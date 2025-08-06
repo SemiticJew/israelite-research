@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extra-Biblical Sources — Israelite Research</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="timeline.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="extra-biblical-sources.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="tanakh.html">The Tanakh</a></li>
+          <li><a href="newtestament.html">NT</a></li>
+          <li><a href="apocrypha.html">Apocrypha</a></li>
+          <li><a href="biblical_references.html">Refs</a></li>
+          <li><a href="extra-biblical-sources.html" class="active">Extra-Biblical</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container extra-biblical-page">
+    <h1>Extra-Biblical Sources</h1>
+    <p>Explore a comprehensive timeline from Adam to the present, marking major biblical eras and historical data on Israelite settlements and sojourns.</p>
+
+    <!-- Timeline Container -->
+    <section class="timeline-section">
+      <div id="timeline"></div>
+    </section>
+
+    <!-- Add Data Markers Interface -->
+    <section class="marker-interface">
+      <h2>Add Historical Marker</h2>
+      <form id="marker-form">
+        <label for="marker-date">Date/Year:</label>
+        <input type="text" id="marker-date" name="marker-date" placeholder="e.g., 586 BC or 2025 AD" required>
+        <label for="marker-title">Title:</label>
+        <input type="text" id="marker-title" name="marker-title" placeholder="Event title" required>
+        <label for="marker-description">Description:</label>
+        <textarea id="marker-description" name="marker-description" placeholder="Details about the marker" required></textarea>
+        <button type="submit" class="btn-primary">Add Marker</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">&copy; 2025 Israelite Research</div>
+  </footer>
+</body>
+</html>
