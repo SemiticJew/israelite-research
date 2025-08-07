@@ -22,37 +22,52 @@
       </nav>
       <div class="search-container">
         <form action="/search" method="GET">
-          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search">
           <button type="submit" aria-label="Submit search">🔍</button>
         </form>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <h1>Articles</h1>
-        <p>Insights and research focused on biblical texts and Israelite heritage.</p>
-      </div>
+  <main class="container">
+    <h1>Articles</h1>
+
+    <!-- Featured Section -->
+    <section class="featured-list">
+      <h2>Featured</h2>
+      <ul class="article-list">
+        <li>
+          <span class="article-type">Article</span>
+          <h3><a href="#">Understanding the Creation Narrative</a></h3>
+          <div class="meta">An in-depth look at Genesis 1–2 and its theological implications. <span class="date">Aug 6, 2025</span> • <span class="author">Seth Porch</span></div>
+        </li>
+        <li>
+          <span class="article-type">Audio Article</span>
+          <h3><a href="#">The Wonders of His Weather</a></h3>
+          <div class="meta">Sensing God’s Majesty in the Storm. <span class="date">Aug 5, 2025</span> • <span class="author">David Mathis</span></div>
+        </li>
+        <!-- …three more featured items… -->
+      </ul>
+      <a href="#" class="more-link">All Authors →</a>
     </section>
 
-    <section class="featured container">
-      <h2>Featured Articles</h2>
-      <div class="grid">
-        <!-- 20 Article Cards -->
-        <article class="card">
-          <img src="article1.jpg" alt="Understanding the Creation Narrative">
-          <h3><a href="#">Understanding the Creation Narrative</a></h3>
-          <p class="excerpt">An in-depth look at Genesis 1–2 and its theological implications.</p>
-        </article>
-        <!-- Repeat cards similarly -->
-        <!-- ... up to 20 ... -->
-      </div>
-      <div class="pagination">
-        <a href="#" class="prev">&laquo; Previous</a>
-        <a href="#" class="next">Next &raquo;</a>
-      </div>
+    <!-- Recent Section -->
+    <section class="recent-list">
+      <h2>Recent</h2>
+      <ul class="article-list">
+        <li>
+          <span class="article-type">Audio Article</span>
+          <h3><a href="#">None Too Old to Serve the King</a></h3>
+          <div class="meta">Though many do not acknowledge his rule… <span class="date">Aug 3, 2025</span> • <span class="author">Greg Morse</span></div>
+        </li>
+        <li>
+          <span class="article-type">Article</span>
+          <h3><a href="#">How Can We Help Our Kids Grow in Grace?</a></h3>
+          <div class="meta">God is the decisive factor in fruitful parenting… <span class="date">Aug 1, 2025</span> • <span class="author">Andrea Hoglund</span></div>
+        </li>
+        <!-- …more recent items… -->
+      </ul>
+      <a href="#" class="more-link">More →</a>
     </section>
   </main>
 
