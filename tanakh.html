@@ -3,64 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Israelite Research — Texts</title>
+  <title>The Tanakh — Israelite Research</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="tabs.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="index.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
+      <a href="texts.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
       <nav class="main-nav">
         <ul>
           <li><a href="index.html">Articles</a></li>
           <li><a href="texts.html" class="active">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
+          <li><a href="apocrypha.html">Apocrypha</a></li>
+          <li><a href="biblical_references.html">Refs</a></li>
+          <li><a href="extra-biblical-sources.html">Extra-Biblical</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" aria-label="Open navigation"><span class="hamburger"></span></button>
     </div>
   </header>
 
-  <main class="container texts-page">
+  <main class="container tanakh-page">
     <section class="hero">
-      <h1 style="font-family:var(--ff-serif); font-size:var(--fs-page-title);">Texts</h1>
-      <p style="font-family:var(--ff-sans); font-size:var(--fs-small-text);">Explore our biblical resources by category.</p>
+      <h1>The Tanakh</h1>
+      <p>Explore the Hebrew Bible divided into four major sections.</p>
     </section>
 
-    <section class="grid">
-      <article class="card">
-        <h3><a href="tanakh.html">The Tanakh</a></h3>
-        <p class="excerpt">The Tanakh is the foundational text for the Israelites. It discusses God, cosmology, beginning of the human family, Israelite customs, and more.</p>
-      </article>
-      <article class="card">
-        <h3><a href="newtestament.html">The New Testament</a></h3>
-        <p class="excerpt">The New Testament books consisting of biographies, history, revelation, and more.</p>
-      </article>
-      <article class="card">
-        <h3><a href="index.html">Israelite Articles</a></h3>
-        <p class="excerpt">Biblical instruction ranging from topics on depression, marriage, raising children, theology, eschatology, and more.</p>
-      </article>
-      <article class="card">
-        <h3><a href="apocrypha.html">The Apocrypha</a></h3>
-        <p class="excerpt">The intertestimental period between Malachi and Matthew which are important historical documents about the time before Christ's arrival.</p>
-      </article>
-      <article class="card">
-        <h3><a href="biblical_references.html">Biblical References</a></h3>
-        <p class="excerpt">Biblical dictionaries, encyclopedias, and commentaries.</p>
-      </article>
-      <article class="card">
-        <h3><a href="extra-biblical-sources.html">Extra-Biblical Sources</a></h3>
-        <p class="excerpt">Sources gathered from academic scholars, bible teachers, and ancient historians to help piece together our fragmented history.</p>
-      </article>
+    <!-- History Section 1 -->
+    <section class="section-group">
+      <h2>History</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="genesis" class="active">Genesis</li>
+          <li data-book="exodus">Exodus</li>
+          <li data-book="leviticus">Leviticus</li>
+          <li data-book="numbers">Numbers</li>
+          <li data-book="deuteronomy">Deuteronomy</li>
+        </ul>
+        <div class="tab-content"></div>
+      </div>
     </section>
 
-    <div class="pagination">
-      <a href="#" class="prev">&laquo; Previous</a>
-      <a href="#" class="next">Next &raquo;</a>
-    </div>
+    <!-- History Section 2 -->
+    <section class="section-group">
+      <h2>History (Continuing)</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="joshua" class="active">Joshua</li>
+          <li data-book="judges">Judges</li>
+          <li data-book="ruth">Ruth</li>
+          <li data-book="samuel1">1 Samuel</li>
+          <li data-book="samuel2">2 Samuel</li>
+          <li data-book="kings1">1 Kings</li>
+          <li data-book="kings2">2 Kings</li>
+          <li data-book="chronicles1">1 Chronicles</li>
+          <li data-book="chronicles2">2 Chronicles</li>
+          <li data-book="ezra">Ezra</li>
+          <li data-book="nehemiah">Nehemiah</li>
+          <li data-book="esther">Esther</li>
+        </ul>
+        <div class="tab-content"></div>
+      </div>
+    </section>
+
+    <!-- Wisdom Section -->
+    <section class="section-group">
+      <h2>Wisdom</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="job" class="active">Job</li>
+          <li data-book="psalms">Psalms</li>
+          <li data-book="proverbs">Proverbs</li>
+          <li data-book="ecclesiastes">Ecclesiastes</li>
+          <li data-book="song-of-songs">Song of Songs</li>
+        </ul>
+        <div class="tab-content"></div>
+      </div>
+    </section>
+
+    <!-- Prophets Section -->
+    <section class="section-group">
+      <h2>Prophets</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="isaiah" class="active">Isaiah</li>
+          <li data-book="jeremiah">Jeremiah</li>
+          <li data-book="lamentations">Lamentations</li>
+          <li data-book="ezekiel">Ezekiel</li>
+          <li data-book="daniel">Daniel</li>
+          <li data-book="hosea">Hosea</li>
+          <li data-book="joel">Joel</li>
+          <li data-book="amos">Amos</li>
+          <li data-book="obadiah">Obadiah</li>
+          <li data-book="jonah">Jonah</li>
+          <li data-book="micah">Micah</li>
+          <li data-book="nahum">Nahum</li>
+          <li data-book="habakkuk">Habakkuk</li>
+          <li data-book="zephaniah">Zephaniah</li>
+          <li data-book="haggai">Haggai</li>
+          <li data-book="malachi">Malachi</li>
+        </ul>
+        <div class="tab-content"></div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
