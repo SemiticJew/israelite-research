@@ -57,22 +57,25 @@ ul { list-style: none; }
 .site-header {
   background-color: var(--blue-dark);
   color: #fff;
+  /* Remove any fixed height you added before */
   padding: var(--gap-medium) 0;
   display: flex;
-  align-items: center;
+  align-items: center;    /* Centers logo vertically */
 }
+
 .site-header .container {
   display: flex;
-  align-items: center;
+  align-items: center;    /* Also center the inner container’s items */
 }
-.logo {
-  margin-right: var(--gap-medium);
-}
+
+/* Logo */
 .site-logo {
-  height: 350px;
+  height: 100px;          /* Your desired logo height */
   width: auto;
   object-fit: contain;
+  margin-right: var(--gap-medium);
 }
+
 
 /* Keep header container height unchanged */
 .site-header {
