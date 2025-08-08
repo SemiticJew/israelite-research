@@ -69,17 +69,13 @@ ul { list-style: none; }
   margin-right: var(--gap-medium);
 }
 .site-logo {
-  height: 120px;
+  height: 100px;
   width: auto;
   object-fit: contain;
   margin-right: var(--gap-medium);
 }
 
-/* Keep header container height unchanged */
-.site-header {
-  align-items: flex-start;
-  height: 120px; /* fixed header height to prevent expanding with logo */
-}
+
 .main-nav ul {
   display: flex;
   gap: var(--gap-large);
