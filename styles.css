@@ -57,25 +57,23 @@ ul { list-style: none; }
 .site-header {
   background-color: var(--blue-dark);
   color: #fff;
-  /* Remove any fixed height you added before */
   padding: var(--gap-medium) 0;
   display: flex;
-  align-items: center;    /* Centers logo vertically */
+  align-items: center;
 }
-
 .site-header .container {
   display: flex;
-  align-items: center;    /* Also center the inner container’s items */
+  align-items: center;
 }
-
-/* Logo */
+.logo {
+  margin-right: var(--gap-medium);
+}
 .site-logo {
-  height: 100px;          /* Your desired logo height */
+  height: 200px;
   width: auto;
   object-fit: contain;
   margin-right: var(--gap-medium);
 }
-
 
 /* Keep header container height unchanged */
 .site-header {
@@ -191,3 +189,4 @@ ul { list-style: none; }
   text-align: center;
   padding: var(--gap-medium) 0;
 }
+
