@@ -10,7 +10,7 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="texts.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
+      <a href="texts.html" class="logo"><img src="images/logo.png" alt="Israelite Research Logo" class="site-logo"></a>
       <nav class="main-nav">
         <ul>
           <li><a href="index.html">Articles</a></li>
@@ -20,6 +20,12 @@
           <li><a href="extra-biblical-sources.html">Extra-Biblical</a></li>
         </ul>
       </nav>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search">
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
     </div>
   </header>
 
@@ -29,9 +35,9 @@
       <p>Explore the Hebrew Bible divided into four major sections.</p>
     </section>
 
-    <!-- History Section 1 -->
+    <!-- Law (Torah) -->
     <section class="section-group">
-      <h2>History</h2>
+      <h2>The Law (Torah)</h2>
       <div class="book-tabs">
         <ul class="tab-list">
           <li data-book="genesis" class="active">Genesis</li>
@@ -44,9 +50,9 @@
       </div>
     </section>
 
-    <!-- History Section 2 -->
+    <!-- History (Nevi’im Phase 1) -->
     <section class="section-group">
-      <h2>History (Continuing)</h2>
+      <h2>History</h2>
       <div class="book-tabs">
         <ul class="tab-list">
           <li data-book="joshua" class="active">Joshua</li>
@@ -66,9 +72,9 @@
       </div>
     </section>
 
-    <!-- Wisdom Section -->
+    <!-- Wisdom (Ketuvim) -->
     <section class="section-group">
-      <h2>Wisdom</h2>
+      <h2>Wisdom (Ketuvim)</h2>
       <div class="book-tabs">
         <ul class="tab-list">
           <li data-book="job" class="active">Job</li>
@@ -81,9 +87,9 @@
       </div>
     </section>
 
-    <!-- Prophets Section -->
+    <!-- Prophets (Nevi’im Phase 2) -->
     <section class="section-group">
-      <h2>Prophets</h2>
+      <h2>Prophets (Nevi’im)</h2>
       <div class="book-tabs">
         <ul class="tab-list">
           <li data-book="isaiah" class="active">Isaiah</li>
