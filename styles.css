@@ -71,6 +71,13 @@ ul { list-style: none; }
 .site-logo {
   height: 350px;
   width: auto;
+  object-fit: contain;
+}
+
+/* Keep header container height unchanged */
+.site-header {
+  align-items: flex-start;
+  height: 120px; /* fixed header height to prevent expanding with logo */
 }
 .main-nav ul {
   display: flex;
@@ -181,4 +188,3 @@ ul { list-style: none; }
   text-align: center;
   padding: var(--gap-medium) 0;
 }
-
