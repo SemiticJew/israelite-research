@@ -5,29 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Israelite Research — Articles</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="js/include.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
-        <ul>
-          <li><a href="index.html" class="active">Articles</a></li>
-          <li><a href="texts.html">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
-        </ul>
-      </nav>
-      <div class="search-container">
-        <form action="/search" method="GET">
-          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
-          <button type="submit" aria-label="Submit search">🔍</button>
-        </form>
-      </div>
-    </div>
-  </header>
+  <div data-include="partials/header.html"></div>
 
   <main class="container articles-list-page">
     <h1>Articles</h1>
@@ -45,13 +26,9 @@
           </div>
         </a>
       </article>
-      <!-- Duplicate this <article> block for more cards when ready -->
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">&copy; 2025 Israelite Research</div>
-  </footer>
+  <div data-include="partials/footer.html"></div>
 </body>
 </html>
-
