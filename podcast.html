@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Podcast — Israelite Research</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="podcast.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
       <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
         <ul>
           <li><a href="index.html">Articles</a></li>
           <li><a href="texts.html">Texts</a></li>
@@ -20,22 +20,27 @@
           <li><a href="donate.html">Donations</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" aria-label="Open navigation"><span class="hamburger"></span></button>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
     </div>
   </header>
 
-  <main class="podcast-page container">
-    <h1>Israelite Research Podcast</h1>
-    <p>Discussions and deep dives into biblical texts from an Israelite perspective.</p>
-    <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=5c177dbc11a54ef6" class="btn-primary" target="_blank">Listen on Spotify</a>
-    <iframe src="https://open.spotify.com/embed/show/0GvSSHiBeVAmvHMIXP6lOi?si=5c177dbc11a54ef6"
-            width="100%" height="232" frameborder="0" allow="encrypted-media"></iframe>
+  <main class="container">
+    <section class="hero">
+      <h1>Podcast</h1>
+      <p>Listen to our latest episodes.</p>
+    </section>
+
+    <!-- Embed/player list goes here -->
   </main>
 
   <footer class="site-footer">
     <div class="container">&copy; 2025 Israelite Research</div>
   </footer>
-  <script src="tabs.js"></script>
 </body>
 </html>
 
