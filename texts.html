@@ -9,18 +9,22 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="index.html" class="logo"><img src="logo.svg" alt="Israelite Research"></a>
       <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
         <ul>
           <li><a href="index.html">Articles</a></li>
-          <li><a href="texts.html" class="active">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
+          <li><a href="text.html" class="active">Texts</a></li>
+          <li><a href="apocrypha.html">Apocrypha</a></li>
+          <li><a href="biblical_references.html">Bible References</a></li>
+          <li><a href="extra-biblical-sources.html">Extra-Biblical Sources</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" aria-label="Open navigation"><span class="hamburger"></span></button>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
     </div>
   </header>
 
