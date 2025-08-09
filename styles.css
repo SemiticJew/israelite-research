@@ -41,15 +41,12 @@ ul { list-style: none; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--gap-medium); }
 
 /* Header */
-.site-header { background-color: var(--blue-dark); color: #fff; padding: var(--gap-medium) 0; display: flex; align-items: center; }
+.site-header { background-color: var(--blue-dark); color: #fff; padding: var(--gap-medium) 0; }
 .site-header .container { display: flex; align-items: center; }
 .main-nav { display: flex; align-items: center; gap: var(--gap-large); }
 .main-nav ul { display: flex; gap: var(--gap-large); }
 .main-nav a { color: #fff; font-weight: 500; }
 .main-nav a.active { border-bottom: 2px solid var(--orange-accent); }
-/* Site Title */
-.site-title { font-family: var(--ff-serif); font-size: var(--fs-page-title); color: #fff; margin-right: var(--gap-large); text-decoration: none; }
-/* Search */
 .search-container { margin-left: auto; }
 .search-container input[type="text"] { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px 0 0 4px; font-size: var(--fs-small-text); }
 .search-container button { padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-left: none; background: var(--orange-accent); color: #fff; border-radius: 0 4px 4px 0; cursor: pointer; }
