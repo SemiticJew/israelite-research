@@ -250,3 +250,8 @@ blockquote.scripture {
 }
 .author-meta .author-name { font-weight: 700; line-height: 1.2; }
 .author-meta .author-title { font-size: var(--fs-small-text); color: #666; }
+/* Article cards: link only on title */
+.article-card { display: flex; flex-direction: column; height: 100%; }
+.article-card .card-title a { color: inherit; text-decoration: none; }
+.article-card .card-title a:hover { text-decoration: underline; }
+

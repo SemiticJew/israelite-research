@@ -8,27 +8,44 @@
   <script src="js/include.js" defer></script>
 </head>
 <body>
+  <!-- Shared header -->
   <div data-include="partials/header.html"></div>
 
   <main class="container articles-list-page">
     <h1>Articles</h1>
+
+    <!-- Articles grid -->
     <section class="articles-grid">
       <article class="card article-card">
-        <a href="article.html" class="card-link">
-          <img src="images/creation.png" alt="Creation Narrative Illustration" class="card-image" />
-          <div class="card-content">
-            <h3 class="card-title">Understanding the Creation Narrative</h3>
-            <p class="card-excerpt">Why logic and Scripture alone guide our interpretation of Genesis 1–3.</p>
-            <div class="card-meta">
-              <span class="date">Aug 7, 2025</span>
-              <span class="author">Semitic Jew</span>
-            </div>
+        <img src="images/creation.png" alt="Creation Narrative Illustration" class="card-image" />
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="article.html">Understanding the Creation Narrative</a>
+          </h3>
+          <p class="card-excerpt">Why logic and Scripture alone guide our interpretation of Genesis 1–3.</p>
+          <div class="card-meta">
+            <span class="date">Aug 7, 2025</span>
+            <span class="author">Semitic Jew</span>
           </div>
-        </a>
+        </div>
       </article>
+
+      <!-- Duplicate this <article> block for more posts -->
+      <!--
+      <article class="card article-card">
+        <img src="images/your-image.jpg" alt="Alt text" class="card-image" />
+        <div class="card-content">
+          <h3 class="card-title"><a href="your-article.html">Your Article Title</a></h3>
+          <p class="card-excerpt">Short excerpt for this article…</p>
+          <div class="card-meta"><span class="date">Month DD, YYYY</span> <span class="author">Author Name</span></div>
+        </div>
+      </article>
+      -->
     </section>
   </main>
 
+  <!-- Shared footer -->
   <div data-include="partials/footer.html"></div>
 </body>
 </html>
+
