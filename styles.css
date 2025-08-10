@@ -317,3 +317,11 @@ blockquote.scripture {
   outline: 2px solid var(--orange-accent);
   outline-offset: 2px;
 }
+/* Remove underline from Spotify / Apple / RSS badges, no matter what */
+.subscribe-bar .listen-panel .listen-badge,
+.subscribe-bar .listen-panel .listen-badge:visited,
+.subscribe-bar .listen-panel .listen-badge:hover,
+.subscribe-bar .listen-panel .listen-badge:active,
+.subscribe-bar .listen-panel .listen-badge:focus {
+  text-decoration: none !important;
+}
