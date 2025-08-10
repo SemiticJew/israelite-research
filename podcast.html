@@ -31,29 +31,49 @@
     <!-- Featured player (show embed) -->
     <section class="featured-episode" style="margin: 1.5rem 0;">
       <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/0GvSSHiBeVAmvHMIXP6lOi"
-        width="100%" height="232" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        width="100%" height="232" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy" title="Podcast player"></iframe>
     </section>
 
-    <!-- Controls (Episodes tab + sort) -->
-    <section class="episodes-controls" style="display:flex;justify-content:space-between;align-items:center;margin:1rem 0;">
-      <div class="tabs">
-        <button type="button" class="tab-btn" aria-pressed="true" style="padding:.5rem 1rem;border:1px solid #e0e0e0;border-radius:6px;background:#fff;">Episodes</button>
-        <!-- If you add a Series page later, make another button and toggle views with JS -->
+    <!-- Tabs + Controls -->
+    <section class="episodes-controls" style="display:flex;justify-content:space-between;align-items:center;margin:1rem 0;gap:1rem;flex-wrap:wrap;">
+      <div class="tabs" role="tablist" aria-label="View">
+        <button id="tabEpisodes" class="tab-btn" aria-pressed="true" role="tab"
+                style="padding:.5rem 1rem;border:1px solid #e0e0e0;border-radius:6px;background:#fff;">
+          Episodes
+        </button>
+        <button id="tabSeries" class="tab-btn" aria-pressed="false" role="tab"
+                style="padding:.5rem 1rem;border:1px solid #e0e0e0;border-radius:6px;background:#fff;">
+          Series
+        </button>
       </div>
-      <label style="font-size:13px;color:#555;">
-        Sort:
-        <select id="sortSelect">
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </select>
-      </label>
+
+      <div class="filters" id="filtersBar" style="margin-left:auto;display:flex;gap:1rem;align-items:center;">
+        <label style="font-size:13px;color:#555;">
+          Sort:
+          <select id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </label>
+
+        <label style="font-size:13px;color:#555;">
+          Series:
+          <select id="seriesSelect">
+            <option value="all">All</option>
+            <option value="creation">Creation</option>
+            <option value="canon">Canon</option>
+            <option value="wisdom">Wisdom</option>
+          </select>
+        </label>
+      </div>
     </section>
 
-    <!-- Episodes grid (reuses your card styles) -->
-    <section id="episodesGrid" class="articles-grid">
-      <!-- Episode Card 1 -->
-      <article class="card article-card" data-date="2025-08-01">
+    <!-- Episodes grid -->
+    <section id="episodesView" class="articles-grid" role="tabpanel" aria-labelledby="tabEpisodes">
+      <!-- Episode 1 -->
+      <article class="card article-card" data-date="2025-08-01" data-series="creation">
         <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" class="card-link" target="_blank" rel="noopener">
           <img src="images/creation.png" alt="Episode artwork" class="card-image" />
           <div class="card-content">
@@ -64,8 +84,8 @@
         </a>
       </article>
 
-      <!-- Episode Card 2 (sample placeholder) -->
-      <article class="card article-card" data-date="2025-07-15">
+      <!-- Episode 2 -->
+      <article class="card article-card" data-date="2025-07-15" data-series="canon">
         <a href="#" class="card-link">
           <img src="images/podcast-placeholder.jpg" alt="Episode artwork" class="card-image" />
           <div class="card-content">
@@ -76,8 +96,8 @@
         </a>
       </article>
 
-      <!-- Episode Card 3 (sample placeholder) -->
-      <article class="card article-card" data-date="2025-06-20">
+      <!-- Episode 3 -->
+      <article class="card article-card" data-date="2025-06-20" data-series="wisdom">
         <a href="#" class="card-link">
           <img src="images/podcast-placeholder.jpg" alt="Episode artwork" class="card-image" />
           <div class="card-content">
@@ -89,7 +109,35 @@
       </article>
     </section>
 
-    <!-- Pagination / Load more -->
+    <!-- Series grid -->
+    <section id="seriesView" class="articles-grid" role="tabpanel" aria-labelledby="tabSeries" hidden>
+      <article class="card article-card">
+        <a href="#" class="card-link series-card" data-series="creation">
+          <div class="card-content">
+            <h3 class="card-title">Creation</h3>
+            <p class="card-excerpt">Origins, purpose, and the logic of Genesis.</p>
+          </div>
+        </a>
+      </article>
+      <article class="card article-card">
+        <a href="#" class="card-link series-card" data-series="canon">
+          <div class="card-content">
+            <h3 class="card-title">Canon</h3>
+            <p class="card-excerpt">Books, authority, and how the library holds together.</p>
+          </div>
+        </a>
+      </article>
+      <article class="card article-card">
+        <a href="#" class="card-link series-card" data-series="wisdom">
+          <div class="card-content">
+            <h3 class="card-title">Wisdom</h3>
+            <p class="card-excerpt">Proverbs, Job, Ecclesiastes, and everyday life.</p>
+          </div>
+        </a>
+      </article>
+    </section>
+
+    <!-- Pagination / Load more (visual only for now) -->
     <div class="pagination" style="display:flex;gap:.75rem;justify-content:center;margin:2rem 0;">
       <a href="#" class="prev" aria-disabled="true" style="opacity:.5;pointer-events:none;">&laquo; Previous</a>
       <a href="#" class="next">Next &raquo;</a>
@@ -99,25 +147,74 @@
   <!-- Shared footer -->
   <div data-include="partials/footer.html"></div>
 
-  <!-- Lightweight client-side sort by date -->
+  <!-- Tab / Sort / Filter logic + URL param support -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const select = document.getElementById('sortSelect');
-      const grid = document.getElementById('episodesGrid');
+      const tabEpisodes = document.getElementById('tabEpisodes');
+      const tabSeries = document.getElementById('tabSeries');
+      const episodesView = document.getElementById('episodesView');
+      const seriesView = document.getElementById('seriesView');
+      const sortSelect = document.getElementById('sortSelect');
+      const seriesSelect = document.getElementById('seriesSelect');
+      const filtersBar = document.getElementById('filtersBar');
+
+      function setTab(which, push = true) {
+        const isEpisodes = which === 'episodes';
+        tabEpisodes.setAttribute('aria-pressed', isEpisodes ? 'true' : 'false');
+        tabSeries.setAttribute('aria-pressed', isEpisodes ? 'false' : 'true');
+        episodesView.hidden = !isEpisodes;
+        seriesView.hidden = isEpisodes;
+        filtersBar.style.display = isEpisodes ? 'flex' : 'none';
+        if (push) {
+          const url = new URL(location.href);
+          url.searchParams.set('tab', which);
+          history.replaceState(null, '', url.toString());
+        }
+      }
 
       function sortEpisodes(order) {
-        const cards = Array.from(grid.children);
+        const cards = Array.from(episodesView.children);
         cards.sort((a,b) => {
           const da = new Date(a.getAttribute('data-date'));
           const db = new Date(b.getAttribute('data-date'));
           return order === 'oldest' ? da - db : db - da;
         });
-        cards.forEach(c => grid.appendChild(c));
+        cards.forEach(c => episodesView.appendChild(c));
       }
 
-      select.addEventListener('change', () => sortEpisodes(select.value));
-      sortEpisodes(select.value); // initial
+      function filterEpisodes(series) {
+        const cards = Array.from(episodesView.children);
+        cards.forEach(c => {
+          const s = c.getAttribute('data-series');
+          c.style.display = (series === 'all' || s === series) ? '' : 'none';
+        });
+      }
+
+      // Series card clicks: go to Episodes and filter
+      seriesView.addEventListener('click', (e) => {
+        const link = e.target.closest('.series-card');
+        if (!link) return;
+        e.preventDefault();
+        const series = link.getAttribute('data-series');
+        seriesSelect.value = series;
+        setTab('episodes');
+        filterEpisodes(series);
+      });
+
+      // Wire controls
+      tabEpisodes.addEventListener('click', () => setTab('episodes'));
+      tabSeries.addEventListener('click', () => setTab('series'));
+      sortSelect.addEventListener('change', () => sortEpisodes(sortSelect.value));
+      seriesSelect.addEventListener('change', () => filterEpisodes(seriesSelect.value));
+
+      // Initial state from URL (?tab=episodes|series)
+      const params = new URLSearchParams(location.search);
+      const initialTab = params.get('tab') === 'series' ? 'series' : 'episodes';
+      setTab(initialTab, false);
+      sortEpisodes(sortSelect.value);
+      filterEpisodes(seriesSelect.value);
     });
   </script>
 </body>
 </html>
+
