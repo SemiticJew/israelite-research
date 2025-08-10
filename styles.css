@@ -257,4 +257,36 @@ blockquote.scripture {
 .author-meta .author-name { font-weight: 700; line-height: 1.2; }
 .author-meta .author-title { font-size: var(--fs-small-text); color: #666; }
 .author-box.no-image .author-meta { margin-left: 0; }
+/* Author box aligned to hero image (700px) */
+.article-hero.below-title img {
+  width: 700px;
+  height: 394px;
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;         /* centers the 700px image */
+}
+
+.article .author-box {
+  width: 700px;           /* match hero image width */
+  max-width: 100%;        /* shrink on small screens like the image */
+  margin: 1rem auto 1.5rem; /* center the box itself */
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-start; /* left-align contents inside the box */
+  text-align: left;
+}
+
+/* keep your existing avatar + meta rules as-is */
+.author-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 72px;
+}
+.author-meta .author-name { font-weight: 700; line-height: 1.2; }
+.author-meta .author-title { font-size: var(--fs-small-text); color: #666; }
+.author-box.no-image .author-meta { margin-left: 0; }
 
