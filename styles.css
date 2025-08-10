@@ -385,3 +385,23 @@ blockquote.scripture {
     font-size: 0.92rem;
   }
 }
+/* === Tanakh tiles: extra-compact === */
+.book-grid {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: .4rem;
+}
+
+.book-tile {
+  min-height: 48px;        /* was 56px */
+  padding: .4rem .5rem;    /* tighter padding */
+  border-radius: 7px;
+  font-size: 0.9rem;
+  line-height: 1.15;
+}
+
+/* Phone tweaks (still >=44px touch target) */
+@media (max-width: 520px) {
+  .book-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  .book-tile { min-height: 44px; font-size: 0.88rem; }
+}
+
