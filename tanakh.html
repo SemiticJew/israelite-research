@@ -1,122 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Tanakh — Israelite Research</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="tabs.js" defer></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="js/include.js" defer></script>
 </head>
 <body>
-<header class="site-header">
-  <div class="container">
-    <nav class="main-nav">
-      <a href="index.html" class="site-title">Biblical Logicians</a>
-      <ul>
-        <li><a href="index.html">Articles</a></li>
-        <li><a href="text.html">Texts</a></li>
-        <li><a href="apologetics.html">Apologetics</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="podcast.html">Podcast</a></li>
-        <li><a href="donate.html">Donations</a></li>
-      </ul>
-    </nav>
-    <div class="search-container">
-      <form action="/search" method="GET">
-        <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
-        <button type="submit" aria-label="Submit search">🔍</button>
-      </form>
-    </div>
-  </div>
-</header>
-  <main class="container tanakh-page">
+  <!-- Shared header -->
+  <div data-include="partials/header.html"></div>
+
+  <main class="container texts-page">
     <section class="hero">
       <h1>The Tanakh</h1>
-      <p>Explore the Hebrew Bible divided into four major sections.</p>
+      <p>Browse books by section. Click a book to open its chapter “Contents” grid.</p>
     </section>
 
-    <!-- Law (Torah) -->
-    <section class="section-group">
-      <h2>The Law (Torah)</h2>
-      <div class="book-tabs">
-        <ul class="tab-list">
-          <li data-book="genesis" class="active">Genesis</li>
-          <li data-book="exodus">Exodus</li>
-          <li data-book="leviticus">Leviticus</li>
-          <li data-book="numbers">Numbers</li>
-          <li data-book="deuteronomy">Deuteronomy</li>
-        </ul>
-        <div class="tab-content"></div>
-      </div>
+    <!-- The Law -->
+    <section class="text-section">
+      <h2>The Law</h2>
+      <ul class="book-grid">
+        <li><a href="tanakh/book.html?book=Genesis">Genesis</a></li>
+        <li><a href="tanakh/book.html?book=Exodus">Exodus</a></li>
+        <li><a href="tanakh/book.html?book=Leviticus">Leviticus</a></li>
+        <li><a href="tanakh/book.html?book=Numbers">Numbers</a></li>
+        <li><a href="tanakh/book.html?book=Deuteronomy">Deuteronomy</a></li>
+      </ul>
     </section>
 
-    <!-- History (Nevi’im Phase 1) -->
-    <section class="section-group">
+    <!-- History -->
+    <section class="text-section">
       <h2>History</h2>
-      <div class="book-tabs">
-        <ul class="tab-list">
-          <li data-book="joshua" class="active">Joshua</li>
-          <li data-book="judges">Judges</li>
-          <li data-book="ruth">Ruth</li>
-          <li data-book="samuel1">1 Samuel</li>
-          <li data-book="samuel2">2 Samuel</li>
-          <li data-book="kings1">1 Kings</li>
-          <li data-book="kings2">2 Kings</li>
-          <li data-book="chronicles1">1 Chronicles</li>
-          <li data-book="chronicles2">2 Chronicles</li>
-          <li data-book="ezra">Ezra</li>
-          <li data-book="nehemiah">Nehemiah</li>
-          <li data-book="esther">Esther</li>
-        </ul>
-        <div class="tab-content"></div>
-      </div>
+      <ul class="book-grid">
+        <li><a href="tanakh/book.html?book=Joshua">Joshua</a></li>
+        <li><a href="tanakh/book.html?book=Judges">Judges</a></li>
+        <li><a href="tanakh/book.html?book=Ruth">Ruth</a></li>
+        <li><a href="tanakh/book.html?book=1%20Samuel">1 Samuel</a></li>
+        <li><a href="tanakh/book.html?book=2%20Samuel">2 Samuel</a></li>
+        <li><a href="tanakh/book.html?book=1%20Kings">1 Kings</a></li>
+        <li><a href="tanakh/book.html?book=2%20Kings">2 Kings</a></li>
+        <li><a href="tanakh/book.html?book=1%20Chronicles">1 Chronicles</a></li>
+        <li><a href="tanakh/book.html?book=2%20Chronicles">2 Chronicles</a></li>
+        <li><a href="tanakh/book.html?book=Ezra">Ezra</a></li>
+        <li><a href="tanakh/book.html?book=Nehemiah">Nehemiah</a></li>
+        <li><a href="tanakh/book.html?book=Esther">Esther</a></li>
+      </ul>
     </section>
 
-    <!-- Wisdom (Ketuvim) -->
-    <section class="section-group">
-      <h2>Wisdom (Ketuvim)</h2>
-      <div class="book-tabs">
-        <ul class="tab-list">
-          <li data-book="job" class="active">Job</li>
-          <li data-book="psalms">Psalms</li>
-          <li data-book="proverbs">Proverbs</li>
-          <li data-book="ecclesiastes">Ecclesiastes</li>
-          <li data-book="song-of-songs">Song of Songs</li>
-        </ul>
-        <div class="tab-content"></div>
-      </div>
+    <!-- Wisdom -->
+    <section class="text-section">
+      <h2>Wisdom</h2>
+      <ul class="book-grid">
+        <li><a href="tanakh/book.html?book=Job">Job</a></li>
+        <li><a href="tanakh/book.html?book=Psalms">Psalms</a></li>
+        <li><a href="tanakh/book.html?book=Proverbs">Proverbs</a></li>
+        <li><a href="tanakh/book.html?book=Ecclesiastes">Ecclesiastes</a></li>
+        <li><a href="tanakh/book.html?book=Song%20of%20Songs">Song of Songs</a></li>
+      </ul>
     </section>
 
-    <!-- Prophets (Nevi’im Phase 2) -->
-    <section class="section-group">
-      <h2>Prophets (Nevi’im)</h2>
-      <div class="book-tabs">
-        <ul class="tab-list">
-          <li data-book="isaiah" class="active">Isaiah</li>
-          <li data-book="jeremiah">Jeremiah</li>
-          <li data-book="lamentations">Lamentations</li>
-          <li data-book="ezekiel">Ezekiel</li>
-          <li data-book="daniel">Daniel</li>
-          <li data-book="hosea">Hosea</li>
-          <li data-book="joel">Joel</li>
-          <li data-book="amos">Amos</li>
-          <li data-book="obadiah">Obadiah</li>
-          <li data-book="jonah">Jonah</li>
-          <li data-book="micah">Micah</li>
-          <li data-book="nahum">Nahum</li>
-          <li data-book="habakkuk">Habakkuk</li>
-          <li data-book="zephaniah">Zephaniah</li>
-          <li data-book="haggai">Haggai</li>
-          <li data-book="malachi">Malachi</li>
-        </ul>
-        <div class="tab-content"></div>
-      </div>
+    <!-- The Prophets -->
+    <section class="text-section">
+      <h2>The Prophets</h2>
+      <ul class="book-grid">
+        <li><a href="tanakh/book.html?book=Isaiah">Isaiah</a></li>
+        <li><a href="tanakh/book.html?book=Jeremiah">Jeremiah</a></li>
+        <li><a href="tanakh/book.html?book=Lamentations">Lamentations</a></li>
+        <li><a href="tanakh/book.html?book=Ezekiel">Ezekiel</a></li>
+        <li><a href="tanakh/book.html?book=Daniel">Daniel</a></li>
+        <li><a href="tanakh/book.html?book=Hosea">Hosea</a></li>
+        <li><a href="tanakh/book.html?book=Joel">Joel</a></li>
+        <li><a href="tanakh/book.html?book=Amos">Amos</a></li>
+        <li><a href="tanakh/book.html?book=Obadiah">Obadiah</a></li>
+        <li><a href="tanakh/book.html?book=Jonah">Jonah</a></li>
+        <li><a href="tanakh/book.html?book=Micah">Micah</a></li>
+        <li><a href="tanakh/book.html?book=Nahum">Nahum</a></li>
+        <li><a href="tanakh/book.html?book=Habakkuk">Habakkuk</a></li>
+        <li><a href="tanakh/book.html?book=Zephaniah">Zephaniah</a></li>
+        <li><a href="tanakh/book.html?book=Haggai">Haggai</a></li>
+        <li><a href="tanakh/book.html?book=Zechariah">Zechariah</a></li>
+        <li><a href="tanakh/book.html?book=Malachi">Malachi</a></li>
+      </ul>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">&copy; 2025 Israelite Research</div>
-  </footer>
+  <!-- Shared footer -->
+  <div data-include="partials/footer.html"></div>
 </body>
 </html>
-
