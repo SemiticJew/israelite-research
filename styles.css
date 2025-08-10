@@ -215,58 +215,38 @@ blockquote.scripture {
   margin: 1rem auto 0;
 }
 
-/* Center title and size hero image to 700×394 (responsive down) */
+/* Keep title centered (already set earlier) */
 .article-header { text-align: center; }
 
-.article-hero.below-title img {
-  width: 700px;
-  height: 394px;
-  max-width: 100%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
+/* Shared wrapper so hero and author share the same left edge */
+.hero-block {
+  width: 700px;         /* exact hero width */
+  max-width: 100%;      /* shrink nicely on small screens */
+  margin: 0 auto 1.5rem;/* centers the whole block */
 }
 
-/* Date line spacing */
-.article-meta-top {
-  color: #666;
-  font-size: var(--fs-small-text);
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-  justify-content: center; /* center the date row */
-  margin-top: 1rem;
-}
-/* Author box aligned to hero image (700px) */
-.article-hero.below-title img {
-  width: 700px;
-  height: 394px;
-  max-width: 100%;
+/* Size hero image within the wrapper */
+.hero-block .article-hero img {
+  width: 100%;
+  aspect-ratio: 700 / 394; /* keeps 700x394 proportion */
   object-fit: cover;
   display: block;
-  margin: 0 auto;         /* centers the 700px image */
 }
 
-.article .author-box {
-  width: 700px;           /* match hero image width */
-  max-width: 100%;        /* shrink on small screens like the image */
-  margin: 1rem auto 1.5rem; /* center the box itself */
+/* Author box aligns to the left edge of the hero */
+.hero-block .author-box {
   display: flex;
   gap: 0.75rem;
   align-items: center;
-  justify-content: flex-start; /* left-align contents inside the box */
+  justify-content: flex-start; /* left-aligned content */
   text-align: left;
+  margin: 0.75rem 0 0;         /* space below image */
 }
 
-/* keep your existing avatar + meta rules as-is */
+/* Avatar + text (keep your existing rules if you already have them) */
 .author-avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex: 0 0 72px;
+  width: 72px; height: 72px; border-radius: 50%;
+  object-fit: cover; flex: 0 0 72px;
 }
 .author-meta .author-name { font-weight: 700; line-height: 1.2; }
 .author-meta .author-title { font-size: var(--fs-small-text); color: #666; }
-.author-box.no-image .author-meta { margin-left: 0; }
-
