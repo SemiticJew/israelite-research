@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tanakh — Book</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../js/include.js" defer></script>
+  <script src="../js/book.js" defer></script>
+
+  <style>
+    /* Scoped styles for the chapters grid page */
+    .book-hero { margin: .75rem 0 1rem; }
+    .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
+    .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
+    .book-toolbar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666; }
+
+    .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+    .chapter-tile {
+      display: grid; place-items: center;
+      height: 56px;
+      background: var(--gray-light);
+      border: 1px solid var(--blue-light);
+      border-radius: 8px;
+      text-decoration: none; color: var(--blue-dark); font-weight: 600;
+      transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .chapter-tile:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); transform: translateY(-1px); }
+
+    .crumbs a { color: var(--blue-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Shared header (nested for subfolder) -->
+  <div data-include="../partials/header-nested.html"></div>
+
+  <main class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
+      <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
+      <span id="crumbBook">Book</span>
+    </nav>
+
+    <section class="book-hero">
+      <h1 id="bookTitle">Book</h1>
+      <p id="bookDesc" class="book-desc" hidden></p>
+
+      <div class="book-toolbar">
+        <span class="sub">Contents</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="chaptersHead">
+      <h2 id="chaptersHead" class="section-subhead">Chapters</h2>
+      <div id="chapters" class="chapter-grid" aria-label="Chapters"></div>
+    </section>
+  </main>
+
+  <!-- Shared footer -->
+  <div data-include="../partials/footer.html"></div>
+</body>
+</html>
+
