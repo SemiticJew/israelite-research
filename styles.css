@@ -237,14 +237,15 @@ blockquote.scripture {
   justify-content: center; /* center the date row */
   margin-top: 1rem;
 }
-/* Author box (under hero) */
-.author-box {
+/* Author box (under hero) — left aligned */
+.article .author-box {
   display: flex;
   gap: 0.75rem;
   align-items: center;
-  justify-content: center;
-  margin: 1rem auto 1.5rem;
-  text-align: center;
+  justify-content: flex-start;   /* was center */
+  margin: 1rem 0 1.5rem;         /* remove auto centering */
+  text-align: left;               /* not centered */
+  max-width: 720px;               /* matches reading column */
 }
 .author-avatar {
   width: 72px;
@@ -253,14 +254,7 @@ blockquote.scripture {
   object-fit: cover;
   flex: 0 0 72px;
 }
-.author-meta .author-name {
-  font-weight: 700;
-  line-height: 1.2;
-}
-.author-meta .author-title {
-  font-size: var(--fs-small-text);
-  color: #666;
-}
-.author-box.no-image .author-meta {
-  margin-left: 0;
-}
+.author-meta .author-name { font-weight: 700; line-height: 1.2; }
+.author-meta .author-title { font-size: var(--fs-small-text); color: #666; }
+.author-box.no-image .author-meta { margin-left: 0; }
+
