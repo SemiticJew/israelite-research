@@ -5,66 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Understanding the Creation Narrative — Israelite Research</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="js/include.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
-        <ul>
-          <li><a href="index.html" class="active">Articles</a></li>
-          <li><a href="text.html">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
-        </ul>
-      </nav>
-      <div class="search-container">
-        <form action="/search" method="GET">
-          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
-          <button type="submit" aria-label="Submit search">🔍</button>
-        </form>
-      </div>
-    </div>
-  </header>
+  <!-- Shared header -->
+  <div data-include="partials/header.html"></div>
 
-  <main class="container article-page">
-    <section class="hero">
-      <h1>Understanding the Creation Narrative</h1>
-      <p>Why logic and Scripture alone guide our interpretation</p>
-    </section>
+  <main class="article-shell">
+    <!-- Left share rail -->
+    <aside class="share-rail" aria-label="Share">
+      <a class="share-link" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}" target="_blank" rel="noopener" aria-label="Share on X">✕</a>
+      <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>
+      <button class="share-link" id="copyLinkBtn" aria-label="Copy link">⟲</button>
+    </aside>
 
-    <article class="article-content">
-      <img src="images/creation.png" alt="Creation Illustration" class="hero-image" style="width:100%;max-height:300px;object-fit:cover;border-radius:8px;margin-bottom:1rem;"/>
+    <!-- Main article -->
+    <article class="article">
+      <!-- Hero -->
+      <figure class="article-hero">
+        <img src="images/creation.png" alt="Creation Illustration" />
+      </figure>
 
-      <p>The opening chapters of Genesis set the stage for all biblical theology: they tell us about God, the cosmos, and humanity’s place within it. To grasp the profound truths here, we must rely on the clear teaching of Scripture itself, using sound logic rather than external philosophies or traditions. By holding fast to the text of the Bible and applying rational principles, we safeguard our interpretation from misdirection and honor the sufficiency of God's Word.</p>
+      <!-- Header -->
+      <header class="article-header container">
+        <h1 class="article-title">Understanding the Creation Narrative</h1>
+        <p class="article-subtitle">Why logic and Scripture alone should govern our reading of Genesis 1–3.</p>
 
-      <section class="scripture-excerpt">
-        <h2>Genesis 1:1–3</h2>
-        <blockquote>
-          <p><strong>1</strong> In the beginning God created the heavens and the earth.</p>
-          <p><strong>2</strong> Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.</p>
-          <p><strong>3</strong> And God said, “Let there be light,” and there was light.</p>
+        <div class="article-meta">
+          <span class="meta-author">By <strong>Semitic Jew</strong></span>
+          <span class="meta-dot">•</span>
+          <time datetime="2025-08-07" class="meta-date">Aug 7, 2025</time>
+          <span class="meta-dot">•</span>
+          <span class="meta-readtime">~6 min read</span>
+        </div>
+      </header>
+
+      <!-- Body -->
+      <div class="article-body container prose">
+        <p>The opening chapters of Genesis set the stage for all biblical theology: they tell us about God, the cosmos, and humanity’s place within it. To grasp the profound truths here, we must rely on the clear teaching of Scripture itself, using sound logic rather than external philosophies or traditions. By holding fast to the text of the Bible and applying rational principles, we safeguard our interpretation from misdirection and honor the sufficiency of God’s Word.</p>
+
+        <h2>Scripture’s Clarity and Sufficiency</h2>
+        <p>Scripture claims to be self-interpreting: God’s Spirit illuminates understanding for those who read with a humble and teachable heart (2 Timothy 3:16–17). While historical context and language studies aid our comprehension, the fundamental truths of creation—God as Creator, the sequence of days, and the inherent goodness of His work—are plainly stated.</p>
+
+        <aside class="pullquote" aria-label="pull quote">
+          <p>Let the Bible speak for itself—and let reason trace the lines it draws.</p>
+        </aside>
+
+        <h2>The Role of Logic in Interpretation</h2>
+        <p>Logic gives structure to our reading. We ask: What premises does the text establish? How do the statements relate? Genesis 1:1 asserts, “In the beginning God created…” From this, we deduce that God is eternal, distinct from creation, and supremely powerful. Each verse builds upon the last in a coherent narrative.</p>
+
+        <h2>Guarding Against Extra-Biblical Overlays</h2>
+        <p>Throughout history, interpreters have overlaid extra-biblical ideas—Platonic forms, modern scientism, or mystical schemes—onto Genesis. By committing to Scripture alone and using logical reflection, we reject ungrounded traditions and maintain fidelity to the Creator’s revealed account.</p>
+
+        <h2>Texts in Context</h2>
+        <blockquote class="scripture">
+          <p><strong>Genesis 1:1–3</strong> — In the beginning God created the heavens and the earth… And God said, “Let there be light,” and there was light.</p>
         </blockquote>
-      </section>
+        <ul class="refs">
+          <li>2 Timothy 3:16–17 — Scripture as sufficient and profitable</li>
+          <li>Psalm 33:6–9 — Creation by God’s word</li>
+          <li>John 1:1–3 — The Word with God in the beginning</li>
+        </ul>
 
-      <h2>Scripture’s Clarity and Sufficiency</h2>
-      <p>Scripture claims to be self-interpreting: God’s Spirit illuminates understanding for those who read with a humble and teachable heart (2 Timothy 3:16–17). While historical context and language studies aid our comprehension, the fundamental truths of creation—God as Creator, the sequence of days, and the inherent goodness of His work—are plainly stated. We don’t need to import Greek metaphysics or modern science to affirm what Genesis reveals.</p>
-
-      <h2>The Role of Logic in Biblical Interpretation</h2>
-      <p>Logic provides structure to our reading. We ask: What premises does the text establish? How do the statements relate? For example, Genesis 1:1 asserts “In the beginning God created…” From this single proposition, we deduce that God is eternal, distinct from creation, and supremely powerful. Each verse builds upon the last in a coherent narrative. If we abandon logical analysis, we risk allegorizing away clear teaching or contradicting verses with speculative theories.</p>
-
-      <h2>Guarding Against Extra-Biblical Influences</h2>
-      <p>Throughout church history, interpreters have sometimes overlaid extra-biblical ideas—Platonic forms, evolutionary assumptions, or mystical readings—onto Genesis. These approaches often conflict with the straightforward reading of the text. By committing to “Scripture alone” (sola Scriptura) and using logical reflection, we reject ungrounded traditions and maintain fidelity to the Creator’s revealed account.</p>
-
-      <h2>Conclusion: Faith Rooted in the Word</h2>
-      <p>Understanding the Creation Narrative is not a matter of juggling competing worldviews but of patiently listening to God’s own revelation and thoughtfully applying reason. When we let the Bible speak for itself and follow the natural flow of its logic, we arrive at a robust faith anchored in the sufficiency and clarity of Scripture.</p>
+        <h2>Conclusion</h2>
+        <p>Understanding the Creation Narrative is not a contest of worldviews but patient listening to God’s own revelation and thoughtful application of reason. When we let the Bible speak and follow the natural flow of its logic, faith is anchored in the clarity and sufficiency of Scripture.</p>
+      </div>
     </article>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">&copy; 2025 Israelite Research</div>
-  </footer>
+  <!-- Shared footer -->
+  <div data-include="partials/footer.html"></div>
+
+  <script>
+    // Fill Facebook share with current URL
+    document.addEventListener('DOMContentLoaded', () => {
+      const fb = document.querySelector('.share-rail a[href*="facebook.com"]');
+      if (fb) fb.href = fb.href + encodeURIComponent(location.href);
+
+      const copyBtn = document.getElementById('copyLinkBtn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(location.href); copyBtn.textContent = '✓'; }
+          catch { copyBtn.textContent = '×'; }
+          setTimeout(() => (copyBtn.textContent = '⟲'), 1200);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
+

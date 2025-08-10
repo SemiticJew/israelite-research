@@ -96,3 +96,105 @@ ul { list-style: none; }
 
 /* Footer */
 .site-footer { background-color: var(--blue-dark); color: #fff; text-align: center; padding: var(--gap-medium) 0; }
+/* ===== Article Layout ===== */
+.article-shell {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--gap-medium);
+}
+@media (max-width: 900px) {
+  .article-shell { grid-template-columns: 1fr; }
+}
+
+/* Left share rail */
+.share-rail {
+  position: sticky;
+  top: 6rem;
+  height: 0; /* avoid pushing layout */
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  align-items: center;
+}
+.share-link {
+  width: 40px; height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 999px;
+  display: grid; place-items: center;
+  background: #fff;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Article */
+.article { grid-column: 2 / -1; }
+@media (max-width: 900px) { .article { grid-column: 1 / -1; } }
+
+.article-hero img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+.article-header {
+  margin: 1.25rem auto 0;
+}
+.article-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(32px, 4vw, 44px);
+  color: var(--blue-dark);
+  line-height: 1.15;
+  margin: .5rem 0 .25rem;
+}
+.article-subtitle {
+  color: #555;
+  margin-bottom: .75rem;
+}
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  align-items: center;
+  color: #777;
+  font-size: var(--fs-small-text);
+}
+.article-meta .meta-dot { opacity: .6; }
+
+/* Reading column */
+.prose {
+  max-width: 720px;
+  margin: 1.25rem auto 3rem;
+  font-size: 18px;
+}
+.prose h2 {
+  font-family: var(--ff-serif);
+  font-size: 28px;
+  margin: 1.5rem 0 .5rem;
+  color: #111;
+}
+.prose p { margin: .75rem 0; }
+.prose ul { margin: .5rem 0 1rem 1.25rem; list-style: disc; }
+
+/* Pullquote */
+.pullquote {
+  border-left: 4px solid var(--orange-accent);
+  padding: .75rem 1rem;
+  margin: 1rem 0;
+  background: #fff;
+  color: #333;
+  font-style: italic;
+}
+
+/* Scripture block */
+blockquote.scripture {
+  background: var(--gray-light);
+  border-left: 4px solid var(--blue-mid);
+  padding: .75rem 1rem;
+  border-radius: 6px;
+}
+
