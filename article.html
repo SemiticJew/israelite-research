@@ -14,31 +14,31 @@
   <main class="article-shell">
     <!-- Left share rail -->
     <aside class="share-rail" aria-label="Share">
-      <a class="share-link" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}" target="_blank" rel="noopener" aria-label="Share on X">✕</a>
+      <a class="share-link" href="https://twitter.com/intent/tweet?url=" target="_blank" rel="noopener" aria-label="Share on X">✕</a>
       <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>
       <button class="share-link" id="copyLinkBtn" aria-label="Copy link">⟲</button>
     </aside>
 
     <!-- Main article -->
     <article class="article">
-      <!-- Hero -->
-      <figure class="article-hero">
-        <img src="images/creation.png" alt="Creation Illustration" />
-      </figure>
-
-      <!-- Header -->
+      <!-- Header (DATE → TITLE → SUBTITLE → BYLINE) -->
       <header class="article-header container">
-        <h1 class="article-title">Understanding the Creation Narrative</h1>
-        <p class="article-subtitle">Why logic and Scripture alone should govern our reading of Genesis 1–3.</p>
-
-        <div class="article-meta">
-          <span class="meta-author">By <strong>Semitic Jew</strong></span>
-          <span class="meta-dot">•</span>
+        <div class="article-meta-top">
           <time datetime="2025-08-07" class="meta-date">Aug 7, 2025</time>
           <span class="meta-dot">•</span>
           <span class="meta-readtime">~6 min read</span>
         </div>
+
+        <h1 class="article-title">Understanding the Creation Narrative</h1>
+        <p class="article-subtitle">Why logic and Scripture alone should govern our reading of Genesis 1–3.</p>
+
+        <div class="article-meta-byline">By <strong>Semitic Jew</strong></div>
       </header>
+
+      <!-- Hero image (now BELOW the title area) -->
+      <figure class="article-hero below-title">
+        <img src="images/creation.png" alt="Creation Illustration" />
+      </figure>
 
       <!-- Body -->
       <div class="article-body container prose">
@@ -77,10 +77,13 @@
   <div data-include="partials/footer.html"></div>
 
   <script>
-    // Fill Facebook share with current URL
+    // Fill share links with current URL + copy button
     document.addEventListener('DOMContentLoaded', () => {
-      const fb = document.querySelector('.share-rail a[href*="facebook.com"]');
-      if (fb) fb.href = fb.href + encodeURIComponent(location.href);
+      const url = encodeURIComponent(location.href);
+      const x = document.querySelector('.share-rail a[href*="twitter.com/intent/tweet"]');
+      const fb = document.querySelector('.share-rail a[href*="facebook.com/sharer"]');
+      if (x) x.href = x.href + url;
+      if (fb) fb.href = fb.href + url;
 
       const copyBtn = document.getElementById('copyLinkBtn');
       if (copyBtn) {

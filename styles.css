@@ -197,4 +197,21 @@ blockquote.scripture {
   padding: .75rem 1rem;
   border-radius: 6px;
 }
+/* Article: date over title + spacing for below-title hero */
+.article-meta-top {
+  color: #666;
+  font-size: var(--fs-small-text);
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+.article-meta-byline {
+  color: #555;
+  margin-top: .25rem;
+}
+
+.article-hero.below-title {
+  margin: 1rem auto 0;
+}
 
