@@ -215,3 +215,25 @@ blockquote.scripture {
   margin: 1rem auto 0;
 }
 
+/* Center title and size hero image to 700×394 (responsive down) */
+.article-header { text-align: center; }
+
+.article-hero.below-title img {
+  width: 700px;
+  height: 394px;
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Date line spacing */
+.article-meta-top {
+  color: #666;
+  font-size: var(--fs-small-text);
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  justify-content: center; /* center the date row */
+  margin-top: 1rem;
+}
