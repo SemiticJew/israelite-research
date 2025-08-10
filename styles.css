@@ -299,3 +299,21 @@ blockquote.scripture {
   outline-offset: 2px;
 }
 
+/* Subscribe badges: never underline */
+.listen-badge,
+.listen-badge:visited {
+  text-decoration: none;
+  color: var(--blue-dark);
+}
+
+.listen-badge:hover,
+.listen-badge:active {
+  text-decoration: none;
+  color: #fff; /* already flips on hover */
+}
+
+.listen-badge:focus {
+  text-decoration: none;
+  outline: 2px solid var(--orange-accent);
+  outline-offset: 2px;
+}
