@@ -325,3 +325,39 @@ blockquote.scripture {
 .subscribe-bar .listen-panel .listen-badge:focus {
   text-decoration: none !important;
 }
+/* ===== Tanakh book grid ===== */
+.book-grid {
+  list-style: none;
+  padding: 0;
+  margin: .5rem 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .75rem;
+}
+.book-tile {
+  display: grid;
+  place-items: center;
+  min-height: 72px;
+  padding: .75rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  background: var(--gray-light);
+  border: 1px solid var(--blue-light);
+  color: var(--blue-dark);
+  font-weight: 600;
+  transition: transform .06s ease, background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.book-tile:hover {
+  transform: translateY(-1px);
+  background: var(--blue-mid);
+  color: #fff;
+  border-color: var(--blue-mid);
+  box-shadow: 0 4px 10px rgba(0,0,0,.06);
+}
+.text-section h2 {
+  font-family: var(--ff-serif);
+  margin: 1.25rem 0 .5rem;
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: .25rem;
+}
