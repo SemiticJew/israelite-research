@@ -361,3 +361,27 @@ blockquote.scripture {
   border-bottom: 2px solid var(--gray-light);
   padding-bottom: .25rem;
 }
+/* === Tanakh tiles: compact sizing === */
+.book-grid {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: .5rem; /* tighter gaps */
+}
+
+.book-tile {
+  min-height: 56px;         /* was ~72px */
+  padding: .5rem .6rem;     /* was .75rem */
+  border-radius: 8px;       /* slightly tighter corners */
+  font-size: 0.95rem;       /* a touch smaller text */
+}
+
+/* Extra-tight on small screens */
+@media (max-width: 520px) {
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  .book-tile {
+    min-height: 52px;
+    padding: .45rem .55rem;
+    font-size: 0.92rem;
+  }
+}
