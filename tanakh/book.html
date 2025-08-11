@@ -17,22 +17,41 @@
 
     .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
 
+    /* Tight, Sefaria-like chapter numbers */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
-      gap: .5rem;
+      grid-template-columns: repeat(auto-fill, minmax(36px, 36px)); /* fixed 36px columns */
+      gap: 4px;
+      justify-content: start;             /* left-align the grid */
       margin-top: .5rem;
     }
     .chapter-tile {
-      display: grid; place-items: center;
-      height: 56px;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
       background: var(--gray-light);
       border: 1px solid var(--blue-light);
-      border-radius: 8px;
-      text-decoration: none; color: var(--blue-dark); font-weight: 600;
+      color: var(--blue-dark);
+      font-weight: 600;
+      font-size: 0.92rem;
+      line-height: 1;
+      text-decoration: none;
       transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
     }
-    .chapter-tile:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); transform: translateY(-1px); }
+    .chapter-tile:hover {
+      background: var(--blue-mid);
+      color: #fff;
+      border-color: var(--blue-mid);
+      transform: translateY(-1px);
+    }
+
+    /* Keep tap targets comfy on phones */
+    @media (max-width: 520px) {
+      .chapter-grid { grid-template-columns: repeat(auto-fill, minmax(40px, 40px)); gap: 5px; }
+      .chapter-tile { width: 40px; height: 40px; font-size: 0.95rem; }
+    }
 
     .crumbs a { color: var(--blue-dark); text-decoration: none; }
     .crumbs a:hover { text-decoration: underline; }
@@ -68,3 +87,4 @@
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
+
