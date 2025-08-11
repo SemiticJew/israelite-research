@@ -872,3 +872,15 @@ a.book-pill { padding: 12px 14px !important; }
     gap: 1rem !important; /* mobile spacing */
   }
 }
+/* — Nav spacing override (sitewide) — */
+.site-header .container .main-nav ul {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 2rem !important;   /* <-- your new spacing */
+  margin: 0 !important;
+  padding: 0;
+  list-style: none;
+}
+.site-header .container .main-nav ul li a {
+  padding: .35rem .6rem;  /* bigger click target */
+}
