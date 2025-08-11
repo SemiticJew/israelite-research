@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image & Dominion — Biblical Logicians</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="js/include.js" defer></script>
+  <script src="js/breadcrumbs.js" defer></script>
+  <style>
+    .article-wrap{max-width:760px;margin:0 auto;padding-bottom:2.5rem}
+    .article-date{display:block;color:#666;margin:.25rem 0 .25rem}
+    .article-title{text-align:center;font-family:var(--ff-serif);margin:.25rem 0 .5rem}
+    .hero-img{display:block;margin:.5rem auto 1rem;max-width:700px;aspect-ratio:700/394;width:100%;object-fit:cover;border-radius:10px}
+    .author-slot{max-width:700px;margin:.25rem auto 1rem}
+  </style>
+</head>
+<body>
+  <div data-include="partials/header.html"></div>
+  <main class="container">
+    <nav data-bc='[{"label":"Articles","href":"index.html"},{"label":"Image & Dominion"}]'></nav>
+    <div class="article-wrap">
+      <time datetime="2025-08-11" class="article-date">Aug 11, 2025</time>
+      <h1 class="article-title">Image & Dominion</h1>
+      <img class="hero-img" src="images/creation.png" alt="Humanity and creation motif" />
+      <div class="author-slot" data-include="partials/author-default.html"></div>
+
+      <article class="prose">
+        <p><em>Placeholder:</em> Replace with reflections on the image of God and stewarding creation.</p>
+        <p>Suggested anchors: Genesis 1:26–28; Psalm 8.</p>
+      </article>
+    </div>
+  </main>
+  <div data-include="partials/footer.html"></div>
+</body>
+</html>
