@@ -696,3 +696,60 @@ a.book-pill { padding: 12px 14px !important; }
 @media (max-width: 720px) {
   .main-nav ul { flex-wrap: wrap; justify-content: center; }
 }
+/* === Center the nav sitewide (logo left, nav centered, search right) === */
+.site-header .container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Nav spans the middle; its UL is centered */
+.main-nav {
+  position: relative;          /* lets us anchor the logo inside */
+  flex: 1 1 auto;              /* take all middle space */
+  display: flex;
+  justify-content: center;     /* center the menu */
+}
+
+/* Keep the logo/title on the far left inside the nav */
+.main-nav .site-title {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+/* Centered menu */
+.main-nav ul {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Search box stays on the right */
+.search-container {
+  margin-left: 1rem;
+}
+
+/* Mobile: stack neatly, keep menu centered */
+@media (max-width: 720px) {
+  .site-header .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .main-nav { width: 100%; justify-content: center; }
+  .main-nav .site-title {
+    position: static;
+    transform: none;
+    margin-bottom: .5rem;
+  }
+  .search-container {
+    align-self: stretch;
+    text-align: right;
+    margin-left: 0;
+  }
+}
+
