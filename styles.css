@@ -753,3 +753,49 @@ a.book-pill { padding: 12px 14px !important; }
   }
 }
 
+/* --- Center the main nav sitewide (logo left, nav centered, search right) --- */
+.site-header .container {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav search";
+  align-items: center;
+  column-gap: 1rem;
+  text-align: initial;
+}
+
+/* Reset any older positioning */
+.site-header .main-nav { display: contents !important; }
+.site-header .main-nav .site-title {
+  grid-area: logo;
+  position: static !important;
+  transform: none !important;
+  left: auto !important; top: auto !important;
+  white-space: nowrap;
+}
+
+/* Center the menu */
+.site-header .main-nav ul {
+  grid-area: nav;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 1rem;
+  margin: 0 !important;
+  padding: 0;
+  list-style: none;
+}
+
+/* Optional search (if present) */
+.search-container { grid-area: search; justify-self: end; }
+
+/* Mobile: stack and keep menu centered */
+@media (max-width: 720px) {
+  .site-header .container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "logo"
+      "nav"
+      "search";
+    row-gap: .5rem;
+  }
+  .search-container { justify-self: stretch; text-align: right; }
+}
