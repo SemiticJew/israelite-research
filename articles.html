@@ -5,35 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Articles — Biblical Logicians</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="js/include.js" defer></script>
-  <script src="js/breadcrumbs.js" defer></script>
   <meta name="description" content="Articles from Biblical Logicians at Israelite Research." />
 </head>
 <body>
-  <!-- Shared header -->
-  <div data-include="partials/header.html"></div>
+  <header class="site-header">
+    <div class="container">
+      <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
+        <ul>
+          <li><a href="articles.html" class="active">Articles</a></li>
+          <li><a href="texts.html">Texts</a></li>
+          <li><a href="apologetics.html">Apologetics</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="podcast.html">Podcast</a></li>
+          <li><a href="donate.html">Donations</a></li>
+        </ul>
+      </nav>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
+    </div>
+  </header>
 
   <main class="container">
-    <!-- Breadcrumbs -->
-    <nav data-bc='[{"label":"Articles"}]'></nav>
-
-    <!-- HERO -->
-    <section class="hero" style="margin-bottom:1rem;">
+    <section class="hero hero--brand">
       <h1 class="page-title">Articles</h1>
       <p class="page-sub">Reasoned, Bible-first reflections and resources.</p>
     </section>
 
-    <!-- FILTERS (non-functional placeholders; wire up later if desired) -->
-    <section class="filters" aria-label="Filter articles" style="margin: .25rem 0 1.25rem; display:flex; gap:.5rem; flex-wrap:wrap;">
-      <a href="#" class="pill">All</a>
-      <a href="#" class="pill">Theology</a>
-      <a href="#" class="pill">Apologetics</a>
-      <a href="#" class="pill">Scripture</a>
-      <a href="#" class="pill">Family</a>
-      <a href="#" class="pill">Culture</a>
-    </section>
-
-    <!-- FEATURED -->
+    <!-- Featured -->
     <section class="featured" style="margin-bottom:1.5rem;">
       <article class="feature-card">
         <a class="feature-thumb" href="articles/understanding-the-creation-narrative.html" aria-label="Open: Understanding the Creation Narrative">
@@ -56,9 +59,8 @@
       </article>
     </section>
 
-    <!-- LATEST GRID (same card sizing as index) -->
+    <!-- Latest grid (same card sizing as home) -->
     <section class="articles-grid" aria-label="Latest articles" style="margin-bottom: 2rem;">
-      <!-- Card 1 -->
       <article class="post-card">
         <a class="post-thumb" href="articles/understanding-the-creation-narrative.html">
           <img src="images/creation.png" alt="Creation imagery" loading="lazy" />
@@ -108,15 +110,11 @@
         <p class="excerpt">Living faithfully while longing for restoration.</p>
       </article>
     </section>
-
-    <!-- PAGINATION -->
-    <nav class="pagination" aria-label="Pagination" style="display:flex; justify-content:space-between; gap:.75rem; margin-bottom:2rem;">
-      <a class="btn" href="#" aria-disabled="true">« Newer</a>
-      <a class="btn btn-primary" href="#">Older »</a>
-    </nav>
   </main>
 
-  <!-- Shared footer -->
-  <div data-include="partials/footer.html"></div>
+  <footer class="site-footer">
+    <div class="container">© 2025 Israelite Research • Biblical Logicians</div>
+  </footer>
 </body>
 </html>
+

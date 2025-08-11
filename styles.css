@@ -903,3 +903,22 @@ a.book-pill { padding: 12px 14px !important; }
   padding: var(--hero-pad-y) var(--hero-pad-x);
   border-radius: var(--hero-radius);
 }
+cd ~/Sites/israelite-research
+cat <<'CSS' >> styles.css
+
+/* === Brand hero (reuse home-hero style on inner pages) === */
+:root{
+  --hero-pad-y: 2.25rem;
+  --hero-pad-x: 1.25rem;
+  --hero-radius: 16px;
+}
+.hero--brand{
+  background: linear-gradient(135deg, #054A91 0%, #3E7CB1 100%);
+  color: #fff;
+  padding: var(--hero-pad-y) var(--hero-pad-x);
+  border-radius: var(--hero-radius);
+  margin: 0 0 1.5rem;
+}
+.hero--brand .page-title { color: #fff; margin: 0 0 .25rem; }
+.hero--brand .page-sub   { color: #DBE4EE; margin: 0; }
+CSS

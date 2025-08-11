@@ -3,22 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Donations — Israelite Research</title>
+  <title>Donations — Biblical Logicians</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="js/include.js" defer></script>
 </head>
 <body>
-  <div data-include="partials/header.html"></div>
+  <header class="site-header">
+    <div class="container">
+      <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
+        <ul>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="texts.html">Texts</a></li>
+          <li><a href="apologetics.html">Apologetics</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="podcast.html">Podcast</a></li>
+          <li><a href="donate.html" class="active">Donations</a></li>
+        </ul>
+      </nav>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
+    </div>
+  </header>
 
   <main class="container">
-    <section class="hero">
-      <h1>Donations</h1>
-      <p>Support the work of Israelite Research.</p>
+    <section class="hero hero--brand">
+      <h1 class="page-title">Donations</h1>
+      <p class="page-sub">Support Scripture-first resources and tools.</p>
     </section>
 
-    <!-- Donation info/form embed goes here -->
+    <section class="grid">
+      <article class="card">
+        <h3>Give</h3>
+        <p class="excerpt">Online giving coming soon. Thank you for your support.</p>
+      </article>
+    </section>
   </main>
 
-  <div data-include="partials/footer.html"></div>
+  <footer class="site-footer">
+    <div class="container">© 2025 Israelite Research • Biblical Logicians</div>
+  </footer>
 </body>
 </html>
