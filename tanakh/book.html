@@ -9,34 +9,48 @@
   <script src="../js/book.js" defer></script>
 
   <style>
-    /* Scoped styles for the chapters grid page */
-    .book-hero { margin: .75rem 0 1rem; }
+    /* Center the whole page content area */
+    .center-wrap { text-align: center; }
+
+    /* Breadcrumb centered */
+    .crumbs {
+      text-align: center;
+      margin: .25rem 0 .5rem;
+      color: #666;
+      font-size: var(--fs-small-text);
+    }
+    .crumbs a { color: var(--blue-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+
+    /* Hero */
+    .book-hero { margin: .75rem auto 1rem; }
     .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
-    .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
-    .book-toolbar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666; }
+    .book-desc { color:#555; margin:.4rem auto 0; max-width: 70ch; }
+
+    .book-toolbar { display:inline-flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666; }
 
     .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
 
-    /* 11 columns, larger squares + bigger numbers */
+    /* 11 columns, larger squares + bigger numbers (still centered) */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(11, 44px);  /* was 36px */
-      gap: 6px;                                  /* a bit more space between tiles */
-      justify-content: start;
-      margin-top: .5rem;
+      grid-template-columns: repeat(11, 44px);
+      gap: 6px;
+      justify-content: center;   /* <-- center the grid */
+      margin: .5rem auto 0;
     }
 
     .chapter-tile {
       display: grid;
       place-items: center;
-      width: 44px;                                /* was 36px */
-      height: 44px;                               /* was 36px */
-      border-radius: 8px;                         /* keep the rounded feel */
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
       background: var(--gray-light);
       border: 1px solid var(--blue-light);
       color: var(--blue-dark);
-      font-weight: 700;                           /* slightly bolder */
-      font-size: 1.05rem;                         /* larger number text */
+      font-weight: 700;
+      font-size: 1.05rem;
       line-height: 1;
       text-decoration: none;
       transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
@@ -48,21 +62,18 @@
       transform: translateY(-1px);
     }
 
-    /* Mobile: keep them roomy but prevent overflow */
+    /* Mobile: roomy but prevent overflow */
     @media (max-width: 520px) {
       .chapter-grid { grid-template-columns: repeat(8, 48px); gap: 6px; }
       .chapter-tile { width: 48px; height: 48px; font-size: 1.1rem; }
     }
-
-    .crumbs a { color: var(--blue-dark); text-decoration: none; }
-    .crumbs a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <!-- Shared header (nested for subfolder) -->
   <div data-include="../partials/header-nested.html"></div>
 
-  <main class="container">
+  <main class="container center-wrap">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
       <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
@@ -73,7 +84,7 @@
       <h1 id="bookTitle">Book</h1>
       <p id="bookDesc" class="book-desc" hidden></p>
 
-      <div class="book-toolbar">
+      <div class="book-toolbar" aria-hidden="true">
         <span class="sub">Contents</span>
       </div>
     </section>
@@ -88,3 +99,4 @@
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
+
