@@ -5,12 +5,6 @@
     return p.get(name) ? decodeURIComponent(p.get(name)) : null;
   }
 
-  function slugifyBook(book) {
-    // Use folder names exactly as book names (e.g., Genesis), so no slugging needed.
-    // But keep a fallback replacing spaces with %20 for links.
-    return book;
-  }
-
   function pathForChapter(book, chapter) {
     // data/tanakh/Genesis/1.json
     return `../data/tanakh/${encodeURIComponent(book)}/${chapter}.json`;
@@ -51,17 +45,10 @@
     text.className = 'verse-text';
     text.textContent = v.text;
 
-    // tools
-    const tools = document.createElement('div');
-    tools.className = 'verse-tools';
-    tools.innerHTML = `
-      <button class="tool-btn" data-action="xrefs">Cross Refs</button>
-      <button class="tool-btn" data-action="comm">Commentary</button>
-      <button class="tool-btn" data-action="study">Study</button>
-    `;
-
+    // Panels first so we can wire aria-controls accurately
     const xrefs = document.createElement('div');
     xrefs.className = 'panel xrefs';
+    xrefs.id = `xrefs-v${v.num}`;
     if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
       xrefs.innerHTML = `
         <div><strong>Cross References</strong></div>
@@ -75,6 +62,7 @@
 
     const comm = document.createElement('div');
     comm.className = 'panel commentary';
+    comm.id = `comm-v${v.num}`;
     comm.innerHTML = `
       <div><strong>Your Commentary</strong></div>
       <textarea placeholder="Add notes for ${v.num}…">${v.commentary || ''}</textarea>
@@ -85,6 +73,7 @@
 
     const study = document.createElement('div');
     study.className = 'panel study';
+    study.id = `study-v${v.num}`;
     study.innerHTML = `
       <div><strong>Study Tools</strong></div>
       <ul style="margin:.5rem 0 0; padding-left:1rem;">
@@ -94,17 +83,65 @@
       </ul>
     `;
 
-    // Toggle logic
+    // Tools toolbar with ARIA wiring
+    const tools = document.createElement('div');
+    tools.className = 'verse-tools';
+
+    const btnX = document.createElement('button');
+    btnX.className = 'tool-btn';
+    btnX.dataset.action = 'xrefs';
+    btnX.setAttribute('aria-controls', xrefs.id);
+    btnX.setAttribute('aria-expanded', 'false');
+    btnX.textContent = 'Cross Refs';
+
+    const btnC = document.createElement('button');
+    btnC.className = 'tool-btn';
+    btnC.dataset.action = 'comm';
+    btnC.setAttribute('aria-controls', comm.id);
+    btnC.setAttribute('aria-expanded', 'false');
+    btnC.textContent = 'Commentary';
+
+    const btnS = document.createElement('button');
+    btnS.className = 'tool-btn';
+    btnS.dataset.action = 'study';
+    btnS.setAttribute('aria-controls', study.id);
+    btnS.setAttribute('aria-expanded', 'false');
+    btnS.textContent = 'Study';
+
+    tools.append(btnX, btnC, btnS);
+
+    function setExpanded(btn, expanded) {
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+    function closeAll() {
+      [xrefs, comm, study].forEach(p => p.classList.remove('open'));
+      tools.querySelectorAll('.tool-btn[aria-expanded="true"]').forEach(b => setExpanded(b, false));
+    }
+
+    // Click-to-toggle behavior (open/close same button; switch between panels)
     tools.addEventListener('click', (e) => {
       const btn = e.target.closest('.tool-btn');
       if (!btn) return;
-      const action = btn.getAttribute('data-action');
-      [xrefs, comm, study].forEach(p => p.classList.remove('open'));
-      if (action === 'xrefs') xrefs.classList.add('open');
-      if (action === 'comm') comm.classList.add('open');
-      if (action === 'study') study.classList.add('open');
+
+      const action = btn.dataset.action;
+      const panel = action === 'xrefs' ? xrefs : action === 'comm' ? comm : study;
+      const isOpen = panel.classList.contains('open');
+
+      closeAll();
+      if (!isOpen) {
+        panel.classList.add('open');
+        setExpanded(btn, true);
+      }
     });
 
+    // Optional: Escape closes any open panel in this verse
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAll();
+      }
+    });
+
+    // Assemble verse block
     wrap.appendChild(num);
     wrap.appendChild(text);
     wrap.appendChild(tools);
@@ -130,23 +167,18 @@
     }
 
     try {
-      // load chapter data
       const data = await loadJSON(pathForChapter(book, chapter));
-      // load chapter count (books.json) to set prev/next limits
       const books = await loadJSON('../data/tanakh/books.json');
       const maxCh = books[book] || (data.maxChapter || chapter);
 
-      // header
       title.textContent = `${book} ${chapter}`;
       crumbBook.textContent = book;
       crumbBook.href = `book.html?book=${encodeURIComponent(book)}`;
       crumbChapter.textContent = `Chapter ${chapter}`;
 
-      // verses
       versesWrap.innerHTML = '';
       (data.verses || []).forEach(v => renderVerse(versesWrap, v));
 
-      // nav
       setNavLinks(book, chapter, maxCh);
     } catch (err) {
       title.textContent = `${book} ${chapter}`;
