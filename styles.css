@@ -862,3 +862,13 @@ a.book-pill { padding: 12px 14px !important; }
 @media (max-width: 720px) {
   .site-header .main-nav ul { gap: .75rem; }
 }
+/* Nav link spacing */
+.site-header .main-nav ul {
+  gap: 2rem !important;   /* desktop spacing */
+}
+
+@media (max-width: 720px) {
+  .site-header .main-nav ul {
+    gap: 1rem !important; /* mobile spacing */
+  }
+}
