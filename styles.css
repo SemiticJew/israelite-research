@@ -586,3 +586,41 @@ a.book-pill { padding: 12px 14px !important; }
 }
 .site-header .main-nav a { text-decoration: none; }
 
+/* Header layout: logo left, nav centered, search right */
+.site-header .container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "logo nav search";
+  align-items: center;
+  column-gap: 1rem;
+}
+
+/* Let the logo link and the <ul> become grid items */
+.main-nav { display: contents; }
+.site-title { grid-area: logo; }
+
+/* Centered nav list with comfy spacing */
+.main-nav ul {
+  grid-area: nav;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;            /* adjust spacing between links here */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Search (if present) stays on the right */
+.search-container { grid-area: search; justify-self: end; }
+
+/* Small screens: stack nav below logo/search, still centered */
+@media (max-width: 720px) {
+  .site-header .container {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "logo search"
+      "nav  nav";
+    row-gap: .5rem;
+  }
+  .main-nav ul { flex-wrap: wrap; }
+}
