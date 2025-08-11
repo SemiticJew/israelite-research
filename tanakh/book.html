@@ -7,85 +7,36 @@
   <link rel="stylesheet" href="../styles.css" />
   <script src="../js/include.js" defer></script>
   <script src="../js/book.js" defer></script>
+<script src="js/breadcrumbs.js" defer></script>
 
   <style>
-    /* Footer breathing room */
-    main.container { padding-bottom: 3rem; }
-
-    /* Shared wrapper: locks text & grid to the same left edge */
-    .book-wrap {
-      --cols: 11;           /* number of columns in the grid */
-      --size: 44px;         /* tile size */
-      --gap: 6px;           /* gap between tiles */
-      width: calc(var(--cols) * var(--size) + (var(--cols) - 1) * var(--gap));
-      max-width: 100%;
-    }
-
-    /* Breadcrumb, title, desc: hard-left inside the wrapper */
-    .crumbs {
-      text-align: left !important;
-      margin: .25rem 0 .5rem;
-      color: #666;
-      font-size: var(--fs-small-text);
-    }
-    .crumbs a { color: var(--blue-dark); text-decoration: none; }
-    .crumbs a:hover { text-decoration: underline; }
-
-    .book-hero { margin: .75rem 0 1rem; text-align: left !important; }
+    /* Scoped styles for the chapters grid page */
+    .book-hero { margin: .75rem 0 1rem; }
     .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
     .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
+    .book-toolbar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666; }
 
-    .book-toolbar {
-      display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
-      margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666;
-      text-align: left !important;
-    }
+    .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
 
-    /* “Chapters” label sits directly above the grid, left-aligned */
-    .section-subhead {
-      margin: 1rem 0 .25rem;
-      font-weight: 700;
-      color:#222;
-      text-align: left !important;
-    }
-
-    /* Grid uses the same variables as the wrapper width */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(var(--cols), var(--size));
-      gap: var(--gap);
-      justify-content: start;
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+      gap: .5rem;
       margin-top: .5rem;
     }
     .chapter-tile {
-      display: grid;
-      place-items: center;
-      width: var(--size);
-      height: var(--size);
-      border-radius: 8px;
+      display: grid; place-items: center;
+      height: 56px;
       background: var(--gray-light);
       border: 1px solid var(--blue-light);
-      color: var(--blue-dark);
-      font-weight: 700;
-      font-size: 1.05rem;
-      line-height: 1;
-      text-decoration: none;
+      border-radius: 8px;
+      text-decoration: none; color: var(--blue-dark); font-weight: 600;
       transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
     }
-    .chapter-tile:hover {
-      background: var(--blue-mid);
-      color: #fff;
-      border-color: var(--blue-mid);
-      transform: translateY(-1px);
-    }
+    .chapter-tile:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); transform: translateY(-1px); }
 
-    /* Responsive: keep left alignment while shrinking columns */
-    @media (max-width: 720px) {
-      .book-wrap { --cols: 9; }  /* wrapper width auto-recalculates */
-    }
-    @media (max-width: 420px) {
-      .book-wrap { --cols: 7; }
-    }
+    .crumbs a { color: var(--blue-dark); text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -93,27 +44,25 @@
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
-    <div class="book-wrap">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
-        <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
-        <span id="crumbBook">Book</span>
-      </nav>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
+      <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
+      <span id="crumbBook">Book</span>
+    </nav>
 
-      <section class="book-hero">
-        <h1 id="bookTitle">Book</h1>
-        <p id="bookDesc" class="book-desc" hidden></p>
+    <section class="book-hero">
+      <h1 id="bookTitle">Book</h1>
+      <p id="bookDesc" class="book-desc" hidden></p>
 
-        <div class="book-toolbar" aria-hidden="true">
-          <span class="sub">Contents</span>
-        </div>
-      </section>
+      <div class="book-toolbar">
+        <span class="sub">Contents</span>
+      </div>
+    </section>
 
-      <section aria-labelledby="chaptersHead">
-        <h2 id="chaptersHead" class="section-subhead">Chapters</h2>
-        <div id="chapters" class="chapter-grid" aria-label="Chapters"></div>
-      </section>
-    </div>
+    <section aria-labelledby="chaptersHead">
+      <h2 id="chaptersHead" class="section-subhead">Chapters</h2>
+      <div id="chapters" class="chapter-grid" aria-label="Chapters"></div>
+    </section>
   </main>
 
   <!-- Shared footer -->

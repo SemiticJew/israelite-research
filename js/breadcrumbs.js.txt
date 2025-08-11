@@ -1,0 +1,23 @@
+// js/breadcrumbs.js
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('nav[data-bc]').forEach(nav => {
+    try {
+      const items = JSON.parse(nav.getAttribute('data-bc') || '[]');
+      if (!items.length) return;
+
+      const html = items.map((it, i) => {
+        const last = i === items.length - 1;
+        if (last || !it.href) {
+          return `<span aria-current="page">${it.label}</span>`;
+        }
+        return `<a href="${it.href}">${it.label}</a>`;
+      }).join(' &nbsp;/&nbsp; ');
+
+      nav.classList.add('crumbs');
+      nav.setAttribute('aria-label', 'Breadcrumb');
+      nav.innerHTML = html;
+    } catch (_) {
+      /* ignore invalid JSON */
+    }
+  });
+});
