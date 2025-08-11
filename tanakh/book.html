@@ -17,26 +17,26 @@
 
     .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
 
-    /* 11 columns (numbers flow into ~5 rows for 50 chapters) */
+    /* 11 columns, larger squares + bigger numbers */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(11, 36px);  /* fixed 11 columns */
-      gap: 4px;
-      justify-content: start;                   /* left-align the grid */
+      grid-template-columns: repeat(11, 44px);  /* was 36px */
+      gap: 6px;                                  /* a bit more space between tiles */
+      justify-content: start;
       margin-top: .5rem;
     }
 
     .chapter-tile {
       display: grid;
       place-items: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
+      width: 44px;                                /* was 36px */
+      height: 44px;                               /* was 36px */
+      border-radius: 8px;                         /* keep the rounded feel */
       background: var(--gray-light);
       border: 1px solid var(--blue-light);
       color: var(--blue-dark);
-      font-weight: 600;
-      font-size: 0.92rem;
+      font-weight: 700;                           /* slightly bolder */
+      font-size: 1.05rem;                         /* larger number text */
       line-height: 1;
       text-decoration: none;
       transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
@@ -46,6 +46,12 @@
       color: #fff;
       border-color: var(--blue-mid);
       transform: translateY(-1px);
+    }
+
+    /* Mobile: keep them roomy but prevent overflow */
+    @media (max-width: 520px) {
+      .chapter-grid { grid-template-columns: repeat(8, 48px); gap: 6px; }
+      .chapter-tile { width: 48px; height: 48px; font-size: 1.1rem; }
     }
 
     .crumbs a { color: var(--blue-dark); text-decoration: none; }
@@ -82,4 +88,3 @@
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
-
