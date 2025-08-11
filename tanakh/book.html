@@ -17,14 +17,15 @@
 
     .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
 
-    /* Tight, Sefaria-like chapter numbers */
+    /* 11 columns (numbers flow into ~5 rows for 50 chapters) */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(36px, 36px)); /* fixed 36px columns */
+      grid-template-columns: repeat(11, 36px);  /* fixed 11 columns */
       gap: 4px;
-      justify-content: start;             /* left-align the grid */
+      justify-content: start;                   /* left-align the grid */
       margin-top: .5rem;
     }
+
     .chapter-tile {
       display: grid;
       place-items: center;
@@ -45,12 +46,6 @@
       color: #fff;
       border-color: var(--blue-mid);
       transform: translateY(-1px);
-    }
-
-    /* Keep tap targets comfy on phones */
-    @media (max-width: 520px) {
-      .chapter-grid { grid-template-columns: repeat(auto-fill, minmax(40px, 40px)); gap: 5px; }
-      .chapter-tile { width: 40px; height: 40px; font-size: 0.95rem; }
     }
 
     .crumbs a { color: var(--blue-dark); text-decoration: none; }
