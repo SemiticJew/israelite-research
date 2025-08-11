@@ -568,4 +568,21 @@ blockquote.scripture {
 
 /* Guard against global resets removing padding */
 a.book-pill { padding: 12px 14px !important; }
+/* Nav layout guard */
+.site-header .main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.site-header .main-nav ul {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-header .main-nav a { text-decoration: none; }
 
