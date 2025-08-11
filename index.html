@@ -3,29 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Articles — Israelite Research</title>
+  <title>Biblical Logicians — Home</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Include shared partials + breadcrumbs -->
   <script src="js/include.js" defer></script>
   <script src="js/breadcrumbs.js" defer></script>
-  <meta name="description" content="Articles from Biblical Logicians at Israelite Research." />
+  <meta name="description" content="Biblical Logicians: logic-forward, Scripture-first resources." />
 </head>
 <body>
   <!-- Shared header -->
   <div data-include="partials/header.html"></div>
 
-  <main class="container">
-    <!-- Breadcrumbs (optional) -->
-    <nav data-bc='[{"label":"Articles"}]'></nav>
-
-    <section class="hero">
-      <h1 class="page-title">Articles</h1>
-      <p class="page-sub">Reasoned, Bible-first reflections from Biblical Logicians.</p>
+  <main class="container home">
+    <!-- HERO -->
+    <section class="home-hero">
+      <div class="hero-inner">
+        <h1 class="brand">Biblical Logicians</h1>
+        <p class="tagline">Logic. Scripture. Clarity.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#articles">Read Articles</a>
+          <a class="btn" href="texts.html">Explore Texts</a>
+        </div>
+      </div>
     </section>
 
-    <!-- Articles grid -->
-    <section class="articles-grid">
-      <!-- Article 1 -->
+    <!-- QUICK LINKS -->
+    <section class="quick-links" aria-label="Quick links">
+      <a href="texts.html">Texts</a>
+      <a href="apologetics.html">Apologetics</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="events.html">Events</a>
+      <a href="donate.html">Donations</a>
+    </section>
+
+    <!-- FEATURED -->
+    <section id="featured" class="featured">
+      <article class="feature-card">
+        <a class="feature-thumb" href="article.html" aria-label="Open: Understanding the Creation Narrative">
+          <img src="images/creation.png" alt="Creation imagery" loading="lazy" />
+        </a>
+        <div class="feature-body">
+          <div class="post-meta">
+            <time datetime="2025-08-01">Aug 1, 2025</time>
+            <span class="dot">•</span>
+            <span>~5 min read</span>
+          </div>
+          <h2 class="feature-title"><a href="article.html">Understanding the Creation Narrative</a></h2>
+          <p class="feature-excerpt">
+            Why logic and Scripture interpret Scripture: a short case for reading Genesis with disciplined reason and the Bible itself as the primary guide.
+          </p>
+          <a class="btn btn-primary" href="article.html">Read Article</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- LATEST ARTICLES -->
+    <section id="articles" class="articles-grid">
+      <h3 class="section-head">Latest Articles</h3>
+
+      <!-- Card 1 (your existing article) -->
       <article class="post-card">
         <a class="post-thumb" href="article.html" aria-label="Open: Understanding the Creation Narrative">
           <img src="images/creation.png" alt="Creation imagery" loading="lazy" />
@@ -35,15 +70,34 @@
           <span class="dot">•</span>
           <span class="read">~5 min read</span>
         </div>
-        <h2 class="post-title">
-          <a href="article.html">Understanding the Creation Narrative</a>
-        </h2>
-        <p class="excerpt">
-          Why logic and Scripture interpret Scripture: a short case for reading Genesis with disciplined reason and the Bible itself as the primary guide.
-        </p>
+        <h4 class="post-title"><a href="article.html">Understanding the Creation Narrative</a></h4>
+        <p class="excerpt">Why logic and Scripture interpret Scripture…</p>
       </article>
 
-      <!-- (Add more <article class="post-card">…</article> items here as you publish) -->
+      <!-- (Add more post-card items here as you publish) -->
+    </section>
+
+    <!-- PODCAST STRIP -->
+    <section class="podcast-strip">
+      <div class="ps-body">
+        <h3>Podcast</h3>
+        <p>Listen on your favorite platform.</p>
+        <div class="pod-links">
+          <a class="pill" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+          <a class="pill" href="https://podcasts.apple.com/" target="_blank" rel="noopener">Apple Podcasts</a>
+          <a class="pill" href="podcast.xml">RSS</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <h3>Stay in the loop</h3>
+      <p>Get updates on new articles, texts, and study tools.</p>
+      <form onsubmit="return false" class="nl-form">
+        <input type="email" placeholder="you@example.com" aria-label="Email address" required />
+        <button class="btn btn-primary" type="submit">Subscribe</button>
+      </form>
     </section>
   </main>
 
