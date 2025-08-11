@@ -9,18 +9,21 @@
   <script src="../js/book.js" defer></script>
 
   <style>
-    /* Page spacing so footer doesn't touch content */
+    /* Footer breathing room */
     main.container { padding-bottom: 3rem; }
 
-    /* Shared wrapper so text and grid share the exact same left edge */
+    /* Shared wrapper: locks text & grid to the same left edge */
     .book-wrap {
-      width: 544px;          /* 11 cols × 44px + 10 gaps × 6px = 484 + 60 = 544 */
+      --cols: 11;           /* number of columns in the grid */
+      --size: 44px;         /* tile size */
+      --gap: 6px;           /* gap between tiles */
+      width: calc(var(--cols) * var(--size) + (var(--cols) - 1) * var(--gap));
       max-width: 100%;
     }
 
-    /* Breadcrumb, title, description — all left inside the shared wrap */
+    /* Breadcrumb, title, desc: hard-left inside the wrapper */
     .crumbs {
-      text-align: left;
+      text-align: left !important;
       margin: .25rem 0 .5rem;
       color: #666;
       font-size: var(--fs-small-text);
@@ -28,36 +31,37 @@
     .crumbs a { color: var(--blue-dark); text-decoration: none; }
     .crumbs a:hover { text-decoration: underline; }
 
-    .book-hero { margin: .75rem 0 1rem; }
+    .book-hero { margin: .75rem 0 1rem; text-align: left !important; }
     .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
     .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
 
     .book-toolbar {
       display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
       margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666;
+      text-align: left !important;
     }
 
-    /* “Chapters” subhead — LEFT, directly above grid */
+    /* “Chapters” label sits directly above the grid, left-aligned */
     .section-subhead {
       margin: 1rem 0 .25rem;
       font-weight: 700;
       color:#222;
-      text-align: left;
+      text-align: left !important;
     }
 
-    /* Grid: 11 columns of 44px, 6px gaps — aligns with .book-wrap width */
+    /* Grid uses the same variables as the wrapper width */
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(11, 44px);
-      gap: 6px;
+      grid-template-columns: repeat(var(--cols), var(--size));
+      gap: var(--gap);
       justify-content: start;
       margin-top: .5rem;
     }
     .chapter-tile {
       display: grid;
       place-items: center;
-      width: 44px;
-      height: 44px;
+      width: var(--size);
+      height: var(--size);
       border-radius: 8px;
       background: var(--gray-light);
       border: 1px solid var(--blue-light);
@@ -75,6 +79,45 @@
       transform: translateY(-1px);
     }
 
-    /* Responsive:
-::contentReference[oaicite:0]{index=0}
+    /* Responsive: keep left alignment while shrinking columns */
+    @media (max-width: 720px) {
+      .book-wrap { --cols: 9; }  /* wrapper width auto-recalculates */
+    }
+    @media (max-width: 420px) {
+      .book-wrap { --cols: 7; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared header (nested for subfolder) -->
+  <div data-include="../partials/header-nested.html"></div>
+
+  <main class="container">
+    <div class="book-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
+        <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
+        <span id="crumbBook">Book</span>
+      </nav>
+
+      <section class="book-hero">
+        <h1 id="bookTitle">Book</h1>
+        <p id="bookDesc" class="book-desc" hidden></p>
+
+        <div class="book-toolbar" aria-hidden="true">
+          <span class="sub">Contents</span>
+        </div>
+      </section>
+
+      <section aria-labelledby="chaptersHead">
+        <h2 id="chaptersHead" class="section-subhead">Chapters</h2>
+        <div id="chapters" class="chapter-grid" aria-label="Chapters"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Shared footer -->
+  <div data-include="../partials/footer.html"></div>
+</body>
+</html>
 
