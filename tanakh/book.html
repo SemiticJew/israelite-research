@@ -12,7 +12,13 @@
     /* Page spacing so footer doesn't touch content */
     main.container { padding-bottom: 3rem; }
 
-    /* Breadcrumb — LEFT */
+    /* Shared wrapper so text and grid share the exact same left edge */
+    .book-wrap {
+      width: 544px;          /* 11 cols × 44px + 10 gaps × 6px = 484 + 60 = 544 */
+      max-width: 100%;
+    }
+
+    /* Breadcrumb, title, description — all left inside the shared wrap */
     .crumbs {
       text-align: left;
       margin: .25rem 0 .5rem;
@@ -22,7 +28,6 @@
     .crumbs a { color: var(--blue-dark); text-decoration: none; }
     .crumbs a:hover { text-decoration: underline; }
 
-    /* Hero — LEFT */
     .book-hero { margin: .75rem 0 1rem; }
     .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
     .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
@@ -40,7 +45,7 @@
       text-align: left;
     }
 
-    /* 11 columns, larger squares + bigger numbers — LEFT-aligned grid */
+    /* Grid: 11 columns of 44px, 6px gaps — aligns with .book-wrap width */
     .chapter-grid {
       display: grid;
       grid-template-columns: repeat(11, 44px);
@@ -66,6 +71,10 @@
     .chapter-tile:hover {
       background: var(--blue-mid);
       color: #fff;
-      border-color: var(--blue-m
+      border-color: var(--blue-mid);
+      transform: translateY(-1px);
+    }
+
+    /* Responsive:
 ::contentReference[oaicite:0]{index=0}
 
