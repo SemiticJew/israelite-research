@@ -884,3 +884,22 @@ a.book-pill { padding: 12px 14px !important; }
 .site-header .container .main-nav ul li a {
   padding: .35rem .6rem;  /* bigger click target */
 }
+/* — Consistent page-title (“hero”) padding sitewide — */
+:root{
+  --hero-pad-y: 2.25rem;
+  --hero-pad-x: 1.25rem;
+  --hero-radius: 16px;
+}
+
+/* Any page section using .hero gets the same enclosure as home */
+.hero{
+  padding: var(--hero-pad-y) var(--hero-pad-x);
+  border-radius: var(--hero-radius);
+  margin: 0 0 1.5rem;
+}
+
+/* Home already uses .home-hero .hero-inner — align its padding to the same vars */
+.home-hero .hero-inner{
+  padding: var(--hero-pad-y) var(--hero-pad-x);
+  border-radius: var(--hero-radius);
+}
