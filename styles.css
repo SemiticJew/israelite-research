@@ -849,3 +849,16 @@ a.book-pill { padding: 12px 14px !important; }
   .site-header .search-container { justify-self: stretch; text-align: right; }
 }
 
+/* Nav link spacing (sitewide) */
+.site-header .main-nav ul {
+  gap: 1.25rem;            /* space between menu items on desktop */
+}
+
+.site-header .main-nav ul li a {
+  padding: .35rem .5rem;   /* makes click targets a bit roomier */
+}
+
+/* Slightly tighter on small screens */
+@media (max-width: 720px) {
+  .site-header .main-nav ul { gap: .75rem; }
+}
