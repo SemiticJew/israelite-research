@@ -960,3 +960,28 @@ CSS
 .main-nav a[aria-current="page"]::after {
   transform: scaleX(1);
 }
+/* Nav: show ONLY the accent bar, never a native underline/border */
+.main-nav a,
+.main-nav a:hover,
+.main-nav a.active {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+.main-nav li { border-bottom: 0 !important; }
+
+/* Accent underline (keeps the one bar) */
+.main-nav a { position: relative; }
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 3px;
+  background: #F17300; /* accent */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+.main-nav a.active::after,
+.main-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}

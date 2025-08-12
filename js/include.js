@@ -42,3 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// Normalize filename so "text.html" also matches "texts.html"
+document.addEventListener('DOMContentLoaded', () => {
+  const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const normalized = file === 'text.html' ? 'texts.html' : file;
+
+  document.querySelectorAll('.main-nav a[href]').forEach(a => {
+    const href = a.getAttribute('href').split('/').pop().toLowerCase();
+    const match = href === normalized || (normalized === 'index.html' && (href === '' || href === 'index.html'));
+    if (match) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+});
