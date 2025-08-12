@@ -8,8 +8,10 @@
   <script src="../js/include.js" defer></script>
   <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter.js" defer></script>
+
+  <!-- Inline overrides to guarantee layout change takes effect -->
   <style>
-    /* Base layout (matches your Tanakh chapter look) */
+    /* Base page layout */
     .chapter-wrap { max-width: 900px; margin: 0 auto 2.5rem; }
     .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
     .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
@@ -21,30 +23,30 @@
     .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
     main.container { padding-bottom: 2.5rem; } /* keep footer off content */
 
-    /* === Your requested tweaks === */
-    /* Keep the page title left-aligned */
-    .chapter-head h1 { text-align: left; }
+    /* === Requested tweaks (forced) === */
+    /* Title stays left */
+    .chapter-head h1 { text-align: left !important; }
 
     /* Center the verses stream as a block */
-    .verses {
-      display: flex;
-      flex-direction: column;
-      align-items: center;      /* centers the verse rows as a group */
-      margin-top: 1rem;
+    #verses {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      margin-top: 1rem !important;
     }
 
-    /* Limit each verse row to a comfy width, but still responsive */
-    .verse {
-      width: min(100%, 760px);
-      display:flex;
-      gap:.5rem;
-      padding:.35rem 0;
-      border-bottom:1px solid #f2f4f7;
+    /* Each verse row uses comfortable max width */
+    #verses .verse {
+      width: min(100%, 760px) !important;
+      display: flex !important;
+      gap: .5rem !important;
+      padding: .35rem 0 !important;
+      border-bottom: 1px solid #f2f4f7 !important;
     }
 
-    /* Keep text itself left-aligned inside centered block */
-    .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
-    .vtext { flex:1; text-align:left; }
+    /* Keep the inner text left-aligned inside the centered block */
+    #verses .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
+    #verses .vtext { flex: 1; text-align: left !important; }
   </style>
 </head>
 <body>
@@ -77,6 +79,7 @@
       <div id="notes" class="panel"><em>Add your commentary notes here.</em></div>
       <div id="study" class="panel"><em>Study tools coming soon.</em></div>
 
+      <!-- Important: keep both id and class so the overrides apply -->
       <section id="verses" class="verses"></section>
     </div>
   </main>
