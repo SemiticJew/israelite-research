@@ -1,69 +1,53 @@
-// js/book.js
-(function () {
-  function getParam(name) {
-    const p = new URLSearchParams(location.search);
-    return p.get(name) ? decodeURIComponent(p.get(name)) : null;
+// js/book.js — Tanakh book page (match NT book layout/behavior)
+function getParam(name) {
+  const u = new URL(location.href);
+  return u.searchParams.get(name);
+}
+
+async function loadJSON(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`Failed to load ${path}`);
+  return res.json();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const book = getParam('book');
+  if (!book) return;
+
+  // Breadcrumbs
+  const bc = document.getElementById('crumbs');
+  if (bc) {
+    bc.setAttribute('data-bc', JSON.stringify([
+      { label: 'Articles', href: '../articles.html' },
+      { label: 'Texts', href: '../texts.html' },
+      { label: 'The Tanakh', href: '../tanakh.html' },
+      { label: book }
+    ]));
+    bc.classList.add('crumbs');
+    bc.setAttribute('aria-label','Breadcrumb');
   }
 
-  async function loadJSON(path) {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error(`Failed to load ${path}`);
-    return res.json();
+  // Load metadata
+  const [counts, descs] = await Promise.all([
+    loadJSON('../data/tanakh/books.json'),
+    loadJSON('../data/tanakh/descriptions.json')
+  ]);
+
+  const chapters = counts[book];
+  const desc = (descs && descs[book]) || '';
+
+  // Title + description
+  document.getElementById('book-label').textContent = book;
+  document.getElementById('book-title').textContent = book;
+  document.getElementById('book-desc').textContent = desc;
+
+  // Build chapter grid
+  const holder = document.getElementById('chapters');
+  holder.innerHTML = '';
+  for (let n = 1; n <= chapters; n++) {
+    const a = document.createElement('a');
+    a.href = `chapter.html?book=${encodeURIComponent(book)}&chapter=${n}`;
+    a.textContent = n;
+    holder.appendChild(a);
   }
-
-  function renderChapters(container, bookName, count) {
-    container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-      const a = document.createElement('a');
-      a.className = 'chapter-tile';
-      a.textContent = i;
-      // Destination: chapter view (we can build chapter.html next)
-      a.href = `chapter.html?book=${encodeURIComponent(bookName)}&chapter=${i}`;
-      container.appendChild(a);
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    const book = getParam('book');
-    const titleEl = document.getElementById('bookTitle');
-    const crumbEl = document.getElementById('crumbBook');
-    const grid = document.getElementById('chapters');
-    const descEl = document.getElementById('bookDesc');
-
-    if (!book) {
-      titleEl.textContent = 'Select a Book';
-      grid.innerHTML = '<p>Please open this page with ?book=BookName (e.g., book.html?book=Genesis).</p>';
-      return;
-    }
-
-    try {
-      const [books, descriptions] = await Promise.all([
-        loadJSON('../data/tanakh/books.json'),
-        loadJSON('../data/tanakh/descriptions.json')
-      ]);
-
-      const count = books[book];
-      titleEl.textContent = book;
-      crumbEl.textContent = book;
-
-      // Description (if present)
-      const desc = descriptions[book];
-      if (desc) {
-        descEl.textContent = desc;
-        descEl.hidden = false;
-      } else {
-        descEl.hidden = true;
-      }
-
-      if (!count) {
-        grid.innerHTML = '<p>Chapters not found for this book. Check the exact name in books.json.</p>';
-        return;
-      }
-      renderChapters(grid, book, count);
-    } catch (e) {
-      titleEl.textContent = book || 'Book';
-      grid.innerHTML = '<p>Could not load book data.</p>';
-    }
-  });
-})();
-
+});

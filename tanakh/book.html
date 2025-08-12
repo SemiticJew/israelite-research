@@ -6,67 +6,53 @@
   <title>Tanakh — Book</title>
   <link rel="stylesheet" href="../styles.css" />
   <script src="../js/include.js" defer></script>
+  <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/book.js" defer></script>
-<script src="js/breadcrumbs.js" defer></script>
-
   <style>
-    /* Scoped styles for the chapters grid page */
-    .book-hero { margin: .75rem 0 1rem; }
-    .book-hero h1 { margin: 0; font-family: var(--ff-serif); text-wrap: balance; }
-    .book-desc { color:#555; margin:.4rem 0 0; max-width: 70ch; }
-    .book-toolbar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; font-size: var(--fs-small-text); color:#666; }
-
-    .section-subhead { margin: 1rem 0 .25rem; font-weight: 700; color:#222; }
-
-    .chapter-grid {
+    /* Match NT book page look */
+    .book-wrap { max-width: 1000px; margin: 0 auto 2rem; }
+    .book-head h1 { margin: .25rem 0; font-family: var(--ff-serif); }
+    .book-desc { color:#555; margin: .25rem 0 1rem; }
+    .chapters-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
-      gap: .5rem;
-      margin-top: .5rem;
+      grid-template-columns: repeat(11, minmax(36px,1fr));
+      gap: 6px;
+      margin: .75rem 0 2rem;
     }
-    .chapter-tile {
-      display: grid; place-items: center;
-      height: 56px;
-      background: var(--gray-light);
-      border: 1px solid var(--blue-light);
+    .chapters-grid a {
+      display: grid;
+      place-items: center;
+      padding: 10px 0;
+      border: 1px solid #DBE4EE;
       border-radius: 8px;
-      text-decoration: none; color: var(--blue-dark); font-weight: 600;
-      transition: transform .05s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      text-decoration: none;
+      color: #054A91;
+      font-weight: 600;
     }
-    .chapter-tile:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); transform: translateY(-1px); }
-
-    .crumbs a { color: var(--blue-dark); text-decoration: none; }
-    .crumbs a:hover { text-decoration: underline; }
+    .chapters-grid a:hover { background:#DBE4EE; border-color:#81A4CD; }
+    .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
   </style>
 </head>
 <body>
-  <!-- Shared header (nested for subfolder) -->
+  <!-- nested header -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="../texts.html">Texts</a> &nbsp;/&nbsp;
-      <a href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
-      <span id="crumbBook">Book</span>
-    </nav>
+    <nav id="crumbs" class="crumbs"></nav>
 
-    <section class="book-hero">
-      <h1 id="bookTitle">Book</h1>
-      <p id="bookDesc" class="book-desc" hidden></p>
-
-      <div class="book-toolbar">
-        <span class="sub">Contents</span>
+    <div class="book-wrap">
+      <div class="book-head">
+        <div class="label">Texts / The Tanakh / <span id="book-label"></span></div>
+        <h1 id="book-title">Book</h1>
+        <p class="book-desc" id="book-desc"></p>
       </div>
-    </section>
 
-    <section aria-labelledby="chaptersHead">
-      <h2 id="chaptersHead" class="section-subhead">Chapters</h2>
-      <div id="chapters" class="chapter-grid" aria-label="Chapters"></div>
-    </section>
+      <div class="label">Chapters</div>
+      <div class="chapters-grid" id="chapters"></div>
+    </div>
   </main>
 
-  <!-- Shared footer -->
+  <!-- nested footer -->
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
-
