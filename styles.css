@@ -928,3 +928,19 @@ CSS
 .crumbs a:hover { text-decoration:underline; }
 .crumbs .sep { color:#999; margin:0 .35rem; }
 .crumbs .current { color:#333; font-weight:500; }
+/* Global: chapter + verse dropdowns (match exactly) */
+#chap-picker select,
+#verse-picker {
+  padding: .3rem .5rem;
+  border: 1px solid #DBE4EE;
+  border-radius: 8px;
+  background: #fff;
+  font-size: .95rem;
+}
+
+#chap-picker select:focus,
+#verse-picker:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(62,124,177,.15);
+  border-color: #81A4CD;
+}
