@@ -9,8 +9,11 @@
   <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter-nt.js" defer></script>
   <style>
+    /* Match Tanakh chapter page styles */
     .chapter-wrap { max-width: 900px; margin: 0 auto 2.5rem; }
     .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
+    .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
+    .navline { display:flex; gap:.5rem; justify-content:space-between; margin:.5rem 0 1rem; }
     .verses { margin-top: 1rem; }
     .verse { display:flex; gap:.5rem; padding:.35rem 0; border-bottom:1px solid #f2f4f7; }
     .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
@@ -19,13 +22,15 @@
     .tool-btn { padding:.35rem .6rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; }
     .panel { display:none; border:1px dashed #DBE4EE; border-radius:8px; padding:.5rem .75rem; margin:.35rem 0; background:#fff; }
     .panel.open { display:block; }
-    .navline { display:flex; gap:.5rem; justify-content:space-between; margin:.5rem 0 1rem; }
+    .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
   </style>
 </head>
 <body>
+  <!-- Use the same nested header partial as Tanakh -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
+    <!-- Breadcrumbs identical structure -->
     <nav id="crumbs" class="crumbs"></nav>
 
     <div class="chapter-wrap">
@@ -54,6 +59,8 @@
     </div>
   </main>
 
+  <!-- Same footer include -->
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
+

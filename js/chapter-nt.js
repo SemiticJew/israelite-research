@@ -1,4 +1,4 @@
-// js/chapter-nt.js
+// js/chapter-nt.js — mirror Tanakh chapter behavior
 function getParam(name){ const u = new URL(location.href); return u.searchParams.get(name); }
 async function j(path){ const r = await fetch(path); if(!r.ok) throw new Error(`Fail ${path}`); return r.json(); }
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const book = getParam('book');
   const chapter = parseInt(getParam('chapter') || '1', 10);
 
-  // crumbs
+  // Breadcrumbs — identical structure to Tanakh chapter page
   const crumbs = document.getElementById('crumbs');
   crumbs.setAttribute('data-bc', JSON.stringify([
     {label:'Articles', href:'../articles.html'},
@@ -44,14 +44,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     {label: `Chapter ${chapter}`}
   ]));
 
-  // counts for prev/next + picker
+  // Load counts for prev/next + picker
   const counts = await j('../data/newtestament/books.json');
   const max = counts[book] || 1;
 
   document.getElementById('book-label').textContent = book;
   document.getElementById('title').textContent = `${book} ${chapter}`;
 
-  // prev/next
+  // Prev/Next
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
   prev.href = chapter > 1 ? `chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter-1}` : '#';
@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (chapter === 1) prev.setAttribute('aria-disabled','true');
   if (chapter === max) next.setAttribute('aria-disabled','true');
 
-  // picker
+  // Picker
   buildPicker(book, chapter, max);
 
-  // load chapter data
+  // Load chapter data (same JSON shape as Tanakh)
   const dataPath = `../data/newtestament/${encodeURIComponent(book)}/${chapter}.json`;
   let data = { verses: [] };
-  try { data = await j(dataPath); } catch (e) { /* empty */ }
+  try { data = await j(dataPath); } catch (e) { /* if missing, show empty */ }
 
   const holder = document.getElementById('verses');
   holder.innerHTML = '';
