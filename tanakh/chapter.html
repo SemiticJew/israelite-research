@@ -9,30 +9,39 @@
   <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter.js" defer></script>
   <style>
-    /* ===== BLB-like layout to match NT chapter page ===== */
+    /* BLB-like layout (match NT) */
     .chapter-wrap { max-width: 1200px; margin: 0 auto 2.5rem; }
     .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
     .label { color:#666; font-size:.9rem; margin:.25rem 0 .6rem; }
 
-    /* Top controls */
     .topline { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; margin:.5rem 0 1rem; }
     .topline .picker select { padding:.3rem .5rem; border:1px solid #DBE4EE; border-radius:8px; }
 
-    /* Two-column layout */
-    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(250px, 320px); gap: 1.25rem; }
+    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(260px, 340px); gap: 1.25rem; }
     @media (max-width: 980px) { .chapter-grid { grid-template-columns: 1fr; } }
 
-    /* Verses */
-    .verses { background:#fff; border-radius:12px; }
-    .verse { scroll-margin-top: 96px; padding:.55rem .5rem; border-bottom:1px solid #f2f4f7; }
+    /* === BLB-style enclosure around verses === */
+    .verses {
+      border: 1px solid #DBE4EE;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+      overflow: hidden;
+    }
+    .verse { scroll-margin-top: 96px; padding:.55rem .75rem; border-bottom:1px solid #EEF2F7; background:#fff; }
+    .verse:last-child { border-bottom: 0; }
+    .verse:hover { background:#F8FAFD; }
+
     .vrow { display:flex; gap:.75rem; }
     .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
+    .vnum a { text-decoration:none; color:inherit; display:inline-block; padding:2px 6px; border-radius:6px; }
+    .verse:hover .vnum a { background:#DBE4EE; }
     .vtext { flex:1; }
+
     .tools-row { display:flex; gap:.4rem; flex-wrap:wrap; margin:.35rem 0 0 3rem; }
     .tool-btn { padding:.3rem .55rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; font-size:.9rem; }
     .tool-btn:hover { background:#DBE4EE; border-color:#81A4CD; }
 
-    /* Sidebar panels */
     .side { position: sticky; top: 72px; align-self: start; }
     .panel { border:1px dashed #DBE4EE; border-radius:12px; padding:.75rem .9rem; background:#fff; margin:0 0 .85rem; display:none; }
     .panel.open { display:block; }
@@ -43,7 +52,6 @@
   </style>
 </head>
 <body>
-  <!-- nested header -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
@@ -72,10 +80,8 @@
       </div>
 
       <div class="chapter-grid">
-        <!-- LEFT: Verse stream -->
         <section id="verses" class="verses"></section>
 
-        <!-- RIGHT: Tools sidebar -->
         <aside class="side">
           <div id="panel-xrefs" class="panel">
             <h3>Cross References</h3>
@@ -97,4 +103,3 @@
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
-

@@ -20,11 +20,24 @@
     .chapter-grid { display:grid; grid-template-columns: 1fr minmax(260px, 340px); gap: 1.25rem; }
     @media (max-width: 980px) { .chapter-grid { grid-template-columns: 1fr; } }
 
-    .verses { background:#fff; border-radius:12px; }
-    .verse { scroll-margin-top: 96px; padding:.55rem .5rem; border-bottom:1px solid #f2f4f7; }
+    /* === BLB-style enclosure around verses === */
+    .verses {
+      border: 1px solid #DBE4EE;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+      overflow: hidden;
+    }
+    .verse { scroll-margin-top: 96px; padding:.55rem .75rem; border-bottom:1px solid #EEF2F7; background:#fff; }
+    .verse:last-child { border-bottom: 0; }
+    .verse:hover { background:#F8FAFD; }
+
     .vrow { display:flex; gap:.75rem; }
     .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
+    .vnum a { text-decoration:none; color:inherit; display:inline-block; padding:2px 6px; border-radius:6px; }
+    .verse:hover .vnum a { background:#DBE4EE; }
     .vtext { flex:1; }
+
     .tools-row { display:flex; gap:.4rem; flex-wrap:wrap; margin:.35rem 0 0 3rem; }
     .tool-btn { padding:.3rem .55rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; font-size:.9rem; }
     .tool-btn:hover { background:#DBE4EE; border-color:#81A4CD; }
