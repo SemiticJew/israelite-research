@@ -985,3 +985,25 @@ CSS
 .main-nav a[aria-current="page"]::after {
   transform: scaleX(1);
 }
+/* Nav accent: only on list items (not site title) */
+.main-nav ul a {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+.main-nav ul a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: #F17300;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+.main-nav ul a.active::after,
+.main-nav ul a[aria-current="page"]::after {
+  transform: scaleX(1);
+}

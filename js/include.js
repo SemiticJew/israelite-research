@@ -56,3 +56,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// Nav active: normalize filename so text.html == texts.html, and match by filename only
+document.addEventListener('DOMContentLoaded', () => {
+  const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+  // Map singular/plural or folder variants to the menu hrefs you actually use
+  const normalize = f => {
+    if (f === 'text.html') return 'texts.html';
+    if (f === 'apologetics/index.html') return 'apologetics.html';
+    return f;
+  };
+
+  const current = normalize(file);
+
+  document.querySelectorAll('.main-nav ul a[href]').forEach(a => {
+    const href = a.getAttribute('href').split('/').pop().toLowerCase();
+    const isIndex = (current === '' || current === '/') && (href === '' || href === 'index.html');
+    if (href === current || isIndex) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+});
