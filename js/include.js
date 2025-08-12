@@ -28,3 +28,17 @@
 
   document.addEventListener('DOMContentLoaded', run);
 })();
+// Auto-highlight current nav link
+document.addEventListener('DOMContentLoaded', () => {
+  const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+  document.querySelectorAll('.main-nav a[href]').forEach(a => {
+    const href = a.getAttribute('href').split('/').pop().toLowerCase();
+    // Treat "" and "/" as index.html
+    const isIndex = (current === '' || current === '/') && href === 'index.html';
+    if (href === current || isIndex) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+});

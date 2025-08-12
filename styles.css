@@ -944,3 +944,19 @@ CSS
   box-shadow: 0 0 0 3px rgba(62,124,177,.15);
   border-color: #81A4CD;
 }
+/* Accent underline on the active nav item */
+.main-nav a { position: relative; }
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 3px;
+  background: #F17300; /* your accent color */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+.main-nav a.active::after,
+.main-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
