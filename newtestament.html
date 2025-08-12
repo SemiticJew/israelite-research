@@ -3,88 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The New Testament — Israelite Research</title>
+  <title>The New Testament — Biblical Logicians</title>
+  <meta name="description" content="The New Testament: Biographies, History, Epistles, and Prophecy." />
   <link rel="stylesheet" href="styles.css" />
-  <script src="tabs.js" defer></script>
-  <script src="js/include.js" defer></script>
 </head>
 <body>
-  <div data-include="partials/header.html"></div>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
+        <ul>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="texts.html">Texts</a></li>
+          <li><a href="apologetics.html">Apologetics</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="podcast.html">Podcast</a></li>
+          <li><a href="donate.html">Donations</a></li>
+        </ul>
+      </nav>
+      <div class="search-container">
+        <form action="/search" method="GET">
+          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
+          <button type="submit" aria-label="Submit search">🔍</button>
+        </form>
+      </div>
+    </div>
+  </header>
 
   <main class="container">
-    <section class="hero">
-      <h1>The New Testament</h1>
-      <p>Biographies, history, letters, and prophecy.</p>
+    <!-- Brand hero -->
+    <section class="hero hero--brand">
+      <h1 class="page-title">The New Testament</h1>
+      <p class="page-sub">Biographies, History, Epistles, and Prophecy.</p>
     </section>
 
-    <!-- Biographies -->
-    <section class="section-group">
-      <h2>Biographies (Gospels)</h2>
-      <div class="book-tabs" data-basepath="data/nt">
-        <ul class="tab-list">
-          <li data-book="matthew" class="active">Matthew</li>
-          <li data-book="mark">Mark</li>
-          <li data-book="luke">Luke</li>
-          <li data-book="john">John</li>
-        </ul>
-        <div class="tab-content"></div>
+    <!-- Sections -->
+    <section class="nt-sections">
+      <h2>Biographies</h2>
+      <div class="books-grid">
+        <a class="book-pill" href="newtestament/book.html?book=Matthew">Matthew</a>
+        <a class="book-pill" href="newtestament/book.html?book=Mark">Mark</a>
+        <a class="book-pill" href="newtestament/book.html?book=Luke">Luke</a>
+        <a class="book-pill" href="newtestament/book.html?book=John">John</a>
       </div>
-    </section>
 
-    <!-- History -->
-    <section class="section-group">
       <h2>History</h2>
-      <div class="book-tabs" data-basepath="data/nt">
-        <ul class="tab-list">
-          <li data-book="acts" class="active">Acts</li>
-        </ul>
-        <div class="tab-content"></div>
+      <div class="books-grid">
+        <a class="book-pill" href="newtestament/book.html?book=Acts">Acts</a>
       </div>
-    </section>
 
-    <!-- Epistles -->
-    <section class="section-group">
       <h2>Epistles</h2>
-      <div class="book-tabs" data-basepath="data/nt">
-        <ul class="tab-list">
-          <li data-book="romans" class="active">Romans</li>
-          <li data-book="1corinthians">1 Corinthians</li>
-          <li data-book="2corinthians">2 Corinthians</li>
-          <li data-book="galatians">Galatians</li>
-          <li data-book="ephesians">Ephesians</li>
-          <li data-book="philippians">Philippians</li>
-          <li data-book="colossians">Colossians</li>
-          <li data-book="1thessalonians">1 Thessalonians</li>
-          <li data-book="2thessalonians">2 Thessalonians</li>
-          <li data-book="1timothy">1 Timothy</li>
-          <li data-book="2timothy">2 Timothy</li>
-          <li data-book="titus">Titus</li>
-          <li data-book="philemon">Philemon</li>
-          <li data-book="hebrews">Hebrews</li>
-          <li data-book="james">James</li>
-          <li data-book="1peter">1 Peter</li>
-          <li data-book="2peter">2 Peter</li>
-          <li data-book="1john">1 John</li>
-          <li data-book="2john">2 John</li>
-          <li data-book="3john">3 John</li>
-          <li data-book="jude">Jude</li>
-        </ul>
-        <div class="tab-content"></div>
+      <div class="books-grid">
+        <a class="book-pill" href="newtestament/book.html?book=Romans">Romans</a>
+        <a class="book-pill" href="newtestament/book.html?book=1%20Corinthians">1&nbsp;Corinthians</a>
+        <a class="book-pill" href="newtestament/book.html?book=2%20Corinthians">2&nbsp;Corinthians</a>
+        <a class="book-pill" href="newtestament/book.html?book=Galatians">Galatians</a>
+        <a class="book-pill" href="newtestament/book.html?book=Ephesians">Ephesians</a>
+        <a class="book-pill" href="newtestament/book.html?book=Philippians">Philippians</a>
+        <a class="book-pill" href="newtestament/book.html?book=Colossians">Colossians</a>
+        <a class="book-pill" href="newtestament/book.html?book=1%20Thessalonians">1&nbsp;Thessalonians</a>
+        <a class="book-pill" href="newtestament/book.html?book=2%20Thessalonians">2&nbsp;Thessalonians</a>
+        <a class="book-pill" href="newtestament/book.html?book=1%20Timothy">1&nbsp;Timothy</a>
+        <a class="book-pill" href="newtestament/book.html?book=2%20Timothy">2&nbsp;Timothy</a>
+        <a class="book-pill" href="newtestament/book.html?book=Titus">Titus</a>
+        <a class="book-pill" href="newtestament/book.html?book=Philemon">Philemon</a>
+        <a class="book-pill" href="newtestament/book.html?book=Hebrews">Hebrews</a>
+        <a class="book-pill" href="newtestament/book.html?book=James">James</a>
+        <a class="book-pill" href="newtestament/book.html?book=1%20Peter">1&nbsp;Peter</a>
+        <a class="book-pill" href="newtestament/book.html?book=2%20Peter">2&nbsp;Peter</a>
+        <a class="book-pill" href="newtestament/book.html?book=1%20John">1&nbsp;John</a>
+        <a class="book-pill" href="newtestament/book.html?book=2%20John">2&nbsp;John</a>
+        <a class="book-pill" href="newtestament/book.html?book=3%20John">3&nbsp;John</a>
+        <a class="book-pill" href="newtestament/book.html?book=Jude">Jude</a>
       </div>
-    </section>
 
-    <!-- Prophecy -->
-    <section class="section-group">
       <h2>Prophecy</h2>
-      <div class="book-tabs" data-basepath="data/nt">
-        <ul class="tab-list">
-          <li data-book="revelation" class="active">Revelation</li>
-        </ul>
-        <div class="tab-content"></div>
+      <div class="books-grid">
+        <a class="book-pill" href="newtestament/book.html?book=Revelation">Revelation</a>
       </div>
     </section>
   </main>
 
-  <div data-include="partials/footer.html"></div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">© 2025 Israelite Research • Biblical Logicians</div>
+  </footer>
 </body>
 </html>
+

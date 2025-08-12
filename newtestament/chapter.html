@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NT Chapter — Biblical Logicians</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="../js/include.js" defer></script>
+  <script src="../js/breadcrumbs.js" defer></script>
+  <script src="../js/chapter-nt.js" defer></script>
+  <style>
+    .chapter-wrap { max-width: 900px; margin: 0 auto 2.5rem; }
+    .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
+    .verses { margin-top: 1rem; }
+    .verse { display:flex; gap:.5rem; padding:.35rem 0; border-bottom:1px solid #f2f4f7; }
+    .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
+    .vtext { flex:1; }
+    .tools { display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0; }
+    .tool-btn { padding:.35rem .6rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; }
+    .panel { display:none; border:1px dashed #DBE4EE; border-radius:8px; padding:.5rem .75rem; margin:.35rem 0; background:#fff; }
+    .panel.open { display:block; }
+    .navline { display:flex; gap:.5rem; justify-content:space-between; margin:.5rem 0 1rem; }
+  </style>
+</head>
+<body>
+  <div data-include="../partials/header-nested.html"></div>
+
+  <main class="container">
+    <nav id="crumbs" class="crumbs"></nav>
+
+    <div class="chapter-wrap">
+      <div class="chapter-head">
+        <div class="label" id="path">Texts / The New Testament / <span id="book-label"></span></div>
+        <h1 id="title">Book 1</h1>
+      </div>
+
+      <div class="navline">
+        <a id="prev" class="btn" href="#">« Prev</a>
+        <div id="chap-picker"></div>
+        <a id="next" class="btn" href="#">Next »</a>
+      </div>
+
+      <div class="tools">
+        <button class="tool-btn" data-target="#xrefs">Cross References</button>
+        <button class="tool-btn" data-target="#notes">Commentary</button>
+        <button class="tool-btn" data-target="#study">Study</button>
+      </div>
+
+      <div id="xrefs" class="panel"><em>Select a verse to see cross references.</em></div>
+      <div id="notes" class="panel"><em>Add your commentary notes here.</em></div>
+      <div id="study" class="panel"><em>Study tools coming soon.</em></div>
+
+      <section id="verses" class="verses"></section>
+    </div>
+  </main>
+
+  <div data-include="../partials/footer.html"></div>
+</body>
+</html>
