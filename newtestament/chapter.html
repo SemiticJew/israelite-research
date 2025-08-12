@@ -9,28 +9,46 @@
   <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter-nt.js" defer></script>
   <style>
-    /* Match Tanakh chapter page styles */
-    .chapter-wrap { max-width: 900px; margin: 0 auto 2.5rem; }
+    /* ===== BLB-like layout ===== */
+    .chapter-wrap { max-width: 1200px; margin: 0 auto 2.5rem; }
     .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
-    .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
-    .navline { display:flex; gap:.5rem; justify-content:space-between; margin:.5rem 0 1rem; }
-    .verses { margin-top: 1rem; }
-    .verse { display:flex; gap:.5rem; padding:.35rem 0; border-bottom:1px solid #f2f4f7; }
+    .label { color:#666; font-size:.9rem; margin:.25rem 0 .6rem; }
+
+    /* Top controls */
+    .topline { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; margin:.5rem 0 1rem; }
+    .topline .picker select { padding:.3rem .5rem; border:1px solid #DBE4EE; border-radius:8px; }
+
+    /* Two-column layout */
+    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(250px, 320px); gap: 1.25rem; }
+    @media (max-width: 980px) { .chapter-grid { grid-template-columns: 1fr; } }
+
+    /* Verses */
+    .verses { background:#fff; border-radius:12px; }
+    .verse { scroll-margin-top: 96px; padding:.55rem .5rem; border-bottom:1px solid #f2f4f7; }
+    .vrow { display:flex; gap:.75rem; }
     .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
     .vtext { flex:1; }
-    .tools { display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0; }
-    .tool-btn { padding:.35rem .6rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; }
-    .panel { display:none; border:1px dashed #DBE4EE; border-radius:8px; padding:.5rem .75rem; margin:.35rem 0; background:#fff; }
+    .tools-row { display:flex; gap:.4rem; flex-wrap:wrap; margin:.35rem 0 0 3rem; }
+    .tool-btn { padding:.3rem .55rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; font-size:.9rem; }
+    .tool-btn:hover { background:#DBE4EE; border-color:#81A4CD; }
+
+    /* Sidebar panels */
+    .side { position: sticky; top: 72px; align-self: start; }
+    .panel { border:1px dashed #DBE4EE; border-radius:12px; padding:.75rem .9rem; background:#fff; margin:0 0 .85rem; display:none; }
     .panel.open { display:block; }
+    .panel h3 { margin:.1rem 0 .35rem; font-size:1rem; }
+    .empty { color:#777; font-style:italic; }
+
     .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
+    .copy-ok { font-size:.85rem; color:#3E7CB1; display:none; margin-left:.4rem; }
+    .jump-form { display:flex; gap:.5rem; align-items:center; }
   </style>
 </head>
 <body>
-  <!-- Use the same nested header partial as Tanakh -->
+  <!-- nested header -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
-    <!-- Breadcrumbs identical structure -->
     <nav id="crumbs" class="crumbs"></nav>
 
     <div class="chapter-wrap">
@@ -39,28 +57,45 @@
         <h1 id="title">Book 1</h1>
       </div>
 
-      <div class="navline">
-        <a id="prev" class="btn" href="#">« Prev</a>
-        <div id="chap-picker"></div>
-        <a id="next" class="btn" href="#">Next »</a>
+      <div class="topline">
+        <div class="jump-form">
+          <label for="chap-picker" class="label" style="margin:0;">Chapter</label>
+          <span id="chap-picker" class="picker"></span>
+        </div>
+        <div class="jump-form">
+          <label for="verse-picker" class="label" style="margin:0;">Verse</label>
+          <select id="verse-picker"></select>
+          <button id="jump-btn" class="btn" type="button">Jump</button>
+        </div>
+        <div style="margin-left:auto; display:flex; gap:.5rem;">
+          <a id="prev" class="btn" href="#">« Prev</a>
+          <a id="next" class="btn" href="#">Next »</a>
+        </div>
       </div>
 
-      <div class="tools">
-        <button class="tool-btn" data-target="#xrefs">Cross References</button>
-        <button class="tool-btn" data-target="#notes">Commentary</button>
-        <button class="tool-btn" data-target="#study">Study</button>
+      <div class="chapter-grid">
+        <!-- LEFT: Verse stream -->
+        <section id="verses" class="verses"></section>
+
+        <!-- RIGHT: Tools sidebar -->
+        <aside class="side">
+          <div id="panel-xrefs" class="panel">
+            <h3>Cross References</h3>
+            <div class="body empty">Select a verse.</div>
+          </div>
+          <div id="panel-notes" class="panel">
+            <h3>Notes</h3>
+            <div class="body empty">Add your commentary notes for this verse.</div>
+          </div>
+          <div id="panel-study" class="panel">
+            <h3>Study</h3>
+            <div class="body empty">Study tools coming soon.</div>
+          </div>
+        </aside>
       </div>
-
-      <div id="xrefs" class="panel"><em>Select a verse to see cross references.</em></div>
-      <div id="notes" class="panel"><em>Add your commentary notes here.</em></div>
-      <div id="study" class="panel"><em>Study tools coming soon.</em></div>
-
-      <section id="verses" class="verses"></section>
     </div>
   </main>
 
-  <!-- Same footer include -->
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
-
