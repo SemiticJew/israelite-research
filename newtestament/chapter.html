@@ -3,26 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NT Chapter — Biblical Logicians</title>
+  <title>New Testament — Chapter</title>
   <link rel="stylesheet" href="../styles.css" />
   <script src="../js/include.js" defer></script>
   <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter-nt.js" defer></script>
   <style>
-    /* ===== BLB-like layout ===== */
+    /* BLB-like layout */
     .chapter-wrap { max-width: 1200px; margin: 0 auto 2.5rem; }
     .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
     .label { color:#666; font-size:.9rem; margin:.25rem 0 .6rem; }
 
-    /* Top controls */
     .topline { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; margin:.5rem 0 1rem; }
     .topline .picker select { padding:.3rem .5rem; border:1px solid #DBE4EE; border-radius:8px; }
 
-    /* Two-column layout */
-    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(250px, 320px); gap: 1.25rem; }
+    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(260px, 340px); gap: 1.25rem; }
     @media (max-width: 980px) { .chapter-grid { grid-template-columns: 1fr; } }
 
-    /* Verses */
     .verses { background:#fff; border-radius:12px; }
     .verse { scroll-margin-top: 96px; padding:.55rem .5rem; border-bottom:1px solid #f2f4f7; }
     .vrow { display:flex; gap:.75rem; }
@@ -32,7 +29,6 @@
     .tool-btn { padding:.3rem .55rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; font-size:.9rem; }
     .tool-btn:hover { background:#DBE4EE; border-color:#81A4CD; }
 
-    /* Sidebar panels */
     .side { position: sticky; top: 72px; align-self: start; }
     .panel { border:1px dashed #DBE4EE; border-radius:12px; padding:.75rem .9rem; background:#fff; margin:0 0 .85rem; display:none; }
     .panel.open { display:block; }
@@ -40,12 +36,9 @@
     .empty { color:#777; font-style:italic; }
 
     .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
-    .copy-ok { font-size:.85rem; color:#3E7CB1; display:none; margin-left:.4rem; }
-    .jump-form { display:flex; gap:.5rem; align-items:center; }
   </style>
 </head>
 <body>
-  <!-- nested header -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
@@ -54,7 +47,7 @@
     <div class="chapter-wrap">
       <div class="chapter-head">
         <div class="label" id="path">Texts / The New Testament / <span id="book-label"></span></div>
-        <h1 id="title">Book 1</h1>
+        <h1 id="title">Matthew 1</h1>
       </div>
 
       <div class="topline">
@@ -74,10 +67,8 @@
       </div>
 
       <div class="chapter-grid">
-        <!-- LEFT: Verse stream -->
         <section id="verses" class="verses"></section>
 
-        <!-- RIGHT: Tools sidebar -->
         <aside class="side">
           <div id="panel-xrefs" class="panel">
             <h3>Cross References</h3>

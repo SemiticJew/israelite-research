@@ -1,4 +1,4 @@
-// js/chapter-nt.js — BLB-like UX with verse anchors + sidebar tools
+// BLB-like UX with verse anchors + sidebar tools for NT
 function getParam(name){ const u = new URL(location.href); return u.searchParams.get(name); }
 async function j(path){ const r = await fetch(path); if(!r.ok) throw new Error(`Fail ${path}`); return r.json(); }
 
@@ -42,7 +42,7 @@ function verseHTML(v){
       <button class="tool-btn" data-tool="notes" data-v="${v.num}">Notes</button>
       <button class="tool-btn" data-tool="study" data-v="${v.num}">Study</button>
       <button class="tool-btn" data-tool="copy" data-v="${v.num}">Copy</button>
-      <span class="copy-ok" id="copied-${v.num}">Copied!</span>
+      <span class="copy-ok" id="copied-${v.num}" style="display:none;">Copied!</span>
     </div>
   `;
 }
@@ -61,7 +61,7 @@ async function init() {
     {label: `Chapter ${chapter}`}
   ]));
 
-  // Chapter counts (for prev/next & picker)
+  // Chapter counts
   const counts = await j('../data/newtestament/books.json');
   const maxChap = counts[book] || 1;
 
@@ -79,12 +79,12 @@ async function init() {
 
   buildChapterPicker(book, chapter, maxChap);
 
-  // Load chapter data
+  // Data
   const dataPath = `../data/newtestament/${encodeURIComponent(book)}/${chapter}.json`;
   let data = { verses: [] };
-  try { data = await j(dataPath); } catch(e){ /* show empty */ }
+  try { data = await j(dataPath); } catch(e){ /* empty */ }
 
-  // Verse stream
+  // Verses
   const holder = document.getElementById('verses');
   holder.innerHTML = '';
   (data.verses || []).forEach(v => {
@@ -95,7 +95,7 @@ async function init() {
     holder.appendChild(wrap);
   });
 
-  // Verse picker (jump)
+  // Verse picker
   buildVersePicker((data.verses || []).length || 1);
 
   // Tool events
@@ -106,9 +106,9 @@ async function init() {
 
     if (tool === 'xrefs') {
       const html = (v.crossRefs && v.crossRefs.length)
-        ? `<ul>${v.crossRefs.map(cr=>`<li>${cr.ref}${cr.note?` — ${cr.note}`:''}</li>`).join('')}</ul>`
-        : '<em class="empty">No cross references for this verse.</em>';
-      openPanel('panel-xrefs', `<strong>${book} ${chapter}:${vnum}</strong>${html}`);
+        ? `<strong>${book} ${chapter}:${vnum}</strong><ul>${v.crossRefs.map(cr=>`<li>${cr.ref}${cr.note?` — ${cr.note}`:''}</li>`).join('')}</ul>`
+        : `<strong>${book} ${chapter}:${vnum}</strong><p class="empty">No cross references for this verse.</p>`;
+      openPanel('panel-xrefs', html);
     }
     if (tool === 'notes') {
       openPanel('panel-notes',
@@ -130,7 +130,7 @@ async function init() {
     }
   });
 
-  // Support deep link to #vN
+  // Deep link to #vN
   if (location.hash && /^#v\d+/.test(location.hash)) {
     const el = document.querySelector(location.hash);
     if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
