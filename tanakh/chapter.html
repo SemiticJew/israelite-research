@@ -3,120 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tanakh — Chapter</title>
+  <title>Genesis — Chapter</title>
   <link rel="stylesheet" href="../styles.css" />
   <script src="../js/include.js" defer></script>
+  <script src="../js/breadcrumbs.js" defer></script>
   <script src="../js/chapter.js" defer></script>
-<script src="js/breadcrumbs.js" defer></script>
-
   <style>
-    /* Page spacing */
-    main.container { padding-bottom: 3rem; }
-
-    /* Wrap to keep text aligned with verse column */
-    .chapter-wrap { max-width: 760px; }
-
-    .crumbs {
-      margin: .25rem 0 .5rem; color:#666; font-size: var(--fs-small-text);
-    }
-    .crumbs a { color: var(--blue-dark); text-decoration: none; }
-    .crumbs a:hover { text-decoration: underline; }
-
-    .chapter-header h1 { margin:.25rem 0 0; font-family: var(--ff-serif); }
-    .chapter-sub { color:#555; margin:.25rem 0 1rem; }
-
-    /* Verse list */
-    .verse-block {
-      display: grid;
-      grid-template-columns: 44px 1fr; /* number column + text */
-      gap: .5rem .75rem;
-      padding: .6rem .75rem;
-      border-bottom: 1px solid var(--gray-light);
-    }
-    .verse-num {
-      display: inline-flex; align-items:center; justify-content:center;
-      width: 36px; height: 36px; border-radius: 6px;
-      background: var(--gray-light); border:1px solid var(--blue-light);
-      font-weight: 700; color: var(--blue-dark); text-decoration:none;
-    }
-    .verse-text { line-height: 1.6; }
-
-    /* Tools under each verse */
-    .verse-tools {
-      grid-column: 2 / -1;
-      display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .25rem;
-    }
-    .tool-btn {
-      display:inline-block; padding:.35rem .6rem; border-radius: 999px;
-      background:#fff; border:1px solid var(--blue-light); color:var(--blue-dark);
-      font-size: var(--fs-small-text); text-decoration:none;
-    }
-    .tool-btn:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); }
-
-    /* Panels (toggle) */
-    .panel {
-      grid-column: 2 / -1;
-      background:#fff; border:1px solid var(--blue-light); border-radius:8px;
-      padding:.6rem .75rem; margin:.5rem 0 0; display:none;
-    }
+    /* Base layout (matches your Tanakh chapter look) */
+    .chapter-wrap { max-width: 900px; margin: 0 auto 2.5rem; }
+    .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
+    .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
+    .navline { display:flex; gap:.5rem; justify-content:space-between; margin:.5rem 0 1rem; }
+    .tools { display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0; }
+    .tool-btn { padding:.35rem .6rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; }
+    .panel { display:none; border:1px dashed #DBE4EE; border-radius:8px; padding:.5rem .75rem; margin:.35rem 0; background:#fff; }
     .panel.open { display:block; }
+    .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
+    main.container { padding-bottom: 2.5rem; } /* keep footer off content */
 
-    .xrefs { font-size: var(--fs-small-text); }
-    .xrefs a { color: var(--blue-dark); text-decoration: none; }
-    .xrefs a:hover { text-decoration: underline; }
+    /* === Your requested tweaks === */
+    /* Keep the page title left-aligned */
+    .chapter-head h1 { text-align: left; }
 
-    .commentary textarea {
-      width: 100%; min-height: 110px; resize: vertical; padding:.5rem .6rem;
-      border:1px solid #d9e2ef; border-radius:8px; font: inherit;
+    /* Center the verses stream as a block */
+    .verses {
+      display: flex;
+      flex-direction: column;
+      align-items: center;      /* centers the verse rows as a group */
+      margin-top: 1rem;
     }
 
-    /* Chapter nav */
-    .chapter-nav {
-      display:flex; justify-content:space-between; gap:.75rem; margin: 1rem 0;
+    /* Limit each verse row to a comfy width, but still responsive */
+    .verse {
+      width: min(100%, 760px);
+      display:flex;
+      gap:.5rem;
+      padding:.35rem 0;
+      border-bottom:1px solid #f2f4f7;
     }
-    .chapter-nav a {
-      text-decoration:none; padding:.45rem .75rem; border:1px solid var(--blue-light);
-      border-radius:8px; color: var(--blue-dark); background:#fff;
-    }
-    .chapter-nav a:hover { background: var(--blue-mid); color:#fff; border-color: var(--blue-mid); }
+
+    /* Keep text itself left-aligned inside centered block */
+    .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
+    .vtext { flex:1; text-align:left; }
   </style>
 </head>
 <body>
-  <!-- Shared header (nested) -->
+  <!-- nested header -->
   <div data-include="../partials/header-nested.html"></div>
 
   <main class="container">
+    <!-- breadcrumbs (filled by JS) -->
+    <nav id="crumbs" class="crumbs"></nav>
+
     <div class="chapter-wrap">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a id="crumbTexts" href="../texts.html">Texts</a> &nbsp;/&nbsp;
-        <a id="crumbTanakh" href="../tanakh.html">The Tanakh</a> &nbsp;/&nbsp;
-        <a id="crumbBook" href="#">Book</a> &nbsp;/&nbsp;
-        <span id="crumbChapter">Chapter</span>
-      </nav>
-
-      <header class="chapter-header">
-        <h1 id="title">Book Chapter</h1>
-        <div class="chapter-sub" id="subline">KJV (sample) • Click a verse for tools</div>
-        <div class="chapter-nav">
-          <a id="prevLink" href="#">&larr; Previous</a>
-          <a id="bookLink" href="#">Back to Contents</a>
-          <a id="nextLink" href="#">Next &rarr;</a>
-        </div>
-      </header>
-
-      <section id="verses" aria-label="Verses">
-        <!-- Rendered by chapter.js -->
-      </section>
-
-      <div class="chapter-nav">
-        <a id="prevLinkBottom" href="#">&larr; Previous</a>
-        <a id="bookLinkBottom" href="#">Back to Contents</a>
-        <a id="nextLinkBottom" href="#">Next &rarr;</a>
+      <div class="chapter-head">
+        <div class="label" id="path">Texts / The Tanakh / <span id="book-label"></span></div>
+        <h1 id="title">Genesis 1</h1>
       </div>
+
+      <div class="navline">
+        <a id="prev" class="btn" href="#">« Prev</a>
+        <div id="chap-picker"></div>
+        <a id="next" class="btn" href="#">Next »</a>
+      </div>
+
+      <div class="tools">
+        <button class="tool-btn" data-target="#xrefs">Cross References</button>
+        <button class="tool-btn" data-target="#notes">Commentary</button>
+        <button class="tool-btn" data-target="#study">Study</button>
+      </div>
+
+      <div id="xrefs" class="panel"><em>Select a verse to see cross references.</em></div>
+      <div id="notes" class="panel"><em>Add your commentary notes here.</em></div>
+      <div id="study" class="panel"><em>Study tools coming soon.</em></div>
+
+      <section id="verses" class="verses"></section>
     </div>
   </main>
 
-  <!-- Shared footer -->
+  <!-- nested footer -->
   <div data-include="../partials/footer.html"></div>
 </body>
 </html>
