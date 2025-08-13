@@ -1007,3 +1007,29 @@ CSS
 .main-nav ul a[aria-current="page"]::after {
   transform: scaleX(1);
 }
+.breadcrumb {
+  font-size: 0.9rem;
+  margin: 1rem 0 1.5rem;
+}
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+}
+.breadcrumb li {
+  color: #666;
+}
+.breadcrumb li a {
+  text-decoration: none;
+  color: inherit;
+}
+.breadcrumb li + li::before {
+  content: "›";
+  margin: 0 0.5rem;
+  color: #999;
+}
+.home-hero .page-title { color: #fff; }
+
