@@ -3,230 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apologetics — Topics</title>
+  <title>Israelite Research — Apologetics</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="js/include.js" defer></script>
-<script src="js/include.js" defer></script>
-<head>
   <style>
-    /* --- Apologetics Topics styles (scoped) --- */
-    .topics-hero { margin: .5rem 0 1rem; }
-    .topics-hero h1 { margin: 0 0 .25rem; }
-    .topics-hero p { color:#555; }
+    /* Horizontal breadcrumbs (local helper) */
+    .breadcrumb { font-size: 0.95rem; margin: 1rem 0 1.25rem; }
+    .breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; }
+    .breadcrumb li { color: #666; display: inline-flex; align-items: center; }
+    .breadcrumb li a { text-decoration: none; color: inherit; }
+    .breadcrumb li + li::before { content: "›"; margin: 0 .5rem; color: #999; }
 
-    .topics-toolbar {
-      display:flex; gap:.75rem; align-items:center; flex-wrap:wrap;
-      background: var(--gray-light); border:1px solid var(--blue-light);
-      border-radius:12px; padding:.75rem 1rem; margin:1rem 0 1.25rem;
+    /* Page-specific hero using your palette */
+    .hero-apologetics {
+      --blue-900: #054A91;
+      --blue-700: #3E7CB1;
+      --blue-400: #81A4CD;
+      --blue-100: #DBE4EE;
+      --accent:   #F17300;
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-700) 55%, var(--blue-400));
+      color: #fff;
+      padding: 4rem 1.5rem;
+      border-bottom: 6px solid var(--accent);
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      text-align: center;
     }
-    .topics-toolbar input[type="search"]{
-      flex:1 1 260px; padding:.6rem .8rem; border:1px solid #d9e2ef; border-radius:8px;
-      font-size:16px; outline-color: var(--orange-accent);
+    .hero-apologetics .page-title {
+      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+      font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+      margin: 0 0 .5rem 0;
+      letter-spacing: 0.5px;
     }
+    .hero-apologetics .page-subtitle {
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+      font-size: 1rem;
+      color: var(--blue-100);
+      max-width: 60ch;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .hero-divider { height: 12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
 
-    .az-bar{
-      display:flex; flex-wrap:wrap; gap:.35rem; align-items:center;
-    }
-    .az-bar .az-label{ font-weight:600; color:var(--blue-dark); margin-right:.25rem; }
-    .az-btn{
-      display:inline-block; min-width:2rem; text-align:center; padding:.35rem .55rem;
-      border:1px solid var(--blue-mid); border-radius:999px; background:#fff; color:var(--blue-dark);
-      text-decoration:none; font-weight:600; font-size:14px;
-    }
-    .az-btn:hover{ background:var(--blue-mid); color:#fff; }
-    .az-btn[aria-current="true"]{ background:var(--blue-dark); color:#fff; border-color:var(--blue-dark); }
-
-    .topics-section{ margin:2rem 0; }
-    .topics-section h2{
-      font-family: var(--ff-serif); color:#111; margin:.25rem 0 .5rem;
-      border-bottom:2px solid var(--gray-light); padding-bottom:.25rem;
-    }
-    /* Multi-column topic list like a directory */
-    .topics-list{
-      columns: 3 280px; column-gap: 1.25rem;
-      list-style:none; padding:0; margin:0;
-    }
-    .topics-list li{ break-inside: avoid; margin: .25rem 0; }
-    .topics-list a{ text-decoration:none; color:var(--blue-dark); }
-    .topics-list a:hover{ text-decoration:underline; }
-
-    .no-results{
-      padding:1rem; background:#fff7e6; border:1px solid #ffd8a8; border-radius:8px;
-      color:#7a4d00; margin-top:1rem; display:none;
-    }
+    /* Simple topics grid (keep consistent with other pages) */
+    .topics { margin-top: 1.5rem; }
+    .topics .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap: 1rem; }
+    .topics .card { padding: 1rem; border-radius: 12px; background: #fff; border: 1px solid #e6ebf2; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .topics .card h3 { margin: 0 0 .35rem; font-size: 1.05rem; }
+    .topics .card p { margin: 0; font-size: .95rem; color: #555; }
   </style>
 </head>
 <body>
-<div id="site-header"></div>
-  <!-- Shared header -->
-  <div data-include="partials/header.html"></div>
 
-  <main class="container">
-    <section class="topics-hero">
-      <h1>Apologetics Topics</h1>
-      <p>Browse topics A–Z or search to jump directly to what you need.</p>
+  <!-- Header partial -->
+  <div id="site-header"></div>
+
+  <main class="container apologetics-page">
+
+    <!-- Breadcrumbs ABOVE hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+    <section class="hero hero-apologetics">
+      <h1 class="page-title">Apologetics</h1>
+      <p class="page-subtitle">Reasoned defenses of the faith—organized by topic for study and teaching.</p>
+    </section>
+    <div class="hero-divider" aria-hidden="true"></div>
+
+    <!-- Topics (sample categories; replace/expand as you add content) -->
+    <section class="topics">
+      <h2 class="section-title">Browse Topics</h2>
+      <div class="grid">
+        <article class="card">
+          <h3><a href="apologetics/creation.html">Creation & Origins</a></h3>
+          <p>Creation, design, Genesis debates, and cosmology.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/scripture.html">Scripture & Reliability</a></h3>
+          <p>Canon, inspiration, transmission, and textual trustworthiness.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/christ.html">Christology</a></h3>
+          <p>Person and work of Christ, incarnation, atonement, resurrection.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/theodicy.html">Evil & Suffering</a></h3>
+          <p>Why suffering? Divine justice, moral evil, and hope.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/ethics.html">Ethics</a></h3>
+          <p>Marriage, sexuality, life issues, justice, and virtue.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/worldviews.html">Worldviews & Religions</a></h3>
+          <p>Comparative religion, secular ideologies, and rational critique.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/prophecy.html">Prophecy & Fulfillment</a></h3>
+          <p>Messianic prophecies, dates, and historical anchors.</p>
+        </article>
+        <article class="card">
+          <h3><a href="apologetics/israel.html">Israel & Covenant</a></h3>
+          <p>Identity, covenants, promises, and historical claims.</p>
+        </article>
+      </div>
     </section>
 
-    <!-- Search + A–Z bar -->
-    <div class="topics-toolbar" role="region" aria-label="Filter topics">
-      <input id="topicsSearch" type="search" placeholder="Search topics (e.g., faith, canon, miracles)…" aria-label="Search topics" />
-      <nav class="az-bar" aria-label="A to Z index">
-        <span class="az-label">Jump to:</span>
-        <a class="az-btn" href="#letter-A">A</a>
-        <a class="az-btn" href="#letter-B">B</a>
-        <a class="az-btn" href="#letter-C">C</a>
-        <a class="az-btn" href="#letter-D">D</a>
-        <a class="az-btn" href="#letter-E">E</a>
-        <a class="az-btn" href="#letter-F">F</a>
-        <a class="az-btn" href="#letter-G">G</a>
-        <a class="az-btn" href="#letter-H">H</a>
-        <a class="az-btn" href="#letter-I">I</a>
-        <a class="az-btn" href="#letter-J">J</a>
-        <a class="az-btn" href="#letter-K">K</a>
-        <a class="az-btn" href="#letter-L">L</a>
-        <a class="az-btn" href="#letter-M">M</a>
-        <a class="az-btn" href="#letter-N">N</a>
-        <a class="az-btn" href="#letter-O">O</a>
-        <a class="az-btn" href="#letter-P">P</a>
-        <a class="az-btn" href="#letter-Q">Q</a>
-        <a class="az-btn" href="#letter-R">R</a>
-        <a class="az-btn" href="#letter-S">S</a>
-        <a class="az-btn" href="#letter-T">T</a>
-        <a class="az-btn" href="#letter-U">U</a>
-        <a class="az-btn" href="#letter-V">V</a>
-        <a class="az-btn" href="#letter-W">W</a>
-        <a class="az-btn" href="#letter-X">X</a>
-        <a class="az-btn" href="#letter-Y">Y</a>
-        <a class="az-btn" href="#letter-Z">Z</a>
-      </nav>
-    </div>
-
-    <!-- Results note -->
-    <div id="noResults" class="no-results" role="status">No topics match your search.</div>
-
-    <!-- Letter sections -->
-    <section id="letter-A" class="topics-section" aria-labelledby="h-A">
-      <h2 id="h-A">A</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/abortion.html">Abortion</a></li>
-        <li><a href="apologetics/adam-and-eve.html">Adam and Eve</a></li>
-        <li><a href="apologetics/alcohol.html">Alcohol</a></li>
-        <li><a href="apologetics/altar.html">Altar</a></li>
-        <li><a href="apologetics/angels.html">Angels</a></li>
-        <li><a href="apologetics/anger.html">Anger</a></li>
-        <li><a href="apologetics/antichrist.html">Antichrist</a></li>
-        <li><a href="apologetics/apostasy.html">Apostasy</a></li>
-        <li><a href="apologetics/archaeology.html">Archaeology</a></li>
-        <li><a href="apologetics/atonement.html">Atonement</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-C" class="topics-section" aria-labelledby="h-C">
-      <h2 id="h-C">C</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/canon.html">Canon of Scripture</a></li>
-        <li><a href="apologetics/christ-deity.html">Christ’s Deity</a></li>
-        <li><a href="apologetics/church-identity.html">Church Identity</a></li>
-        <li><a href="apologetics/creation.html">Creation</a></li>
-        <li><a href="apologetics/crucifixion.html">Crucifixion</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-F" class="topics-section" aria-labelledby="h-F">
-      <h2 id="h-F">F</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/faith.html">Faith</a></li>
-        <li><a href="apologetics/foreknowledge.html">Foreknowledge</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-G" class="topics-section" aria-labelledby="h-G">
-      <h2 id="h-G">G</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/giving.html">Giving</a></li>
-        <li><a href="apologetics/good-shepherd.html">Good Shepherd</a></li>
-        <li><a href="apologetics/gospel.html">Gospel</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-J" class="topics-section" aria-labelledby="h-J">
-      <h2 id="h-J">J</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/jesus-deity.html">Jesus — Deity</a></li>
-        <li><a href="apologetics/jehoshaphat.html">Jehoshaphat’s Prayer</a></li>
-        <li><a href="apologetics/jonah.html">Jonah</a></li>
-        <li><a href="apologetics/justification.html">Justification</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-M" class="topics-section" aria-labelledby="h-M">
-      <h2 id="h-M">M</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/mankind-image-of-god.html">Mankind — Image of God</a></li>
-        <li><a href="apologetics/marriage.html">Marriage</a></li>
-        <li><a href="apologetics/miracles.html">Miracles</a></li>
-        <li><a href="apologetics/mental-health.html">Mental Health</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-S" class="topics-section" aria-labelledby="h-S">
-      <h2 id="h-S">S</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/salvation.html">Salvation</a></li>
-        <li><a href="apologetics/speaking-in-tongues.html">Speaking in Tongues</a></li>
-        <li><a href="apologetics/suffering.html">Suffering</a></li>
-      </ul>
-    </section>
-
-    <section id="letter-W" class="topics-section" aria-labelledby="h-W">
-      <h2 id="h-W">W</h2>
-      <ul class="topics-list">
-        <li><a href="apologetics/wisdom.html">Wisdom</a></li>
-        <li><a href="apologetics/worship.html">Worship</a></li>
-      </ul>
-    </section>
   </main>
 
-  <!-- Shared footer -->
-  <div data-include="partials/footer.html"></div>
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
 
-  <script>
-    // A–Z highlight + search filtering
-    document.addEventListener('DOMContentLoaded', () => {
-      const search = document.getElementById('topicsSearch');
-      const sections = Array.from(document.querySelectorAll('.topics-section'));
-      const noResults = document.getElementById('noResults');
-      const az = document.querySelector('.az-bar');
-
-      function highlightAZ() {
-        az.querySelectorAll('.az-btn').forEach(a => a.removeAttribute('aria-current'));
-        const id = location.hash || '#letter-A';
-        const active = az.querySelector(`a[href="${id}"]`);
-        if (active) active.setAttribute('aria-current','true');
-      }
-      window.addEventListener('hashchange', highlightAZ);
-      highlightAZ();
-
-      function filter() {
-        const q = (search.value || '').trim().toLowerCase();
-        let visibleCount = 0;
-        sections.forEach(sec => {
-          const items = Array.from(sec.querySelectorAll('.topics-list li'));
-          let anyVisible = false;
-          items.forEach(li => {
-            const t = li.textContent.trim().toLowerCase();
-            const show = !q || t.includes(q);
-            li.style.display = show ? '' : 'none';
-            if (show) { anyVisible = true; visibleCount++; }
-          });
-          sec.style.display = anyVisible ? '' : 'none';
-        });
-        noResults.style.display = (!visibleCount && search.value) ? 'block' : 'none';
-      }
-      search.addEventListener('input', filter);
-    });
-  </script>
-<div id="site-footer"></div>
-<script src="/israelite-research/js/include.js"></script>
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
+
