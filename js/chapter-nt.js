@@ -10,6 +10,17 @@ async function j(path) {
   if (!res.ok) throw new Error(`Failed to load ${path}`);
   return res.json();
 }
+async function loadCrossRefs(book, chapter) {
+  try {
+    const res = await fetch(`../data/newtestament/${book}/crossrefs.json`, { cache: "no-store" });
+    if (!res.ok) return null;
+    const x = await res.json();
+    const byVerse = x?.chapters?.[String(chapter)];
+    return byVerse || null;
+  } catch {
+    return null;
+  }
+}
 
 // Notes persistence (localStorage)
 function noteKey(book, chap, v) { return `note:${book}:${chap}:${v}`; }
