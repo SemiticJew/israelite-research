@@ -2,40 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Israelite Research — New Testament</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The New Testament — Israelite Research</title>
+  <!-- Preload Fonts -->
+  <link rel="preload" href="fonts/AdobeGaramondPro-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/AdobeGaramondPro-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
+      <a href="/texts" class="logo">
+        <img src="logo.svg" alt="Israelite Research">
+      </a>
       <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
         <ul>
-          <li><a href="index.html">Articles</a></li>
-          <li><a href="texts.html" class="active">Texts</a></li>
-          <li><a href="apocrypha.html">Apocrypha</a></li>
-          <li><a href="biblical_references.html">Bible References</a></li>
-          <li><a href="extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+          <li><a href="/texts/tanakh">The Tanakh</a></li>
+          <li><a href="/texts/new-testament" class="active">The New Testament</a></li>
+          <li><a href="/texts/apocrypha">Apocrypha</a></li>
+          <li><a href="/texts/biblical-references">Refs</a></li>
+          <li><a href="/texts/extra-biblical">Extra-Biblical</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main class="container">
-    <h1>The New Testament</h1>
-    <ul class="book-list">
-      <li><a href="book.html?book=matthew">Matthew</a></li>
-      <li><a href="book.html?book=james">James</a></li>
-      <li><a href="book.html?book=jude">Jude</a></li>
-      <li><a href="book.html?book=1john">1 John</a></li>
-      <li><a href="book.html?book=2john">2 John</a></li>
-      <li><a href="book.html?book=3john">3 John</a></li>
-    </ul>
+  <main class="nt-page container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/texts">Texts</a></li>
+        <li>The New Testament</li>
+      </ol>
+    </nav>
+
+    <h1 style="font-family: var(--ff-serif); font-size: var(--fs-page-title); color: #000;">The New Testament</h1>
+    <p style="font-family: var(--ff-sans); font-size: var(--fs-small-text); color: #333;">Explore the four primary sections of the New Testament below.</p>
+
+    <!-- Biographies -->
+    <section class="section-group biography-section">
+      <h2 style="font-family: var(--ff-serif); font-size: var(--fs-section-title); text-transform: uppercase; letter-spacing: var(--tracking-chapter); color: #000;">Biographies</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="matthew" class="active">Matthew</li>
+          <li data-book="mark">Mark</li>
+          <li data-book="luke">Luke</li>
+          <li data-book="john">John</li>
+        </ul>
+        <div class="tab-content"><!-- Loaded via JS --></div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="section-group history-section">
+      <h2 style="font-family: var(--ff-serif); font-size: var(--fs-section-title); text-transform: uppercase; letter-spacing: var(--tracking-chapter); color: #000;">History</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="acts" class="active">Acts</li>
+        </ul>
+        <div class="tab-content"><!-- Loaded via JS --></div>
+      </div>
+    </section>
+
+    <!-- Epistles -->
+    <section class="section-group epistles-section">
+      <h2 style="font-family: var(--ff-serif); font-size: var(--fs-section-title); text-transform: uppercase; letter-spacing: var(--tracking-chapter); color: #000;">Epistles</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="romans" class="active">Romans</li>
+          <li data-book="corinthians1">1 Corinthians</li>
+          <li data-book="corinthians2">2 Corinthians</li>
+          <li data-book="galatians">Galatians</li>
+          <li data-book="ephesians">Ephesians</li>
+          <li data-book="philippians">Philippians</li>
+          <li data-book="colossians">Colossians</li>
+          <li data-book="thessalonians1">1 Thessalonians</li>
+          <li data-book="thessalonians2">2 Thessalonians</li>
+          <li data-book="timothy1">1 Timothy</li>
+          <li data-book="timothy2">2 Timothy</li>
+          <li data-book="titus">Titus</li>
+          <li data-book="philemon">Philemon</li>
+          <li data-book="hebrews">Hebrews</li>
+          <li data-book="james">James</li>
+          <li data-book="peter1">1 Peter</li>
+          <li data-book="peter2">2 Peter</li>
+          <li data-book="john1">1 John</li>
+          <li data-book="john2">2 John</li>
+          <li data-book="john3">3 John</li>
+          <li data-book="jude">Jude</li>
+        </ul>
+        <div class="tab-content"><!-- Loaded via JS --></div>
+      </div>
+    </section>
+
+    <!-- Prophecy -->
+    <section class="section-group prophecy-section">
+      <h2 style="font-family: var(--ff-serif); font-size: var(--fs-section-title); text-transform: uppercase; letter-spacing: var(--tracking-chapter); color: #000;">Prophecy</h2>
+      <div class="book-tabs">
+        <ul class="tab-list">
+          <li data-book="revelation" class="active">Revelation</li>
+        </ul>
+        <div class="tab-content"><!-- Loaded via JS --></div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">&copy; 2025 Israelite Research</div>
+    <div class="container">
+      <p>&copy; 2025 Israelite Research. All rights reserved.</p>
+    </div>
   </footer>
+  <script src="tabs.js"></script>
 </body>
 </html>
