@@ -1,80 +1,27 @@
-// include.js — inject partials and set active nav (no link rewriting)
-(function () {
-  function setActiveNav(root) {
-    const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    let key = file.replace('.html', '') || 'index';
-    const allowed = new Set(['index','texts','apologetics','events','podcast','donate']);
-    if (!allowed.has(key)) key = 'index';
-    const link = root.querySelector(`a[data-nav="${key}"]`);
-    if (link) link.classList.add('active');
-  }
+// js/include.js — loads partials/header.html + partials/footer.html on any page depth
+(async () => {
+  const roots = [
+    '/israelite-research/', // GitHub Pages (repo root)
+    '',                     // same folder
+    '../',                  // one level up
+    '../../'                // two levels up
+  ];
 
-  async function inject(el) {
-    const src = el.getAttribute('data-include');
-    try {
-      const res = await fetch(src);
-      el.outerHTML = await res.text();
-    } catch {
-      el.outerHTML = `<!-- include failed: ${src} -->`;
+  async function loadInto(id, file) {
+    const host = document.getElementById(id);
+    if (!host) return;
+    for (const base of roots) {
+      try {
+        const res = await fetch(base + 'partials/' + file, { cache: 'no-cache' });
+        if (res.ok) {
+          host.innerHTML = await res.text();
+          return;
+        }
+      } catch (_) {}
     }
+    console.error('Failed to load partial:', file);
   }
 
-  async function run() {
-    const includes = Array.from(document.querySelectorAll('[data-include]'));
-    await Promise.all(includes.map(inject));
-    const header = document.querySelector('.site-header');
-    if (header) setActiveNav(header);
-  }
-
-  document.addEventListener('DOMContentLoaded', run);
+  await loadInto('site-header', 'header.html');
+  await loadInto('site-footer', 'footer.html');
 })();
-// Auto-highlight current nav link
-document.addEventListener('DOMContentLoaded', () => {
-  const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-
-  document.querySelectorAll('.main-nav a[href]').forEach(a => {
-    const href = a.getAttribute('href').split('/').pop().toLowerCase();
-    // Treat "" and "/" as index.html
-    const isIndex = (current === '' || current === '/') && href === 'index.html';
-    if (href === current || isIndex) {
-      a.classList.add('active');
-      a.setAttribute('aria-current', 'page');
-    }
-  });
-});
-// Normalize filename so "text.html" also matches "texts.html"
-document.addEventListener('DOMContentLoaded', () => {
-  const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  const normalized = file === 'text.html' ? 'texts.html' : file;
-
-  document.querySelectorAll('.main-nav a[href]').forEach(a => {
-    const href = a.getAttribute('href').split('/').pop().toLowerCase();
-    const match = href === normalized || (normalized === 'index.html' && (href === '' || href === 'index.html'));
-    if (match) {
-      a.classList.add('active');
-      a.setAttribute('aria-current', 'page');
-    }
-  });
-});
-// Nav active: normalize filename so text.html == texts.html, and match by filename only
-document.addEventListener('DOMContentLoaded', () => {
-  const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-
-  // Map singular/plural or folder variants to the menu hrefs you actually use
-  const normalize = f => {
-    if (f === 'text.html') return 'texts.html';
-    if (f === 'apologetics/index.html') return 'apologetics.html';
-    return f;
-  };
-
-  const current = normalize(file);
-
-  document.querySelectorAll('.main-nav ul a[href]').forEach(a => {
-    const href = a.getAttribute('href').split('/').pop().toLowerCase();
-    const isIndex = (current === '' || current === '/') && (href === '' || href === 'index.html');
-    if (href === current || isIndex) {
-      a.classList.add('active');
-      a.setAttribute('aria-current', 'page');
-    }
-  });
-});
