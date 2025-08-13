@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Israelite Research — The Tanakh</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Ensure horizontal breadcrumbs (page-local override) */
+    .breadcrumb { font-size: 0.95rem; margin: 1rem 0 1.25rem; }
+    .breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; }
+    .breadcrumb li { color: #666; display: inline-flex; align-items: center; }
+    .breadcrumb li a { text-decoration: none; color: inherit; }
+    .breadcrumb li + li::before { content: "›"; margin: 0 .5rem; color: #999; }
+  </style>
 </head>
 <body>
 
@@ -12,7 +20,8 @@
   <div id="site-header"></div>
 
   <main class="container tanakh-page">
-    <!-- Breadcrumbs (Texts → The Tanakh → …) -->
+
+    <!-- Breadcrumbs ABOVE hero -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
     <section class="hero home-hero">
