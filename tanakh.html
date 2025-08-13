@@ -1,89 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Tanakh — Biblical Logicians</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="js/include.js" defer></script>
-  <script src="js/breadcrumbs.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Israelite Research — Tanakh</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Shared header -->
-  <div data-include="partials/header.html"></div>
+  <header class="site-header">
+    <div class="container">
+      <nav class="main-nav">
+        <a href="index.html" class="site-title">Biblical Logicians</a>
+        <ul>
+          <li><a href="index.html">Articles</a></li>
+          <li><a href="texts.html" class="active">Texts</a></li>
+          <li><a href="apocrypha.html">Apocrypha</a></li>
+          <li><a href="biblical_references.html">Bible References</a></li>
+          <li><a href="extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
   <main class="container">
-    <nav data-bc='[
-      {"label":"Articles","href":"index.html"},
-      {"label":"Texts","href":"texts.html"},
-      {"label":"The Tanakh"}
-    ]'></nav>
-
-    <section class="hero">
-      <h1 class="page-title">The Tanakh</h1>
-      <p class="page-sub">Law, History, Wisdom, and the Prophets.</p>
-    </section>
-
-    <!-- Categories -->
-    <section class="tanakh-sections">
-      <h2>The Law</h2>
-      <div class="books-grid">
-        <a class="book-pill" href="tanakh/book.html?book=Genesis">Genesis</a>
-        <a class="book-pill" href="tanakh/book.html?book=Exodus">Exodus</a>
-        <a class="book-pill" href="tanakh/book.html?book=Leviticus">Leviticus</a>
-        <a class="book-pill" href="tanakh/book.html?book=Numbers">Numbers</a>
-        <a class="book-pill" href="tanakh/book.html?book=Deuteronomy">Deuteronomy</a>
-      </div>
-
-      <h2>History</h2>
-      <div class="books-grid">
-        <a class="book-pill" href="tanakh/book.html?book=Joshua">Joshua</a>
-        <a class="book-pill" href="tanakh/book.html?book=Judges">Judges</a>
-        <a class="book-pill" href="tanakh/book.html?book=Ruth">Ruth</a>
-        <a class="book-pill" href="tanakh/book.html?book=1%20Samuel">1 Samuel</a>
-        <a class="book-pill" href="tanakh/book.html?book=2%20Samuel">2 Samuel</a>
-        <a class="book-pill" href="tanakh/book.html?book=1%20Kings">1 Kings</a>
-        <a class="book-pill" href="tanakh/book.html?book=2%20Kings">2 Kings</a>
-        <a class="book-pill" href="tanakh/book.html?book=1%20Chronicles">1 Chronicles</a>
-        <a class="book-pill" href="tanakh/book.html?book=2%20Chronicles">2 Chronicles</a>
-        <a class="book-pill" href="tanakh/book.html?book=Ezra">Ezra</a>
-        <a class="book-pill" href="tanakh/book.html?book=Nehemiah">Nehemiah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Esther">Esther</a>
-      </div>
-
-      <h2>Wisdom</h2>
-      <div class="books-grid">
-        <a class="book-pill" href="tanakh/book.html?book=Job">Job</a>
-        <a class="book-pill" href="tanakh/book.html?book=Psalms">Psalms</a>
-        <a class="book-pill" href="tanakh/book.html?book=Proverbs">Proverbs</a>
-        <a class="book-pill" href="tanakh/book.html?book=Ecclesiastes">Ecclesiastes</a>
-        <a class="book-pill" href="tanakh/book.html?book=Song%20of%20Songs">Song of Songs</a>
-      </div>
-
-      <h2>The Prophets</h2>
-      <div class="books-grid">
-        <a class="book-pill" href="tanakh/book.html?book=Isaiah">Isaiah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Jeremiah">Jeremiah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Lamentations">Lamentations</a>
-        <a class="book-pill" href="tanakh/book.html?book=Ezekiel">Ezekiel</a>
-        <a class="book-pill" href="tanakh/book.html?book=Daniel">Daniel</a>
-        <a class="book-pill" href="tanakh/book.html?book=Hosea">Hosea</a>
-        <a class="book-pill" href="tanakh/book.html?book=Joel">Joel</a>
-        <a class="book-pill" href="tanakh/book.html?book=Amos">Amos</a>
-        <a class="book-pill" href="tanakh/book.html?book=Obadiah">Obadiah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Jonah">Jonah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Micah">Micah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Nahum">Nahum</a>
-        <a class="book-pill" href="tanakh/book.html?book=Habakkuk">Habakkuk</a>
-        <a class="book-pill" href="tanakh/book.html?book=Zephaniah">Zephaniah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Haggai">Haggai</a>
-        <a class="book-pill" href="tanakh/book.html?book=Zechariah">Zechariah</a>
-        <a class="book-pill" href="tanakh/book.html?book=Malachi">Malachi</a>
-      </div>
-    </section>
+    <h1>The Tanakh</h1>
+    <ul class="book-list">
+      <li><a href="book.html?book=genesis">Genesis</a></li>
+      <li><a href="book.html?book=exodus">Exodus</a></li>
+      <li><a href="book.html?book=leviticus">Leviticus</a></li>
+      <li><a href="book.html?book=numbers">Numbers</a></li>
+      <li><a href="book.html?book=deuteronomy">Deuteronomy</a></li>
+    </ul>
   </main>
 
-  <!-- Shared footer -->
-  <div data-include="partials/footer.html"></div>
+  <footer class="site-footer">
+    <div class="container">&copy; 2025 Israelite Research</div>
+  </footer>
 </body>
 </html>
