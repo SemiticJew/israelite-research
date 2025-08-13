@@ -1,40 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Israelite Research — Tanakh</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Israelite Research — The Tanakh</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
-        <ul>
-          <li><a href="index.html">Articles</a></li>
-          <li><a href="texts.html" class="active">Texts</a></li>
-          <li><a href="apocrypha.html">Apocrypha</a></li>
-          <li><a href="biblical_references.html">Bible References</a></li>
-          <li><a href="extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
 
-  <main class="container">
-    <h1>The Tanakh</h1>
-    <ul class="book-list">
-      <li><a href="book.html?book=genesis">Genesis</a></li>
-      <li><a href="book.html?book=exodus">Exodus</a></li>
-      <li><a href="book.html?book=leviticus">Leviticus</a></li>
-      <li><a href="book.html?book=numbers">Numbers</a></li>
-      <li><a href="book.html?book=deuteronomy">Deuteronomy</a></li>
-    </ul>
+  <!-- Header partial -->
+  <div id="site-header"></div>
+
+  <main class="container tanakh-page">
+    <!-- Breadcrumbs (Texts → The Tanakh → …) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+    <section class="hero home-hero">
+      <h1 class="page-title">The Tanakh</h1>
+      <p class="page-subtitle">Explore the Hebrew Scriptures by section.</p>
+    </section>
+
+    <!-- The Law (Torah) -->
+    <section class="section-group">
+      <h2 class="section-title">The Law (Torah)</h2>
+      <div class="grid tanakh-grid">
+        <a class="book-card" href="tanakh/book.html?book=genesis">Genesis</a>
+        <a class="book-card" href="tanakh/book.html?book=exodus">Exodus</a>
+        <a class="book-card" href="tanakh/book.html?book=leviticus">Leviticus</a>
+        <a class="book-card" href="tanakh/book.html?book=numbers">Numbers</a>
+        <a class="book-card" href="tanakh/book.html?book=deuteronomy">Deuteronomy</a>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="section-group">
+      <h2 class="section-title">History</h2>
+      <div class="grid tanakh-grid">
+        <a class="book-card" href="tanakh/book.html?book=joshua">Joshua</a>
+        <a class="book-card" href="tanakh/book.html?book=judges">Judges</a>
+        <a class="book-card" href="tanakh/book.html?book=ruth">Ruth</a>
+        <a class="book-card" href="tanakh/book.html?book=1samuel">1 Samuel</a>
+        <a class="book-card" href="tanakh/book.html?book=2samuel">2 Samuel</a>
+        <a class="book-card" href="tanakh/book.html?book=1kings">1 Kings</a>
+        <a class="book-card" href="tanakh/book.html?book=2kings">2 Kings</a>
+        <a class="book-card" href="tanakh/book.html?book=1chronicles">1 Chronicles</a>
+        <a class="book-card" href="tanakh/book.html?book=2chronicles">2 Chronicles</a>
+        <a class="book-card" href="tanakh/book.html?book=ezra">Ezra</a>
+        <a class="book-card" href="tanakh/book.html?book=nehemiah">Nehemiah</a>
+        <a class="book-card" href="tanakh/book.html?book=esther">Esther</a>
+      </div>
+    </section>
+
+    <!-- Wisdom -->
+    <section class="section-group">
+      <h2 class="section-title">Wisdom</h2>
+      <div class="grid tanakh-grid">
+        <a class="book-card" href="tanakh/book.html?book=job">Job</a>
+        <a class="book-card" href="tanakh/book.html?book=psalms">Psalms</a>
+        <a class="book-card" href="tanakh/book.html?book=proverbs">Proverbs</a>
+        <a class="book-card" href="tanakh/book.html?book=ecclesiastes">Ecclesiastes</a>
+        <a class="book-card" href="tanakh/book.html?book=songofsongs">Song of Songs</a>
+      </div>
+    </section>
+
+    <!-- The Prophets -->
+    <section class="section-group">
+      <h2 class="section-title">The Prophets</h2>
+
+      <h3 class="subsection-title">Major Prophets</h3>
+      <div class="grid tanakh-grid">
+        <a class="book-card" href="tanakh/book.html?book=isaiah">Isaiah</a>
+        <a class="book-card" href="tanakh/book.html?book=jeremiah">Jeremiah</a>
+        <a class="book-card" href="tanakh/book.html?book=lamentations">Lamentations</a>
+        <a class="book-card" href="tanakh/book.html?book=ezekiel">Ezekiel</a>
+        <a class="book-card" href="tanakh/book.html?book=daniel">Daniel</a>
+      </div>
+
+      <h3 class="subsection-title">Minor Prophets</h3>
+      <div class="grid tanakh-grid">
+        <a class="book-card" href="tanakh/book.html?book=hosea">Hosea</a>
+        <a class="book-card" href="tanakh/book.html?book=joel">Joel</a>
+        <a class="book-card" href="tanakh/book.html?book=amos">Amos</a>
+        <a class="book-card" href="tanakh/book.html?book=obadiah">Obadiah</a>
+        <a class="book-card" href="tanakh/book.html?book=jonah">Jonah</a>
+        <a class="book-card" href="tanakh/book.html?book=micah">Micah</a>
+        <a class="book-card" href="tanakh/book.html?book=nahum">Nahum</a>
+        <a class="book-card" href="tanakh/book.html?book=habakkuk">Habakkuk</a>
+        <a class="book-card" href="tanakh/book.html?book=zephaniah">Zephaniah</a>
+        <a class="book-card" href="tanakh/book.html?book=haggai">Haggai</a>
+        <a class="book-card" href="tanakh/book.html?book=zechariah">Zechariah</a>
+        <a class="book-card" href="tanakh/book.html?book=malachi">Malachi</a>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">&copy; 2025 Israelite Research</div>
-  </footer>
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
