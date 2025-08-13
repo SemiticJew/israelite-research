@@ -3,124 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Articles — Biblical Logicians</title>
+  <title>Israelite Research — Articles</title>
   <link rel="stylesheet" href="styles.css" />
-  <meta name="description" content="Articles from Biblical Logicians at Israelite Research." />
+  <style>
+    /* Horizontal breadcrumbs */
+    .breadcrumb { font-size: 0.95rem; margin: 1rem 0 1.25rem; }
+    .breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; }
+    .breadcrumb li { color: #666; display: inline-flex; align-items: center; }
+    .breadcrumb li a { text-decoration: none; color: inherit; }
+    .breadcrumb li + li::before { content: "›"; margin: 0 .5rem; color: #999; }
+
+    /* Page-specific hero using your palette */
+    .hero-articles {
+      --blue-900: #054A91;
+      --blue-700: #3E7CB1;
+      --blue-400: #81A4CD;
+      --blue-100: #DBE4EE;
+      --accent:   #F17300;
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-700) 55%, var(--blue-400));
+      color: #fff;
+      padding: 4rem 1.5rem;
+      border-bottom: 6px solid var(--accent);
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    .hero-articles .page-title {
+      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+      font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+      margin: 0 0 .5rem 0;
+      letter-spacing: 0.5px;
+      color: #fff; /* ensure white */
+    }
+    .hero-articles .page-subtitle {
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+      font-size: 1rem;
+      color: #DBE4EE;
+      max-width: 60ch;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .hero-divider { height: 12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
+
+    /* Simple article card grid (kept light so your existing layout can drop in) */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .article-card {
+      border: 1px solid #e6ebf2;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .article-card .content { padding: 1rem; }
+    .article-card h3 { margin: 0 0 .5rem; font-size: 1.1rem; }
+    .article-card h3 a { text-decoration: none; color: #054A91; }
+    .article-card p { margin: 0; color: #555; font-size: .95rem; }
+    .article-card .meta { margin-top: .75rem; font-size: .85rem; color: #777; }
+  </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
-        <ul>
-          <li><a href="articles.html" class="active">Articles</a></li>
-          <li><a href="texts.html">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
-        </ul>
-      </nav>
-      <div class="search-container">
-        <form action="/search" method="GET">
-          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
-          <button type="submit" aria-label="Submit search">🔍</button>
-        </form>
-      </div>
-    </div>
-  </header>
-<nav id="crumbs" class="crumbs" data-bc='[
-  {"label":"Home","href":"index.html"},
-  {"label":"Articles"}
-]'></nav>
+  <!-- Header partial -->
+  <div id="site-header"></div>
 
-  <main class="container">
-    <section class="hero hero--brand">
+  <main class="container articles-page">
+
+    <!-- Breadcrumbs ABOVE hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+    <section class="hero hero-articles">
       <h1 class="page-title">Articles</h1>
-      <p class="page-sub">Reasoned, Bible-first reflections and resources.</p>
+      <p class="page-subtitle">Biblical instruction and thoughtful studies for everyday discipleship.</p>
     </section>
+    <div class="hero-divider" aria-hidden="true"></div>
 
-    <!-- Featured -->
-    <section class="featured" style="margin-bottom:1.5rem;">
-      <article class="feature-card">
-        <a class="feature-thumb" href="articles/understanding-the-creation-narrative.html" aria-label="Open: Understanding the Creation Narrative">
-          <img src="images/creation.png" alt="Creation imagery" loading="lazy" />
+    <!-- Your existing articles layout can live here.
+         Below is a minimal example card so the page isn't empty. Replace/expand as needed. -->
+    <section class="articles-grid">
+      <article class="article-card">
+        <a href="articles/understanding-the-creation-narrative.html">
+          <img src="images/creation.png" alt="Understanding the Creation Narrative">
         </a>
-        <div class="feature-body">
-          <div class="post-meta">
-            <time datetime="2025-08-01">Aug 1, 2025</time>
-            <span class="dot">•</span>
-            <span>~5 min read</span>
-          </div>
-          <h2 class="feature-title">
-            <a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a>
-          </h2>
-          <p class="feature-excerpt">
-            Why logic and Scripture interpret Scripture: a short case for reading Genesis with disciplined reason and the Bible itself as the primary guide.
-          </p>
-          <a class="btn btn-primary" href="articles/understanding-the-creation-narrative.html">Read Article</a>
+        <div class="content">
+          <div class="meta">Jan 5, 2025 · 5–6 min read</div>
+          <h3><a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a></h3>
+          <p>Why reading Scripture with Scripture — and clear logic — clarifies Genesis 1 without importing external systems.</p>
         </div>
       </article>
+
+      <!-- Keep adding your article cards here, or replace this whole section with your current markup -->
     </section>
 
-    <!-- Latest grid (same card sizing as home) -->
-    <section class="articles-grid" aria-label="Latest articles" style="margin-bottom: 2rem;">
-      <article class="post-card">
-        <a class="post-thumb" href="articles/understanding-the-creation-narrative.html">
-          <img src="images/creation.png" alt="Creation imagery" loading="lazy" />
-        </a>
-        <div class="post-meta">
-          <time datetime="2025-08-01">Aug 1, 2025</time>
-          <span class="dot">•</span>
-          <span class="read">~5 min read</span>
-        </div>
-        <h4 class="post-title"><a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a></h4>
-        <p class="excerpt">Why logic and Scripture interpret Scripture…</p>
-      </article>
-
-      <!-- Placeholder cards (edit later) -->
-      <article class="post-card">
-        <a class="post-thumb" href="articles/article-faith.html"><img src="images/creation.png" alt="Abstract light" loading="lazy" /></a>
-        <div class="post-meta"><time datetime="2025-08-11">Aug 11, 2025</time><span class="dot">•</span><span>~3 min read</span></div>
-        <h4 class="post-title"><a href="articles/article-faith.html">By Faith</a></h4>
-        <p class="excerpt">A brief meditation on trusting God’s word.</p>
-      </article>
-
-      <article class="post-card">
-        <a class="post-thumb" href="articles/article-image-dominion.html"><img src="images/creation.png" alt="Humanity and creation" loading="lazy" /></a>
-        <div class="post-meta"><time datetime="2025-08-11">Aug 11, 2025</time><span class="dot">•</span><span>~3 min read</span></div>
-        <h4 class="post-title"><a href="articles/article-image-dominion.html">Image & Dominion</a></h4>
-        <p class="excerpt">On bearing God’s image and stewarding creation.</p>
-      </article>
-
-      <article class="post-card">
-        <a class="post-thumb" href="articles/article-covenant.html"><img src="images/creation.png" alt="Covenant promise" loading="lazy" /></a>
-        <div class="post-meta"><time datetime="2025-08-11">Aug 11, 2025</time><span class="dot">•</span><span>~3 min read</span></div>
-        <h4 class="post-title"><a href="articles/article-covenant.html">Covenant</a></h4>
-        <p class="excerpt">Tracing God’s promises through Scripture.</p>
-      </article>
-
-      <article class="post-card">
-        <a class="post-thumb" href="articles/article-wisdom.html"><img src="images/creation.png" alt="Wisdom at the gate" loading="lazy" /></a>
-        <div class="post-meta"><time datetime="2025-08-11">Aug 11, 2025</time><span class="dot">•</span><span>~3 min read</span></div>
-        <h4 class="post-title"><a href="articles/article-wisdom.html">Wisdom at the Gate</a></h4>
-        <p class="excerpt">Pursuing wisdom with humility and reverence.</p>
-      </article>
-
-      <article class="post-card">
-        <a class="post-thumb" href="articles/article-hope.html"><img src="images/creation.png" alt="Hope in exile" loading="lazy" /></a>
-        <div class="post-meta"><time datetime="2025-08-11">Aug 11, 2025</time><span class="dot">•</span><span>~3 min read</span></div>
-        <h4 class="post-title"><a href="articles/article-hope.html">Hope in Exile</a></h4>
-        <p class="excerpt">Living faithfully while longing for restoration.</p>
-      </article>
-    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© 2025 Israelite Research • Biblical Logicians</div>
-  </footer>
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
 
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
-
