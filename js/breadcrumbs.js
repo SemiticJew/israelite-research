@@ -1,111 +1,98 @@
-// js/breadcrumbs.js — universal breadcrumb builder for Texts flow
+// js/breadcrumbs.js — hyperlinks for all crumbs; no numbers in labels
 (() => {
-  const BASE = '/israelite-research/'; // GitHub Pages repo root
+  const BASE = '/israelite-research/'; // repo root for GitHub Pages
 
-  const el = document.getElementById('breadcrumbs');
-  if (!el) return;
+  const wrap = document.getElementById('breadcrumbs');
+  if (!wrap) return;
 
   const params = new URLSearchParams(location.search);
-  const bookParam = params.get('book');         // e.g., "genesis", "1john", etc. (no-space, lowercase recommended)
-  const chapterParam = params.get('chapter');   // e.g., "1"
-  const verseFromHash = (location.hash.match(/^#v(\d+)$/i) || [])[1] || params.get('verse');
+  const rawBook = params.get('book') || '';
+  const chapter = params.get('chapter') || '';
+  const verse =
+    (location.hash.match(/^#v(\d+)$/i) || [])[1] ||
+    params.get('verse') ||
+    '';
 
-  const norm = s => (s || '').toString().trim().toLowerCase().replace(/\s+/g, '');
-  const bookFolder = norm(bookParam);
+  const norm = s => s.toString().trim().toLowerCase().replace(/\s+/g, '');
 
-  // Detect section context from path
+  // Detect section from path
   const path = location.pathname.toLowerCase();
-
-  // Section resolver
-  let sectionLabel = null;
-  let sectionHref = null;
-  let dataRoot = null; // 'tanakh' | 'newtestament' | 'apocrypha' (future)
-
+  let section = null, sectionHref = null, dataRoot = null;
   if (path.endsWith('/tanakh.html') || path.includes('/tanakh/')) {
-    sectionLabel = 'The Tanakh';
-    sectionHref = `${BASE}tanakh.html`;
-    dataRoot = 'tanakh';
+    section = 'The Tanakh'; sectionHref = `${BASE}tanakh.html`; dataRoot = 'tanakh';
   } else if (path.endsWith('/newtestament.html') || path.includes('/newtestament/')) {
-    sectionLabel = 'The New Testament';
-    sectionHref = `${BASE}newtestament.html`;
-    dataRoot = 'newtestament';
+    section = 'The New Testament'; sectionHref = `${BASE}newtestament.html`; dataRoot = 'newtestament';
   } else if (path.endsWith('/apocrypha.html') || path.includes('/apocrypha/')) {
-    sectionLabel = 'The Apocrypha';
-    sectionHref = `${BASE}apocrypha.html`;
-    dataRoot = 'apocrypha'; // if/when you add data
+    section = 'The Apocrypha'; sectionHref = `${BASE}apocrypha.html`; dataRoot = 'apocrypha';
   }
 
-  // Helper: try to fetch display name from the book's metadata (BookName.json)
+  const bookFolder = norm(rawBook);
+
   async function getBookDisplayName(root, folder) {
     if (!root || !folder) return null;
-    const metaUrls = [
-      `${BASE}data/${root}/${folder}/${folder}.json`, // new convention (BookName.json == folder.json)
-      `${BASE}data/${root}/${folder}/book.json`       // fallback (old)
+    const urls = [
+      `${BASE}data/${root}/${folder}/${folder}.json`, // new convention
+      `${BASE}data/${root}/${folder}/book.json`       // fallback
     ];
-    for (const url of metaUrls) {
+    for (const u of urls) {
       try {
-        const r = await fetch(url, { cache: 'no-cache' });
+        const r = await fetch(u, { cache: 'no-cache' });
         if (r.ok) {
           const j = await r.json();
           if (j && (j.name || j.title)) return j.name || j.title;
         }
       } catch (_) {}
     }
-    // Fallback: humanize folder (e.g., '1john' -> '1 John', 'songofsolomon' -> 'Songofsolomon')
-    return folder.replace(/^(\d)([a-z])/, (_, d, ch) => `${d} ${ch.toUpperCase()}`)  // "1john" -> "1 John"
-                 .replace(/^[a-z]/, m => m.toUpperCase());                             // capitalize first letter
+    // Fallback humanization
+    return folder
+      .replace(/^(\d)([a-z])/, (_, d, ch) => `${d} ${ch.toUpperCase()}`)
+      .replace(/^[a-z]/, m => m.toUpperCase());
   }
 
   async function build() {
-    // Start crumbs
-    const crumbs = [
-      { label: 'Texts', href: `${BASE}texts.html` }
-    ];
+    const crumbs = [];
+    crumbs.push({ label: 'Texts', href: `${BASE}texts.html` });
 
-    if (sectionLabel && sectionHref) {
-      crumbs.push({ label: sectionLabel, href: sectionHref });
+    if (section && sectionHref) {
+      crumbs.push({ label: section, href: sectionHref });
     }
 
-    // Book-level
-    let bookDisplay = null;
+    let bookLabel = null;
     if (bookFolder && dataRoot) {
-      bookDisplay = await getBookDisplayName(dataRoot, bookFolder);
+      bookLabel = await getBookDisplayName(dataRoot, bookFolder);
       crumbs.push({
-        label: bookDisplay || (bookParam || 'Book'),
+        label: bookLabel || (rawBook || 'Book'),
         href: `${BASE}${dataRoot}/book.html?book=${encodeURIComponent(bookFolder)}`
       });
     }
 
-    // Chapter-level
-    if (chapterParam && dataRoot && bookFolder) {
+    if (chapter && dataRoot && bookFolder) {
       crumbs.push({
-        label: `Chapter ${chapterParam}`,
-        href: `${BASE}${dataRoot}/chapter.html?book=${encodeURIComponent(bookFolder)}&chapter=${encodeURIComponent(chapterParam)}`
+        label: 'Chapter',
+        href: `${BASE}${dataRoot}/chapter.html?book=${encodeURIComponent(bookFolder)}&chapter=${encodeURIComponent(chapter)}`
       });
     }
 
-    // Verse-level (from #v1 or ?verse=1)
-    if (verseFromHash && dataRoot && bookFolder && chapterParam) {
-      crumbs.push({ label: `Verse ${verseFromHash}` });
+    if (verse && dataRoot && bookFolder && chapter) {
+      crumbs.push({
+        label: 'Verse',
+        href: `${BASE}${dataRoot}/chapter.html?book=${encodeURIComponent(bookFolder)}&chapter=${encodeURIComponent(chapter)}#v${verse}`
+      });
     }
 
-    // Render
+    // Render (all crumbs clickable)
     const ol = document.createElement('ol');
-    crumbs.forEach((c, i) => {
+    ol.className = 'breadcrumb-list';
+    crumbs.forEach(c => {
       const li = document.createElement('li');
-      if (c.href && i < crumbs.length - 1) {
-        const a = document.createElement('a');
-        a.href = c.href;
-        a.textContent = c.label;
-        li.appendChild(a);
-      } else {
-        li.textContent = c.label;
-      }
+      const a = document.createElement('a');
+      a.href = c.href || '#';
+      a.textContent = c.label;
+      li.appendChild(a);
       ol.appendChild(li);
     });
-
-    el.innerHTML = '';
-    el.appendChild(ol);
+    wrap.innerHTML = '';
+    wrap.appendChild(ol);
   }
 
   build();
