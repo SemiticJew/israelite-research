@@ -3,62 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Podcast — Biblical Logicians</title>
+  <title>Israelite Research — Podcast</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Horizontal breadcrumbs (page-local) */
+    .breadcrumb { font-size: 0.95rem; margin: 1rem 0 1.25rem; }
+    .breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; }
+    .breadcrumb li { color: #666; display: inline-flex; align-items: center; }
+    .breadcrumb li a { text-decoration: none; color: inherit; }
+    .breadcrumb li + li::before { content: "›"; margin: 0 .5rem; color: #999; }
+
+    /* Hero using site palette */
+    .hero-podcast{
+      --blue-900:#054A91; --blue-700:#3E7CB1; --blue-400:#81A4CD; --blue-100:#DBE4EE; --accent:#F17300;
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-700) 55%, var(--blue-400));
+      color:#fff; padding:4rem 1.5rem; text-align:center;
+      border-bottom:6px solid var(--accent); border-radius:0 0 18px 18px;
+      box-shadow:0 6px 18px rgba(0,0,0,.12);
+    }
+    .hero-divider{ height:12px; background:linear-gradient(90deg, #F17300 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
+
+    /* Platform buttons row */
+    .podcast-platforms{
+      display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center;
+      margin:1.25rem 0 0;
+    }
+    .platform-btn{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.6rem .9rem; border-radius:999px; border:1px solid #e6ebf2;
+      background:#fff; color:#054A91; text-decoration:none;
+      box-shadow:0 2px 8px rgba(0,0,0,.04); font-weight:500;
+    }
+    .platform-btn:hover{ transform:translateY(-1px); }
+    .platform-btn svg{ width:18px; height:18px; }
+
+    /* Simple tabs (Episodes / Series) — keep minimal to not disrupt existing content */
+    .podcast-tabs{ margin-top:1.5rem; }
+    .tab-head{
+      display:flex; gap:1rem; justify-content:center; margin-bottom:1rem;
+      border-bottom:1px solid #e6ebf2; padding-bottom:.5rem;
+    }
+    .tab-head a{ text-decoration:none; padding:.4rem .8rem; border-radius:8px; }
+    .tab-head a.active{ background:#DBE4EE; color:#054A91; }
+    .episodes-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+    .episode-card{ background:#fff; border:1px solid #e6ebf2; border-radius:12px; padding:1rem; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+    .episode-card h3{ margin:.25rem 0 .5rem; font-size:1.05rem; }
+    .episode-meta{ font-size:.9rem; color:#666; margin-bottom:.5rem; }
+  </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container">
-      <nav class="main-nav">
-        <a href="index.html" class="site-title">Biblical Logicians</a>
-        <ul>
-          <li><a href="articles.html">Articles</a></li>
-          <li><a href="texts.html">Texts</a></li>
-          <li><a href="apologetics.html">Apologetics</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="podcast.html" class="active">Podcast</a></li>
-          <li><a href="donate.html">Donations</a></li>
-        </ul>
-      </nav>
-      <div class="search-container">
-        <form action="/search" method="GET">
-          <input type="text" name="q" placeholder="Search the site..." aria-label="Search" />
-          <button type="submit" aria-label="Submit search">🔍</button>
-        </form>
-      </div>
-    </div>
-  </header>
+  <!-- Header partial -->
+  <div id="site-header"></div>
 
-  <main class="container">
-    <section class="hero hero--brand">
+  <main class="container podcast-page">
+
+    <!-- Breadcrumbs ABOVE hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+    <section class="hero hero-podcast">
       <h1 class="page-title">Podcast</h1>
-      <p class="page-sub">Listen on your favorite platform.</p>
-    </section>
+      <p class="page-subtitle">Conversations exploring Scripture, theology, and life with God.</p>
 
-    <section class="podcast-strip">
-      <div class="ps-body">
-        <h3>Subscribe</h3>
-        <div class="pod-links">
-          <a class="pill" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
-          <a class="pill" href="https://podcasts.apple.com/" target="_blank" rel="noopener">Apple Podcasts</a>
-          <a class="pill" href="podcast.xml">RSS</a>
-        </div>
+      <!-- Platform buttons -->
+      <div class="podcast-platforms">
+        <a class="platform-btn" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">
+          <!-- Spotify icon (inline) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".08"/><path d="M19 10.5c-3.9-2.3-10.1-2.5-13.9-.9a.8.8 0 0 1-.7-1.4c4.3-1.8 11.2-1.6 15.6 1a.8.8 0 0 1-.9 1.3Zm-.2 3.2c-3.3-2-8.3-2.6-12.2-1.2a.7.7 0 1 1-.5-1.3c4.3-1.5 9.8-1 13.5 1.3a.7.7 0 1 1-.8 1.2Zm-1 3c-2.9-1.7-6.5-1.9-10-1a.6.6 0 1 1-.3-1.2c3.9-1 7.9-.8 11.1 1.1a.6.6 0 0 1-.6 1.1Z" fill="currentColor"/></svg>
+          Spotify
+        </a>
+        <a class="platform-btn" href="https://podcasts.apple.com/" target="_blank" rel="noopener">
+          <!-- Apple Podcasts glyph-ish -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".08"/><path d="M12 6.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0 10.2c2.5 0 4.8.6 6.2 1.7.3.2.3.6 0 .8-.4.3-1 .2-1.4 0-1.2-.8-3.1-1.3-4.8-1.3s-3.6.5-4.8 1.3c-.3.2-1 .3-1.4 0-.3-.2-.3-.6 0-.8 1.4-1.1 3.7-1.7 6.2-1.7Z" fill="currentColor"/></svg>
+          Apple Podcasts
+        </a>
+        <a class="platform-btn" href="rss.xml" target="_blank" rel="noopener">
+          <!-- RSS -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2" fill="currentColor"/><path d="M5 5a14 14 0 0 1 14 14h-3A11 11 0 0 0 5 8V5Zm0 6a8 8 0 0 1 8 8h-3a5 5 0 0 0-5-5v-3Z" fill="currentColor"/></svg>
+          RSS
+        </a>
+      </div>
+    </section>
+    <div class="hero-divider" aria-hidden="true"></div>
+
+    <!-- Tabs (Episodes / Series) — optional content area -->
+    <section class="podcast-tabs">
+      <div class="tab-head">
+        <a href="?tab=episodes" class="active">Episodes</a>
+        <a href="?tab=series">Series</a>
+      </div>
+
+      <!-- Example episode cards (replace with your real feed or static items) -->
+      <div class="episodes-grid">
+        <article class="episode-card">
+          <div class="episode-meta">Jan 10, 2025 · 42 min</div>
+          <h3>In the Beginning: Reading Genesis as Literature</h3>
+          <p>How structure, repetition, and imagery shape our understanding of the creation narrative.</p>
+        </article>
+        <article class="episode-card">
+          <div class="episode-meta">Dec 18, 2024 · 38 min</div>
+          <h3>Wisdom’s Voice: Proverbs for Modern Life</h3>
+          <p>Listening to the sages: skill for living amid competing voices and hurry.</p>
+        </article>
       </div>
     </section>
 
-    <section class="list">
-      <article class="card">
-        <h3>Latest Episode</h3>
-        <p class="excerpt">New episodes populated here soon.</p>
-      </article>
-    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© 2025 Israelite Research • Biblical Logicians</div>
-  </footer>
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
 
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
-
