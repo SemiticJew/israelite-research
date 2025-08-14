@@ -1,8 +1,4 @@
-// Scoped, domain-specific breadcrumbs.
-// Domains: articles, texts (+ its 6 categories), apologetics, events, podcast, donations.
-// For Texts categories (Tanakh/NT/Apocrypha), adds Book → Chapter → Verse.
-// Labels: first alphabetic char uppercased; "Chapter"/"Verse" (no numbers in labels).
-
+// js/breadcrumbs.js — domain-scoped crumbs; leading-cap slugs in links; fetch still uses lowercase
 (() => {
   const BASE = '/israelite-research/';
   const wrap = document.getElementById('breadcrumbs');
@@ -16,12 +12,40 @@
     (location.hash.match(/^#v(\d+)$/i) || [])[1] ||
     (params.get('verse') || '').trim();
 
+  // normalizer for data folders (lowercase, no spaces)
   const norm = s => s.toString().trim().toLowerCase().replace(/\s+/g, '');
 
-  // Detect domain/sectionKey (no overlap across domains)
-  let sectionKey = 'home';
-  const is = (end, inc='') => path.endsWith(end) || (inc && path.includes(inc));
+  // Pretty names for common no-space keys
+  const NICE_NAME = {
+    '1samuel':'1 Samuel','2samuel':'2 Samuel',
+    '1kings':'1 Kings','2kings':'2 Kings',
+    '1chronicles':'1 Chronicles','2chronicles':'2 Chronicles',
+    '1corinthians':'1 Corinthians','2corinthians':'2 Corinthians',
+    '1thessalonians':'1 Thessalonians','2thessalonians':'2 Thessalonians',
+    '1peter':'1 Peter','2peter':'2 Peter',
+    '1john':'1 John','2john':'2 John','3john':'3 John',
+    'songofsongs':'Song of Songs','songofsolomon':'Song of Solomon'
+  };
 
+  // UI helpers
+  const firstAlphaUpper = s => {
+    if (!s) return '';
+    const i = s.search(/[A-Za-z]/);
+    return i === -1 ? s : s.slice(0, i) + s[i].toUpperCase() + s.slice(i + 1);
+  };
+
+  // Build a DISPLAY slug with leading capital letter, while keeping no spaces.
+  // 'genesis' -> 'Genesis', '1samuel' -> '1Samuel', 'songofsongs' -> 'Songofsongs'
+  const displaySlug = folder => {
+    if (!folder) return '';
+    const i = folder.search(/[a-z]/);
+    if (i === -1) return folder;
+    return folder.slice(0, i) + folder[i].toUpperCase() + folder.slice(i + 1);
+  };
+
+  // Where are we? (domains don’t overlap)
+  const is = (end, inc='') => path.endsWith(end) || (inc && path.includes(inc));
+  let sectionKey = 'home';
   if (is('/articles.html') || path.endsWith('/index.html') || path === BASE || path.includes('/articles/')) {
     sectionKey = 'articles';
   } else if (is('/texts.html')) {
@@ -36,6 +60,9 @@
     sectionKey = 'texts-refs';
   } else if (is('/extra-biblical-sources.html')) {
     sectionKey = 'texts-extra';
+  } else if (is('/historical_textual_variants.html') || is('/historical-textual-variants.html')) {
+    // NEW: scope this page under Texts as its own sub-category
+    sectionKey = 'texts-variants';
   } else if (is('/apologetics.html','/apologetics/')) {
     sectionKey = 'apologetics';
   } else if (is('/events.html')) {
@@ -54,7 +81,7 @@
     events:     { label: 'Events', href: `${BASE}events.html` },
     podcast:    { label: 'Podcast', href: `${BASE}podcast.html` },
     donations:  { label: 'Donations', href: `${BASE}donate.html` },
-    home:       { label: 'Articles', href: `${BASE}articles.html` },
+    home:       { label: 'Articles', href: `${BASE}articles.html` }
   };
 
   // Texts categories (only these get appended after "Texts")
@@ -64,25 +91,15 @@
     'texts-ap':     { label: 'The Apocrypha',     href: `${BASE}apocrypha.html`,     root: 'apocrypha' },
     'texts-refs':   { label: 'Biblical References', href: `${BASE}biblical_references.html`, root: null },
     'texts-extra':  { label: 'Extra-Biblical Sources', href: `${BASE}extra-biblical-sources.html`, root: null },
-  };
-
-  // Pretty fallbacks for common no-space keys
-  const NICE_NAME = {
-    '1samuel':'1 Samuel','2samuel':'2 Samuel',
-    '1kings':'1 Kings','2kings':'2 Kings',
-    '1chronicles':'1 Chronicles','2chronicles':'2 Chronicles',
-    '1corinthians':'1 Corinthians','2corinthians':'2 Corinthians',
-    '1thessalonians':'1 Thessalonians','2thessalonians':'2 Thessalonians',
-    '1peter':'1 Peter','2peter':'2 Peter',
-    '1john':'1 John','2john':'2 John','3john':'3 John',
-    'songofsongs':'Song of Songs','songofsolomon':'Song of Solomon'
+    // NEW: Historical & Textual Variants category (no book/chapter flow)
+    'texts-variants': { label: 'Historical & Textual Variants', href: `${BASE}historical_textual_variants.html`, root: null }
   };
 
   async function getBookDisplayName(root, folder) {
     if (!root || !folder) return null;
     const urls = [
-      `${BASE}data/${root}/${folder}/${folder}.json`,
-      `${BASE}data/${root}/${folder}/book.json`
+      `${BASE}data/${root}/${folder}/${folder}.json`, // preferred
+      `${BASE}data/${root}/${folder}/book.json`       // fallback
     ];
     for (const u of urls) {
       try {
@@ -99,52 +116,38 @@
       .replace(/^[a-z]/, m => m.toUpperCase());
   }
 
-  // Uppercase the first alphabetic character
-  function firstAlphaUpper(s) {
-    if (!s) return '';
-    const i = s.search(/[A-Za-z]/);
-    return i === -1 ? s : s.slice(0, i) + s[i].toUpperCase() + s.slice(i + 1);
-  }
-
-  function baseDomainKey(k) {
-    return k.startsWith('texts-') ? 'texts' : k;
-  }
-
   async function build() {
     const crumbs = [];
 
-    // First crumb = current domain (no cross-domain overlap)
-    const first = FIRST[baseDomainKey(sectionKey)] || FIRST.home;
+    // First crumb = current domain
+    const first = FIRST[sectionKey.startsWith('texts-') ? 'texts' : sectionKey] || FIRST.home;
     if (first) crumbs.push(first);
 
-    // If inside Texts, append the chosen category (one of the six)
+    // If inside Texts, add the category (one of the mapped ones above)
     const sub = SUBSECT[sectionKey];
     if (sub) crumbs.push({ label: sub.label, href: sub.href });
 
     // Only for Tanakh/NT/Apocrypha categories: Book → Chapter → Verse
     if (sub && sub.root && rawBook) {
-      const folder = norm(rawBook);
+      const folder = norm(rawBook);           // data folder key
+      const browseSlug = displaySlug(folder); // pretty URL slug (leading-cap)
       const bookLabel = await getBookDisplayName(sub.root, folder);
+
       crumbs.push({
         label: bookLabel || rawBook,
-        href: `${BASE}${sub.root}/book.html?book=${encodeURIComponent(folder)}`
+        href: `${BASE}${sub.root}/book.html?book=${encodeURIComponent(browseSlug)}`
       });
 
       if (chapter) {
-        crumbs.push({
-          label: 'Chapter',
-          href: `${BASE}${sub.root}/chapter.html?book=${encodeURIComponent(folder)}&chapter=${encodeURIComponent(chapter)}`
-        });
+        const chURL = `${BASE}${sub.root}/chapter.html?book=${encodeURIComponent(browseSlug)}&chapter=${encodeURIComponent(chapter)}`;
+        crumbs.push({ label: 'Chapter', href: chURL });
         if (verse) {
-          crumbs.push({
-            label: 'Verse',
-            href: `${BASE}${sub.root}/chapter.html?book=${encodeURIComponent(folder)}&chapter=${encodeURIComponent(chapter)}#v${verse}`
-          });
+          crumbs.push({ label: 'Verse', href: `${chURL}#v${verse}` });
         }
       }
     }
 
-    // Render horizontally (CSS handled by pages)
+    // Render horizontally (CSS provided by pages/site)
     const ol = document.createElement('ol');
     crumbs.forEach(c => {
       const li = document.createElement('li');
