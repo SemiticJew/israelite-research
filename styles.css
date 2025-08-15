@@ -624,7 +624,7 @@ a.book-pill { padding: 12px 14px !important; }
   }
   .main-nav ul { flex-wrap: wrap; }
 }
-/* Header: logo left, nav centered, search right — sitewide */
+/* Header: logo left, nav centered, search right â€” sitewide */
 .site-header .container {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -872,7 +872,7 @@ a.book-pill { padding: 12px 14px !important; }
     gap: 1rem !important; /* mobile spacing */
   }
 }
-/* — Nav spacing override (sitewide) — */
+/* â€” Nav spacing override (sitewide) â€” */
 .site-header .container .main-nav ul {
   display: flex !important;
   justify-content: center !important;
@@ -884,7 +884,7 @@ a.book-pill { padding: 12px 14px !important; }
 .site-header .container .main-nav ul li a {
   padding: .35rem .6rem;  /* bigger click target */
 }
-/* — Consistent page-title (“hero”) padding sitewide — */
+/* â€” Consistent page-title (â€œheroâ€) padding sitewide â€” */
 :root{
   --hero-pad-y: 2.25rem;
   --hero-pad-x: 1.25rem;
@@ -898,7 +898,7 @@ a.book-pill { padding: 12px 14px !important; }
   margin: 0 0 1.5rem;
 }
 
-/* Home already uses .home-hero .hero-inner — align its padding to the same vars */
+/* Home already uses .home-hero .hero-inner â€” align its padding to the same vars */
 .home-hero .hero-inner{
   padding: var(--hero-pad-y) var(--hero-pad-x);
   border-radius: var(--hero-radius);
@@ -1027,7 +1027,7 @@ CSS
   color: inherit;
 }
 .breadcrumb li + li::before {
-  content: "›";
+  content: "â€º";
   margin: 0 0.5rem;
   color: #999;
 }
@@ -1155,4 +1155,41 @@ CSS
   object-fit: cover;
   border-radius: 10px;
   display: block;
+}
+
+/* === DG-style pill label overlay inside card images === */
+.card .card-image,
+.card.card-featured .card-image {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Keep card images consistent and nicely cropped (approx 16:9) */
+.card .card-image img,
+.card.card-featured .card-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 394;
+  object-fit: cover;
+  display: block;
+}
+
+/* Small pill label overlay */
+.label-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: .28rem .55rem;
+  font-size: .72rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #fff;
+  background: #054A91; /* or use #F17300 for accent */
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  user-select: none;
+  pointer-events: none;
 }
