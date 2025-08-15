@@ -1100,3 +1100,23 @@ CSS
   .footer-grid{ grid-template-columns:1fr; }
   .footer-bottom{ flex-direction:column; align-items:flex-start; }
 }
+/* Universal article card media frame */
+.article-media {
+  position: relative;
+  aspect-ratio: 16 / 9;     /* consistent shape */
+  background: #f5f7fb;      /* placeholder bg */
+  overflow: hidden;
+  border-radius: 8px;       /* optional, matches your style */
+}
+
+.article-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* crops to fill without distortion */
+  display: block;
+}
+
+/* Optional: make the left featured a touch taller */
+.articles-featured > .article-card:first-child .article-media {
+  aspect-ratio: 16 / 9;     /* keep 16:9, or change to 1.85/1 for a cinema look */
+}
