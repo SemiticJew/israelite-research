@@ -7,44 +7,47 @@
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 </head>
 <body>
+  <!-- Site header -->
   <div id="site-header"></div>
 
   <main>
     <!-- Breadcrumbs -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Hero -->
-    <section class="hero hero--sm" style="background:linear-gradient(135deg,#054A91,#3E7CB1);color:#fff;">
+    <!-- Site-wide hero (same look as other pages) -->
+    <section class="hero" style="background:linear-gradient(135deg,#054A91,#3E7CB1);">
       <div class="container">
         <h1 style="color:#fff;">Articles</h1>
-        <p class="subtitle" style="color:#DBE4EE;">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+        <p class="subtitle" style="color:#DBE4EE;">
+          Free, research-driven resources to help you read Scripture with logic, care, and context.
+        </p>
       </div>
     </section>
 
-    <!-- Featured row -->
-    <section class="container articles-featured" style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin:2rem auto;">
-      <div id="featuredPrimary"></div>
-      <div id="featuredSecondary"></div>
-    </section>
+    <!-- Optional tag hint (shows when ?tag= is used) -->
+    <div class="container" id="tagNotice" style="display:none;margin-top:1rem;color:#666;"></div>
 
-    <!-- Recent grid -->
+    <!-- Articles grid (same card style as the rest of the site) -->
     <section class="container" style="margin:2rem auto 3rem;">
-      <h2 class="section-title">Recent Articles</h2>
       <div id="articlesGrid" class="articles-grid"></div>
+
       <div style="text-align:center;margin-top:1.5rem;">
         <button id="loadMore" class="btn">Load more</button>
       </div>
     </section>
   </main>
 
+  <!-- Site footer -->
   <div id="site-footer"></div>
 
+  <!-- Partials + breadcrumbs + dynamic articles -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/articles.js" defer></script>
+
   <noscript>
     <div class="container" style="margin:1rem auto 3rem;">
-      <p>Enable JavaScript to see the latest articles.</p>
+      <p>Please enable JavaScript to see the latest articles.</p>
     </div>
   </noscript>
 </body>
