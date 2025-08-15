@@ -1136,3 +1136,23 @@ CSS
   border:1px solid #e6ebf2;
 }
 .author-name{ font-weight:600; }
+/* Consistent card thumbnails (16:9) */
+.articles-grid .card .card-image img,
+.card.card-featured .card-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 394;   /* 16:9-ish */
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Article page hero image consistency */
+.article-page .hero-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 394;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
