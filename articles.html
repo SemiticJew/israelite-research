@@ -7,48 +7,88 @@
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 </head>
 <body>
-  <!-- Site header -->
+  <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Breadcrumbs -->
+    <!-- Breadcrumbs ABOVE hero (consistent site-wide) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Site-wide hero (same look as other pages) -->
+    <!-- Site-wide hero -->
     <section class="hero" style="background:linear-gradient(135deg,#054A91,#3E7CB1);">
       <div class="container">
         <h1 style="color:#fff;">Articles</h1>
-        <p class="subtitle" style="color:#DBE4EE;">
-          Free, research-driven resources to help you read Scripture with logic, care, and context.
-        </p>
+        <p class="subtitle" style="color:#DBE4EE;">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
       </div>
     </section>
 
-    <!-- Optional tag hint (shows when ?tag= is used) -->
-    <div class="container" id="tagNotice" style="display:none;margin-top:1rem;color:#666;"></div>
+    <!-- Featured row (DG-style: large feature left) -->
+    <section class="container" style="margin:2rem auto;">
+      <div class="articles-featured" style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;">
+        <!-- Featured primary -->
+        <article class="card card-featured">
+          <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                 srcset="/israelite-research/images/articles/logic-compatibility-700x394.jpg 700w, /israelite-research/images/articles/logic-compatibility-1000x563.jpg 1000w"
+                 sizes="(min-width: 1024px) 640px, 100vw"
+                 alt="Is Scripture &amp; Logic Compatible?">
+          </a>
+          <div class="card-body">
+            <span class="resource-label">Article</span>
+            <h2 class="card-title">
+              <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+            </h2>
+            <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
+            <div class="article-footer">
+              <span class="author-mini">
+                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                <span class="author-name">Semitic Jew</span>
+              </span>
+              <span class="meta">Aug 15, 2025</span>
+            </div>
+          </div>
+        </article>
 
-    <!-- Articles grid (same card style as the rest of the site) -->
-    <section class="container" style="margin:2rem auto 3rem;">
-      <div id="articlesGrid" class="articles-grid"></div>
+        <!-- Featured secondary (slot reserved; leave empty until you add a 2nd article) -->
+        <div class="card-placeholder" aria-hidden="true" style="border:1px dashed #e6ebf2; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#666;">
+          Add another featured article later
+        </div>
+      </div>
+    </section>
 
-      <div style="text-align:center;margin-top:1.5rem;">
-        <button id="loadMore" class="btn">Load more</button>
+    <!-- Recent grid (same card style as feature, smaller) -->
+    <section class="container" style="margin:0 auto 3rem;">
+      <h2 class="section-title">Recent Articles</h2>
+      <div class="articles-grid">
+        <article class="card">
+          <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                 alt="Is Scripture &amp; Logic Compatible?">
+          </a>
+          <div class="card-body">
+            <span class="resource-label">Article</span>
+            <h3 class="card-title">
+              <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+            </h3>
+            <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
+          </div>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+            <span class="meta">Aug 15, 2025</span>
+          </div>
+        </article>
       </div>
     </section>
   </main>
 
-  <!-- Site footer -->
+  <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + breadcrumbs + dynamic articles -->
+  <!-- Partials + breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <script src="/israelite-research/js/articles.js" defer></script>
-
-  <noscript>
-    <div class="container" style="margin:1rem auto 3rem;">
-      <p>Please enable JavaScript to see the latest articles.</p>
-    </div>
-  </noscript>
 </body>
 </html>
