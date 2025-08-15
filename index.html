@@ -7,23 +7,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
   <div id="site-header"></div>
 
   <main class="container home-page">
-    <!-- Optional breadcrumb bar if you use it on the home page -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Home hero -->
     <section class="hero hero-home" style="text-align:center;">
       <h1 class="page-title">Semitic Jew</h1>
       <p class="page-subtitle">Articles and resources for careful, logical reading of Scripture.</p>
     </section>
     <div class="hero-divider" aria-hidden="true"></div>
 
-    <!-- Example article cards on the homepage -->
     <section class="articles-grid" style="margin-top:1.5rem;">
-      <!-- Card: Understanding the Creation Narrative -->
       <article class="article-card">
         <div class="article-media">
           <span class="resource-label">Article</span>
@@ -38,34 +33,19 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Jan 5, 2025</div>
-          <h3 class="article-title">
-            <a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a></h3>
           <p class="article-excerpt">Why the Bible interprets the Bible with logic and context.</p>
+          <!-- NEW: author footer -->
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
-      <!-- Duplicate this pattern for any additional homepage cards -->
-      <!--
-      <article class="article-card">
-        <div class="article-media">
-          <span class="resource-label">Article</span>
-          <img
-            src="images/articles/another-700x394.jpg"
-            srcset="
-              images/articles/another-700x394.jpg 700w,
-              images/articles/another-1000x563.jpg 1000w
-            "
-            sizes="(min-width: 980px) 33vw, (min-width: 640px) 50vw, 100vw"
-            alt="Another Article Title" />
-        </div>
-        <div class="article-body">
-          <div class="article-meta">Dec 1, 2024</div>
-          <h3 class="article-title"><a href="articles/another-article.html">Another Article Title</a></h3>
-          <p class="article-excerpt">Short excerpt text goes here…</p>
-        </div>
-      </article>
-      -->
+      <!-- Duplicate as needed for more homepage cards... -->
     </section>
   </main>
 

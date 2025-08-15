@@ -1120,3 +1120,19 @@ CSS
 .articles-featured > .article-card:first-child .article-media {
   aspect-ratio: 16 / 9;     /* keep 16:9, or change to 1.85/1 for a cinema look */
 }
+/* === Article card author footer === */
+.article-body{ display:flex; flex-direction:column; }
+.article-footer{
+  margin-top:.8rem; padding-top:.6rem; border-top:1px solid #e6ebf2;
+  display:flex; align-items:center; gap:.55rem;
+}
+.author-mini{
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-size:.9rem; color:#333;
+}
+.author-avatar{
+  width:28px; height:28px; border-radius:50%;
+  object-fit:cover; background:#f0f3f8; flex:0 0 28px;
+  border:1px solid #e6ebf2;
+}
+.author-name{ font-weight:600; }

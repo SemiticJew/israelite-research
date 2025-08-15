@@ -6,15 +6,12 @@
   <title>Israelite Research — Articles</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    :root{
-      --blue-900:#054A91; --blue-700:#3E7CB1; --blue-400:#81A4CD; --blue-100:#DBE4EE; --accent:#F17300;
-    }
+    :root{ --blue-900:#054A91; --blue-700:#3E7CB1; --blue-400:#81A4CD; --blue-100:#DBE4EE; --accent:#F17300; }
     .breadcrumb{font-size:.95rem;margin:1rem 0 1.25rem}
     .breadcrumb ol{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;padding:0;margin:0}
     .breadcrumb li{color:#666;display:inline-flex;align-items:center}
     .breadcrumb li a{text-decoration:none;color:inherit}
     .breadcrumb li+li::before{content:"›";margin:0 .5rem;color:#999}
-
     .hero-articles{
       background: linear-gradient(135deg,var(--blue-900),var(--blue-700) 55%,var(--blue-400));
       color:#fff;padding:4rem 1.5rem;text-align:center;
@@ -22,56 +19,33 @@
       box-shadow:0 6px 18px rgba(0,0,0,.12);
     }
     .hero-divider{height:12px;background:linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat}
-
-    .articles-featured{
-      display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;margin:1.5rem 0;
-    }
-    @media (max-width: 980px){ .articles-featured{grid-template-columns:1fr} }
-
-    .article-card{
-      background:#fff;border:1px solid #e6ebf2;border-radius:14px;overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.04);display:flex;flex-direction:column;height:100%;
-    }
+    .articles-featured{display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;margin:1.5rem 0}
+    @media (max-width:980px){.articles-featured{grid-template-columns:1fr}}
+    .article-card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.04);display:flex;flex-direction:column;height:100%}
     .article-media{position:relative;aspect-ratio:16/9;background:#f5f7fb;overflow:hidden;border-radius:8px}
     .article-media img{width:100%;height:100%;object-fit:cover;display:block}
-    .resource-label{
-      position:absolute;top:.6rem;left:.6rem;
-      background:#fff;border:1px solid #e6ebf2;border-radius:999px;
-      padding:.25rem .55rem;font-size:.8rem;font-weight:600;color:#054A91;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
-    }
+    .resource-label{position:absolute;top:.6rem;left:.6rem;background:#fff;border:1px solid #e6ebf2;border-radius:999px;padding:.25rem .55rem;font-size:.8rem;font-weight:600;color:#054A91;box-shadow:0 2px 8px rgba(0,0,0,.06)}
     .article-body{padding:1rem 1rem 1.1rem}
     .article-meta{font-size:.9rem;color:#666;margin-bottom:.35rem}
     .article-title{margin:.15rem 0 .4rem;font-size:1.35rem;line-height:1.25}
     .article-title a{color:#0b2340;text-decoration:none}
     .article-title a:hover{color:#054A91;text-decoration:underline}
     .article-excerpt{color:#4a4a4a;line-height:1.55}
-
     .article-card.small .article-title{font-size:1.05rem}
     .article-card.small .article-excerpt{font-size:.95rem}
-
     .section-head{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;margin-bottom:.75rem}
     .section-head h2{margin:0;font-size:1.15rem;color:#0b2340;letter-spacing:.3px}
-    .articles-grid{
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;
-    }
-    @media (max-width: 980px){ .articles-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
-    @media (max-width: 640px){ .articles-grid{grid-template-columns:1fr} }
-
-    .btn-more{
-      display:inline-block;margin:1.2rem auto 0;padding:.6rem 1rem;border-radius:10px;
-      border:1px solid #e6ebf2;background:#fff;color:#054A91;text-decoration:none;font-weight:700;
-      box-shadow:0 2px 8px rgba(0,0,0,.04)
-    }
+    .articles-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+    @media (max-width:980px){.articles-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:640px){.articles-grid{grid-template-columns:1fr}}
+    .btn-more{display:inline-block;margin:1.2rem auto 0;padding:.6rem 1rem;border-radius:10px;border:1px solid #e6ebf2;background:#fff;color:#054A91;text-decoration:none;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.04)}
     .btn-more:hover{transform:translateY(-1px)}
   </style>
 </head>
 <body>
-
   <div id="site-header"></div>
 
   <main class="container articles-page">
-
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
     <section class="hero hero-articles">
@@ -101,9 +75,14 @@
           <h2 class="article-title">
             <a href="articles/understanding-the-creation-narrative.html">Understanding the Creation Narrative</a>
           </h2>
-          <p class="article-excerpt">
-            Why the Bible interprets the Bible: using logic, context, and plain reading to follow the text’s own signals.
-          </p>
+          <p class="article-excerpt">Why the Bible interprets the Bible: using logic, context, and plain reading to follow the text’s own signals.</p>
+          <!-- NEW: author footer -->
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -126,16 +105,20 @@
             <a href="articles/proverbs-and-the-shape-of-wisdom.html">Proverbs and the Shape of Wisdom</a>
           </h3>
           <p class="article-excerpt">How Hebrew poetry trains our hearts and habits for everyday faithfulness.</p>
+          <!-- NEW: author footer -->
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
     </section>
 
     <!-- Recent Articles -->
-    <div class="section-head">
-      <h2>Recent Articles</h2>
-    </div>
+    <div class="section-head"><h2>Recent Articles</h2></div>
     <section class="articles-grid">
-
       <!-- Card 1 -->
       <article class="article-card">
         <div class="article-media">
@@ -151,10 +134,14 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Dec 8, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/covenant-threads-in-genesis.html">Covenant Threads in Genesis</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/covenant-threads-in-genesis.html">Covenant Threads in Genesis</a></h3>
           <p class="article-excerpt">From Eden to Abraham, the narrative ties mercy to promise.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -173,10 +160,14 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Nov 30, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/learning-to-pray-the-psalms.html">Learning to Pray the Psalms</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/learning-to-pray-the-psalms.html">Learning to Pray the Psalms</a></h3>
           <p class="article-excerpt">The Psalter as a Spirit-given tutor for our emotions and speech to God.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -195,10 +186,14 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Nov 15, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/prophetic-hope-in-exile.html">Prophetic Hope in Exile</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/prophetic-hope-in-exile.html">Prophetic Hope in Exile</a></h3>
           <p class="article-excerpt">Jeremiah and Daniel show a faithful path in foreign lands.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -217,10 +212,14 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Nov 1, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/the-gospel-of-the-kingdom.html">The Gospel of the Kingdom</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/the-gospel-of-the-kingdom.html">The Gospel of the Kingdom</a></h3>
           <p class="article-excerpt">Jesus’s royal announcement reframes our loyalties and mission.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -239,10 +238,14 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Oct 20, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/torah-and-the-logic-of-love.html">Torah and the Logic of Love</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/torah-and-the-logic-of-love.html">Torah and the Logic of Love</a></h3>
           <p class="article-excerpt">Law that aims at love: how commandments shape a people.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
 
@@ -261,13 +264,16 @@
         </div>
         <div class="article-body">
           <div class="article-meta">Oct 5, 2024</div>
-          <h3 class="article-title">
-            <a href="articles/acts-and-the-mission-of-god.html">Acts and the Mission of God</a>
-          </h3>
+          <h3 class="article-title"><a href="articles/acts-and-the-mission-of-god.html">Acts and the Mission of God</a></h3>
           <p class="article-excerpt">The Spirit expands the people of God beyond every border.</p>
+          <div class="article-footer">
+            <span class="author-mini">
+              <img class="author-avatar" src="images/authors/default.jpg" alt="" aria-hidden="true">
+              <span class="author-name">Semitic Jew</span>
+            </span>
+          </div>
         </div>
       </article>
-
     </section>
 
     <div style="display:flex;justify-content:center">
