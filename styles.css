@@ -1439,3 +1439,125 @@ CSS
   transform: translateY(-2px);
   border-color: #e1e6ef;                     /* slightly lighter border on hover */
 }
+/* ===== Articles: exact sizing spec ===== */
+.articles-page .container{ max-width: 1280px; } /* wider to fit 934 + gap + 290 */
+
+.articles-page .articles-featured{
+  display: grid;
+  grid-template-columns: 934px 290px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Primary featured (horizontal) */
+.articles-page .card-featured.primary{
+  width: 934px;
+  height: 450px;
+  padding: 0;
+  border: 1px solid #e6ebf2;
+  display: block;
+  border-radius: 0;
+}
+.articles-page .card-featured.primary .inner{
+  display: grid;
+  grid-template-columns: 622.66px 311.34px;
+  height: 450px;
+  gap: 0;
+}
+.articles-page .card-featured.primary .card-image{
+  width: 622.66px; height: 450px;
+  overflow: hidden; border-radius: 0;
+}
+.articles-page .card-featured.primary .card-image img{
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0;
+}
+.articles-page .card-featured.primary .card-body{
+  width: 311.34px; height: 450px;
+  padding: 14px 14px 12px;
+  display: flex; flex-direction: column;
+}
+.articles-page .card-featured.primary .article-footer{
+  margin-top: auto;
+}
+
+/* Secondary featured (vertical) */
+.articles-page .card-featured.secondary{
+  width: 290px; height: 450px;
+  padding: 0; border: 1px solid #e6ebf2; border-radius: 0;
+  display: flex; flex-direction: column;
+}
+.articles-page .card-featured.secondary .card-image{
+  width: 290px; height: 163.13px; /* 290 * 9/16 */
+  overflow: hidden; border-radius: 0;
+}
+.articles-page .card-featured.secondary .card-image img{
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0;
+}
+.articles-page .card-featured.secondary .card-body{
+  flex: 1 1 auto; display: flex; flex-direction: column;
+}
+.articles-page .card-featured.secondary .article-footer{
+  margin-top: auto;
+}
+
+/* Recent grid: fixed 290x450 cards */
+.articles-page .articles-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 290px);
+  justify-content: center;
+  gap: 20px;
+}
+.articles-page .articles-grid .card{
+  width: 290px; height: 450px;
+  padding: 0; border: 1px solid #e6ebf2; border-radius: 0;
+  display: flex; flex-direction: column;
+}
+.articles-page .articles-grid .card .card-image{
+  width: 290px; height: 163.13px; overflow: hidden; border-radius: 0;
+}
+.articles-page .articles-grid .card .card-image img{
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0;
+}
+.articles-page .articles-grid .card .card-body{
+  padding: .9rem .95rem .25rem;
+  display: flex; flex-direction: column; flex: 1;
+}
+.articles-page .articles-grid .card .article-footer{
+  padding: .35rem .95rem .9rem;
+  margin-top: auto;
+}
+
+/* Square corners everywhere on Articles page */
+.articles-page .card,
+.articles-page .card-image,
+.articles-page .card-image img{
+  border-radius: 0 !important;
+}
+
+/* Hover shadow (kept) */
+.articles-page .card,
+.articles-page .card-featured{
+  transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+}
+.articles-page .card:hover,
+.articles-page .card-featured:hover{
+  box-shadow: 0 10px 28px rgba(0,0,0,.10);
+  transform: translateY(-2px);
+  border-color: #e1e6ef;
+}
+
+/* ===== Responsive fallback for narrow screens ===== */
+@media (max-width: 1280px){
+  .articles-page .articles-featured{ grid-template-columns: 1fr; }
+  .articles-page .card-featured.primary{ width: 100%; height: auto; }
+  .articles-page .card-featured.primary .inner{ grid-template-columns: 1fr; height: auto; }
+  .articles-page .card-featured.primary .card-image{ width: 100%; height: auto; aspect-ratio: 16/9; }
+  .articles-page .card-featured.primary .card-body{ width: auto; height: auto; }
+
+  .articles-page .card-featured.secondary{ width: 100%; height: auto; }
+  .articles-page .card-featured.secondary .card-image{ width: 100%; height: auto; aspect-ratio: 16/9; }
+
+  .articles-page .articles-grid{ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .articles-page .articles-grid .card{ width: auto; height: auto; }
+  .articles-page .articles-grid .card .card-image{ width: 100%; height: auto; aspect-ratio: 16/9; }
+}
