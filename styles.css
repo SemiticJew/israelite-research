@@ -1761,3 +1761,32 @@ main.articles-page::after{
 html, body { height: 100%; }
 body{ min-height:100vh; display:flex; flex-direction:column; }
 main{ flex:1 0 auto; }
+/* --- Articles page: guaranteed breathing room above footer --- */
+main.articles-page{
+  display: block !important;
+  padding-bottom: 160px !important;   /* room above footer */
+}
+
+/* ensure blocks before the footer add extra space */
+.articles-page .articles-featured{ margin-bottom: 32px !important; }
+.articles-page .articles-grid{ margin-bottom: 48px !important; }
+.articles-page .more-row{ margin-bottom: 64px !important; }
+
+/* --- Stacking order: footer should sit above any card hover shadows --- */
+.articles-page .card,
+.articles-page .card-featured{
+  position: relative !important;
+  z-index: 0 !important;
+}
+.articles-page .card:hover,
+.articles-page .card-featured:hover{
+  z-index: 1 !important;          /* cards rise on hover, but still under footer */
+}
+.site-footer{
+  position: relative !important;   /* never fixed/absolute */
+  z-index: 5 !important;           /* above any card hover shadow */
+  clear: both !important;
+}
+
+/* If the footer is injected into #site-footer wrapper, make sure it participates in flow */
+#site-footer{ display: block !important; }
