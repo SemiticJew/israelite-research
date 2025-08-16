@@ -1427,3 +1427,15 @@ CSS
 .articles-page .articles-grid .card .card-image img{
   border-radius: 0 !important;
 }
+/* Subtle hover shadow on article cards (featured + grid) */
+.articles-page .card,
+.articles-page .card-featured{
+  transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+}
+
+.articles-page .card:hover,
+.articles-page .card-featured:hover{
+  box-shadow: 0 10px 28px rgba(0,0,0,.10);   /* light grey shadow */
+  transform: translateY(-2px);
+  border-color: #e1e6ef;                     /* slightly lighter border on hover */
+}
