@@ -1350,3 +1350,29 @@ CSS
 .articles-page .articles-grid .card .card-image img{
   border-radius: 0 !important;
 }
+/* Articles: square corners for FEATURED cards + images */
+.articles-page .card-featured.primary,
+.articles-page .card-featured.secondary{
+  border-radius: 0 !important;
+}
+
+.articles-page .card-featured.primary .card-image,
+.articles-page .card-featured.primary .card-image img,
+.articles-page .card-featured.secondary .card-image,
+.articles-page .card-featured.secondary .card-image img{
+  border-radius: 0 !important;
+}
+
+/* Featured content column should push footer to the bottom */
+.articles-page .card-featured .card-body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.articles-page .card-featured .article-footer{
+  margin-top: auto;              /* pins author row to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
