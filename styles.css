@@ -1742,3 +1742,22 @@ main.articles-page{ padding-bottom: 96px; }   /* breathing room */
 .articles-page .card-featured{
   position: relative;
 }
+/* --- Final guardrail: spacer after Articles content to prevent footer overlap --- */
+main.articles-page::after{
+  content: "";
+  display: block;
+  height: 140px;   /* space above footer; bump if needed */
+}
+
+/* Ensure footer isn’t positioned over content */
+.site-footer{
+  position: static !important;
+  clear: both;
+  margin-top: 0;
+  z-index: 1;
+}
+
+/* Keep main growing so footer is pushed down (sticky-footer layout) */
+html, body { height: 100%; }
+body{ min-height:100vh; display:flex; flex-direction:column; }
+main{ flex:1 0 auto; }
