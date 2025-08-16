@@ -1266,3 +1266,72 @@ CSS
 .articles-page .articles-grid{
   margin-inline: auto;
 }
+/* === Revert article title spacing to original === */
+.article-page .article-head{ margin-top: .5rem !important; }
+.article-page .article-title{ margin: 0 0 .8rem !important; line-height: 1.15 !important; }
+.article-page .article-date{ margin-bottom: .35rem !important; }
+.article-page .hero-image{ margin: 1rem auto !important; }
+
+/* === Featured primary (horizontal): image fills left pane === */
+.card-featured.primary .inner{
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 1rem;
+  align-items: stretch;
+  min-height: 320px;            /* gives the image room */
+}
+.card-featured.primary .card-image{ height: 100%; border-radius: 12px; overflow: hidden; }
+.card-featured.primary .card-image img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* === Secondary featured (right) and grid cards: fixed 332x452 === */
+.articles-featured .card:not(.primary){
+  width: 332px;
+  height: 452px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+}
+.articles-featured .card:not(.primary) .card-image{ height: 200px; }
+.articles-featured .card:not(.primary) .card-image img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.articles-featured{ align-items: start; } /* keep grids aligned when fixed-size card sits beside primary */
+
+/* Grid cards fixed size */
+.articles-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 332px);
+  justify-content: center;
+  gap: 1.25rem;
+}
+.articles-grid .card{
+  width: 332px;
+  height: 452px;
+  display: flex;
+  flex-direction: column;
+  background:#fff;
+  border:1px solid #e6ebf2;
+  border-radius:12px;
+  overflow:hidden;
+  padding:0;
+}
+.articles-grid .card .card-image{ height: 200px; }
+.articles-grid .card .card-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+.articles-grid .card .card-body{
+  padding:.75rem .9rem .25rem;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.articles-grid .card .excerpt{
+  color:#333; font-size:.95rem; margin:0 0 .5rem;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.article-footer{
+  margin-top:auto; display:flex; align-items:center; justify-content:space-between;
+  padding:.35rem .9rem .75rem; gap:.5rem;
+}
+.author-mini{ display:flex; align-items:center; gap:.5rem; }
+.author-avatar{ width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
