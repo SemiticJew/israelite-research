@@ -1561,3 +1561,41 @@ CSS
   .articles-page .articles-grid .card{ width: auto; height: auto; }
   .articles-page .articles-grid .card .card-image{ width: 100%; height: auto; aspect-ratio: 16/9; }
 }
+/* Center the Articles content area */
+.articles-page .container{
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+.articles-page .articles-featured,
+.articles-page .articles-grid{
+  margin-inline: auto;     /* ensure the grid blocks themselves are centered */
+}
+
+/* Fix the image on the SECOND (right) featured card */
+.articles-page .card-featured.secondary{
+  width: 290px;
+  height: 450px;           /* keep the whole card locked */
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card-featured.secondary .card-image{
+  width: 290px;
+  height: 163.13px;        /* 16:9 @ 290 wide */
+  flex: 0 0 163.13px;      /* do NOT grow/shrink; keeps it fixed in the column */
+  overflow: hidden;
+}
+.articles-page .card-featured.secondary .card-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fills the box without distortion */
+  display: block;
+}
+.articles-page .card-featured.secondary .card-body{
+  flex: 1 1 auto;          /* content fills the remaining height */
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card-featured.secondary .article-footer{
+  margin-top: auto;        /* author row pinned at the base */
+}
