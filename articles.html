@@ -20,7 +20,7 @@
 
     /* Primary featured as horizontal card: image left, content right */
     .card-featured.primary{
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px; padding:1rem;
+      background:#fff; border:1px solid #e6ebf2; border-radius:0; padding:1rem;
     }
     .card-featured.primary .inner{
       display:grid; grid-template-columns: 58% 42%; gap:1rem; align-items: stretch;
@@ -30,16 +30,11 @@
     }
 
     /* Card image with label pill */
-    .card .card-image{ position:relative; display:block; overflow:hidden; border-radius:12px; }
+    .card .card-image{ position:relative; display:block; overflow:hidden; border-radius:0; }
     .card .card-image img{
-      width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; display:block;
+      width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; display:block; border-radius:0;
     }
-    .label-pill{
-      position:absolute; top:10px; left:10px; padding:.28rem .55rem;
-      font-size:.72rem; line-height:1; text-transform:uppercase; letter-spacing:.08em;
-      color:#fff; background:#054A91; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,.15);
-      pointer-events:none;
-    }
+    /* NOTE: label-pill square & dark translucent bg is handled in styles.css site-wide */
 
     /* Card text */
     .card .card-body{ padding:.25rem 0 0; }
@@ -57,7 +52,7 @@
 
     /* Right featured (vertical) card */
     .card-featured.secondary{
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px; overflow:hidden; padding:0;
+      background:#fff; border:1px solid #e6ebf2; border-radius:0; overflow:hidden; padding:0;
       display:flex; flex-direction:column;
     }
     .card-featured.secondary .card-image{ height:auto; border-radius:0; }
@@ -76,7 +71,7 @@
     @media (max-width: 640px){ .articles-grid{ grid-template-columns: 1fr;} }
 
     .articles-grid .card{
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px; overflow:hidden; padding:0;
+      background:#fff; border:1px solid #e6ebf2; border-radius:0; overflow:hidden; padding:0;
       display:flex; flex-direction:column;
     }
     .articles-grid .card .card-image{ height:auto; border-radius:0; }
@@ -86,15 +81,7 @@
     }
     .articles-grid .article-footer{ padding:.35rem .95rem .9rem; }
 
-    /* More button */
-    .more-row{ text-align:center; margin: 2rem 0 3rem; }
-    .btn-more{
-      display:inline-block; padding:.65rem 1rem; border-radius:999px;
-      background:#F17300; color:#fff; text-decoration:none; font-weight:600;
-    }
-    .btn-more:hover{ filter:brightness(.95); }
-
-    /* Small top spacing now that hero is gone */
+    /* Small top spacing since hero is removed */
     .articles-top-pad{ padding-top: 1rem; }
   </style>
 </head>
@@ -103,11 +90,10 @@
   <div id="site-header"></div>
 
   <main class="articles-page">
-    <!-- Breadcrumbs (kept) -->
     <!-- Breadcrumbs ABOVE content, left-aligned inside container -->
-<div class="container" style="margin-top:1rem;">
-  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
-</div>
+    <div class="container articles-top-pad">
+      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+    </div>
 
     <!-- Featured row -->
     <section class="container" style="margin:1.25rem auto 2rem;">
@@ -135,7 +121,7 @@
           </div>
         </article>
 
-        <!-- Secondary featured: vertical -->
+        <!-- Secondary featured: vertical (AUTHOR + DATE RESTORED) -->
         <article class="card card-featured secondary">
           <a class="card-image" href="/israelite-research/articles/is-creation-logical.html">
             <span class="label-pill">Article</span>
@@ -146,9 +132,14 @@
               <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
             </h2>
             <p class="excerpt">Does creation bear marks of order, coherence, and purpose that reason can humbly trace under God’s rule?</p>
+
+            <!-- Restored author avatar + date -->
             <div class="article-footer">
               <span class="author-mini">
-                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                <img class="author-avatar"
+                     src="/israelite-research/images/authors/semitic-jew.jpg"
+                     alt="Author: Semitic Jew"
+                     onerror="this.src='/israelite-research/images/authors/default.jpg'">
                 <span class="author-name">Semitic Jew</span>
               </span>
               <span class="meta">Aug 15, 2025</span>
