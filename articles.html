@@ -36,7 +36,7 @@
       gap: 1.5rem;
     }
 
-    /* Ensure our cards look clean (uses .label-pill styles from styles.css) */
+    /* Card + image overlay pill (uses 700x394 everywhere) */
     .card .card-image,
     .card.card-featured .card-image {
       position: relative;
@@ -86,7 +86,7 @@
     <!-- Breadcrumbs ABOVE hero (articles scope only) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
-    <!-- Hero (matches your pages) -->
+    <!-- Hero -->
     <section class="hero hero-apologetics" style="background:linear-gradient(135deg,#054A91,#3E7CB1);">
       <div class="container" style="text-align:center; padding:2.25rem 1rem;">
         <h1 class="page-title">Articles</h1>
@@ -97,7 +97,7 @@
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Featured row (DG-style) -->
+    <!-- Featured row -->
     <section class="container" style="margin:2rem auto;">
       <div class="articles-featured">
         <!-- Featured primary (left) -->
@@ -105,9 +105,6 @@
           <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
             <span class="label-pill">Article</span>
             <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-                 srcset="/israelite-research/images/articles/logic-compatibility-700x394.jpg 700w,
-                         /israelite-research/images/articles/logic-compatibility-1000x563.jpg 1000w"
-                 sizes="(min-width: 1024px) 640px, 100vw"
                  alt="Is Scripture &amp; Logic Compatible?">
           </a>
           <div class="card-body">
@@ -130,9 +127,6 @@
           <a class="card-image" href="/israelite-research/articles/is-creation-logical.html">
             <span class="label-pill">Article</span>
             <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
-                 srcset="/israelite-research/images/articles/creation-logical-700x394.jpg 700w,
-                         /israelite-research/images/articles/creation-logical-1000x563.jpg 1000w"
-                 sizes="(min-width: 1024px) 420px, 100vw"
                  alt="Is Creation Logical?">
           </a>
           <div class="card-body">
@@ -209,7 +203,7 @@
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + breadcrumbs (absolute paths so no 404s on subpages) -->
+  <!-- Partials + breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
