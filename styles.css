@@ -1790,3 +1790,14 @@ main.articles-page{
 
 /* If the footer is injected into #site-footer wrapper, make sure it participates in flow */
 #site-footer{ display: block !important; }
+/* Resource label: remove white outline/border */
+.label-pill,
+.articles-page .label-pill{
+  border: 0 !important;          /* no white outline */
+  outline: 0 !important;         /* just in case */
+  /* keep your dark translucent bg + square shape from earlier */
+  background: rgba(0,0,0,.48) !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18); /* soft shadow only */
+}
