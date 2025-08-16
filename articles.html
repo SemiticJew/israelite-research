@@ -11,7 +11,7 @@
     .breadcrumb a { text-decoration: none; }
     .breadcrumb a:hover { text-decoration: none; opacity: .85; }
 
-    /* Hero styling (same as your other pages) */
+    /* Hero styling (your shared snippet) */
     .hero-apologetics .page-title {
       font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
       font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
@@ -29,14 +29,25 @@
     }
     .hero-divider { height: 12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
 
-    /* Featured row like DG: big left, smaller right */
+    /* Featured row: big primary (left), smaller secondary (right) */
     .articles-featured {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 1.5rem;
     }
 
-    /* Card + image overlay pill (uses 700x394 everywhere) */
+    /* Primary featured as a horizontal card (image left, content right) */
+    .card-featured.primary .inner {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .card-featured { background:#fff; border:1px solid #e6ebf2; border-radius:12px; padding:1rem; }
+    .card-featured .card-body { padding: .25rem 0 0; }
+    .card-featured .card-title { font-size:1.35rem; line-height:1.2; margin:.25rem 0 .5rem; }
+
+    /* Card + image overlay pill (700×394 everywhere) */
     .card .card-image,
     .card.card-featured .card-image {
       position: relative;
@@ -60,20 +71,62 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.15); pointer-events: none;
     }
 
-    /* Grid below features */
-    .articles-grid {
+    /* ======= GRID: fixed 332×452 cards ======= */
+    .articles-grid{
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      grid-template-columns: repeat(auto-fit, 332px);
+      justify-content: center;
       gap: 1.25rem;
     }
-
+    .articles-grid .card{
+      width: 332px;
+      height: 452px;
+      display: flex;
+      flex-direction: column;
+      background:#fff;
+      border:1px solid #e6ebf2;
+      border-radius:12px;
+      overflow:hidden;
+      padding:0; /* image is flush; body has padding */
+    }
+    .articles-grid .card .card-body{
+      padding:.75rem .9rem .25rem;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+    }
+    .articles-grid .card .card-title{
+      font-size:1rem;
+      line-height:1.25;
+      margin:0 0 .45rem;
+    }
+    .articles-grid .card .excerpt{
+      color:#333;
+      font-size:.95rem;
+      margin:0 0 .5rem;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .article-footer{
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:.35rem .9rem .75rem;
+      gap:.5rem;
+    }
+    .author-mini{ display:flex; align-items:center; gap:.5rem; }
+    .author-avatar{ width:26px; height:26px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+    .author-name{ font-size:.9rem; color:#333; }
+    .meta{ color:#777; font-size:.85rem; }
+    /* ========================================= */
     .more-row { text-align: center; margin: 2rem 0 3rem; }
     .btn-more {
-      display: inline-block;
-      padding: .65rem 1rem;
-      border-radius: 999px;
-      background: #F17300;
-      color: #fff; text-decoration: none; font-weight: 600;
+      display: inline-block; padding: .65rem 1rem;
+      border-radius: 999px; background: #F17300; color:#fff;
+      text-decoration: none; font-weight: 600;
     }
     .btn-more:hover { filter: brightness(.95); }
   </style>
@@ -100,34 +153,34 @@
     <!-- Featured row -->
     <section class="container" style="margin:2rem auto;">
       <div class="articles-featured">
-        <!-- Featured primary (left) -->
-        <article class="card card-featured">
-          <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-            <span class="label-pill">Article</span>
-            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-                 alt="Is Scripture &amp; Logic Compatible?">
-          </a>
-          <div class="card-body">
-            <h2 class="card-title">
-              <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
-            </h2>
-            <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
-            <div class="article-footer">
-              <span class="author-mini">
-                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
-                <span class="author-name">Semitic Jew</span>
-              </span>
-              <span class="meta">Aug 15, 2025</span>
+        <!-- Primary featured: horizontal layout -->
+        <article class="card card-featured primary">
+          <div class="inner">
+            <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html" aria-label="Is Scripture &amp; Logic Compatible?">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
+            </a>
+            <div class="card-body">
+              <h2 class="card-title">
+                <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+              </h2>
+              <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+                <span class="meta">Aug 15, 2025</span>
+              </div>
             </div>
           </div>
         </article>
 
-        <!-- Featured secondary (right) -->
+        <!-- Secondary featured (standard vertical) -->
         <article class="card card-featured">
           <a class="card-image" href="/israelite-research/articles/is-creation-logical.html">
             <span class="label-pill">Article</span>
-            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
-                 alt="Is Creation Logical?">
+            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
           </a>
           <div class="card-body">
             <h2 class="card-title">
@@ -146,7 +199,7 @@
       </div>
     </section>
 
-    <!-- Recent Articles grid -->
+    <!-- Recent Articles grid (fixed 332×452 cards) -->
     <section class="container" style="margin:0 auto;">
       <h2 class="section-title">Recent Articles</h2>
       <div class="articles-grid">
