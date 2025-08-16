@@ -1229,3 +1229,18 @@ CSS
   pointer-events: none;        /* clicks go to the image link */
   z-index: 1;
 }
+/* Keep article pages from inheriting any flex layout from .container */
+.article-page.container { display: block; }
+
+/* Ensure article content area breathes */
+.article-shell { max-width: 760px; margin: 0 auto; padding: 0 1rem; }
+
+/* Defensive: keep the hero/article image visible and nicely cropped */
+.article-page .hero-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 394;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}

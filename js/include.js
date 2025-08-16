@@ -1,27 +1,20 @@
-// js/include.js — loads partials/header.html + partials/footer.html on any page depth
-(async () => {
-  const roots = [
-    '/israelite-research/', // GitHub Pages (repo root)
-    '',                     // same folder
-    '../',                  // one level up
-    '../../'                // two levels up
-  ];
+// js/include.js
+(function(){
+  const BASE = '/israelite-research'; // absolute base for GitHub Pages
 
-  async function loadInto(id, file) {
+  function inject(id, path){
     const host = document.getElementById(id);
     if (!host) return;
-    for (const base of roots) {
-      try {
-        const res = await fetch(base + 'partials/' + file, { cache: 'no-cache' });
-        if (res.ok) {
-          host.innerHTML = await res.text();
-          return;
-        }
-      } catch (_) {}
-    }
-    console.error('Failed to load partial:', file);
+    fetch(`${BASE}${path}`, {cache:'no-store'})
+      .then(r => r.ok ? r.text() : Promise.reject(new Error(r.status)))
+      .then(html => { host.innerHTML = html; })
+      .catch(err => {
+        console.warn('Include failed:', path, err);
+        // fail open: no header/footer is better than breaking the page
+      });
   }
 
-  await loadInto('site-header', 'header.html');
-  await loadInto('site-footer', 'footer.html');
+  // Always absolute so subpages like /articles/... work
+  inject('site-header', '/partials/header.html');
+  inject('site-footer', '/partials/footer.html');
 })();
