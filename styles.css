@@ -1717,3 +1717,28 @@ main.articles-page{
   position: static !important; /* ensure not fixed/absolute */
   margin-top: 24px;
 }
+/* === Site-wide sticky footer layout === */
+html, body { height: 100%; }
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main{ flex: 1 0 auto; }          /* content grows to push footer down */
+.site-footer{
+  flex-shrink: 0;
+  position: static !important;   /* ensure not fixed/absolute */
+  z-index: 1;                     /* keep it above any card shadows */
+}
+
+/* === Articles page: make sure there’s room above footer === */
+main.articles-page{ padding-bottom: 96px; }   /* breathing room */
+.articles-page .articles-grid{ margin-bottom: 24px; }
+
+/* Defensive: ensure featured/grid blocks participate in normal flow */
+.articles-page .articles-featured,
+.articles-page .articles-grid,
+.articles-page .card,
+.articles-page .card-featured{
+  position: relative;
+}
