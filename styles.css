@@ -1376,3 +1376,54 @@ CSS
   justify-content: space-between;
   gap: .5rem;
 }
+/* ===== Articles: equal-height FEATURED columns ===== */
+:root{ --featured-min-h: 420px; } /* adjust if you want taller/shorter */
+
+.articles-page .articles-featured{
+  align-items: stretch;          /* grid items stretch to the row height */
+}
+
+/* Both featured cards fill the track height */
+.articles-page .articles-featured > .card-featured{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;              /* keep squared, per your last request */
+}
+
+/* Primary (horizontal): image left fills its pane; content right stretches */
+.articles-page .card-featured.primary .inner{
+  height: 100%;
+  min-height: var(--featured-min-h);
+}
+.articles-page .card-featured.primary .card-image{
+  height: 100%;
+  border-radius: 0;              /* squared image container */
+  overflow: hidden;
+}
+.articles-page .card-featured.primary .card-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;             /* fill */
+  border-radius: 0;              /* squared image */
+}
+
+/* Secondary (vertical): enforce same minimum and push author footer down */
+.articles-page .card-featured.secondary{
+  min-height: var(--featured-min-h);
+}
+.articles-page .card-featured.secondary .card-body{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card-featured.secondary .article-footer{
+  margin-top: auto;              /* author row at the base */
+}
+
+/* Keep recent grid cards square-cornered too */
+.articles-page .articles-grid .card,
+.articles-page .articles-grid .card .card-image,
+.articles-page .articles-grid .card .card-image img{
+  border-radius: 0 !important;
+}
