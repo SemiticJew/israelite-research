@@ -1344,3 +1344,9 @@ CSS
   /* optional readability; remove if you don't want it */
   text-shadow: 0 1px 2px rgba(0,0,0,.35);
 }
+/* Articles page: make grid cards NOT rounded */
+.articles-page .articles-grid .card,
+.articles-page .articles-grid .card .card-image,
+.articles-page .articles-grid .card .card-image img{
+  border-radius: 0 !important;
+}
