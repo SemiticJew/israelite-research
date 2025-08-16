@@ -1702,3 +1702,18 @@ CSS
   justify-content: space-between;
   gap: .5rem;
 }
+/* ---- Prevent Articles grid from overlapping the footer ---- */
+main.articles-page{
+  padding-bottom: 64px;        /* space for the footer */
+}
+
+.articles-page .articles-grid{
+  padding-bottom: 24px;        /* extra breathing room */
+}
+
+/* In case any floats or grids confuse the footer, force a clear */
+.site-footer{
+  clear: both;
+  position: static !important; /* ensure not fixed/absolute */
+  margin-top: 24px;
+}
