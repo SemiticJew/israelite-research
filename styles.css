@@ -1599,3 +1599,30 @@ CSS
 .articles-page .card-featured.secondary .article-footer{
   margin-top: auto;        /* author row pinned at the base */
 }
+/* ===== Articles: featured row within 1420 × 791.58 and centered ===== */
+
+/* Make the articles page container 1420px wide and centered */
+.articles-page .container{
+  max-width: 1420px;
+  margin-inline: auto;
+  padding-inline: 1rem; /* small gutter so it breathes on narrow screens */
+}
+
+/* The featured pair (primary + secondary) centered with equal side space */
+.articles-page .articles-featured{
+  /* total width of your pair = 934 (primary) + 24 gap + 290 (secondary) = 1248 */
+  width: min(1248px, 100%);
+  margin-inline: auto;        /* equal left/right space inside 1420 container */
+  max-height: 791.58px;       /* stays within requested height bound */
+  align-items: stretch;        /* both cards share the row height */
+}
+
+/* Keep your exact card sizing from earlier */
+.articles-page .card-featured.primary{ width: 934px; height: 450px; }
+.articles-page .card-featured.primary .inner{
+  grid-template-columns: 622.66px 311.34px; height: 450px;
+}
+.articles-page .card-featured.secondary{ width: 290px; height: 450px; }
+
+/* Ensure the recent grid is also centered under the 1420 container */
+.articles-page .articles-grid{ margin-inline: auto; }
