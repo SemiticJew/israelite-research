@@ -12,22 +12,28 @@
     .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
     .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
       font-size:clamp(1.9rem,3.4vw,2.6rem); color:#000; line-height:1.15; margin:0 0 .8rem; }
+
     .hero-image{ margin:1rem auto; }
     .hero-image img{ width:100%; height:auto; display:block; border-radius:10px; }
+
     .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color:#333; }
     .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
       border:1px solid #e6ebf2; background:#f0f3f8; }
     .byline-name{ font-weight:700; }
     .byline-meta{ color:#666; font-size:.95rem; }
+
     .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
     .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
       border-radius:999px; border:1px solid #e6ebf2; background:#fff; color:#054A91; text-decoration:none; }
     .share-btn:hover{ transform:translateY(-1px); }
+
     .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
     .article-content p{ margin:1rem 0; }
     .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color:#000; }
     .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:#333;
       background:#f9fbfe; border-radius:8px; }
+
+    /* Verse hover “plugin” (articles-only) */
     .verse{ position:relative; text-decoration:underline dotted; color:#054A91; }
     .verse:hover::after{
       content:"Open in Logos";
@@ -38,20 +44,29 @@
   </style>
 </head>
 <body>
+  <!-- Header partial -->
   <div id="site-header"></div>
+
   <main class="container article-page">
+    <!-- Breadcrumbs -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+
     <div class="article-shell">
+      <!-- Title + Date -->
       <header class="article-head">
         <div class="article-date">Aug 16, 2025</div>
         <h1 class="article-title">Is Truth Reliable?</h1>
       </header>
+
+      <!-- Hero image -->
       <figure class="hero-image">
         <img
           src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
           alt="The reliability of truth grounded in God's Word"
           onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
       </figure>
+
+      <!-- Byline -->
       <div class="article-byline">
         <img class="author-avatar"
              src="/israelite-research/images/authors/semitic-jew.jpg"
@@ -62,13 +77,18 @@
           <div class="byline-meta">Author</div>
         </div>
       </div>
+
+      <!-- Share -->
       <div class="article-share">
         <a class="share-btn" id="shareX"  href="#" aria-label="Share on X/Twitter">X</a>
         <a class="share-btn" id="shareFB" href="#" aria-label="Share on Facebook">f</a>
         <a class="share-btn" id="shareEM" href="#" aria-label="Share via Email">@</a>
       </div>
+
+      <!-- Body -->
       <article class="article-content">
         <p>If our truth changes with our feelings, it cannot guide our lives. Scripture says truth must be anchored in our knowledge of God’s unchanging character through His trustworthy Word. The question is not whether truth exists, but whether we will receive it with through sound teaching and faith.</p>
+
         <h2>God Is Truthful</h2>
         <p>“God is not a man, that he should lie”
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Numbers%2023:19">Numbers&nbsp;23:19</a>);
@@ -76,6 +96,7 @@
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Titus%201:2">Titus&nbsp;1:2</a>).
           Because God is faithful and unchanging, what He reveals can be relied upon in every generation
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Malachi%203:6">Malachi&nbsp;3:6</a>).</p>
+
         <h2>God’s Word Is Truth</h2>
         <p>Jesus prays, “Sanctify them through Thy truth: Thy word is truth”
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/John%2017:17">John&nbsp;17:17</a>).
@@ -85,23 +106,34 @@
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Psalm%20119:160">Psalm&nbsp;119:160</a>).
           Scripture is God-breathed and therefore reliable for teaching and correction
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/2%20Timothy%203:16">2&nbsp;Timothy&nbsp;3:16</a>).</p>
+
         <h2>Truth Reveals and Reorients</h2>
         <p>Truth exposes deception and gives insight to help us navigates lifes biggest questions. The prophet declares that God’s word stands forever
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Isaiah%2040:8">Isaiah&nbsp;40:8</a>).
           To walk in truth is to walk in the light, not in the shifting fog of opinion
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Psalm%2086:11">Psalm&nbsp;86:11</a>).</p>
+
         <blockquote>Truth is reliable because God is reliable. We do not build a faith out of uncertainty; we build a faith through the soundness and validity of God.</blockquote>
+
         <p>For believers, trusting Scripture does not mean ignoring the hard questions; it means bringing our questions to the One whose words have never failed. As we learn to hear and obey, truth will steady our minds and anchor our lives.</p>
       </article>
+
+      <!-- Tags (optional) -->
       <div class="article-tags" style="display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 2.5rem;">
         <a class="tag" href="/israelite-research/articles.html?tag=truth">Truth</a>
         <a class="tag" href="/israelite-research/articles.html?tag=scripture">Scripture</a>
       </div>
     </div>
   </main>
+
+  <!-- Footer partial -->
   <div id="site-footer"></div>
+
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+
+  <!-- Simple share links -->
   <script>
     (function(){
       const url=encodeURIComponent(location.href),
