@@ -1801,3 +1801,36 @@ main.articles-page{
   border-radius: 0 !important;
   box-shadow: 0 4px 12px rgba(0,0,0,.18); /* soft shadow only */
 }
+/* ==== ARTICLES: responsive overrides to kill fixed 934/290x450 sizes ==== */
+.articles-page .container{ max-width:1420px !important; padding:0 16px; }
+.articles-page{ padding-bottom:0; }
+.articles-page .container{ padding-bottom:12px; }
+
+/* Featured row layout (no fixed px) */
+.articles-featured{ display:grid !important; grid-template-columns:2fr 1fr !important; gap:24px !important; }
+@media (max-width:980px){ .articles-featured{ grid-template-columns:1fr !important; } }
+
+/* Nuke fixed widths/heights on featured cards */
+.articles-page .card-featured.primary,
+.articles-page .card-featured.secondary,
+.articles-page .card-featured .inner,
+.articles-page .card,
+.articles-page .card .card-body,
+.articles-page .card .card-image{ width:auto !important; height:auto !important; max-width:100% !important; }
+
+/* Make featured primary split 60/40 without fixed pixels */
+.articles-page .card-featured.primary .inner{ display:grid !important; grid-template-columns:60% 40% !important; gap:0 !important; }
+@media (max-width:980px){ .articles-page .card-featured.primary .inner{ grid-template-columns:1fr !important; } }
+
+/* Images: always fit box, keep 16:9 */
+.articles-page .card-image img{ width:100% !important; height:auto !important; aspect-ratio:700/394; object-fit:cover; display:block; }
+
+/* Recent grid should flow responsively */
+.articles-grid{ display:grid !important; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)) !important; gap:16px !important; align-items:start !important; }
+.articles-grid .card{ width:auto !important; height:auto !important; }
+
+/* Ensure wrapper rows never exceed container width */
+.recent-wrap, .articles-featured{ max-width:1420px !important; margin-left:auto !important; margin-right:auto !important; }
+
+/* Prevent horizontal scroll from any stray 100vw rules */
+html, body{ overflow-x:hidden; }
