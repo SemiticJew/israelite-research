@@ -1972,3 +1972,111 @@ html, body{ overflow-x:hidden; }
   object-fit: cover;
   border: 1px solid #e6ebf2;
 }
+/* ===== Articles: featured pair under hero ===== */
+.articles-page .page-hero .container{ max-width:1420px; margin:0 auto; }
+.articles-page .featured-pair .container{ max-width:1420px; margin:0 auto; }
+
+.articles-page .featured-grid{
+  display:grid;
+  grid-template-columns: 1.7fr 1fr;   /* large left, standard right */
+  gap:24px;
+  align-items: stretch;
+}
+
+.articles-page .card-featured.primary .inner{
+  display:grid;
+  grid-template-columns: 62% 38%;     /* big image left, content right */
+  height: 450px;                      /* keep consistent with your card height */
+  border:1px solid #e6ebf2;
+  background:#fff;
+  text-decoration:none;
+}
+
+.articles-page .card-featured.primary .media{
+  position:relative;
+  overflow:hidden;
+}
+.articles-page .card-featured.primary .media img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.articles-page .card-featured.primary .label-pill{
+  position:absolute; top:10px; left:10px;
+  background:rgba(0,0,0,.6); color:#fff; border-radius:0; padding:4px 8px;
+  font-size:.72rem; letter-spacing:.3px; text-transform:uppercase;
+}
+
+.articles-page .card-featured.primary .content{
+  display:flex; flex-direction:column; gap:.6rem;
+  padding:16px 18px;
+}
+.articles-page .card-featured.primary .title{
+  margin:0; font-size:1.4rem; line-height:1.2; color:#0b2340;
+}
+.articles-page .card-featured.primary .excerpt{
+  margin:0; color:#444; line-height:1.45;
+}
+.articles-page .card-featured.primary .foot{
+  margin-top:auto; display:flex; align-items:center; gap:.5rem;
+}
+.articles-page .card-featured .author-avatar{
+  width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2;
+}
+
+/* Secondary featured uses your standard vertical card proportions */
+.articles-page .card-featured.secondary .inner{
+  display:flex; flex-direction:column; height:450px;
+  border:1px solid #e6ebf2; background:#fff; text-decoration:none;
+}
+.articles-page .card-featured.secondary .media{
+  position:relative; width:100%; height:177.6px; overflow:hidden; background:#f5f7fb;
+}
+.articles-page .card-featured.secondary .media img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.articles-page .card-featured.secondary .label-pill{
+  position:absolute; top:8px; left:8px;
+  background:rgba(0,0,0,.6); color:#fff; border-radius:0; padding:4px 8px;
+  font-size:.72rem; letter-spacing:.3px; text-transform:uppercase;
+}
+.articles-page .card-featured.secondary .body{
+  display:flex; flex-direction:column; gap:.5rem; padding:12px 14px 8px;
+}
+.articles-page .card-featured.secondary .title{ margin:0; font-size:1.05rem; line-height:1.25; }
+.articles-page .card-featured.secondary .title a{ color:#0b2340; text-decoration:none; }
+.articles-page .card-featured.secondary .title a:hover{ text-decoration:underline; }
+.articles-page .card-featured.secondary .excerpt{ color:#444; font-size:.95rem; line-height:1.45; }
+.articles-page .card-featured.secondary .card-foot{
+  margin-top:auto; display:flex; align-items:center; gap:.5rem;
+}
+.articles-page .card-featured.secondary .card-date{ color:#666; font-size:.85rem; }
+
+/* Recent grid — keep your 315x450 standard */
+.articles-page .articles-list .container{ max-width:1420px; margin:0 auto; }
+.articles-page .articles-list .grid{
+  display:grid; grid-template-columns: repeat(auto-fill, 315px); gap:24px; justify-content:flex-start;
+}
+.articles-page .card{ width:315px; height:450px; border:1px solid #e6ebf2; background:#fff; border-radius:0; display:flex; flex-direction:column; }
+.articles-page .card .card-media{ position:relative; width:100%; height:177.6px; background:#f5f7fb; overflow:hidden; }
+.articles-page .card .card-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.articles-page .card .label-pill{ position:absolute; top:8px; left:8px; background:rgba(0,0,0,.6); color:#fff; border-radius:0; padding:4px 8px; font-size:.72rem; text-transform:uppercase; letter-spacing:.3px; }
+.articles-page .card .card-body{ padding:12px 14px 8px; display:flex; flex-direction:column; gap:.45rem; }
+.articles-page .card .card-title{ margin:0; font-size:1.05rem; line-height:1.25; }
+.articles-page .card .card-title a{ color:#0b2340; text-decoration:none; }
+.articles-page .card .card-title a:hover{ text-decoration:underline; }
+.articles-page .card .card-excerpt{ color:#444; font-size:.95rem; line-height:1.45; }
+.articles-page .card .card-date{ color:#666; font-size:.85rem; margin-top:.25rem; }
+.articles-page .card .card-foot{ margin-top:auto; padding:0 14px 14px; display:flex; align-items:center; gap:.5rem; }
+
+/* Simple hover */
+.articles-page .card:hover,
+.articles-page .card-featured.primary .inner:hover,
+.articles-page .card-featured.secondary .inner:hover{
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+
+/* Responsive stack for smaller screens */
+@media (max-width: 980px){
+  .articles-page .featured-grid{ grid-template-columns: 1fr; }
+  .articles-page .card-featured.primary .inner{ grid-template-columns: 1fr; height:auto; }
+  .articles-page .card-featured.primary .media{ height:220px; }
+}
