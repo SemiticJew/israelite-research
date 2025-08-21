@@ -3,173 +3,260 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Semitic Jew — Home</title>
+  <title>Semitic Jew — Read Scripture with Logic, Care, and Context</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-specific helpers (kept minimal) */
-    .home-hero { padding: 56px 0 40px; background: linear-gradient(180deg, #DBE4EE 0%, #fff 100%); }
-    .home-hero .page-title { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); font-size: clamp(2.2rem, 3.4vw, 3rem); margin: 0 0 .35rem; }
-    .home-hero .page-subtitle { font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif); color:#3E7CB1; max-width: 70ch; margin: 0; }
-    .hero-divider { height: 10px; background: linear-gradient(90deg, #F17300 0 160px, transparent 160px) bottom/100% 6px no-repeat; }
+    /* --- Home-only helpers (scoped) --- */
+    .home-page .hero {
+      background: linear-gradient(180deg, #054A91 0%, #3E7CB1 60%, #81A4CD 100%);
+      color: #fff;
+      padding: clamp(2rem, 6vw, 4rem) 0;
+    }
+    .home-page .hero .kicker {
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .85;
+      font: 500 .8rem/1 Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+    }
+    .home-page .hero h1 {
+      font-family: "Adobe Garamond Pro", Garamond, serif;
+      font-size: clamp(2rem, 4.2vw, 3rem);
+      margin: .5rem 0 1rem;
+    }
+    .home-page .hero p.sub {
+      max-width: 62ch; margin: 0 auto 1.25rem; line-height: 1.6;
+      font: 400 1rem/1.6 Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      color: #DBE4EE;
+    }
+    .home-page .cta-row {
+      display: inline-flex; gap: .75rem; flex-wrap: wrap;
+    }
+    .home-page .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .6rem 1rem; border-radius: 10px; text-decoration: none;
+      font: 500 .95rem/1 Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      border: 1px solid rgba(255,255,255,.2); transition: transform .08s ease;
+    }
+    .home-page .btn:active { transform: translateY(1px); }
+    .home-page .btn--light { background: #fff; color: #054A91; border-color: #fff; }
+    .home-page .btn--ghost { background: transparent; color: #fff; }
+    .home-page .accent-bar { height: 10px; background: linear-gradient(90deg, #F17300 0 140px, transparent 140px); }
 
-    .home-featured { margin: 28px auto 24px; max-width: 1200px; display: grid; grid-template-columns: minmax(280px, 2fr) minmax(240px, 1.6fr); gap: 20px; align-items: stretch; }
-    .home-featured .featured-card { display: grid; grid-template-columns: 1.6fr 1fr; border: 1px solid #e6ebf2; background:#fff; box-shadow: 0 3px 14px rgba(0,0,0,.06); text-decoration:none; color:inherit; }
-    .featured-card .media { position: relative; overflow: hidden; }
-    .featured-card .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .featured-card .body { padding: 16px; display:flex; flex-direction:column; }
-    .pill { position:absolute; top:10px; left:10px; padding:4px 8px; background: rgba(0,0,0,.55); color:#fff; font-size:.75rem; letter-spacing:.03em; border-radius:0; }
-    .featured-card h2 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin: 0 0 .35rem; font-size: clamp(1.25rem, 2vw, 1.6rem); }
-    .featured-card p { color:#333; margin: 0 0 .75rem; }
-    .featured-meta { margin-top: auto; display:flex; align-items:center; gap:.5rem; }
-    .featured-meta img { width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+    .home-wrap { padding: clamp(1.5rem, 4vw, 2.5rem) 0; }
 
-    .home-latest { max-width: 1200px; margin: 0 auto 48px; }
-    .home-latest h3 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin: 0 0 .75rem; font-size: 1.25rem; }
-    .articles-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); gap: 16px; }
-    .article-card { border:1px solid #e6ebf2; background:#fff; text-decoration:none; color:inherit; display:flex; flex-direction:column; height: 450px; }
-    .article-card .thumb { position:relative; width:100%; height: 177px; overflow:hidden; }
-    .article-card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .article-card .label { position:absolute; top:8px; left:8px; background:rgba(0,0,0,.55); color:#fff; padding:3px 7px; font-size:.72rem; border-radius:0; }
+    /* Featured row: primary (big, left) + secondary (right) */
+    .featured-row {
+      display: grid; gap: 1.25rem;
+      grid-template-columns: 1fr 320px;
+      align-items: stretch;
+    }
+    @media (max-width: 980px){ .featured-row{ grid-template-columns: 1fr; } }
 
-    .article-card .content { padding: 12px 14px; display:flex; flex-direction:column; gap:.35rem; }
-    .article-card h4 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin:0; font-size:1.05rem; line-height:1.25; }
-    .article-card .excerpt { color:#444; font-size:.95rem; line-height:1.45; margin:0; }
-    .article-card .meta { margin-top:auto; display:flex; align-items:center; gap:.5rem; }
-    .article-card .meta img { width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
-    .article-card .date { color:#666; font-size:.85rem; }
+    .card-featured {
+      border: 1px solid #e6ebf2; background: #fff;
+      display: grid; grid-template-columns: minmax(280px, 58%) 1fr;
+      min-height: 420px;
+    }
+    @media (max-width: 720px){ .card-featured{ grid-template-columns: 1fr; } }
 
-    @media (max-width: 900px){
-      .home-featured{ grid-template-columns: 1fr; }
-      .home-featured .featured-card{ grid-template-columns: 1fr; }
+    .card-featured .media {
+      position: relative; overflow: hidden; background:#f2f6fb;
+    }
+    .card-featured .media img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .card-featured .body {
+      padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .6rem;
+    }
+    .pill {
+      position: absolute; top: .75rem; left: .75rem;
+      padding: .25rem .45rem; font: 600 .7rem/1 Roboto, system-ui;
+      border: 1px solid rgba(255,255,255,.25);
+      color:#fff; background: rgba(0,0,0,.35);
+      text-transform: uppercase; letter-spacing:.08em;
+    }
+    .card-title {
+      font-family: "Adobe Garamond Pro", Garamond, serif;
+      font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+      margin: .25rem 0 .25rem;
+    }
+    .card-excerpt { color: #333; line-height: 1.6; }
+    .card-meta { margin-top: auto; display:flex; align-items:center; gap:.5rem; }
+    .card-meta img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+    .card-meta .date { color:#666; font-size:.9rem; }
+
+    .card-tall {
+      border:1px solid #e6ebf2; background:#fff; height: 100%;
+      display:flex; flex-direction:column;
+    }
+    .card-tall .media { height: 180px; overflow: hidden; background:#f2f6fb; }
+    .card-tall .media img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card-tall .body { padding: .85rem 1rem; display:flex; flex-direction:column; gap:.5rem; }
+    .hover-shadow:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); transition: .12s ease; }
+
+    /* Recent grid */
+    .recent {
+      margin-top: clamp(1.25rem, 3vw, 2rem);
+    }
+    .recent h2 {
+      font-family: "Adobe Garamond Pro", Garamond, serif;
+      font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+      margin: 0 0 .6rem;
+    }
+    .recent-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     }
   </style>
 </head>
-<body>
+<body class="home-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="home"></nav>
-
-    <!-- HERO -->
-    <section class="home-hero page-hero">
-      <div class="container">
-        <h1 class="page-title">Semitic Jew</h1>
-        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container" style="text-align:center">
+      <div class="kicker">Free, research-driven resources</div>
+      <h1>Semitic Jew</h1>
+      <p class="sub">Helping you read Scripture with logic, care, and context.</p>
+      <div class="cta-row">
+        <a class="btn btn--light" href="/israelite-research/articles.html">Read Articles</a>
+        <a class="btn btn--ghost" href="/israelite-research/texts.html">Explore Texts</a>
       </div>
-      <div class="hero-divider"></div>
-    </section>
+    </div>
+    <div class="accent-bar"></div>
+  </section>
 
-    <!-- FEATURED STRIP (left = big featured, right = secondary) -->
-    <section class="home-featured container">
-      <!-- Primary featured -->
-      <a class="featured-card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-        <div class="media">
-          <span class="pill">Article</span>
-          <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-               alt="Is Scripture &amp; Logic Compatible?"
-               onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
-        </div>
-        <div class="body">
-          <h2>Is Scripture &amp; Logic Compatible?</h2>
-          <p>God calls His people to reason, test, and examine the Scriptures. Logic doesn’t compete with faith — it serves truth.</p>
-          <div class="featured-meta">
-            <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span style="color:#666;font-size:.9rem;">Aug 15, 2025</span>
-          </div>
-        </div>
-      </a>
+  <main class="home-wrap">
+    <div class="container">
 
-      <!-- Secondary callout (could be podcast, second article, or category) -->
-      <a class="featured-card" href="/israelite-research/articles/is-truth-reliable.html" style="grid-template-columns:1fr;">
-        <div class="media">
-          <span class="pill">Article</span>
-          <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
-               alt="Is Truth Reliable?"
-               onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
-        </div>
-        <div class="body">
-          <h2>Is Truth Reliable?</h2>
-          <p>If truth shifts with feelings, it can’t guide us. Scripture roots truth in God’s unchanging character and Word.</p>
-          <div class="featured-meta">
-            <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span style="color:#666;font-size:.9rem;">Aug 16, 2025</span>
-          </div>
-        </div>
-      </a>
-    </section>
-
-    <!-- LATEST ARTICLES GRID -->
-    <section class="home-latest container">
-      <h3>Latest Articles</h3>
-      <div class="articles-grid">
-        <a class="article-card" href="/israelite-research/articles/is-creation-logical.html">
-          <div class="thumb">
-            <span class="label">Article</span>
-            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
-                 alt="Is Creation Logical?"
-                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
-          </div>
-          <div class="content">
-            <h4>Is Creation Logical?</h4>
-            <p class="excerpt">Does Genesis invite a rational reading? Scripture’s own patterns show creation ordered by God’s wisdom.</p>
-            <div class="meta">
-              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="date">Aug 18, 2025</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="article-card" href="/israelite-research/articles/is-truth-reliable.html">
-          <div class="thumb">
-            <span class="label">Article</span>
-            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
-                 alt="Is Truth Reliable?"
-                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
-          </div>
-          <div class="content">
-            <h4>Is Truth Reliable?</h4>
-            <p class="excerpt">Truth is reliable because God is reliable. His Word stands, even when feelings and trends change.</p>
-            <div class="meta">
-              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="date">Aug 16, 2025</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="article-card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-          <div class="thumb">
-            <span class="label">Article</span>
-            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-                 alt="Is Scripture &amp; Logic Compatible?"
-                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
-          </div>
-          <div class="content">
-            <h4>Is Scripture &amp; Logic Compatible?</h4>
-            <p class="excerpt">Logic doesn’t add to Scripture; it helps us trace the lines God already drew.</p>
-            <div class="meta">
-              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+      <!-- Featured Row -->
+      <section class="featured-row" aria-label="Featured">
+        <!-- Primary featured (image left, content right) -->
+        <article class="card-featured hover-shadow">
+          <a class="media" href="/israelite-research/articles/is-scripture-and-logic-compatible.html" aria-label="Is Scripture & Logic Compatible?">
+            <span class="pill">Article</span>
+            <img src="/israelite-research/images/articles/logic-compatibility-1000x563.jpg"
+                 alt="Reading Scripture with logic" />
+          </a>
+          <div class="body">
+            <h2 class="card-title"><a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a></h2>
+            <p class="card-excerpt">God calls us to test, reason, and examine the Scriptures. Logic doesn’t compete with faith; it serves the truth God has revealed.</p>
+            <div class="card-meta">
+              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+              <span>Semitic Jew</span>
               <span class="date">Aug 15, 2025</span>
             </div>
           </div>
-        </a>
-      </div>
-    </section>
+        </article>
+
+        <!-- Secondary featured (tall card) -->
+        <article class="card-tall hover-shadow">
+          <a class="media" href="/israelite-research/articles/is-truth-reliable.html" aria-label="Is Truth Reliable?">
+            <span class="pill" style="left:.5rem; top:.5rem">Article</span>
+            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                 alt="Is truth reliable?" />
+          </a>
+          <div class="body">
+            <h3 class="card-title" style="font-size:1.15rem; margin:.2rem 0;">
+              <a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+            </h3>
+            <p class="card-excerpt" style="font-size:.98rem;">If truth shifts with mood, it cannot guide a life. Scripture anchors truth in God’s unchanging character and trustworthy Word.</p>
+            <div class="card-meta" style="margin-top:auto;">
+              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+              <span>Semitic Jew</span>
+              <span class="date">Aug 16, 2025</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Recent -->
+      <section class="recent" aria-label="Recent">
+        <h2>Recent Articles</h2>
+        <div class="recent-grid">
+          <!-- Card 1 -->
+          <article class="card-tall hover-shadow">
+            <a class="media" href="/israelite-research/articles/is-creation-logical.html">
+              <span class="pill" style="left:.5rem; top:.5rem">Article</span>
+              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
+                   alt="Is Creation Logical?" />
+            </a>
+            <div class="body">
+              <h3 class="card-title" style="font-size:1.05rem"><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
+              <p class="card-excerpt" style="font-size:.95rem;">From order to purpose, creation itself witnesses to divine wisdom.</p>
+              <div class="card-meta">
+                <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+                <span>Semitic Jew</span>
+                <span class="date">Aug 18, 2025</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 (duplicate of primary for now so page isn’t sparse; swap as you add) -->
+          <article class="card-tall hover-shadow">
+            <a class="media" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+              <span class="pill" style="left:.5rem; top:.5rem">Article</span>
+              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                   alt="Is Scripture & Logic Compatible?" />
+            </a>
+            <div class="body">
+              <h3 class="card-title" style="font-size:1.05rem"><a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a></h3>
+              <p class="card-excerpt" style="font-size:.95rem;">Why testing and reasoning are acts of faithfulness, not doubt.</p>
+              <div class="card-meta">
+                <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+                <span>Semitic Jew</span>
+                <span class="date">Aug 15, 2025</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card-tall hover-shadow">
+            <a class="media" href="/israelite-research/articles/is-truth-reliable.html">
+              <span class="pill" style="left:.5rem; top:.5rem">Article</span>
+              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                   alt="Is Truth Reliable?" />
+            </a>
+            <div class="body">
+              <h3 class="card-title" style="font-size:1.05rem"><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></h3>
+              <p class="card-excerpt" style="font-size:.95rem;">Truth steadies minds because it rests in God who cannot lie.</p>
+              <div class="card-meta">
+                <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+                <span>Semitic Jew</span>
+                <span class="date">Aug 16, 2025</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Podcast teaser -->
+      <section class="home-wrap" aria-label="Podcast" style="padding-top:1.5rem;">
+        <div class="card-featured" style="grid-template-columns: 280px 1fr;">
+          <div class="media">
+            <img src="/israelite-research/images/podcast-placeholder.jpg"
+                 alt="Podcast" onerror="this.style.display='none'">
+          </div>
+          <div class="body">
+            <h2 class="card-title" style="margin-top:.25rem;">Semitic Jew Podcast</h2>
+            <p class="card-excerpt">Conversations and teachings to help you read the Bible with clear logic and humble faith.</p>
+            <div style="margin-top:auto; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a class="btn" style="background:#F17300; color:#fff; border-color:#F17300;"
+                 href="/israelite-research/podcast.html">Listen Now</a>
+              <a class="btn btn--ghost" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs -->
+  <!-- Partials (header/footer) -->
   <script src="/israelite-research/js/include.js"></script>
-  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <script>
-    // Ensure the site name in the header points to the homepage (absolute path)
-    document.addEventListener('DOMContentLoaded', () => {
-      const titleLink = document.querySelector('.site-title');
-      if (titleLink) titleLink.setAttribute('href', '/israelite-research/index.html');
-    });
-  </script>
 </body>
 </html>
