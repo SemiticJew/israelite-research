@@ -2376,3 +2376,10 @@ html, body{ overflow-x:hidden; }
   .articles-page .card-featured.primary .inner{ grid-template-columns: 1fr; }
   .articles-page .card-featured.primary .media{ width:100% !important; height:220px !important; }
 }
+/* Hide hero CTAs on Articles page only */
+.articles-page .hero-actions,
+.articles-page .page-hero .buttons,
+.articles-page .page-hero .cta,
+.articles-page .hero-cta {
+  display: none !important;
+}
