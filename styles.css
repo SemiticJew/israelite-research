@@ -1962,3 +1962,13 @@ html, body{ overflow-x:hidden; }
   border: 1px solid #e6ebf2;  /* subtle ring like DG */
   flex: 0 0 24px;             /* prevent stretch */
 }
+/* Author avatars: 30x30 round everywhere (cards + single article) */
+.article-byline .author-avatar,
+.articles-page .card-foot .author-avatar,
+.card .author-avatar{
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  border: 1px solid #e6ebf2;
+}
