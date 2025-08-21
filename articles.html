@@ -1,137 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style id="articles-responsive-override">
-  /* Prevent featured row from overflowing; override old fixed px rules */
-  .articles-page .container{
-    max-width:1420px !important; width:100% !important;
-    padding:0 16px !important; margin:0 auto !important; box-sizing:border-box;
-  }
-  .articles-featured{
-    display:grid !important;
-    grid-template-columns:minmax(0,2fr) minmax(0,1fr) !important;
-    gap:24px !important; max-width:100% !important;
-    margin-left:auto !important; margin-right:auto !important;
-  }
-  @media (max-width:980px){ .articles-featured{ grid-template-columns:1fr !important; } }
-
-  /* Kill fixed width/height on cards and inner */
-  .articles-page .card-featured.primary,
-  .articles-page .card-featured.secondary,
-  .articles-page .card-featured .inner,
-  .articles-page .card,
-  .articles-page .card .card-body,
-  .articles-page .card .card-image{
-    width:auto !important; height:auto !important; max-width:100% !important;
-  }
-
-  /* Primary featured split (no px) */
-  .articles-page .card-featured.primary .inner{
-    display:grid !important; grid-template-columns:minmax(0,60%) minmax(0,40%) !important; gap:0 !important;
-  }
-  @media (max-width:980px){ .articles-page .card-featured.primary .inner{ grid-template-columns:1fr !important; } }
-
-  /* Allow shrink inside grid columns */
-  .articles-page .card-image, .articles-page .card-body{ min-width:0 !important; }
-
-  /* Images: fit container, keep 16:9 */
-  .articles-page .card-image img{
-    width:100% !important; height:auto !important; aspect-ratio:700/394; object-fit:cover; display:block;
-  }
-</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    .articles-page .container { max-width: 1420px; margin: 0 auto; }
-    .breadcrumb { margin: 1rem 16px .5rem; }
-    .page-hero { padding: 32px 16px 18px; background: linear-gradient(180deg, #054A91 0%, #3E7CB1 100%); color: #fff; }
-    .page-hero .container { max-width: 1420px; margin: 0 auto; }
-    .page-title {
-      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
-      font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
-      margin: 0 0 .5rem; letter-spacing: .5px; color: #fff;
+    /* Page frame */
+    .articles-page .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    #breadcrumbs { margin: 16px 0 8px; }
+
+    /* Hero (same vibe as other pages) */
+    .page-hero { margin: 0 0 16px; }
+    .page-hero .hero-slab{
+      background: linear-gradient(135deg,#054A91,#3E7CB1);
+      color:#fff; border-radius:12px;
+      padding: clamp(24px,4vw,36px) clamp(20px,3vw,28px);
     }
-    .page-subtitle {
-      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
-      font-size: 1rem; color: #DBE4EE; max-width: 60ch; margin: 0; line-height: 1.6;
+    .page-hero .page-title{
+      font-family: var(--ff-serif,"Adobe Garamond Pro",serif);
+      font-size: clamp(2rem,3.2vw + 1rem,3rem);
+      margin: 0 0 .5rem;
+      letter-spacing:.5px;
     }
-    .hero-divider { height: 12px; background: linear-gradient(90deg, #F17300 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
-    .section-pad { padding: 0 16px; }
-
-    .articles-featured {
-      display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin: 20px 0 18px;
+    .page-hero .page-subtitle{
+      font-family: var(--ff-sans,Roboto,system-ui,-apple-system,Segoe UI,Arial,sans-serif);
+      font-size:1rem; color:#DBE4EE; max-width:60ch; margin:0; line-height:1.6;
     }
-    @media (max-width: 980px) { .articles-featured { grid-template-columns: 1fr; } }
+    .hero-divider{height:10px;background:linear-gradient(90deg,#F17300 0 140px,transparent 140px) bottom/100% 5px no-repeat;}
 
-    .card { background: #fff; border: 1px solid #e6ebf2; border-radius: 0; overflow: hidden; }
-    .card .card-body { padding: 14px; display: flex; flex-direction: column; height: 100%; }
-    .card .card-title { margin: .2rem 0 .45rem; line-height: 1.22; }
-    .card .excerpt { color: #333; margin: 0 0 .5rem; }
-    .card .date { color: #777; font-size: .87rem; margin: .2rem 0 .55rem; }
-
-    .label-pill {
-      position: absolute; left: 10px; top: 10px; z-index: 2;
-      padding: 4px 8px; font-size: .78rem; line-height: 1;
-      color: #fff; background: rgba(0,0,0,.6); border: 0; border-radius: 0;
-      text-transform: uppercase; letter-spacing: .04em;
+    /* Simple, consistent grid */
+    .articles-list{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 16px 0 32px;
     }
+    .card{
+      border:1px solid #e6ebf2; background:#fff; border-radius:12px;
+      overflow:hidden; display:flex; flex-direction:column;
+      transition: box-shadow .2s ease;
+    }
+    .card:hover{ box-shadow:0 8px 24px rgba(0,0,0,.06); }
 
-    .article-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 6px; }
-    .author-mini { display: flex; align-items: center; gap: .5rem; }
-    .author-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #e6ebf2; }
-
-    .card-featured.primary .inner { display: flex; height: 450px; }
-    .card-featured.primary .card-image { position: relative; width: 62.66%; height: 100%; overflow: hidden; }
-    .card-featured.primary .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .card-featured.primary .card-body { width: 37.34%; display: flex; flex-direction: column; padding: 16px; }
-    @media (max-width: 980px) {
-      .card-featured.primary .inner { flex-direction: column; height: auto; }
-      .card-featured.primary .card-image { width: 100%; height: auto; }
-      .card-featured.primary .card-body { width: 100%; }
+    .card-media{ position:relative; background:#f5f7fb; }
+    /* Lock 16:9 image without hard heights */
+    .card-media::before{ content:""; display:block; padding-top:56.25%; }
+    .card-media img{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+    }
+    /* In-image label: squared, dark translucent */
+    .label-pill{
+      position:absolute; top:8px; left:8px;
+      background: rgba(0,0,0,.6); color:#fff; border:none; border-radius:0;
+      font-size:.72rem; letter-spacing:.3px; text-transform:uppercase; padding:4px 8px;
     }
 
-    .card-featured.secondary { width: 290px; height: 450px; }
-    .card-featured.secondary .card-image { position: relative; width: 100%; height: 163.13px; overflow: hidden; }
-    .card-featured.secondary .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-body{ padding:12px 14px 8px; display:flex; flex-direction:column; gap:.45rem; }
+    .card-title{ margin:0; font-size:1.05rem; line-height:1.25; }
+    .card-title a{ color:#0b2340; text-decoration:none; }
+    .card-title a:hover{ text-decoration:underline; }
+    .card-excerpt{ color:#444; font-size:.95rem; line-height:1.45; }
+    .card-date{ color:#666; font-size:.85rem; margin-top:.25rem; }
 
-    .recent-wrap { margin: 6px 0 0; }
-    .section-title { margin: 8px 0 12px; }
-    .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, 290px); gap: 16px; justify-content: start; }
-    .articles-grid .card { width: 290px; height: 450px; }
-    .articles-grid .card .card-image { position: relative; width: 100%; height: 163.13px; overflow: hidden; }
-    .articles-grid .card .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .articles-grid .card:hover, .card-featured.secondary:hover { box-shadow: 0 6px 24px rgba(0,0,0,.06); transition: box-shadow .15s ease; }
-    .articles-page { padding-bottom: 1rem; }
+    .card-foot{
+      margin-top:auto; padding:0 14px 14px; display:flex; align-items:center; gap:.5rem;
+    }
+    .author-avatar{ width:22px; height:22px; border-radius:50%; object-fit:cover; }
   </style>
 </head>
 <body>
+  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="articles-page">
-    <div class="container">
-      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+  <main class="container articles-page">
+    <!-- Breadcrumbs (left, above hero) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
-      <section class="page-hero hero-articles">
-        <div class="container">
-          <h1 class="page-title">Articles</h1>
-          <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="hero-slab">
+        <h1 class="page-title">Articles</h1>
+        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- Clean grid of current articles -->
+    <section class="articles-list">
+      <!-- A1 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="label-pill">Article</span>
+          <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+               alt="Is Scripture &amp; Logic Compatible?">
         </div>
-        <div class="hero-divider"></div>
-      </section>
+        <div class="card-body">
+          <h2 class="card-title">
+            <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+              Is Scripture &amp; Logic Compatible?
+            </a>
+          </h2>
+          <p class="card-excerpt">Why reasoning with the Scriptures honors God’s truth and clarifies our obedience.</p>
+          <div class="card-date">Aug 15, 2025</div>
+        </div>
+        <div class="card-foot">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+          <span>Semitic Jew</span>
+        </div>
+      </article>
 
-      <section class="section-pad">
-        <div class="articles-featured">
-          <!-- Primary featured -->
-          </div>
-      </section>
-    </div>
+      <!-- A2 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="label-pill">Article</span>
+          <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
+               alt="Is Creation Logical?">
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">
+            <a href="/israelite-research/articles/is-creation-logical.html">
+              Is Creation Logical?
+            </a>
+          </h2>
+          <p class="card-excerpt">Reading Genesis with care shows a coherent story of God’s wise ordering of all things.</p>
+          <div class="card-date">Aug 16, 2025</div>
+        </div>
+        <div class="card-foot">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+          <span>Semitic Jew</span>
+        </div>
+      </article>
+
+      <!-- A3 -->
+      <article class="card">
+        <div class="card-media">
+          <span class="label-pill">Article</span>
+          <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+               alt="Is Truth Reliable?">
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">
+            <a href="/israelite-research/articles/is-truth-reliable.html">
+              Is Truth Reliable?
+            </a>
+          </h2>
+          <p class="card-excerpt">Because God is faithful and unchanging, His Word provides a sure foundation for life.</p>
+          <div class="card-date">Aug 16, 2025</div>
+        </div>
+        <div class="card-foot">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+          <span>Semitic Jew</span>
+        </div>
+      </article>
+    </section>
   </main>
 
+  <!-- Footer partial -->
   <div id="site-footer"></div>
 
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
