@@ -1946,3 +1946,19 @@ html, body{ overflow-x:hidden; }
 .articles-page .card .author-avatar{
   width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
 }
+/* ---- Article card author chip: circular avatar (articles page only) ---- */
+.articles-page .card-foot{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.articles-page .card-foot .author-avatar{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;       /* keep true circle in modern browsers */
+  object-fit: cover;          /* crop nicely */
+  border: 1px solid #e6ebf2;  /* subtle ring like DG */
+  flex: 0 0 24px;             /* prevent stretch */
+}
