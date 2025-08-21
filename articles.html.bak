@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style id="articles-responsive-override">
+  /* Prevent featured row from overflowing; override old fixed px rules */
+  .articles-page .container{
+    max-width:1420px !important; width:100% !important;
+    padding:0 16px !important; margin:0 auto !important; box-sizing:border-box;
+  }
+  .articles-featured{
+    display:grid !important;
+    grid-template-columns:minmax(0,2fr) minmax(0,1fr) !important;
+    gap:24px !important; max-width:100% !important;
+    margin-left:auto !important; margin-right:auto !important;
+  }
+  @media (max-width:980px){ .articles-featured{ grid-template-columns:1fr !important; } }
+
+  /* Kill fixed width/height on cards and inner */
+  .articles-page .card-featured.primary,
+  .articles-page .card-featured.secondary,
+  .articles-page .card-featured .inner,
+  .articles-page .card,
+  .articles-page .card .card-body,
+  .articles-page .card .card-image{
+    width:auto !important; height:auto !important; max-width:100% !important;
+  }
+
+  /* Primary featured split (no px) */
+  .articles-page .card-featured.primary .inner{
+    display:grid !important; grid-template-columns:minmax(0,60%) minmax(0,40%) !important; gap:0 !important;
+  }
+  @media (max-width:980px){ .articles-page .card-featured.primary .inner{ grid-template-columns:1fr !important; } }
+
+  /* Allow shrink inside grid columns */
+  .articles-page .card-image, .articles-page .card-body{ min-width:0 !important; }
+
+  /* Images: fit container, keep 16:9 */
+  .articles-page .card-image img{
+    width:100% !important; height:auto !important; aspect-ratio:700/394; object-fit:cover; display:block;
+  }
+</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Articles — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    .articles-page .container { max-width: 1420px; margin: 0 auto; }
+    .breadcrumb { margin: 1rem 16px .5rem; }
+    .page-hero { padding: 32px 16px 18px; background: linear-gradient(180deg, #054A91 0%, #3E7CB1 100%); color: #fff; }
+    .page-hero .container { max-width: 1420px; margin: 0 auto; }
+    .page-title {
+      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+      font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+      margin: 0 0 .5rem; letter-spacing: .5px; color: #fff;
+    }
+    .page-subtitle {
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+      font-size: 1rem; color: #DBE4EE; max-width: 60ch; margin: 0; line-height: 1.6;
+    }
+    .hero-divider { height: 12px; background: linear-gradient(90deg, #F17300 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
+    .section-pad { padding: 0 16px; }
+
+    .articles-featured {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin: 20px 0 18px;
+    }
+    @media (max-width: 980px) { .articles-featured { grid-template-columns: 1fr; } }
+
+    .card { background: #fff; border: 1px solid #e6ebf2; border-radius: 0; overflow: hidden; }
+    .card .card-body { padding: 14px; display: flex; flex-direction: column; height: 100%; }
+    .card .card-title { margin: .2rem 0 .45rem; line-height: 1.22; }
+    .card .excerpt { color: #333; margin: 0 0 .5rem; }
+    .card .date { color: #777; font-size: .87rem; margin: .2rem 0 .55rem; }
+
+    .label-pill {
+      position: absolute; left: 10px; top: 10px; z-index: 2;
+      padding: 4px 8px; font-size: .78rem; line-height: 1;
+      color: #fff; background: rgba(0,0,0,.6); border: 0; border-radius: 0;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    .article-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 6px; }
+    .author-mini { display: flex; align-items: center; gap: .5rem; }
+    .author-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #e6ebf2; }
+
+    .card-featured.primary .inner { display: flex; height: 450px; }
+    .card-featured.primary .card-image { position: relative; width: 62.66%; height: 100%; overflow: hidden; }
+    .card-featured.primary .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-featured.primary .card-body { width: 37.34%; display: flex; flex-direction: column; padding: 16px; }
+    @media (max-width: 980px) {
+      .card-featured.primary .inner { flex-direction: column; height: auto; }
+      .card-featured.primary .card-image { width: 100%; height: auto; }
+      .card-featured.primary .card-body { width: 100%; }
+    }
+
+    .card-featured.secondary { width: 290px; height: 450px; }
+    .card-featured.secondary .card-image { position: relative; width: 100%; height: 163.13px; overflow: hidden; }
+    .card-featured.secondary .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .recent-wrap { margin: 6px 0 0; }
+    .section-title { margin: 8px 0 12px; }
+    .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, 290px); gap: 16px; justify-content: start; }
+    .articles-grid .card { width: 290px; height: 450px; }
+    .articles-grid .card .card-image { position: relative; width: 100%; height: 163.13px; overflow: hidden; }
+    .articles-grid .card .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .articles-grid .card:hover, .card-featured.secondary:hover { box-shadow: 0 6px 24px rgba(0,0,0,.06); transition: box-shadow .15s ease; }
+    .articles-page { padding-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="articles-page">
+    <div class="container">
+      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+
+      <section class="page-hero hero-articles">
+        <div class="container">
+          <h1 class="page-title">Articles</h1>
+          <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+        </div>
+        <div class="hero-divider"></div>
+      </section>
+
+      <section class="section-pad">
+        <div class="articles-featured">
+          <!-- Primary featured -->
+          <article class="card card-featured primary">
+            <div class="inner">
+              <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html" aria-label="Is Scripture &amp; Logic Compatible?">
+                <span class="label-pill">Article</span>
+                <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg?v=9" alt="Is Scripture &amp; Logic Compatible?">
+              </a>
+              <div class="card-body">
+                <h2 class="card-title">
+                  <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+                </h2>
+                <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
+                <div class="date">Aug 15, 2025</div>
+                <div class="article-footer">
+                  <span class="author-mini">
+                    <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                    <span class="author-name">Semitic Jew</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Secondary featured -->
+          <article class="card card-featured secondary">
+            <a class="card-image" href="/israelite-research/articles/is-creation-logical.html">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg?v=9" alt="Is Creation Logical?">
+            </a>
+            <div class="card-body">
+              <h2 class="card-title">
+                <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+              </h2>
+              <p class="excerpt">Does creation bear marks of order, coherence, and purpose that reason can humbly trace under God’s rule?</p>
+              <div class="date">Aug 16, 2025</div>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar"
+                       src="/israelite-research/images/authors/semitic-jew.jpg"
+                       alt="Author: Semitic Jew"
+                       onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Recent Articles (now with Article #4 added) -->
+      <section class="recent-wrap section-pad">
+        <h2 class="section-title">Recent Articles</h2>
+
+        <div class="articles-grid">
+          <!-- Card 1 -->
+          <article class="card">
+            <a class="card-image" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg?v=9" alt="Is Scripture &amp; Logic Compatible?">
+            </a>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+              </h3>
+              <p class="excerpt">Does the Bible ask us to set thinking aside—or to think God’s thoughts after him with clarity and care?</p>
+              <div class="date">Aug 15, 2025</div>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card">
+            <a class="card-image" href="/israelite-research/articles/is-creation-logical.html">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg?v=9" alt="Is Creation Logical?">
+            </a>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+              </h3>
+              <p class="excerpt">Does creation bear marks of order, coherence, and purpose that reason can humbly trace under God’s rule?</p>
+              <div class="date">Aug 16, 2025</div>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card">
+            <a class="card-image" href="/israelite-research/articles/is-truth-reliable.html">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg?v=9" alt="Is Truth Reliable?">
+            </a>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+              </h3>
+              <p class="excerpt">If truth rests on shifting feelings, it cannot guide us. Scripture roots truth in God’s unchanging word.</p>
+              <div class="date">Aug 16, 2025</div>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4 (NEW) -->
+          <article class="card">
+            <a class="card-image" href="/israelite-research/articles/is-there-a-gap-gen1-1-and-1-2.html">
+              <span class="label-pill">Article</span>
+              <img src="/israelite-research/images/articles/gap-gen1-1-to-1-2-700x394.jpg?v=9" alt="Is There a Gap Between Genesis 1:1 and 1:2?">
+            </a>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-there-a-gap-gen1-1-and-1-2.html">Is There a Gap Between Genesis 1:1 and 1:2?</a>
+              </h3>
+              <p class="excerpt">A careful look at the opening verses of Genesis—can Scripture itself support a time gap, or does the context point to a continuous reading?</p>
+              <div class="date">Aug 17, 2025</div>
+              <div class="article-footer">
+                <span class="author-mini">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author: Semitic Jew" onerror="this.src='/israelite-research/images/authors/default.jpg'">
+                  <span class="author-name">Semitic Jew</span>
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+</body>
+</html>
