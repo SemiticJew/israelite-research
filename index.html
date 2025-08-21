@@ -5,17 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Semitic Jew — Home</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-specific helpers (kept minimal) */
+    .home-hero { padding: 56px 0 40px; background: linear-gradient(180deg, #DBE4EE 0%, #fff 100%); }
+    .home-hero .page-title { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); font-size: clamp(2.2rem, 3.4vw, 3rem); margin: 0 0 .35rem; }
+    .home-hero .page-subtitle { font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif); color:#3E7CB1; max-width: 70ch; margin: 0; }
+    .hero-divider { height: 10px; background: linear-gradient(90deg, #F17300 0 160px, transparent 160px) bottom/100% 6px no-repeat; }
+
+    .home-featured { margin: 28px auto 24px; max-width: 1200px; display: grid; grid-template-columns: minmax(280px, 2fr) minmax(240px, 1.6fr); gap: 20px; align-items: stretch; }
+    .home-featured .featured-card { display: grid; grid-template-columns: 1.6fr 1fr; border: 1px solid #e6ebf2; background:#fff; box-shadow: 0 3px 14px rgba(0,0,0,.06); text-decoration:none; color:inherit; }
+    .featured-card .media { position: relative; overflow: hidden; }
+    .featured-card .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured-card .body { padding: 16px; display:flex; flex-direction:column; }
+    .pill { position:absolute; top:10px; left:10px; padding:4px 8px; background: rgba(0,0,0,.55); color:#fff; font-size:.75rem; letter-spacing:.03em; border-radius:0; }
+    .featured-card h2 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin: 0 0 .35rem; font-size: clamp(1.25rem, 2vw, 1.6rem); }
+    .featured-card p { color:#333; margin: 0 0 .75rem; }
+    .featured-meta { margin-top: auto; display:flex; align-items:center; gap:.5rem; }
+    .featured-meta img { width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+
+    .home-latest { max-width: 1200px; margin: 0 auto 48px; }
+    .home-latest h3 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin: 0 0 .75rem; font-size: 1.25rem; }
+    .articles-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); gap: 16px; }
+    .article-card { border:1px solid #e6ebf2; background:#fff; text-decoration:none; color:inherit; display:flex; flex-direction:column; height: 450px; }
+    .article-card .thumb { position:relative; width:100%; height: 177px; overflow:hidden; }
+    .article-card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .article-card .label { position:absolute; top:8px; left:8px; background:rgba(0,0,0,.55); color:#fff; padding:3px 7px; font-size:.72rem; border-radius:0; }
+
+    .article-card .content { padding: 12px 14px; display:flex; flex-direction:column; gap:.35rem; }
+    .article-card h4 { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); margin:0; font-size:1.05rem; line-height:1.25; }
+    .article-card .excerpt { color:#444; font-size:.95rem; line-height:1.45; margin:0; }
+    .article-card .meta { margin-top:auto; display:flex; align-items:center; gap:.5rem; }
+    .article-card .meta img { width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+    .article-card .date { color:#666; font-size:.85rem; }
+
+    @media (max-width: 900px){
+      .home-featured{ grid-template-columns: 1fr; }
+      .home-featured .featured-card{ grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container home-page">
+  <main>
     <!-- Breadcrumbs -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="home"></nav>
 
-    <!-- Hero -->
-    <section class="page-hero hero-articles" style="padding: 48px 0;">
+    <!-- HERO -->
+    <section class="home-hero page-hero">
       <div class="container">
         <h1 class="page-title">Semitic Jew</h1>
         <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
@@ -23,37 +61,98 @@
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Quick links -->
-    <section class="topics" style="margin-top: 1.5rem;">
-      <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;">
-        <a class="card" href="/israelite-research/articles.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Articles</h3>
-          <p style="margin:0;color:#555;">Essays and studies on Scripture and logic.</p>
+    <!-- FEATURED STRIP (left = big featured, right = secondary) -->
+    <section class="home-featured container">
+      <!-- Primary featured -->
+      <a class="featured-card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+        <div class="media">
+          <span class="pill">Article</span>
+          <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+               alt="Is Scripture &amp; Logic Compatible?"
+               onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
+        </div>
+        <div class="body">
+          <h2>Is Scripture &amp; Logic Compatible?</h2>
+          <p>God calls His people to reason, test, and examine the Scriptures. Logic doesn’t compete with faith — it serves truth.</p>
+          <div class="featured-meta">
+            <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span style="color:#666;font-size:.9rem;">Aug 15, 2025</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Secondary callout (could be podcast, second article, or category) -->
+      <a class="featured-card" href="/israelite-research/articles/is-truth-reliable.html" style="grid-template-columns:1fr;">
+        <div class="media">
+          <span class="pill">Article</span>
+          <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+               alt="Is Truth Reliable?"
+               onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
+        </div>
+        <div class="body">
+          <h2>Is Truth Reliable?</h2>
+          <p>If truth shifts with feelings, it can’t guide us. Scripture roots truth in God’s unchanging character and Word.</p>
+          <div class="featured-meta">
+            <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span style="color:#666;font-size:.9rem;">Aug 16, 2025</span>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <!-- LATEST ARTICLES GRID -->
+    <section class="home-latest container">
+      <h3>Latest Articles</h3>
+      <div class="articles-grid">
+        <a class="article-card" href="/israelite-research/articles/is-creation-logical.html">
+          <div class="thumb">
+            <span class="label">Article</span>
+            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg"
+                 alt="Is Creation Logical?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
+          </div>
+          <div class="content">
+            <h4>Is Creation Logical?</h4>
+            <p class="excerpt">Does Genesis invite a rational reading? Scripture’s own patterns show creation ordered by God’s wisdom.</p>
+            <div class="meta">
+              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="date">Aug 18, 2025</span>
+            </div>
+          </div>
         </a>
 
-        <a class="card" href="/israelite-research/texts.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Texts</h3>
-          <p style="margin:0;color:#555;">Tanakh, New Testament, Apocrypha, and references.</p>
+        <a class="article-card" href="/israelite-research/articles/is-truth-reliable.html">
+          <div class="thumb">
+            <span class="label">Article</span>
+            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                 alt="Is Truth Reliable?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
+          </div>
+          <div class="content">
+            <h4>Is Truth Reliable?</h4>
+            <p class="excerpt">Truth is reliable because God is reliable. His Word stands, even when feelings and trends change.</p>
+            <div class="meta">
+              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="date">Aug 16, 2025</span>
+            </div>
+          </div>
         </a>
 
-        <a class="card" href="/israelite-research/apologetics.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Apologetics</h3>
-          <p style="margin:0;color:#555;">Reasoned defenses of the faith.</p>
-        </a>
-
-        <a class="card" href="/israelite-research/events.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Events</h3>
-          <p style="margin:0;color:#555;">Upcoming gatherings and studies.</p>
-        </a>
-
-        <a class="card" href="/israelite-research/podcast.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Podcast</h3>
-          <p style="margin:0;color:#555;">Listen and learn on the go.</p>
-        </a>
-
-        <a class="card" href="/israelite-research/donate.html" style="display:block;padding:1rem;border-radius:12px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;">
-          <h3 style="margin:0 0 .35rem;">Donations</h3>
-          <p style="margin:0;color:#555;">Support free biblical resources.</p>
+        <a class="article-card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+          <div class="thumb">
+            <span class="label">Article</span>
+            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                 alt="Is Scripture &amp; Logic Compatible?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
+          </div>
+          <div class="content">
+            <h4>Is Scripture &amp; Logic Compatible?</h4>
+            <p class="excerpt">Logic doesn’t add to Scripture; it helps us trace the lines God already drew.</p>
+            <div class="meta">
+              <img src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="date">Aug 15, 2025</span>
+            </div>
+          </div>
         </a>
       </div>
     </section>
@@ -65,5 +164,12 @@
   <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <script>
+    // Ensure the site name in the header points to the homepage (absolute path)
+    document.addEventListener('DOMContentLoaded', () => {
+      const titleLink = document.querySelector('.site-title');
+      if (titleLink) titleLink.setAttribute('href', '/israelite-research/index.html');
+    });
+  </script>
 </body>
 </html>
