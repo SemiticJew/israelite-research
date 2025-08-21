@@ -56,6 +56,15 @@ ul { list-style: none; }
 .hero { background-color: var(--gray-light); text-align: center; padding: var(--gap-large) 0; }
 .hero h1 { font-family: var(--ff-serif); font-size: var(--fs-feature-title); color: var(--blue-dark); margin-bottom: var(--gap-small); }
 .hero p { font-size: var(--fs-small-text); color: #555; margin-bottom: var(--gap-medium); }
+/* Articles hero visibility + spacing */
+.page-hero { padding: 48px 0 24px; }
+.hero-articles .page-title { color: #fff; }
+.hero-articles .page-subtitle { color: #DBE4EE; }
+.hero-divider { height: 12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
+
+/* Make sure nothing globally hides hero/title */
+.page-hero, .page-title { display: block; visibility: visible; }
+
 
 /* Articles Card Layout */
 .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--gap-medium); margin: var(--gap-large) 0; }
