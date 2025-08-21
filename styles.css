@@ -1867,3 +1867,82 @@ html, body{ overflow-x:hidden; }
 
 /* Prevent horizontal scroll from any stray 100vw rules */
 html, body{ overflow-x:hidden; }
+/* === Standardize article cards to 315x450 === */
+.articles-page .articles-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 315px);
+  gap: 24px;
+  justify-content: center;   /* or flex-start if you prefer left align */
+}
+
+.articles-page .card{
+  width: 315px !important;
+  height: 450px !important;
+  border: 1px solid #e6ebf2;
+  background: #fff;
+  border-radius: 0;          /* squared cards on articles page */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .2s ease;
+}
+
+.articles-page .card:hover{
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+/* Image area locked to 16:9 of 315px width = 177.6px height */
+.articles-page .card .card-media{
+  width: 100%;
+  height: 177.6px !important;
+  position: relative;
+  background: #f5f7fb;
+}
+
+.articles-page .card .card-media img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* In-image label: squared, dark translucent */
+.articles-page .card .label-pill{
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  font-size: .72rem;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+}
+
+.articles-page .card .card-body{
+  padding: 12px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.articles-page .card .card-title{ margin: 0; font-size: 1.05rem; line-height: 1.25; }
+.articles-page .card .card-title a{ color: #0b2340; text-decoration: none; }
+.articles-page .card .card-title a:hover{ text-decoration: underline; }
+
+.articles-page .card .card-excerpt{ color:#444; font-size:.95rem; line-height:1.45; }
+.articles-page .card .card-date{ color:#666; font-size:.85rem; margin-top:.25rem; }
+
+/* Pin author row to bottom */
+.articles-page .card .card-foot{
+  margin-top: auto;
+  padding: 0 14px 14px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.articles-page .card .author-avatar{
+  width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
+}
