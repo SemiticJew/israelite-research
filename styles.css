@@ -2326,3 +2326,44 @@ html, body{ overflow-x:hidden; }
   font-size: 1rem; color: var(--blue-100);
   max-width: 60ch; margin: 0 auto; line-height: 1.6;
 }
+/* === Articles: tighten featured pair === */
+.articles-page .container{ max-width: 1200px !important; }
+
+.articles-page .featured-grid{
+  display:grid;
+  grid-template-columns: 760px 315px !important; /* primary + secondary */
+  gap: 24px !important;
+  justify-content:center; /* keep centered in page */
+}
+
+/* Primary featured (smaller) */
+.articles-page .card-featured.primary{ width:760px !important; height:360px !important; }
+.articles-page .card-featured.primary .inner{
+  display:grid; grid-template-columns: 470px 1fr; height:360px !important;
+}
+.articles-page .card-featured.primary .media{ width:470px !important; height:360px !important; }
+.articles-page .card-featured.primary .media img{
+  width:100%; height:100%; object-fit:cover;
+}
+.articles-page .card-featured.primary .content{
+  padding:16px !important; display:flex; flex-direction:column; justify-content:space-between;
+}
+
+/* Secondary featured (keep your 315×450) */
+.articles-page .card-featured.secondary{ width:315px !important; height:450px !important; }
+.articles-page .card-featured.secondary .media{ width:315px !important; height:177.6px !important; }
+.articles-page .card-featured.secondary .media img{ width:100%; height:100%; object-fit:cover; }
+
+/* Make sure recent cards remain 315×450 if you’re using that size elsewhere */
+.articles-page .articles-grid .card{ width:315px !important; height:450px !important; }
+
+/* Responsive stacking */
+@media (max-width: 1024px){
+  .articles-page .featured-grid{
+    grid-template-columns: 1fr !important;
+  }
+  .articles-page .card-featured.primary,
+  .articles-page .card-featured.primary .inner{ width:100% !important; height:auto !important; }
+  .articles-page .card-featured.primary .inner{ grid-template-columns: 1fr; }
+  .articles-page .card-featured.primary .media{ width:100% !important; height:220px !important; }
+}
