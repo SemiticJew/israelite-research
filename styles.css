@@ -2120,3 +2120,36 @@ html, body{ overflow-x:hidden; }
   max-width: 1400px;  /* 1348 + room for padding */
   margin: 0 auto;
 }
+/* --- Featured row: right card fixed to 315x450 --- */
+.articles-page .featured-row{
+  grid-template-columns: 1009px 315px !important; /* left + right = 1009 + 315 */
+  column-gap: 24px;
+}
+
+/* Right featured card container */
+.articles-page .card-featured.secondary{
+  width: 315px !important;
+  height: 450px !important;
+}
+
+/* Make the secondary card a vertical stack: image + body */
+.articles-page .card-featured.secondary .inner{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Image area locked to 315 x 177.6 (16:9 @ 315w) */
+.articles-page .card-featured.secondary img{
+  width: 100%;
+  height: 177.6px;          /* 315 * 9 / 16 */
+  object-fit: cover;
+  display: block;
+}
+
+/* Body fills the remaining height under the image */
+.articles-page .card-featured.secondary .body{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
