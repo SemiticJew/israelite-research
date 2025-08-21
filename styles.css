@@ -2192,3 +2192,137 @@ html, body{ overflow-x:hidden; }
   transform: translateY(-1px);
 }
 .platform-links .platform:focus { outline: 2px solid var(--accent, #F17300); outline-offset: 2px; }
+/* ===== Articles page reset (scoped) ===== */
+.articles-page .container { max-width: 1320px; margin: 0 auto; }
+
+/* Featured row: two columns — large left, small right */
+.featured-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 315px;
+  gap: 24px;
+  align-items: stretch;
+  margin: 1.25rem 0 2rem;
+}
+
+/* Featured primary (left) */
+.card-featured.primary { background:#fff; border:1px solid #e6ebf2; }
+.card-featured.primary .inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr;   /* image left : text right */
+  height: 450px;
+}
+.card-featured.primary .media {
+  position: relative;
+  overflow: hidden;
+}
+.card-featured.primary .media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                 /* fills the left side fully */
+  display: block;
+}
+.card-featured.primary .content {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Featured secondary (right) is a normal fixed card */
+.card-featured.secondary .inner {
+  position: relative;
+  width: 315px;
+  height: 450px;
+  border:1px solid #e6ebf2;
+  background:#fff;
+  display:flex;
+  flex-direction: column;
+}
+.card-featured.secondary img {
+  width: 315px;
+  height: 177.6px;       /* 315 x 177.6 (≈ 16:9) */
+  object-fit: cover;
+  display:block;
+}
+.card-featured.secondary .body { padding: 12px 14px; }
+.card-featured.secondary .meta {
+  margin-top: auto;
+  padding: 12px 14px;
+  display:flex; align-items:center; gap:.5rem;
+  border-top:1px solid #eee;
+}
+
+/* Pills (squared, dark translucent, inside image) */
+.pill {
+  position:absolute;
+  top:10px; left:10px;
+  background: rgba(0,0,0,.6);
+  color:#fff;
+  font-size:.75rem;
+  padding:4px 8px;
+  border-radius:0;
+  letter-spacing:.02em;
+}
+
+/* Shared card bits */
+.card-link { color: inherit; text-decoration: none; display:block; }
+.title { font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif); }
+.excerpt { color:#444; }
+
+/* Author meta (all cards) */
+.meta { display:flex; align-items:center; gap:.5rem; color:#666; }
+.author-avatar { width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+.dot { opacity:.5; }
+
+/* Recent grid: fixed 315x450 cards, left-aligned, no rounding */
+.articles-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, 315px);
+  gap: 20px;
+  justify-content: start;
+  margin-bottom: 2rem;
+}
+.articles-grid .card {
+  width:315px; height:450px;
+  border:1px solid #e6ebf2; background:#fff;
+}
+.articles-grid .image-wrap {
+  position:relative;
+  width:315px; height:177.6px; overflow:hidden;
+}
+.articles-grid .image-wrap img {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.articles-grid .body { padding:12px 14px; display:flex; flex-direction:column; height: calc(450px - 177.6px); }
+.articles-grid .body .title { font-size:1.05rem; margin:0 0 .35rem; }
+.articles-grid .body .excerpt { font-size:.95rem; color:#555; margin:0 0 .75rem; }
+.articles-grid .meta {
+  margin-top:auto; padding-top:.75rem; border-top:1px solid #eee;
+}
+
+/* Hover elevation for all article cards */
+.card-featured.primary .inner,
+.card-featured.secondary .inner,
+.articles-grid .card {
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+.card-featured.primary .inner:hover,
+.card-featured.secondary .inner:hover,
+.articles-grid .card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transform: translateY(-2px);
+}
+
+/* Keep hero look consistent with other pages */
+.hero-articles .page-title{
+  font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+  font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+  margin: 0 0 .5rem 0;
+  letter-spacing: .5px;
+  color:#fff;
+}
+.hero-articles .page-subtitle{
+  font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+  font-size: 1rem; color: var(--blue-100);
+  max-width: 60ch; margin: 0 auto; line-height: 1.6;
+}

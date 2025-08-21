@@ -10,113 +10,142 @@
   <!-- Header partial -->
   <div id="site-header"></div>
 
+  <!-- Breadcrumbs -->
+  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+
+  <!-- Hero (matches other pages’ spacing/colors) -->
+  <section class="page-hero hero-articles">
+    <div class="container">
+      <h1 class="page-title">Articles</h1>
+      <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+    </div>
+    <div class="hero-divider"></div>
+  </section>
+
   <main class="articles-page">
-    <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+    <div class="container">
 
-    <!-- Hero (consistent across site) -->
-    <section class="page-hero hero-apologetics">
-      <div class="container">
-        <h1 class="page-title">Articles</h1>
-        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
-
-    <!-- Featured Row -->
-    <section class="featured-row container">
-      <!-- PRIMARY featured: wide card (left) -->
-      <article class="card-featured primary">
-        <a class="inner" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-          <div class="media">
-            <span class="pill pill-article">Article</span>
-            <img
-              src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-              alt="Is Scripture &amp; Logic Compatible?"
-              loading="eager">
-          </div>
-          <div class="body">
-            <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
-            <p class="excerpt">Logic does not add to Scripture; it helps us trace the lines God already drew. Here’s how reason serves faith without replacing it.</p>
-            <div class="meta">
-              <img class="author-avatar-mini" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="author">Semitic Jew</span>
-              <span class="date">Aug 15, 2025</span>
+      <!-- FEATURED ROW: large left, small right -->
+      <section class="featured-row" aria-label="Featured articles">
+        <!-- Featured Primary (left) -->
+        <article class="card-featured primary">
+          <a class="card-link" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+            <div class="inner">
+              <div class="media">
+                <span class="pill">Article</span>
+                <img
+                  src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                  alt="Is Scripture &amp; Logic Compatible?">
+              </div>
+              <div class="content">
+                <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
+                <p class="excerpt">
+                  Scripture calls us to reason carefully and test all things. How can logic serve our love for God and our neighbor as we read the Bible?
+                </p>
+                <div class="meta">
+                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+                  <span class="author-name">Semitic Jew</span>
+                  <span class="dot">•</span>
+                  <time datetime="2025-08-15">Aug 15, 2025</time>
+                </div>
+              </div>
             </div>
-          </div>
-        </a>
-      </article>
+          </a>
+        </article>
 
-      <!-- SECONDARY featured: fixed 315x450 (right) -->
-      <article class="card-featured secondary">
-        <a class="inner" href="/israelite-research/articles/is-truth-reliable.html">
-          <div class="media">
-            <span class="pill pill-article">Article</span>
-            <!-- Image should fill 315x177.6 via CSS hooks -->
-            <img
-              src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
-              alt="Is Truth Reliable?"
-              loading="eager">
-          </div>
-          <div class="body">
-            <h3 class="title">Is Truth Reliable?</h3>
-            <p class="excerpt">If truth shifts with feelings, it cannot guide us. Scripture anchors truth in the unchanging character of God.</p>
-            <div class="meta">
-              <img class="author-avatar-mini" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="author">Semitic Jew</span>
-              <span class="date">Aug 16, 2025</span>
+        <!-- Featured Secondary (right) -->
+        <article class="card-featured secondary">
+          <a class="card-link" href="/israelite-research/articles/is-creation-logical.html">
+            <div class="inner">
+              <span class="pill">Article</span>
+              <img
+                src="/israelite-research/images/articles/creation-logical-700x394.jpg"
+                alt="Is Creation Logical?">
+              <div class="body">
+                <h3 class="title">Is Creation Logical?</h3>
+                <p class="excerpt">Does the Bible’s creation account invite reasoned confidence rather than blind belief?</p>
+              </div>
+              <div class="meta">
+                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+                <span class="author-name">Semitic Jew</span>
+                <span class="dot">•</span>
+                <time datetime="2025-08-16">Aug 16, 2025</time>
+              </div>
             </div>
-          </div>
-        </a>
-      </article>
-    </section>
+          </a>
+        </article>
+      </section>
 
-    <!-- Recent Articles Grid -->
-    <section class="articles-grid container">
-      <div class="grid">
-        <!-- Card 1 -->
+      <!-- RECENT GRID: all cards 315x450 -->
+      <section class="articles-grid" aria-label="Recent articles">
+        <!-- Article 1 (duplicate of featured is fine until you add more posts) -->
         <article class="card">
-          <a class="inner" href="/israelite-research/articles/is-creation-logical.html">
-            <div class="media">
-              <span class="pill pill-article">Article</span>
+          <a class="card-link" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+            <div class="image-wrap">
+              <span class="pill">Article</span>
+              <img
+                src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                alt="Is Scripture &amp; Logic Compatible?">
+            </div>
+            <div class="body">
+              <h3 class="title">Is Scripture &amp; Logic Compatible?</h3>
+              <p class="excerpt">Scripture invites careful reasoning and testing. Here’s how logic humbly serves truth.</p>
+              <div class="meta">
+                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+                <span class="author-name">Semitic Jew</span>
+                <span class="dot">•</span>
+                <time datetime="2025-08-15">Aug 15, 2025</time>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="card">
+          <a class="card-link" href="/israelite-research/articles/is-creation-logical.html">
+            <div class="image-wrap">
+              <span class="pill">Article</span>
               <img
                 src="/israelite-research/images/articles/creation-logical-700x394.jpg"
                 alt="Is Creation Logical?">
             </div>
             <div class="body">
               <h3 class="title">Is Creation Logical?</h3>
-              <p class="excerpt">Why the Bible’s opening chapter invites rigorous, reverent thinking about origins and meaning.</p>
+              <p class="excerpt">The creation narrative and the pursuit of sound thinking.</p>
               <div class="meta">
-                <img class="author-avatar-mini" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-                <span class="author">Semitic Jew</span>
-                <span class="date">Aug 18, 2025</span>
+                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+                <span class="author-name">Semitic Jew</span>
+                <span class="dot">•</span>
+                <time datetime="2025-08-16">Aug 16, 2025</time>
               </div>
             </div>
           </a>
         </article>
 
-        <!-- Card 2 (example spare slot) -->
-        <!--
+        <!-- Article 3 -->
         <article class="card">
-          <a class="inner" href="/israelite-research/articles/another-article.html">
-            <div class="media">
-              <span class="pill pill-article">Article</span>
-              <img src="/israelite-research/images/articles/another-700x394.jpg" alt="Another Article">
+          <a class="card-link" href="/israelite-research/articles/is-truth-reliable.html">
+            <div class="image-wrap">
+              <span class="pill">Article</span>
+              <img
+                src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                alt="Is Truth Reliable?">
             </div>
             <div class="body">
-              <h3 class="title">Another Article</h3>
-              <p class="excerpt">A short excerpt for the article goes here...</p>
+              <h3 class="title">Is Truth Reliable?</h3>
+              <p class="excerpt">Truth steadies our minds because God and his Word are faithful and sure.</p>
               <div class="meta">
-                <img class="author-avatar-mini" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-                <span class="author">Semitic Jew</span>
-                <span class="date">Aug 19, 2025</span>
+                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+                <span class="author-name">Semitic Jew</span>
+                <span class="dot">•</span>
+                <time datetime="2025-08-16">Aug 16, 2025</time>
               </div>
             </div>
           </a>
         </article>
-        -->
-      </div>
-    </section>
+      </section>
+
+    </div>
   </main>
 
   <!-- Footer partial -->
