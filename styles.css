@@ -2732,3 +2732,15 @@ button:hover, .btn:hover{ filter:brightness(.95); }
   max-width: 60ch;
   margin: 0 auto;
 }
+/* === Articles page: tighter hero === */
+.articles-page .page-hero { 
+  padding: 32px 0 16px;
+}
+.articles-page .page-hero .container {
+  max-width: 960px !important;   /* override any earlier wider value */
+  margin: 0 auto;
+}
+.articles-page .hero-divider {
+  height: 8px;
+  background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat;
+}
