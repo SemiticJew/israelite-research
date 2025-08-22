@@ -487,3 +487,12 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 }
 .search-trigger:hover{ background:#DBE4EE; color:#F17300; }
 .search-trigger svg{ width:20px; height:20px; stroke:currentColor; }
+/* ---- Header search icon (right aligned) ---- */
+.header-grid{
+  display:flex; align-items:center; gap:1rem;
+  justify-content:space-between;
+}
+.site-header .main-nav ul{ display:flex; gap:2rem; align-items:center; justify-content:center; }
+.nav-utilities{ display:flex; align-items:center; margin-left:auto; }
+.nav-search{ display:inline-flex; padding:.4rem; border-radius:8px; text-decoration:none; color:#054A91; }
+.nav-search:hover{ background:#f3f6fb; }
