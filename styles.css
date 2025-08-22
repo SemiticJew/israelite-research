@@ -233,6 +233,13 @@ blockquote.scripture {
   max-width: 100%;      /* shrink nicely on small screens */
   margin: 0 auto 1.5rem;/* centers the whole block */
 }
+/* Articles hero: tighter inner width only on the Articles page */
+.hero-articles .container{
+  max-width: 960px;        /* tighter than the default */
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 
 /* Size hero image within the wrapper */
 .hero-block .article-hero img {
