@@ -2459,3 +2459,61 @@ html, body{ overflow-x:hidden; }
 .articles-page .articles-list .card .card-foot {
   margin-top: auto; /* keep author/date pinned to bottom */
 }
+/* ===== Articles page hard sizes ===== */
+body.articles-page .articles-list .grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, 315px);
+  gap:24px;
+  justify-content:start;
+}
+
+/* Recent cards: 315 x 450 */
+body.articles-page .articles-list .card{ 
+  width:315px !important; 
+  height:450px !important; 
+  display:flex; 
+  flex-direction:column; 
+  overflow:hidden;
+}
+body.articles-page .articles-list .card .card-media{
+  width:315px !important; 
+  height:163.13px !important;  /* 315 x 16:9 */
+  overflow:hidden;
+}
+body.articles-page .articles-list .card .card-media img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+body.articles-page .articles-list .card .card-body{
+  flex:1; display:flex; flex-direction:column;
+}
+body.articles-page .articles-list .card .card-foot{ margin-top:auto; }
+
+/* Featured grid keeps two columns, with right card fixed to 315x450 */
+body.articles-page .featured-grid{
+  display:grid; 
+  grid-template-columns: 1fr 315px; 
+  gap:24px; 
+  align-items:stretch;
+}
+
+/* Right featured (secondary): 315 x 450 */
+body.articles-page .card-featured.secondary{
+  width:315px !important; 
+  height:450px !important; 
+  overflow:hidden;
+}
+body.articles-page .card-featured.secondary .inner{
+  display:flex; flex-direction:column; height:100%;
+}
+body.articles-page .card-featured.secondary .media{
+  width:315px !important; 
+  height:163.13px !important; 
+  overflow:hidden;
+}
+body.articles-page .card-featured.secondary .media img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+body.articles-page .card-featured.secondary .body{
+  flex:1; display:flex; flex-direction:column;
+}
+body.articles-page .card-featured.secondary .card-foot{ margin-top:auto; }
