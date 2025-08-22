@@ -7,13 +7,15 @@
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
     :root{ --accent:#F17300; --muted:#666; --ink:#0b2340; }
-    .article-shell{ max-width:760px; margin:0 auto; padding:0 1rem; }
+    .article-shell{ max-width:760px; margin:0 auto; }
     .article-head{ text-align:center; margin-top:.5rem; }
     .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
     .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
       font-size:clamp(1.9rem,3.4vw,2.6rem); color:#000; line-height:1.15; margin:0 0 .8rem; }
+
     .hero-image{ margin:1rem auto; }
-    .hero-image img{ width:100%; height:auto; display:block; border-radius:10px; aspect-ratio:700/394; object-fit:cover; }
+    .hero-image img{ width:100%; height:auto; display:block; border-radius:10px; }
+
     .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color:#333; }
     .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
       border:1px solid #e6ebf2; background:#f0f3f8; }
@@ -31,7 +33,7 @@
     .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:#333;
       background:#f9fbfe; border-radius:8px; }
 
-    /* Verse hover (articles-only) */
+    /* Verse hover “plugin” (articles-only) */
     .verse{ position:relative; text-decoration:underline dotted; color:#054A91; }
     .verse:hover::after{
       content:"Open in Logos";
@@ -46,25 +48,22 @@
   <div id="site-header"></div>
 
   <main class="container article-page">
-    <!-- Breadcrumbs (consistent placement) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
-    <!-- Page title + date -->
     <div class="article-shell">
+      <!-- Title + Date -->
       <header class="article-head">
-        <div class="article-date">Aug 15, 2025</div>
+        <div class="article-date">Aug 14, 2025</div>
         <h1 class="article-title">Is Creation Logical?</h1>
       </header>
 
       <!-- Hero image -->
       <figure class="hero-image">
         <img
-          src="/israelite-research/images/articles/creation-logical-700x394.jpg?v=9"
-          srcset="/israelite-research/images/articles/creation-logical-700x394.jpg?v=9 700w,
-                  /israelite-research/images/articles/creation-logical-1000x563.jpg?v=9 1000w"
-          sizes="700px"
-          alt="Order and coherence in God's creation"
-          onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg?v=9'">
+          src="/israelite-research/images/articles/creation-logical-700x394.jpg"
+          alt="Creation and the order of God"
+          onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
       </figure>
 
       <!-- Byline -->
@@ -88,51 +87,38 @@
 
       <!-- Body -->
       <article class="article-content">
-        <p>The opening line of Scripture affirms an intelligible world with an intentional cause:
-          “In the beginning God created the heaven and the earth”
+        <p>Genesis opens with the most sweeping claim in Scripture: “In the beginning God created the heaven and the earth”
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Genesis%201:1">Genesis&nbsp;1:1</a>).
-          If creation springs from the wisdom of God, then the world should bear marks of coherence, order, and purpose that
-          reason can humbly trace (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Proverbs%203:19">Proverbs&nbsp;3:19</a>;
-          <a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Colossians%201:16-17">Colossians&nbsp;1:16–17</a>).</p>
+          From the first verse, creation is presented as an ordered act from an intelligent, personal God. Far from being chaotic or accidental, the world comes to be through God’s purposeful word.</p>
 
-        <h2>Creation and Coherence</h2>
-        <p>Scripture frequently connects God’s creative work with intelligibility. “By faith we understand that the worlds were framed by the word of God”
+        <h2>Word Before World</h2>
+        <p>Creation proceeds by divine speech—“And God said”
+          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Genesis%201:3">Genesis&nbsp;1:3</a>)—which the New Testament identifies with the eternal Word:
+          “All things were made by him”
+          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/John%201:1-3">John&nbsp;1:1–3</a>).
+          If the Triune God speaks reality into existence, then rationality is baked into the universe itself.</p>
+
+        <h2>Order That Invites Observation</h2>
+        <p>God separates light from darkness, waters above from waters below, and gathers the seas so dry land appears
+          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Genesis%201:4-10">Genesis&nbsp;1:4–10</a>).
+          This is not haphazard power; it is structured wisdom that invites human discovery.
+          “The heavens declare the glory of God”
+          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Psalm%2019:1">Psalm&nbsp;19:1</a>);
+          the created order bears witness to the Creator’s “eternal power and Godhead”
+          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Romans%201:20">Romans&nbsp;1:20</a>).</p>
+
+        <h2>Faith Sees More, Not Less</h2>
+        <p>Biblical faith doesn’t reject reason; it extends it.
+          “Through faith we understand that the worlds were framed by the word of God”
           (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Hebrews%2011:3">Hebrews&nbsp;11:3</a>).
-          God speaks, and the world takes form—light distinguished from darkness, land from sea, times and seasons marked
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Genesis%201:3-5">Genesis&nbsp;1:3–5</a>;
-          <a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Genesis%201:14">1:14</a>).
-          This is not chaos but cosmos—ordered reality that invites observation and understanding.</p>
+          Logic helps us trace the coherence of God’s work; revelation shows us the meaning logic alone cannot supply.</p>
 
-        <h2>Purpose, Order, and Natural Law</h2>
-        <p>The heavens “declare” (announce, make known) the glory of God
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Psalm%2019:1">Psalm&nbsp;19:1</a>),
-          so that humanity is “without excuse” for ignoring the Maker
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Romans%201:20">Romans&nbsp;1:20</a>).
-          The regularities we study—patterns in physics, biology, and mathematics—reflect a world under providential rule, not a
-          meaningless accident. God is “not the author of confusion”
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/1%20Corinthians%2014:33">1&nbsp;Corinthians&nbsp;14:33</a>), so Christians welcome clarity, testing, and sound inference.</p>
+        <blockquote>Creation is logical because God is wise. The universe is not a riddle without an answer; it is a poem with an Author.</blockquote>
 
-        <h2>What Logic Can and Can’t Do</h2>
-        <p>Logic is a servant—not a master—of divine revelation. It helps us avoid contradictions, sort categories, and
-          connect premises to conclusions. But reason is finite; it cannot climb to God by unaided speculation
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Job%2038:4">Job&nbsp;38:4</a>).
-          We receive, by revelation, truths we could not discover on our own; then we use reason to understand and rightly apply them
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/Luke%2024:27">Luke&nbsp;24:27</a>).</p>
-
-        <h2>Thinking God’s World After Him</h2>
-        <p>Because “all things were made by” the Word
-          (<a class="verse" target="_blank" rel="noopener" href="https://biblia.com/bible/kjv1900/John%201:3">John&nbsp;1:3</a>),
-          believers can “think God’s thoughts after Him,” tracing design with humility. Creation is logical—not because we
-          control it with our logic—but because God is faithful, wise, and good. Our study of the world becomes gratitude:
-          to observe is to worship.</p>
-
-        <blockquote>Creation’s order does not replace revelation; it resonates with it.</blockquote>
-
-        <p>So we approach the created order with open Bibles and engaged minds, confident that the God who formed the world
-          also formed language, inference, and truth. His works and His word agree.</p>
+        <p>Therefore, Christians need not fear careful thinking about the world’s beginning. The God who spoke light into darkness calls us to love him with all our heart, soul, and mind—and to read both Scripture and creation with humility and clarity.</p>
       </article>
 
-      <!-- Tags -->
+      <!-- Tags (optional) -->
       <div class="article-tags" style="display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 2.5rem;">
         <a class="tag" href="/israelite-research/articles.html?tag=creation">Creation</a>
         <a class="tag" href="/israelite-research/articles.html?tag=logic">Logic</a>
