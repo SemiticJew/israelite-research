@@ -2653,3 +2653,37 @@ body.articles-page .card-featured.secondary .card-foot{ margin-top:auto; }
 
 /* Keep page gutters consistent with rest of site */
 .podcast-home .container { max-width: 1100px; margin: 0 auto; }
+/* ——— Brand palette ——— */
+:root{
+  --brand-900:#054A91; /* deep blue */
+  --brand-700:#3E7CB1;
+  --brand-400:#81A4CD;
+  --brand-100:#DBE4EE;
+  --accent:#F17300;   /* orange */
+}
+
+/* Articles hero uses brand colors */
+.hero-articles{
+  background: linear-gradient(180deg, var(--brand-900) 0%, var(--brand-700) 100%);
+}
+.hero-articles .page-title,
+.hero-articles .page-subtitle{ color:#fff; }
+.hero-divider{ height:12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
+
+/* Breadcrumb links stay on-brand (no underline) */
+.breadcrumb a{ color:var(--brand-900); text-decoration:none; }
+.breadcrumb a:hover{ color:var(--brand-700); text-decoration:underline; }
+
+/* Article “pill” label stays dark-transparent (readable on any image) */
+.label-pill{
+  position:absolute; left:8px; top:8px;
+  padding:.25rem .5rem; font-size:.75rem; font-weight:600;
+  background: rgba(0,0,0,.45); color:#fff; border:none; border-radius:0;
+  letter-spacing:.04em; text-transform:uppercase;
+}
+
+/* Generic link/interactive accents (optional, subtle) */
+a{ color:var(--brand-900); }
+a:hover{ color:var(--brand-700); }
+button, .btn{ background:var(--accent); color:#fff; }
+button:hover, .btn:hover{ filter:brightness(.95); }
