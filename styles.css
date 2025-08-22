@@ -322,3 +322,10 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .breadcrumb li:last-child a {
   color: var(--ink, #0b2340);
 }
+/* Breadcrumbs */
+.breadcrumb { max-width: 1100px; margin: var(--space-sm,16px) auto var(--space-xs,8px); padding: 0 16px; }
+.breadcrumb .crumbs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.breadcrumb .crumbs li { font-size: .95rem; color: #666; }
+.breadcrumb .crumbs li + li::before { content: "›"; margin: 0 6px; color: #999; }
+.breadcrumb a { color: var(--accent, #F17300); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; text-underline-offset: 2px; }
