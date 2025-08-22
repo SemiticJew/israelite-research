@@ -267,3 +267,40 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   border: 0;                   /* no white outline */
   pointer-events: none;
 }
+.site-header .main-nav ul{
+  display:flex;
+  justify-content:center;
+  gap: 1.25rem; /* keep your spacing */
+}
+/* --- Articles page breadcrumb fix (location & no numbering) --- */
+.articles-page .breadcrumb {
+  max-width: var(--container, 1200px);
+  margin: 0 auto var(--space-sm, 16px);
+  padding: 0 16px;
+}
+.articles-page .breadcrumb ol {
+  list-style: none;      /* removes 1,2,3 numbering */
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+}
+.articles-page .breadcrumb li {
+  display: flex;
+  align-items: center;
+  font-size: .95rem;
+  color: var(--blue-100, #81A4CD);
+}
+.articles-page .breadcrumb li + li::before {
+  content: "›";
+  margin: 0 .35rem;
+  color: var(--blue-200, #3E7CB1);
+}
+.articles-page .breadcrumb a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.articles-page .breadcrumb a:hover {
+  border-bottom-color: currentColor;
+}
