@@ -2719,3 +2719,16 @@ button:hover, .btn:hover{ filter:brightness(.95); }
   height: 12px;
   background: linear-gradient(90deg, var(--accent, #F17300) 0 140px, transparent 140px) bottom/100% 6px no-repeat;
 }
+/* ——— Articles page hero (tighter width & spacing) ——— */
+.hero-articles { padding: 1.5rem 0 1rem; }
+.hero-articles .container { 
+  max-width: 980px;         /* tighten only the Articles hero */
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.hero-articles .page-title { margin: 0 0 .25rem; }
+.hero-articles .page-subtitle {
+  max-width: 60ch;
+  margin: 0 auto;
+}
