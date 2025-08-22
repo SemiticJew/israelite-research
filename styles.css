@@ -2687,3 +2687,28 @@ a{ color:var(--brand-900); }
 a:hover{ color:var(--brand-700); }
 button, .btn{ background:var(--accent); color:#fff; }
 button:hover, .btn:hover{ filter:brightness(.95); }
+/* Articles hero — match Events hero */
+.hero-articles{
+  background: var(--blue-900, #0b2340);
+  color: #fff;
+  padding: 2.25rem 0 1.25rem;
+}
+.hero-articles .page-title{
+  font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+  font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+  margin: 0 0 .5rem 0;
+  letter-spacing: .5px;
+  color: #fff;
+}
+.hero-articles .page-subtitle{
+  font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+  font-size: 1rem;
+  color: var(--blue-100, #DBE4EE);
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.hero-divider{
+  height: 12px;
+  background: linear-gradient(90deg, var(--accent, #F17300) 0 140px, transparent 140px) bottom/100% 6px no-repeat;
+}
