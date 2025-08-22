@@ -3,271 +3,212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Semitic Jew — Read, Reason, Revere</title>
+  <title>Semitic Jew — Home</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* --- Home-only helpers (kept scoped to .home) --- */
-    :root{
-      --blue-900:#054A91; --blue-700:#3E7CB1; --blue-400:#81A4CD; --blue-50:#DBE4EE; --accent:#F17300;
+    /* Page-local styles (kept tight so we don’t affect other pages) */
+    :root {
+      --blue-900:#054A91; --blue-600:#3E7CB1; --blue-300:#81A4CD;
+      --blue-50:#DBE4EE;  --accent:#F17300;   --ink:#0B2340;
     }
-    .home .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    .home-hero {
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-600));
+      color: #fff;
+      padding: clamp(48px, 8vw, 96px) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    .home-hero h1 {
+      font-family: var(--ff-serif, "Adobe Garamond Pro", serif);
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      margin: 0 0 .5rem 0;
+      letter-spacing: .5px;
+      color: #fff;
+    }
+    .home-hero p.lead {
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif);
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      margin: 0 0 1.25rem 0;
+      color: #f5f9ff;
+      max-width: 60ch;
+      line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn-solid, .btn-outline {
+      display: inline-block; padding: .7rem 1rem; text-decoration: none; border-radius: 10px;
+      font-weight: 600; letter-spacing: .2px;
+    }
+    .btn-solid { background: var(--accent); color: #111; }
+    .btn-outline { border: 2px solid #fff; color: #fff; }
+    .hero-divider { height: 10px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
 
-    /* Hero (GTY-like: big, bold, simple CTA) */
-    .home-hero{
-      position:relative; color:#fff;
-      background: linear-gradient(180deg, rgba(5,74,145,.85), rgba(5,74,145,.65)), url("/israelite-research/images/hero/home-hero.jpg") center/cover no-repeat;
-      min-height: 48vh; display:flex; align-items:center;
+    /* Featured Podcast */
+    .home-podcast { padding: clamp(32px, 6vw, 56px) 0; background: #fff; }
+    .home-section .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    .section-title {
+      font-family: var(--ff-serif, "Adobe Garamond Pro", serif);
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      color: var(--ink);
+      margin: 0 0 .5rem 0;
     }
-    .home-hero .hero-inner{ padding: clamp(32px,5vw,56px) 0; }
-    .home-hero .kicker{ text-transform:uppercase; letter-spacing:.12em; font-size:.85rem; opacity:.95 }
-    .home-hero .title{
-      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
-      font-size: clamp(2rem,4.2vw,3.25rem); line-height:1.08; margin:.35rem 0 .5rem 0;
+    .section-sub {
+      color:#555; margin:0 0 1rem 0; max-width: 64ch; line-height: 1.7;
     }
-    .home-hero .subtitle{
-      max-width: 60ch; font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
-      font-size: 1.05rem; line-height:1.6; color:#f5f7fb;
+    .podcast-wrap {
+      display: grid; gap: 1rem; grid-template-columns: 1fr; align-items: start;
     }
-    .home-hero .cta-row{ margin-top: 1rem; display:flex; gap:.75rem; flex-wrap:wrap; }
-    .home-hero .btn{
-      display:inline-block; padding:.65rem 1rem; border:1px solid rgba(255,255,255,.35);
-      text-decoration:none; color:#fff; border-radius:8px; font-weight:500;
+    @media (min-width: 860px) {
+      .podcast-wrap { grid-template-columns: 2fr 1fr; }
     }
-    .home-hero .btn.primary{ background: var(--accent); border-color: var(--accent); }
-    .home-hero .btn:hover{ transform: translateY(-1px); }
+    .podcast-player {
+      background: #f8fbff; border: 1px solid #e6ebf2; border-radius: 12px; padding: 1rem;
+    }
+    .podcast-badges {
+      display: flex; gap:.5rem; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display:inline-block; padding:.5rem .7rem; border:1px solid #e6ebf2; border-radius: 8px;
+      text-decoration:none; color: var(--blue-900); background:#fff;
+    }
+    .badge:hover { transform: translateY(-1px); }
 
-    /* Featured lane (two-up like GTY: lead feature + supporting) */
-    .featured-lane{ padding: clamp(24px,4vw,40px) 0; background:#fff; }
-    .featured-grid{
-      display:grid; grid-template-columns: 1fr 320px; gap: 24px;
+    /* Latest Articles (reuses your 315x450 standard) */
+    .home-latest { padding: clamp(32px, 6vw, 56px) 0; background:#fff; }
+    .cards { display:grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); }
+    .card { width: 315px; height: 450px; border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column; }
+    .card .card-media { width:100%; height: 177.6px; position:relative; overflow:hidden; }
+    .card .card-media img { width:100%; height:100%; object-fit:cover; display:block; }
+    .label-pill {
+      position:absolute; left:8px; top:8px; background: rgba(0,0,0,.65);
+      color:#fff; font-size:.78rem; padding:.25rem .45rem; border-radius: 0;
     }
-    @media (max-width: 980px){ .featured-grid{ grid-template-columns: 1fr; } }
+    .card-body { padding: .75rem .85rem 0 .85rem; display:flex; flex-direction:column; gap:.5rem; }
+    .card-title a { color: var(--ink); text-decoration:none; font-weight:700; }
+    .card-title a:hover { text-decoration:underline; }
+    .card-excerpt { color:#444; font-size:.95rem; line-height:1.5; }
+    .card-date { font-size:.85rem; color:#666; }
+    .card-foot {
+      margin-top:auto; padding: .75rem .85rem 1rem .85rem; display:flex; align-items:center; gap:.5rem;
+      border-top:1px solid #eef2f7;
+    }
+    .author-avatar { width:30px; height:30px; border-radius:50%; object-fit:cover; display:block; }
+    .author-name { font-size:.95rem; color:#222; }
 
-    .featured-primary .card{
-      display:grid; grid-template-columns: minmax(280px, 58%) 1fr; gap:0; background:#fff;
-      border:1px solid #e6ebf2; text-decoration:none; color:inherit;
-    }
-    @media (max-width: 720px){ .featured-primary .card{ grid-template-columns: 1fr; } }
-
-    .featured-primary .media{
-      position:relative; aspect-ratio: 16/9; background:#f1f5fa; overflow:hidden;
-    }
-    .featured-primary .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .featured-primary .label-pill{
-      position:absolute; top:10px; left:10px; background: rgba(0,0,0,.55); color:#fff;
-      font-size:.75rem; padding:.25rem .5rem; border-radius:0; /* square per your standard */
-    }
-    .featured-primary .body{ padding:16px 16px 12px; display:flex; flex-direction:column; }
-    .featured-primary .title{ font-size: clamp(1.15rem, 2.2vw, 1.6rem); margin:.15rem 0 .35rem; font-family: var(--ff-serif); }
-    .featured-primary .excerpt{ color:#333; line-height:1.55; margin:0 0 .5rem; }
-    .featured-primary .foot{ margin-top:auto; display:flex; align-items:center; gap:.5rem; color:#555; }
-    .featured-primary .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
-
-    .featured-side .card{
-      border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column; height:100%;
-      text-decoration:none; color:inherit;
-    }
-    .featured-side .media{ position:relative; aspect-ratio: 16/9; overflow:hidden; background:#f1f5fa; }
-    .featured-side .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .featured-side .label-pill{
-      position:absolute; top:10px; left:10px; background: rgba(0,0,0,.55); color:#fff;
-      font-size:.75rem; padding:.25rem .5rem; border-radius:0;
-    }
-    .featured-side .body{ padding:12px 12px 10px; display:flex; flex-direction:column; }
-    .featured-side .title{ font-size:1.05rem; margin:0 0 .35rem; font-family: var(--ff-serif); }
-    .featured-side .excerpt{ color:#333; line-height:1.5; margin:0 0 .5rem; }
-    .featured-side .foot{ margin-top:auto; display:flex; align-items:center; gap:.5rem; color:#555; }
-    .featured-side .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
-
-    /* Latest articles grid (your 315x450 standard) */
-    .latest{ padding: clamp(24px,4vw,40px) 0; background:#fff; }
-    .grid-cards{
-      display:grid; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); gap: 18px;
-    }
-    .card-std{
-      border:1px solid #e6ebf2; background:#fff; height:450px; display:flex; flex-direction:column; text-decoration:none; color:inherit;
-    }
-    .card-std .media{ position:relative; width:100%; height:177.6px; background:#f1f5fa; overflow:hidden; }
-    .card-std .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .card-std .label-pill{
-      position:absolute; top:10px; left:10px; background: rgba(0,0,0,.55); color:#fff;
-      font-size:.75rem; padding:.25rem .5rem; border-radius:0;
-    }
-    .card-std .body{ padding:12px; display:flex; flex-direction:column; gap:.35rem; }
-    .card-std .title{ font-size:1.02rem; line-height:1.3; font-family: var(--ff-serif); }
-    .card-std .excerpt{ color:#444; line-height:1.5; font-size:.95rem; }
-    .card-std .date{ color:#667; font-size:.9rem; }
-    .card-std .foot{ margin-top:auto; display:flex; align-items:center; gap:.5rem; color:#555; padding:0 12px 12px; }
-    .card-std .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
-
-    /* Podcast slice */
-    .podcast-slice{ padding: clamp(24px,4vw,40px) 0; background: #f8fafc; border-top: 1px solid #e6ebf2; }
-    .podcast-slice h2{ font-family: var(--ff-serif); font-size: clamp(1.3rem,2.5vw,1.7rem); margin:0 0 .5rem; }
-    .podcast-embed{ width:100%; max-width: 720px; aspect-ratio: 16/9; border:0; }
-
-    /* Explore links */
-    .explore{ padding: clamp(24px,4vw,40px) 0; background:#fff; border-top:1px solid #e6ebf2; }
-    .quick-links{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:14px; }
-    .quick-links a{
-      display:block; padding:14px; border:1px solid #e1e7ef; text-decoration:none; color:#0b2340; background:#fff;
-    }
-    .quick-links a:hover{ background:#f7faff; border-color:#d5e0ee; }
+    /* General spacing helpers */
+    .stack-sm { margin-top: 1rem; }
   </style>
 </head>
-<body class="home">
+<body class="home-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- HERO -->
-  <section class="home-hero">
-    <div class="container hero-inner">
-      <div class="kicker">Semitic Jew</div>
-      <h1 class="title">Read Scripture with Logic, Care, and Context</h1>
-      <p class="subtitle">Free, research-driven resources to help you study the Tanakh and New Testament—thoughtfully, reverently, and clearly.</p>
-      <div class="cta-row">
-        <a class="btn primary" href="/israelite-research/articles.html">Read Articles</a>
-        <a class="btn" href="/israelite-research/texts.html">Explore Texts</a>
+  <main>
+    <!-- HERO -->
+    <section class="home-hero">
+      <div class="container">
+        <h1>Semitic Jew</h1>
+        <p class="lead">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+        <div class="hero-ctas">
+          <a class="btn-solid" href="/israelite-research/articles.html">Read Articles</a>
+          <a class="btn-outline" href="/israelite-research/texts.html">Explore Texts</a>
+        </div>
       </div>
-    </div>
-  </section>
+      <div class="hero-divider"></div>
+    </section>
 
-  <!-- FEATURED LANE -->
-  <section class="featured-lane">
-    <div class="container featured-grid">
-
-      <!-- Lead feature (article) -->
-      <article class="featured-primary">
-        <a class="card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-          <div class="media">
-            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-                 alt="Is Scripture &amp; Logic Compatible?">
-            <span class="label-pill">Article</span>
+    <!-- FEATURED PODCAST -->
+    <section class="home-section home-podcast">
+      <div class="container">
+        <h2 class="section-title">Featured Podcast</h2>
+        <p class="section-sub">Listen to recent conversations and studies. Subscribe on your favorite platform.</p>
+        <div class="podcast-wrap">
+          <div class="podcast-player">
+            <!-- Apple Podcasts embed (simple iframe). If it doesn’t render, the badges on the right still work. -->
+            <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+                    frameborder="0" height="450" style="width:100%;max-width:100%;overflow:hidden;border-radius:12px;"
+                    sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+                    src="https://embed.podcasts.apple.com/us/podcast/semitic-jew/id1693178004"></iframe>
           </div>
-          <div class="body">
-            <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
-            <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
-            <div class="foot">
-              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span>Semitic Jew · Aug 15, 2025</span>
+          <div class="podcast-badges">
+            <a class="badge" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple Podcasts</a>
+            <a class="badge" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+            <a class="badge" href="/israelite-research/podcast.html" rel="noopener">Podcast Page</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LATEST ARTICLES (315x450) -->
+    <section class="home-section home-latest">
+      <div class="container">
+        <h2 class="section-title">Latest Articles</h2>
+        <div class="cards">
+          <!-- Article 1 -->
+          <article class="card">
+            <div class="card-media">
+              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
+              <span class="label-pill">Article</span>
             </div>
-          </div>
-        </a>
-      </article>
-
-      <!-- Supporting feature (article) -->
-      <aside class="featured-side">
-        <a class="card" href="/israelite-research/articles/is-truth-reliable.html">
-          <div class="media">
-            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
-                 alt="Is Truth Reliable?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="body">
-            <h3 class="title">Is Truth Reliable?</h3>
-            <p class="excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
-            <div class="foot">
-              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span>Semitic Jew · Aug 16, 2025</span>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+              </h3>
+              <p class="card-excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+              <div class="card-date">Aug 15, 2025</div>
             </div>
-          </div>
-        </a>
-      </aside>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
 
-    </div>
-  </section>
+          <!-- Article 2 -->
+          <article class="card">
+            <div class="card-media">
+              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?">
+              <span class="label-pill">Article</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+              </h3>
+              <p class="card-excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
+              <div class="card-date">Aug 16, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
 
-  <!-- LATEST ARTICLES GRID (315 x 450 cards) -->
-  <section class="latest">
-    <div class="container">
-      <h2 style="font-family:var(--ff-serif); margin:0 0 .5rem;">Recent Articles</h2>
-      <div class="grid-cards">
-
-        <!-- Creation article -->
-        <a class="card-std" href="/israelite-research/articles/is-creation-logical.html">
-          <div class="media">
-            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="body">
-            <div class="title">Is Creation Logical?</div>
-            <div class="excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</div>
-            <div class="date">Aug 14, 2025</div>
-          </div>
-          <div class="foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span>Semitic Jew</span>
-          </div>
-        </a>
-
-        <!-- Truth article (also in supporting feature, duplicated here is fine or replace later) -->
-        <a class="card-std" href="/israelite-research/articles/is-truth-reliable.html">
-          <div class="media">
-            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="body">
-            <div class="title">Is Truth Reliable?</div>
-            <div class="excerpt">Scripture anchors truth in God’s unchanging character.</div>
-            <div class="date">Aug 16, 2025</div>
-          </div>
-          <div class="foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span>Semitic Jew</span>
-          </div>
-        </a>
-
-        <!-- Logic compatible (also featured) -->
-        <a class="card-std" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-          <div class="media">
-            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="body">
-            <div class="title">Is Scripture &amp; Logic Compatible?</div>
-            <div class="excerpt">How logic serves love and clarity when we read the Bible.</div>
-            <div class="date">Aug 15, 2025</div>
-          </div>
-          <div class="foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span>Semitic Jew</span>
-          </div>
-        </a>
-
+          <!-- Article 3 -->
+          <article class="card">
+            <div class="card-media">
+              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
+              <span class="label-pill">Article</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+              </h3>
+              <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
+              <div class="card-date">Aug 14, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- PODCAST SLICE -->
-  <section class="podcast-slice">
-    <div class="container">
-      <h2>Latest Podcast</h2>
-      <iframe class="podcast-embed"
-              allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
-              sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-              src="https://embed.podcasts.apple.com/us/podcast/semitic-jew/id1693178004"></iframe>
-    </div>
-  </section>
-
-  <!-- EXPLORE QUICK LINKS -->
-  <section class="explore">
-    <div class="container">
-      <h2 style="font-family:var(--ff-serif); margin:0 0 .5rem;">Explore</h2>
-      <div class="quick-links">
-        <a href="/israelite-research/texts.html">Texts</a>
-        <a href="/israelite-research/tanakh.html">The Tanakh</a>
-        <a href="/israelite-research/newtestament.html">The New Testament</a>
-        <a href="/israelite-research/apocrypha.html">The Apocrypha</a>
-        <a href="/israelite-research/biblical-references.html">Biblical References</a>
-        <a href="/israelite-research/podcast.html">Podcast</a>
-        <a href="/israelite-research/donate.html">Donations</a>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials loader -->
+  <!-- Partials -->
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
