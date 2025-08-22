@@ -247,3 +247,23 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   .articles-grid{ grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); }
   .articles-grid .card{ width: 100%; }
 }
+/* Show the resource label only inside article cards */
+.label-pill { display: none; }
+
+.card .label-pill,
+.card-featured .label-pill {
+  display: inline-flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  background: rgba(0,0,0,.55); /* dark transparent, squared */
+  color: #fff;
+  border-radius: 0;            /* square corners */
+  border: 0;                   /* no white outline */
+  pointer-events: none;
+}
