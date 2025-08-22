@@ -1,77 +1,73 @@
-<footer class="global-footer" role="contentinfo">
-  <div class="container">
-    <!-- Top row: brand + newsletter -->
-    <div class="footer-top">
-      <div class="brand-blurb">
-        <div class="footer-title">Semitic Jew</div>
-        <p class="footer-copy">
-          Free, research-driven resources to help you read Scripture with logic, care, and context.
-        </p>
+<footer class="site-footer">
+  <div class="footer-accent"></div>
+
+  <div class="container footer-grid">
+    <!-- Brand / mission / socials -->
+    <div class="footer-brand">
+      <a class="brand" href="/israelite-research/">
+        <span class="brand-mark">Semitic Jew</span>
+      </a>
+      <p class="brand-tag">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
+
+      <div class="social">
+        <a aria-label="Spotify" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">
+          <!-- Spotify -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 0a12 12 0 1 0 .001 24.001A12 12 0 0 0 12 0Zm4.93 17.15a.75.75 0 0 1-1.03.25c-2.81-1.72-6.35-2.11-10.5-1.17a.75.75 0 0 1-.33-1.46c4.52-1.03 8.43-.58 11.51 1.31.36.22.48.7.25 1.07Zm1.39-3.13a.9.9 0 0 1-1.23.3c-3.21-1.93-8.1-2.49-11.89-1.38a.9.9 0 0 1-.5-1.73c4.23-1.22 9.5-.62 13.13 1.56.43.26.57.82.28 1.25Zm.19-3.29a1.05 1.05 0 0 1-1.44.36c-3.68-2.2-9.3-2.7-13.28-1.5a1.05 1.05 0 0 1-.6-2.02c4.48-1.33 10.6-.78 14.72 1.67.5.3.67.96.36 1.49Z" fill="currentColor"/></svg>
+        </a>
+        <a aria-label="Apple Podcasts" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">
+          <!-- Apple -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M16.37 1.64c.39-.47.66-1.05.61-1.64-.59.02-1.3.39-1.72.86-.38.44-.69 1.04-.61 1.64.65.05 1.33-.38 1.72-.86ZM21 17.25c-.34.77-.75 1.48-1.2 2.13-.64.93-1.31 1.85-2.3 1.86-.99.01-1.31-.61-2.45-.61s-1.5.59-2.46.62c-.98.03-1.72-1-2.36-1.92-1.29-1.84-2.28-5.2-.95-7.48.9-1.57 2.52-2.56 4.28-2.59 1-.02 1.94.36 2.64.36.69 0 1.83-.44 3.09-.38.52.02 1.98.21 2.92 1.59-.08.05-1.74 1.02-1.71 3.02.02 2.39 2.09 3.19 2.2 3.24Z" fill="currentColor"/></svg>
+        </a>
+        <a aria-label="RSS" href="/israelite-research/articles.xml">
+          <!-- RSS -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 18a2 2 0 1 1-4.001-.001A2 2 0 0 1 6 18Zm-4-8v3a9 9 0 0 1 9 9h3c0-6.627-5.373-12-12-12Zm0-5v3c9.941 0 18 8.059 18 18h3C23 5.82 13.18-4 2-4Z" transform="translate(2 2)" fill="currentColor"/></svg>
+        </a>
       </div>
+    </div>
 
-      <form class="newsletter" action="#" method="post" aria-label="Newsletter signup">
-        <label for="newsletter-email">Get updates</label>
-        <div class="newsletter-row">
-          <input id="newsletter-email" name="email" type="email" placeholder="you@email.com" required>
-          <button type="submit">Subscribe</button>
-        </div>
-        <small class="disclaimer">We respect your inbox. Unsubscribe anytime.</small>
+    <!-- Explore -->
+    <nav class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="/israelite-research/index.html">Articles</a></li>
+        <li><a href="/israelite-research/texts.html">Texts</a></li>
+        <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
+        <li><a href="/israelite-research/events.html">Events</a></li>
+        <li><a href="/israelite-research/podcast.html">Podcast</a></li>
+        <li><a href="/israelite-research/donate.html">Donations</a></li>
+      </ul>
+    </nav>
+
+    <!-- Podcasts quick links -->
+    <div class="footer-col">
+      <h4>Podcasts</h4>
+      <div class="pod-links">
+        <a class="pod-btn" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+        <a class="pod-btn" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple</a>
+        <a class="pod-btn" href="/israelite-research/podcast.html">Podcast page</a>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="footer-col">
+      <h4>Stay in the loop</h4>
+      <form class="newsletter" action="#" method="post" onsubmit="alert('Thanks for subscribing!'); return false;">
+        <label for="nl-email" class="sr-only">Email</label>
+        <input id="nl-email" type="email" name="email" placeholder="your@email.com" required>
+        <button type="submit">Subscribe</button>
       </form>
+      <small class="fine">We respect your inbox.</small>
     </div>
+  </div>
 
-    <!-- Link columns -->
-    <div class="footer-grid">
-      <nav class="footer-col" aria-label="Texts">
-        <h4>Texts</h4>
-        <ul>
-          <li><a href="/israelite-research/tanakh.html">The Tanakh</a></li>
-          <li><a href="/israelite-research/newtestament.html">The New Testament</a></li>
-          <li><a href="/israelite-research/apocrypha.html">The Apocrypha</a></li>
-          <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
-          <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
-          <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-        </ul>
-      </nav>
-
-      <nav class="footer-col" aria-label="Media">
-        <h4>Media</h4>
-        <ul>
-          <li><a href="/israelite-research/articles.html">Articles</a></li>
-          <li><a href="/israelite-research/podcast.html">Podcast</a></li>
-          <li><a href="/israelite-research/events.html">Events</a></li>
-        </ul>
-      </nav>
-
-      <nav class="footer-col" aria-label="Support">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="/israelite-research/donate.html">Donations</a></li>
-          <li><a href="mailto:info@your-domain.org">Contact</a></li>
-        </ul>
-        <div class="social" aria-label="Social links">
-          <a aria-label="Follow on YouTube" href="#" target="_blank" rel="noopener" class="social-btn">
-            <!-- YouTube -->
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M23 7.2a4 4 0 0 0-2.8-2.9C18.2 3.7 12 3.7 12 3.7s-6.2 0-8.2.6A4 4 0 0 0 1 7.2 41 41 0 0 0 .4 12a41 41 0 0 0 .6 4.8 4 4 0 0 0 2.8 2.9c2 .6 8.2.6 8.2.6s6.2 0 8.2-.6a4 4 0 0 0 2.8-2.9A41 41 0 0 0 23.6 12 41 41 0 0 0 23 7.2ZM9.8 15.3V8.7l6 3.3-6 3.3Z"/></svg>
-          </a>
-          <a aria-label="Follow on Twitter/X" href="#" target="_blank" rel="noopener" class="social-btn">
-            <!-- X/Twitter -->
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.1 3H23l-9.9 11.3L22.8 21H16l-6-5.9L4 21H1l10.6-12L1.6 3H8l5.4 5.3 6.7-5.3Z"/></svg>
-          </a>
-          <a aria-label="Follow on Instagram" href="#" target="_blank" rel="noopener" class="social-btn">
-            <!-- Instagram -->
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm6.25-3a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z"/></svg>
-          </a>
-        </div>
-      </nav>
-    </div>
-
-    <!-- Bottom bar -->
-    <div class="footer-bottom">
-      <p>&copy; 2025 Israelite Research. All rights reserved.</p>
-      <nav class="legal-links" aria-label="Legal links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-      </nav>
+  <div class="legal">
+    <div class="container legal-inner">
+      <p>© 2025 Semitic Jew • All rights reserved.</p>
+      <ul class="legal-links">
+        <li><a href="/israelite-research/donate.html">Donate</a></li>
+        <li><a href="/israelite-research/articles.html">Articles</a></li>
+        <li><a href="/israelite-research/texts.html">Texts</a></li>
+      </ul>
     </div>
   </div>
 </footer>
