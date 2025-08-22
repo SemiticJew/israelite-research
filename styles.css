@@ -496,3 +496,33 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .nav-utilities{ display:flex; align-items:center; margin-left:auto; }
 .nav-search{ display:inline-flex; padding:.4rem; border-radius:8px; text-decoration:none; color:#054A91; }
 .nav-search:hover{ background:#f3f6fb; }
+/* Breadcrumbs – global */
+.breadcrumb{margin:0 auto 1rem; padding:0 1rem;}
+.breadcrumb ol{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; align-items:center; gap:.4rem;}
+.breadcrumb li{font-size:.95rem; color:#3E7CB1;}
+.breadcrumb li+li::before{content:"›"; color:#81A4CD; margin:0 .25rem;}
+.breadcrumb a{color:#F17300; text-decoration:none;}
+.breadcrumb a:hover{opacity:.85; text-decoration:none;}
+
+/* Articles page: ensure it sits above hero and not cramped */
+.articles-page .breadcrumb{max-width:1420px;}
+/* --- Header layout with centered nav & right search --- */
+.header-bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem}
+.site-title{justify-self:start;font-weight:700;text-decoration:none;color:#0b2340}
+.main-nav{justify-self:center}
+.main-nav ul{display:flex;gap:2rem;list-style:none;margin:0;padding:0}
+.main-nav a{text-decoration:none;color:#0b2340}
+.nav-search{justify-self:end;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid #e6ebf2;border-radius:999px;background:#fff;color:#054A91}
+.nav-search:hover{transform:translateY(-1px)}
+
+/* --- Footer tweaks --- */
+.footer-heading{font-weight:700}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.footer-links{list-style:none;margin:0;padding:0}
+.footer-links a{text-decoration:none;color:#0b2340}
+.footer-social{display:flex;gap:.5rem;margin-top:.5rem}
+.social-btn{width:36px;height:36px;border:1px solid #e6ebf2;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:#fff}
+.newsletter-form{display:flex;gap:.5rem;margin-top:.5rem}
+.newsletter-form input{flex:1;min-width:0;padding:.5rem .6rem;border:1px solid #e0e6ef;border-radius:8px}
+.newsletter-form button{padding:.5rem .9rem;border:none;border-radius:8px;background:#F17300;color:#fff;font-weight:600;cursor:pointer}
+.footer-bottom{margin-top:1rem;padding-top:1rem;border-top:1px solid #e6ebf2;text-align:center;color:#555}
