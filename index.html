@@ -117,27 +117,69 @@
       <div class="hero-divider"></div>
     </section>
 
-    <!-- FEATURED PODCAST -->
-    <section class="home-section home-podcast">
-      <div class="container">
-        <h2 class="section-title">Featured Podcast</h2>
-        <p class="section-sub">Listen to recent conversations and studies. Subscribe on your favorite platform.</p>
-        <div class="podcast-wrap">
-          <div class="podcast-player">
-            <!-- Apple Podcasts embed (simple iframe). If it doesn’t render, the badges on the right still work. -->
-            <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
-                    frameborder="0" height="450" style="width:100%;max-width:100%;overflow:hidden;border-radius:12px;"
-                    sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-                    src="https://embed.podcasts.apple.com/us/podcast/semitic-jew/id1693178004"></iframe>
-          </div>
-          <div class="podcast-badges">
-            <a class="badge" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple Podcasts</a>
-            <a class="badge" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
-            <a class="badge" href="/israelite-research/podcast.html" rel="noopener">Podcast Page</a>
-          </div>
-        </div>
+<!-- PODCAST (BibleProject-style) -->
+<section class="podcast-home">
+  <div class="container">
+    <header class="podcast-head">
+      <h2 class="podcast-title">Podcast</h2>
+      <p class="podcast-subtitle">Conversations that help you read Scripture with logic, care, and context.</p>
+
+      <!-- Subscribe row -->
+      <div class="subscribe-row">
+        <a class="pill-subscribe" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+        <a class="pill-subscribe" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple Podcasts</a>
+        <a class="pill-subscribe" href="/israelite-research/podcast.xml" target="_blank" rel="noopener">RSS</a>
       </div>
-    </section>
+    </header>
+
+    <!-- Latest Episodes -->
+    <div class="episodes">
+      <h3 class="episodes-title">Latest Episodes</h3>
+
+      <div class="episodes-grid">
+        <!-- Episode 1 -->
+        <article class="episode-card">
+          <a class="episode-link" href="https://open.spotify.com/episode/0" target="_blank" rel="noopener">
+            <div class="episode-media">
+              <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode artwork">
+            </div>
+            <div class="episode-body">
+              <div class="episode-meta">
+                <span class="ep-pill">Episode</span>
+                <time datetime="2025-08-15">Aug 15, 2025</time>
+              </div>
+              <h4 class="episode-title">Reading Genesis with First Principles</h4>
+              <p class="episode-excerpt">How basic logic helps us avoid common mistakes when starting in Genesis 1–3.</p>
+            </div>
+          </a>
+        </article>
+
+        <!-- Episode 2 -->
+        <article class="episode-card">
+          <a class="episode-link" href="https://open.spotify.com/episode/1" target="_blank" rel="noopener">
+            <div class="episode-media">
+              <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode artwork">
+            </div>
+            <div class="episode-body">
+              <div class="episode-meta">
+                <span class="ep-pill">Episode</span>
+                <time datetime="2025-08-08">Aug 8, 2025</time>
+              </div>
+              <h4 class="episode-title">What Do We Mean by “Context”?</h4>
+              <p class="episode-excerpt">Literary, historical, and canonical context—and why each one matters.</p>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <!-- Browse all -->
+      <div class="episodes-foot">
+        <a class="btn-outline" href="/israelite-research/podcast.html">Browse all episodes</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- LATEST ARTICLES (315x450) -->
     <section class="home-section home-latest">
