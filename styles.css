@@ -304,3 +304,21 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .articles-page .breadcrumb a:hover {
   border-bottom-color: currentColor;
 }
+/* Breadcrumb color = site accent (orange) */
+.breadcrumb a {
+  color: var(--accent, #F17300);
+  text-decoration: none;
+}
+.breadcrumb a:visited {
+  color: var(--accent, #F17300);
+}
+.breadcrumb a:hover,
+.breadcrumb a:focus {
+  opacity: .9;            /* no underline on hover */
+}
+
+/* Keep current (last) crumb readable if it's a linkless item */
+.breadcrumb li:last-child,
+.breadcrumb li:last-child a {
+  color: var(--ink, #0b2340);
+}
