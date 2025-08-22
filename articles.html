@@ -6,72 +6,100 @@
   <title>Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page container */
-    .articles-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    /* ---------- Scoped to articles page only ---------- */
+    .articles-page .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-    /* Featured pair layout */
-    .featured-pair{ margin: 28px 0 36px; }
-    .featured-grid{
-      display:grid; grid-template-columns:minmax(0,1fr) 315px; gap:24px;
-      align-items:stretch; justify-content:center;
+    /* Breadcrumbs above hero, left aligned (colors from your palette) */
+    .articles-page #breadcrumbs { margin: 1rem 0 .5rem; }
+    .articles-page #breadcrumbs a { color: #F17300; text-decoration: none; }
+    .articles-page #breadcrumbs a:hover { text-decoration: underline; }
+
+    /* Hero matches your universal style classes */
+    .hero-articles .page-title { color:#fff; }
+    .hero-articles .page-subtitle { color: #DBE4EE; }
+
+    /* Featured pair */
+    .featured-pair { margin: 2rem 0; }
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 315px;
+      gap: 24px;
+      align-items: stretch;
     }
 
-    /* Horizontal featured (left) */
-    .card-featured.primary .inner{
-      display:grid; grid-template-columns:minmax(0,1fr) 315px; height:450px;
-      background:#fff; border:1px solid #e6ebf2;
+    /* Primary featured (horizontal) */
+    .card-featured.primary .inner {
+      display: grid;
+      grid-template-columns: minmax(420px, 1fr) 315px; /* left image flexes, right is fixed 315 */
+      height: 450px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #e6ebf2;
     }
-    .card-featured .media{ position:relative; overflow:hidden; }
-    .card-featured .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .label-pill{
-      position:absolute; top:10px; left:10px; padding:6px 10px;
-      background:rgba(0,0,0,.55); color:#fff; font-size:.72rem; letter-spacing:.04em;
-      text-transform:uppercase; border-radius:0; /* squared */
+    .card-featured.primary .media {
+      position: relative; overflow: hidden; background: #eee;
     }
-    .card-featured .content{
-      display:flex; flex-direction:column; justify-content:space-between; padding:16px;
+    .card-featured.primary .media img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .card-featured .content .title{ font-size:1.35rem; margin:0 0 .5rem; color:#111; }
-    .card-featured .content .excerpt{ color:#444; margin:0 0 .75rem; line-height:1.45; }
-    .card-featured .foot{
-      display:flex; align-items:center; gap:.5rem; margin-top:auto; padding-top:.25rem;
+    .label-pill {
+      position: absolute; left: 12px; top: 12px;
+      background: rgba(0,0,0,.55); color: #fff; padding: 6px 10px;
+      font-size: 12px; letter-spacing:.4px; text-transform: uppercase;
+      border-radius: 0; /* square */
     }
-    .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
+    .card-featured.primary .content {
+      padding: 16px; display: flex; flex-direction: column; justify-content: space-between;
+      background: #fff;
+    }
+    .card-featured.primary .title { font-size: 1.35rem; margin: 0 0 .5rem; }
+    .card-featured.primary .excerpt { font-size: .98rem; color: #333; line-height: 1.5; }
+    .card-featured .foot {
+      display: flex; align-items: center; gap: .5rem; margin-top: 1rem;
+      border-top: 1px solid #eee; padding-top: .75rem;
+    }
+    .author-avatar { width:30px; height:30px; border-radius:50%; object-fit:cover; }
 
-    /* Vertical featured (right) fixed 315x450 */
-    .card-featured.secondary .inner{
-      width:315px; height:450px; display:flex; flex-direction:column; background:#fff; border:1px solid #e6ebf2;
+    /* Secondary featured (315x450) */
+    .card-featured.secondary .inner {
+      display: grid; grid-template-rows: 163.13px 1fr auto;  /* image height then content then foot */
+      width: 315px; height: 450px; background: #fff;
+      border: 1px solid #e6ebf2; text-decoration: none; color: inherit;
     }
-    .card-featured.secondary .media{ height:163px; position:relative; overflow:hidden; }
-    .card-featured.secondary .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .card-featured.secondary .body{ display:flex; flex-direction:column; padding:12px; flex:1; }
-    .card-featured.secondary .title{ font-size:1.05rem; margin:.25rem 0 .35rem; }
-    .card-featured.secondary .excerpt{ color:#555; font-size:.95rem; line-height:1.45; margin:0 0 .5rem; }
-    .card-featured.secondary .card-foot{
-      margin-top:auto; display:flex; align-items:center; gap:.5rem; padding-top:.25rem;
+    .card-featured.secondary .media { position: relative; overflow: hidden; background:#eee; }
+    .card-featured.secondary .media img { width: 100%; height: 100%; object-fit: cover; display:block; }
+    .card-featured.secondary .body { padding: 12px 12px 0; }
+    .card-featured.secondary .title { margin: 0 0 .4rem; font-size: 1.05rem; line-height:1.25; }
+    .card-featured.secondary .title a { color: inherit; text-decoration: none; }
+    .card-featured.secondary .title a:hover { text-decoration: underline; }
+    .card-featured.secondary .excerpt { font-size: .95rem; color:#444; line-height:1.5; margin:0 0 .5rem; }
+    .card-featured.secondary .card-foot {
+      display:flex; align-items:center; gap:.5rem; padding: .5rem 12px .75rem;
+      border-top: 1px solid #eee; margin-top: auto;
     }
-    .card-featured.secondary .card-date{ margin-left:auto; color:#666; font-size:.9rem; }
+    .card-featured.secondary .card-date { margin-left:auto; color:#666; font-size:.85rem; }
 
-    /* Recent grid: fixed 315x450 cards centered */
-    .articles-list{ margin: 8px 0 32px; }
-    .articles-list .grid{
-      display:grid; grid-template-columns:repeat(auto-fit, 315px); gap:24px;
-      justify-content:center;
+    /* Recent Articles grid — cards 315x450 */
+    .articles-list { margin: 2rem 0 3rem; }
+    .articles-list .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, 315px); gap: 20px; justify-content: center;
     }
-    .card{ width:315px; height:450px; background:#fff; border:1px solid #e6ebf2; display:flex; flex-direction:column; }
-    .card-media{ position:relative; height:163px; overflow:hidden; }
-    .card-media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .card-body{ padding:12px; display:flex; flex-direction:column; gap:.4rem; }
-    .card-title{ font-size:1.05rem; margin:0; }
-    .card-excerpt{ color:#555; font-size:.95rem; line-height:1.45; margin:0; }
-    .card-date{ color:#666; font-size:.9rem; margin-top:auto; } /* date under excerpt */
-    .card-foot{ margin-top:auto; padding:0 12px 12px; display:flex; align-items:center; gap:.5rem; }
-
-    /* Subtle hover shadow */
-    .card, .card-featured .inner{ transition: box-shadow .2s ease; }
-    .card:hover, .card-featured .inner:hover{ box-shadow:0 10px 24px rgba(0,0,0,.06); }
-
-    /* Keep breadcrumb above; hero uses site-wide styles */
+    .articles-list .card {
+      width: 315px; height: 450px; background:#fff; border:1px solid #e6ebf2;
+      display: grid; grid-template-rows: 163.13px 1fr auto; /* image / body / foot */
+    }
+    .card-media { position: relative; overflow: hidden; background:#eee; }
+    .card-media img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card-body { padding: 12px; }
+    .card-title { margin: 0 0 .4rem; font-size: 1rem; line-height:1.3; }
+    .card-title a { color: inherit; text-decoration: none; }
+    .card-title a:hover { text-decoration: underline; }
+    .card-excerpt { font-size: .95rem; color:#444; line-height:1.5; margin:0 0 .5rem; }
+    .card-date { color:#666; font-size:.85rem; }
+    .card-foot {
+      display: flex; align-items: center; gap: .5rem; padding: .5rem 12px .75rem;
+      border-top: 1px solid #eee; margin-top: auto;
+    }
   </style>
 </head>
 <body class="articles-page">
@@ -79,10 +107,10 @@
   <div id="site-header"></div>
 
   <main>
-    <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+    <!-- Breadcrumbs (above hero, left aligned) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
-    <!-- Hero (uses your site-wide hero styles/colors) -->
+    <!-- Hero (uses your universal hero styles) -->
     <section class="page-hero hero-articles">
       <div class="container">
         <h1 class="page-title">Articles</h1>
@@ -94,8 +122,7 @@
     <!-- Featured pair -->
     <section class="featured-pair">
       <div class="container featured-grid">
-
-        <!-- Left: horizontal featured -->
+        <!-- Primary featured (horizontal) -->
         <article class="card-featured primary">
           <a class="inner" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
             <div class="media">
@@ -103,18 +130,20 @@
               <span class="label-pill">Article</span>
             </div>
             <div class="content">
-              <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
-              <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+              <div>
+                <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
+                <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+              </div>
               <div class="foot">
                 <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
                 <span class="author-name">Semitic Jew</span>
-                <span class="date">Aug 15, 2025</span>
+                <span class="date" style="margin-left:auto;color:#666;font-size:.9rem;">Aug 15, 2025</span>
               </div>
             </div>
           </a>
         </article>
 
-        <!-- Right: vertical featured 315x450 -->
+        <!-- Secondary featured (315x450) -->
         <article class="card-featured secondary">
           <a class="inner" href="/israelite-research/articles/is-truth-reliable.html">
             <div class="media">
@@ -124,22 +153,20 @@
             <div class="body">
               <h3 class="title"><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></h3>
               <p class="excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
-              <div class="card-foot">
-                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-                <span class="author-name">Semitic Jew</span>
-                <span class="card-date">Aug 16, 2025</span>
-              </div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+              <span class="card-date">Aug 16, 2025</span>
             </div>
           </a>
         </article>
-
       </div>
     </section>
 
     <!-- Recent Articles -->
     <section class="articles-list">
       <div class="container grid">
-
         <!-- Is Creation Logical? -->
         <article class="card">
           <div class="card-media">
@@ -147,9 +174,7 @@
             <span class="label-pill">Article</span>
           </div>
           <div class="card-body">
-            <h3 class="card-title">
-              <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
-            </h3>
+            <h3 class="card-title"><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
             <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
             <div class="card-date">Aug 14, 2025</div>
           </div>
@@ -159,7 +184,7 @@
           </div>
         </article>
 
-        <!-- Add more 315x450 cards here as you publish -->
+        <!-- Add more recent cards below as you publish -->
       </div>
     </section>
   </main>
