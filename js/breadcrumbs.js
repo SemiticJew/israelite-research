@@ -1,165 +1,214 @@
-// js/breadcrumbs.js — domain-scoped crumbs; leading-cap slugs in links; fetch still uses lowercase
-(() => {
-  const BASE = '/israelite-research/';
-  const wrap = document.getElementById('breadcrumbs');
-  if (!wrap) return;
+<script>
+/**
+ * Breadcrumbs — sitewide, domain-aware, "Home-first" and Title-Cased.
+ * Works for:
+ *  - Home
+ *  - /articles.html and /articles/<slug>.html
+ *  - /texts.html
+ *  - /tanakh.html, /tanakh/book.html?book=Genesis, /tanakh/chapter.html?book=Genesis&chapter=1[&verse=1]
+ *  - /newtestament.html, /newtestament/book.html?book=Matthew, /newtestament/chapter.html?book=Matthew&chapter=1[&verse=1]
+ *  - /apologetics.html[?view=topics][&topic=Theology]
+ *  - /events.html, /podcast.html, /donate.html
+ *
+ * Usage on each page (already standard on your site):
+ *   <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="auto"></nav>
+ */
 
-  const path = location.pathname.toLowerCase();
-  const params = new URLSearchParams(location.search);
-  const rawBook = (params.get('book') || '').trim();
-  const chapter  = (params.get('chapter') || '').trim();
-  const verse =
-    (location.hash.match(/^#v(\d+)$/i) || [])[1] ||
-    (params.get('verse') || '').trim();
+(function () {
+  document.addEventListener('DOMContentLoaded', () => {
+    const BASE = '/israelite-research';
+    const bcEl = document.getElementById('breadcrumbs');
+    if (!bcEl) return;
 
-  // normalizer for data folders (lowercase, no spaces)
-  const norm = s => s.toString().trim().toLowerCase().replace(/\s+/g, '');
+    // --------- Utilities ----------
+    const toTitle = (s) =>
+      s.replace(/[-_]/g, ' ')
+       .replace(/\s+/g, ' ')
+       .trim()
+       .replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
 
-  // Pretty names for common no-space keys
-  const NICE_NAME = {
-    '1samuel':'1 Samuel','2samuel':'2 Samuel',
-    '1kings':'1 Kings','2kings':'2 Kings',
-    '1chronicles':'1 Chronicles','2chronicles':'2 Chronicles',
-    '1corinthians':'1 Corinthians','2corinthians':'2 Corinthians',
-    '1thessalonians':'1 Thessalonians','2thessalonians':'2 Thessalonians',
-    '1peter':'1 Peter','2peter':'2 Peter',
-    '1john':'1 John','2john':'2 John','3john':'3 John',
-    'songofsongs':'Song of Songs','songofsolomon':'Song of Solomon'
-  };
+    const params = new URLSearchParams(window.location.search);
+    const path = window.location.pathname.replace(/\/+$/,''); // trim trailing slash
+    const here = path.toLowerCase();
 
-  // UI helpers
-  const firstAlphaUpper = s => {
-    if (!s) return '';
-    const i = s.search(/[A-Za-z]/);
-    return i === -1 ? s : s.slice(0, i) + s[i].toUpperCase() + s.slice(i + 1);
-  };
+    const make = (name, href) => ({ name, href });
+    const render = (items) => {
+      // Ensure first letter uppercase on every crumb label
+      const html = `
+        <ol>
+          ${items.map((it, i) => {
+            const label = toTitle(it.name);
+            return it.href && i < items.length - 1
+              ? `<li><a href="${it.href}">${label}</a></li>`
+              : `<li aria-current="page">${label}</li>`;
+          }).join('')}
+        </ol>`;
+      bcEl.innerHTML = html;
+    };
 
-  // Build a DISPLAY slug with leading capital letter, while keeping no spaces.
-  // 'genesis' -> 'Genesis', '1samuel' -> '1Samuel', 'songofsongs' -> 'Songofsongs'
-  const displaySlug = folder => {
-    if (!folder) return '';
-    const i = folder.search(/[a-z]/);
-    if (i === -1) return folder;
-    return folder.slice(0, i) + folder[i].toUpperCase() + folder.slice(i + 1);
-  };
+    // Known books (so we only create links for valid targets)
+    const TANAKH_BOOKS = new Set([
+      'Genesis','Exodus','Leviticus','Numbers','Deuteronomy',
+      'Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings',
+      '1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther',
+      'Job','Psalms','Proverbs','Ecclesiastes','Song of Songs',
+      'Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel',
+      'Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum',
+      'Habakkuk','Zephaniah','Haggai','Zechariah','Malachi'
+    ]);
+    const NT_BOOKS = new Set([
+      'Matthew','Mark','Luke','John','Acts',
+      'Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians',
+      'Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus',
+      'Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'
+    ]);
 
-  // Where are we? (domains don’t overlap)
-  const is = (end, inc='') => path.endsWith(end) || (inc && path.includes(inc));
-  let sectionKey = 'home';
-  if (is('/articles.html') || path.endsWith('/index.html') || path === BASE || path.includes('/articles/')) {
-    sectionKey = 'articles';
-  } else if (is('/texts.html')) {
-    sectionKey = 'texts';
-  } else if (is('/tanakh.html','/tanakh/')) {
-    sectionKey = 'texts-tanakh';
-  } else if (is('/newtestament.html','/newtestament/')) {
-    sectionKey = 'texts-nt';
-  } else if (is('/apocrypha.html','/apocrypha/')) {
-    sectionKey = 'texts-ap';
-  } else if (is('/biblical_references.html')) {
-    sectionKey = 'texts-refs';
-  } else if (is('/extra-biblical-sources.html')) {
-    sectionKey = 'texts-extra';
-  } else if (is('/historical_textual_variants.html') || is('/historical-textual-variants.html')) {
-    // NEW: scope this page under Texts as its own sub-category
-    sectionKey = 'texts-variants';
-  } else if (is('/apologetics.html','/apologetics/')) {
-    sectionKey = 'apologetics';
-  } else if (is('/events.html')) {
-    sectionKey = 'events';
-  } else if (is('/podcast.html')) {
-    sectionKey = 'podcast';
-  } else if (is('/donate.html')) {
-    sectionKey = 'donations';
-  }
+    // --------- Builders ----------
+    const homeOnly = () => render([ make('Home') ]);
 
-  // First crumb per domain
-  const FIRST = {
-    articles:   { label: 'Articles', href: `${BASE}articles.html` },
-    texts:      { label: 'Texts', href: `${BASE}texts.html` },
-    apologetics:{ label: 'Apologetics', href: `${BASE}apologetics.html` },
-    events:     { label: 'Events', href: `${BASE}events.html` },
-    podcast:    { label: 'Podcast', href: `${BASE}podcast.html` },
-    donations:  { label: 'Donations', href: `${BASE}donate.html` },
-    home:       { label: 'Articles', href: `${BASE}articles.html` }
-  };
+    const simplePage = (label, href = null) =>
+      render([ make('Home', BASE + '/'), make(label, href) ]);
 
-  // Texts categories (only these get appended after "Texts")
-  const SUBSECT = {
-    'texts-tanakh': { label: 'The Tanakh',        href: `${BASE}tanakh.html`,        root: 'tanakh' },
-    'texts-nt':     { label: 'The New Testament', href: `${BASE}newtestament.html`,  root: 'newtestament' },
-    'texts-ap':     { label: 'The Apocrypha',     href: `${BASE}apocrypha.html`,     root: 'apocrypha' },
-    'texts-refs':   { label: 'Biblical References', href: `${BASE}biblical_references.html`, root: null },
-    'texts-extra':  { label: 'Extra-Biblical Sources', href: `${BASE}extra-biblical-sources.html`, root: null },
-    // NEW: Historical & Textual Variants category (no book/chapter flow)
-    'texts-variants': { label: 'Historical & Textual Variants', href: `${BASE}historical_textual_variants.html`, root: null }
-  };
+    const articlesList = () =>
+      render([ make('Home', BASE + '/'), make('Articles') ]);
 
-  async function getBookDisplayName(root, folder) {
-    if (!root || !folder) return null;
-    const urls = [
-      `${BASE}data/${root}/${folder}/${folder}.json`, // preferred
-      `${BASE}data/${root}/${folder}/book.json`       // fallback
-    ];
-    for (const u of urls) {
-      try {
-        const r = await fetch(u, { cache: 'no-cache' });
-        if (r.ok) {
-          const j = await r.json();
-          if (j && (j.name || j.title)) return j.name || j.title;
-        }
-      } catch (_) {}
+    const articleDetail = (slug) => {
+      const title = toTitle(slug.replace(/\.html$/,''));
+      render([
+        make('Home', BASE + '/'),
+        make('Articles', BASE + '/articles.html'),
+        make(title)
+      ]);
+    };
+
+    const tanakhIndex = () => render([
+      make('Home', BASE + '/'),
+      make('Texts', BASE + '/texts.html'),
+      make('The Tanakh')
+    ]);
+
+    const tanakhBook = () => {
+      const book = params.get('book') || '';
+      const valid = TANAKH_BOOKS.has(book);
+      render([
+        make('Home', BASE + '/'),
+        make('Texts', BASE + '/texts.html'),
+        make('The Tanakh', BASE + '/tanakh.html'),
+        valid ? make(book) : make(book || 'Book')
+      ]);
+    };
+
+    const tanakhChapter = () => {
+      const book = params.get('book') || '';
+      const chap = params.get('chapter');
+      const verse = params.get('verse');
+      const validBook = TANAKH_BOOKS.has(book);
+      const bookHref = validBook ? `${BASE}/tanakh/book.html?book=${encodeURIComponent(book)}` : null;
+      const chapHref = chap ? `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${encodeURIComponent(chap)}` : null;
+
+      const crumbs = [
+        make('Home', BASE + '/'),
+        make('Texts', BASE + '/texts.html'),
+        make('The Tanakh', BASE + '/tanakh.html'),
+        make(book, bookHref),
+      ];
+      if (chap) crumbs.push(make(`Chapter ${chap}`, chapHref));
+      if (verse) crumbs.push(make(`v${verse}`));
+      render(crumbs);
+    };
+
+    const ntIndex = () => render([
+      make('Home', BASE + '/'),
+      make('Texts', BASE + '/texts.html'),
+      make('The New Testament')
+    ]);
+
+    const ntBook = () => {
+      const book = params.get('book') || '';
+      const valid = NT_BOOKS.has(book);
+      render([
+        make('Home', BASE + '/'),
+        make('Texts', BASE + '/texts.html'),
+        make('The New Testament', BASE + '/newtestament.html'),
+        valid ? make(book) : make(book || 'Book')
+      ]);
+    };
+
+    const ntChapter = () => {
+      const book = params.get('book') || '';
+      const chap = params.get('chapter');
+      const verse = params.get('verse');
+      const validBook = NT_BOOKS.has(book);
+      const bookHref = validBook ? `${BASE}/newtestament/book.html?book=${encodeURIComponent(book)}` : null;
+      const chapHref = chap ? `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book)}&chapter=${encodeURIComponent(chap)}` : null;
+
+      const crumbs = [
+        make('Home', BASE + '/'),
+        make('Texts', BASE + '/texts.html'),
+        make('The New Testament', BASE + '/newtestament.html'),
+        make(book, bookHref),
+      ];
+      if (chap) crumbs.push(make(`Chapter ${chap}`, chapHref));
+      if (verse) crumbs.push(make(`v${verse}`));
+      render(crumbs);
+    };
+
+    const apocryphaIndex = () => render([
+      make('Home', BASE + '/'),
+      make('Texts', BASE + '/texts.html'),
+      make('Apocrypha')
+    ]);
+
+    const apologetics = () => {
+      // ?view=topics to show "Browse Topics", &topic=Something to add a final crumb
+      const view = params.get('view');         // "topics"
+      const topic = params.get('topic');       // "Theology" etc.
+      const crumbs = [ make('Home', BASE + '/'), make('Apologetics') ];
+      if (view === 'topics') crumbs.push(make('Browse Topics'));
+      if (topic) crumbs.push(make(topic));
+      render(crumbs);
+    };
+
+    // --------- Router ----------
+    // Home (root or /index.html)
+    if (here === `${BASE}` || here === `${BASE}/` || here.endsWith('/index.html')) {
+      return homeOnly();
     }
-    if (NICE_NAME[folder]) return NICE_NAME[folder];
-    return folder
-      .replace(/^(\d)([a-z])/, (_, d, ch) => `${d} ${ch.toUpperCase()}`)
-      .replace(/^[a-z]/, m => m.toUpperCase());
-  }
 
-  async function build() {
-    const crumbs = [];
-
-    // First crumb = current domain
-    const first = FIRST[sectionKey.startsWith('texts-') ? 'texts' : sectionKey] || FIRST.home;
-    if (first) crumbs.push(first);
-
-    // If inside Texts, add the category (one of the mapped ones above)
-    const sub = SUBSECT[sectionKey];
-    if (sub) crumbs.push({ label: sub.label, href: sub.href });
-
-    // Only for Tanakh/NT/Apocrypha categories: Book → Chapter → Verse
-    if (sub && sub.root && rawBook) {
-      const folder = norm(rawBook);           // data folder key
-      const browseSlug = displaySlug(folder); // pretty URL slug (leading-cap)
-      const bookLabel = await getBookDisplayName(sub.root, folder);
-
-      crumbs.push({
-        label: bookLabel || rawBook,
-        href: `${BASE}${sub.root}/book.html?book=${encodeURIComponent(browseSlug)}`
-      });
-
-      if (chapter) {
-        const chURL = `${BASE}${sub.root}/chapter.html?book=${encodeURIComponent(browseSlug)}&chapter=${encodeURIComponent(chapter)}`;
-        crumbs.push({ label: 'Chapter', href: chURL });
-        if (verse) {
-          crumbs.push({ label: 'Verse', href: `${chURL}#v${verse}` });
-        }
-      }
+    // Articles
+    if (here.endsWith('/articles.html')) return articlesList();
+    if (here.includes('/articles/')) {
+      const slug = here.split('/articles/')[1] || '';
+      return articleDetail(slug);
     }
 
-    // Render horizontally (CSS provided by pages/site)
-    const ol = document.createElement('ol');
-    crumbs.forEach(c => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = c.href || '#';
-      a.textContent = firstAlphaUpper(c.label);
-      li.appendChild(a);
-      ol.appendChild(li);
-    });
-    wrap.innerHTML = '';
-    wrap.appendChild(ol);
-  }
+    // Texts hub
+    if (here.endsWith('/texts.html')) return simplePage('Texts');
 
-  build();
+    // Tanakh
+    if (here.endsWith('/tanakh.html')) return tanakhIndex();
+    if (here.endsWith('/tanakh/book.html')) return tanakhBook();
+    if (here.endsWith('/tanakh/chapter.html')) return tanakhChapter();
+
+    // New Testament
+    if (here.endsWith('/newtestament.html')) return ntIndex();
+    if (here.endsWith('/newtestament/book.html')) return ntBook();
+    if (here.endsWith('/newtestament/chapter.html')) return ntChapter();
+
+    // Apocrypha index
+    if (here.endsWith('/apocrypha.html')) return apocryphaIndex();
+
+    // Apologetics
+    if (here.endsWith('/apologetics.html')) return apologetics();
+
+    // Events / Podcast / Donate
+    if (here.endsWith('/events.html'))   return simplePage('Events');
+    if (here.endsWith('/podcast.html'))  return simplePage('Podcast');
+    if (here.endsWith('/donate.html'))   return simplePage('Donations');
+
+    // Fallback: just Home > Current filename
+    const file = here.split('/').pop() || 'Page';
+    return render([ make('Home', BASE + '/'), make(file.replace('.html','')) ]);
+  });
 })();
+</script>
