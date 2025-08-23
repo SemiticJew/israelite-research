@@ -6,280 +6,202 @@
   <title>Semitic Jew — Home</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-local styles (kept tight so we don’t affect other pages) */
-    :root {
-      --blue-900:#054A91; --blue-600:#3E7CB1; --blue-300:#81A4CD;
-      --blue-50:#DBE4EE;  --accent:#F17300;   --ink:#0B2340;
+    /* --- Home-only helpers (scoped) --- */
+    .home .container{max-width:1200px;margin:0 auto;padding:0 16px;}
+    .home .section{margin:2.5rem 0;}
+    /* Featured trio */
+    .featured-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .feature-card{border:1px solid #e6ebf2;background:#fff;display:flex;flex-direction:column;text-decoration:none;color:inherit}
+    .feature-media{position:relative;aspect-ratio:16/9;overflow:hidden}
+    .feature-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .feature-body{padding:14px 16px 16px}
+    .feature-title{font-family:var(--ff-serif);font-size:1.25rem;margin:0 0 .35rem}
+    .feature-text{color:#444;margin:0}
+    /* Coming soon */
+    .coming-grid{display:grid;grid-template-columns:1fr;gap:18px}
+    .coming-card{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:stretch;border:1px solid #e6ebf2;background:#fff}
+    .coming-media{position:relative;min-height:180px;overflow:hidden}
+    .coming-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .coming-body{padding:16px}
+    .coming-title{font-family:var(--ff-serif);font-size:1.3rem;margin:0 0 .35rem}
+    .coming-text{margin:0;color:#444}
+    /* Label pill (square corners, dark translucent) */
+    .label-pill{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.55);color:#fff;
+      padding:4px 10px;font-size:.8rem;border-radius:0;letter-spacing:.02em}
+    /* Podcast row */
+    .pod-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
+    .pod-title{margin:0;font-family:var(--ff-serif)}
+    .pod-subscribe{display:flex;gap:.5rem;flex-wrap:wrap}
+    .pod-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .65rem;border:1px solid #e6ebf2;background:#fff;border-radius:10px;text-decoration:none}
+    .pod-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .pod-card{border:1px solid #e6ebf2;background:#fff}
+    .pod-media{position:relative;aspect-ratio:16/9;overflow:hidden}
+    .pod-media img{width:100%;height:100%;object-fit:cover}
+    .pod-body{padding:12px 14px}
+    .pod-ep-title{margin:0 0 .25rem;font-size:1rem}
+    .pod-ep-date{color:#667; font-size:.9rem}
+    /* Responsive */
+    @media (max-width: 980px){
+      .featured-trio{grid-template-columns:1fr 1fr}
+      .coming-card{grid-template-columns:1fr}
+      .pod-list{grid-template-columns:1fr 1fr}
     }
-    .home-hero {
-      background: linear-gradient(135deg, var(--blue-900), var(--blue-600));
-      color: #fff;
-      padding: clamp(48px, 8vw, 96px) 0;
-      position: relative;
-      overflow: hidden;
+    @media (max-width: 640px){
+      .featured-trio{grid-template-columns:1fr}
+      .pod-list{grid-template-columns:1fr}
     }
-    .home-hero .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
-    .home-hero h1 {
-      font-family: var(--ff-serif, "Adobe Garamond Pro", serif);
-      font-size: clamp(2.4rem, 4vw, 3.2rem);
-      margin: 0 0 .5rem 0;
-      letter-spacing: .5px;
-      color: #fff;
-    }
-    .home-hero p.lead {
-      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif);
-      font-size: clamp(1rem, 1.6vw, 1.15rem);
-      margin: 0 0 1.25rem 0;
-      color: #f5f9ff;
-      max-width: 60ch;
-      line-height: 1.7;
-    }
-    .hero-ctas { display: flex; gap: .75rem; flex-wrap: wrap; }
-    .btn-solid, .btn-outline {
-      display: inline-block; padding: .7rem 1rem; text-decoration: none; border-radius: 10px;
-      font-weight: 600; letter-spacing: .2px;
-    }
-    .btn-solid { background: var(--accent); color: #111; }
-    .btn-outline { border: 2px solid #fff; color: #fff; }
-    .hero-divider { height: 10px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
-
-<style>
-  /* Home Podcast (scoped) */
-  .home-podcast{padding:2.5rem 0;background:#fff;}
-  .home-podcast .container{max-width:1200px;margin:0 auto;padding:0 1rem;}
-  .home-podcast .hp-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1rem;}
-  .home-podcast .hp-head h2{margin:0;font-family:var(--ff-serif,"Adobe Garamond Pro",serif);font-size:clamp(1.5rem,2.2vw,2rem);}
-  .home-podcast .hp-cta{display:flex;gap:.5rem;flex-wrap:wrap;}
-  .home-podcast .pill{
-    display:inline-flex;align-items:center;gap:.35rem;
-    padding:.45rem .75rem;border-radius:999px;
-    border:1px solid #054A91;color:#054A91;text-decoration:none;font-size:.95rem;
-    background:transparent;
-  }
-  .home-podcast .pill:hover{background:#DBE4EE;}
-  .home-podcast .hp-feature{
-    display:grid;grid-template-columns:1.6fr 1fr;gap:1rem;align-items:stretch;margin-bottom:1.25rem;
-  }
-  .home-podcast .hp-player iframe{width:100%;height:232px;border:0;border-radius:12px;background:#000;}
-  .home-podcast .hp-meta{border:1px solid #e6ebf2;border-radius:12px;padding:1rem;background:#fff;display:flex;flex-direction:column;justify-content:center;}
-  .home-podcast .ep-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:.3rem}
-  .home-podcast .hp-meta h3{margin:.2rem 0 .5rem 0;font-size:1.15rem}
-  .home-podcast .hp-meta p{margin:0;color:#333;font-size:.98rem;line-height:1.5}
-  .home-podcast .hp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-  .home-podcast .ep-card{border:1px solid #e6ebf2;border-radius:12px;background:#fff;padding:1rem;display:flex;flex-direction:column;gap:.5rem}
-  .home-podcast .ep-card .thumb{aspect-ratio:16/9;width:100%;border-radius:8px;object-fit:cover;background:#f3f6fa}
-  .home-podcast .ep-card h4{margin:.25rem 0;font-size:1rem}
-  .home-podcast .meta{font-size:.85rem;color:#666}
-  .home-podcast .links{margin-top:auto;display:flex;gap:.5rem;flex-wrap:wrap}
-  .home-podcast .links a{font-size:.85rem;text-decoration:none;color:#3E7CB1}
-  @media (max-width: 900px){
-    .home-podcast .hp-feature{grid-template-columns:1fr}
-    .home-podcast .hp-player iframe{height:200px}
-  }
-</style>
-
-    /* Featured Podcast */
-    .home-podcast { padding: clamp(32px, 6vw, 56px) 0; background: #fff; }
-    .home-section .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
-    .section-title {
-      font-family: var(--ff-serif, "Adobe Garamond Pro", serif);
-      font-size: clamp(1.6rem, 3vw, 2rem);
-      color: var(--ink);
-      margin: 0 0 .5rem 0;
-    }
-    .section-sub {
-      color:#555; margin:0 0 1rem 0; max-width: 64ch; line-height: 1.7;
-    }
-    .podcast-wrap {
-      display: grid; gap: 1rem; grid-template-columns: 1fr; align-items: start;
-    }
-    @media (min-width: 860px) {
-      .podcast-wrap { grid-template-columns: 2fr 1fr; }
-    }
-    .podcast-player {
-      background: #f8fbff; border: 1px solid #e6ebf2; border-radius: 12px; padding: 1rem;
-    }
-    .podcast-badges {
-      display: flex; gap:.5rem; flex-wrap: wrap; align-items: center;
-    }
-    .badge {
-      display:inline-block; padding:.5rem .7rem; border:1px solid #e6ebf2; border-radius: 8px;
-      text-decoration:none; color: var(--blue-900); background:#fff;
-    }
-    .badge:hover { transform: translateY(-1px); }
-
-    /* Latest Articles (reuses your 315x450 standard) */
-    .home-latest { padding: clamp(32px, 6vw, 56px) 0; background:#fff; }
-    .cards { display:grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); }
-    .card { width: 315px; height: 450px; border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column; }
-    .card .card-media { width:100%; height: 177.6px; position:relative; overflow:hidden; }
-    .card .card-media img { width:100%; height:100%; object-fit:cover; display:block; }
-    .label-pill {
-      position:absolute; left:8px; top:8px; background: rgba(0,0,0,.65);
-      color:#fff; font-size:.78rem; padding:.25rem .45rem; border-radius: 0;
-    }
-    .card-body { padding: .75rem .85rem 0 .85rem; display:flex; flex-direction:column; gap:.5rem; }
-    .card-title a { color: var(--ink); text-decoration:none; font-weight:700; }
-    .card-title a:hover { text-decoration:underline; }
-    .card-excerpt { color:#444; font-size:.95rem; line-height:1.5; }
-    .card-date { font-size:.85rem; color:#666; }
-    .card-foot {
-      margin-top:auto; padding: .75rem .85rem 1rem .85rem; display:flex; align-items:center; gap:.5rem;
-      border-top:1px solid #eef2f7;
-    }
-    .author-avatar { width:30px; height:30px; border-radius:50%; object-fit:cover; display:block; }
-    .author-name { font-size:.95rem; color:#222; }
-
-    /* General spacing helpers */
-    .stack-sm { margin-top: 1rem; }
   </style>
 </head>
-<body class="home-page">
-  <!-- Header partial -->
+<body class="home">
+  <!-- Header partial (nav with search icon) -->
   <div id="site-header"></div>
 
-<nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
-
   <main>
-    <!-- HERO -->
-    <section class="home-hero">
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="home"></nav>
+
+    <!-- Hero (matches other pages) -->
+    <section class="page-hero hero-articles">
       <div class="container">
-        <h1>Israelite Research</h1>
-        <p class="lead">Research-driven resources to help you read scripture with logic, care, and context.</p>
-        <div class="hero-ctas">
-          <a class="btn-solid" href="/israelite-research/articles.html">Read Articles</a>
-          <a class="btn-outline" href="/israelite-research/texts.html">Explore Texts</a>
-        </div>
+        <h1 class="page-title">Semitic Jew</h1>
+        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-<!-- Podcast (homepage) -->
-<section class="home-podcast" id="podcast">
-  <div class="container">
-    <div class="hp-head">
-      <h2>Podcast</h2>
-      <div class="hp-cta">
-        <a class="pill" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
-        <a class="pill" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple Podcasts</a>
-        <a class="pill" href="/israelite-research/podcast.html">All Episodes →</a>
-      </div>
-    </div>
-
-    <!-- Feature: player + latest meta -->
-    <div class="hp-feature">
-      <div class="hp-player">
-        <!-- Spotify embed (you can swap to Apple embed if you prefer) -->
-        <iframe
-          style="border-radius:12px"
-          src="https://open.spotify.com/embed/show/0GvSSHiBeVAmvHMIXP6lOi?utm_source=generator"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
-      </div>
-      <div class="hp-meta">
-        <div class="ep-label">Latest Episode</div>
-        <h3>Semitic Jew — Recent Teaching</h3>
-        <p>A reasoned, text-first conversation through Scripture. Listen in as we trace arguments, test claims, and follow cross-references with care.</p>
-      </div>
-    </div>
-
-    <!-- Manual recent cards (edit titles/links/thumbs as you publish) -->
-    <div class="hp-grid">
-      <article class="ep-card">
-        <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode cover">
-        <h4>Genesis 1 and the Logic of Beginnings</h4>
-        <div class="meta">35 min · Bible / Genesis</div>
-        <div class="links">
-          <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Play on Spotify</a>
-          <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple</a>
-        </div>
-      </article>
-
-      <article class="ep-card">
-        <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode cover">
-        <h4>Testing All Things (1 Thess 5:21)</h4>
-        <div class="meta">29 min · Apologetics</div>
-        <div class="links">
-          <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Play on Spotify</a>
-          <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple</a>
-        </div>
-      </article>
-
-      <article class="ep-card">
-        <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode cover">
-        <h4>Scripture Interprets Scripture</h4>
-        <div class="meta">31 min · Hermeneutics</div>
-        <div class="links">
-          <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Play on Spotify</a>
-          <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-    <!-- LATEST ARTICLES (315x450) -->
-    <section class="home-section home-latest">
+    <!-- I. Podcast Section -->
+    <section class="section">
       <div class="container">
-        <h2 class="section-title">Latest Articles</h2>
-        <div class="cards">
-          <!-- Article 1 -->
-          <article class="card">
-            <div class="card-media">
-              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
-              <span class="label-pill">Article</span>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">
-                <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
-              </h3>
-              <p class="card-excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
-              <div class="card-date">Aug 15, 2025</div>
-            </div>
-            <div class="card-foot">
-              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="author-name">Semitic Jew</span>
+        <div class="pod-head">
+          <h2 class="pod-title">Podcast</h2>
+          <div class="pod-subscribe">
+            <a class="pod-btn" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">Spotify</a>
+            <a class="pod-btn" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">Apple Podcasts</a>
+            <a class="pod-btn" href="/israelite-research/podcast.html">All Episodes</a>
+          </div>
+        </div>
+
+        <div class="pod-list">
+          <!-- Episode 1 -->
+          <article class="pod-card">
+            <a class="pod-media" href="/israelite-research/podcast.html">
+              <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Podcast episode artwork"
+                   onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
+              <span class="label-pill">Episode</span>
+            </a>
+            <div class="pod-body">
+              <h3 class="pod-ep-title"><a href="/israelite-research/podcast.html">Season 2: Trailer</a></h3>
+              <div class="pod-ep-date">Aug 2025</div>
             </div>
           </article>
 
-          <!-- Article 2 -->
-          <article class="card">
-            <div class="card-media">
-              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?">
-              <span class="label-pill">Article</span>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">
-                <a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
-              </h3>
-              <p class="card-excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
-              <div class="card-date">Aug 16, 2025</div>
-            </div>
-            <div class="card-foot">
-              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="author-name">Semitic Jew</span>
+          <!-- Episode 2 -->
+          <article class="pod-card">
+            <a class="pod-media" href="/israelite-research/podcast.html">
+              <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Podcast episode artwork">
+              <span class="label-pill">Episode</span>
+            </a>
+            <div class="pod-body">
+              <h3 class="pod-ep-title"><a href="/israelite-research/podcast.html">Reading with Logic</a></h3>
+              <div class="pod-ep-date">Aug 2025</div>
             </div>
           </article>
 
-          <!-- Article 3 -->
-          <article class="card">
-            <div class="card-media">
-              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
-              <span class="label-pill">Article</span>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">
-                <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
-              </h3>
-              <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
-              <div class="card-date">Aug 14, 2025</div>
-            </div>
-            <div class="card-foot">
-              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-              <span class="author-name">Semitic Jew</span>
+          <!-- Episode 3 -->
+          <article class="pod-card">
+            <a class="pod-media" href="/israelite-research/podcast.html">
+              <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Podcast episode artwork">
+              <span class="label-pill">Episode</span>
+            </a>
+            <div class="pod-body">
+              <h3 class="pod-ep-title"><a href="/israelite-research/podcast.html">Genesis 1 in Context</a></h3>
+              <div class="pod-ep-date">Aug 2025</div>
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- II. Featured (Biography, Articles, Podcast S2) -->
+    <section class="section">
+      <div class="container">
+        <h2 style="font-family:var(--ff-serif);margin:.25rem 0 1rem;">Featured</h2>
+        <div class="featured-trio">
+          <!-- Biography Page (placeholder target for now) -->
+          <a class="feature-card" href="/israelite-research/biography.html">
+            <div class="feature-media">
+              <img src="/israelite-research/images/feature-bio.jpg"
+                   onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'"
+                   alt="Biography">
+              <span class="label-pill">Feature</span>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-title">Biography</h3>
+              <p class="feature-text">A brief story and approach behind Semitic Jew.</p>
+            </div>
+          </a>
+
+          <!-- Articles Page -->
+          <a class="feature-card" href="/israelite-research/articles.html">
+            <div class="feature-media">
+              <img src="/israelite-research/images/feature-articles.jpg"
+                   onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'"
+                   alt="Articles">
+              <span class="label-pill">Feature</span>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-title">Articles</h3>
+              <p class="feature-text">Research-driven reflections that model logic + Scripture.</p>
+            </div>
+          </a>
+
+          <!-- Podcast Season 2 -->
+          <a class="feature-card" href="/israelite-research/podcast.html#season-2">
+            <div class="feature-media">
+              <img src="/israelite-research/images/feature-podcast-s2.jpg"
+                   onerror="this.onerror=null;this.src='/israelite-research/images/podcast-placeholder.jpg'"
+                   alt="Podcast Season 2">
+              <span class="label-pill">Feature</span>
+            </div>
+            <div class="feature-body">
+              <h3 class="feature-title">Podcast: Season 2</h3>
+              <p class="feature-text">Big questions, careful answers—new season out now.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- III. Coming Soon -->
+    <section class="section">
+      <div class="container">
+        <h2 style="font-family:var(--ff-serif);margin:.25rem 0 1rem;">Coming Soon</h2>
+
+        <article class="coming-card">
+          <div class="coming-media">
+            <img src="/israelite-research/images/coming-spacesx.jpg"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'"
+                 alt="Israelite Spaces X">
+            <span class="label-pill">Coming Soon</span>
+          </div>
+          <div class="coming-body">
+            <h3 class="coming-title">Israelite Spaces X</h3>
+            <p class="coming-text">Live, logic-first conversations hosted on X. Join discussions, ask questions, and test ideas together.</p>
+          </div>
+        </article>
+
+        <article class="coming-card">
+          <div class="coming-media">
+            <img src="/israelite-research/images/coming-discord.jpg"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'"
+                 alt="Discord Debates">
+            <span class="label-pill">Coming Soon</span>
+          </div>
+          <div class="coming-body">
+            <h3 class="coming-title">Discord Debates</h3>
+            <p class="coming-text">Structured dialogues on hard passages and doctrines. Rules, moderators, and references—so light wins over heat.</p>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -287,7 +209,8 @@
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
