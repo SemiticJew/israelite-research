@@ -812,3 +812,23 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   height: 180px;             /* adjust if your design needs a different height */
   object-fit: cover;
 }
+/* Podcast B & C: rounded episode & lecture thumbnails */
+.podcast-episodes img,
+.podcast-lectures img {
+  border-radius: 12px;
+}
+
+/* If your markup uses thumb wrappers on cards, keep corners clean */
+.podcast-episodes .thumb,
+.podcast-lectures .thumb {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Optional: ensure good cropping inside fixed boxes */
+.podcast-episodes .thumb img,
+.podcast-lectures .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
