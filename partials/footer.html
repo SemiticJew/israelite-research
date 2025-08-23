@@ -1,114 +1,57 @@
 <footer class="site-footer">
-  <style>
-    /* Scoped styles so nothing else on the site is affected */
-    .site-footer { background:#0b2340; color:#dbe4ee; padding:40px 0 28px; }
-    .site-footer a { color:#dbe4ee; text-decoration:none; }
-    .site-footer a:hover { color:#81a4cd; }
+  <div class="container footer-grid">
+    <!-- Brand / About -->
+    <section class="footer-col footer-brand">
+      <h3 class="footer-heading"><strong>Semitic Jew</strong></h3>
+      <p class="footer-tagline">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
 
-    .footer-wrap { max-width:1200px; margin:0 auto; padding:0 16px; }
-    .footer-grid {
-      display:grid;
-      grid-template-columns: 1.25fr 1fr 1fr 1.25fr;
-      gap:24px;
-    }
-    @media (max-width:900px){
-      .footer-grid { grid-template-columns:1fr 1fr; }
-    }
-    @media (max-width:600px){
-      .footer-grid { grid-template-columns:1fr; }
-    }
-
-    .footer-brand h3 { 
-      margin:0 0 8px; 
-      font-weight:700;        /* make name bold */
-      font-size:1.1rem; 
-      letter-spacing:.3px;
-      color:#fff;
-    }
-    .footer-tag { margin:0 0 16px; color:#c6d3e3; font-size:.95rem; }
-
-    /* Rounded social buttons */
-    .footer-socials { display:flex; gap:10px; align-items:center; margin:8px 0 2px; }
-    .social-round {
-      width:36px; height:36px; border-radius:50%;
-      display:inline-flex; align-items:center; justify-content:center;
-      background:#3e7cb1; color:#fff; font-weight:600; font-size:.9rem;
-      border:1px solid rgba(255,255,255,.15);
-    }
-    .social-round:hover { background:#054a91; }
-
-    .footer-col h4 { margin:0 0 10px; font-weight:700; font-size:1rem; color:#fff; }
-    .footer-col ul { list-style:none; padding:0; margin:0; }
-    .footer-col li { margin:6px 0; }
-
-    /* Newsletter */
-    .newsletter h4 { margin:0 0 10px; font-weight:700; color:#fff; }
-    .newsletter p { margin:0 0 10px; color:#c6d3e3; font-size:.95rem; }
-    .newsletter form { display:flex; gap:8px; }
-    .newsletter input[type="email"]{
-      flex:1; padding:10px 12px; border-radius:8px; border:1px solid #81a4cd; background:#fff; color:#0b2340;
-    }
-    .newsletter button{
-      padding:10px 14px; border-radius:8px; border:1px solid #f17300; background:#f17300; color:#0b2340; font-weight:700;
-    }
-    .newsletter button:hover{ filter:brightness(.95); }
-
-    .footer-bottom { margin-top:22px; border-top:1px solid rgba(255,255,255,.15); padding-top:14px; font-size:.9rem; color:#c6d3e3; }
-  </style>
-
-  <div class="footer-wrap">
-    <div class="footer-grid">
-      <!-- Brand + socials -->
-      <div class="footer-brand">
-        <h3>Semitic Jew</h3>
-        <p class="footer-tag">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
-        <div class="footer-socials" aria-label="Social links">
-          <a class="social-round" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
-          <a class="social-round" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">X</a>
-          <a class="social-round" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">Th</a>
-        </div>
+      <!-- Socials (kept as-is if you already had them) -->
+      <div class="footer-social">
+        <a class="social-pill" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+        <a class="social-pill" href="https://x.com/semitic_jew?s=21" aria-label="X (Twitter)" target="_blank" rel="noopener">X</a>
+        <a class="social-pill" href="https://www.threads.com/@semiticjew?invite=0" aria-label="Threads" target="_blank" rel="noopener">Th</a>
       </div>
+    </section>
 
-      <!-- Explore -->
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="/israelite-research/index.html">Articles</a></li>
-          <li><a href="/israelite-research/texts.html">Texts</a></li>
-          <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
-          <li><a href="/israelite-research/events.html">Events</a></li>
-          <li><a href="/israelite-research/podcast.html">Podcast</a></li>
-          <li><a href="/israelite-research/donate.html">Donations</a></li>
-        </ul>
-      </div>
+    <!-- Explore -->
+    <nav class="footer-col">
+      <h3 class="footer-heading">Explore</h3>
+      <ul class="footer-links">
+        <li><a href="/israelite-research/index.html">Articles</a></li>
+        <li><a href="/israelite-research/texts.html">Texts</a></li>
+        <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
+        <li><a href="/israelite-research/events.html">Events</a></li>
+        <li><a href="/israelite-research/podcast.html">Podcast</a></li>
+        <li><a href="/israelite-research/donate.html">Donations</a></li>
+      </ul>
+    </nav>
 
-      <!-- Texts -->
-      <div class="footer-col">
-        <h4>Texts</h4>
-        <ul>
-          <li><a href="/israelite-research/tanakh.html">The Tanakh</a></li>
-          <li><a href="/israelite-research/newtestament.html">The New Testament</a></li>
-          <li><a href="/israelite-research/apocrypha.html">Apocrypha</a></li>
-          <li><a href="/israelite-research/biblical-references.html">Biblical References</a></li>
-          <li><a href="/israelite-research/historical-textual-variants.html">Historical &amp; Textual Variants</a></li>
-          <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-        </ul>
-      </div>
+    <!-- Texts -->
+    <nav class="footer-col">
+      <h3 class="footer-heading">Texts</h3>
+      <ul class="footer-links">
+        <li><a href="/israelite-research/tanakh.html">The Tanakh</a></li>
+        <li><a href="/israelite-research/newtestament.html">The New Testament</a></li>
+        <li><a href="/israelite-research/apocrypha.html">Apocrypha</a></li>
+        <li><a href="/israelite-research/biblical-references.html">Biblical References</a></li>
+        <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+        <li><a href="/israelite-research/historical-textual-variants.html">Historical &amp; Textual Variants</a></li>
+      </ul>
+    </nav>
 
-      <!-- Newsletter -->
-      <div class="newsletter">
-        <h4>Newsletter</h4>
-        <p>Get new studies and resources in your inbox.</p>
-        <form action="#" method="post">
-          <label class="sr-only" for="nl-email">Email</label>
-          <input id="nl-email" type="email" name="email" placeholder="you@example.com" required>
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-    </div>
+    <!-- Newsletter (new) -->
+    <section class="footer-col footer-newsletter">
+      <h3 class="footer-heading">Newsletter</h3>
+      <p class="footer-note">Occasional updates—new articles, studies, and resources. Unsubscribe anytime.</p>
+      <form class="newsletter-form" action="https://formspree.io/f/your-id" method="POST">
+        <label for="nl-email" class="visually-hidden">Email address</label>
+        <input id="nl-email" name="email" type="email" placeholder="you@example.com" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+  </div>
 
-    <div class="footer-bottom">
-      &copy; 2025 Semitic Jew. All rights reserved.
-    </div>
+  <div class="footer-bottom">
+    <div class="container">© 2025 Semitic Jew. All rights reserved.</div>
   </div>
 </footer>
