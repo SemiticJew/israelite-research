@@ -2,112 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Israelite Research — Podcast</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Podcast — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Horizontal breadcrumbs (page-local) */
-    .breadcrumb { font-size: 0.95rem; margin: 1rem 0 1.25rem; }
-    .breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; }
-    .breadcrumb li { color: #666; display: inline-flex; align-items: center; }
-    .breadcrumb li a { text-decoration: none; color: inherit; }
-    .breadcrumb li + li::before { content: "›"; margin: 0 .5rem; color: #999; }
+    /* --- Podcast page local tweaks (scoped) --- */
+    .podcast-page .container { max-width: 1200px; margin: 0 auto; }
 
-    /* Hero using site palette */
-    .hero-podcast{
-      --blue-900:#054A91; --blue-700:#3E7CB1; --blue-400:#81A4CD; --blue-100:#DBE4EE; --accent:#F17300;
-      background: linear-gradient(135deg, var(--blue-900), var(--blue-700) 55%, var(--blue-400));
-      color:#fff; padding:4rem 1.5rem; text-align:center;
-      border-bottom:6px solid var(--accent); border-radius:0 0 18px 18px;
-      box-shadow:0 6px 18px rgba(0,0,0,.12);
+    /* Section A — Intro */
+    .podcast-intro { padding: 1.5rem var(--page-pad, 1rem) 2rem; }
+    .podcast-intro .intro-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+      align-items: start;
     }
-    .hero-divider{ height:12px; background:linear-gradient(90deg, #F17300 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
-
-    /* Platform buttons row */
-    .podcast-platforms{
-      display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center;
-      margin:1.25rem 0 0;
+    .podcast-cover {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: #eef3fa;
+      display: grid; place-items: center;
+      border: 1px solid #e6ebf2;
     }
-    .platform-btn{
+    .podcast-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .podcast-about h2 { margin: 0 0 .5rem; font-family: var(--ff-serif); }
+    .podcast-about p { margin: 0 0 1rem; color: #333; }
+    .platform-links {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+    }
+    .platform-links a {
       display:inline-flex; align-items:center; gap:.5rem;
-      padding:.6rem .9rem; border-radius:999px; border:1px solid #e6ebf2;
-      background:#fff; color:#054A91; text-decoration:none;
-      box-shadow:0 2px 8px rgba(0,0,0,.04); font-weight:500;
+      padding:.5rem .75rem; border-radius: 999px;
+      border:1px solid #e6ebf2; background: #fff; text-decoration:none;
+      color: var(--blue-700, #054A91); font-weight: 500;
     }
-    .platform-btn:hover{ transform:translateY(-1px); }
-    .platform-btn svg{ width:18px; height:18px; }
+    .platform-links a:hover { transform: translateY(-1px); }
 
-    /* Simple tabs (Episodes / Series) — keep minimal to not disrupt existing content */
-    .podcast-tabs{ margin-top:1.5rem; }
-    .tab-head{
-      display:flex; gap:1rem; justify-content:center; margin-bottom:1rem;
-      border-bottom:1px solid #e6ebf2; padding-bottom:.5rem;
+    /* Shared horizontal row */
+    .h-scroll {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(320px, 520px);
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: .25rem;
+      scroll-snap-type: x proximity;
     }
-    .tab-head a{ text-decoration:none; padding:.4rem .8rem; border-radius:8px; }
-    .tab-head a.active{ background:#DBE4EE; color:#054A91; }
-    .episodes-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
-    .episode-card{ background:#fff; border:1px solid #e6ebf2; border-radius:12px; padding:1rem; box-shadow:0 2px 8px rgba(0,0,0,.04); }
-    .episode-card h3{ margin:.25rem 0 .5rem; font-size:1.05rem; }
-    .episode-meta{ font-size:.9rem; color:#666; margin-bottom:.5rem; }
+    .episode-card, .lecture-card {
+      scroll-snap-align: start;
+      border: 1px solid #e6ebf2; background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      display: flex; gap: .85rem; padding: .85rem; min-height: 152px;
+    }
+    .episode-card .thumb, .lecture-card .thumb {
+      width: 40%; max-width: 240px; min-width: 180px;
+      aspect-ratio: 16/9; background:#f3f6fb; display:block; object-fit: cover;
+      border: 1px solid #e6ebf2;
+    }
+    .episode-card .body, .lecture-card .body { display: flex; flex-direction: column; }
+    .episode-card .title, .lecture-card .title {
+      margin: 0 0 .35rem; font-size: 1.05rem; line-height: 1.35; color: #000;
+    }
+    .episode-card .meta, .lecture-card .meta { font-size: .9rem; color: #666; margin-bottom: .35rem; }
+    .episode-card .desc, .lecture-card .desc { font-size: .95rem; color: #333; margin: 0; }
+
+    /* Section headings */
+    .podcast-section { padding: 1rem var(--page-pad, 1rem) 2rem; }
+    .podcast-section .section-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+      margin: 0 0 .75rem;
+    }
+
+    /* Small screens */
+    @media (max-width: 800px) {
+      .podcast-intro .intro-grid { grid-template-columns: 1fr; }
+      .platform-links { gap: .4rem; }
+      .episode-card, .lecture-card { flex-direction: column; }
+      .episode-card .thumb, .lecture-card .thumb { width: 100%; max-width: none; }
+    }
   </style>
 </head>
-<body>
-
+<body class="podcast-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container podcast-page">
-
-    <!-- Breadcrumbs ABOVE hero -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
-
-    <section class="hero hero-podcast">
-      <h1 class="page-title">Podcast</h1>
-      <p class="page-subtitle">Conversations exploring Scripture, theology, and life with God.</p>
-
-      <!-- Platform buttons -->
-      <div class="podcast-platforms">
-        <a class="platform-btn" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener">
-          <!-- Spotify icon (inline) -->
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".08"/><path d="M19 10.5c-3.9-2.3-10.1-2.5-13.9-.9a.8.8 0 0 1-.7-1.4c4.3-1.8 11.2-1.6 15.6 1a.8.8 0 0 1-.9 1.3Zm-.2 3.2c-3.3-2-8.3-2.6-12.2-1.2a.7.7 0 1 1-.5-1.3c4.3-1.5 9.8-1 13.5 1.3a.7.7 0 1 1-.8 1.2Zm-1 3c-2.9-1.7-6.5-1.9-10-1a.6.6 0 1 1-.3-1.2c3.9-1 7.9-.8 11.1 1.1a.6.6 0 0 1-.6 1.1Z" fill="currentColor"/></svg>
-          Spotify
-        </a>
-        <a class="platform-btn" href="https://podcasts.apple.com/" target="_blank" rel="noopener">
-          <!-- Apple Podcasts glyph-ish -->
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".08"/><path d="M12 6.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0 10.2c2.5 0 4.8.6 6.2 1.7.3.2.3.6 0 .8-.4.3-1 .2-1.4 0-1.2-.8-3.1-1.3-4.8-1.3s-3.6.5-4.8 1.3c-.3.2-1 .3-1.4 0-.3-.2-.3-.6 0-.8 1.4-1.1 3.7-1.7 6.2-1.7Z" fill="currentColor"/></svg>
-          Apple Podcasts
-        </a>
-        <a class="platform-btn" href="rss.xml" target="_blank" rel="noopener">
-          <!-- RSS -->
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2" fill="currentColor"/><path d="M5 5a14 14 0 0 1 14 14h-3A11 11 0 0 0 5 8V5Zm0 6a8 8 0 0 1 8 8h-3a5 5 0 0 0-5-5v-3Z" fill="currentColor"/></svg>
-          RSS
-        </a>
+  <main>
+    <!-- Universal hero -->
+    <section class="page-hero hero-podcast">
+      <div class="container">
+        <h1 class="page-title">Podcast</h1>
+        <p class="page-subtitle">Conversations, exegesis, and logic for faithful Bible reading.</p>
       </div>
+      <div class="hero-divider"></div>
     </section>
-    <div class="hero-divider" aria-hidden="true"></div>
 
-    <!-- Tabs (Episodes / Series) — optional content area -->
-    <section class="podcast-tabs">
-      <div class="tab-head">
-        <a href="?tab=episodes" class="active">Episodes</a>
-        <a href="?tab=series">Series</a>
-      </div>
+    <!-- Breadcrumbs under hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="podcast"></nav>
 
-      <!-- Example episode cards (replace with your real feed or static items) -->
-      <div class="episodes-grid">
-        <article class="episode-card">
-          <div class="episode-meta">Jan 10, 2025 · 42 min</div>
-          <h3>In the Beginning: Reading Genesis as Literature</h3>
-          <p>How structure, repetition, and imagery shape our understanding of the creation narrative.</p>
-        </article>
-        <article class="episode-card">
-          <div class="episode-meta">Dec 18, 2024 · 38 min</div>
-          <h3>Wisdom’s Voice: Proverbs for Modern Life</h3>
-          <p>Listening to the sages: skill for living amid competing voices and hurry.</p>
-        </article>
+    <!-- A) Intro: cover + description + platform links -->
+    <section class="podcast-intro">
+      <div class="container intro-grid">
+        <div class="podcast-cover">
+          <img src="/israelite-research/images/podcast-placeholder.jpg" alt="Semitic Jew Podcast cover"
+               onerror="this.onerror=null;this.src='/israelite-research/images/podcast-placeholder.jpg'">
+        </div>
+        <div class="podcast-about">
+          <h2>About the Podcast</h2>
+          <p>
+            The Semitic Jew Podcast explores Scripture with careful logic, cultural context,
+            and a heart for truth. Join for verse-by-verse conversation, biblical themes,
+            and Q&amp;A episodes.
+          </p>
+          <div class="platform-links">
+            <a href="https://youtube.com/@blksemitic" target="_blank" rel="noopener" aria-label="YouTube">
+              ▶️ YouTube
+            </a>
+            <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener" aria-label="Apple Podcasts">
+               Apple Podcasts
+            </a>
+            <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=7c5d6203630c4b37" target="_blank" rel="noopener" aria-label="Spotify">
+              ♫ Spotify
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- B) Featured Episodes (horizontal cards) -->
+    <section class="podcast-section">
+      <div class="container">
+        <h2 class="section-title">Featured Episodes</h2>
+        <div class="h-scroll">
+          <!-- Example Episode 1 -->
+          <article class="episode-card">
+            <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode artwork">
+            <div class="body">
+              <h3 class="title"><a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener">
+                Why Logic Matters for Bible Reading
+              </a></h3>
+              <div class="meta">Apple Podcasts • 42 min</div>
+              <p class="desc">A practical framework for testing interpretations with clear reasoning and cross references.</p>
+            </div>
+          </article>
+          <!-- Example Episode 2 -->
+          <article class="episode-card">
+            <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="Episode artwork">
+            <div class="body">
+              <h3 class="title"><a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=7c5d6203630c4b37" target="_blank" rel="noopener">
+                Genesis 1: Order, Pattern, and Purpose
+              </a></h3>
+              <div class="meta">Spotify • 38 min</div>
+              <p class="desc">Reading the creation account with literary cues and canonical echoes.</p>
+            </div>
+          </article>
+          <!-- Add more episode-card items as you publish -->
+        </div>
+      </div>
+    </section>
+
+    <!-- C) Lectures (YouTube) -->
+    <section class="podcast-section">
+      <div class="container">
+        <h2 class="section-title">Lectures</h2>
+        <div class="h-scroll">
+          <!-- Example Lecture 1 -->
+          <article class="lecture-card">
+            <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="YouTube lecture thumbnail">
+            <div class="body">
+              <h3 class="title"><a href="https://youtube.com/@blksemitic" target="_blank" rel="noopener">
+                Textual Logic: Three Principles for Beginners
+              </a></h3>
+              <div class="meta">YouTube</div>
+              <p class="desc">An intro session on non-contradiction, identity, and coherence for Bible study.</p>
+            </div>
+          </article>
+
+          <!-- Example Lecture 2 -->
+          <article class="lecture-card">
+            <img class="thumb" src="/israelite-research/images/podcast-placeholder.jpg" alt="YouTube lecture thumbnail">
+            <div class="body">
+              <h3 class="title"><a href="https://youtube.com/@blksemitic" target="_blank" rel="noopener">
+                Intertextuality: How Scripture Interprets Scripture
+              </a></h3>
+              <div class="meta">YouTube</div>
+              <p class="desc">Following themes across the canon to confirm and clarify meaning.</p>
+            </div>
+          </article>
+          <!-- Add more lecture-card items as needed -->
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Footer partial -->
