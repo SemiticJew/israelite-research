@@ -526,3 +526,62 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .newsletter-form input{flex:1;min-width:0;padding:.5rem .6rem;border:1px solid #e0e6ef;border-radius:8px}
 .newsletter-form button{padding:.5rem .9rem;border:none;border-radius:8px;background:#F17300;color:#fff;font-weight:600;cursor:pointer}
 .footer-bottom{margin-top:1rem;padding-top:1rem;border-top:1px solid #e6ebf2;text-align:center;color:#555}
+.site-footer .footer-grid {
+  display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.footer-heading { font-weight: 700; margin: 0 0 .5rem; }
+.footer-links { list-style: none; margin: 0; padding: 0; }
+.footer-links li { margin: .35rem 0; }
+.footer-links a { text-decoration: none; color: var(--ink, #0b2340); }
+.footer-links a:hover { text-decoration: underline; }
+
+.footer-social { display: flex; gap: .5rem; margin-top: .5rem; }
+.social-pill {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px; border-radius:999px; border:1px solid #e6ebf2;
+  text-decoration:none; font-weight:600; font-size:.85rem;
+  color:#054A91; background:#fff;
+}
+
+.footer-newsletter .newsletter-form { display:flex; gap:.5rem; margin-top:.5rem; }
+.footer-newsletter input[type="email"] {
+  flex:1; padding:.55rem .7rem; border:1px solid #e1e6ee; border-radius:8px;
+}
+.footer-newsletter button {
+  padding:.55rem .9rem; border-radius:8px; border:1px solid transparent;
+  background:#F17300; color:#fff; font-weight:600; cursor:pointer;
+}
+.footer-newsletter button:hover { opacity:.9; }
+.visually-hidden { position:absolute !important; clip:rect(1px,1px,1px,1px); clip-path: inset(50%); height:1px; width:1px; overflow:hidden; white-space:nowrap; }
+/* Footer socials */
+.site-footer .footer-social{
+  display:flex;
+  gap:.5rem;
+  margin-top:.75rem;
+}
+
+.site-footer .footer-social .icon{
+  width:36px;
+  height:36px;
+  border-radius:999px;           /* rounded */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--accent, #F17300);
+  color:var(--accent, #F17300);  /* orange by default */
+  background:transparent;
+  text-decoration:none;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.site-footer .footer-social .icon:hover{
+  background:var(--accent, #F17300);  /* orange on hover */
+  color:#fff;                         /* icon turns white */
+  border-color:var(--accent, #F17300);
+  transform:translateY(-1px);
+}
+
+.site-footer .footer-social .icon svg{
+  width:18px; height:18px; display:block;
+  fill:currentColor; /* makes the SVG follow the link color */
+}
