@@ -832,3 +832,20 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   height: 100%;
   object-fit: cover;
 }
+/* === Articles page width constraints (1200px) === */
+.articles-page .page-hero .container,
+.articles-page .featured-pair .container,
+.articles-page .articles-list .container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Breadcrumb bar itself should also honor 1200px frame */
+.articles-page #breadcrumbs {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
