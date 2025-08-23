@@ -5,58 +5,134 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Apologetics — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-scoped tweaks (safe, minimal) */
+    .apologetics-page .topics-wrap{ margin: 1.25rem auto 2.5rem; max-width: 1200px; }
+    .apologetics-page .topics-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+      gap: 1rem;
+    }
+    .topic-card{
+      display:flex; align-items:flex-start; gap:1rem;
+      padding:1rem 1.25rem; background:#fff; border:1px solid #e6ebf2;
+      box-shadow:0 2px 8px rgba(0,0,0,.04); border-radius:12px;
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    .topic-card:hover{ box-shadow:0 6px 18px rgba(0,0,0,.08); transform:translateY(-1px); }
+    .topic-icon{
+      flex:0 0 48px; height:48px; border-radius:10px;
+      background:#DBE4EE; display:flex; align-items:center; justify-content:center;
+      font-weight:700; color:#054A91;
+    }
+    .topic-body h3{
+      margin:.15rem 0 .35rem; font-size:1.05rem; line-height:1.3;
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+    }
+    .topic-body h3 a{ text-decoration:none; color:#0b2340; }
+    .topic-body h3 a:hover{ text-decoration:underline; }
+    .topic-body p{ margin:0; color:#555; font-size:.95rem; line-height:1.5; }
+  </style>
 </head>
 <body class="apologetics-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Universal Hero -->
+    <!-- Hero -->
     <section class="page-hero hero-apologetics">
       <div class="container">
         <h1 class="page-title">Apologetics</h1>
-        <p class="page-subtitle">
-          Browse focused topics defending the faith with Scripture, history, and sound reasoning.
-        </p>
+        <p class="page-subtitle">Concise topics to help you think clearly and biblically.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (standard placement: under hero, left-aligned) -->
+    <!-- Breadcrumbs (under hero, left aligned) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="apologetics"></nav>
 
-    <!-- CONTENT: keep your existing grid/list exactly as-is inside this container -->
-    <section class="topics">
-      <div class="container">
-        <!-- BEGIN your existing Apologetics markup (unchanged). If you already have it, replace only this inner block. -->
-        <div class="grid">
-          <!-- Example cards (you can keep your current ones) -->
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/bible">Bible</a></h3>
-            <p>Canon, reliability, transmission, harmonizations.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/god">God</a></h3>
-            <p>Attributes, Trinity, sovereignty, problem of evil.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/jesus">Jesus</a></h3>
-            <p>Messiahship, resurrection, prophecy fulfillment.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/salvation">Salvation</a></h3>
-            <p>Gospel, justification, sanctification, assurance.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/culture">Culture</a></h3>
-            <p>Ethics, gender, marriage, life, justice.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/israelite-research/apologetics/church">Church</a></h3>
-            <p>History, councils, creeds, persecution.</p>
-          </article>
-        </div>
-        <!-- END your existing Apologetics markup -->
+    <!-- Horizontal topic cards -->
+    <section class="topics-wrap">
+      <div class="topics-grid">
+        <article class="topic-card" id="reliability">
+          <div class="topic-icon">R</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#reliability">Reliability of Scripture</a></h3>
+            <p>Manuscripts, transmission, and why the Bible we read is trustworthy.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="resurrection">
+          <div class="topic-icon">☩</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#resurrection">Resurrection</a></h3>
+            <p>Historical case and theological meaning of Jesus’s bodily resurrection.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="evil">
+          <div class="topic-icon">E</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#evil">Problem of Evil</a></h3>
+            <p>How Scripture addresses suffering, justice, and God’s goodness.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="trinity">
+          <div class="topic-icon">Τ</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#trinity">Trinity &amp; God’s Nature</a></h3>
+            <p>Biblical foundations for the oneness of God and three Persons.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="deity-of-christ">
+          <div class="topic-icon">Χ</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#deity-of-christ">Jesus’s Deity</a></h3>
+            <p>Claims of Christ and witness of the apostles to His divine identity.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="creation-design">
+          <div class="topic-icon">∴</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#creation-design">Creation &amp; Design</a></h3>
+            <p>Order, purpose, and the biblical account of origins.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="canon-text">
+          <div class="topic-icon">C</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#canon-text">Canon &amp; Textual Variants</a></h3>
+            <p>Which books belong and how scholars evaluate variant readings.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="miracles">
+          <div class="topic-icon">✶</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#miracles">Miracles</a></h3>
+            <p>Understanding biblical miracles and their purpose in redemptive history.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="ethics">
+          <div class="topic-icon">§</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#ethics">Ethics &amp; Culture</a></h3>
+            <p>Applying Scripture to modern questions of life, sexuality, justice, and more.</p>
+          </div>
+        </article>
+
+        <article class="topic-card" id="israel-covenants">
+          <div class="topic-icon">✡︎</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/apologetics.html#israel-covenants">Israel &amp; the Covenants</a></h3>
+            <p>Promises, identity, and the unfolding plan of God through Israel.</p>
+          </div>
+        </article>
       </div>
     </section>
   </main>
