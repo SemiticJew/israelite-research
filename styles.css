@@ -639,3 +639,30 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 
 .footer-bottom{ border-top:1px solid rgba(255,255,255,.12); margin-top:2rem; }
 .footer-bottom .container{ padding:1rem 0; display:flex; justify-content:space-between; align-items:center; }
+/* Center columns + lists in footer */
+.site-footer .footer-col { text-align: center; }
+.site-footer .footer-nav { display: flex; flex-direction: column; gap: .45rem; align-items: center; }
+
+/* Keep headings bold as requested previously */
+.site-footer .footer-title,
+.site-footer .footer-heading { font-weight: 700; }
+
+/* Social pills remain rounded + orange brand color */
+.site-footer .social-pill {
+  width: 36px; height: 36px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid #F17300; color: #F17300; text-decoration: none;
+}
+.site-footer .social-pill:hover { background: #F17300; color: #fff; }
+
+/* Newsletter stays compact */
+.site-footer .newsletter { margin-top: .75rem; }
+.site-footer .newsletter-row { display: flex; gap: .5rem; justify-content: center; }
+.site-footer .newsletter input { padding: .45rem .6rem; border: 1px solid #e6ebf2; border-radius: 8px; }
+.site-footer .newsletter button { padding: .45rem .8rem; border-radius: 8px; background: #F17300; color: #fff; border: none; }
+/* Newsletter tiny styles (non-invasive) */
+.footer-newsletter { margin-top: 1rem; }
+.footer-newsletter .newsletter-row { display:flex; gap:.5rem; }
+.footer-newsletter input[type="email"] { flex:1; padding:.5rem .65rem; border:1px solid #e6ebf2; border-radius:8px; }
+.footer-newsletter button { padding:.5rem .9rem; border:1px solid #e6ebf2; border-radius:8px; background:#F17300; color:#fff; }
+.footer-newsletter .newsletter-note { display:block; margin-top:.4rem; color:#666; font-size:.85rem; }
