@@ -666,3 +666,35 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .footer-newsletter input[type="email"] { flex:1; padding:.5rem .65rem; border:1px solid #e6ebf2; border-radius:8px; }
 .footer-newsletter button { padding:.5rem .9rem; border:1px solid #e6ebf2; border-radius:8px; background:#F17300; color:#fff; }
 .footer-newsletter .newsletter-note { display:block; margin-top:.4rem; color:#666; font-size:.85rem; }
+/* Footer socials */
+.site-footer .footer-social{
+  display:flex;
+  gap:.5rem;
+  margin-top:.75rem;
+}
+
+.site-footer .footer-social .icon{
+  width:36px;
+  height:36px;
+  border-radius:999px;           /* rounded */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--accent, #F17300);
+  color:var(--accent, #F17300);  /* orange by default */
+  background:transparent;
+  text-decoration:none;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.site-footer .footer-social .icon:hover{
+  background:var(--accent, #F17300);  /* orange on hover */
+  color:#fff;                         /* icon turns white */
+  border-color:var(--accent, #F17300);
+  transform:translateY(-1px);
+}
+
+.site-footer .footer-social .icon svg{
+  width:18px; height:18px; display:block;
+  fill:currentColor; /* makes the SVG follow the link color */
+}
