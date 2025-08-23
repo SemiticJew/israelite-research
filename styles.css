@@ -849,3 +849,48 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   padding-left: 1rem;
   padding-right: 1rem;
 }
+/* === Articles card layout fixes (excerpts, date, avatar in footer) === */
+.articles-page .card,
+.articles-page .card-featured.secondary {
+  display: flex;
+  flex-direction: column;
+}
+
+.articles-page .card-body,
+.articles-page .card-featured.secondary .body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.articles-page .card-excerpt,
+.articles-page .card-featured.secondary .excerpt {
+  display: block;
+  margin-top: .5rem;
+  color: #333;
+  max-height: none;         /* ensure not clipped */
+  overflow: visible;
+}
+
+.articles-page .card-date,
+.articles-page .card-featured.secondary .card-date {
+  margin-top: .4rem;        /* directly under excerpt */
+  font-size: .9rem;
+  color: #777;
+}
+
+.articles-page .card-foot,
+.articles-page .card-featured.secondary .card-foot {
+  margin-top: auto;         /* pin footer to bottom */
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding-top: .6rem;
+}
+
+.articles-page .author-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
