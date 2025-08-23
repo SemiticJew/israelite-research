@@ -698,3 +698,6 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   width:18px; height:18px; display:block;
   fill:currentColor; /* makes the SVG follow the link color */
 }
+/* Center columns + lists in footer */
+.site-footer .footer-col { text-align: center; }
+.site-footer .footer-nav { display: flex; flex-direction: column; gap: .45rem; align-items: center; }
