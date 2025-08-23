@@ -1,104 +1,132 @@
-<script>
-(() => {
-  const el = document.getElementById('breadcrumbs');
-  if (!el) return;
+// /js/breadcrumbs.js
+document.addEventListener('DOMContentLoaded', () => {
+  const BASE = '/israelite-research/';
 
-  const BASE = '/israelite-research';                // GitHub Pages base
-  const toTitle = s => decodeURIComponent(s)
-    .replace(/[-_]/g,' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
+  const hero = document.querySelector('.page-hero');
+  let nav = document.getElementById('breadcrumbs');
 
-  // Build list
-  const loc   = window.location;
-  const path0 = loc.pathname.replace(/index\.html$/,'');
-  const path  = path0.startsWith(BASE) ? path0.slice(BASE.length) : path0;
-  const segs  = path.split('/').filter(Boolean);
-  const q     = new URLSearchParams(loc.search);
-  const book  = q.get('book');
-  const chap  = q.get('chapter');
-  const verse = q.get('verse');
-
-  const crumbs = [];
-  const push = (label, href) => crumbs.push({label, href});
-
-  // Always start at Home
-  push('Home', `${BASE}/index.html`);
-
-  // Special cases for content sections
-  const s0 = segs[0] || '';
-  if (s0 === 'articles') {
-    push('Articles', `${BASE}/articles.html`);
-    // Article page
-    if (segs[1]) {
-      const h1 = document.querySelector('.article-title');
-      const label = h1?.textContent?.trim() || toTitle(segs[1].replace(/\.html$/,''));
-      push(label, null);
-    }
-  } else if (segs[0] === 'tanakh') {
-    push('Texts', `${BASE}/texts.html`);
-    push('The Tanakh', `${BASE}/tanakh.html`);
-    if (segs[1] === 'book.html' && book) push(book, null);
-    if (segs[1] === 'chapter.html' && book) {
-      push(book, `${BASE}/tanakh/book.html?book=${encodeURIComponent(book)}`);
-      if (chap) push(`Chapter ${chap}`, null);
-      if (verse) push(`Verse ${verse}`, null);
-    }
-  } else if (segs[0] === 'newtestament') {
-    push('Texts', `${BASE}/texts.html`);
-    push('The New Testament', `${BASE}/newtestament.html`);
-    if (segs[1] === 'book.html' && book) push(book, null);
-    if (segs[1] === 'chapter.html' && book) {
-      push(book, `${BASE}/newtestament/book.html?book=${encodeURIComponent(book)}`);
-      if (chap) push(`Chapter ${chap}`, null);
-      if (verse) push(`Verse ${verse}`, null);
-    }
-  } else if (path === '/texts.html') {
-    push('Texts', null);
-  } else if (path === '/tanakh.html') {
-    push('Texts', `${BASE}/texts.html`);
-    push('The Tanakh', null);
-  } else if (path === '/newtestament.html') {
-    push('Texts', `${BASE}/texts.html`);
-    push('The New Testament', null);
-  } else if (path === '/apocrypha.html') {
-    push('Texts', `${BASE}/texts.html`);
-    push('The Apocrypha', null);
-  } else if (path === '/apologetics.html') {
-    push('Apologetics', null);
-  } else if (path === '/events.html') {
-    push('Events', null);
-  } else if (path === '/podcast.html') {
-    push('Podcast', null);
-  } else if (path === '/donate.html') {
-    push('Donations', null);
-  } else if (path === '/articles.html') {
-    push('Articles', null);
+  // Ensure a breadcrumb nav exists
+  if (!nav) {
+    nav = document.createElement('nav');
+    nav.id = 'breadcrumbs';
+    nav.className = 'breadcrumb';
+    (hero ? hero : (document.querySelector('main') || document.body))
+      .insertAdjacentElement(hero ? 'afterend' : 'afterbegin', nav);
   } else {
-    // Fallback: derive from segments
-    segs.forEach((s, i) => {
-      const href = `${BASE}/${segs.slice(0, i+1).join('/')}`;
-      const isLast = i === segs.length - 1;
-      push(toTitle(s.replace(/\.html$/,'')), isLast ? null : href);
-    });
+    // Move it under the hero globally (if hero exists)
+    if (hero && nav.previousElementSibling !== hero) {
+      hero.insertAdjacentElement('afterend', nav);
+    }
   }
 
-  // Render
+  // Build list
+  nav.innerHTML = '';
   const ol = document.createElement('ol');
-  ol.className = 'crumbs';
-  crumbs.forEach((c, i) => {
+  nav.appendChild(ol);
+
+  const addCrumb = (href, label, isLast = false) => {
     const li = document.createElement('li');
-    if (c.href && i < crumbs.length - 1) {
-      const a = document.createElement('a');
-      a.href = c.href;
-      a.textContent = c.label;
-      li.appendChild(a);
+    if (isLast || !href) {
+      li.textContent = label;
     } else {
-      li.textContent = c.label;
-      li.setAttribute('aria-current','page');
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = label;
+      li.appendChild(a);
     }
     ol.appendChild(li);
-  });
-  el.innerHTML = '';
-  el.appendChild(ol);
-})();
-</script>
+  };
+
+  const titleCase = s =>
+    s.replace(/[-_]/g, ' ')
+     .replace(/\b\w/g, c => c.toUpperCase());
+
+  // Always start with Home
+  addCrumb(BASE, 'Home');
+
+  // Path + params
+  const pathRaw = location.pathname.replace(BASE, '').replace(/^\/+/, '');
+  const segs = pathRaw.split('/').filter(Boolean);
+  const params = new URLSearchParams(location.search);
+  const h1 = (document.querySelector('h1')?.textContent || '').trim();
+
+  // If root or index, done
+  if (segs.length === 0 || segs[0] === 'index.html') return;
+
+  // Simple file label map
+  const FILE_LABELS = {
+    'texts.html': 'Texts',
+    'tanakh.html': 'The Tanakh',
+    'newtestament.html': 'The New Testament',
+    'apocrypha.html': 'Apocrypha',
+    'apologetics.html': 'Apologetics',
+    'events.html': 'Events',
+    'podcast.html': 'Podcast',
+    'donate.html': 'Donations',
+    'biblical_references.html': 'Bible References',
+    'historical-textual-variants.html': 'Historical & Textual Variants',
+    'articles.html': 'Articles'
+  };
+
+  // Articles
+  if (segs[0] === 'articles') {
+    addCrumb(BASE + 'articles.html', 'Articles', segs.length === 1);
+    if (segs.length > 1) {
+      const file = segs[1].replace(/\.html?$/i, '');
+      addCrumb(null, h1 || titleCase(file), true);
+    }
+    return;
+  }
+
+  // Tanakh
+  if (segs[0] === 'tanakh') {
+    addCrumb(BASE + 'texts.html', 'Texts');
+    addCrumb(BASE + 'tanakh.html', 'The Tanakh');
+
+    if (segs[1] === 'book.html') {
+      const book = params.get('book');
+      addCrumb(null, book || 'Book', true);
+      return;
+    }
+    if (segs[1] === 'chapter.html') {
+      const book = params.get('book');
+      const ch = params.get('chapter');
+      if (book) addCrumb(BASE + 'tanakh/book.html?book=' + encodeURIComponent(book), book);
+      if (ch) addCrumb(null, 'Chapter ' + ch, true);
+      return;
+    }
+
+    // Fallback to file label
+    const label = FILE_LABELS[segs[1]] || titleCase((segs[1] || '').replace(/\.html?$/i, ''));
+    if (label) addCrumb(BASE + segs.slice(0,2).join('/'), label, true);
+    return;
+  }
+
+  // New Testament
+  if (segs[0] === 'newtestament') {
+    addCrumb(BASE + 'texts.html', 'Texts');
+    addCrumb(BASE + 'newtestament.html', 'The New Testament');
+
+    if (segs[1] === 'book.html') {
+      const book = params.get('book');
+      addCrumb(null, book || 'Book', true);
+      return;
+    }
+    if (segs[1] === 'chapter.html') {
+      const book = params.get('book');
+      const ch = params.get('chapter');
+      if (book) addCrumb(BASE + 'newtestament/book.html?book=' + encodeURIComponent(book), book);
+      if (ch) addCrumb(null, 'Chapter ' + ch, true);
+      return;
+    }
+
+    const label = FILE_LABELS[segs[1]] || titleCase((segs[1] || '').replace(/\.html?$/i, ''));
+    if (label) addCrumb(BASE + segs.slice(0,2).join('/'), label, true);
+    return;
+  }
+
+  // Apocrypha / Apologetics / Events / Podcast / Donations / etc.
+  const file = segs[0];
+  const label = FILE_LABELS[file] || titleCase(file.replace(/\.html?$/i, ''));
+  addCrumb(BASE + file, label, true);
+});
