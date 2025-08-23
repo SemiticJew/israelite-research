@@ -6,100 +6,92 @@
   <title>Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* ---------- Scoped to articles page only ---------- */
-    .articles-page .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    /* Page-scoped tweaks (won’t affect other pages) */
+    .articles-page .container{ max-width: 1320px; margin: 0 auto; padding: 0 16px; }
 
-    /* Breadcrumbs above hero, left aligned (colors from your palette) */
-    .articles-page #breadcrumbs { margin: 1rem 0 .5rem; }
-    .articles-page #breadcrumbs a { color: #F17300; text-decoration: none; }
-    .articles-page #breadcrumbs a:hover { text-decoration: underline; }
+    /* Hero (uses your universal hero look) */
+    .hero-articles { padding: 2.25rem 0 1.25rem; background: linear-gradient(180deg, #DBE4EE 0%, #fff 100%); }
+    .hero-articles .page-title{
+      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+      font-size: clamp(2rem, 3.2vw + 1rem, 3rem);
+      margin: 0 0 .5rem 0;
+      letter-spacing: 0.5px;
+      color: #0b2340;
+      text-align: left;
+    }
+    .hero-articles .page-subtitle{
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+      font-size: 1rem; color: #3E7CB1; max-width: 60ch; line-height: 1.6; margin: 0;
+      text-align: left;
+    }
+    .hero-divider { height: 10px; background: linear-gradient(90deg, #F17300 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
 
-    /* Hero matches your universal style classes */
-    .hero-articles .page-title { color:#fff; }
-    .hero-articles .page-subtitle { color: #DBE4EE; }
+    /* In-image “Article” label */
+    .label-pill{
+      position: absolute; left: 8px; top: 8px;
+      background: rgba(0,0,0,.55); color: #fff; padding: 4px 8px; font-size: .75rem;
+      border-radius: 0; text-transform: uppercase; letter-spacing: .04em;
+    }
 
     /* Featured pair */
-    .featured-pair { margin: 2rem 0; }
-    .featured-grid {
-      display: grid;
-      grid-template-columns: 1fr 315px;
-      gap: 24px;
-      align-items: stretch;
-    }
+    .featured-pair{ padding: 1.25rem 0 1.25rem; }
+    .featured-grid{ display: flex; gap: 24px; justify-content: center; align-items: stretch; }
 
-    /* Primary featured (horizontal) */
-    .card-featured.primary .inner {
-      display: grid;
-      grid-template-columns: minmax(420px, 1fr) 315px; /* left image flexes, right is fixed 315 */
-      height: 450px;
-      text-decoration: none;
-      color: inherit;
-      border: 1px solid #e6ebf2;
+    /* Primary (horizontal) featured */
+    .card-featured.primary{
+      width: 960px; height: 450px; border: 1px solid #e6ebf2; background: #fff;
+      display:flex; box-shadow: 0 2px 10px rgba(0,0,0,.04);
     }
-    .card-featured.primary .media {
-      position: relative; overflow: hidden; background: #eee;
+    .card-featured.primary .inner{ display:flex; width:100%; height:100%; text-decoration:none; color:inherit; }
+    .card-featured.primary .media{
+      width: 630px; height: 100%; position: relative; overflow: hidden; background:#f7f9fc;
     }
-    .card-featured.primary .media img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
+    .card-featured.primary .media img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-featured.primary .content{
+      width: 330px; height: 100%; padding: 16px; display:flex; flex-direction:column; justify-content: space-between;
     }
-    .label-pill {
-      position: absolute; left: 12px; top: 12px;
-      background: rgba(0,0,0,.55); color: #fff; padding: 6px 10px;
-      font-size: 12px; letter-spacing:.4px; text-transform: uppercase;
-      border-radius: 0; /* square */
-    }
-    .card-featured.primary .content {
-      padding: 16px; display: flex; flex-direction: column; justify-content: space-between;
-      background: #fff;
-    }
-    .card-featured.primary .title { font-size: 1.35rem; margin: 0 0 .5rem; }
-    .card-featured.primary .excerpt { font-size: .98rem; color: #333; line-height: 1.5; }
-    .card-featured .foot {
-      display: flex; align-items: center; gap: .5rem; margin-top: 1rem;
-      border-top: 1px solid #eee; padding-top: .75rem;
-    }
-    .author-avatar { width:30px; height:30px; border-radius:50%; object-fit:cover; }
+    .card-featured .title{ margin: 0 0 .35rem; font-size: 1.15rem; line-height: 1.25; color:#0b2340; }
+    .card-featured .excerpt{ margin: 0 0 .75rem; color:#333; font-size: .96rem; line-height: 1.5; }
+    .card-featured .foot{ margin-top: auto; display:flex; align-items:center; gap:.5rem; color:#555; }
+    .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
 
-    /* Secondary featured (315x450) */
-    .card-featured.secondary .inner {
-      display: grid; grid-template-rows: 163.13px 1fr auto;  /* image height then content then foot */
-      width: 315px; height: 450px; background: #fff;
-      border: 1px solid #e6ebf2; text-decoration: none; color: inherit;
+    /* Secondary (vertical) featured = 315x450 */
+    .card-featured.secondary{
+      width: 315px; height: 450px; border: 1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
     }
-    .card-featured.secondary .media { position: relative; overflow: hidden; background:#eee; }
-    .card-featured.secondary .media img { width: 100%; height: 100%; object-fit: cover; display:block; }
-    .card-featured.secondary .body { padding: 12px 12px 0; }
-    .card-featured.secondary .title { margin: 0 0 .4rem; font-size: 1.05rem; line-height:1.25; }
-    .card-featured.secondary .title a { color: inherit; text-decoration: none; }
-    .card-featured.secondary .title a:hover { text-decoration: underline; }
-    .card-featured.secondary .excerpt { font-size: .95rem; color:#444; line-height:1.5; margin:0 0 .5rem; }
-    .card-featured.secondary .card-foot {
-      display:flex; align-items:center; gap:.5rem; padding: .5rem 12px .75rem;
-      border-top: 1px solid #eee; margin-top: auto;
+    .card-featured.secondary .inner{ display:flex; flex-direction:column; width:100%; height:100%; text-decoration:none; color:inherit; }
+    .card-featured.secondary .media{ position:relative; width:100%; height: 177.6px; background:#f7f9fc; overflow:hidden; }
+    .card-featured.secondary .media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .card-featured.secondary .body{ padding: 10px 12px 0; display:flex; flex-direction:column; gap:.4rem; }
+    .card-featured.secondary .title{ margin:0; font-size:1rem; color:#0b2340; }
+    .card-featured.secondary .excerpt{ margin:0; color:#333; font-size:.92rem; line-height:1.45; }
+    .card-featured.secondary .card-foot{
+      margin-top:auto; padding: 8px 12px 12px; display:flex; align-items:center; gap:.5rem; color:#555;
     }
-    .card-featured.secondary .card-date { margin-left:auto; color:#666; font-size:.85rem; }
+    .card-date{ color:#666; font-size:.85rem; }
 
-    /* Recent Articles grid — cards 315x450 */
-    .articles-list { margin: 2rem 0 3rem; }
-    .articles-list .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, 315px); gap: 20px; justify-content: center;
+    /* Recent grid: all 315x450 */
+    .articles-list{ padding: 0 0 2rem; }
+    .articles-list .grid{
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(315px, 315px));
+      gap: 16px; justify-content: center;
     }
-    .articles-list .card {
-      width: 315px; height: 450px; background:#fff; border:1px solid #e6ebf2;
-      display: grid; grid-template-rows: 163.13px 1fr auto; /* image / body / foot */
+    .articles-list .card{
+      width:315px; height:450px; border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
     }
-    .card-media { position: relative; overflow: hidden; background:#eee; }
-    .card-media img { width:100%; height:100%; object-fit:cover; display:block; }
-    .card-body { padding: 12px; }
-    .card-title { margin: 0 0 .4rem; font-size: 1rem; line-height:1.3; }
-    .card-title a { color: inherit; text-decoration: none; }
-    .card-title a:hover { text-decoration: underline; }
-    .card-excerpt { font-size: .95rem; color:#444; line-height:1.5; margin:0 0 .5rem; }
-    .card-date { color:#666; font-size:.85rem; }
-    .card-foot {
-      display: flex; align-items: center; gap: .5rem; padding: .5rem 12px .75rem;
-      border-top: 1px solid #eee; margin-top: auto;
-    }
+    .card-media{ position:relative; width:100%; height:177.6px; overflow:hidden; background:#f7f9fc; }
+    .card-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .card-body{ padding: 12px; display:flex; flex-direction:column; gap:.4rem; }
+    .card-title{ margin:0; font-size:1rem; line-height:1.25; }
+    .card-title a{ color:#0b2340; text-decoration:none; }
+    .card-title a:hover{ text-decoration:underline; }
+    .card-excerpt{ margin:0; color:#333; font-size:.92rem; line-height:1.45; }
+    .card-foot{ margin-top:auto; padding: 8px 12px 12px; display:flex; align-items:center; gap:.5rem; color:#555; }
+
+    /* Breadcrumbs placement */
+    #breadcrumbs.breadcrumb{ max-width:1320px; margin: 0 auto; padding: 12px 16px 0; }
   </style>
 </head>
 <body class="articles-page">
@@ -110,7 +102,7 @@
     <!-- Breadcrumbs (above hero, left aligned) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
-    <!-- Hero (uses your universal hero styles) -->
+    <!-- Hero -->
     <section class="page-hero hero-articles">
       <div class="container">
         <h1 class="page-title">Articles</h1>
@@ -133,17 +125,17 @@
               <div>
                 <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
                 <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+                <div class="card-date">Aug 15, 2025</div>
               </div>
               <div class="foot">
                 <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
                 <span class="author-name">Semitic Jew</span>
-                <span class="date" style="margin-left:auto;color:#666;font-size:.9rem;">Aug 15, 2025</span>
               </div>
             </div>
           </a>
         </article>
 
-        <!-- Secondary featured (315x450) -->
+        <!-- Secondary featured (vertical 315x450) -->
         <article class="card-featured secondary">
           <a class="inner" href="/israelite-research/articles/is-truth-reliable.html">
             <div class="media">
@@ -153,18 +145,18 @@
             <div class="body">
               <h3 class="title"><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></h3>
               <p class="excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
+              <div class="card-date">Aug 16, 2025</div>
             </div>
             <div class="card-foot">
               <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
               <span class="author-name">Semitic Jew</span>
-              <span class="card-date">Aug 16, 2025</span>
             </div>
           </a>
         </article>
       </div>
     </section>
 
-    <!-- Recent Articles -->
+    <!-- Recent grid -->
     <section class="articles-list">
       <div class="container grid">
         <!-- Is Creation Logical? -->
@@ -183,8 +175,6 @@
             <span class="author-name">Semitic Jew</span>
           </div>
         </article>
-
-        <!-- Add more recent cards below as you publish -->
       </div>
     </section>
   </main>
