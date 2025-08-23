@@ -585,3 +585,57 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   width:18px; height:18px; display:block;
   fill:currentColor; /* makes the SVG follow the link color */
 }
+/* --- Footer (3-column) --- */
+.site-footer{
+  --ink:#0b2340; --accent:#F17300; --muted:#DBE4EE;
+  background:#0b2340; color:var(--muted);
+  padding:2.5rem 0 0;
+}
+.site-footer a{ color:var(--accent); text-decoration:none; }
+.site-footer a:hover{ color:#fff; text-decoration:none; }
+
+.site-footer .footer-grid{
+  display:grid; gap:2rem;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  align-items:start;
+}
+@media (max-width: 900px){
+  .site-footer .footer-grid{ grid-template-columns:1fr; }
+}
+
+.footer-title{ font-weight:800; color:#fff; margin:0 0 .5rem; }
+.footer-heading{ font-weight:700; color:#fff; margin:0 0 .5rem; }
+.footer-tagline{ margin:.25rem 0 1rem; color:#cfd8e6; }
+
+.footer-links{ list-style:none; margin:0; padding:0; }
+.footer-links li{ margin:.4rem 0; }
+.footer-links a{ color:#cfd8e6; }
+.footer-links a:hover{ color:#fff; }
+
+.footer-socials{ display:flex; gap:.5rem; margin:.75rem 0 1rem; }
+.footer-socials .social{
+  width:40px; height:40px; border-radius:999px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,.15);
+  background:transparent; transition:background .15s, border-color .15s;
+}
+.footer-socials .social svg{ width:20px; height:20px; fill:var(--accent); transition:fill .15s; }
+.footer-socials .social:hover{ background:var(--accent); border-color:var(--accent); }
+.footer-socials .social:hover svg{ fill:#fff; }
+
+.footer-newsletter label{
+  display:block; font-weight:600; color:#fff; margin:.25rem 0 .5rem;
+}
+.footer-newsletter .nl-controls{ display:flex; gap:.5rem; }
+.footer-newsletter input{
+  flex:1; padding:.6rem .75rem; border-radius:8px;
+  border:1px solid #3E7CB1; background:#fff; color:#0b2340;
+}
+.footer-newsletter button{
+  padding:.6rem .9rem; border-radius:8px; border:0;
+  background:var(--accent); color:#fff; font-weight:700; cursor:pointer;
+}
+.footer-newsletter button:hover{ opacity:.9; }
+
+.footer-bottom{ border-top:1px solid rgba(255,255,255,.12); margin-top:2rem; }
+.footer-bottom .container{ padding:1rem 0; display:flex; justify-content:space-between; align-items:center; }

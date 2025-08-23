@@ -1,41 +1,37 @@
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
   <div class="container footer-grid">
-    <!-- Brand / About -->
-    <section class="footer-col footer-brand">
-      <h3 class="footer-heading"><strong>Semitic Jew</strong></h3>
+    <!-- Left: Name, description, socials, newsletter -->
+    <section class="footer-col footer-left">
+      <h3 class="footer-title">Semitic Jew</h3>
       <p class="footer-tagline">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
 
-<!-- Socials -->
-<div class="footer-social" aria-label="Social media">
-  <!-- Instagram -->
-  <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
-    <!-- Instagram icon -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zm6-3a1 1 0 1 1 0 2.001 1 1 0 0 1 0-2z"/>
-    </svg>
-  </a>
+      <div class="footer-socials" aria-label="Social links">
+        <a class="social" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
+          <!-- Instagram glyph (simple) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.75A5.25 5.25 0 1 1 6.75 13 5.25 5.25 0 0 1 12 7.75zm0 2A3.25 3.25 0 1 0 15.25 13 3.25 3.25 0 0 0 12 9.75zm5.6-2.55a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>
+        </a>
+        <a class="social" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
+          <!-- X glyph -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h3.5l5.1 7.2L16.6 3H21l-7.6 10.4L21 21h-3.6l-6-8.4L7.3 21H3l8.1-11.1L3 3z"/></svg>
+        </a>
+        <a class="social" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
+          <!-- Threads glyph (simplified) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c5.5 0 10 4.5 10 10 0 6-4.5 10-10 10S2 18 2 12 6.5 2 12 2zm-.1 5c-3 0-4.9 1.7-4.9 4.1 0 2.7 2.2 4.5 5.4 4.5 1.1 0 2.2-.2 3.2-.6l-.3-1.7c-.8.3-1.7.5-2.6.5-2 0-3.4-1-3.4-2.6 0-1.6 1.2-2.5 3.1-2.5 1 0 1.9.2 2.7.6-.2-.9-.6-1.6-1.2-2-.7-.5-1.6-.8-3-.8z"/></svg>
+        </a>
+      </div>
 
-  <!-- X (Twitter) -->
-  <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
-    <!-- X icon -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 3h3l5 6 5-6h3l-7 8 7 10h-3l-5-7-6 7H4l7-8z"/>
-    </svg>
-  </a>
+      <form class="footer-newsletter" action="#" method="post" onsubmit="return false;">
+        <label for="nl-email">Join our newsletter</label>
+        <div class="nl-controls">
+          <input id="nl-email" type="email" placeholder="you@example.com" required>
+          <button type="submit">Subscribe</button>
+        </div>
+      </form>
+    </section>
 
-  <!-- Threads -->
-  <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
-    <!-- Threads icon -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2c5.5 0 10 3.6 10 10.3 0 6.3-4.6 9.7-10 9.7S2 18.6 2 12.3C2 5.6 6.5 2 12 2zm0 2C7.7 4 4 6.6 4 12.3 4 17.1 7.4 20 12 20s8-2.9 8-7.7C20 6.6 16.3 4 12 4zm3.7 7.5c-.3-1.6-1.5-2.7-3.6-2.7-2.5 0-4.1 1.5-4.1 3.8 0 2.2 1.6 3.8 4 3.8 1.7 0 2.9-.7 3.5-2l-1.3-.6c-.3.8-1.2 1.3-2.2 1.3-1.5 0-2.5-.9-2.6-2.2H16c.1-.4.1-.8 0-1.2zm-5.2-.7c.2-1 1-1.6 2.2-1.6 1.3 0 2 .6 2.2 1.6h-4.4z"/>
-    </svg>
-  </a>
-</div>
-
-
-    <!-- Explore -->
-    <nav class="footer-col">
-      <h3 class="footer-heading">Explore</h3>
+    <!-- Middle: Explore -->
+    <section class="footer-col">
+      <h4 class="footer-heading">Explore</h4>
       <ul class="footer-links">
         <li><a href="/israelite-research/index.html">Articles</a></li>
         <li><a href="/israelite-research/texts.html">Texts</a></li>
@@ -44,34 +40,25 @@
         <li><a href="/israelite-research/podcast.html">Podcast</a></li>
         <li><a href="/israelite-research/donate.html">Donations</a></li>
       </ul>
-    </nav>
+    </section>
 
-    <!-- Texts -->
-    <nav class="footer-col">
-      <h3 class="footer-heading">Texts</h3>
+    <!-- Right: Texts -->
+    <section class="footer-col">
+      <h4 class="footer-heading">Texts</h4>
       <ul class="footer-links">
         <li><a href="/israelite-research/tanakh.html">The Tanakh</a></li>
         <li><a href="/israelite-research/newtestament.html">The New Testament</a></li>
         <li><a href="/israelite-research/apocrypha.html">Apocrypha</a></li>
-        <li><a href="/israelite-research/biblical-references.html">Biblical References</a></li>
+        <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
         <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
         <li><a href="/israelite-research/historical-textual-variants.html">Historical &amp; Textual Variants</a></li>
       </ul>
-    </nav>
-
-    <!-- Newsletter (new) -->
-    <section class="footer-col footer-newsletter">
-      <h3 class="footer-heading">Newsletter</h3>
-      <p class="footer-note">Occasional updates—new articles, studies, and resources. Unsubscribe anytime.</p>
-      <form class="newsletter-form" action="https://formspree.io/f/your-id" method="POST">
-        <label for="nl-email" class="visually-hidden">Email address</label>
-        <input id="nl-email" name="email" type="email" placeholder="you@example.com" required>
-        <button type="submit">Subscribe</button>
-      </form>
     </section>
   </div>
 
   <div class="footer-bottom">
-    <div class="container">© 2025 Semitic Jew. All rights reserved.</div>
+    <div class="container">
+      <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
+    </div>
   </div>
 </footer>
