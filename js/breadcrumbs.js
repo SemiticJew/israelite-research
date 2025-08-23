@@ -1,3 +1,43 @@
+// --- Articles-only breadcrumb fix (place at top of js/breadcrumbs.js) ---
+document.addEventListener('DOMContentLoaded', function () {
+  const nav = document.getElementById('breadcrumbs');
+  if (!nav) return;
+
+  const base = '/israelite-research';
+  const path = location.pathname.replace(/\/+$/, '');
+  const isArticlesList =
+    path.endsWith('/articles.html') || nav.dataset.scope === 'articles' || nav.dataset.scope === 'articles-list';
+  const isArticleDetail =
+    /\/articles\/[^/]+\.html$/.test(path) || nav.dataset.scope === 'article';
+
+  if (!isArticlesList && !isArticleDetail) return; // let the existing code handle other pages
+
+  const ol = document.createElement('ol');
+  const add = (label, href) => {
+    const li = document.createElement('li');
+    if (href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = label;
+      li.appendChild(a);
+    } else {
+      li.textContent = label;
+    }
+    ol.appendChild(li);
+  };
+
+  // Home > Articles (and add current article title on detail pages)
+  add('Home', base + '/');
+  add('Articles', base + '/articles.html');
+  if (isArticleDetail) {
+    const h1 = document.querySelector('h1');
+    const title = h1 ? h1.textContent.trim() : document.title.replace(/ — .*/, '');
+    add(title);
+  }
+
+  nav.innerHTML = '';
+  nav.appendChild(ol);
+});
 // /js/breadcrumbs.js
 document.addEventListener('DOMContentLoaded', () => {
   const BASE = '/israelite-research/';
