@@ -31,6 +31,52 @@ img { max-width: 100%; display: block; }
   --ink-200:#aaa;
   --ink-100:#ddd;
   --paper:#fff;
+:root {
+  --header-h: 72px;        /* single source of truth for header height */
+  --container-w: 1200px;   /* keep header width consistent site-wide */
+}
+
+/* Global header */
+.site-header {
+  background:#fff;
+  border-bottom:1px solid #e6ebf2;
+  width:100%;
+}
+.site-header .container {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 16px;
+  min-height: var(--header-h);
+  display:flex;
+  align-items:center;
+  justify-content: space-between; /* logo left, nav centered via inner rule, search right */
+  gap: 1rem;
+}
+
+/* Center the nav consistently on every page */
+.site-header .main-nav ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  gap: 2rem;                /* consistent spacing between items */
+  justify-content:center;   /* center the menu */
+  align-items:center;
+}
+
+/* Make sure links look the same everywhere */
+.site-header .main-nav a {
+  text-decoration:none;
+  color:#0b2340;
+  padding: 10px 0;
+}
+
+/* Optional: keep header visible while scrolling (remove if you don't want sticky) */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
   /* Typography */
   --ff-serif: "Adobe Garamond Pro", Garamond, "Garamond Premier Pro", Georgia, serif;
