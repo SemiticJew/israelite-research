@@ -6,32 +6,45 @@
   <title>Is Scripture &amp; Logic Compatible? — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    :root{ --accent:#F17300; --muted:#666; --ink:#0b2340; }
-    .article-shell{ max-width:760px; margin:0 auto; }
+    /* Page-scoped trims to keep articles consistent */
+    .article-shell{ max-width:700px; margin:0 auto; }
     .article-head{ text-align:center; margin-top:.5rem; }
-    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
-    .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(1.9rem,3.4vw,2.6rem); color:#000; line-height:1.15; margin:0 0 .8rem; }
+    .article-date{ color:#666; font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
+    .article-title{
+      font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
+      font-size:clamp(1.9rem,3.4vw,2.6rem);
+      color:#000; line-height:1.15; margin:0 0 .8rem;
+    }
 
+    /* Article image: fixed look, square corners */
     .hero-image{ margin:1rem auto; }
-    .hero-image img{ width:100%; height:auto; display:block; border-radius:10px; }
+    .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
+    /* Byline + socials sit directly under image, same 700px width */
     .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color:#333; }
-    .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
-      border:1px solid #e6ebf2; background:#f0f3f8; }
+    .article-byline .author-avatar{
+      width:40px; height:40px; border-radius:50%; object-fit:cover;
+      border:1px solid #e6ebf2; background:#f0f3f8;
+    }
     .byline-name{ font-weight:700; }
     .byline-meta{ color:#666; font-size:.95rem; }
 
     .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
-    .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
-      border-radius:999px; border:1px solid #e6ebf2; background:#fff; color:#054A91; text-decoration:none; }
+    .share-btn{
+      display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+      border-radius:999px; border:1px solid #e6ebf2; background:#fff; color:#054A91; text-decoration:none;
+    }
     .share-btn:hover{ transform:translateY(-1px); }
 
     .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
     .article-content p{ margin:1rem 0; }
-    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color:#000; }
-    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:#333;
-      background:#f9fbfe; border-radius:8px; }
+    .article-content h2{
+      font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color:#000;
+    }
+    .article-content blockquote{
+      border-left:4px solid var(--accent,#F17300); padding:.25rem 1rem; color:#333;
+      background:#f9fbfe; border-radius:8px;
+    }
 
     /* Verse hover “plugin” (articles-only) */
     .verse{ position:relative; text-decoration:underline dotted; color:#054A91; }
@@ -49,7 +62,7 @@
 
   <main class="container article-page">
     <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
     <div class="article-shell">
       <!-- Title + Date -->
@@ -58,15 +71,13 @@
         <h1 class="article-title">Is Scripture &amp; Logic Compatible?</h1>
       </header>
 
-      <!-- Hero image -->
+      <!-- Article image (700×394 source) -->
       <figure class="hero-image">
         <img
           src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
-          srcset="/israelite-research/images/articles/logic-compatibility-700x394.jpg 700w,
-                  /israelite-research/images/articles/logic-compatibility-1000x563.jpg 1000w"
-          sizes="700px"
           alt="Reasoned reading of Scripture"
-          onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg'">
+          width="700" height="394"
+          onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
       </figure>
 
       <!-- Byline -->
@@ -102,19 +113,19 @@
           Logic is not an opponent of our faith but a humble servant of truth.</p>
 
         <h2>Logic Serves Love and Clarity</h2>
-        <p>For example, since God is not the author of confusion
+        <p>Since God is not the author of confusion
           (<a class="verse" target="_blank" rel="noopener"
               href="https://biblia.com/bible/kjv1900/1%20Corinthians%2014:33">1&nbsp;Corinthians&nbsp;14:33</a>),
-          God commands we pursue clarity (Gk, agape; brotherly love) in all things. The Holy Spirit commanded Paul to urge us to have repeated thoughtful reflection:
+          he calls us to clarity and charity in all things. The Holy Spirit commanded Paul to urge us to thoughtful reflection:
           “Think over what I say, for the Lord will give you understanding”
           (<a class="verse" target="_blank" rel="noopener"
               href="https://biblia.com/bible/kjv1900/2%20Timothy%202:7">2&nbsp;Timothy&nbsp;2:7</a>).
-          Jesus, The Son of God, Himself reasoned from the Law and the Prophets to show how they point to Him
+          Jesus himself reasoned from the Law and the Prophets to show how they point to him
           (<a class="verse" target="_blank" rel="noopener"
               href="https://biblia.com/bible/kjv1900/Luke%2024:27">Luke&nbsp;24:27</a>).</p>
 
         <h2>Scripture Interprets Scripture</h2>
-        <p>Sound interpretation follows Scripture’s own patterns, this is the only biblical hermeneutic (interpretation). The Bereans (Israelite group) tested the apostles’ claims with the text
+        <p>Sound interpretation follows Scripture’s own patterns. The Bereans tested the apostles’ claims with the text
           (<a class="verse" target="_blank" rel="noopener"
               href="https://biblia.com/bible/kjv1900/Acts%2017:11">Acts&nbsp;17:11</a>),
           and Paul reasoned from the Scriptures as his standard
@@ -122,12 +133,11 @@
               href="https://biblia.com/bible/kjv1900/Acts%2017:2">Acts&nbsp;17:2</a>).
           Wisdom begins with reverence—“Get wisdom”
           (<a class="verse" target="_blank" rel="noopener"
-              href="https://biblia.com/bible/kjv1900/Proverbs%204:7">Proverbs&nbsp;4:7</a>)—and reverence can never be irrational.
-          It orders the mind and heart under God’s Word.</p>
+              href="https://biblia.com/bible/kjv1900/Proverbs%204:7">Proverbs&nbsp;4:7</a>)—and reverence is never irrational; it orders the mind and heart under God’s Word.</p>
 
         <blockquote>Logic does not add to Scripture; it helps us trace the lines God already drew.</blockquote>
 
-        <p>When logic serves our love of God and our neighbor, it becomes an amazing tool of worship to God. We think, test, and reason
+        <p>When logic serves our love of God and our neighbor, it becomes an instrument of worship. We think, test, and reason
           so that we might believe, obey, and rejoice in the truth.</p>
       </article>
 
