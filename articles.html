@@ -6,90 +6,83 @@
   <title>Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page container width */
-    .articles-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    /* Local fixes just for layout stability on this page */
+    .articles-page .container { max-width: 1200px; margin: 0 auto; }
 
-    /* Featured pair: 880×450 + 290×450 (gap = 30 = 1200-880-290) */
-    .featured-pair { margin: 24px 0 28px; }
+    /* Featured pair grid: 880 + 290 with a gap that fits your theme */
     .featured-grid {
-      display:grid; grid-template-columns:880px 290px; gap:30px;
-      align-items:start;
+      display: grid;
+      grid-template-columns: 880px 290px;
+      gap: 24px;
+      align-items: stretch;
     }
 
-    /* Primary featured (horizontal): image 590×450, content 290×450 */
-    .card-featured.primary .inner{
-      display:grid; grid-template-columns:590px 290px; height:450px;
-      background:#fff; border:1px solid #e6ebf2; overflow:hidden;
+    /* Primary (left) — horizontal: image 590x450 + content 290x450 */
+    .card-featured.primary .inner {
+      display: grid;
+      grid-template-columns: 590px 1fr;
+      height: 450px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #e6ebf2;
     }
-    .card-featured .media{ position:relative; width:100%; height:100%; overflow:hidden; }
-    .card-featured .media img{
-      width:100%; height:100%; object-fit:cover; display:block;
+    .card-featured.primary .media { position: relative; overflow: hidden; }
+    .card-featured.primary .media img {
+      width: 590px; height: 450px; object-fit: cover; display: block;
     }
+    .card-featured.primary .content {
+      display: flex; flex-direction: column; padding: 1rem;
+    }
+    .card-featured.primary .excerpt { margin: .5rem 0 0; }
+    .card-featured.primary .date { margin-top: .5rem; color: #666; font-size: .95rem; }
+    .card-featured.primary .foot {
+      margin-top: auto; display: flex; align-items: center; gap: .5rem;
+    }
+    .card-featured.primary .author-avatar {
+      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+    }
+
+    /* Secondary (right) — fixed 290x450 vertical card */
+    .card-featured.secondary { width: 290px; height: 450px; border: 1px solid #e6ebf2; }
+    .card-featured.secondary .inner {
+      display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit;
+    }
+    .card-featured.secondary .media { position: relative; }
+    .card-featured.secondary .media img {
+      width: 290px; height: 163.13px; object-fit: cover; display: block;
+    }
+    .card-featured.secondary .body {
+      display: flex; flex-direction: column; padding: .9rem; gap: .4rem; flex: 1 1 auto;
+    }
+    .card-featured.secondary .date { color: #666; font-size: .95rem; }
+    .card-featured.secondary .card-foot {
+      margin-top: auto; display: flex; align-items: center; gap: .5rem; padding: 0 .9rem .9rem;
+    }
+    .card-featured.secondary .author-avatar {
+      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+    }
+
+    /* Label pill inside image (square corners) */
     .label-pill{
-      position:absolute; left:10px; top:10px;
-      padding:4px 8px; font-size:.75rem; letter-spacing:.3px;
-      background:rgba(0,0,0,.55); color:#fff; border-radius:0;
+      position:absolute; left:8px; top:8px;
+      background: rgba(0,0,0,.55); color:#fff; border:1px solid transparent;
+      padding:.25rem .5rem; font-size:.75rem; letter-spacing:.02em; text-transform:uppercase;
+      border-radius:0;
     }
-    .card-featured.primary .content{
-      padding:16px; display:flex; flex-direction:column; height:450px;
-    }
-    .card-featured.primary .title{ font-size:1.25rem; margin:0 0 .25rem; }
-    .card-featured.primary .excerpt{ font-size:.95rem; color:#333; margin:.25rem 0 .5rem; }
-    .card-featured .foot{
-      margin-top:auto; display:flex; align-items:center; gap:.5rem;
-      border-top:1px solid #eef2f7; padding-top:.5rem;
-    }
-    .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
-    .author-name{ font-size:.9rem; color:#222; }
-    .date{ display:block; font-size:.85rem; color:#666; margin-left:auto; }
 
-    /* Secondary featured (vertical 290×450), image 290×163.13 (700×394 scale) */
-    .card-featured.secondary .inner{
-      display:flex; flex-direction:column; width:290px; height:450px;
-      background:#fff; border:1px solid #e6ebf2; overflow:hidden;
-    }
-    .card-featured.secondary .media{ height:163.13px; }
-    .card-featured.secondary .body{ padding:12px; display:flex; flex-direction:column; height:calc(450px - 163.13px); }
-    .card-featured.secondary .title{ font-size:1rem; margin:6px 0 6px; line-height:1.25; }
-    .card-featured.secondary .excerpt{ font-size:.92rem; color:#333; margin:0 0 .5rem; }
-    .card-featured.secondary .card-foot{
-      margin-top:auto; display:flex; align-items:center; gap:.5rem;
-      border-top:1px solid #eef2f7; padding-top:.5rem;
-    }
-    .card-date{ display:block; font-size:.85rem; color:#666; margin-left:auto; }
-
-    /* Recent grid: fixed 290×450 cards */
-    .articles-list { margin: 16px 0 40px; }
+    /* Recent grid: 290x450 cards, centered container */
     .articles-list .grid{
-      display:grid; grid-template-columns:repeat(auto-fill, 290px);
-      gap:20px; justify-content:center;
+      display:grid; grid-template-columns: repeat(auto-fill, 290px);
+      gap:24px; justify-content:center;
     }
-    .articles-list .card{ width:290px; height:450px; border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column; }
-    .card-media{ position:relative; width:100%; height:163.13px; overflow:hidden; }
-    .card-media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .card-body{ padding:12px; display:flex; flex-direction:column; }
-    .card-title{ margin:0 0 .35rem; font-size:1rem; line-height:1.25; }
-    .card-excerpt{ font-size:.92rem; color:#333; margin:0 0 .5rem; }
-    .card-date{ font-size:.85rem; color:#666; margin:0 0 .5rem; }
-    .card-foot{
-      margin-top:auto; display:flex; align-items:center; gap:.5rem;
-      border-top:1px solid #eef2f7; padding:8px 12px;
-    }
-
-    /* Pills only inside article cards */
-    .label-pill { text-transform:none; }
-
-    /* Breadcrumbs under hero (site standard) */
-    .page-hero + #breadcrumbs { margin-top: 10px; }
-
-    /* Mobile stack */
-    @media (max-width: 1024px){
-      .featured-grid{ grid-template-columns:1fr; }
-      .card-featured.primary .inner{ grid-template-columns:1fr; height:auto; }
-      .card-featured.primary .content{ height:auto; }
-      .card-featured.secondary .inner{ width:100%; }
-      .articles-list .grid{ justify-content:center; }
-    }
+    .articles-list .card{ width:290px; height:450px; border:1px solid #e6ebf2; display:flex; flex-direction:column; }
+    .articles-list .card-media{ position:relative; }
+    .articles-list .card-media img{ width:290px; height:163.13px; object-fit:cover; display:block; }
+    .articles-list .card-body{ padding:.9rem; display:flex; flex-direction:column; gap:.4rem; }
+    .articles-list .card-excerpt{ flex:0 0 auto; }
+    .articles-list .card-date{ color:#666; font-size:.95rem; }
+    .articles-list .card-foot{ margin-top:auto; display:flex; align-items:center; gap:.5rem; padding:.9rem; }
+    .articles-list .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
   </style>
 </head>
 <body class="articles-page">
@@ -106,14 +99,13 @@
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (under hero, consistent site-wide) -->
+    <!-- Breadcrumbs under hero -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
 
     <!-- Featured pair -->
     <section class="featured-pair">
       <div class="container featured-grid">
-
-        <!-- Primary featured (880×450) -->
+        <!-- Primary featured -->
         <article class="card-featured primary">
           <a class="inner" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
             <div class="media">
@@ -123,16 +115,16 @@
             <div class="content">
               <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
               <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+              <div class="date">Aug 15, 2025</div>
               <div class="foot">
                 <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
                 <span class="author-name">Semitic Jew</span>
-                <span class="date">Aug 15, 2025</span>
               </div>
             </div>
           </a>
         </article>
 
-        <!-- Secondary featured (290×450) -->
+        <!-- Secondary featured (fixed 290x450) -->
         <article class="card-featured secondary">
           <a class="inner" href="/israelite-research/articles/is-truth-reliable.html">
             <div class="media">
@@ -140,66 +132,58 @@
               <span class="label-pill">Article</span>
             </div>
             <div class="body">
-              <h3 class="title"><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></h3>
+              <h3 class="title">Is Truth Reliable?</h3>
               <p class="excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
-              <div class="card-foot">
-                <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-                <span class="author-name">Semitic Jew</span>
-                <span class="card-date">Aug 16, 2025</span>
-              </div>
-            </div>
-          </a>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- Recent (fixed 290×450 cards) -->
-    <section class="articles-list">
-      <div class="container">
-        <h2 class="section-title" style="font-size:1.1rem; letter-spacing:.5px; margin:0 0 10px;">Recent Articles</h2>
-        <div class="grid">
-          <!-- Is Creation Logical? -->
-          <article class="card">
-            <div class="card-media">
-              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
-              <span class="label-pill">Article</span>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">
-                <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
-              </h3>
-              <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
-              <div class="card-date">Aug 14, 2025</div>
+              <div class="date">Aug 16, 2025</div>
             </div>
             <div class="card-foot">
               <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
               <span class="author-name">Semitic Jew</span>
             </div>
-          </article>
+          </a>
+        </article>
+      </div>
+    </section>
 
-          <!-- Add additional 290×450 cards below as you publish new articles -->
+    <!-- Recent grid -->
+    <section class="articles-list">
+      <div class="container">
+        <h2 class="section-title" style="margin:1rem 0 .5rem;">Recent Articles</h2>
+      </div>
+      <div class="container grid">
+        <!-- Is Creation Logical? -->
+        <article class="card">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
+            <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
+            <div class="card-date">Aug 14, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span class="author-name">Semitic Jew</span>
+          </div>
+        </article>
 
-<!-- Recent: Three Laws of Logic -->
-<article class="card">
-  <div class="card-media">
-    <img src="/israelite-research/images/articles/three-laws-logic-700x394.jpg" alt="Three Laws of Logic">
-    <span class="label-pill">Article</span>
-  </div>
-  <div class="card-body">
-    <h3 class="card-title">
-      <a href="/israelite-research/articles/three-laws-of-logic.html">The Three Laws of Logic</a>
-    </h3>
-    <p class="card-excerpt">Why identity, non-contradiction, and excluded middle help us read Scripture clearly and consistently.</p>
-    <div class="card-date">Aug 19, 2025</div>
-  </div>
-  <div class="card-foot">
-    <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-    <span class="author-name">Semitic Jew</span>
-  </div>
-</article>
-
-        </div>
+        <!-- Three Laws of Logic (example) -->
+        <article class="card">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a></h3>
+            <p class="card-excerpt">Identity, excluded middle, and non-contradiction — the basic tools Scripture invites us to use.</p>
+            <div class="card-date">Aug 20, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span class="author-name">Semitic Jew</span>
+          </div>
+        </article>
       </div>
     </section>
   </main>
