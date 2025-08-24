@@ -894,3 +894,57 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   border-radius: 50%;
   object-fit: cover;
 }
+/* Ensure article cards keep their content inside and stack correctly */
+.articles-page .card{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;              /* keeps excerpt inside the card box */
+  box-sizing:border-box;
+}
+
+.articles-page .card-media{
+  position:relative;
+  width:100%;
+  height:163.13px;              /* 290x163.13 image box ratio */
+  overflow:hidden;
+}
+.articles-page .card-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.articles-page .card-body{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;                /* text area grows, footer sticks to bottom */
+  padding:12px;
+}
+
+.articles-page .card-excerpt{
+  margin:.4rem 0 .6rem;
+  line-height:1.45;
+  flex:0 0 auto;
+}
+
+.articles-page .card-date{
+  color:#666;
+  font-size:.92rem;
+}
+
+.articles-page .card-foot{
+  margin-top:auto;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border-top:1px solid #e6ebf2;
+}
+
+.articles-page .author-avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  object-fit:cover;
+}
