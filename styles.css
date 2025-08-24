@@ -1060,3 +1060,34 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   max-width: 700px;
   margin: 0 auto;
 }
+/* Featured primary date under excerpt */
+.card-featured.primary .content .date{
+  display:block;
+  margin:.5rem 0 .75rem;
+  font-size:.95rem;
+  color:#667089;
+}
+
+/* Featured secondary date under excerpt */
+.card-featured.secondary .body .card-date{
+  display:block;
+  margin:.5rem 0 .75rem;
+  font-size:.95rem;
+  color:#667089;
+}
+
+/* Keep foot just for avatar + name */
+.card-featured .foot,
+.card-featured .card-foot{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+/* Featured date under excerpt (keep avatar in bottom foot) */
+.articles-page .card-featured.primary .content { display: flex; flex-direction: column; }
+.articles-page .card-featured.primary .content .date-under {
+  margin: .4rem 0 .6rem;
+  font-size: .95rem;
+  color: #666;
+}
+.articles-page .card-featured.primary .content .foot { margin-top: auto; display:flex; align-items:center; gap:.5rem; }
