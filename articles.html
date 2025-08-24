@@ -6,91 +6,60 @@
   <title>Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-scoped tweaks (won’t affect other pages) */
-    .articles-page .container { max-width: 1200px; margin: 0 auto; }
-    /* Make hero flush to fixed header */
-    .articles-page .page-hero { margin-top: 0 !important; }
+    /* Page-scoped layout (won't affect other pages) */
+    .articles-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
 
-    /* Featured pair layout: 880x450 + 290x450 */
-    .featured-grid {
-      display: grid;
-      grid-template-columns: 880px 290px;
-      gap: 30px;
-      align-items: stretch;
-    }
-    .card-featured.primary .inner {
-      display: grid;
-      grid-template-columns: 590px 1fr; /* image left 590x450, content right */
-      height: 450px;
-      border: 1px solid #e6ebf2;
-      background: #fff;
-      text-decoration: none;
-    }
-    .card-featured .media { position: relative; overflow: hidden; }
-    .card-featured .media img {
-      width: 100%; height: 450px; object-fit: cover; display: block;
-    }
-    .label-pill {
-      position: absolute; top: 8px; left: 8px;
-      background: rgba(0,0,0,.55);
-      color: #fff; font-size: .8rem; padding: 4px 8px;
-      border-radius: 0; /* squared corners */
-    }
-    .card-featured.primary .content {
-      display: flex; flex-direction: column; justify-content: space-between;
-      padding: 16px 18px;
-    }
-    .card-featured .title { margin: 0 0 8px; font-size: 1.25rem; line-height: 1.25; }
-    .card-featured .excerpt { margin: 0 0 10px; color: #333; font-size: .98rem; line-height: 1.5; }
-    .card-featured .foot {
-      display: flex; align-items: center; gap: 8px; margin-top: auto;
-    }
-    .author-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-    .author-name { font-size: .92rem; color: #222; }
-    .date, .card-date { font-size: .9rem; color: #666; }
+    /* Featured pair: 880px (left) + 290px (right) with 24px gap */
+    .featured-grid{display:grid;grid-template-columns:880px 290px;gap:24px;align-items:start}
 
-    .card-featured.secondary { width: 290px; height: 450px; border: 1px solid #e6ebf2; background: #fff; }
-    .card-featured.secondary .inner { display: block; height: 100%; text-decoration: none; color: inherit; }
-    .card-featured.secondary .media { height: 163px; overflow: hidden; position: relative; }
-    .card-featured.secondary .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .card-featured.secondary .body { display: flex; flex-direction: column; height: calc(450px - 163px); padding: 12px 14px; }
-    .card-featured.secondary .body .title { margin: 0 0 6px; font-size: 1.05rem; line-height: 1.25; }
-    .card-featured.secondary .body .excerpt { margin: 0 0 8px; color: #333; font-size: .95rem; line-height: 1.45; }
-    .card-featured.secondary .card-foot {
-      margin-top: auto; display: flex; align-items: center; gap: 8px;
-      padding-top: 6px; border-top: 1px solid #eef1f5;
+    .card-featured.primary .inner{
+      display:grid;grid-template-columns:590px 290px;height:450px;
+      border:1px solid #e6ebf2;background:#fff;
+    }
+    .card-featured.primary .media{position:relative;overflow:hidden}
+    .card-featured.primary .media img{width:590px;height:450px;object-fit:cover;display:block}
+    .card-featured.primary .content{
+      padding:14px 14px 12px;display:flex;flex-direction:column;gap:.4rem;background:#fff;
+    }
+    .card-featured.primary .content .title{font-size:1.2rem;margin:0}
+    .card-featured.primary .content .excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
+    .card-featured.primary .content .date{color:#666;font-size:.9rem;margin:.25rem 0 .5rem}
+    .card-featured .foot{margin-top:auto;display:flex;align-items:center;gap:.5rem;padding-top:.4rem;border-top:1px solid #eef2f7}
+    .author-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover}
+
+    /* Secondary featured 290×450; image 290×163.13 */
+    .card-featured.secondary .inner{
+      display:block;width:290px;height:450px;border:1px solid #e6ebf2;background:#fff;
+    }
+    .card-featured.secondary .media{position:relative;overflow:hidden}
+    .card-featured.secondary .media img{width:290px;height:163.13px;object-fit:cover;display:block}
+    .card-featured.secondary .body{
+      padding:12px;display:flex;flex-direction:column;height:calc(450px - 163.13px);
+    }
+    .card-featured.secondary .body .title{font-size:1.05rem;margin:0}
+    .card-featured.secondary .body .excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
+    .card-featured.secondary .body .card-date{color:#666;font-size:.9rem;margin:.25rem 0 .5rem}
+    .card-featured.secondary .card-foot{margin-top:auto;display:flex;align-items:center;gap:.5rem;padding-top:.4rem;border-top:1px solid #eef2f7}
+
+    /* Label pill inside images - squared, dark transparent */
+    .label-pill{
+      position:absolute;left:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;
+      font-size:.75rem;letter-spacing:.25px;padding:4px 8px;border-radius:0
     }
 
-    /* Recent grid: 290x450 cards */
-    .articles-list .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, 290px);
-      gap: 22px;
-      justify-content: center; /* center the block under featured */
-    }
-    .articles-list .section-title {
-      font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
-      font-size: 1.35rem;
-      margin: 0 0 10px 0;
-      text-align: center;
-    }
-    .card {
-      width: 290px; height: 450px; border: 1px solid #e6ebf2; background: #fff;
-      display: flex; flex-direction: column;
-    }
-    .card-media { position: relative; height: 163px; overflow: hidden; }
-    .card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
-    .card-title { margin: 0; font-size: 1.02rem; line-height: 1.3; }
-    .card-excerpt { margin: 0; color: #333; font-size: .95rem; line-height: 1.45; }
-    .card-date { margin-top: 4px; font-size: .9rem; color: #666; }
-    .card-foot {
-      margin-top: auto; padding: 10px 14px; border-top: 1px solid #eef1f5;
-      display: flex; align-items: center; gap: 8px;
-    }
+    /* Recent grid: fixed 290×450 cards, left-aligned */
+    .articles-list .grid{display:flex;flex-wrap:wrap;gap:24px;align-items:stretch}
+    .articles-list .card{width:290px;height:450px;border:1px solid #e6ebf2;background:#fff;display:flex;flex-direction:column}
+    .articles-list .card-media{position:relative}
+    .articles-list .card-media img{width:290px;height:163.13px;object-fit:cover;display:block}
+    .articles-list .card-body{padding:12px;display:flex;flex-direction:column}
+    .articles-list .card-title{font-size:1.02rem;margin:0}
+    .articles-list .card-excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
+    .articles-list .card-date{color:#666;font-size:.9rem;margin-top:.25rem}
+    .articles-list .card-foot{margin-top:auto;padding:12px;display:flex;align-items:center;gap:.5rem;border-top:1px solid #eef2f7}
 
-    /* Breadcrumbs placement under hero */
-    #breadcrumbs { margin: 8px auto 16px; max-width: 1200px; }
+    /* Keep page bottom comfortable without overlapping footer */
+    .articles-list{margin-bottom:2.5rem}
   </style>
 </head>
 <body class="articles-page">
@@ -98,8 +67,8 @@
   <div id="site-header"></div>
 
   <main>
-    <!-- Hero (flush to fixed nav) -->
-    <section class="page-hero hero-articles" style="margin-top:0">
+    <!-- Universal hero (title + sub) -->
+    <section class="page-hero hero-universal">
       <div class="container">
         <h1 class="page-title">Articles</h1>
         <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
@@ -108,37 +77,39 @@
     </section>
 
     <!-- Breadcrumbs under hero -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+    <div class="container">
+      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+    </div>
 
     <!-- Featured pair -->
     <section class="featured-pair">
       <div class="container featured-grid">
-        <!-- Primary featured (horizontal) -->
+        <!-- Primary featured (left, horizontal: 880x450 as 590+290) -->
         <article class="card-featured primary">
           <a class="inner" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
             <div class="media">
-              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
+              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                   alt="Is Scripture &amp; Logic Compatible?">
               <span class="label-pill">Article</span>
             </div>
             <div class="content">
-              <div>
-                <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
-                <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
-              </div>
+              <h2 class="title">Is Scripture &amp; Logic Compatible?</h2>
+              <p class="excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+              <div class="date">Aug 15, 2025</div>
               <div class="foot">
                 <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
                 <span class="author-name">Semitic Jew</span>
-                <span class="date">Aug 15, 2025</span>
               </div>
             </div>
           </a>
         </article>
 
-        <!-- Secondary featured (vertical 290x450) -->
+        <!-- Secondary featured (right, 290x450) -->
         <article class="card-featured secondary">
           <a class="inner" href="/israelite-research/articles/is-truth-reliable.html">
             <div class="media">
-              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?">
+              <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                   alt="Is Truth Reliable?">
               <span class="label-pill">Article</span>
             </div>
             <div class="body">
@@ -158,76 +129,87 @@
     <!-- Recent -->
     <section class="articles-list">
       <div class="container">
-        <h2 class="section-title">Recent Articles</h2>
-      </div>
-      <div class="container grid">
-        <!-- Is Creation Logical? -->
-        <article class="card">
-          <div class="card-media">
-            <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title"><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
-            <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
-            <div class="card-date">Aug 14, 2025</div>
-          </div>
-          <div class="card-foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span class="author-name">Semitic Jew</span>
-          </div>
-        </article>
+        <h2 style="margin:0 0 .75rem 2px;font-size:1.15rem;">Recent Articles</h2>
+        <div class="grid">
+          <!-- Is Creation Logical? -->
+          <article class="card">
+            <a href="/israelite-research/articles/is-creation-logical.html">
+              <div class="card-media">
+                <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
+                <span class="label-pill">Article</span>
+              </div>
+            </a>
+            <div class="card-body">
+              <h3 class="card-title"><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
+              <p class="card-excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
+              <div class="card-date">Aug 14, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
 
-        <!-- Three Laws of Logic -->
-        <article class="card">
-          <div class="card-media">
-            <img src="/israelite-research/images/articles/three-laws-700x394.jpg" alt="The Three Laws of Logic">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title"><a href="/israelite-research/articles/three-laws-of-logic.html">The Three Laws of Logic</a></h3>
-            <p class="card-excerpt">Identity, non-contradiction, and excluded middle—why these laws help us read the Bible with care.</p>
-            <div class="card-date">Aug 18, 2025</div>
-          </div>
-          <div class="card-foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span class="author-name">Semitic Jew</span>
-          </div>
-        </article>
+          <!-- Three Laws of Logic -->
+          <article class="card">
+            <a href="/israelite-research/articles/three-laws-of-logic.html">
+              <div class="card-media">
+                <img src="/israelite-research/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic">
+                <span class="label-pill">Article</span>
+              </div>
+            </a>
+            <div class="card-body">
+              <h3 class="card-title"><a href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a></h3>
+              <p class="card-excerpt">Identity, non-contradiction, and excluded middle — why clear thinking serves faithful reading.</p>
+              <div class="card-date">Aug 17, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
 
-        <!-- Gentiles article -->
-        <article class="card">
-          <div class="card-media">
-            <img src="/israelite-research/images/articles/gentiles-meaning-700x394.jpg" alt="What Does ‘Gentile’ Mean?">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title"><a href="/israelite-research/articles/gentiles.html">What Does ‘Gentile’ Mean?</a></h3>
-            <p class="card-excerpt">In Scripture, “Gentile” can refer to non-Israelites and, contextually, sometimes Israelites among the nations.</p>
-            <div class="card-date">Aug 20, 2025</div>
-          </div>
-          <div class="card-foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span class="author-name">Semitic Jew</span>
-          </div>
-        </article>
+          <!-- What Does “Gentile” Mean? -->
+          <article class="card">
+            <a href="/israelite-research/articles/gentiles.html">
+              <div class="card-media">
+                <img src="/israelite-research/images/articles/gentiles-meaning-700x394.jpg" alt="What Does 'Gentile' Mean?">
+                <span class="label-pill">Article</span>
+              </div>
+            </a>
+            <div class="card-body">
+              <h3 class="card-title"><a href="/israelite-research/articles/gentiles.html">What Does “Gentile” Mean?</a></h3>
+              <p class="card-excerpt">In Scripture, “Gentile” can speak broadly of nations — and sometimes of Israelites among them.</p>
+              <div class="card-date">Aug 18, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
 
-        <!-- Hamites Historicity -->
-        <article class="card">
-          <div class="card-media">
-            <img src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" alt="Hamites: A Brief Historicity">
-            <span class="label-pill">Article</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title"><a href="/israelite-research/articles/hamites-historicity.html">Hamites: A Brief Historicity</a></h3>
-            <p class="card-excerpt">Surveying Ham’s descendants in Scripture and history, with references and careful definitions.</p>
-            <div class="card-date">Aug 21, 2025</div>
-          </div>
-          <div class="card-foot">
-            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-            <span class="author-name">Semitic Jew</span>
-          </div>
-        </article>
+          <!-- Hamites: Historicity & Skin Tone -->
+          <article class="card">
+            <a href="/israelite-research/articles/hamites-historicity.html">
+              <div class="card-media">
+                <img src="/israelite-research/images/articles/hamites-historicity-700x394.jpg"
+                     alt="Hamites: Historicity &amp; Skin Tone"
+                     onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-logical-700x394.jpg'">
+                <span class="label-pill">Article</span>
+              </div>
+            </a>
+            <div class="card-body">
+              <h3 class="card-title"><a href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity &amp; Skin Tone</a></h3>
+              <p class="card-excerpt">Surveying Scripture and history to understand Hamite peoples and their intersections with Israel.</p>
+              <div class="card-date">Aug 19, 2025</div>
+            </div>
+            <div class="card-foot">
+              <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+              <span class="author-name">Semitic Jew</span>
+            </div>
+          </article>
+
+        </div>
       </div>
     </section>
   </main>
