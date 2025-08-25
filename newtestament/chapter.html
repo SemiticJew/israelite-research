@@ -2,120 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>New Testament — Chapter</title>
-  <link rel="stylesheet" href="../styles.css" />
-  <script src="../js/include.js" defer></script>
-  <script src="../js/breadcrumbs.js" defer></script>
-  <script src="../js/chapter-nt.js" defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chapter — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* BLB-like layout */
-    .chapter-wrap { max-width: 1200px; margin: 0 auto 2.5rem; }
-    .chapter-head h1 { margin:.25rem 0; font-family: var(--ff-serif); }
-    .label { color:#666; font-size:.9rem; margin:.25rem 0 .6rem; }
+    .chapter-wrap{max-width:960px;margin:0 auto;padding:1rem 1rem 2.5rem}
+    .chapter-header{margin:0 0 1rem}
+    .chapter-title{font-family:var(--ff-serif, "Adobe Garamond Pro", serif);margin:0 0 .25rem}
+    .chapter-sub{color:#555;margin:0 0 .75rem}
+    .chapter-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}
 
-    .topline { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; margin:.5rem 0 1rem; }
-
-    .chapter-grid { display:grid; grid-template-columns: 1fr minmax(260px, 340px); gap: 1.25rem; }
-    @media (max-width: 980px) { .chapter-grid { grid-template-columns: 1fr; } }
-
-    /* === BLB-style enclosure around verses === */
-    .verses {
-      border: 1px solid #DBE4EE;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-      overflow: hidden;
+    .verses{display:flex;flex-direction:column;gap:.5rem}
+    .verse-row{
+      display:grid;
+      grid-template-columns: 52px 1fr;
+      gap:0.75rem;
+      border:1px solid #e6ebf2;
+      background:#fff;
+      border-radius:8px;
+      padding:.65rem .75rem;
     }
-    .verse { scroll-margin-top: 96px; padding:.55rem .75rem; border-bottom:1px solid #EEF2F7; background:#fff; }
-    .verse:last-child { border-bottom: 0; }
-    .verse:hover { background:#F8FAFD; }
-
-    .vrow { display:flex; gap:.75rem; }
-    .vnum { width: 2.2rem; color:#666; text-align:right; font-variant-numeric: tabular-nums; }
-    .vnum a { text-decoration:none; color:inherit; display:inline-block; padding:2px 6px; border-radius:6px; }
-    .verse:hover .vnum a { background:#DBE4EE; }
-    .vtext { flex:1; }
-
-    .tools-row { display:flex; gap:.4rem; flex-wrap:wrap; margin:.35rem 0 0 3rem; }
-    .tool-btn { padding:.3rem .55rem; border:1px solid #DBE4EE; border-radius:8px; background:#fff; cursor:pointer; font-size:.9rem; }
-    .tool-btn:hover { background:#DBE4EE; border-color:#81A4CD; }
-
-    .side { position: sticky; top: 72px; align-self: start; }
-    .panel { border:1px dashed #DBE4EE; border-radius:12px; padding:.75rem .9rem; background:#fff; margin:0 0 .85rem; display:none; }
-    .panel.open { display:block; }
-    .panel h3 { margin:.1rem 0 .35rem; font-size:1rem; }
-    .empty { color:#777; font-style:italic; }
-
-    .btn[aria-disabled="true"] { pointer-events:none; opacity:.5; }
-
-    /* === Unified dropdown style for chapter + verse (the only change) === */
-    #chap-picker select,
-    #verse-picker {
-      padding: .3rem .5rem;
-      border: 1px solid #DBE4EE;
-      border-radius: 8px;
-      background: #fff;
-      font-size: .95rem;
+    .verse-num{
+      font-weight:700; color:#333; text-decoration:none;
+      display:inline-block; width:42px; text-align:right;
+      position:sticky; left:0; align-self:flex-start;
+      scroll-margin-top:96px;
     }
-    #chap-picker select:focus,
-    #verse-picker:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(62,124,177,.15);
-      border-color: #81A4CD;
+    .verse-text{color:#0b2340; line-height:1.7}
+    .verse-actions{grid-column:1 / -1; display:flex; gap:.5rem; margin-top:.35rem}
+    .btn-sm{
+      font:inherit; font-size:.85rem; padding:.35rem .6rem; border-radius:6px;
+      border:1px solid #d9e1ee; background:#f7f9fd; color:#054A91; cursor:pointer;
     }
+    .btn-sm:hover{background:#eef3fb}
+    .panel{
+      grid-column:1 / -1; display:none; border-top:1px dashed #e1e6f0;
+      padding:.55rem .25rem .25rem; color:#333; background:#fafcff; border-radius:0 0 6px 6px;
+    }
+    .panel.open{display:block}
+    .xref-list{display:flex; flex-wrap:wrap; gap:.4rem .8rem; padding:.25rem 0}
+    .xref-list a{color:#054A91; text-decoration:underline dotted}
   </style>
 </head>
 <body>
-  <div data-include="../partials/header-nested.html"></div>
+  <div id="site-header"></div>
 
-  <main class="container">
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+  <main class="container chapter-page">
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
 
-    <div class="chapter-wrap">
-      <div class="chapter-head">
-        <div class="label" id="path">Texts / The New Testament / <span id="book-label"></span></div>
-        <h1 id="title">Matthew 1</h1>
-      </div>
+    <section class="chapter-wrap">
+      <header class="chapter-header">
+        <h1 class="chapter-title" id="chapterTitle">Loading…</h1>
+        <p class="chapter-sub" id="chapterSub"></p>
+        <div class="chapter-controls" id="chapterControls"></div>
+      </header>
 
-      <div class="topline">
-        <div class="jump-form">
-          <label for="chap-picker" class="label" style="margin:0;">Chapter</label>
-          <span id="chap-picker" class="picker"></span>
-        </div>
-        <div class="jump-form">
-          <label for="verse-picker" class="label" style="margin:0;">Verse</label>
-          <select id="verse-picker"></select>
-          <button id="jump-btn" class="btn" type="button">Jump</button>
-        </div>
-        <div style="margin-left:auto; display:flex; gap:.5rem;">
-          <a id="prev" class="btn" href="#">« Prev</a>
-          <a id="next" class="btn" href="#">Next »</a>
-        </div>
-      </div>
-
-      <div class="chapter-grid">
-        <section id="verses" class="verses"></section>
-
-        <aside class="side">
-          <div id="panel-xrefs" class="panel">
-            <h3>Cross References</h3>
-            <div class="body empty">Select a verse.</div>
-          </div>
-          <div id="panel-notes" class="panel">
-            <h3>Notes</h3>
-            <div class="body empty">Add your commentary notes for this verse.</div>
-          </div>
-          <div id="panel-study" class="panel">
-            <h3>Study</h3>
-            <div class="body empty">Study tools coming soon.</div>
-          </div>
-        </aside>
-      </div>
-    </div>
+      <div class="verses" id="verses"></div>
+    </section>
   </main>
 
-  <div data-include="../partials/footer.html"></div>
+  <div id="site-footer"></div>
+
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <script src="/israelite-research/js/chapter-nt.js" defer></script>
 </body>
 </html>
-
