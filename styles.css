@@ -284,6 +284,9 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   font-size:.9rem; color:#666; margin-top:2px;
 }
 
+/* Disable the old "Open in Logos" pseudo-tooltip */
+.article-content .verse:hover::after { content: none !important; }
+
 .articles-page .card-featured.secondary .card-foot{
   margin-top:auto; padding-top:8px;
   display:flex; align-items:center; gap:8px;
