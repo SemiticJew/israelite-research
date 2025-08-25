@@ -1178,3 +1178,41 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   flex-direction: column;
 }
 .articles-page .card-featured.primary .foot { margin-top: auto; }
+/* ——— Author byline/link ——— */
+.article-byline .byline-info { display:flex; flex-direction:column; }
+.byline-top{ display:flex; align-items:center; gap:.5rem; }
+.byline-name{ font-weight:700; text-decoration:none; color:#0b2340; }
+.byline-name:hover{ text-decoration:none; opacity:.85; }
+
+/* small “cube” button */
+.author-pop{
+  width:20px; height:20px; min-width:20px; min-height:20px;
+  border:1px solid #e0e6ef; border-radius:4px; background:#fff; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.author-pop::before{ content:"▣"; font-size:12px; line-height:1; color:#0b2340; }
+.author-pop:hover{ background:#f7f9fc; }
+
+/* ——— Author modal ——— */
+.author-modal[hidden]{ display:none; }
+.author-modal__overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter:saturate(120%) blur(2px); z-index:1000;
+}
+.author-modal__dialog{
+  position:fixed; inset:auto 0 0 0; margin:auto; top:10%;
+  max-width:640px; background:#fff; border:1px solid #e6ebf2; border-radius:12px;
+  box-shadow:0 16px 60px rgba(0,0,0,.18); padding:16px 18px; z-index:1001;
+}
+.author-modal__close{
+  position:absolute; top:8px; right:10px; border:0; background:transparent; font-size:20px; cursor:pointer;
+}
+.author-modal__header{ display:flex; gap:.75rem; align-items:center; margin-bottom:.5rem; }
+.author-modal__avatar{ width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid #e6ebf2; }
+.author-modal__role{ color:#666; font-size:.95rem; }
+.author-modal__bio{ color:#333; margin:.5rem 0 1rem; }
+.author-modal__list{ margin:.25rem 0 1rem; padding-left:1.1rem; }
+.author-modal__list li{ margin:.25rem 0; }
+.author-modal__cta{
+  display:inline-block; padding:.5rem .75rem; border:1px solid #e6ebf2; border-radius:8px; text-decoration:none; color:#054A91;
+}
+.author-modal__cta:hover{ background:#f5f8ff; }

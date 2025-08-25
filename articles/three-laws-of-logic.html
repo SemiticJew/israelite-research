@@ -79,16 +79,19 @@
       </figure>
 
       <!-- Byline -->
-      <div class="article-byline">
-        <img class="author-avatar"
-             src="/israelite-research/images/authors/semitic-jew.jpg"
-             alt="Author: Semitic Jew"
-             onerror="this.src='/israelite-research/images/authors/default.jpg'">
-        <div>
-          <div class="byline-name">Semitic Jew</div>
-          <div class="byline-meta">Author</div>
-        </div>
-      </div>
+     <div class="article-byline">
+  <img class="author-avatar"
+       src="/israelite-research/images/authors/semitic-jew.jpg"
+       alt="Author: Semitic Jew"
+       onerror="this.src='/israelite-research/images/authors/default.jpg'">
+  <div class="byline-info">
+    <div class="byline-top">
+      <a class="byline-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
+      <button class="author-pop" data-author="semitic-jew" aria-label="About this author"></button>
+    </div>
+    <div class="byline-meta">Author</div>
+  </div>
+</div>
 
       <!-- Share -->
       <div class="article-share">
@@ -188,12 +191,61 @@
     </div>
   </main>
 
+<!-- Author modal: Semitic Jew -->
+<div class="author-modal" id="author-modal-semitic-jew" hidden>
+  <div class="author-modal__overlay" data-close></div>
+  <div class="author-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="author-modal-title-sj">
+    <button class="author-modal__close" data-close aria-label="Close">×</button>
+    <div class="author-modal__header">
+      <img class="author-modal__avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+      <div>
+        <h3 id="author-modal-title-sj">Semitic Jew</h3>
+        <div class="author-modal__role">Author</div>
+      </div>
+    </div>
+    <p class="author-modal__bio">
+      Research-driven writer focused on Scripture, logic, and historical sources for clear, careful Bible reading.
+    </p>
+    <h4 style="margin:.25rem 0 .5rem;">Recent articles</h4>
+    <ul class="author-modal__list">
+      <li><a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a></li>
+      <li><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></li>
+      <li><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></li>
+    </ul>
+    <a class="author-modal__cta" href="/israelite-research/authors/semitic-jew.html">More from Semitic Jew</a>
+  </div>
+</div>
+
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
   <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+<script>
+(function(){
+  function openModal(id){
+    var m = document.getElementById(id);
+    if(!m) return;
+    m.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(modal){
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('click', function(e){
+    var pop = e.target.closest('.author-pop');
+    if (pop) { openModal('author-modal-' + pop.dataset.author); }
+    if (e.target.matches('[data-close]')) { closeModal(e.target.closest('.author-modal')); }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.author-modal:not([hidden])').forEach(function(m){ closeModal(m); });
+    }
+  });
+})();
+</script>
 
   <!-- Simple share links -->
   <script>
