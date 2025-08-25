@@ -1131,3 +1131,45 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   color: #666;
 }
 .articles-page .card-featured.primary .content .foot { margin-top: auto; display:flex; align-items:center; gap:.5rem; }
+/* --- Pin author footer to bottom of cards --- */
+.articles-page .card {
+  display: flex;
+  flex-direction: column;
+  height: 450px; /* your standard card height */
+}
+.articles-page .card .card-body {
+  /* body takes remaining space above the footer */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card .card-excerpt { margin-bottom: .5rem; }
+.articles-page .card .card-date { margin: .25rem 0 0; }
+
+.articles-page .card .card-foot {
+  margin-top: auto;                /* pushes footer to the bottom */
+  padding: 10px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Secondary featured (vertical) */
+.articles-page .card-featured.secondary .inner {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+}
+.articles-page .card-featured.secondary .body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card-featured.secondary .card-foot { margin-top: auto; }
+
+/* Primary featured (horizontal) */
+.articles-page .card-featured.primary .content {
+  display: flex;
+  flex-direction: column;
+}
+.articles-page .card-featured.primary .foot { margin-top: auto; }
