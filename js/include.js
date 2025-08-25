@@ -18,3 +18,11 @@
   inject('site-header', '/partials/header.html');
   inject('site-footer', '/partials/footer.html');
 })();
+// Load Reftagger on article pages
+(function () {
+  if (!document.querySelector('.article-page')) return;
+  var rt = document.createElement('script');
+  rt.src = '/israelite-research/js/reftagger.js';
+  rt.defer = true;
+  document.head.appendChild(rt);
+})();
