@@ -1184,14 +1184,14 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .byline-name{ font-weight:700; text-decoration:none; color:#0b2340; }
 .byline-name:hover{ text-decoration:none; opacity:.85; }
 
-/* small “cube” button */
-.author-pop{
-  width:20px; height:20px; min-width:20px; min-height:20px;
-  border:1px solid #e0e6ef; border-radius:4px; background:#fff; cursor:pointer;
+/* author “more” icon (book) */
+.author-more{
   display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; border:1px solid #e6ebf2; border-radius:6px;
+  background:#fff; color:var(--accent); cursor:pointer;
 }
-.author-pop::before{ content:"▣"; font-size:12px; line-height:1; color:#0b2340; }
-.author-pop:hover{ background:#f7f9fc; }
+.author-more:hover{ background:#f9fbfe; }
+.author-more svg{ width:16px; height:16px; display:block; }
 
 /* ——— Author modal ——— */
 .author-modal[hidden]{ display:none; }
