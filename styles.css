@@ -250,6 +250,46 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 
 /* Hover shadow (light grey) */
 .card:hover{ box-shadow: 0 6px 18px rgba(0,0,0,.08); transform: translateY(-1px); transition: .18s ease; }
+/* --- Fix: secondary featured layout (prevent “smushed” content) --- */
+.articles-page .card-featured.secondary .inner{
+  display:flex; flex-direction:column;
+  width:290px; height:450px; box-sizing:border-box;
+}
+
+.articles-page .card-featured.secondary .media{ flex:0 0 auto; position:relative; }
+.articles-page .card-featured.secondary .media img{
+  width:290px; height:163.13px; object-fit:cover; display:block;
+}
+
+.articles-page .card-featured.secondary .label-pill{
+  position:absolute; left:8px; top:8px;
+}
+
+.articles-page .card-featured.secondary .body{
+  display:flex; flex-direction:column; flex:1;
+  padding:12px; gap:6px; box-sizing:border-box;
+}
+
+.articles-page .card-featured.secondary .title{
+  font-size:1.05rem; line-height:1.3; margin:0;
+}
+
+.articles-page .card-featured.secondary .excerpt{
+  font-size:.95rem; line-height:1.45; color:#333; margin:0;
+}
+
+.articles-page .card-featured.secondary .card-date{
+  font-size:.9rem; color:#666; margin-top:2px;
+}
+
+.articles-page .card-featured.secondary .card-foot{
+  margin-top:auto; padding-top:8px;
+  display:flex; align-items:center; gap:8px;
+}
+
+.articles-page .card-featured.secondary .author-avatar{
+  width:30px; height:30px; border-radius:50%; object-fit:cover;
+}
 
 /* ------------------------------
    Tanakh / Texts grids
