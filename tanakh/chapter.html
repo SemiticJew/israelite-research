@@ -5,112 +5,41 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* Verse-by-verse “line upon line” layout */
-    .chapter-wrap { max-width: 900px; margin: 0 auto; }
-    .verse-card {
-      border: 1px solid #e6ebf2;
-      background: #fff;
-      border-radius: 10px;
-      padding: .85rem 1rem;
-      margin: .65rem 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,.03);
-    }
-    .verse-head {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: .75rem;
-      align-items: start;
-    }
-    .verse-num {
-      min-width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: #f5f7fb;
-      border: 1px solid #e6ebf2;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: #0b2340;
-      font-size: .95rem;
-      margin-top: .1rem;
-    }
-    .verse-text { color:#111; line-height:1.7; }
-    .tool-bar {
-      display: inline-flex;
-      gap: .4rem;
-      flex-wrap: wrap;
-    }
-    .tool-btn {
-      border: 1px solid #e6ebf2;
-      background: #fff;
-      padding: .35rem .55rem;
-      border-radius: 8px;
-      font-size: .85rem;
-      cursor: pointer;
-    }
-    .tool-btn:hover { transform: translateY(-1px); }
-
-    .panels { margin-top: .6rem; }
-    .panel {
-      display: none;
-      border-top: 1px dashed #e6ebf2;
-      padding-top: .6rem;
-    }
-    .panel.show { display:block; }
-
-    .ref-list { padding-left: 1rem; margin: .25rem 0 0; }
-    .ref-list li { margin: .15rem 0; }
-    .ref-list a { text-decoration: underline dotted; color: #054A91; }
-
-    .note-wrap { display: grid; gap: .5rem; }
-    .note-wrap label { font-size: .9rem; color:#555; }
-    .note-area {
-      width: 100%;
-      min-height: 90px;
-      border: 1px solid #e6ebf2;
-      border-radius: 8px;
-      padding: .6rem .7rem;
-      font: inherit;
-      resize: vertical;
-      background: #fafcff;
-    }
-    .study-text { color:#222; line-height:1.65; }
-
-    /* Breadcrumb under hero: keep consistent site-wide */
-    .breadcrumb { margin-top: .5rem; }
-  </style>
 </head>
-<body>
+<body class="chapter-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Universal hero -->
+  <main class="container">
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+    <!-- Universal hero (title gets filled by JS) -->
     <section class="page-hero hero-texts">
       <div class="container">
-        <h1 class="page-title" id="chapter-title">Loading…</h1>
-        <p class="page-subtitle" id="chapter-subtitle"></p>
+        <h1 class="page-title" id="chapterTitle">Loading…</h1>
+        <p class="page-subtitle" id="chapterSubtitle">Please wait while the chapter loads.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs BELOW hero (site standard) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+    <!-- Controls (optional) -->
+    <div class="chapter-controls">
+      <button id="toggleAllRefs" class="btn">Toggle Cross-Refs</button>
+      <button id="toggleAllNotes" class="btn">Toggle Notes</button>
+    </div>
 
-    <!-- Chapter content -->
-    <section class="container chapter-wrap">
-      <div id="verses" aria-live="polite">Loading…</div>
-    </section>
+    <!-- Verses mount -->
+    <section id="verses" class="verses-list" aria-live="polite">Loading…</section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + breadcrumbs + chapter logic -->
+  <!-- Partials + logic (absolute paths) -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <!-- Your chapter loader (must point to the lowercase /data/tanakh/... JSON) -->
   <script src="/israelite-research/js/chapter.js" defer></script>
 </body>
 </html>
