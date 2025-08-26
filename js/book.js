@@ -1,100 +1,63 @@
+// /israelite-research/js/book.js
 (function () {
-  const ROOT = '/israelite-research';
+  const params = new URLSearchParams(location.search);
+  const rawBook = params.get('book') || 'Genesis';
 
-  // Get book name from ?book=Genesis OR from /tanakh/genesis.html
-  function getBookFromLocation() {
-    const qs = new URLSearchParams(location.search);
-    let book = qs.get('book');
-    if (book) return normalizeBook(book);
+  // Slug to match your folder names (lowercase, hyphens for spaces/punctuation)
+  const slug = rawBook
+    .toLowerCase()
+    .replace(/[\u2019'’]/g, '')     // drop apostrophes
+    .replace(/&/g, 'and')           // normalize ampersand
+    .replace(/[^a-z0-9]+/g, '-')    // non-alnum -> hyphen
+    .replace(/^-+|-+$/g, '');       // trim hyphens
 
-    // Path-based: /israelite-research/tanakh/genesis.html
-    const m = location.pathname.match(/tanakh\/([^\/.]+)\.html$/i);
-    if (m && m[1]) return normalizeBook(m[1]);
+  // Elements
+  const titleEl = document.getElementById('book-title');
+  const descEl  = document.getElementById('book-desc');
+  const gridEl  = document.getElementById('chapters');
 
-    return null;
-  }
+  // Set title immediately
+  if (titleEl) titleEl.textContent = rawBook;
 
-  function normalizeBook(s) {
-    // accept kebab/slug/case-insensitive -> Title Case words
-    const cleaned = s.replace(/-/g, ' ').trim();
-    return cleaned
-      .split(/\s+/)
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-      .join(' ');
-  }
+  // Build absolute paths (GitHub Pages safe)
+  const base = '/israelite-research';
+  const bookMetaURL = `${base}/data/tanakh/${slug}/book.json`;
+  const bookDescURL = `${base}/data/tanakh/descriptions.json`;
 
-  async function loadMeta() {
-    const [booksRes, descRes] = await Promise.all([
-      fetch(`${ROOT}/data/tanakh/books.json`),
-      fetch(`${ROOT}/data/tanakh/descriptions.json`)
-    ]);
-    if (!booksRes.ok) throw new Error('books.json load failed');
-    const books = await booksRes.json();
-    let desc = {};
-    if (descRes.ok) desc = await descRes.json();
-    return { books, desc };
-  }
-
-  function render(bookName, chapters) {
-    const titleEl = document.getElementById('bookTitle');
-    const descEl = document.getElementById('bookDesc');
-    const gridEl = document.getElementById('chaptersGrid');
-
-    if (titleEl) titleEl.textContent = bookName;
-    if (descEl) {
-      // Description will be set by caller using descriptions.json (if present)
-    }
-
-    // Build chapter tiles 1..N
-    const frag = document.createDocumentFragment();
-    for (let i = 1; i <= chapters; i++) {
-      const a = document.createElement('a');
-      a.className = 'chapter-tile';
-      a.role = 'listitem';
-      a.href = `${ROOT}/tanakh/chapter.html?book=${encodeURIComponent(bookName)}&chapter=${i}`;
-      a.textContent = i;
-      frag.appendChild(a);
-    }
+  // Helper to render chapters 1..N
+  function renderChapters(n) {
+    if (!gridEl) return;
     gridEl.innerHTML = '';
-    gridEl.appendChild(frag);
+    for (let i = 1; i <= n; i++) {
+      const a = document.createElement('a');
+      a.href = `${base}/tanakh/chapter.html?book=${encodeURIComponent(rawBook)}&chapter=${i}`;
+      a.textContent = i;
+      a.setAttribute('aria-label', `Chapter ${i}`);
+      gridEl.appendChild(a);
+    }
   }
 
-  (async function init() {
-    const targetBook = getBookFromLocation();
-    const titleEl = document.getElementById('bookTitle');
-    const descEl = document.getElementById('bookDesc');
+  // Load chapter count from book.json; fall back if missing
+  fetch(bookMetaURL)
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(meta => {
+      const chapters = Number(meta?.chapters) || Number(meta?.chapterCount) || 50;
+      renderChapters(chapters);
+    })
+    .catch(() => {
+      // Fallbacks for common books; default to 50 if unknown
+      const defaults = {
+        genesis: 50, exodus: 40, leviticus: 27, numbers: 36, deuteronomy: 34
+      };
+      renderChapters(defaults[slug] || 50);
+    });
 
-    if (!targetBook) {
-      if (titleEl) titleEl.textContent = 'Book not found';
-      return;
-    }
-
-    try {
-      const { books, desc } = await loadMeta();
-
-      // Find matching book by name, case-insensitive
-      const match = books.find(
-        b => (b.name || '').toLowerCase() === targetBook.toLowerCase()
-      );
-
-      if (!match) {
-        if (titleEl) titleEl.textContent = targetBook;
-        if (descEl) descEl.textContent = '';
-        render(targetBook, 50); // fallback to 50 if unknown
-        return;
-      }
-
-      if (titleEl) titleEl.textContent = match.name;
-      if (descEl) {
-        const d = desc[match.name] || '';
-        descEl.textContent = d;
-      }
-      render(match.name, Number(match.chapters) || 50);
-    } catch (e) {
-      if (titleEl) titleEl.textContent = targetBook;
-      if (descEl) descEl.textContent = '';
-      render(targetBook, 50);
-      // console.error(e);
-    }
-  })();
+  // Load description (optional)
+  fetch(bookDescURL)
+    .then(r => r.ok ? r.json() : {})
+    .then(allDescs => {
+      const d = allDescs && (allDescs[rawBook] || allDescs[slug]);
+      if (d && descEl) descEl.textContent = d;
+    })
+    .catch(() => {});
 })();

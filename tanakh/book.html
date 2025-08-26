@@ -1,58 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tanakh — Book</title>
+  <title>Book — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Local safety styles (uses your site’s palette/utilities) */
+    .chapters-wrap { padding: 1rem 0 3rem; }
+    .chapters-grid {
+      display:grid;
+      grid-template-columns: repeat(11, minmax(36px, 1fr));
+      gap:.5rem;
+      justify-items:center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .chapters-grid a {
+      display:inline-grid; place-items:center;
+      width:42px; height:42px; border:1px solid #e6ebf2;
+      text-decoration:none; color:#0b2340; font-weight:600; border-radius:6px;
+      background:#fff;
+    }
+    .chapters-grid a:hover { box-shadow:0 4px 10px rgba(0,0,0,.07); transform:translateY(-1px); }
+    .book-intro { max-width: 900px; margin: .5rem auto 1.25rem; color:#333; }
+    .page-hero .page-title { margin-bottom:.25rem; }
+  </style>
 </head>
-<body class="book-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Universal hero (matches other pages) -->
+  <main class="container">
+    <!-- Breadcrumbs first -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+
+    <!-- Universal hero -->
     <section class="page-hero hero-texts">
       <div class="container">
-        <!-- Book title filled by JS; fallback shows while loading -->
-        <h1 class="page-title" id="bookTitle">Book</h1>
-        <p class="page-subtitle" id="bookSubtitle"></p>
+        <h1 class="page-title" id="book-title">Loading…</h1>
+        <p class="page-subtitle" id="book-sub">Contents</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (standard: under hero) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+    <!-- Book description (optional) -->
+    <div class="book-intro" id="book-desc"></div>
 
-    <!-- Contents -->
-    <section class="container" style="margin-top:1.25rem;">
-      <h2 class="section-title" style="text-align:left;margin-bottom:.5rem;">Contents</h2>
-      <div id="chapterGrid" class="chapter-grid"></div>
+    <!-- Chapters grid -->
+    <section class="chapters-wrap">
+      <div id="chapters" class="chapters-grid" aria-label="Chapters"></div>
     </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Book loader -->
+  <!-- Partials + Breadcrumbs + Book script -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/book.js" defer></script>
-
-  <!-- Tiny inline fallback to show title/desc quickly if book.js is slow -->
-  <script>
-    (function () {
-      const params = new URLSearchParams(location.search);
-      const book = params.get('book') || 'Genesis';
-      const titleEl = document.getElementById('bookTitle');
-      const subEl   = document.getElementById('bookSubtitle');
-      if (titleEl) titleEl.textContent = book;
-      // Optional: quick description if book.js hasn't filled yet
-      const hints = {
-        Genesis: 'Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.'
-      };
-      if (subEl && hints[book]) subEl.textContent = hints[book];
-    })();
-  </script>
 </body>
 </html>
