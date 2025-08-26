@@ -189,3 +189,16 @@
       if (wrap) wrap.textContent = "Chapter data not found.";
     });
 })();
+try {
+  const xrUrl = `/israelite-research/data/tanakh/${book.toLowerCase()}/${chapter}.xrefs.json`;
+  const xrMap = await (await fetch(xrUrl)).json();
+  if (Array.isArray(data.verses)) {
+    data.verses.forEach(v => {
+      if (!v.crossRefs || v.crossRefs.length === 0) {
+        v.crossRefs = xrMap[String(v.num)] || [];
+      }
+    });
+  }
+} catch (e) {
+  // no xrefs file yet — safe to ignore
+}
