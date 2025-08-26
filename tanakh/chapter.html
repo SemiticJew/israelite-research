@@ -5,8 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Minimal layout scaffolding for verses */
+    .chapter-wrap{max-width:920px;margin:0 auto;padding:1rem;}
+    .chapter-head{margin:.5rem 0 1rem;}
+    .chapter-head h1{margin:0;font-family:var(--ff-serif);}
+    #verses{display:grid;gap:.5rem;}
+    .verse-row{display:grid;grid-template-columns:3rem 1fr;gap:.75rem;padding:.75rem;border:1px solid #e6ebf2;background:#fff}
+    .verse-num{font-weight:700;color:#555}
+    .verse-tools details{margin-top:.35rem}
+    .error{color:#a00;background:#fff3f3;border:1px solid #f0c; padding:.75rem;border-radius:8px}
+  </style>
 </head>
-<body class="chapter-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
@@ -14,32 +25,22 @@
     <!-- Breadcrumbs -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Universal hero (title gets filled by JS) -->
-    <section class="page-hero hero-texts">
-      <div class="container">
-        <h1 class="page-title" id="chapterTitle">Loading…</h1>
-        <p class="page-subtitle" id="chapterSubtitle">Please wait while the chapter loads.</p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
+    <div class="chapter-wrap">
+      <header class="chapter-head">
+        <h1 id="chapter-title">Loading…</h1>
+      </header>
 
-    <!-- Controls (optional) -->
-    <div class="chapter-controls">
-      <button id="toggleAllRefs" class="btn">Toggle Cross-Refs</button>
-      <button id="toggleAllNotes" class="btn">Toggle Notes</button>
+      <!-- Verses mount point -->
+      <div id="verses">Loading…</div>
     </div>
-
-    <!-- Verses mount -->
-    <section id="verses" class="verses-list" aria-live="polite">Loading…</section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + logic (absolute paths) -->
+  <!-- Partials + Breadcrumbs + Chapter logic -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <!-- Your chapter loader (must point to the lowercase /data/tanakh/... JSON) -->
   <script src="/israelite-research/js/chapter.js" defer></script>
 </body>
 </html>
