@@ -1,61 +1,62 @@
+<script>
+// js/chapter.js
 (function () {
-  const params = new URLSearchParams(location.search);
-  const book = params.get('book') || 'Genesis';
-  const chapter = params.get('chapter') || '1';
+  const qs = new URLSearchParams(location.search);
+  const bookRaw = qs.get("book") || "Genesis";     // e.g., "Genesis"
+  const chapter = (qs.get("chapter") || "1").trim();
 
-  const titleEl = document.getElementById('chapter-title');
-  const versesEl = document.getElementById('verses');
+  // Build several safe path candidates (handles spaces/case)
+  const clean = s => s.replace(/\s+/g, "").replace(/[^\w-]/g, "");
+  const base = "/israelite-research/data/tanakh";
+  const candidates = [
+    `${base}/${bookRaw}/${chapter}.json`,
+    `${base}/${bookRaw.toLowerCase()}/${chapter}.json`,
+    `${base}/${clean(bookRaw)}/${chapter}.json`,
+    `${base}/${clean(bookRaw).toLowerCase()}/${chapter}.json`,
+  ];
 
-  titleEl.textContent = `${book} ${chapter}`;
+  const statusEl = document.getElementById("status");   // optional “Loading…” element
+  const versesEl = document.getElementById("verses");   // required list/container
+  const titleEl  = document.querySelector("[data-book-title]"); // optional title hook
 
-  // Build path to your JSON (matches your repo structure)
-  const url = `/israelite-research/data/tanakh/${encodeURIComponent(book)}/${encodeURIComponent(chapter)}.json`;
+  let i = 0;
+  function tryNext() {
+    if (i >= candidates.length) {
+      if (statusEl) statusEl.textContent = "Chapter not found.";
+      console.error("Tried paths:", candidates);
+      return;
+    }
+    const url = candidates[i++];
+    fetch(url)
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(data => {
+        if (statusEl) statusEl.remove();
+        if (titleEl) titleEl.textContent = `${data.book} ${data.chapter}`;
+        render(data);
+      })
+      .catch(tryNext);
+  }
 
-  fetch(url)
-    .then(r => {
-      if (!r.ok) throw new Error(`Missing data for ${book} ${chapter}`);
-      return r.json();
-    })
-    .then(data => {
-      // optional: trust JSON’s own book/chapter if present
-      titleEl.textContent = `${data.book || book} ${data.chapter || chapter}`;
-
-      versesEl.innerHTML = (data.verses || []).map(v => `
-        <section class="verse" id="v${v.num}">
-          <div class="verse-head">
-            <span class="num">${v.num}</span>
-            <div class="actions">
-              <button class="btn-ref" data-v="${v.num}">Cross-Refs</button>
-              <button class="btn-notes" data-v="${v.num}">Notes</button>
-            </div>
-          </div>
-          <p class="text">${v.text}</p>
-
-          <div class="panel refs" id="refs-${v.num}" hidden>
-            ${(v.crossRefs && v.crossRefs.length)
-              ? `<ul>` + v.crossRefs.map(cr => `<li><strong>${cr.ref}</strong>${cr.note ? ` — ${cr.note}`:''}</li>`).join('') + `</ul>`
-              : `<em>No cross-references.</em>`}
-          </div>
-
-          <div class="panel notes" id="notes-${v.num}" hidden>
-            ${v.commentary ? v.commentary : `<em>No notes yet.</em>`}
-          </div>
-        </section>
-      `).join('');
-
-      // Toggle handlers
-      versesEl.addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn-ref')) {
-          const n = e.target.dataset.v;
-          document.getElementById(`refs-${n}`).toggleAttribute('hidden');
-        }
-        if (e.target.classList.contains('btn-notes')) {
-          const n = e.target.dataset.v;
-          document.getElementById(`notes-${n}`).toggleAttribute('hidden');
-        }
-      });
-    })
-    .catch(err => {
-      versesEl.innerHTML = `<p style="color:#b00">Error: ${err.message}</p>`;
+  function render(data) {
+    if (!versesEl) { console.error("#verses missing in chapter.html"); return; }
+    versesEl.innerHTML = "";
+    (data.verses || []).forEach(v => {
+      const li = document.createElement("li");
+      li.className = "verse-row";
+      li.innerHTML = `
+        <div class="verse-num">${v.num}</div>
+        <div class="verse-text">${v.text}</div>
+        <div class="verse-actions">
+          <button class="btn-xref" data-num="${v.num}">Cross-Refs ${(v.crossRefs||[]).length}</button>
+          <button class="btn-notes" data-num="${v.num}">Notes</button>
+        </div>`;
+      versesEl.appendChild(li);
     });
+  }
+
+  tryNext();
 })();
+</script>
