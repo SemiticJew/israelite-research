@@ -6,67 +6,109 @@
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Chapter layout (BLB-style) */
-    .chapter-wrap{max-width:960px;margin:0 auto;padding:1rem 1rem 2.5rem}
-    .chapter-header{margin:0 0 1rem}
-    .chapter-title{font-family:var(--ff-serif, "Adobe Garamond Pro", serif);margin:0 0 .25rem}
-    .chapter-sub{color:#555;margin:0 0 .75rem}
-    .chapter-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}
+    /* Verse-by-verse “line upon line” layout */
+    .chapter-wrap { max-width: 900px; margin: 0 auto; }
+    .verse-card {
+      border: 1px solid #e6ebf2;
+      background: #fff;
+      border-radius: 10px;
+      padding: .85rem 1rem;
+      margin: .65rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.03);
+    }
+    .verse-head {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: .75rem;
+      align-items: start;
+    }
+    .verse-num {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #f5f7fb;
+      border: 1px solid #e6ebf2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #0b2340;
+      font-size: .95rem;
+      margin-top: .1rem;
+    }
+    .verse-text { color:#111; line-height:1.7; }
+    .tool-bar {
+      display: inline-flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      border: 1px solid #e6ebf2;
+      background: #fff;
+      padding: .35rem .55rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      cursor: pointer;
+    }
+    .tool-btn:hover { transform: translateY(-1px); }
 
-    .verses{display:flex;flex-direction:column;gap:.5rem}
-    .verse-row{
-      display:grid;
-      grid-template-columns: 52px 1fr;
-      gap:0.75rem;
-      border:1px solid #e6ebf2;
-      background:#fff;
-      border-radius:8px;
-      padding:.65rem .75rem;
+    .panels { margin-top: .6rem; }
+    .panel {
+      display: none;
+      border-top: 1px dashed #e6ebf2;
+      padding-top: .6rem;
     }
-    .verse-num{
-      font-weight:700; color:#333; text-decoration:none;
-      display:inline-block; width:42px; text-align:right;
-      position:sticky; left:0; align-self:flex-start;
-      scroll-margin-top:96px; /* for fixed header */
+    .panel.show { display:block; }
+
+    .ref-list { padding-left: 1rem; margin: .25rem 0 0; }
+    .ref-list li { margin: .15rem 0; }
+    .ref-list a { text-decoration: underline dotted; color: #054A91; }
+
+    .note-wrap { display: grid; gap: .5rem; }
+    .note-wrap label { font-size: .9rem; color:#555; }
+    .note-area {
+      width: 100%;
+      min-height: 90px;
+      border: 1px solid #e6ebf2;
+      border-radius: 8px;
+      padding: .6rem .7rem;
+      font: inherit;
+      resize: vertical;
+      background: #fafcff;
     }
-    .verse-text{color:#0b2340; line-height:1.7}
-    .verse-actions{grid-column:1 / -1; display:flex; gap:.5rem; margin-top:.35rem}
-    .btn-sm{
-      font:inherit; font-size:.85rem; padding:.35rem .6rem; border-radius:6px;
-      border:1px solid #d9e1ee; background:#f7f9fd; color:#054A91; cursor:pointer;
-    }
-    .btn-sm:hover{background:#eef3fb}
-    .panel{
-      grid-column:1 / -1; display:none; border-top:1px dashed #e1e6f0;
-      padding:.55rem .25rem .25rem; color:#333; background:#fafcff; border-radius:0 0 6px 6px;
-    }
-    .panel.open{display:block}
-    .xref-list{display:flex; flex-wrap:wrap; gap:.4rem .8rem; padding:.25rem 0}
-    .xref-list a{color:#054A91; text-decoration:underline dotted}
+    .study-text { color:#222; line-height:1.65; }
+
+    /* Breadcrumb under hero: keep consistent site-wide */
+    .breadcrumb { margin-top: .5rem; }
   </style>
 </head>
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container chapter-page">
-    <!-- Breadcrumbs above content -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+  <main>
+    <!-- Universal hero -->
+    <section class="page-hero hero-texts">
+      <div class="container">
+        <h1 class="page-title" id="chapter-title">Loading…</h1>
+        <p class="page-subtitle" id="chapter-subtitle"></p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
 
-    <section class="chapter-wrap">
-      <<h1 id="chapterHeading" class="chapter-title"></h1>
-<div id="verses"></div>
-<script src="/israelite-research/js/chapter.js" defer></script>
-      </header>
+    <!-- Breadcrumbs BELOW hero (site standard) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-      <div class="verses" id="verses"></div>
+    <!-- Chapter content -->
+    <section class="container chapter-wrap">
+      <div id="verses" aria-live="polite">Loading…</div>
     </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Chapter logic -->
+  <!-- Partials + breadcrumbs + chapter logic -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>
