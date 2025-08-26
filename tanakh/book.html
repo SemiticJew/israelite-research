@@ -3,73 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Genesis — Semitic Jew</title>
+  <title>Book — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-local tweaks for the chapter grid */
-    .book-wrap { max-width: 1200px; margin: 0 auto; padding: var(--space-md, 24px) 16px; }
-    .book-header { margin: 0 0 1rem 0; }
-    .book-title { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); font-size: clamp(1.8rem, 3vw, 2.4rem); margin: 0; }
-    .book-desc  { color: #444; margin: .35rem 0 1.25rem; }
+    /* Page-local touches to ensure center + consistent layout */
+    .book-hero .container { max-width: 1200px; margin: 0 auto; }
+    .book-hero .page-title { margin-bottom: .35rem; }
+    .book-hero .page-subtitle { max-width: 70ch; margin-inline: auto; }
 
-    /* Chapters */
-    .chapters-wrap { margin-top: 1rem; }
-    .chapters-title { font-family: var(--ff-sans, Roboto, system-ui); text-transform: uppercase; letter-spacing: .14em; font-size: .9rem; color: #333; margin: 0 0 .5rem; }
+    .book-meta { max-width: 1200px; margin: 0 auto; padding: var(--space-sm, 16px) 0; }
+    .book-meta h2 { margin: 0 0 .5rem 0; font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; color: var(--blue-100,#335); }
 
-    /* 11 columns × up to 5 rows for 1–50 */
-    .chapter-grid {
+    .chapters { max-width: 1200px; margin: 0 auto; padding: var(--space-sm, 16px) 0 var(--space-lg, 48px); }
+    .chapters .grid {
       display: grid;
-      grid-template-columns: repeat(11, 1fr);
-      gap: 8px;
-      max-width: 900px;
+      grid-auto-rows: 56px;
+      grid-template-columns: repeat(auto-fill, 56px);
+      gap: 10px;
+      justify-content: center; /* centers the grid block itself */
     }
-    .chapter-grid a {
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none;
-      color: var(--ink, #0b2340);
-      border: 1px solid #e3e8f0;
-      border-radius: 8px;
-      height: 44px;            /* compact pills */
-      font-weight: 600;
+    .chapters .tile {
+      display: grid;
+      place-items: center;
+      width: 56px; height: 56px;
+      border: 1px solid #e6ebf2;
       background: #fff;
+      text-decoration: none;
+      color: #0b2340;
+      font-weight: 600;
+      border-radius: 8px; /* match site feel */
     }
-    .chapter-grid a:hover { box-shadow: 0 4px 14px rgba(0,0,0,.06); transform: translateY(-1px); }
-    @media (max-width: 900px) {
-      .chapter-grid { grid-template-columns: repeat(8, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .chapter-grid { grid-template-columns: repeat(6, 1fr); }
-    }
+    .chapters .tile:hover { box-shadow: 0 6px 16px rgba(0,0,0,.08); transform: translateY(-1px); }
+    .chapters .tile:active { transform: translateY(0); }
+
+    /* Keep breadcrumbs under hero across all pages */
+    nav.breadcrumb { max-width: 1200px; margin: 0 auto; }
   </style>
 </head>
-<body>
+<body class="book-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
     <!-- Universal hero -->
-    <section class="page-hero hero-texts">
+    <section class="page-hero book-hero">
       <div class="container">
-        <h1 class="page-title" id="heroTitle">Genesis</h1>
-        <p class="page-subtitle" id="heroSub">Creation, the beginning of mankind, and history of  our Israelitepatriarchs and matriarchs.</p>
+        <h1 id="bookTitle" class="page-title">Loading…</h1>
+        <p id="bookDesc" class="page-subtitle"></p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs under hero -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="tanakh"></nav>
+    <!-- Breadcrumbs (under hero) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
 
-    <!-- Content -->
-    <section class="book-wrap">
-      <header class="book-header">
-        <h2 class="book-title" id="bookHeading">Genesis</h2>
-        <p class="book-desc" id="bookDesc">Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.</p>
-      </header>
+    <!-- Contents + Chapters grid -->
+    <section class="book-meta">
+      <h2>Contents</h2>
+      <p id="chaptersHint" class="muted" style="color:#666;margin:0;"></p>
+    </section>
 
-      <div class="chapters-wrap">
-        <div class="chapters-title">Contents</div>
-        <div class="chapter-grid" id="chapterGrid" aria-label="Chapters"></div>
-      </div>
+    <section class="chapters">
+      <div id="chaptersGrid" class="grid" aria-label="Chapter list"></div>
     </section>
   </main>
 
@@ -80,37 +75,84 @@
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 
+  <!-- Page logic: read ?book=, load counts/description, render centered grid -->
   <script>
-    (function(){
-      // Read ?book=... (default Genesis)
+    (function () {
       const params = new URLSearchParams(location.search);
-      const book = (params.get('book') || 'Genesis').replace(/\+/g,' ');
-      const chaptersByBook = { 'Genesis': 50 }; // fallback count; extend later if desired
-      const descByBook = {
-        'Genesis': 'Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.'
-      };
+      const rawBook = params.get('book') || 'Genesis';
+      const book = decodeURIComponent(rawBook);
 
-      // Set headings/descriptions
-      document.title = (book + ' — Semitic Jew');
-      document.getElementById('heroTitle').textContent   = book;
-      document.getElementById('bookHeading').textContent = book;
-      const d = descByBook[book] || descByBook['Genesis'];
-      document.getElementById('heroSub').textContent  = d;
-      document.getElementById('bookDesc').textContent = d;
+      // Set title immediately
+      const titleEl = document.getElementById('bookTitle');
+      const descEl  = document.getElementById('bookDesc');
+      const hintEl  = document.getElementById('chaptersHint');
+      const gridEl  = document.getElementById('chaptersGrid');
 
-      // Build chapter grid
-      const total = chaptersByBook[book] || 50;
-      const grid = document.getElementById('chapterGrid');
-      const base = '/israelite-research/tanakh/chapter.html';
-      const frag = document.createDocumentFragment();
-      for (let i = 1; i <= total; i++) {
-        const a = document.createElement('a');
-        a.href = `${base}?book=${encodeURIComponent(book)}&chapter=${i}`;
-        a.textContent = i;
-        a.setAttribute('aria-label', `${book} chapter ${i}`);
-        frag.appendChild(a);
-      }
-      grid.appendChild(frag);
+      titleEl.textContent = book;
+
+      // Helper: slug folder is lowercase for files, per your repo layout
+      const folder = book.toLowerCase().replace(/\s+/g, '');
+      const booksJson = '/israelite-research/data/tanakh/books.json';
+      const descJson  = '/israelite-research/data/tanakh/descriptions.json';
+
+      // Load description (graceful if missing)
+      fetch(descJson)
+        .then(r => r.ok ? r.json() : {})
+        .then(all => {
+          if (all && all[book]) descEl.textContent = all[book];
+          else descEl.textContent = '';
+        })
+        .catch(()=>{ descEl.textContent = ''; });
+
+      // Load chapter count and render grid
+      fetch(booksJson)
+        .then(r => {
+          if (!r.ok) throw new Error('books.json not found');
+          return r.json();
+        })
+        .then(list => {
+          const rec = Array.isArray(list) ? list.find(x => x.name === book) : null;
+          const count = rec && rec.chapters ? Number(rec.chapters) : 50; // fallback
+          hintEl.textContent = `Chapters ${count > 1 ? `1–${count}` : '1'}`;
+
+          // Build centered tiles
+          const frag = document.createDocumentFragment();
+          for (let i = 1; i <= count; i++) {
+            const a = document.createElement('a');
+            a.className = 'tile';
+            a.href = `/israelite-research/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${i}`;
+            a.textContent = i;
+            a.setAttribute('aria-label', `Go to ${book} chapter ${i}`);
+            frag.appendChild(a);
+          }
+          gridEl.innerHTML = '';
+          gridEl.appendChild(frag);
+
+          // Update <title>
+          document.title = `${book} — Semitic Jew`;
+
+          // Nudge breadcrumbs (Home > Texts > Tanakh > Book)
+          // breadcrumbs.js will render base trail; we can append current book name as last crumb if needed:
+          document.addEventListener('breadcrumbs:ready', () => {
+            const bc = document.getElementById('breadcrumbs');
+            if (!bc) return;
+            const last = bc.querySelector('ol');
+            if (!last) return;
+            // If the last item isn't already the book name, append it.
+            const items = last.querySelectorAll('li');
+            const already = items.length && items[items.length-1].textContent.trim() === book;
+            if (!already) {
+              const li = document.createElement('li');
+              li.textContent = book;
+              last.appendChild(li);
+            }
+          });
+        })
+        .catch(err => {
+          hintEl.textContent = 'Chapters';
+          gridEl.innerHTML = '<p style="color:#a00">Could not load chapters.</p>';
+          console.error(err);
+        });
     })();
   </script>
 </body>
