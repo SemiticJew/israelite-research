@@ -1,62 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Book — Semitic Jew</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tanakh — Book — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* Local safety styles (uses your site’s palette/utilities) */
-    .chapters-wrap { padding: 1rem 0 3rem; }
-    .chapters-grid {
-      display:grid;
-      grid-template-columns: repeat(11, minmax(36px, 1fr));
-      gap:.5rem;
-      justify-items:center;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .chapters-grid a {
-      display:inline-grid; place-items:center;
-      width:42px; height:42px; border:1px solid #e6ebf2;
-      text-decoration:none; color:#0b2340; font-weight:600; border-radius:6px;
-      background:#fff;
-    }
-    .chapters-grid a:hover { box-shadow:0 4px 10px rgba(0,0,0,.07); transform:translateY(-1px); }
-    .book-intro { max-width: 900px; margin: .5rem auto 1.25rem; color:#333; }
-    .page-hero .page-title { margin-bottom:.25rem; }
-  </style>
 </head>
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container">
-    <!-- Breadcrumbs first -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
-
-    <!-- Universal hero -->
-    <section class="page-hero hero-texts">
+  <main>
+    <!-- Universal hero (consistent sitewide) -->
+    <section class="page-hero">
       <div class="container">
-        <h1 class="page-title" id="book-title">Loading…</h1>
-        <p class="page-subtitle" id="book-sub">Contents</p>
+        <h1 class="page-title">The Tanakh</h1>
+        <p class="page-subtitle">Explore each book and chapter of the Hebrew Bible.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Book description (optional) -->
-    <div class="book-intro" id="book-desc"></div>
+    <!-- Breadcrumbs (standard position: under hero) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="tanakh"></nav>
 
-    <!-- Chapters grid -->
-    <section class="chapters-wrap">
-      <div id="chapters" class="chapters-grid" aria-label="Chapters"></div>
+    <!-- Book header + description (title left-aligned) -->
+    <section class="container" style="margin-top:1rem;">
+      <h2 id="book-title" class="book-title" style="margin:0 0 .25rem 0;"></h2>
+      <p id="book-desc" class="book-desc" style="max-width:65ch;"></p>
+    </section>
+
+    <!-- Chapters grid (centered) -->
+    <section class="container" style="margin-top:1rem;">
+      <div id="chapters" class="chapters-grid"></div>
     </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Book script -->
+  <!-- Scripts -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/book.js" defer></script>
