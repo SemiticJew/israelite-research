@@ -1224,3 +1224,39 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 .verse .actions { display:flex; gap:6px; }
 .verse .actions button { font-size:.85rem; padding:.25rem .5rem; border:1px solid #d9e1ec; background:#f7f9fc; border-radius:6px; cursor:pointer; }
 .panel { margin-top:8px; padding:8px; background:#f9fbfe; border:1px dashed #e2e8f0; border-radius:6px; }
+/* Center the chapter-number grid on book pages */
+.book-page .chapters-grid,
+.chapters-grid {
+  --tile-w: 64px;        /* chapter tile width  */
+  --tile-h: 48px;        /* chapter tile height */
+  --gap: 10px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tile-w), var(--tile-w)));
+  gap: var(--gap);
+
+  /* this actually centers the whole grid block */
+  justify-content: center;
+
+  /* keep the grid itself tight and centered on the page */
+  width: fit-content;
+  margin: 1rem auto 2rem;
+}
+
+.chapters-grid a,
+.chapters-grid .chapter-tile {
+  display: grid;
+  place-items: center;
+  width: var(--tile-w);
+  height: var(--tile-h);
+  border: 1px solid #e6ebf2;
+  text-decoration: none;
+  color: #0b2340;
+  background: #fff;
+}
+
+.chapters-grid a:hover,
+.chapters-grid .chapter-tile:hover {
+  background: #f7f9fc;
+  border-color: #d6dfeb;
+}
