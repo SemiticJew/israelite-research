@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What We Believe — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-specific accent & hero tint (keeps your palette, slight variation) */
+    .hero-beliefs { 
+      background:
+        linear-gradient(180deg, rgba(241,115,0,.10), rgba(241,115,0,0)) 0 0/100% 100% no-repeat;
+    }
+    .hero-beliefs .page-title,
+    .hero-beliefs .page-subtitle { color: #0b2340; }
+
+    /* Simple tabs (page-scoped so it won’t affect other pages) */
+    .beliefs { max-width: 900px; margin: 2rem auto 3rem; }
+    .beliefs .tabs-nav {
+      display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem;
+      border-bottom: 1px solid #e6ebf2; padding-bottom: .5rem;
+    }
+    .beliefs .tab {
+      appearance: none; border: 1px solid #e6ebf2; background: #fff; color: #0b2340;
+      padding: .5rem .75rem; border-radius: 10px; font: inherit; cursor: pointer;
+    }
+    .beliefs .tab[aria-selected="true"] {
+      border-color: var(--accent, #F17300);
+      box-shadow: 0 0 0 2px rgba(241,115,0,.12) inset;
+    }
+    .beliefs .tab-panel { display: none; }
+    .beliefs .tab-panel.active { display: block; }
+    .beliefs h3 { margin: 1rem 0 .35rem; font-family: var(--ff-serif, "Adobe Garamond Pro", serif); }
+    .beliefs p, .beliefs li { line-height: 1.7; }
+    .beliefs ul { margin: .5rem 0 1rem 1.25rem; }
+  </style>
+</head>
+<body>
+  <!-- Header partial -->
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Hero (universal styles) -->
+    <section class="page-hero hero-beliefs">
+      <div class="container">
+        <h1 class="page-title">What We Believe</h1>
+        <p class="page-subtitle">A concise summary of our convictions, rooted in Scripture and pursued with logic, care, and context.</p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- Breadcrumbs (under hero, left aligned) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="beliefs"></nav>
+
+    <!-- Tabs content -->
+    <section class="beliefs container">
+      <div class="tabs" id="beliefTabs">
+        <div class="tabs-nav" role="tablist" aria-label="Belief Sections">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="tab-core"   id="t-core"   data-tab="core">Core</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-script" id="t-script" data-tab="script">Scripture</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-god"    id="t-god"    data-tab="god">God</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-human"  id="t-human"  data-tab="human">Humanity</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-salv"   id="t-salv"   data-tab="salv">Salvation</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-church" id="t-church" data-tab="church">Church</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="tab-future" id="t-future" data-tab="future">Future Hope</button>
+        </div>
+
+        <div class="tabs-panels">
+          <section class="tab-panel active" id="tab-core" role="tabpanel" aria-labelledby="t-core">
+            <h3>Core Summary</h3>
+            <p>We confess the authority and sufficiency of the Holy Scriptures, the triune God, the person and work of Jesus the Messiah, salvation by grace through faith, and a life of obedience empowered by the Spirit.</p>
+            <ul>
+              <li>God has spoken clearly in Scripture and calls us to “reason together” (Isa 1:18) and “test everything” (1 Th 5:21).</li>
+              <li>Logic serves love and clarity; Scripture interprets Scripture.</li>
+              <li>We pursue biblical faithfulness with humility, joy, and courage.</li>
+            </ul>
+          </section>
+
+          <section class="tab-panel" id="tab-script" role="tabpanel" aria-labelledby="t-script">
+            <h3>Scripture</h3>
+            <p>The Scriptures are God-breathed, truthful, and authoritative for faith and life (2 Tim 3:16–17; Jn 17:17). We submit our minds and methods to the Word of God.</p>
+            <ul>
+              <li>Clarity: God communicates to be understood (Neh 8:8; Ps 119).</li>
+              <li>Consistency: The sum of God’s Word is truth (Ps 119:160).</li>
+              <li>Christ-centered: The Law and the Prophets point to the Messiah (Lk 24:27).</li>
+            </ul>
+          </section>
+
+          <section class="tab-panel" id="tab-god" role="tabpanel" aria-labelledby="t-god">
+            <h3>God</h3>
+            <p>There is one God, eternal, holy, and faithful (Deut 6:4; Mal 3:6). He is the Creator and Sustainer of all things and reveals Himself truly in Scripture.</p>
+          </section>
+
+          <section class="tab-panel" id="tab-human" role="tabpanel" aria-labelledby="t-human">
+            <h3>Humanity</h3>
+            <p>Humanity is created in God’s image with dignity and purpose (Gen 1:26–27), yet fallen in sin (Rom 3:23). Our hope is found in God’s redeeming grace.</p>
+          </section>
+
+          <section class="tab-panel" id="tab-salv" role="tabpanel" aria-labelledby="t-salv">
+            <h3>Salvation</h3>
+            <p>Salvation is by grace through faith in Jesus the Messiah (Eph 2:8–9). He lived, died, and rose again to save sinners and reconcile us to God.</p>
+          </section>
+
+          <section class="tab-panel" id="tab-church" role="tabpanel" aria-labelledby="t-church">
+            <h3>Church</h3>
+            <p>Christ gathers His people to worship, grow, and witness (Acts 2:42–47). We devote ourselves to Scripture, prayer, fellowship, and faithful mission.</p>
+          </section>
+
+          <section class="tab-panel" id="tab-future" role="tabpanel" aria-labelledby="t-future">
+            <h3>Future Hope</h3>
+            <p>Jesus will return; God will judge righteously; and He will make all things new (Rev 21–22). Therefore, we live with watchful hope and steadfast love.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+
+  <!-- Lightweight tabs (page-local, no global side effects) -->
+  <script>
+    (function(){
+      const root = document.getElementById('beliefTabs');
+      if(!root) return;
+      const tabs = root.querySelectorAll('.tab');
+      const panels = root.querySelectorAll('.tab-panel');
+      function activate(id){
+        tabs.forEach(b=>{
+          const on = b.dataset.tab === id;
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panels.forEach(p=>{
+          p.classList.toggle('active', p.id === 'tab-' + id);
+        });
+      }
+      tabs.forEach(b=>{
+        b.addEventListener('click', () => activate(b.dataset.tab));
+      });
+      // default active tab
+      activate('core');
+    })();
+  </script>
+</body>
+</html>
