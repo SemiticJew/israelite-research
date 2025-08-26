@@ -1,104 +1,35 @@
-// /israelite-research/js/chapter.js
-(function(){
-  // read ?book=Genesis&chapter=1
-  const params = new URLSearchParams(location.search);
-  const book = params.get('book') || 'Genesis';
-  const chapter = parseInt(params.get('chapter')||'1',10);
-
-  const titleEl = document.getElementById('chapterTitle');
-  const subEl   = document.getElementById('chapterSub');
-  const versesEl= document.getElementById('verses');
-  const controls= document.getElementById('chapterControls');
-
-  titleEl.textContent = `${book} ${chapter}`;
-  subEl.textContent   = `Chapter ${chapter} • ${book}`;
-
-  // Basic chapter selector
-  const prev = document.createElement('a');
-  prev.className='btn-sm'; prev.href=`?book=${encodeURIComponent(book)}&chapter=${Math.max(1,chapter-1)}`;
-  prev.textContent='◀ Prev';
-  const next = document.createElement('a');
-  next.className='btn-sm'; next.href=`?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
-  next.textContent='Next ▶';
-  controls.append(prev, next);
-
-  // fetch JSON: data/tanakh/Genesis/1.json
-  const path = `/israelite-research/data/tanakh/${encodeURIComponent(book)}/${chapter}.json`;
-  fetch(path).then(r=>r.json()).then(render).catch(err=>{
-    versesEl.innerHTML = `<div style="color:#a00">Could not load chapter data.</div>`;
-    console.error(err);
-  });
-
-  function render(data){
-    // Expect: { book: "Genesis", chapter: 1, verses: [{num, text, crossRefs:[{ref,note}], commentary:""}] }
-    versesEl.innerHTML='';
-    data.verses.forEach(v=>{
-      const row = document.createElement('section');
-      row.className='verse-row';
-      row.id = `v${v.num}`;
-
-      const n = document.createElement('a');
-      n.className='verse-num';
-      n.href = `#v${v.num}`;
-      n.textContent = v.num;
-
-      const t = document.createElement('div');
-      t.className='verse-text';
-      t.innerHTML = v.text; // your verse text (assumed safe / pre-sanitized)
-
-      row.appendChild(n);
-      row.appendChild(t);
-
-      // Actions (Cross-Refs + Notes if present)
-      const actions = document.createElement('div');
-      actions.className='verse-actions';
-
-      const hasXrefs = Array.isArray(v.crossRefs) && v.crossRefs.length>0;
-      const hasComm  = v.commentary && v.commentary.trim().length>0;
-
-      let xBtn, cBtn, xPanel, cPanel;
-
-      if(hasXrefs){
-        xBtn = document.createElement('button');
-        xBtn.className='btn-sm';
-        xBtn.textContent='Cross-refs';
-        actions.appendChild(xBtn);
-
-        xPanel = document.createElement('div');
-        xPanel.className='panel';
-        const list = document.createElement('div');
-        list.className='xref-list';
-        v.crossRefs.forEach(x=>{
-          const a = document.createElement('a');
-          a.href = `https://biblia.com/bible/kjv1900/${encodeURIComponent(x.ref)}`;
-          a.target = '_blank';
-          a.rel='noopener';
-          a.textContent = x.ref + (x.note ? ` — ${x.note}` : '');
-          list.appendChild(a);
-        });
-        xPanel.appendChild(list);
-        row.appendChild(xPanel);
-
-        xBtn.addEventListener('click', ()=> xPanel.classList.toggle('open'));
-      }
-
-      if(hasComm){
-        cBtn = document.createElement('button');
-        cBtn.className='btn-sm';
-        cBtn.textContent='Notes';
-        actions.appendChild(cBtn);
-
-        cPanel = document.createElement('div');
-        cPanel.className='panel';
-        cPanel.innerHTML = `<div>${v.commentary}</div>`;
-        row.appendChild(cPanel);
-
-        cBtn.addEventListener('click', ()=> cPanel.classList.toggle('open'));
-      }
-
-      if (hasXrefs || hasComm) row.appendChild(actions);
-
-      versesEl.appendChild(row);
-    });
-  }
-})();
+{
+  "book": "Genesis",
+  "chapter": 1,
+  "verses": [
+    {
+      "num": 1,
+      "text": "In the beginning God created the heaven and the earth.",
+      "crossRefs": [
+        {"ref": "John 1:1", "note": "Creation and the Word"},
+        {"ref": "Hebrews 11:3", "note": "Worlds framed by the word of God"}
+      ],
+      "commentary": "Optional brief commentary for verse 1.",
+      "notes": "Optional study notes for verse 1."
+    },
+    {
+      "num": 2,
+      "text": "And the earth was without form, and void; and darkness was upon the face of the deep...",
+      "crossRefs": [
+        {"ref": "Jeremiah 4:23", "note": "Without form and void"},
+        {"ref": "Psalm 104:30", "note": "Thou sendest forth thy spirit"}
+      ],
+      "commentary": "",
+      "notes": ""
+    },
+    {
+      "num": 3,
+      "text": "And God said, Let there be light: and there was light.",
+      "crossRefs": [
+        {"ref": "2 Corinthians 4:6", "note": "Light shining in our hearts"}
+      ],
+      "commentary": "",
+      "notes": ""
+    }
+  ]
+}
