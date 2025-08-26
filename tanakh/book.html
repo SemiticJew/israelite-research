@@ -6,22 +6,40 @@
   <title>Genesis — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-local light helpers (keeps global CSS untouched) */
-    .chapters-wrap { padding: var(--space-md, 24px) 0; }
-    .chapters-header { margin: 0 0 .75rem 0; }
-    .chapters-grid {
+    /* Page-local tweaks for the chapter grid */
+    .book-wrap { max-width: 1200px; margin: 0 auto; padding: var(--space-md, 24px) 16px; }
+    .book-header { margin: 0 0 1rem 0; }
+    .book-title { font-family: var(--ff-serif, "Adobe Garamond Pro", serif); font-size: clamp(1.8rem, 3vw, 2.4rem); margin: 0; }
+    .book-desc  { color: #444; margin: .35rem 0 1.25rem; }
+
+    /* Chapters */
+    .chapters-wrap { margin-top: 1rem; }
+    .chapters-title { font-family: var(--ff-sans, Roboto, system-ui); text-transform: uppercase; letter-spacing: .14em; font-size: .9rem; color: #333; margin: 0 0 .5rem; }
+
+    /* 11 columns × up to 5 rows for 1–50 */
+    .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(11, minmax(36px, 1fr)); /* 5 x 11 look */
-      gap: .5rem;
-      max-width: 700px; /* keeps grid tidy */
+      grid-template-columns: repeat(11, 1fr);
+      gap: 8px;
+      max-width: 900px;
     }
-    .chapters-grid a {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: .55rem .25rem;
-      border: 1px solid #e6ebf2; background: #fff; color: #0b2340;
-      text-decoration: none; border-radius: 8px; font-weight: 500;
+    .chapter-grid a {
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: var(--ink, #0b2340);
+      border: 1px solid #e3e8f0;
+      border-radius: 8px;
+      height: 44px;            /* compact pills */
+      font-weight: 600;
+      background: #fff;
     }
-    .chapters-grid a:hover { outline: 2px solid var(--accent, #F17300); }
+    .chapter-grid a:hover { box-shadow: 0 4px 14px rgba(0,0,0,.06); transform: translateY(-1px); }
+    @media (max-width: 900px) {
+      .chapter-grid { grid-template-columns: repeat(8, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .chapter-grid { grid-template-columns: repeat(6, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -29,39 +47,28 @@
   <div id="site-header"></div>
 
   <main>
-    <!-- Breadcrumbs ABOVE hero (site standard) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
-
     <!-- Universal hero -->
     <section class="page-hero hero-texts">
       <div class="container">
-        <h1 id="bookTitle" class="page-title">Genesis</h1>
-        <p id="bookDesc" class="page-subtitle">
-          Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.
-        </p>
+        <h1 class="page-title" id="heroTitle">Genesis</h1>
+        <p class="page-subtitle" id="heroSub">Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Chapters grid -->
-    <section class="container chapters-wrap">
-      <h2 class="chapters-header">Chapters</h2>
-      <div id="chaptersGrid" class="chapters-grid" aria-label="Chapters list">
-        <!-- JS fills this. Noscript fallback below. -->
-        <noscript>
-          <!-- Minimal fallback for Genesis 1–50 -->
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=1">1</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=2">2</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=3">3</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=4">4</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=5">5</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=6">6</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=7">7</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=8">8</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=9">9</a>
-          <a href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=10">10</a>
-          <!-- …continue to 50 as needed … -->
-        </noscript>
+    <!-- Breadcrumbs under hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="tanakh"></nav>
+
+    <!-- Content -->
+    <section class="book-wrap">
+      <header class="book-header">
+        <h2 class="book-title" id="bookHeading">Genesis</h2>
+        <p class="book-desc" id="bookDesc">Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.</p>
+      </header>
+
+      <div class="chapters-wrap">
+        <div class="chapters-title">Contents</div>
+        <div class="chapter-grid" id="chapterGrid" aria-label="Chapters"></div>
       </div>
     </section>
   </main>
@@ -69,32 +76,41 @@
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Book logic -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <script src="/israelite-research/js/book.js" defer></script>
 
-  <!-- Tiny inline safety net: only runs if book.js didn’t fill things -->
   <script>
-    (function () {
-      function q(name){return new URLSearchParams(location.search).get(name)}
-      var book = q('book') || 'Genesis';
-      var titleEl = document.getElementById('bookTitle');
-      if (titleEl && !titleEl.dataset.filled) titleEl.textContent = book;
+    (function(){
+      // Read ?book=... (default Genesis)
+      const params = new URLSearchParams(location.search);
+      const book = (params.get('book') || 'Genesis').replace(/\+/g,' ');
+      const chaptersByBook = { 'Genesis': 50 }; // fallback count; extend later if desired
+      const descByBook = {
+        'Genesis': 'Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.'
+      };
 
-      // If book.js didn't render chapters, do a simple 1..N fallback (Genesis 50)
-      var grid = document.getElementById('chaptersGrid');
-      if (grid && !grid.children.length) {
-        var max = 50; // fallback for Genesis; book.js should set real count from JSON
-        var frag = document.createDocumentFragment();
-        for (var i=1;i<=max;i++){
-          var a = document.createElement('a');
-          a.href = '/israelite-research/tanakh/chapter.html?book=' + encodeURIComponent(book) + '&chapter=' + i;
-          a.textContent = i;
-          frag.appendChild(a);
-        }
-        grid.appendChild(frag);
+      // Set headings/descriptions
+      document.title = (book + ' — Semitic Jew');
+      document.getElementById('heroTitle').textContent   = book;
+      document.getElementById('bookHeading').textContent = book;
+      const d = descByBook[book] || descByBook['Genesis'];
+      document.getElementById('heroSub').textContent  = d;
+      document.getElementById('bookDesc').textContent = d;
+
+      // Build chapter grid
+      const total = chaptersByBook[book] || 50;
+      const grid = document.getElementById('chapterGrid');
+      const base = '/israelite-research/tanakh/chapter.html';
+      const frag = document.createDocumentFragment();
+      for (let i = 1; i <= total; i++) {
+        const a = document.createElement('a');
+        a.href = `${base}?book=${encodeURIComponent(book)}&chapter=${i}`;
+        a.textContent = i;
+        a.setAttribute('aria-label', `${book} chapter ${i}`);
+        frag.appendChild(a);
       }
+      grid.appendChild(frag);
     })();
   </script>
 </body>
