@@ -2,43 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Minimal layout scaffolding for verses */
-    .chapter-wrap{max-width:920px;margin:0 auto;padding:1rem;}
-    .chapter-head{margin:.5rem 0 1rem;}
-    .chapter-head h1{margin:0;font-family:var(--ff-serif);}
-    #verses{display:grid;gap:.5rem;}
-    .verse-row{display:grid;grid-template-columns:3rem 1fr;gap:.75rem;padding:.75rem;border:1px solid #e6ebf2;background:#fff}
-    .verse-num{font-weight:700;color:#555}
-    .verse-tools details{margin-top:.35rem}
-    .error{color:#a00;background:#fff3f3;border:1px solid #f0c; padding:.75rem;border-radius:8px}
+    /* Verse layout (scoped to this page) */
+    .chapter-wrap { max-width: 960px; margin: 0 auto; }
+    .verse-block{border:1px solid #e6ebf2;background:#fff;margin:10px 0;border-radius:10px;padding:12px 14px}
+    .verse-row{display:flex;align-items:flex-start;gap:12px}
+    .verse-num{min-width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:8px;background:#f3f6fb;border:1px solid #e6ebf2;font-weight:600;color:#0b2340}
+    .verse-text{flex:1;line-height:1.65}
+    .tools-btn{border:1px solid #e6ebf2;background:#fff;border-radius:8px;padding:.35rem .6rem;font-size:.9rem;
+      cursor:pointer;white-space:nowrap}
+    .tools-btn:hover{background:#f7f9fc}
+    .tools-panel{border-top:1px dashed #e6ebf2;margin-top:8px;padding-top:10px}
+    .tools-tabs{display:flex;gap:8px;margin-bottom:8px}
+    .tools-tabs .tab{border:1px solid #e6ebf2;background:#fff;border-radius:999px;padding:.25rem .6rem;font-size:.85rem;cursor:pointer}
+    .tools-tabs .tab.active{background:#054A91;color:#fff;border-color:#054A91}
+    .tab-panel[hidden]{display:none}
+    .xref-list{margin:0;padding-left:1rem}
+    .xref-list li{margin:.25rem 0}
+    .muted-note{color:#576071;font-size:.95rem}
   </style>
 </head>
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container">
-    <!-- Breadcrumbs -->
+  <main>
+    <!-- Universal hero -->
+    <section class="page-hero hero-texts">
+      <div class="container">
+        <h1 id="book-chapter" class="page-title">Loading…</h1>
+        <p class="page-subtitle" id="book-subtitle">Chapter view</p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- Breadcrumbs (under hero per your global rule) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <div class="chapter-wrap">
-      <header class="chapter-head">
-        <h1 id="chapter-title">Loading…</h1>
-      </header>
-
-      <!-- Verses mount point -->
-      <div id="verses">Loading…</div>
-    </div>
+    <!-- Chapter content -->
+    <section class="container chapter-wrap">
+      <div id="chapter-root" aria-live="polite">Loading…</div>
+    </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Chapter logic -->
+  <!-- Partials + Breadcrumbs + Chapter script -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>
