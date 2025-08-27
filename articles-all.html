@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>All Articles — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-only styles to honor your requested dimensions */
+    .all-articles .tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin:.75rem 0 1rem; }
+    .all-articles .tab-btn{
+      padding:.45rem .8rem; border:1px solid #e6ebf2; border-radius:8px; background:#fff; cursor:pointer;
+      font: inherit; font-weight:600;
+    }
+    .all-articles .tab-btn.active{ background:#f7f9fc; }
+
+    .all-articles .cards { display:grid; justify-content:center; gap:1rem; }
+    /* 768 × 216 inner row card, with 384 × 218.88 image on the left  */
+    .row-card{
+      width:768px; height:216px; display:grid; grid-template-columns:384px 1fr;
+      border:1px solid #e6ebf2; background:#fff;
+    }
+    .row-card .media{
+      position:relative; width:384px; height:218.88px; overflow:hidden;
+    }
+    .row-card .media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .row-card .label-pill{
+      position:absolute; left:8px; top:8px; padding:.25rem .4rem; font-size:.72rem; font-weight:700;
+      background:rgba(0,0,0,.45); color:#fff; border-radius:4px; letter-spacing:.02em;
+    }
+    .row-card .body{ padding:.75rem .9rem .6rem; display:flex; flex-direction:column; gap:.35rem; }
+    .row-card .title{ margin:0; font-size:1.05rem; line-height:1.25; }
+    .row-card .excerpt{ margin:.15rem 0 0; font-size:.95rem; color:#444; line-height:1.5; }
+    .row-card .date{ margin:.35rem 0 0; font-size:.85rem; color:#666; }
+    .row-card .foot{ margin-top:auto; display:flex; align-items:center; gap:.45rem; padding-top:.4rem; }
+    .row-card .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
+
+    /* Center container like your universal hero/container = 1200px max, but content centered */
+    .container-narrow{ max-width:1200px; margin:0 auto; padding:0 1rem; }
+  </style>
+</head>
+<body class="all-articles-page">
+  <!-- Header partial -->
+  <div id="site-header"></div>
+
+  <main class="all-articles container-narrow all-articles-page">
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles,all"></nav>
+
+    <!-- Hero (universal style) -->
+    <section class="page-hero hero-articles">
+      <div class="container">
+        <h1 class="page-title">All Articles</h1>
+        <p class="page-subtitle">Browse every article by topic.</p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Filter articles">
+      <button class="tab-btn active" data-filter="all" aria-selected="true">All</button>
+      <button class="tab-btn" data-filter="logic">Logic</button>
+      <button class="tab-btn" data-filter="scripture">Scripture</button>
+      <button class="tab-btn" data-filter="history">History</button>
+    </div>
+
+    <!-- Cards -->
+    <section class="cards" id="allCards">
+      <!-- Card 1 -->
+      <article class="row-card" data-tags="logic,scripture">
+        <div class="media">
+          <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
+          <span class="label-pill">Article</span>
+        </div>
+        <div class="body">
+          <h2 class="title">
+            <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
+          </h2>
+          <p class="excerpt">Why “reason together” belongs with reverence — how logic serves love and clarity when we read the Bible.</p>
+          <div class="date">Aug 15, 2025</div>
+          <div class="foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span>Semitic Jew</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="row-card" data-tags="scripture">
+        <div class="media">
+          <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?">
+          <span class="label-pill">Article</span>
+        </div>
+        <div class="body">
+          <h2 class="title">
+            <a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+          </h2>
+          <p class="excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
+          <div class="date">Aug 16, 2025</div>
+          <div class="foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span>Semitic Jew</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="row-card" data-tags="logic,creation">
+        <div class="media">
+          <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?">
+          <span class="label-pill">Article</span>
+        </div>
+        <div class="body">
+          <h2 class="title">
+            <a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+          </h2>
+          <p class="excerpt">What Genesis 1 teaches about order, purpose, and the God who speaks reality into existence.</p>
+          <div class="date">Aug 14, 2025</div>
+          <div class="foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <span>Semitic Jew</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+
+  <!-- Partials + Breadcrumbs -->
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+
+  <!-- Tiny tab filter (client-side, optional) -->
+  <script>
+    (function(){
+      const buttons=[...document.querySelectorAll('.tab-btn')];
+      const cards=[...document.querySelectorAll('.row-card')];
+      buttons.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          buttons.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          const k=btn.dataset.filter;
+          cards.forEach(c=>{
+            if(k==='all'){ c.style.display='grid'; return; }
+            const tags=(c.getAttribute('data-tags')||'').toLowerCase();
+            c.style.display = tags.includes(k) ? 'grid' : 'none';
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
