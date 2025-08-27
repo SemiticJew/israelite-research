@@ -1297,3 +1297,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 html{
   scroll-padding-top: calc(var(--nav-height) + var(--nav-pad-y));
 }
+/* Articles page: remove extra gap above the universal hero */
+body.articles-page .page-hero{
+  margin-top: 0 !important;
+}
