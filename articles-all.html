@@ -5,72 +5,158 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>All Articles — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* --- Tabs (compact & structured) --- */
+    .tabs-wrap{ background:#fff; border-bottom:1px solid #e6ebf2; }
+    .tabs{ max-width:1200px; margin:0 auto; padding:.75rem 1rem; display:flex; gap:.5rem; flex-wrap:wrap; }
+    .tab{ appearance:none; border:1px solid #e6ebf2; background:#fff; padding:.5rem .8rem; border-radius:8px; font:500 14px/1 var(--ff-sans,Roboto,system-ui); color:#0b2340; cursor:pointer; }
+    .tab[aria-selected="true"]{ border-color:var(--accent,#F17300); color:#F17300; }
+
+    /* --- Grid: fixed 290x450 cards --- */
+    .articles-all .container{ max-width:1200px; margin:0 auto; padding:0 1rem; }
+    .articles-all .cards{ display:grid; grid-auto-rows:1fr; grid-template-columns:repeat(auto-fill,290px); gap:1rem; justify-content:center; }
+    .articles-all .card{ width:290px; height:450px; border:1px solid #e6ebf2; background:#fff; display:flex; flex-direction:column; }
+    .articles-all .card-media{ position:relative; width:100%; height:163.13px; overflow:hidden; }
+    .articles-all .card-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .articles-all .label-pill{ position:absolute; left:8px; top:8px; padding:.25rem .4rem; font-size:.72rem; background:rgba(0,0,0,.55); color:#fff; border-radius:2px; }
+    .articles-all .card-body{ display:flex; flex-direction:column; padding:.8rem; gap:.45rem; flex:1; }
+    .articles-all .card-title{ font-size:1rem; line-height:1.25; margin:0; }
+    .articles-all .card-title a{ text-decoration:none; color:#0b2340; }
+    .articles-all .card-excerpt{ font-size:.92rem; color:#333; line-height:1.45; margin:0; }
+    .articles-all .card-date{ font-size:.82rem; color:#666; margin-top:.25rem; }
+    .articles-all .card-foot{ display:flex; align-items:center; gap:.5rem; padding:.8rem; border-top:1px solid #e6ebf2; }
+    .articles-all .author-avatar{ width:30px; height:30px; border-radius:50%; object-fit:cover; }
+    .articles-all .author-name{ font-size:.9rem; color:#0b2340; text-decoration:none; }
+
+    /* Breadcrumbs under hero (page standard) */
+    .breadcrumb{ max-width:1200px; margin:0 auto; padding:0 1rem; }
+  </style>
 </head>
-<body class="articles-all-page">
+<body class="articles-all">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Universal Hero -->
+    <!-- Hero (universal) -->
     <section class="page-hero hero-articles">
       <div class="container">
-        <h1 class="page-title">All Articles</h1>
-        <p class="page-subtitle">Browse everything we’ve published in one place.</p>
+        <h1 class="page-title">All articles</h1>
+        <p class="page-subtitle">Browse every article by topic using the tabs below.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (universal, placed under hero) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="articles"></nav>
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Tabs (optional – simple static tabs markup; enhance later if you want) -->
-    <section class="container" style="margin-top:1.25rem;">
-      <div class="tabs tabs-all-articles">
-        <div class="tab-list" role="tablist" aria-label="All Articles Tabs">
-          <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-all" id="tab-all">All</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-topics" id="tab-topics">Topics</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-authors" id="tab-authors">Authors</button>
-        </div>
+    <!-- Tabs -->
+    <div class="tabs-wrap" role="navigation" aria-label="Article filters">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-filter="all">All</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="logic">Logic</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="scripture">Scripture</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="history">History</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="identity">Identity</button>
+      </div>
+    </div>
 
-        <!-- Panels -->
-        <div class="tab-panels" style="margin-top:1rem;">
-          <!-- ALL -->
-          <div class="tab-panel" id="panel-all" role="tabpanel" aria-labelledby="tab-all">
-            <!-- Use your existing card markup here; this container centers nicely -->
-            <div class="grid cards-all" style="gap:1rem;">
-              <!-- Example (you can duplicate and update href/img/title/date/excerpt as needed) -->
-              <article class="card">
-                <div class="card-media">
-                  <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?">
-                  <span class="label-pill">Article</span>
-                </div>
-                <div class="card-body">
-                  <h3 class="card-title">
-                    <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a>
-                  </h3>
-                  <p class="card-excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
-                  <div class="card-date">Aug 15, 2025</div>
-                </div>
-                <div class="card-foot">
-                  <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
-                  <span class="author-name">Semitic Jew</span>
-                </div>
-              </article>
-
-              <!-- Add more cards here (Truth Reliable, Three Laws, Gentiles, Hamites, etc.) -->
-            </div>
+    <!-- Cards -->
+    <section class="container" style="margin-top:1rem; margin-bottom:2rem;">
+      <div id="cards" class="cards">
+        <!-- Is Scripture & Logic Compatible? -->
+        <article class="card" data-tags="logic scripture">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg"
+                 alt="Is Scripture &amp; Logic Compatible?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg'">
+            <span class="label-pill">Article</span>
           </div>
-
-          <!-- TOPICS (placeholder) -->
-          <div class="tab-panel" id="panel-topics" role="tabpanel" aria-labelledby="tab-topics" hidden>
-            <p>Browse by topic (coming soon).</p>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">Is Scripture &amp; Logic Compatible?</a></h3>
+            <p class="card-excerpt">Why “reason together” belongs with reverence. How logic serves love and clarity when we read the Bible.</p>
+            <div class="card-date">Aug 15, 2025</div>
           </div>
-
-          <!-- AUTHORS (placeholder) -->
-          <div class="tab-panel" id="panel-authors" role="tabpanel" aria-labelledby="tab-authors" hidden>
-            <p>Browse by author (coming soon).</p>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <a class="author-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
           </div>
-        </div>
+        </article>
+
+        <!-- Is Truth Reliable? -->
+        <article class="card" data-tags="scripture logic">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg"
+                 alt="Is Truth Reliable?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/logic-compatibility-700x394.jpg'">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></h3>
+            <p class="card-excerpt">If truth shifts with opinion, it cannot guide us. Scripture grounds truth in God’s unchanging character.</p>
+            <div class="card-date">Aug 16, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <a class="author-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
+          </div>
+        </article>
+
+        <!-- Three Laws of Logic -->
+        <article class="card" data-tags="logic">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/three-laws-700x394.jpg"
+                 alt="Three Laws of Logic"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg'">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/three-laws-logic.html">Three Laws of Logic</a></h3>
+            <p class="card-excerpt">Identity, excluded middle, and non-contradiction as tools for careful Bible reading.</p>
+            <div class="card-date">Aug 20, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <a class="author-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
+          </div>
+        </article>
+
+        <!-- What Does “Gentile” Mean? -->
+        <article class="card" data-tags="identity scripture history">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/gentiles-meaning-700x394.jpg"
+                 alt="What Does “Gentile” Mean?"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg'">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/gentiles.html">What Does “Gentile” Mean?</a></h3>
+            <p class="card-excerpt">Tracing “Gentile” across Scripture to show how context can include Israelites or non-Israelites.</p>
+            <div class="card-date">Aug 22, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <a class="author-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
+          </div>
+        </article>
+
+        <!-- Hamites Historicity (if present) -->
+        <article class="card" data-tags="history identity">
+          <div class="card-media">
+            <img src="/israelite-research/images/articles/hamites-historicity-700x394.jpg"
+                 alt="Hamites Historicity"
+                 onerror="this.onerror=null;this.src='/israelite-research/images/articles/creation-hero-700x394.jpg'">
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title"><a href="/israelite-research/articles/hamites-historicity.html">Hamites Historicity</a></h3>
+            <p class="card-excerpt">Surveying sources and Scripture on Hamite peoples with care, context, and citations.</p>
+            <div class="card-date">Aug 24, 2025</div>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew">
+            <a class="author-name" href="/israelite-research/authors/semitic-jew.html">Semitic Jew</a>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -82,23 +168,21 @@
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 
-  <!-- Tiny tab toggle (no styling changes) -->
+  <!-- Tiny filter (no other global changes) -->
   <script>
     (function(){
-      const tabs = document.querySelectorAll('.tabs-all-articles .tab');
-      const panels = {
-        tabAll: document.getElementById('panel-all'),
-        tabTopics: document.getElementById('panel-topics'),
-        tabAuthors: document.getElementById('panel-authors')
-      };
-      tabs.forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          tabs.forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-          document.querySelectorAll('.tabs-all-articles .tab-panel').forEach(p=>p.hidden = true);
-          btn.classList.add('active'); btn.setAttribute('aria-selected','true');
-          const which = btn.id.replace('tab-','');
-          const map = { all:'panel-all', topics:'panel-topics', authors:'panel-authors' };
-          const panel = document.getElementById(map[which]); if(panel) panel.hidden = false;
+      const tabs = document.querySelectorAll('.tab');
+      const cards = document.querySelectorAll('#cards .card');
+      tabs.forEach(tab=>{
+        tab.addEventListener('click', ()=>{
+          tabs.forEach(t=>t.setAttribute('aria-selected','false'));
+          tab.setAttribute('aria-selected','true');
+          const f = tab.dataset.filter;
+          cards.forEach(c=>{
+            if(f==='all'){ c.style.display='flex'; return; }
+            const tags = (c.getAttribute('data-tags')||'').toLowerCase();
+            c.style.display = tags.includes(f) ? 'flex' : 'none';
+          });
         });
       });
     })();
