@@ -1340,3 +1340,45 @@ body.articles-page .page-hero{
 
  /* Ensure content never tucks under sticky header */
 main{ padding-top: clamp(8px, 1vw, 12px); }
+/* ---- Header normalization (uniform thickness) ---- */
+:root { --header-pad-y: 10px; } /* adjust to taste (8–12px looks good) */
+
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+  border-bottom: 1px solid #e6ebf2;
+  padding: var(--header-pad-y) 0;
+}
+
+.site-header .nav-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-header .brand{
+  font-family: var(--ff-serif, "Adobe Garamond Pro", Garamond, serif);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #0b2340;
+  text-decoration: none;
+}
+
+.main-nav .nav-list{
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a{ text-decoration: none; color: inherit; }
+
+.nav-search{
+  text-decoration: none;
+  font-size: 1.1rem;
+  line-height: 1;
+}
