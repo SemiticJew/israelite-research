@@ -1260,3 +1260,40 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   background: #f7f9fc;
   border-color: #d6dfeb;
 }
+/* --- Global Nav Thickness & Consistency (override) --- */
+:root{
+  --nav-height: 72px;      /* unified bar height */
+  --nav-pad-y: 14px;       /* slightly thicker top/bottom padding */
+}
+
+.site-header{
+  padding-block: var(--nav-pad-y);
+}
+
+.site-header .container{
+  min-height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header .logo img{
+  max-height: calc(var(--nav-height) - (2 * var(--nav-pad-y)));
+  height: auto;
+}
+
+.main-nav ul{
+  display: flex;
+  align-items: center;
+  gap: 1.25rem; /* keeps your current spacing */
+}
+
+.main-nav a{
+  padding: 8px 10px; /* small vertical padding so the bar feels thicker */
+  text-decoration: none;
+}
+
+/* helpful for in-page anchors so they don't hide behind the thicker header */
+html{
+  scroll-padding-top: calc(var(--nav-height) + var(--nav-pad-y));
+}
