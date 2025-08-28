@@ -296,4 +296,17 @@
     box.appendChild(p);
     return box;
   }
+// Set Next Chapter button href/text
+(function(){
+  const BASE = '/israelite-research';
+  const qs = new URLSearchParams(location.search);
+  const book = qs.get('book') || 'Genesis';
+  const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
+
+  const next = document.getElementById('nextChapter');
+  if (next) {
+    const nextUrl = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
+    next.href = nextUrl;
+    next.textContent = `Next: Chapter ${chapter+1} →`;
+  }
 })();
