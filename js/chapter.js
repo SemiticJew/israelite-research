@@ -1,28 +1,24 @@
-// Chapter loader with left-side Tools button, tabs, editable commentary, and Strong's support
-(function(){
+// chapter.js — Tanakh chapter loader with Strong's labels support
+(function () {
   const BASE = '/israelite-research';
-  const STRONGS_HEB_URL = `${BASE}/data/lexicon/strongs-hebrew.json`;
-let STRONGS_HEB = null;
-fetch(STRONGS_HEB_URL).then(r=>r.json()).then(d=>{ STRONGS_HEB = d; }).catch(()=>{ STRONGS_HEB = {}; });
 
-function strongsLabel(code){
-  const d = STRONGS_HEB && STRONGS_HEB[code];
-  return d ? `${code} — ${d.translit} (${d.lemma}) — ${d.gloss}` : code;
-}
-
+  // --- URL params ---
   const qs = new URLSearchParams(location.search);
   const book = qs.get('book') || 'Genesis';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'');
-  const titleEl = document.getElementById('chapterTitle');
-  const descEl  = document.getElementById('chapterDesc');
-  const versesEl= document.getElementById('verses');
+  // Folder: lowercase, strip non [a-z0-9-]
+  const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  titleEl.textContent = `${book} ${chapter}`;
-  descEl.textContent  = '';
+  // --- DOM targets ---
+  const titleEl  = document.getElementById('chapterTitle');
+  const descEl   = document.getElementById('chapterDesc');
+  const versesEl = document.getElementById('verses');
 
-  // Breadcrumbs
+  titleEl && (titleEl.textContent = `${book} ${chapter}`);
+  if (descEl) descEl.textContent = ''; // optional
+
+  // --- Breadcrumbs (static pathing for GitHub Pages) ---
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -33,49 +29,167 @@ function strongsLabel(code){
           <li><a href="${BASE}/tanakh.html">The Tanakh</a></li>
           <li><a href="${BASE}/tanakh/book.html?book=${encodeURIComponent(book)}">${book}</a></li>
           <li>Chapter ${chapter}</li>
-        </ol>`;
+        </ol>
+      `;
     }
-  } catch(e){}
+  } catch (_) {}
 
-  const url = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
-  fetch(url, { cache: 'no-store' })
-    .then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
-    })
-    .then(json => render(json))
-    .catch(err => {
-      versesEl.innerHTML =
-        `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code>.</div>`;
-      console.error('Chapter load error:', err);
-    });
+  // --- Data sources ---
+  const CHAPTER_URL = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
+  const STRONGS_URL = `${BASE}/data/strongs/labels.json`; // expects either nested {H:{ "7225": {lemma,gloss} }} or flat {"H7225": {...}}
 
-  function render(data){
+  // --- Strong's cache ---
+  let STRONGS = null;
+
+  function loadStrongsLabels() {
+    if (STRONGS) return Promise.resolve(STRONGS);
+    return fetch(STRONGS_URL, { cache: 'no-store' })
+      .then(r => {
+        if (!r.ok) throw new Error(`Strong's labels HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(json => {
+        STRONGS = json || {};
+        return STRONGS;
+      })
+      .catch(err => {
+        console.warn("Couldn't load Strong's labels:", err);
+        STRONGS = {}; // fallback to empty map
+        return STRONGS;
+      });
+  }
+
+  function fetchChapter() {
+    return fetch(CHAPTER_URL, { cache: 'no-store' })
+      .then(r => {
+        if (!r.ok) throw new Error(`Chapter HTTP ${r.status}`);
+        return r.json();
+      });
+  }
+
+  // Resolve a Strong's code like "H7225" to a readable label string.
+  function strongLabel(code) {
+    if (!code || !STRONGS) return null;
+
+    const c = String(code).trim();
+    const letter = c[0]?.toUpperCase();
+    const numRaw = c.slice(1);
+    const numNoLead = numRaw.replace(/^0+/, '') || '0';
+
+    // Support both flat and nested JSON layouts.
+    // 1) flat: STRONGS["H7225"]
+    let entry = STRONGS[c] || STRONGS[letter + numRaw] || STRONGS[letter + numNoLead];
+
+    // 2) nested: STRONGS.H["7225"]
+    if (!entry && STRONGS[letter] && (STRONGS[letter][numRaw] || STRONGS[letter][numNoLead])) {
+      entry = STRONGS[letter][numRaw] || STRONGS[letter][numNoLead];
+    }
+
+    if (!entry) return null;
+
+    // Accept common fields: lemma, gloss, translit, def, label
+    const lemma = entry.lemma || entry.form || '';
+    const gloss = entry.gloss || entry.def || entry.label || '';
+    const parts = [];
+    if (lemma) parts.push(lemma);
+    if (gloss) parts.push(gloss);
+
+    const text = parts.length ? `${c} — ${parts.join(' · ')}` : c;
+    return { text, title: parts.join(' · ') || c };
+  }
+
+  function renderChapter(data) {
     if (!data || !Array.isArray(data.verses)) {
       versesEl.innerHTML = `<div class="muted">No verses found.</div>`;
       return;
     }
+
     const frag = document.createDocumentFragment();
 
     data.verses.forEach(v => {
-      const row = el('div','verse-row'); row.id = `v${v.num}`;
-      const btn = el('button','tools-btn','Tools ▾'); btn.type='button';
-      const num = el('div','vnum', String(v.num));
-      const txt = el('div','vtext', v.text || '');
+      const row = document.createElement('div');
+      row.className = 'verse-row';
+      row.id = `v${v.num}`;
 
-      const panel = buildToolsPanel(v);
+      const num = document.createElement('div');
+      num.className = 'vnum';
+      num.textContent = v.num;
+
+      const txt = document.createElement('div');
+      txt.className = 'vtext';
+      txt.textContent = v.text || '';
+
+      const btn = document.createElement('button');
+      btn.className = 'tools-btn';
+      btn.type = 'button';
+      btn.textContent = 'Tools ▾';
+
+      const panel = document.createElement('div');
+      panel.className = 'tools';
       panel.hidden = true;
 
+      // Cross References
+      const xh = document.createElement('h4');
+      xh.textContent = 'Cross References';
+      const xbody = document.createElement('div');
+      if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
+        v.crossRefs.forEach(cr => {
+          const a = document.createElement('a');
+          a.className = 'xref';
+          a.href = '#';
+          a.textContent = cr.ref + (cr.note ? ` — ${cr.note}` : '');
+          a.style.display = 'block';
+          xbody.appendChild(a);
+        });
+      } else {
+        xbody.innerHTML = `<div class="muted">—</div>`;
+      }
+
+      // Commentary (editable container placeholder)
+      const ch = document.createElement('h4');
+      ch.textContent = 'Commentary';
+      const cbody = document.createElement('div');
+      cbody.className = 'muted';
+      cbody.textContent = (v.commentary && v.commentary.trim()) ? v.commentary : '—';
+
+      // Lexicon
+      const lh = document.createElement('h4');
+      lh.textContent = 'Lexicon';
+      const lbody = document.createElement('div');
+      lbody.className = 'muted';
+      lbody.textContent = 'Coming soon.';
+
+      // Strong’s (render from v.strongs if present)
+      const sh = document.createElement('h4');
+      sh.textContent = "Strong’s Concordance";
+      const sbody = document.createElement('div');
+
+      if (Array.isArray(v.strongs) && v.strongs.length) {
+        v.strongs.forEach(code => {
+          const info = strongLabel(code);
+          const line = document.createElement('div');
+          if (info) {
+            const tag = document.createElement('span');
+            tag.textContent = info.text;
+            if (info.title) tag.title = info.title; // simple hover tooltip
+            line.appendChild(tag);
+          } else {
+            line.textContent = String(code);
+          }
+          sbody.appendChild(line);
+        });
+      } else {
+        sbody.innerHTML = `<div class="muted">—</div>`;
+      }
+
+      panel.append(xh, xbody, ch, cbody, lh, lbody, sh, sbody);
+
       btn.addEventListener('click', () => {
-        const open = panel.hidden;
-        // close any other open panels
-        document.querySelectorAll('.tools').forEach(p => p.hidden = true);
-        document.querySelectorAll('.tools-btn').forEach(b => b.textContent='Tools ▾');
-        panel.hidden = !open;
-        btn.textContent = open ? 'Tools ▴' : 'Tools ▾';
+        panel.hidden = !panel.hidden;
+        btn.textContent = panel.hidden ? 'Tools ▾' : 'Tools ▴';
       });
 
-      row.append(btn, num, txt, panel);
+      row.append(num, txt, btn, panel);
       frag.appendChild(row);
     });
 
@@ -83,94 +197,12 @@ function strongsLabel(code){
     versesEl.appendChild(frag);
   }
 
-  function buildToolsPanel(v){
-    const panel = el('div','tools');
-
-    // Tabs
-    const tabs = el('div','tool-tabs');
-    const tabX = tabButton('Cross-refs','xref',true);
-    const tabC = tabButton('Commentary','comm',false);
-    const tabL = tabButton('Lexicon','lex',false);
-    const tabS = tabButton("Strong's",'str',false);
-
-    tabs.append(tabX, tabC, tabL, tabS);
-
-    // Sections
-    const secX = el('div','tool-section active');  // Cross refs
-    const secC = el('div','tool-section');         // Commentary
-    const secL = el('div','tool-section');         // Lexicon
-    const secS = el('div','tool-section');         // Strong's
-
-    // Cross refs
-    if (Array.isArray(v.crossRefs) && v.crossRefs.length){
-      v.crossRefs.forEach(cr => {
-        const a = el('a','xref-link', cr.ref + (cr.note ? ` — ${cr.note}` : ''));
-        a.href = '#';
-        secX.appendChild(a);
-      });
-    } else {
-      secX.appendChild(el('div','muted','—'));
-    }
-
-    // Commentary (editable per verse via localStorage)
-    const cKey = `commentary:${book}:${chapter}:${v.num}`;
-    const wrap = el('div','comment-wrap');
-    const ta = document.createElement('textarea');
-    ta.value = localStorage.getItem(cKey) || (v.commentary || '');
-    const actions = el('div','comment-actions');
-    const saveBtn = el('button','btn','Save');
-    const clearBtn = el('button','btn','Clear');
-    saveBtn.type='button'; clearBtn.type='button';
-    saveBtn.addEventListener('click', () => {
-      localStorage.setItem(cKey, ta.value.trim());
-      saveBtn.textContent='Saved';
-      setTimeout(()=>saveBtn.textContent='Save',800);
+  // Load Strong's labels + chapter, then render
+  Promise.all([loadStrongsLabels(), fetchChapter()])
+    .then(([, data]) => renderChapter(data))
+    .catch(err => {
+      versesEl.innerHTML =
+        `<div class="muted">Could not load ${book} ${chapter}. Check <code>${CHAPTER_URL}</code>.</div>`;
+      console.error('Chapter load error:', err);
     });
-    clearBtn.addEventListener('click', () => {
-      localStorage.removeItem(cKey);
-      ta.value='';
-    });
-    actions.append(saveBtn, clearBtn);
-    wrap.append(ta, actions);
-    secC.appendChild(wrap);
-
-    // Lexicon (placeholder)
-    secL.appendChild(el('div','muted','Coming soon.'));
-
-    // Strong’s
-    if (Array.isArray(v.strongs) && v.strongs.length){
-      const list = el('div');
-      list.textContent = v.strongs.join(', ');
-      secS.appendChild(list);
-    } else {
-      // Try to detect H/G numbers in text as a fallback (non-destructive)
-      const found = (v.text || '').match(/\b[HG]\d{1,5}\b/g);
-      secS.appendChild(el('div','muted', found ? found.join(', ') : '—'));
-    }
-
-    // Tab wiring
-    const sections = { xref:secX, comm:secC, lex:secL, str:secS };
-    tabs.querySelectorAll('.tool-tab').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        tabs.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
-        Object.values(sections).forEach(s=>s.classList.remove('active'));
-        b.classList.add('active');
-        sections[b.dataset.tab].classList.add('active');
-      });
-    });
-
-    panel.append(tabs, secX, secC, secL, secS);
-    return panel;
-  }
-
-  function el(tag, cls, text){
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-  function tabButton(label, key, active){
-    const b = el('button','tool-tab'+(active?' active':''),label);
-    b.type='button'; b.dataset.tab = key; return b;
-  }
 })();
