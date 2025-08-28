@@ -296,6 +296,8 @@
     box.appendChild(p);
     return box;
   }
+})();
+
 // Set Next Chapter button href/text
 (function(){
   const BASE = '/israelite-research';
