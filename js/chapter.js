@@ -1,8 +1,7 @@
-<script>
 // js/chapter.js
 // Chapter loader for Tanakh pages (GitHub Pages friendly)
 // Order per verse: [Tools] [Copy] [#] [Text]
-// Tabs: Cross-Refs, Commentary, Lexicon (sentence style), Strong's (sentence style)
+// Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
 
 (function () {
   const BASE = '/israelite-research';
@@ -70,10 +69,11 @@
       row.style.alignItems = 'start';
       row.id = `v${v.num}`;
 
-      // ------- Tools button -------
+      // ------- Tools button (leftmost) -------
       const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
       toolsBtn.type = 'button';
       toolsBtn.setAttribute('aria-expanded', 'false');
+      // Style per request: background #054A91, white text
       toolsBtn.style.background = '#054A91';
       toolsBtn.style.color = '#fff';
       toolsBtn.style.border = '1px solid #054A91';
@@ -113,7 +113,7 @@
       // Tools panel (tabs)
       const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
-      panel.style.gridColumn = '1 / -1';
+      panel.style.gridColumn = '1 / -1'; // full width when opened
       panel.style.marginTop = '.5rem';
       panel.style.borderTop = '1px dashed #e0e6ef';
       panel.style.paddingTop = '.5rem';
@@ -136,6 +136,7 @@
         }
       });
 
+      // Append in requested order
       row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
@@ -145,6 +146,7 @@
   }
 
   // ------- helpers -------
+
   function el(tag, cls, text) {
     const n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -178,7 +180,7 @@
     const sections = [
       ['Cross-Refs', buildCrossRefs(v)],
       ['Commentary', buildCommentary(v, ctx)],
-      ['Lexicon', buildLexiconSentence(v)],     // <-- sentence style now
+      ['Lexicon', buildLexicon(v)],
       ['Strong’s', buildStrongsSentence(v)],
     ];
 
@@ -208,7 +210,7 @@
         b.style.background = i === idx ? '#fff' : '#f8fafc';
       });
     }
-    activate(0);
+    activate(0); // Cross-Refs first
 
     wrap.append(tabsBar, contentWrap);
     return wrap;
@@ -264,42 +266,30 @@
     return box;
   }
 
-  // Lexicon: sentence-style tokens with hover (uses v.strongs)
-  function buildLexiconSentence(v) {
+  // Lexicon: compact list from v.strongs (if present)
+  function buildLexicon(v) {
     const box = el('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
     if (!arr.length) {
       box.innerHTML = `<div class="muted">—</div>`;
       return box;
     }
-    const p = document.createElement('p');
-    p.style.margin = '0';
-    p.style.lineHeight = '1.6';
-
-    arr.forEach((s, i) => {
-      const span = document.createElement('span');
-      span.className = 'lex-token';
-      span.style.whiteSpace = 'nowrap';
-      span.style.borderBottom = '1px dotted #c9d4e5';
-      span.style.cursor = 'help';
-
+    const ul = document.createElement('ul');
+    ul.style.margin = '0';
+    ul.style.paddingLeft = '1rem';
+    arr.forEach(s => {
+      const li = document.createElement('li');
       const num = s.num || '';
       const lemma = s.lemma || '';
       const gloss = s.gloss || '';
-      // hover shows full definition
-      span.title = `${lemma}${gloss ? ` — ${gloss}` : ''} (${num})`;
-      // token text favors lemma/gloss first for lexicon view
-      span.textContent = `${lemma}${gloss ? ` — ${gloss}` : ''}${num ? ` (${num})` : ''}`;
-
-      p.appendChild(span);
-      if (i !== arr.length - 1) p.appendChild(document.createTextNode('; '));
+      li.textContent = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
+      ul.appendChild(li);
     });
-
-    box.appendChild(p);
+    box.appendChild(ul);
     return box;
   }
 
-  // Strong's: sentence-style tokens with hover
+  // Strong's: one compact sentence line with tokens (hover for detail)
   function buildStrongsSentence(v) {
     const box = el('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
@@ -334,29 +324,73 @@
   }
 })();
 
-// Prev / Next Chapter controls (hide if not applicable)
+// Ensure Previous/Next chapter controls (create if missing)
+// - Next button mirrors your original behavior
+// - Previous button appears on the left; hidden for Chapter 1
 (function(){
   const BASE = '/israelite-research';
   const qs = new URLSearchParams(location.search);
   const book = qs.get('book') || 'Genesis';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  const prev = document.getElementById('prevChapter');
-  const next = document.getElementById('nextChapter');
+  let prev = document.getElementById('prevChapter');
+  let next = document.getElementById('nextChapter');
 
-  if (prev) {
-    if (chapter > 1) {
-      prev.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter-1}`;
-      prev.textContent = `← Previous: Chapter ${chapter-1}`;
-      prev.style.visibility = 'visible';
-    } else {
-      prev.style.visibility = 'hidden';
+  // If either button is missing, inject a simple nav with both
+  if (!prev || !next) {
+    let container = document.getElementById('chapterNav');
+    if (!container) {
+      container = document.createElement('nav');
+      container.id = 'chapterNav';
+      container.setAttribute('aria-label','Chapter navigation');
+      container.style.display = 'flex';
+      container.style.justifyContent = 'space-between';
+      container.style.gap = '1rem';
+      container.style.margin = '1.25rem 0 0';
+      // append under the verses section if possible
+      const verses = document.getElementById('verses');
+      if (verses && verses.parentNode) verses.parentNode.appendChild(container);
+      else document.body.appendChild(container);
     }
+    if (!prev) {
+      prev = document.createElement('a');
+      prev.id = 'prevChapter';
+      container.appendChild(prev);
+    }
+    if (!next) {
+      next = document.createElement('a');
+      next.id = 'nextChapter';
+      container.appendChild(next);
+    }
+    const styleBtn = (a, align) => {
+      a.style.padding = '.5rem .8rem';
+      a.style.border = '1px solid #e6ebf2';
+      a.style.borderRadius = '8px';
+      a.style.background = '#fff';
+      a.style.color = '#054A91';
+      a.style.textDecoration = 'none';
+      a.style.minWidth = '140px';
+      a.style.textAlign = align;
+      a.style.fontWeight = '500';
+    };
+    styleBtn(prev, 'left');
+    styleBtn(next, 'right');
   }
 
-  if (next) {
-    next.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
-    next.textContent = `Next: Chapter ${chapter+1} →`;
+  // Set Next
+  const nextUrl = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
+  next.href = nextUrl;
+  next.textContent = `Next: Chapter ${chapter+1} →`;
+
+  // Set Previous (hide if chapter 1)
+  if (chapter > 1) {
+    const prevUrl = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter-1}`;
+    prev.href = prevUrl;
+    prev.textContent = `← Previous: Chapter ${chapter-1}`;
+    prev.style.visibility = 'visible';
+  } else {
+    prev.style.visibility = 'hidden';
+    prev.removeAttribute('href');
+    prev.textContent = '';
   }
 })();
-</script>
