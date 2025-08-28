@@ -1,8 +1,7 @@
 // js/chapter.js
 // Chapter loader for Tanakh pages (GitHub Pages friendly)
-// Per-verse order: [Tools] [Copy] [#] [Text]
+// Order per verse: [Tools] [Copy] [#] [Text]
 // Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
-// Bottom controls: ONLY two buttons — Previous (left) and Next (right)
 
 (function () {
   const BASE = '/israelite-research';
@@ -14,7 +13,7 @@
   // folder = lowercase book name, keep letters/numbers/hyphens only
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  // Wire breadcrumb
+  // Breadcrumbs
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -38,14 +37,12 @@
 
   const url = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
 
-  Promise.all([fetch(url, { cache: 'no-store' }), fetchBooksMeta()])
-    .then(async ([chapResp, booksMeta]) => {
-      if (!chapResp.ok) throw new Error(`HTTP ${chapResp.status}`);
-      const data = await chapResp.json();
-      renderChapter(data);
-      const maxCh = getMaxChapters(booksMeta, book);
-      renderNav(book, chapter, maxCh);
+  fetch(url, { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
     })
+    .then(renderChapter)
     .catch(err => {
       if (versesEl) {
         versesEl.innerHTML =
@@ -54,7 +51,6 @@
       console.error('Chapter load error:', err);
     });
 
-  // ------- render verses -------
   function renderChapter(data) {
     if (!versesEl) return;
     if (!data || !Array.isArray(data.verses)) {
@@ -66,34 +62,47 @@
 
     data.verses.forEach(v => {
       const row = el('div', 'verse-row');
-      // 4 columns: [Tools] [Copy] [#] [Text]
+      // Four columns to match control order: [Tools] [Copy] [#] [Text]
       row.style.display = 'grid';
       row.style.gridTemplateColumns = 'auto auto 44px 1fr';
       row.style.gap = '0.6rem';
       row.style.alignItems = 'start';
       row.id = `v${v.num}`;
 
-      // Tools button (leftmost)
+      // ------- Tools button (updated color) -------
       const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
       toolsBtn.type = 'button';
       toolsBtn.setAttribute('aria-expanded', 'false');
-      // style (color #054A91)
-      toolsBtn.style.border = '1px solid #e6ebf2';
+      // Style per request: background #054A91, white text
       toolsBtn.style.background = '#054A91';
       toolsBtn.style.color = '#fff';
+      toolsBtn.style.border = '1px solid #054A91';
       toolsBtn.style.borderRadius = '8px';
       toolsBtn.style.padding = '.25rem .6rem';
       toolsBtn.style.cursor = 'pointer';
+      toolsBtn.style.transition = 'transform .06s ease';
+      toolsBtn.addEventListener('mousedown', () => { toolsBtn.style.transform = 'translateY(1px)'; });
+      toolsBtn.addEventListener('mouseup',   () => { toolsBtn.style.transform = 'translateY(0)'; });
+      toolsBtn.addEventListener('mouseleave',() => { toolsBtn.style.transform = 'translateY(0)'; });
 
-      // Copy button (icon)
-      const copyBtn = el('button', 'copy-btn', '📋');
+      // ------- Copy button (icon-only) -------
+      const copyBtn = el('button', 'copy-btn');
       copyBtn.type = 'button';
       copyBtn.title = 'Copy verse';
+      copyBtn.setAttribute('aria-label', 'Copy verse');
+      copyBtn.style.display = 'inline-flex';
+      copyBtn.style.alignItems = 'center';
+      copyBtn.style.justifyContent = 'center';
+      copyBtn.style.width = '36px';
+      copyBtn.style.height = '28px';
       copyBtn.style.border = '1px solid #e6ebf2';
       copyBtn.style.background = '#fff';
       copyBtn.style.borderRadius = '8px';
-      copyBtn.style.padding = '.25rem .6rem';
       copyBtn.style.cursor = 'pointer';
+      copyBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/>' +
+        '</svg>';
 
       // Verse number
       const num = el('div', 'vnum', String(v.num));
@@ -104,7 +113,7 @@
       // Tools panel (tabs)
       const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
-      panel.style.gridColumn = '1 / -1'; // full width row when opened
+      panel.style.gridColumn = '1 / -1'; // full width when opened
       panel.style.marginTop = '.5rem';
       panel.style.borderTop = '1px dashed #e0e6ef';
       panel.style.paddingTop = '.5rem';
@@ -121,13 +130,13 @@
         const payload = `${book} ${chapter}:${v.num} ${v.text || ''}`.trim();
         try {
           await navigator.clipboard.writeText(payload);
-          flash(copyBtn, 'Copied!');
+          flash(copyBtn, '✓');
         } catch {
-          flash(copyBtn, 'Press ⌘/Ctrl+C');
+          flash(copyBtn, '⌘/Ctrl+C');
         }
       });
 
-      // Append in the required order
+      // Append in requested order
       row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
@@ -136,52 +145,8 @@
     versesEl.appendChild(frag);
   }
 
-  // ------- bottom navigation (ONLY two controls) -------
-  function renderNav(bookName, ch, maxCh) {
-    // Remove any existing nav to avoid duplicates
-    const old = document.getElementById('chapterNav');
-    if (old && old.parentNode) old.parentNode.removeChild(old);
-
-    // If only one chapter or unknown but ch==1 and no reason to show prev,
-    // we still may want next. We'll handle visibility below.
-    const nav = el('div', 'chapter-nav');
-    nav.id = 'chapterNav';
-    nav.style.display = 'flex';
-    nav.style.justifyContent = 'space-between';
-    nav.style.alignItems = 'center';
-    nav.style.gap = '1rem';
-    nav.style.margin = '1.25rem 0';
-
-    const prev = el('a', 'btn-prev', '← Previous');
-    prev.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(bookName)}&chapter=${ch - 1}`;
-    styleNavBtn(prev);
-
-    const next = el('a', 'btn-next', 'Next →');
-    next.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(bookName)}&chapter=${ch + 1}`;
-    styleNavBtn(next);
-
-    // Visibility rules
-    if (ch <= 1) prev.style.display = 'none';
-    if (maxCh && ch >= maxCh) next.style.display = 'none';
-
-    nav.append(prev, next);
-
-    // Place nav after the verses section
-    const mainWrap = document.querySelector('.chapter-wrap') || document.body;
-    mainWrap.appendChild(nav);
-  }
-
-  function styleNavBtn(a) {
-    a.style.display = 'inline-block';
-    a.style.border = '1px solid #e6ebf2';
-    a.style.background = '#fff';
-    a.style.borderRadius = '10px';
-    a.style.padding = '.5rem .9rem';
-    a.style.textDecoration = 'none';
-    a.style.color = '#054A91';
-  }
-
   // ------- helpers -------
+
   function el(tag, cls, text) {
     const n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -190,35 +155,16 @@
   }
 
   function flash(btn, msg) {
-    const old = btn.textContent;
-    btn.textContent = msg;
+    const old = btn.innerHTML;
+    btn.innerHTML = `<span style="font-size:12px;color:#054A91;">${msg}</span>`;
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = old;
+      btn.innerHTML = old;
       btn.disabled = false;
     }, 900);
   }
 
-  async function fetchBooksMeta() {
-    try {
-      const resp = await fetch(`${BASE}/data/tanakh/books.json`, { cache: 'no-store' });
-      if (!resp.ok) return null;
-      return await resp.json();
-    } catch {
-      return null;
-    }
-  }
-
-  function getMaxChapters(meta, name) {
-    if (!meta) return null;
-    // meta is expected as array of { name, chapters }
-    const target = meta.find(
-      b => (b.name || '').trim().toLowerCase() === (name || '').trim().toLowerCase()
-    );
-    return target ? parseInt(target.chapters, 10) || null : null;
-  }
-
-  // ------- tools panel builders -------
+  // Build tabbed tools panel for one verse
   function buildToolsPanel(v, ctx) {
     const wrap = el('div', 'tools');
 
@@ -310,6 +256,7 @@
     save.style.background = '#fff';
     save.style.borderRadius = '8px';
     save.style.padding = '.25rem .6rem';
+    save.style.cursor = 'pointer';
     save.addEventListener('click', () => {
       localStorage.setItem(key, ta.value.trim());
       flash(save, 'Saved');
@@ -342,7 +289,7 @@
     return box;
   }
 
-  // Strong's: one compact sentence line with tokens
+  // Strong's: one compact sentence line with tokens (hover for detail)
   function buildStrongsSentence(v) {
     const box = el('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
@@ -374,5 +321,20 @@
 
     box.appendChild(p);
     return box;
+  }
+})();
+
+// Set Next Chapter button href/text
+(function(){
+  const BASE = '/israelite-research';
+  const qs = new URLSearchParams(location.search);
+  const book = qs.get('book') || 'Genesis';
+  const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
+
+  const next = document.getElementById('nextChapter');
+  if (next) {
+    const nextUrl = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
+    next.href = nextUrl;
+    next.textContent = `Next: Chapter ${chapter+1} →`;
   }
 })();
