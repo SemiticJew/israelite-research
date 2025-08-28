@@ -1,6 +1,14 @@
 // Chapter loader with left-side Tools button, tabs, editable commentary, and Strong's support
 (function(){
   const BASE = '/israelite-research';
+  const STRONGS_HEB_URL = `${BASE}/data/lexicon/strongs-hebrew.json`;
+let STRONGS_HEB = null;
+fetch(STRONGS_HEB_URL).then(r=>r.json()).then(d=>{ STRONGS_HEB = d; }).catch(()=>{ STRONGS_HEB = {}; });
+
+function strongsLabel(code){
+  const d = STRONGS_HEB && STRONGS_HEB[code];
+  return d ? `${code} — ${d.translit} (${d.lemma}) — ${d.gloss}` : code;
+}
 
   const qs = new URLSearchParams(location.search);
   const book = qs.get('book') || 'Genesis';
