@@ -5,201 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* --- Page-local styles (scoped to this page only) --- */
-
-    /* Keep page nicely spaced beneath fixed header */
-    .chapter-page main { padding-top: 80px; }
-
-    /* Universal hero hooks already exist in styles.css */
-    .page-hero .container { max-width: 1200px; margin: 0 auto; }
-
-    /* Breadcrumbs under hero */
-    .breadcrumb-wrap { background: #fff; }
-    .breadcrumb { max-width: 1200px; margin: 0 auto; padding: 0.5rem 1rem 1rem; }
-
-    /* Chapter container */
-    .chapter-wrap { max-width: 900px; margin: 0 auto; padding: 1rem; }
-
-    /* Each verse card */
-    .verse-card {
-      background: #fff;
-      border: 1px solid #e6ebf2;
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin: 12px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,.03);
-    }
-
-    .verse-head {
-      display: grid;
-      grid-template-columns: auto auto 1fr;
-      align-items: start;
-      column-gap: 10px;
-      row-gap: 6px;
-    }
-
-    /* Tools button to the LEFT of verse number */
-    .btn-tools {
-      appearance: none;
-      border: none;
-      background: #3E7CB1;      /* requested color */
-      color: #fff;               /* white text */
-      padding: 6px 10px;
-      border-radius: 10px;
-      font: 500 0.9rem/1 var(--ff-sans, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(62,124,177,.25);
-      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
-    }
-    .btn-tools:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(62,124,177,.28); filter: brightness(1.03); }
-    .btn-tools:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(62,124,177,.25); }
-
-    /* Verse number with small padded badge */
-    .verse-num {
-      display: inline-block;
-      background: #f0f4f9;
-      color: #123;
-      padding: 2px 7px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: .9rem;
-      letter-spacing: .2px;
-      min-width: 28px;
-      text-align: center;
-      user-select: none;
-    }
-
-    /* Ensure spacing so text never collides with number or tools btn */
-    .verse-text {
-      font-size: 1.06rem;
-      line-height: 1.75;
-      color: #111;
-    }
-
-    /* Tools panel (toggles open/closed) */
-    .tools-panel {
-      margin-top: 10px;
-      border-top: 1px solid #edf2f7;
-      padding-top: 10px;
-      display: none;
-    }
-    .tools-panel.open { display: block; }
-
-    /* Tabs inside tools panel */
-    .tools-tabs {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
-    }
-    .tools-tab {
-      appearance: none;
-      border: 1px solid #d9e2ec;
-      background: #f8fafc;
-      color: #0b2340;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: .9rem;
-      cursor: pointer;
-    }
-    .tools-tab.active {
-      background: #fff;
-      border-color: #3E7CB1;
-      color: #0b2340;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06);
-    }
-
-    .tools-content .pane { display: none; }
-    .tools-content .pane.active { display: block; }
-
-    /* Cross-ref list */
-    .xref-list { margin: 0.25rem 0 0.5rem; padding-left: 1rem; }
-    .xref-list li { margin: 0.2rem 0; }
-
-    /* Commentary editor */
-    .commentary-wrap { display: grid; gap: .5rem; }
-    .commentary-wrap textarea {
-      width: 100%;
-      min-height: 110px;
-      border: 1px solid #e0e7ff;
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: .98rem;
-      line-height: 1.5;
-      resize: vertical;
-    }
-    .commentary-actions {
-      display: flex; gap: 8px; align-items: center;
-    }
-    .btn-save {
-      appearance: none;
-      border: 1px solid #e2e8f0;
-      background: #fff;
-      color: #0b2340;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: .9rem;
-      cursor: pointer;
-    }
-    .save-ok { color: #3E7CB1; font-size: .9rem; }
-
-    /* Copy button lives inside the panel actions area */
-    .panel-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-    .btn-copy {
-      appearance: none;
-      border: 1px solid #e2e8f0;
-      background: #fff;
-      color: #0b2340;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: .9rem;
-      cursor: pointer;
-    }
-    .copied-flag { color: #3E7CB1; font-size: .85rem; }
-
-    /* Lexicon / Strong's placeholders */
-    .soon { color: #555; font-size: .95rem; }
-
-    /* Ensure plenty of space between btn, number, text on narrow screens */
-    @media (max-width: 560px) {
-      .verse-head { grid-template-columns: auto auto / 1fr; }
-    }
-  </style>
 </head>
 <body class="chapter-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Universal hero -->
+    <!-- Universal hero (full-width container) -->
     <section class="page-hero hero-texts">
       <div class="container">
-        <h1 class="page-title" id="chapter-title">Loading…</h1>
-        <p class="page-subtitle" id="chapter-subtitle">Please wait while the chapter initializes.</p>
+        <h1 class="page-title" id="chapterTitle">Loading…</h1>
+        <p class="page-subtitle" id="chapterSubtitle"></p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs UNDER the hero -->
-    <div class="breadcrumb-wrap">
-      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
-    </div>
+    <!-- Breadcrumbs UNDER the hero, full-width container -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Chapter content -->
-    <section class="chapter-wrap" id="chapter"></section>
+    <!-- Reading area (outer container stays full; inner column is narrowed) -->
+    <section class="container">
+      <div class="chapter-wrap">
+        <div id="chapterMeta" class="chapter-meta"></div>
+        <div id="verses" class="verses"></div>
+      </div>
+    </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Chapter renderer -->
+  <!-- Partials + logic -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>
