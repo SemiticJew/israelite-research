@@ -1,7 +1,8 @@
 // js/chapter.js
 // Chapter loader for Tanakh pages (GitHub Pages friendly)
-// Order per verse: [Tools] [Copy] [#] [Text]
+// Per-verse order: [Tools] [Copy] [#] [Text]
 // Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
+// Adds Prev/Next chapter controls (auto-hide when at edges)
 
 (function () {
   const BASE = '/israelite-research';
@@ -13,7 +14,7 @@
   // folder = lowercase book name, keep letters/numbers/hyphens only
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  // Breadcrumbs
+  // Wire breadcrumb quickly so it shows even if content fetch is slow
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -35,21 +36,34 @@
   if (titleEl) titleEl.textContent = `${book} ${chapter}`;
   if (descEl)  descEl.textContent  = '';
 
-  const url = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
+  const chapterUrl = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
+  const booksMetaUrl = `${BASE}/data/tanakh/books.json`;
 
-  fetch(url, { cache: 'no-store' })
-    .then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
+  Promise.all([
+    fetch(chapterUrl, { cache: 'no-store' }).then(r => (r.ok ? r.json() : Promise.reject(r))),
+    fetch(booksMetaUrl, { cache: 'no-store' }).then(r => (r.ok ? r.json() : [] )).catch(() => []),
+  ])
+    .then(([chapterData, booksMeta]) => {
+      renderChapter(chapterData);
+      const totalChapters = findTotalChapters(booksMeta, book);
+      buildChapterNav(book, chapter, totalChapters);
     })
-    .then(renderChapter)
     .catch(err => {
       if (versesEl) {
         versesEl.innerHTML =
-          `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code>.</div>`;
+          `<div class="muted">Could not load ${book} ${chapter}. Check <code>${chapterUrl}</code>.</div>`;
       }
       console.error('Chapter load error:', err);
     });
+
+  function findTotalChapters(meta, name) {
+    try {
+      const m = (Array.isArray(meta) ? meta : []).find(
+        b => (b.name || '').toLowerCase() === (name || '').toLowerCase()
+      );
+      return m && Number.isFinite(m.chapters) ? m.chapters : null;
+    } catch { return null; }
+  }
 
   function renderChapter(data) {
     if (!versesEl) return;
@@ -62,58 +76,60 @@
 
     data.verses.forEach(v => {
       const row = el('div', 'verse-row');
-      // Four columns to match control order: [Tools] [Copy] [#] [Text]
+      // Grid: [Tools] [Copy] [#] [Text]
       row.style.display = 'grid';
       row.style.gridTemplateColumns = 'auto auto 44px 1fr';
       row.style.gap = '0.6rem';
       row.style.alignItems = 'start';
       row.id = `v${v.num}`;
 
-      // ------- Tools button (updated color) -------
+      // Tools button (leftmost) — blue background #054A91, subtle hover lift
       const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
       toolsBtn.type = 'button';
       toolsBtn.setAttribute('aria-expanded', 'false');
-      // Style per request: background #054A91, white text
       toolsBtn.style.background = '#054A91';
       toolsBtn.style.color = '#fff';
-      toolsBtn.style.border = '1px solid #054A91';
+      toolsBtn.style.border = 'none';
       toolsBtn.style.borderRadius = '8px';
       toolsBtn.style.padding = '.25rem .6rem';
       toolsBtn.style.cursor = 'pointer';
-      toolsBtn.style.transition = 'transform .06s ease';
-      toolsBtn.addEventListener('mousedown', () => { toolsBtn.style.transform = 'translateY(1px)'; });
-      toolsBtn.addEventListener('mouseup',   () => { toolsBtn.style.transform = 'translateY(0)'; });
-      toolsBtn.addEventListener('mouseleave',() => { toolsBtn.style.transform = 'translateY(0)'; });
+      toolsBtn.style.transition = 'transform .12s ease';
+      toolsBtn.addEventListener('mouseenter', () => toolsBtn.style.transform = 'translateY(-1px)');
+      toolsBtn.addEventListener('mouseleave', () => toolsBtn.style.transform = '');
 
-      // ------- Copy button (icon-only) -------
+      // Copy button (icon)
       const copyBtn = el('button', 'copy-btn');
       copyBtn.type = 'button';
       copyBtn.title = 'Copy verse';
-      copyBtn.setAttribute('aria-label', 'Copy verse');
-      copyBtn.style.display = 'inline-flex';
-      copyBtn.style.alignItems = 'center';
-      copyBtn.style.justifyContent = 'center';
-      copyBtn.style.width = '36px';
-      copyBtn.style.height = '28px';
       copyBtn.style.border = '1px solid #e6ebf2';
       copyBtn.style.background = '#fff';
       copyBtn.style.borderRadius = '8px';
+      copyBtn.style.padding = '.25rem .45rem';
       copyBtn.style.cursor = 'pointer';
-      copyBtn.innerHTML =
-        '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-        '<path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/>' +
-        '</svg>';
+      copyBtn.style.display = 'inline-flex';
+      copyBtn.style.alignItems = 'center';
+      copyBtn.style.justifyContent = 'center';
+      copyBtn.style.lineHeight = '1';
+      copyBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="#054A91" d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+      `;
 
       // Verse number
       const num = el('div', 'vnum', String(v.num));
+      num.style.fontWeight = '700';
+      num.style.color = '#666';
+      num.style.textAlign = 'center';
 
       // Verse text
       const txt = el('div', 'vtext', v.text || '');
+      txt.style.lineHeight = '1.6';
 
       // Tools panel (tabs)
       const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
-      panel.style.gridColumn = '1 / -1'; // full width when opened
+      panel.style.gridColumn = '1 / -1'; // full width row when opened
       panel.style.marginTop = '.5rem';
       panel.style.borderTop = '1px dashed #e0e6ef';
       panel.style.paddingTop = '.5rem';
@@ -132,17 +148,78 @@
           await navigator.clipboard.writeText(payload);
           flash(copyBtn, '✓');
         } catch {
-          flash(copyBtn, '⌘/Ctrl+C');
+          flash(copyBtn, '⎘');
         }
       });
 
-      // Append in requested order
+      // Append in required order
       row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
 
     versesEl.innerHTML = '';
     versesEl.appendChild(frag);
+  }
+
+  // ------- chapter navigation (Prev / Next) -------
+
+  function buildChapterNav(book, chapter, totalChapters) {
+    const main = document.querySelector('main') || document.body;
+    const nav = document.createElement('div');
+    nav.className = 'chapter-nav';
+    nav.style.display = 'flex';
+    nav.style.justifyContent = 'space-between';
+    nav.style.gap = '1rem';
+    nav.style.margin = '1.25rem 0';
+
+    // Prev button (left)
+    const prev = document.createElement('a');
+    prev.id = 'prevChapter';
+    prev.className = 'nav-btn prev';
+    prev.textContent = '← Previous';
+    prev.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter - 1}`;
+    styleNavBtn(prev);
+
+    // Next button (right)
+    const next = document.createElement('a');
+    next.id = 'nextChapter';
+    next.className = 'nav-btn next';
+    next.textContent = `Next: Chapter ${chapter + 1} →`;
+    next.href = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter + 1}`;
+    styleNavBtn(next);
+
+    // Hide logic
+    // If first chapter, hide Prev
+    if (chapter <= 1) prev.style.display = 'none';
+    // If we know totalChapters and we're at the end, hide Next
+    if (Number.isFinite(totalChapters) && chapter >= totalChapters) next.style.display = 'none';
+    // If only one chapter, hide both
+    if (Number.isFinite(totalChapters) && totalChapters <= 1) {
+      prev.style.display = 'none';
+      next.style.display = 'none';
+    }
+
+    nav.append(prev, next);
+    main.appendChild(nav);
+  }
+
+  function styleNavBtn(a) {
+    a.style.display = 'inline-block';
+    a.style.padding = '.4rem .7rem';
+    a.style.border = '1px solid #e6ebf2';
+    a.style.borderRadius = '10px';
+    a.style.background = '#fff';
+    a.style.color = '#054A91';
+    a.style.textDecoration = 'none';
+    a.style.transition = 'transform .12s ease, box-shadow .12s ease';
+    a.addEventListener('mouseenter', () => {
+      a.style.transform = 'translateY(-1px)';
+      a.style.boxShadow = '0 2px 8px rgba(0,0,0,.06)';
+    });
+    a.addEventListener('mouseleave', () => {
+      a.style.transform = '';
+      a.style.boxShadow = '';
+    });
   }
 
   // ------- helpers -------
@@ -156,7 +233,7 @@
 
   function flash(btn, msg) {
     const old = btn.innerHTML;
-    btn.innerHTML = `<span style="font-size:12px;color:#054A91;">${msg}</span>`;
+    btn.innerHTML = msg;
     btn.disabled = true;
     setTimeout(() => {
       btn.innerHTML = old;
@@ -226,6 +303,7 @@
         a.textContent = cr.ref + (cr.note ? ` — ${cr.note}` : '');
         a.style.display = 'block';
         a.style.margin = '.15rem 0';
+        a.style.color = '#054A91';
         box.appendChild(a);
       });
     } else {
@@ -256,7 +334,6 @@
     save.style.background = '#fff';
     save.style.borderRadius = '8px';
     save.style.padding = '.25rem .6rem';
-    save.style.cursor = 'pointer';
     save.addEventListener('click', () => {
       localStorage.setItem(key, ta.value.trim());
       flash(save, 'Saved');
@@ -321,20 +398,5 @@
 
     box.appendChild(p);
     return box;
-  }
-})();
-
-// Set Next Chapter button href/text
-(function(){
-  const BASE = '/israelite-research';
-  const qs = new URLSearchParams(location.search);
-  const book = qs.get('book') || 'Genesis';
-  const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
-
-  const next = document.getElementById('nextChapter');
-  if (next) {
-    const nextUrl = `${BASE}/tanakh/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
-    next.href = nextUrl;
-    next.textContent = `Next: Chapter ${chapter+1} →`;
   }
 })();
