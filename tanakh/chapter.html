@@ -1,56 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Chapter — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
   <style>
-    /* spacing for tools / copy / number */
-    .verse-row { display:flex; gap:1rem; align-items:flex-start; }
-    .verse-actions { display:flex; align-items:center; gap:.6rem; min-width:110px; }
-    .verse-num { font-weight:700; color:#333; }
-    .tools-btn, .copy-btn{
-      appearance:none; border:1px solid #e6ebf2; background:#F17300; color:#fff;
-      padding:.35rem .6rem; border-radius:8px; cursor:pointer; font-size:.9rem;
-    }
-    .copy-btn{ background:#0b2340; }
-    .verses-shell{ background:#fff; border:1px solid #e6ebf2; border-radius:14px; padding:1rem; }
-    .verse-card{ padding:.75rem .75rem 1rem; border-bottom:1px solid #f0f3f8; }
-    .verse-card:last-child{ border-bottom:0; }
-    .verse-text{ line-height:1.7; color:#111; }
-    .verse-tools{ margin:.6rem 0 0 0; display:none; }
-    .verse-tools.active{ display:block; }
-    .tabs{ display:flex; gap:.5rem; margin:.5rem 0; flex-wrap:wrap; }
-    .tab-btn{ padding:.25rem .5rem; border:1px solid #e6ebf2; background:#fff; border-radius:6px; cursor:pointer; font-size:.85rem; }
-    .tab-btn.active{ background:#0b2340; color:#fff; }
-    .tab-panel{ display:none; padding:.35rem 0; }
-    .tab-panel.active{ display:block; }
-    .xref-list{ margin:.25rem 0 0 1rem; }
-    .xref-list li{ margin:.15rem 0; }
+    /* Small layout fixes so numbers/controls never collide */
+    .verse { border:1px solid #e6ebf2; border-radius:12px; padding:12px 14px; background:#fff; margin:10px 0; }
+    .verse-head{ display:flex; align-items:center; gap:.6rem; margin-bottom:.35rem; }
+    .verse-number{ font-weight:700; color:#0b2340; min-width:2ch; }
+    .tools-btn{ background:#F17300; color:#fff; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; }
+    .tools-panel{ display:none; border-top:1px solid #eef2f7; margin-top:.5rem; padding-top:.5rem; }
+    .tools-toolbar{ display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem; }
+    .copy-btn{ background:#fff; border:1px solid #e1e7f0; border-radius:8px; padding:6px 10px; cursor:pointer; }
+    .tool-tabs{ display:flex; gap:.4rem; margin-bottom:.5rem; flex-wrap:wrap; }
+    .tool-tab{ padding:6px 10px; border:1px solid #e1e7f0; border-radius:8px; background:#fafcff; cursor:pointer; }
+    .tool-tab.active{ border-color:#F17300; color:#F17300; background:#fff; }
+    .tool-pane{ display:none; }
+    .tool-pane.active{ display:block; }
+    .verse-text{ line-height:1.6; color:#222; }
+    .commentary-box{ width:100%; min-height:90px; border:1px solid #e1e7f0; border-radius:8px; padding:8px; }
   </style>
 </head>
-<body>
+<body class="chapter-page">
+  <!-- Header -->
   <div id="site-header"></div>
 
-  <!-- Universal hero -->
-  <section class="page-hero hero-texts">
-    <div class="container">
-      <h1 class="page-title" id="hero-title">Chapter</h1>
-      <p class="page-subtitle" id="hero-subtitle">Study the Scriptures line by line.</p>
-    </div>
-    <div class="hero-divider"></div>
-  </section>
+  <main>
+    <!-- Breadcrumbs ABOVE hero -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
 
-  <!-- Breadcrumbs UNDER hero -->
-  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+    <!-- Universal hero -->
+    <section class="page-hero hero-texts">
+      <div class="container">
+        <h1 class="page-title" id="chapterTitle">Loading…</h1>
+        <p class="page-subtitle" id="chapterSubtitle"></p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
 
-  <main class="container chapter-page">
-    <div class="verses-shell" id="verses"></div>
+    <section class="container" id="chapterContainer">
+      <div id="verses" aria-live="polite">Loading…</div>
+    </section>
   </main>
 
+  <!-- Footer -->
   <div id="site-footer"></div>
 
+  <!-- Partials + Breadcrumbs + Chapter logic -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>

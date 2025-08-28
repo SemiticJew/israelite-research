@@ -1,140 +1,154 @@
 (function(){
   const params = new URLSearchParams(location.search);
-  const book   = params.get('book') || 'Genesis';
-  const chap   = params.get('chapter') || '1';
+  const book   = (params.get('book') || 'Genesis').trim();
+  const chapter= parseInt(params.get('chapter') || '1', 10);
 
-  // Hero title
-  const heroTitle = document.getElementById('hero-title');
-  if (heroTitle) heroTitle.textContent = `${book} ${chap}`;
+  // Title & subtitle
+  const titleEl = document.getElementById('chapterTitle');
+  const subEl   = document.getElementById('chapterSubtitle');
+  if (titleEl) titleEl.textContent = `${book} ${chapter}`;
+  if (subEl)   subEl.textContent   = `Chapter ${chapter}`;
 
-  // Build data path (lowercase folder names as you noted)
-  const dataPath = `/israelite-research/data/tanakh/${book.toLowerCase()}/${chap}.json`;
+  // Verses mount
+  const versesRoot = document.getElementById('verses');
+
+  // Data path (lowercase folder convention)
+  const dataPath = `/israelite-research/data/tanakh/${book.toLowerCase()}/${chapter}.json`;
 
   fetch(dataPath)
-    .then(r => r.json())
-    .then(renderChapter)
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(json => renderChapter(json))
     .catch(err => {
-      console.error(err);
-      const v = document.getElementById('verses');
-      if (v) v.innerHTML = `<p style="color:#a00">Could not load ${book} ${chap}.</p>`;
+      console.error('Chapter load error:', err);
+      if (versesRoot) versesRoot.textContent = 'Sorry—this chapter failed to load.';
     });
 
   function renderChapter(data){
-    const container = document.getElementById('verses');
-    if (!container){ return; }
+    if (!versesRoot) return;
+    versesRoot.innerHTML = '';
 
-    // Ensure we have verses array
-    const verses = Array.isArray(data.verses) ? data.verses : [];
-
-    // Render each verse row with left controls and right content
-    container.innerHTML = verses.map(v => verseRowHTML(book, data.chapter || chap, v)).join('');
-
-    // Wire up tools toggles
-    container.querySelectorAll('.tools-btn').forEach(btn=>{
-      btn.addEventListener('click', e=>{
-        e.preventDefault();
-        const id = btn.getAttribute('data-target');
-        const panel = document.getElementById(id);
-        if (panel){
-          panel.classList.toggle('active');
-          // default tab = Cross References
-          const firstTab = panel.querySelector('.tab-btn[data-panel="xrefs"]');
-          const xrefsPanel = panel.querySelector('.tab-panel[data-panel="xrefs"]');
-          if (firstTab && xrefsPanel){
-            setActiveTab(panel, firstTab, xrefsPanel);
-          }
-        }
-      });
-    });
-
-    // Wire up copy buttons
-    container.querySelectorAll('.copy-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const text = btn.getAttribute('data-copy') || '';
-        navigator.clipboard.writeText(text).catch(()=>{});
-        btn.textContent = 'Copied';
-        setTimeout(()=>btn.textContent='Copy',1000);
-      });
-    });
-
-    // Tab switching inside each verse-tools
-    container.querySelectorAll('.tabs').forEach(tabBar=>{
-      tabBar.addEventListener('click', (e)=>{
-        const btn = e.target.closest('.tab-btn');
-        if(!btn) return;
-        const parent = tabBar.closest('.verse-tools');
-        const target = parent.querySelector(`.tab-panel[data-panel="${btn.dataset.panel}"]`);
-        setActiveTab(parent, btn, target);
-      });
+    (data.verses || []).forEach(v => {
+      versesRoot.appendChild(renderVerse(v, data.book || book, data.chapter || chapter));
     });
   }
 
-  function setActiveTab(scope, btn, panel){
-    // deactivate all
-    scope.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    scope.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-    // activate chosen
-    if(btn) btn.classList.add('active');
-    if(panel) panel.classList.add('active');
-  }
+  function renderVerse(v, bookName, chNum){
+    const wrap = el('div', 'verse');
 
-  function verseRowHTML(book, chapter, verse){
-    const idBase = `v-${chapter}-${verse.num}`;
-    const copyPayload = `${book} ${chapter}:${verse.num} — ${verse.text}`;
+    // header line: Tools button + verse number (copy removed from here)
+    const head = el('div', 'verse-head');
+    const toolsBtn = el('button', 'tools-btn');
+    toolsBtn.type = 'button';
+    toolsBtn.textContent = 'Tools';
+    const vno = el('span', 'verse-number', v.num != null ? String(v.num) : '');
+    head.appendChild(toolsBtn);
+    head.appendChild(vno);
 
-    // Cross refs HTML (render if present; show “None yet” if not)
-    let xrefsHTML = '';
-    if (Array.isArray(verse.crossRefs) && verse.crossRefs.length){
-      xrefsHTML = `<ul class="xref-list">` +
-        verse.crossRefs.map(x => `<li><strong>${escapeHTML(x.ref)}:</strong> ${escapeHTML(x.note || '')}</li>`).join('') +
-      `</ul>`;
+    // verse text
+    const text = el('div', 'verse-text', v.text || '');
+
+    // tools panel (hidden by default)
+    const panel = el('div', 'tools-panel');
+
+    // small toolbar inside panel (Copy lives here now)
+    const toolbar = el('div', 'tools-toolbar');
+    const copyBtn = el('button', 'copy-btn');
+    copyBtn.type = 'button';
+    copyBtn.textContent = 'Copy verse';
+    copyBtn.addEventListener('click', () => {
+      const clip = `${bookName} ${chNum}:${v.num} — ${v.text}`;
+      navigator.clipboard?.writeText(clip).catch(()=>{});
+    });
+    toolbar.appendChild(copyBtn);
+    panel.appendChild(toolbar);
+
+    // tabs
+    const tabs = el('div', 'tool-tabs');
+    const tabRefs = tabButton('Cross-refs', true);
+    const tabComm = tabButton('Commentary');
+    const tabLex  = tabButton('Lexicon');
+    const tabStr  = tabButton('Strong’s');
+    tabs.append(tabRefs, tabComm, tabLex, tabStr);
+
+    // panes
+    const paneRefs = el('div', 'tool-pane active');
+    const paneComm = el('div', 'tool-pane');
+    const paneLex  = el('div', 'tool-pane');
+    const paneStr  = el('div', 'tool-pane');
+
+    // Cross-refs list
+    const refs = Array.isArray(v.crossRefs) ? v.crossRefs : [];
+    if (refs.length){
+      const ul = document.createElement('ul');
+      refs.forEach(r => {
+        const li = document.createElement('li');
+        const ref = (r && r.ref) ? r.ref : '';
+        const note= (r && r.note)? r.note : '';
+        li.textContent = note ? `${ref} — ${note}` : ref;
+        ul.appendChild(li);
+      });
+      paneRefs.appendChild(ul);
     } else {
-      xrefsHTML = `<p style="color:#555; margin:0;">No cross references yet.</p>`;
+      paneRefs.textContent = 'No cross-references yet.';
     }
 
-    return `
-    <div class="verse-card" id="${idBase}">
-      <div class="verse-row">
-        <div class="verse-actions">
-          <button class="tools-btn" data-target="${idBase}-tools" aria-expanded="false">Tools</button>
-          <button class="copy-btn" data-copy="${escapeHTML(copyPayload)}" aria-label="Copy verse">Copy</button>
-          <span class="verse-num">${verse.num}</span>
-        </div>
-        <div class="verse-content">
-          <div class="verse-text">${escapeHTML(verse.text)}</div>
-          <div class="verse-tools" id="${idBase}-tools" aria-hidden="true">
-            <div class="tabs" role="tablist">
-              <button class="tab-btn" data-panel="xrefs" role="tab">Cross References</button>
-              <button class="tab-btn" data-panel="notes" role="tab">My Commentary</button>
-              <button class="tab-btn" data-panel="lex" role="tab">Lexicon</button>
-              <button class="tab-btn" data-panel="strongs" role="tab">Strong’s</button>
-            </div>
-            <div class="tab-panel" data-panel="xrefs" role="tabpanel">
-              ${xrefsHTML}
-            </div>
-            <div class="tab-panel" data-panel="notes" role="tabpanel">
-              ${verse.commentary && verse.commentary.trim()
-                 ? `<p>${escapeHTML(verse.commentary)}</p>`
-                 : `<p style="color:#555; margin:0;">No notes yet.</p>`}
-            </div>
-            <div class="tab-panel" data-panel="lex" role="tabpanel">
-              <p style="color:#555; margin:0;">Lexicon coming soon.</p>
-            </div>
-            <div class="tab-panel" data-panel="strongs" role="tabpanel">
-              <p style="color:#555; margin:0;">Strong’s coming soon.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+    // Commentary box (for your notes)
+    const commLabel = document.createElement('div');
+    commLabel.style.marginBottom = '.25rem';
+    commLabel.textContent = 'My commentary';
+    const comm = el('textarea', 'commentary-box', v.commentary || '');
+    comm.placeholder = 'Add your personal notes on this verse…';
+    comm.addEventListener('change', () => {
+      // local-only persistence hook (optional): key per verse
+      try {
+        const key = `commentary:${bookName}:${chNum}:${v.num}`;
+        localStorage.setItem(key, comm.value);
+      } catch {}
+    });
+    paneComm.append(commLabel, comm);
+
+    // Lexicon / Strong’s placeholders
+    paneLex.textContent = 'Lexicon coming soon.';
+    paneStr.textContent = 'Strong’s concordance coming soon.';
+
+    // tab wiring
+    const panes = [paneRefs, paneComm, paneLex, paneStr];
+    const buttons = [tabRefs, tabComm, tabLex, tabStr];
+    buttons.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        panes[idx].classList.add('active');
+      });
+    });
+
+    panel.appendChild(tabs);
+    panel.append(paneRefs, paneComm, paneLex, paneStr);
+
+    // toggle panel
+    toolsBtn.addEventListener('click', () => {
+      panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+    });
+
+    wrap.append(head, text, panel);
+    return wrap;
   }
 
-  function escapeHTML(s){
-    return String(s)
-      .replaceAll('&','&amp;')
-      .replaceAll('<','&lt;')
-      .replaceAll('>','&gt;')
-      .replaceAll('"','&quot;')
-      .replaceAll("'",'&#39;');
+  // helpers
+  function el(tag, cls, text){
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function tabButton(label, active){
+    const b = el('button','tool-tab',label);
+    b.type='button';
+    if (active) b.classList.add('active');
+    return b;
   }
 })();
