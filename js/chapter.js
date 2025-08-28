@@ -1,182 +1,140 @@
 (function(){
-  const ACCENT = '#F17300';
-
-  // Parse ?book=Genesis&chapter=1
   const params = new URLSearchParams(location.search);
-  const book = params.get('book') || 'Genesis';
-  const chapter = parseInt(params.get('chapter') || '1', 10);
+  const book   = params.get('book') || 'Genesis';
+  const chap   = params.get('chapter') || '1';
 
-  // Slugs (your data folders are lowercase)
-  const bookSlug = (book || '').toLowerCase();
-  const dataUrl = `/israelite-research/data/tanakh/${bookSlug}/${chapter}.json`;
+  // Hero title
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) heroTitle.textContent = `${book} ${chap}`;
 
-  // Title/hero
-  const titleEl = document.getElementById('chapterTitle');
-  const subEl   = document.getElementById('chapterSubtitle');
-  if (titleEl) titleEl.textContent = `${book} ${chapter}`;
-  if (subEl)   subEl.textContent   = `King James Version (KJV) — ${book} ${chapter}`;
+  // Build data path (lowercase folder names as you noted)
+  const dataPath = `/israelite-research/data/tanakh/${book.toLowerCase()}/${chap}.json`;
 
-  // Breadcrumbs scope hint (if your breadcrumbs.js uses it)
-  const bc = document.getElementById('breadcrumbs');
-  if (bc) bc.setAttribute('data-scope', 'texts'); // Home > Texts > Tanakh > Book > Chapter
-
-  // Fetch chapter JSON
-  fetch(dataUrl, {cache:'no-store'})
-    .then(r => {
-      if(!r.ok) throw new Error('Failed to load chapter JSON');
-      return r.json();
-    })
+  fetch(dataPath)
+    .then(r => r.json())
     .then(renderChapter)
     .catch(err => {
-      const v = document.getElementById('verses');
-      if (v) v.textContent = 'Sorry—this chapter could not be loaded.';
       console.error(err);
+      const v = document.getElementById('verses');
+      if (v) v.innerHTML = `<p style="color:#a00">Could not load ${book} ${chap}.</p>`;
     });
 
-  function renderChapter(ch) {
-    document.title = `${book} ${chapter} — Semitic Jew`;
-    if(!ch || !Array.isArray(ch.verses)) {
-      document.getElementById('verses').textContent = 'No verses available.';
-      return;
-    }
+  function renderChapter(data){
+    const container = document.getElementById('verses');
+    if (!container){ return; }
 
-    const versesRoot = document.getElementById('verses');
-    versesRoot.innerHTML = ch.verses.map(v => verseHtml(v)).join('');
+    // Ensure we have verses array
+    const verses = Array.isArray(data.verses) ? data.verses : [];
 
-    // Wire up toggles, tabs, copy, and notes
-    versesRoot.querySelectorAll('.btn-tool').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-vid');
-        togglePanels(id);
-      });
-    });
+    // Render each verse row with left controls and right content
+    container.innerHTML = verses.map(v => verseRowHTML(book, data.chapter || chap, v)).join('');
 
-    versesRoot.querySelectorAll('.btn-copy').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.getAttribute('data-vid');
-        const ref = `${book} ${chapter}:${id}`;
-        const text = versesRoot.querySelector(`#vtext-${id}`)?.textContent?.trim() || '';
-        const payload = `${ref} — ${text}`;
-        try {
-          await navigator.clipboard.writeText(payload);
-          flash(btn, 'Copied');
-        } catch {
-          flash(btn, 'Copy failed');
+    // Wire up tools toggles
+    container.querySelectorAll('.tools-btn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.preventDefault();
+        const id = btn.getAttribute('data-target');
+        const panel = document.getElementById(id);
+        if (panel){
+          panel.classList.toggle('active');
+          // default tab = Cross References
+          const firstTab = panel.querySelector('.tab-btn[data-panel="xrefs"]');
+          const xrefsPanel = panel.querySelector('.tab-panel[data-panel="xrefs"]');
+          if (firstTab && xrefsPanel){
+            setActiveTab(panel, firstTab, xrefsPanel);
+          }
         }
       });
     });
 
-    versesRoot.querySelectorAll('.tab-btn').forEach(tb => {
-      tb.addEventListener('click', () => {
-        const target = tb.getAttribute('data-target');
-        const wrap = tb.closest('.verse-panels');
-        // Set active tab
-        wrap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        tb.classList.add('active');
-        // Show panel
-        wrap.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        wrap.querySelector(`#${target}`)?.classList.add('active');
+    // Wire up copy buttons
+    container.querySelectorAll('.copy-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const text = btn.getAttribute('data-copy') || '';
+        navigator.clipboard.writeText(text).catch(()=>{});
+        btn.textContent = 'Copied';
+        setTimeout(()=>btn.textContent='Copy',1000);
       });
     });
 
-    // Restore any saved notes
-    ch.verses.forEach(v => {
-      const ta = document.querySelector(`textarea[data-note-for="${v.num}"]`);
-      if (ta) ta.value = loadNote(book, chapter, v.num);
-    });
-
-    // Save note handlers
-    versesRoot.querySelectorAll('.btn-save').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = parseInt(btn.getAttribute('data-vid'), 10);
-        const ta = document.querySelector(`textarea[data-note-for="${id}"]`);
-        saveNote(book, chapter, id, (ta?.value || '').trim());
-        flash(btn, 'Saved');
+    // Tab switching inside each verse-tools
+    container.querySelectorAll('.tabs').forEach(tabBar=>{
+      tabBar.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.tab-btn');
+        if(!btn) return;
+        const parent = tabBar.closest('.verse-tools');
+        const target = parent.querySelector(`.tab-panel[data-panel="${btn.dataset.panel}"]`);
+        setActiveTab(parent, btn, target);
       });
     });
   }
 
-  function verseHtml(v){
-    const refId = v.num;
-    const crossRefs = Array.isArray(v.crossRefs) ? v.crossRefs : [];
+  function setActiveTab(scope, btn, panel){
+    // deactivate all
+    scope.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    scope.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    // activate chosen
+    if(btn) btn.classList.add('active');
+    if(panel) panel.classList.add('active');
+  }
+
+  function verseRowHTML(book, chapter, verse){
+    const idBase = `v-${chapter}-${verse.num}`;
+    const copyPayload = `${book} ${chapter}:${verse.num} — ${verse.text}`;
+
+    // Cross refs HTML (render if present; show “None yet” if not)
+    let xrefsHTML = '';
+    if (Array.isArray(verse.crossRefs) && verse.crossRefs.length){
+      xrefsHTML = `<ul class="xref-list">` +
+        verse.crossRefs.map(x => `<li><strong>${escapeHTML(x.ref)}:</strong> ${escapeHTML(x.note || '')}</li>`).join('') +
+      `</ul>`;
+    } else {
+      xrefsHTML = `<p style="color:#555; margin:0;">No cross references yet.</p>`;
+    }
+
     return `
-      <div class="verse-row" id="v${refId}">
-        <div class="verse-controls">
-          <button class="btn-tool" data-vid="${refId}" title="Open tools">Tools</button>
-          <button class="btn-copy" data-vid="${refId}" title="Copy verse">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-          </button>
-          <span class="verse-num">${refId}</span>
+    <div class="verse-card" id="${idBase}">
+      <div class="verse-row">
+        <div class="verse-actions">
+          <button class="tools-btn" data-target="${idBase}-tools" aria-expanded="false">Tools</button>
+          <button class="copy-btn" data-copy="${escapeHTML(copyPayload)}" aria-label="Copy verse">Copy</button>
+          <span class="verse-num">${verse.num}</span>
         </div>
-        <div class="verse-body">
-          <p class="verse-text" id="vtext-${refId}">${escapeHtml(v.text || '')}</p>
-
-          <div class="verse-panels" id="panels-${refId}" hidden>
-            <div class="tab-bar">
-              <button class="tab-btn active" data-target="xrefs-${refId}">Cross References</button>
-              <button class="tab-btn" data-target="notes-${refId}">My Commentary</button>
-              <button class="tab-btn" data-target="lex-${refId}">Lexicon</button>
-              <button class="tab-btn" data-target="strongs-${refId}">Strong’s</button>
+        <div class="verse-content">
+          <div class="verse-text">${escapeHTML(verse.text)}</div>
+          <div class="verse-tools" id="${idBase}-tools" aria-hidden="true">
+            <div class="tabs" role="tablist">
+              <button class="tab-btn" data-panel="xrefs" role="tab">Cross References</button>
+              <button class="tab-btn" data-panel="notes" role="tab">My Commentary</button>
+              <button class="tab-btn" data-panel="lex" role="tab">Lexicon</button>
+              <button class="tab-btn" data-panel="strongs" role="tab">Strong’s</button>
             </div>
-
-            <div class="panel active" id="xrefs-${refId}">
-              ${crossRefs.length
-                ? `<ul class="xrefs-list">` + crossRefs.map(x => `
-                    <li><strong>${escapeHtml(x.ref || '')}</strong> — ${escapeHtml(x.note || '')}</li>
-                  `).join('') + `</ul>`
-                : `<em>No cross references yet.</em>`}
+            <div class="tab-panel" data-panel="xrefs" role="tabpanel">
+              ${xrefsHTML}
             </div>
-
-            <div class="panel" id="notes-${refId}">
-              <div class="note-wrap">
-                <textarea class="note-area" data-note-for="${refId}" placeholder="Write your personal commentary for ${refId}…"></textarea>
-                <div class="note-actions">
-                  <button class="btn-save" data-vid="${refId}">Save</button>
-                </div>
-              </div>
+            <div class="tab-panel" data-panel="notes" role="tabpanel">
+              ${verse.commentary && verse.commentary.trim()
+                 ? `<p>${escapeHTML(verse.commentary)}</p>`
+                 : `<p style="color:#555; margin:0;">No notes yet.</p>`}
             </div>
-
-            <div class="panel" id="lex-${refId}">
-              <em>Lexicon integrations coming soon.</em>
+            <div class="tab-panel" data-panel="lex" role="tabpanel">
+              <p style="color:#555; margin:0;">Lexicon coming soon.</p>
             </div>
-
-            <div class="panel" id="strongs-${refId}">
-              <em>Strong’s Concordance coming soon.</em>
+            <div class="tab-panel" data-panel="strongs" role="tabpanel">
+              <p style="color:#555; margin:0;">Strong’s coming soon.</p>
             </div>
           </div>
         </div>
       </div>
-    `;
+    </div>`;
   }
 
-  function togglePanels(id){
-    const el = document.getElementById(`panels-${id}`);
-    if (!el) return;
-    const isHidden = el.hasAttribute('hidden');
-    if (isHidden) el.removeAttribute('hidden'); else el.setAttribute('hidden','');
-  }
-
-  function flash(node, msg){
-    const prev = node.textContent;
-    node.textContent = msg;
-    setTimeout(()=>{ node.textContent = prev; }, 900);
-  }
-
-  function saveNote(book, ch, num, text){
-    try {
-      localStorage.setItem(noteKey(book, ch, num), text || '');
-    } catch {}
-  }
-  function loadNote(book, ch, num){
-    try {
-      return localStorage.getItem(noteKey(book, ch, num)) || '';
-    } catch { return ''; }
-  }
-  function noteKey(book, ch, num){ return `note:${book}:${ch}:${num}`; }
-
-  function escapeHtml(s){
+  function escapeHTML(s){
     return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#39;');
   }
 })();

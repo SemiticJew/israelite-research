@@ -6,111 +6,51 @@
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Verse UI — scoped to chapter page */
-    .chapter-page .verses-wrap{
-      background:#fff;
-      border:1px solid #e6ebf2;
-      border-radius:14px;
-      padding:12px;
-      box-shadow:0 4px 18px rgba(0,0,0,.04);
-      margin: 1rem 0 2rem;
+    /* spacing for tools / copy / number */
+    .verse-row { display:flex; gap:1rem; align-items:flex-start; }
+    .verse-actions { display:flex; align-items:center; gap:.6rem; min-width:110px; }
+    .verse-num { font-weight:700; color:#333; }
+    .tools-btn, .copy-btn{
+      appearance:none; border:1px solid #e6ebf2; background:#F17300; color:#fff;
+      padding:.35rem .6rem; border-radius:8px; cursor:pointer; font-size:.9rem;
     }
-    .chapter-page .verse-row{
-      display:grid;
-      grid-template-columns: auto 1fr;
-      gap:12px;
-      padding:12px 10px;
-      border-bottom:1px solid #f0f3f8;
-    }
-    .chapter-page .verse-row:last-child{ border-bottom:none; }
-    .chapter-page .verse-controls{
-      display:flex; align-items:flex-start; gap:6px;
-      min-width: 110px; /* holds buttons + number */
-    }
-    .chapter-page .btn-tool{
-      background:#F17300; color:#fff; border:none;
-      padding:6px 10px; border-radius:8px; font-size:.9rem;
-      cursor:pointer;
-    }
-    .chapter-page .btn-tool:hover{ filter:brightness(.95); }
-    .chapter-page .btn-copy{
-      display:inline-flex; align-items:center; justify-content:center;
-      width:34px; height:34px; border:1px solid #e6ebf2; background:#fff; border-radius:8px;
-      cursor:pointer;
-    }
-    .chapter-page .btn-copy svg{ width:16px; height:16px; }
-    .chapter-page .verse-num{
-      display:inline-block; min-width: 1.5rem; text-align:center;
-      font-weight:700; color:#444; padding:.2rem .35rem;
-      background:#f7f9fc; border:1px solid #edf1f6; border-radius:6px;
-      line-height:1.2;
-    }
-    .chapter-page .verse-text{ margin:.15rem 0 .35rem; }
-
-    /* Panels */
-    .chapter-page .verse-panels{
-      margin:.35rem 0 .25rem; border:1px solid #edf1f6; border-radius:10px;
-      overflow:hidden; background:#fff;
-    }
-    .chapter-page .tab-bar{
-      display:flex; gap:2px; background:#f7f9fc; border-bottom:1px solid #edf1f6;
-    }
-    .chapter-page .tab-btn{
-      flex:0 0 auto; padding:.5rem .75rem; border:none; background:transparent; cursor:pointer;
-      font-size:.9rem; color:#444;
-    }
-    .chapter-page .tab-btn.active{ background:#fff; border-bottom:2px solid #F17300; color:#111; }
-    .chapter-page .panel{ display:none; padding:.75rem .9rem; }
-    .chapter-page .panel.active{ display:block; }
-
-    /* Notes */
-    .chapter-page .note-wrap{ display:flex; flex-direction:column; gap:.5rem; }
-    .chapter-page .note-area{
-      width:100%; min-height:110px; resize:vertical;
-      border:1px solid #e6ebf2; border-radius:8px; padding:.6rem .7rem; font:inherit;
-      background:#fff;
-    }
-    .chapter-page .note-actions{ display:flex; gap:.5rem; justify-content:flex-end; }
-    .chapter-page .btn-save{
-      border:1px solid #e6ebf2; background:#fff; padding:.45rem .7rem; border-radius:8px; cursor:pointer;
-    }
-    .chapter-page .btn-save:hover{ background:#f7f9fc; }
-
-    /* Small helpers */
-    .chapter-page .xrefs-list{ margin:.4rem 0 0; padding-left:1rem; }
-    .chapter-page .xrefs-list li{ margin:.2rem 0; }
+    .copy-btn{ background:#0b2340; }
+    .verses-shell{ background:#fff; border:1px solid #e6ebf2; border-radius:14px; padding:1rem; }
+    .verse-card{ padding:.75rem .75rem 1rem; border-bottom:1px solid #f0f3f8; }
+    .verse-card:last-child{ border-bottom:0; }
+    .verse-text{ line-height:1.7; color:#111; }
+    .verse-tools{ margin:.6rem 0 0 0; display:none; }
+    .verse-tools.active{ display:block; }
+    .tabs{ display:flex; gap:.5rem; margin:.5rem 0; flex-wrap:wrap; }
+    .tab-btn{ padding:.25rem .5rem; border:1px solid #e6ebf2; background:#fff; border-radius:6px; cursor:pointer; font-size:.85rem; }
+    .tab-btn.active{ background:#0b2340; color:#fff; }
+    .tab-panel{ display:none; padding:.35rem 0; }
+    .tab-panel.active{ display:block; }
+    .xref-list{ margin:.25rem 0 0 1rem; }
+    .xref-list li{ margin:.15rem 0; }
   </style>
 </head>
 <body>
-  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container chapter-page">
-    <!-- Breadcrumbs above hero -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
-
-    <!-- Universal hero (title/desc filled by JS) -->
-    <section class="page-hero hero-texts">
-      <div class="container">
-        <h1 class="page-title" id="chapterTitle">Loading…</h1>
-        <p class="page-subtitle" id="chapterSubtitle">Please wait while the chapter loads.</p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
-
-    <!-- Chapter selector (optional; stays as-is if you already had one) -->
-    <div id="chapterControls" style="margin:.5rem 0 1rem; display:flex; gap:.5rem; flex-wrap:wrap;"></div>
-
-    <!-- Verses -->
-    <div class="verses-wrap">
-      <div id="verses" class="verses-list" aria-live="polite">Loading verses…</div>
+  <!-- Universal hero -->
+  <section class="page-hero hero-texts">
+    <div class="container">
+      <h1 class="page-title" id="hero-title">Chapter</h1>
+      <p class="page-subtitle" id="hero-subtitle">Study the Scriptures line by line.</p>
     </div>
+    <div class="hero-divider"></div>
+  </section>
+
+  <!-- Breadcrumbs UNDER hero -->
+  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+
+  <main class="container chapter-page">
+    <div class="verses-shell" id="verses"></div>
   </main>
 
-  <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + breadcrumbs + chapter logic -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>
