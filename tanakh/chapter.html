@@ -6,50 +6,20 @@
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    :root{ --accent:#F17300; }
+    /* Minimal layout so content shows even if site CSS misses something */
     .chapter-wrap{max-width:900px;margin:0 auto;padding:1rem}
     .chapter-head{margin:0 0 1rem}
-    .verses{display:flex;flex-direction:column;gap:.6rem}
-    /* button, number, text */
-    .verse-row{
-      display:grid;
-      grid-template-columns:auto 44px 1fr;
-      gap:.6rem;align-items:start;
-      padding:.6rem .8rem;border:1px solid #e6ebf2;background:#fff;border-radius:8px
-    }
+    .verses{display:flex;flex-direction:column;gap:.5rem}
+    .verse-row{display:grid;grid-template-columns:44px 1fr auto;gap:.6rem;align-items:start;
+      padding:.6rem .8rem;border:1px solid #e6ebf2;background:#fff;border-radius:8px}
     .vnum{font-weight:700;color:#666;text-align:center}
     .vtext{line-height:1.6}
-    .tools-btn{
-      border:none;background:var(--accent);color:#fff;
-      border-radius:8px;padding:.35rem .6rem;cursor:pointer;
-      transition:transform .06s ease, filter .12s ease;
-    }
-    .tools-btn:hover{ transform:translateY(-1px); filter:brightness(1.02); }
+    .tools-btn{border:1px solid #e6ebf2;background:#f8fafc;border-radius:8px;padding:.25rem .5rem;cursor:pointer}
     .tools{grid-column:1 / -1;margin-top:.5rem;border-top:1px dashed #e0e6ef;padding-top:.5rem}
     .tools[hidden]{display:none}
-
-    /* Tab strip inside tools */
-    .tool-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem}
-    .tool-tab{
-      border:1px solid #e2e8f0;background:#f8fafc;border-radius:7px;
-      padding:.25rem .55rem;font-size:.9rem;cursor:pointer
-    }
-    .tool-tab.active{background:#fff;border-color:#c9d5e6}
-    .tool-section{display:none}
-    .tool-section.active{display:block}
-
-    .xref-link{display:block;color:#054A91;font-size:.95rem;margin:.15rem 0}
+    .tools h4{margin:.25rem 0 .25rem;font-size:.95rem}
+    .xref{font-size:.95rem;color:#054A91}
     .muted{color:#666;font-size:.95rem}
-
-    .comment-wrap textarea{
-      width:100%; min-height:110px; padding:.5rem; border:1px solid #e2e8f0; border-radius:8px;
-      font:inherit; line-height:1.5;
-    }
-    .comment-actions{margin-top:.4rem;display:flex;gap:.5rem}
-    .btn{
-      display:inline-flex;align-items:center;gap:.35rem;
-      border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:.35rem .6rem;cursor:pointer
-    }
   </style>
 </head>
 <body>

@@ -1,4 +1,4 @@
-// Robust Chapter loader for GitHub Pages – now with Strong’s section
+// Robust Chapter loader for GitHub Pages
 (function(){
   const BASE = '/israelite-research';
 
@@ -6,7 +6,9 @@
   const book = qs.get('book') || 'Genesis';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  // Folder is lowercase (e.g., "genesis")
+  // Folder strategy: lowercase, remove non-alphanumerics except hyphen.
+  // Your current Tanakh folder for Genesis is "genesis" (lowercase).
+  // Adjust here later if you introduce hyphenated folders (e.g., song-of-songs).
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'');
 
   const titleEl = document.getElementById('chapterTitle');
@@ -14,9 +16,9 @@
   const versesEl= document.getElementById('verses');
 
   titleEl.textContent = `${book} ${chapter}`;
-  descEl.textContent  = '';
+  descEl.textContent  = ''; // optional book/chapter blurb
 
-  // Breadcrumbs
+  // Build breadcrumb path: Home > Texts > The Tanakh > {Book} > Chapter {n}
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -92,52 +94,26 @@
         xbody.innerHTML = `<div class="muted">—</div>`;
       }
 
-      // Commentary (your personal notes per verse)
+      // Commentary
       const ch = document.createElement('h4');
       ch.textContent = 'Commentary';
       const cbody = document.createElement('div');
       cbody.className = 'muted';
       cbody.textContent = (v.commentary && v.commentary.trim()) ? v.commentary : '—';
 
-      // Lexicon (placeholder)
+      // Lexicon
       const lh = document.createElement('h4');
-      lh.textContent = 'Lexicon';
+      lh.textContent = "Lexicon";
       const lbody = document.createElement('div');
       lbody.className = 'muted';
       lbody.textContent = 'Coming soon.';
 
-      // Strong’s Concordance (reads v.strongs[] if present)
+      // Strong’s
       const sh = document.createElement('h4');
       sh.textContent = "Strong’s Concordance";
       const sbody = document.createElement('div');
-      if (Array.isArray(v.strongs) && v.strongs.length) {
-        const ul = document.createElement('ul');
-        v.strongs.forEach(s => {
-          const li = document.createElement('li');
-
-          // Code with hover title for quick definition
-          const code = document.createElement('span');
-          code.className = 'strong-code';
-          code.textContent = s.code || '';
-          if (s.lemma || s.gloss) {
-            code.title = [s.lemma, s.gloss].filter(Boolean).join(' — ');
-          }
-          li.appendChild(code);
-
-          // Optional inline descriptor text
-          if (s.lemma || s.gloss) {
-            const info = document.createElement('span');
-            info.className = 'muted';
-            info.textContent = ` ${s.lemma ? s.lemma : ''}${s.lemma && s.gloss ? ' — ' : ''}${s.gloss ? s.gloss : ''}`;
-            li.appendChild(info);
-          }
-
-          ul.appendChild(li);
-        });
-        sbody.appendChild(ul);
-      } else {
-        sbody.innerHTML = `<div class="muted">—</div>`;
-      }
+      sbody.className = 'muted';
+      sbody.textContent = 'Coming soon.';
 
       panel.append(xh, xbody, ch, cbody, lh, lbody, sh, sbody);
 
