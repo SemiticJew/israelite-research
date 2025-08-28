@@ -13,7 +13,7 @@
   // folder = lowercase book name, keep letters/numbers/hyphens only
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  // Wire breadcrumb (kept here so it works even if markup is minimal)
+  // Breadcrumbs
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -62,22 +62,47 @@
 
     data.verses.forEach(v => {
       const row = el('div', 'verse-row');
-      // Ensure four columns to match control order
+      // Four columns to match control order: [Tools] [Copy] [#] [Text]
       row.style.display = 'grid';
-      row.style.gridTemplateColumns = 'auto auto 44px 1fr'; // [Tools] [Copy] [#] [Text]
+      row.style.gridTemplateColumns = 'auto auto 44px 1fr';
       row.style.gap = '0.6rem';
       row.style.alignItems = 'start';
       row.id = `v${v.num}`;
 
-      // Tools button (leftmost)
+      // ------- Tools button (updated color) -------
       const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
       toolsBtn.type = 'button';
       toolsBtn.setAttribute('aria-expanded', 'false');
+      // Style per request: background #054A91, white text
+      toolsBtn.style.background = '#054A91';
+      toolsBtn.style.color = '#fff';
+      toolsBtn.style.border = '1px solid #054A91';
+      toolsBtn.style.borderRadius = '8px';
+      toolsBtn.style.padding = '.25rem .6rem';
+      toolsBtn.style.cursor = 'pointer';
+      toolsBtn.style.transition = 'transform .06s ease';
+      toolsBtn.addEventListener('mousedown', () => { toolsBtn.style.transform = 'translateY(1px)'; });
+      toolsBtn.addEventListener('mouseup',   () => { toolsBtn.style.transform = 'translateY(0)'; });
+      toolsBtn.addEventListener('mouseleave',() => { toolsBtn.style.transform = 'translateY(0)'; });
 
-      // Copy button
-      const copyBtn = el('button', 'copy-btn', 'Copy');
+      // ------- Copy button (icon-only) -------
+      const copyBtn = el('button', 'copy-btn');
       copyBtn.type = 'button';
       copyBtn.title = 'Copy verse';
+      copyBtn.setAttribute('aria-label', 'Copy verse');
+      copyBtn.style.display = 'inline-flex';
+      copyBtn.style.alignItems = 'center';
+      copyBtn.style.justifyContent = 'center';
+      copyBtn.style.width = '36px';
+      copyBtn.style.height = '28px';
+      copyBtn.style.border = '1px solid #e6ebf2';
+      copyBtn.style.background = '#fff';
+      copyBtn.style.borderRadius = '8px';
+      copyBtn.style.cursor = 'pointer';
+      copyBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/>' +
+        '</svg>';
 
       // Verse number
       const num = el('div', 'vnum', String(v.num));
@@ -88,7 +113,7 @@
       // Tools panel (tabs)
       const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
-      panel.style.gridColumn = '1 / -1'; // full width row when opened
+      panel.style.gridColumn = '1 / -1'; // full width when opened
       panel.style.marginTop = '.5rem';
       panel.style.borderTop = '1px dashed #e0e6ef';
       panel.style.paddingTop = '.5rem';
@@ -105,13 +130,13 @@
         const payload = `${book} ${chapter}:${v.num} ${v.text || ''}`.trim();
         try {
           await navigator.clipboard.writeText(payload);
-          flash(copyBtn, 'Copied!');
+          flash(copyBtn, '✓');
         } catch {
-          flash(copyBtn, 'Press ⌘/Ctrl+C');
+          flash(copyBtn, '⌘/Ctrl+C');
         }
       });
 
-      // Append in the required order
+      // Append in requested order
       row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
@@ -130,11 +155,11 @@
   }
 
   function flash(btn, msg) {
-    const old = btn.textContent;
-    btn.textContent = msg;
+    const old = btn.innerHTML;
+    btn.innerHTML = `<span style="font-size:12px;color:#054A91;">${msg}</span>`;
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = old;
+      btn.innerHTML = old;
       btn.disabled = false;
     }, 900);
   }
@@ -231,6 +256,7 @@
     save.style.background = '#fff';
     save.style.borderRadius = '8px';
     save.style.padding = '.25rem .6rem';
+    save.style.cursor = 'pointer';
     save.addEventListener('click', () => {
       localStorage.setItem(key, ta.value.trim());
       flash(save, 'Saved');
@@ -263,7 +289,7 @@
     return box;
   }
 
-  // Strong's: one compact sentence line with tokens
+  // Strong's: one compact sentence line with tokens (hover for detail)
   function buildStrongsSentence(v) {
     const box = el('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
