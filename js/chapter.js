@@ -1,4 +1,8 @@
-// Chapter loader & renderer (Tanakh) — formats Lexicon & Strong's properly
+// js/chapter.js
+// Chapter loader for Tanakh pages (GitHub Pages friendly)
+// Order per verse: [Tools] [Copy] [#] [Text]
+// Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
+
 (function () {
   const BASE = '/israelite-research';
 
@@ -6,28 +10,30 @@
   const book = qs.get('book') || 'Genesis';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  // folder: lowercase, keep hyphens
+  // folder = lowercase book name, keep letters/numbers/hyphens only
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  const titleEl = document.getElementById('chapterTitle');
-  const descEl = document.getElementById('chapterDesc');
+  // Wire breadcrumb (kept here so it works even if markup is minimal)
+  try {
+    const bc = document.getElementById('breadcrumbs');
+    if (bc) {
+      bc.innerHTML = `
+        <ol>
+          <li><a href="${BASE}/index.html">Home</a></li>
+          <li><a href="${BASE}/texts.html">Texts</a></li>
+          <li><a href="${BASE}/tanakh.html">The Tanakh</a></li>
+          <li><a href="${BASE}/tanakh/book.html?book=${encodeURIComponent(book)}">${book}</a></li>
+          <li>Chapter ${chapter}</li>
+        </ol>`;
+    }
+  } catch {}
+
+  const titleEl  = document.getElementById('chapterTitle');
+  const descEl   = document.getElementById('chapterDesc');
   const versesEl = document.getElementById('verses');
 
   if (titleEl) titleEl.textContent = `${book} ${chapter}`;
-  if (descEl) descEl.textContent = '';
-
-  // Breadcrumbs
-  const bc = document.getElementById('breadcrumbs');
-  if (bc) {
-    bc.innerHTML = `
-      <ol>
-        <li><a href="${BASE}/index.html">Home</a></li>
-        <li><a href="${BASE}/texts.html">Texts</a></li>
-        <li><a href="${BASE}/tanakh.html">The Tanakh</a></li>
-        <li><a href="${BASE}/tanakh/book.html?book=${encodeURIComponent(book)}">${book}</a></li>
-        <li>Chapter ${chapter}</li>
-      </ol>`;
-  }
+  if (descEl)  descEl.textContent  = '';
 
   const url = `${BASE}/data/tanakh/${folder}/${chapter}.json`;
 
@@ -36,14 +42,17 @@
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     })
-    .then(data => renderChapter(data))
+    .then(renderChapter)
     .catch(err => {
-      versesEl.innerHTML =
-        `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code> exists.</div>`;
+      if (versesEl) {
+        versesEl.innerHTML =
+          `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code>.</div>`;
+      }
       console.error('Chapter load error:', err);
     });
 
   function renderChapter(data) {
+    if (!versesEl) return;
     if (!data || !Array.isArray(data.verses)) {
       versesEl.innerHTML = `<div class="muted">No verses found.</div>`;
       return;
@@ -52,47 +61,58 @@
     const frag = document.createDocumentFragment();
 
     data.verses.forEach(v => {
-      const row = el('div', 'verse-row', { id: `v${v.num}` });
+      const row = el('div', 'verse-row');
+      // Ensure four columns to match control order
+      row.style.display = 'grid';
+      row.style.gridTemplateColumns = 'auto auto 44px 1fr'; // [Tools] [Copy] [#] [Text]
+      row.style.gap = '0.6rem';
+      row.style.alignItems = 'start';
+      row.id = `v${v.num}`;
 
-      const num = el('div', 'vnum', null, String(v.num));
-      const txt = el('div', 'vtext', null, v.text || '');
+      // Tools button (leftmost)
+      const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
+      toolsBtn.type = 'button';
+      toolsBtn.setAttribute('aria-expanded', 'false');
 
-      const btn = el('button', 'tools-btn', { type: 'button' }, 'Tools ▾');
+      // Copy button
+      const copyBtn = el('button', 'copy-btn', 'Copy');
+      copyBtn.type = 'button';
+      copyBtn.title = 'Copy verse';
 
-      const panel = el('div', 'tools');
+      // Verse number
+      const num = el('div', 'vnum', String(v.num));
+
+      // Verse text
+      const txt = el('div', 'vtext', v.text || '');
+
+      // Tools panel (tabs)
+      const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
+      panel.style.gridColumn = '1 / -1'; // full width row when opened
+      panel.style.marginTop = '.5rem';
+      panel.style.borderTop = '1px dashed #e0e6ef';
+      panel.style.paddingTop = '.5rem';
 
-      // Cross references
-      panel.append(
-        el('h4', null, null, 'Cross References'),
-        renderRefs(v.crossRefs)
-      );
-
-      // Commentary (supports user typing; saved to localStorage)
-      panel.append(
-        el('h4', null, null, 'Commentary'),
-        renderCommentary(book, chapter, v.num, v.commentary)
-      );
-
-      // Lexicon (robust formatter)
-      panel.append(
-        el('h4', null, null, 'Lexicon'),
-        renderLexicon(v.lexicon)
-      );
-
-      // Strong's (robust formatter)
-      panel.append(
-        el('h4', null, null, 'Strong’s Concordance'),
-        renderStrongs(v.strongs)
-      );
-
-      btn.addEventListener('click', () => {
-        panel.hidden = !panel.hidden;
-        btn.textContent = panel.hidden ? 'Tools ▾' : 'Tools ▴';
+      // Interactions
+      toolsBtn.addEventListener('click', () => {
+        const open = panel.hidden;
+        panel.hidden = !open;
+        toolsBtn.textContent = open ? 'Tools ▴' : 'Tools ▾';
+        toolsBtn.setAttribute('aria-expanded', String(open));
       });
 
-      // Keep original order/structure
-      row.append(num, txt, btn, panel);
+      copyBtn.addEventListener('click', async () => {
+        const payload = `${book} ${chapter}:${v.num} ${v.text || ''}`.trim();
+        try {
+          await navigator.clipboard.writeText(payload);
+          flash(copyBtn, 'Copied!');
+        } catch {
+          flash(copyBtn, 'Press ⌘/Ctrl+C');
+        }
+      });
+
+      // Append in the required order
+      row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
 
@@ -100,109 +120,180 @@
     versesEl.appendChild(frag);
   }
 
-  /* ---------- helpers ---------- */
+  // ------- helpers -------
 
-  function el(tag, className, attrs, text) {
+  function el(tag, cls, text) {
     const n = document.createElement(tag);
-    if (className) n.className = className;
-    if (attrs) for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (cls) n.className = cls;
     if (text != null) n.textContent = text;
     return n;
   }
 
-  function renderRefs(refs) {
-    if (!Array.isArray(refs) || refs.length === 0) {
-      return el('div', 'muted', null, '—');
-    }
-    const wrap = el('div');
-    refs.forEach(cr => {
-      const a = el('a', 'xref', { href: '#'}, `${cr.ref}${cr.note ? ' — ' + cr.note : ''}`);
-      a.style.display = 'block';
-      wrap.appendChild(a);
+  function flash(btn, msg) {
+    const old = btn.textContent;
+    btn.textContent = msg;
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = old;
+      btn.disabled = false;
+    }, 900);
+  }
+
+  // Build tabbed tools panel for one verse
+  function buildToolsPanel(v, ctx) {
+    const wrap = el('div', 'tools');
+
+    // Tab header
+    const tabsBar = el('div', 'tools-tabs');
+    tabsBar.style.display = 'flex';
+    tabsBar.style.flexWrap = 'wrap';
+    tabsBar.style.gap = '.4rem';
+    tabsBar.style.marginBottom = '.5rem';
+
+    const contentWrap = el('div', 'tools-contents');
+
+    const sections = [
+      ['Cross-Refs', buildCrossRefs(v)],
+      ['Commentary', buildCommentary(v, ctx)],
+      ['Lexicon', buildLexicon(v)],
+      ['Strong’s', buildStrongsSentence(v)],
+    ];
+
+    const btns = sections.map(([label, content], i) => {
+      const b = el('button', 'tab-btn', label);
+      b.type = 'button';
+      b.style.border = '1px solid #e6ebf2';
+      b.style.background = '#f8fafc';
+      b.style.borderRadius = '8px';
+      b.style.padding = '.25rem .6rem';
+      b.style.cursor = 'pointer';
+      b.setAttribute('aria-controls', `pane-${label}`);
+      b.addEventListener('click', () => activate(i));
+      tabsBar.appendChild(b);
+
+      content.id = `pane-${label}`;
+      content.style.display = 'none';
+      contentWrap.appendChild(content);
+      return b;
     });
+
+    function activate(idx) {
+      sections.forEach(([, node], i) => {
+        node.style.display = i === idx ? 'block' : 'none';
+      });
+      btns.forEach((b, i) => {
+        b.style.background = i === idx ? '#fff' : '#f8fafc';
+      });
+    }
+    activate(0); // Cross-Refs first
+
+    wrap.append(tabsBar, contentWrap);
     return wrap;
   }
 
-  function renderCommentary(book, chap, vnum, initial) {
-    const key = `comm:${book}:${chap}:${vnum}`;
-    const val = localStorage.getItem(key) ?? (initial || '');
-    const ta = el('textarea', 'comm-input', {
-      rows: '3',
-      placeholder: 'Add your notes here (saved on this device)…'
-    });
-    ta.value = val;
-    ta.addEventListener('input', () => localStorage.setItem(key, ta.value));
-    return ta;
+  function buildCrossRefs(v) {
+    const box = el('div');
+    if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
+      v.crossRefs.forEach(cr => {
+        const a = document.createElement('a');
+        a.className = 'xref';
+        a.href = '#';
+        a.textContent = cr.ref + (cr.note ? ` — ${cr.note}` : '');
+        a.style.display = 'block';
+        a.style.margin = '.15rem 0';
+        box.appendChild(a);
+      });
+    } else {
+      box.innerHTML = `<div class="muted">—</div>`;
+    }
+    return box;
   }
 
-  function renderLexicon(lex) {
-    // Accept: string | string[] | {lemma?, headword?, definition?/gloss?, pos?}[]
-    if (!lex || (Array.isArray(lex) && lex.length === 0)) {
-      return el('div', 'muted', null, '—');
+  // Commentary with localStorage save per verse
+  function buildCommentary(v, { book, chapter }) {
+    const key = `commentary:${book}:${chapter}:${v.num}`;
+
+    const box = el('div');
+    const ta = document.createElement('textarea');
+    ta.rows = 4;
+    ta.style.width = '100%';
+    ta.style.border = '1px solid #e6ebf2';
+    ta.style.borderRadius = '8px';
+    ta.style.padding = '.5rem';
+    ta.placeholder = 'Write personal commentary… (saved locally)';
+
+    ta.value = (localStorage.getItem(key) || v.commentary || '').trim();
+
+    const save = el('button', 'save-comm', 'Save');
+    save.type = 'button';
+    save.style.marginTop = '.4rem';
+    save.style.border = '1px solid #e6ebf2';
+    save.style.background = '#fff';
+    save.style.borderRadius = '8px';
+    save.style.padding = '.25rem .6rem';
+    save.addEventListener('click', () => {
+      localStorage.setItem(key, ta.value.trim());
+      flash(save, 'Saved');
+    });
+
+    box.append(ta, save);
+    return box;
+  }
+
+  // Lexicon: compact list from v.strongs (if present)
+  function buildLexicon(v) {
+    const box = el('div');
+    const arr = Array.isArray(v.strongs) ? v.strongs : [];
+    if (!arr.length) {
+      box.innerHTML = `<div class="muted">—</div>`;
+      return box;
     }
-    const wrap = el('div');
-    const ul = el('ul', 'lex-list');
-    (Array.isArray(lex) ? lex : [lex]).forEach(item => {
-      const li = el('li');
-      if (typeof item === 'string') {
-        li.textContent = item;
-      } else if (item && typeof item === 'object') {
-        const head = item.lemma || item.headword || '';
-        const def = item.definition || item.gloss || '';
-        const pos = item.pos ? ` (${item.pos})` : '';
-        if (head || def) {
-          const headSpan = el('span', 'lex-head', null, head);
-          const defSpan = el('span', 'lex-def', null, def ? ` — ${def}` : '');
-          const posSpan = el('span', 'lex-pos', null, pos);
-          li.append(headSpan, defSpan, posSpan);
-        } else {
-          li.textContent = JSON.stringify(item); // extreme fallback
-        }
-      } else {
-        li.textContent = String(item);
-      }
+    const ul = document.createElement('ul');
+    ul.style.margin = '0';
+    ul.style.paddingLeft = '1rem';
+    arr.forEach(s => {
+      const li = document.createElement('li');
+      const num = s.num || '';
+      const lemma = s.lemma || '';
+      const gloss = s.gloss || '';
+      li.textContent = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
       ul.appendChild(li);
     });
-    wrap.appendChild(ul);
-    return wrap;
+    box.appendChild(ul);
+    return box;
   }
 
-  function renderStrongs(arr) {
-    // Accept: string[] | {num/code, lemma?, gloss?/def?}[]
-    if (!arr || (Array.isArray(arr) && arr.length === 0)) {
-      return el('div', 'muted', null, '—');
+  // Strong's: one compact sentence line with tokens
+  function buildStrongsSentence(v) {
+    const box = el('div');
+    const arr = Array.isArray(v.strongs) ? v.strongs : [];
+    if (!arr.length) {
+      box.innerHTML = `<div class="muted">—</div>`;
+      return box;
     }
-    const wrap = el('div');
-    const ul = el('ul', 'strongs-list');
+    const p = document.createElement('p');
+    p.style.margin = '0';
+    p.style.lineHeight = '1.6';
 
-    (Array.isArray(arr) ? arr : [arr]).forEach(item => {
-      const li = el('li');
-      if (typeof item === 'string') {
-        const code = item.trim();
-        const a = el('a', 'strong-code', {
-          href: code ? `https://www.blueletterbible.org/lexicon/${code.toLowerCase()}/kjv/` : '#',
-          target: '_blank', rel: 'noopener'
-        }, code);
-        li.appendChild(a);
-      } else if (item && typeof item === 'object') {
-        const code = item.num || item.code || '';
-        const lemma = item.lemma || '';
-        const gloss = item.gloss || item.def || '';
-        const a = el('a', 'strong-code', {
-          href: code ? `https://www.blueletterbible.org/lexicon/${String(code).toLowerCase()}/kjv/` : '#',
-          target: '_blank', rel: 'noopener',
-          title: (lemma || gloss) ? `${lemma}${gloss ? ' — ' + gloss : ''}` : ''
-        }, code || '—');
-        const lemmaSpan = el('span', 'strong-lemma', null, lemma ? ` ${lemma}` : '');
-        const glossSpan = el('span', 'strong-gloss', null, gloss ? ` — ${gloss}` : '');
-        li.append(a, lemmaSpan, glossSpan);
-      } else {
-        li.textContent = String(item);
-      }
-      ul.appendChild(li);
+    arr.forEach((s, i) => {
+      const span = document.createElement('span');
+      span.className = 'strong-token';
+      span.style.whiteSpace = 'nowrap';
+      span.style.borderBottom = '1px dotted #c9d4e5';
+      span.style.cursor = 'help';
+
+      const num = s.num || '';
+      const lemma = s.lemma || '';
+      const gloss = s.gloss || '';
+
+      span.title = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
+      span.textContent = `${num}${lemma ? ` (${lemma}` : ''}${gloss ? ` — ${gloss}` : ''}${lemma ? `)` : ''}`;
+
+      p.appendChild(span);
+      if (i !== arr.length - 1) p.appendChild(document.createTextNode('; '));
     });
 
-    wrap.appendChild(ul);
-    return wrap;
+    box.appendChild(p);
+    return box;
   }
 })();
