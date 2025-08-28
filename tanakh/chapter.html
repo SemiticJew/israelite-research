@@ -5,37 +5,45 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Minimal layout so content shows even if site CSS misses something */
+    .chapter-wrap{max-width:900px;margin:0 auto;padding:1rem}
+    .chapter-head{margin:0 0 1rem}
+    .verses{display:flex;flex-direction:column;gap:.5rem}
+    .verse-row{display:grid;grid-template-columns:44px 1fr auto;gap:.6rem;align-items:start;
+      padding:.6rem .8rem;border:1px solid #e6ebf2;background:#fff;border-radius:8px}
+    .vnum{font-weight:700;color:#666;text-align:center}
+    .vtext{line-height:1.6}
+    .tools-btn{border:1px solid #e6ebf2;background:#f8fafc;border-radius:8px;padding:.25rem .5rem;cursor:pointer}
+    .tools{grid-column:1 / -1;margin-top:.5rem;border-top:1px dashed #e0e6ef;padding-top:.5rem}
+    .tools[hidden]{display:none}
+    .tools h4{margin:.25rem 0 .25rem;font-size:.95rem}
+    .xref{font-size:.95rem;color:#054A91}
+    .muted{color:#666;font-size:.95rem}
+  </style>
 </head>
-<body class="chapter-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Universal hero (full-width container) -->
-    <section class="page-hero hero-texts">
-      <div class="container">
-        <h1 class="page-title" id="chapterTitle">Loading…</h1>
-        <p class="page-subtitle" id="chapterSubtitle"></p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
+  <!-- Breadcrumbs -->
+  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Breadcrumbs UNDER the hero, full-width container -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+  <main class="chapter-wrap">
+    <header class="chapter-head">
+      <h1 id="chapterTitle" class="page-title">Loading…</h1>
+      <p id="chapterDesc" class="page-subtitle"></p>
+    </header>
 
-    <!-- Reading area (outer container stays full; inner column is narrowed) -->
-    <section class="container">
-      <div class="chapter-wrap">
-        <div id="chapterMeta" class="chapter-meta"></div>
-        <div id="verses" class="verses"></div>
-      </div>
+    <section id="verses" class="verses" aria-live="polite">
+      <div class="muted">Loading…</div>
     </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + logic -->
+  <!-- Partials + Breadcrumbs + Chapter logic (absolute paths for GitHub Pages) -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/chapter.js" defer></script>
