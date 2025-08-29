@@ -1,4 +1,3 @@
-<!-- /new-testament.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +5,49 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Layout for four vertical columns (rails) */
+    .nt-columns{
+      max-width:1200px; margin:0 auto; padding:1rem;
+      display:grid; gap:1rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 800px){ .nt-columns{ grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1200px){ .nt-columns{ grid-template-columns: repeat(4, 1fr); } }
+
+    .nt-rail{
+      background:#fff; border:1px solid #e6ebf2; border-radius:12px;
+      padding:1rem; display:flex; flex-direction:column; gap:.5rem;
+    }
+    .nt-rail h2{
+      margin:.25rem 0 .5rem; font-size:1.1rem; letter-spacing:.5px;
+      text-transform:uppercase; color:#0b2340;
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+    }
+    .nt-rail .sub{ color:#667; font-size:.95rem; margin:-.25rem 0 .5rem; }
+
+    /* Interactive book cards */
+    .nt-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.5rem; }
+    .nt-card{
+      display:block; text-decoration:none; background:#fff;
+      border:1px solid #e6ebf2; border-radius:10px; padding:.75rem .85rem;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      color:#0b2340;
+    }
+    .nt-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.06);
+      border-color:#cfd8e6;
+    }
+    .nt-card .title{
+      margin:0; font-size:1rem; font-weight:600;
+      font-family: var(--ff-serif,"Adobe Garamond Pro", Garamond, serif);
+      letter-spacing:.2px;
+    }
+    .nt-card .meta{ margin:.2rem 0 0; color:#556; font-size:.9rem; }
+  </style>
 </head>
-<body class="nt-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
@@ -16,68 +56,70 @@
     <section class="page-hero hero-nt">
       <div class="container">
         <h1 class="page-title">New Testament</h1>
-        <p class="page-subtitle">The writings of the apostles and early witnesses to the Messiah—Gospels, Acts, Letters, and Revelation.</p>
+        <p class="page-subtitle">Four portraits of Jesus, the Acts of the apostles, letters to the scattered, and a prophetic unveiling.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (left-aligned, under hero) -->
+    <!-- Breadcrumbs (under hero) -->
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <!-- Books grid -->
-    <section class="books index-block">
-      <div class="container">
-        <!-- Gospels -->
-        <h2 class="section-title">The Gospels</h2>
-        <div class="books-grid">
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Matthew"><span class="book-name">Matthew</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Mark"><span class="book-name">Mark</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Luke"><span class="book-name">Luke</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=John"><span class="book-name">John</span></a>
-        </div>
+    <!-- Four vertical columns -->
+    <section class="nt-columns">
+      <!-- A. Synoptic Gospels (Biography) -->
+      <div class="nt-rail">
+        <h2>Synoptic Gospels</h2>
+        <div class="sub">Biography</div>
+        <ul class="nt-list">
+          <li><a class="nt-card" href="#matthew"><h3 class="title">Matthew</h3><div class="meta">Account of Jesus as the promised King</div></a></li>
+          <li><a class="nt-card" href="#mark"><h3 class="title">Mark</h3><div class="meta">Fast-moving account of the Servant-King</div></a></li>
+          <li><a class="nt-card" href="#luke"><h3 class="title">Luke</h3><div class="meta">Orderly narrative for careful certainty</div></a></li>
+          <li><a class="nt-card" href="#john"><h3 class="title">John</h3><div class="meta">The Son of God revealed for belief</div></a></li>
+          <li><a class="nt-card" href="#acts"><h3 class="title">Acts</h3><div class="meta">History of the risen Christ’s mission</div></a></li>
+        </ul>
+      </div>
 
-        <!-- History -->
-        <h2 class="section-title" style="margin-top:1.5rem;">History</h2>
-        <div class="books-grid">
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Acts"><span class="book-name">Acts</span></a>
-        </div>
+      <!-- B. Letters to the Scattered -->
+      <div class="nt-rail">
+        <h2>Letters to the Scattered</h2>
+        <div class="sub">Diaspora encouragement</div>
+        <ul class="nt-list">
+          <li><a class="nt-card" href="#james"><h3 class="title">James</h3><div class="meta">Faith proved by works</div></a></li>
+          <li><a class="nt-card" href="#1peter"><h3 class="title">1 Peter</h3><div class="meta">Hope amid exile</div></a></li>
+          <li><a class="nt-card" href="#2peter"><h3 class="title">2 Peter</h3><div class="meta">Truth vs. false teaching</div></a></li>
+          <li><a class="nt-card" href="#jude"><h3 class="title">Jude</h3><div class="meta">Contend for the faith</div></a></li>
+        </ul>
+      </div>
 
-        <!-- Pauline Epistles -->
-        <h2 class="section-title" style="margin-top:1.5rem;">Pauline Epistles</h2>
-        <div class="books-grid">
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Romans"><span class="book-name">Romans</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=1%20Corinthians"><span class="book-name">1&nbsp;Corinthians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=2%20Corinthians"><span class="book-name">2&nbsp;Corinthians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Galatians"><span class="book-name">Galatians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Ephesians"><span class="book-name">Ephesians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Philippians"><span class="book-name">Philippians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Colossians"><span class="book-name">Colossians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=1%20Thessalonians"><span class="book-name">1&nbsp;Thessalonians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=2%20Thessalonians"><span class="book-name">2&nbsp;Thessalonians</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=1%20Timothy"><span class="book-name">1&nbsp;Timothy</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=2%20Timothy"><span class="book-name">2&nbsp;Timothy</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Titus"><span class="book-name">Titus</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Philemon"><span class="book-name">Philemon</span></a>
-        </div>
+      <!-- C. More Letters -->
+      <div class="nt-rail">
+        <h2>More Letters</h2>
+        <div class="sub">Instruction & encouragement</div>
+        <ul class="nt-list">
+          <li><a class="nt-card" href="#romans"><h3 class="title">Romans</h3><div class="meta">The gospel’s righteousness</div></a></li>
+          <li><a class="nt-card" href="#1cor"><h3 class="title">1 Corinthians</h3><div class="meta">Order in the church</div></a></li>
+          <li><a class="nt-card" href="#2cor"><h3 class="title">2 Corinthians</h3><div class="meta">Power in weakness</div></a></li>
+          <li><a class="nt-card" href="#galatians"><h3 class="title">Galatians</h3><div class="meta">Freedom in Christ</div></a></li>
+          <li><a class="nt-card" href="#ephesians"><h3 class="title">Ephesians</h3><div class="meta">One new humanity</div></a></li>
+          <li><a class="nt-card" href="#philippians"><h3 class="title">Philippians</h3><div class="meta">Joy in Christ</div></a></li>
+          <li><a class="nt-card" href="#colossians"><h3 class="title">Colossians</h3><div class="meta">Christ supreme</div></a></li>
+          <li><a class="nt-card" href="#1thess"><h3 class="title">1 Thessalonians</h3><div class="meta">Steadfast hope</div></a></li>
+          <li><a class="nt-card" href="#2thess"><h3 class="title">2 Thessalonians</h3><div class="meta">Stand firm</div></a></li>
+          <li><a class="nt-card" href="#1tim"><h3 class="title">1 Timothy</h3><div class="meta">Guard the deposit</div></a></li>
+          <li><a class="nt-card" href="#2tim"><h3 class="title">2 Timothy</h3><div class="meta">Finish the race</div></a></li>
+          <li><a class="nt-card" href="#titus"><h3 class="title">Titus</h3><div class="meta">Sound doctrine, good works</div></a></li>
+          <li><a class="nt-card" href="#philemon"><h3 class="title">Philemon</h3><div class="meta">Gospel reconciliation</div></a></li>
+          <li><a class="nt-card" href="#hebrews"><h3 class="title">Hebrews</h3><div class="meta">Better covenant in Christ</div></a></li>
+        </ul>
+      </div>
 
-        <!-- General Epistles -->
-        <h2 class="section-title" style="margin-top:1.5rem;">General Epistles</h2>
-        <div class="books-grid">
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Hebrews"><span class="book-name">Hebrews</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=James"><span class="book-name">James</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=1%20Peter"><span class="book-name">1&nbsp;Peter</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=2%20Peter"><span class="book-name">2&nbsp;Peter</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=1%20John"><span class="book-name">1&nbsp;John</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=2%20John"><span class="book-name">2&nbsp;John</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=3%20John"><span class="book-name">3&nbsp;John</span></a>
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Jude"><span class="book-name">Jude</span></a>
-        </div>
-
-        <!-- Apocalypse -->
-        <h2 class="section-title" style="margin-top:1.5rem;">Revelation</h2>
-        <div class="books-grid">
-          <a class="book-card" href="/israelite-research/nt/book.html?book=Revelation"><span class="book-name">Revelation</span></a>
-        </div>
+      <!-- D. Prophecy -->
+      <div class="nt-rail">
+        <h2>Prophecy</h2>
+        <div class="sub">Apocalypse (Revelation)</div>
+        <ul class="nt-list">
+          <li><a class="nt-card" href="#revelation"><h3 class="title">Revelation</h3><div class="meta">The Lamb reigns</div></a></li>
+        </ul>
       </div>
     </section>
   </main>
@@ -88,5 +130,20 @@
   <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <script>
+    // Simple breadcrumb for this page
+    (function(){
+      const BASE = '/israelite-research';
+      const bc = document.getElementById('breadcrumbs');
+      if (bc){
+        bc.innerHTML = `
+          <ol>
+            <li><a href="${BASE}/index.html">Home</a></li>
+            <li><a href="${BASE}/texts.html">Texts</a></li>
+            <li>New Testament</li>
+          </ol>`;
+      }
+    })();
+  </script>
 </body>
 </html>
