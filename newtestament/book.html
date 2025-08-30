@@ -3,34 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Book — New Testament — Semitic Jew</title>
+  <title>New Testament — Book — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 </head>
-<body>
+<body class="book-nt-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Breadcrumbs (under hero, consistent sitewide) -->
-  <section class="page-hero hero-text">
+  <!-- Hero -->
+  <section class="page-hero hero-universal">
     <div class="container">
-      <h1 id="bookTitle" class="page-title">Loading…</h1>
-      <p id="bookSubtitle" class="page-subtitle"></p>
+      <h1 class="page-title">New Testament</h1>
+      <p class="page-subtitle">Choose a chapter from this book.</p>
     </div>
     <div class="hero-divider"></div>
   </section>
 
+  <!-- Breadcrumbs directly under hero -->
   <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-  <main class="container" style="padding-top:1rem;">
-    <section id="chapters" class="chapters-grid" aria-live="polite">
-      <div class="muted">Loading…</div>
-    </section>
+  <main>
+    <div class="container book-wrap">
+      <!-- Dynamic book header (targets for JS) -->
+      <header class="book-head">
+        <h2 id="bookTitle" class="book-title">Loading…</h2>
+        <p id="bookDesc" class="book-desc"></p>
+      </header>
+
+      <!-- Chapter grid (target for JS) -->
+      <section aria-live="polite" aria-busy="true">
+        <div id="chapters" class="chapters-grid"></div>
+      </section>
+    </div>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + NT Book loader (absolute paths) -->
+  <!-- Partials + Breadcrumbs + NT Book loader -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
   <script src="/israelite-research/js/book-nt.js" defer></script>
