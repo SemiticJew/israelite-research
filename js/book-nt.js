@@ -1,78 +1,81 @@
-<script>
-// Robust NT book loader (tolerates case and plural "Revelations")
-(function(){
+// js/book-nt.js
+// New Testament book page loader (matches Tanakh behavior)
+// - Robust book match (case-insensitive, supports .name or .abbrev)
+// - Accepts both "Chapters" and "chapters" keys
+// - Builds chapter grid linking to /newtestament/chapter.html
+
+(function () {
   const BASE = '/israelite-research';
+  const DATA_URL = `${BASE}/data/newtestament/books.json`;
 
   const qs = new URLSearchParams(location.search);
-  const rawBook = qs.get('book') || 'Revelation';
+  const bookParam = qs.get('book') || '';
 
-  // Normalizer used for matching
-  function norm(s){
-    return String(s || '')
-      .toLowerCase()
-      .replace(/revelations/,'revelation') // common variant
-      .replace(/[^a-z0-9]/g,'');           // strip spaces/punct
+  const titleEl  = document.getElementById('bookTitle');
+  const descEl   = document.getElementById('bookDesc');
+  const gridEl   = document.getElementById('chaptersGrid');
+  const bcEl     = document.getElementById('breadcrumbs');
+
+  const norm = (s) => (s || '').toString().trim().toLowerCase();
+
+  function renderError(msg) {
+    if (gridEl) gridEl.innerHTML = `<div class="muted">${msg}</div>`;
   }
 
-  const want = norm(rawBook);
-
-  const booksUrl = `${BASE}/data/newtestament/books.json`;
-
-  fetch(booksUrl, { cache: 'no-store' })
-    .then(r => r.json())
-    .then(data => {
-      const list = Array.isArray(data) ? data : (data.books || []);
-      if (!Array.isArray(list) || !list.length) throw new Error('No books array');
-
-      // Find by normalized name; also accept abbr match
-      let book = list.find(b => norm(b.name) === want)
-              || list.find(b => norm(b.abbr) === want);
-
-      if (!book) {
-        throw new Error(`Book "${rawBook}" not found in data/newtestament/books.json`);
+  fetch(DATA_URL, { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(list => {
+      const items = Array.isArray(list) ? list : [];
+      const found = items.find(it =>
+        norm(it.name) === norm(bookParam) ||
+        norm(it.abbrev) === norm(bookParam)
+      );
+      if (!found) {
+        renderError(`Book not found in data/newtestament/books.json: "${bookParam}"`);
+        return;
       }
 
-      const chapters = (book.Chapters != null ? book.Chapters : book.chapters) || 0;
+      const name = found.name || bookParam;
+      const chapters = (found.Chapters ?? found.chapters ?? 0) | 0;
 
-      // Page chrome
-      const h1 = document.getElementById('bookTitle');
-      const sub = document.getElementById('bookSubtitle');
-      if (h1) h1.textContent = book.name;
-      if (sub && book.date) sub.textContent = `Approx. date: ${book.date}`;
+      if (titleEl) titleEl.textContent = name;
+      if (descEl)  descEl.textContent  = found.description || '';
 
-      // Breadcrumbs (under hero)
-      const bc = document.getElementById('breadcrumbs');
-      if (bc){
-        bc.innerHTML = `
+      if (!chapters) {
+        renderError('No chapters defined for this book.');
+        return;
+      }
+
+      // Build chapter grid
+      if (gridEl) {
+        const frag = document.createDocumentFragment();
+        for (let i = 1; i <= chapters; i++) {
+          const a = document.createElement('a');
+          a.className = 'chapter-card';
+          a.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(name)}&chapter=${i}`;
+          a.textContent = i;
+          frag.appendChild(a);
+        }
+        gridEl.innerHTML = '';
+        gridEl.appendChild(frag);
+      }
+
+      // Breadcrumbs (under hero per your convention)
+      if (bcEl) {
+        bcEl.innerHTML = `
           <ol>
             <li><a href="${BASE}/index.html">Home</a></li>
             <li><a href="${BASE}/texts.html">Texts</a></li>
             <li><a href="${BASE}/newtestament.html">New Testament</a></li>
-            <li>${book.name}</li>
+            <li>${name}</li>
           </ol>`;
-      }
-
-      // Build chapter grid
-      const grid = document.getElementById('chaptersGrid');
-      if (grid){
-        const frag = document.createDocumentFragment();
-        for (let i=1;i<=chapters;i++){
-          const a = document.createElement('a');
-          a.className = 'chapter-pill';
-          a.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book.name)}&chapter=${i}`;
-          a.textContent = i;
-          frag.appendChild(a);
-        }
-        grid.innerHTML = '';
-        grid.appendChild(frag);
       }
     })
     .catch(err => {
-      const grid = document.getElementById('chaptersGrid');
-      if (grid){
-        grid.innerHTML = `<div class="muted">Book not found. Check your URL “book=” value and that it matches the “name” field in <code>data/newtestament/books.json</code>.</div>`;
-      }
-      console.error(err);
+      console.error('NT book loader error:', err);
+      renderError('Could not load book data.');
     });
 })();
-</script>
