@@ -5,193 +5,143 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* Page container */
-    .nt-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
-
-    /* Hero */
-    .hero-nt{padding:32px 0 16px;}
-    .hero-nt .page-title{
-      font-family: var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-weight:700;
-      font-size: clamp(2rem,3.3vw,3rem);
-      margin:0 0 .35rem;
-      color:#000;
-    }
-    .hero-nt .page-subtitle{
-      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
-      color:#6b7280; /* greyed */
-      font-size:1rem;
-      margin:0;
-    }
-    .hero-divider{height:12px;background:linear-gradient(90deg,var(--accent,#F17300) 0 140px,transparent 140px) bottom/100% 6px no-repeat;margin-top:16px;}
-
-    /* Two-column layout (label left, cards right) */
-    .pt-section{display:grid;grid-template-columns:minmax(180px,260px) 1fr;gap:24px;margin:28px 0;}
-    .pt-heading{
-      display:flex;flex-direction:column;gap:4px;
-      align-items:flex-start;justify-content:flex-start;padding-top:6px
-    }
-    .pt-heading .h{
-      font-weight:700;color:#000;letter-spacing:.25px;
-      font-size: clamp(1.05rem,1.4vw,1.25rem);
-    }
-    .pt-heading .sub{color:#6b7280;font-size:.95rem}
-
-    /* Cards grid */
-    .nt-pt{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
-    .pt-card{
-      display:block;background:#fff;border:1px solid #e6ebf2;border-radius:12px;
-      padding:10px 12px;box-shadow:0 2px 8px rgba(0,0,0,.04);text-decoration:none;position:relative;
-      transition:transform .12s ease, box-shadow .12s ease;
-    }
-    .pt-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
-    .pt-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-    .year{font-size:.75rem;color:#94a3b8}
-    .ord{font-size:.7rem;vertical-align:super;color:#64748b;margin-left:2px}
-
-    /* ABBR + Full name */
-    .abbr{
-      /* ⬆️ Requested change: make larger + bold */
-      font-weight:700;
-      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-      color: #F17300; /* accent */
-      line-height:1;
-      letter-spacing:.3px;
-    }
-    .fullname{
-      color:#054A91;
-      font-size:.92rem;
-      margin-top:2px;
-      line-height:1.2;
-    }
-  </style>
 </head>
 <body class="nt-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Breadcrumbs -->
-  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+  <main>
+    <!-- Universal hero -->
+    <section class="page-hero hero-nt">
+      <div class="container">
+        <h1 class="page-title">New Testament</h1>
+        <p class="page-subtitle">Explore the writings of the apostles and early church.</p>
 
-  <!-- Hero -->
-  <section class="hero-nt">
-    <div class="container">
-      <h1 class="page-title">New Testament</h1>
-      <p class="page-subtitle">The writings of the apostles and their companions, preserved for the God's elect.</p>
-    </div>
-    <div class="hero-divider"></div>
-  </section>
-
-  <main class="container">
-    <!-- A. Synoptic Gospels -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">Synoptic Gospels</div>
-        <div class="sub">Biography</div>
+        <!-- Breadcrumbs moved here (under hero title) -->
+        <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
       </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 60–65</span></div>
-          <div class="abbr">Mt</div>
-          <div class="fullname">Matthew</div>
-        </a>
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 55–65</span></div>
-          <div class="abbr">Mk</div>
-          <div class="fullname">Mark</div>
-        </a>
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 60–62</span></div>
-          <div class="abbr">Lk</div>
-          <div class="fullname">Luke</div>
-        </a>
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 80–95</span></div>
-          <div class="abbr">Jn</div>
-          <div class="fullname">John</div>
-        </a>
-      </div>
+      <div class="hero-divider"></div>
     </section>
 
-    <!-- B. History -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">History</div>
-        <div class="sub">Acts of Israelite Apostles</div>
-      </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 62–64</span></div>
-          <div class="abbr">Ac</div>
-          <div class="fullname">Acts</div>
-        </a>
-      </div>
-    </section>
+    <!-- CONTENT: keep your existing NT layout below.
+         If you already have sections/grids, you can keep them as-is.
+         Here’s a minimal scaffold in case you need it: -->
 
-    <!-- C. Paul Epistles A -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">Paul Epistles A</div>
-        <div class="sub">To Congregations (Scattered Elect)</div>
-      </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 57</span></div><div class="abbr">Rom</div><div class="fullname">Romans</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 55</span></div><div class="abbr">1&nbsp;Cor<sup class="ord">1</sup></div><div class="fullname">1 Corinthians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 56</span></div><div class="abbr">2&nbsp;Cor<sup class="ord">2</sup></div><div class="fullname">2 Corinthians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 48–49</span></div><div class="abbr">Gal</div><div class="fullname">Galatians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 60–62</span></div><div class="abbr">Eph</div><div class="fullname">Ephesians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 60–62</span></div><div class="abbr">Phil</div><div class="fullname">Philippians</div></a>
-      </div>
-    </section>
+    <section class="nt-sections">
+      <div class="container">
 
-    <!-- D. Paul Epistles B -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">Paul Epistles B</div>
-        <div class="sub">Letters to Friends (Instruction)</div>
-      </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 60–62</span></div><div class="abbr">Col</div><div class="fullname">Colossians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 50–51</span></div><div class="abbr">1&nbsp;Th<sup class="ord">1</sup></div><div class="fullname">1 Thessalonians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 51–52</span></div><div class="abbr">2&nbsp;Th<sup class="ord">2</sup></div><div class="fullname">2 Thessalonians</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 62–64</span></div><div class="abbr">1&nbsp;Tim<sup class="ord">1</sup></div><div class="fullname">1 Timothy</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 64–67</span></div><div class="abbr">2&nbsp;Tim<sup class="ord">2</sup></div><div class="fullname">2 Timothy</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 63–65</span></div><div class="abbr">Titus</div><div class="fullname">Titus</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 60–62</span></div><div class="abbr">Phlm</div><div class="fullname">Philemon</div></a>
-      </div>
-    </section>
+        <!-- A. Synoptic Gospels (Biography) -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">Synoptic Gospels</h2>
+            <p class="nt-sub">Biography</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <!-- Example cards (keep your own cards if you’ve already built them) -->
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Matthew&chapter=1">
+              <div class="pt-date">c. AD 60–65</div>
+              <div class="pt-abbr">Mt</div>
+              <div class="pt-name">Matthew</div>
+            </a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Mark&chapter=1">
+              <div class="pt-date">c. AD 55–60</div>
+              <div class="pt-abbr">Mk</div>
+              <div class="pt-name">Mark</div>
+            </a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Luke&chapter=1">
+              <div class="pt-date">c. AD 60–62</div>
+              <div class="pt-abbr">Lk</div>
+              <div class="pt-name">Luke</div>
+            </a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=John&chapter=1">
+              <div class="pt-date">c. AD 80–90</div>
+              <div class="pt-abbr">Jn</div>
+              <div class="pt-name">John</div>
+            </a>
+          </div>
+        </div>
 
-    <!-- E. Israelite Epistles -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">Israelite Epistles</div>
-        <div class="sub">Scattered Elect</div>
-      </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 60–70</span></div><div class="abbr">Heb</div><div class="fullname">Hebrews</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 40–50</span></div><div class="abbr">Jas</div><div class="fullname">James</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 62–64</span></div><div class="abbr">1&nbsp;Pet<sup class="ord">1</sup></div><div class="fullname">1 Peter</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 64–67</span></div><div class="abbr">2&nbsp;Pet<sup class="ord">2</sup></div><div class="fullname">2 Peter</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 85–95</span></div><div class="abbr">1&nbsp;Jn<sup class="ord">1</sup></div><div class="fullname">1 John</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 85–95</span></div><div class="abbr">2&nbsp;Jn<sup class="ord">2</sup></div><div class="fullname">2 John</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 85–95</span></div><div class="abbr">3&nbsp;Jn<sup class="ord">3</sup></div><div class="fullname">3 John</div></a>
-        <a class="pt-card" href="#"><div class="pt-top"><span class="year">AD 65–80</span></div><div class="abbr">Jude</div><div class="fullname">Jude</div></a>
-      </div>
-    </section>
+        <!-- B. History -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">History</h2>
+            <p class="nt-sub">Acts of Israelite Apostles</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Acts&chapter=1">
+              <div class="pt-date">c. AD 62–64</div>
+              <div class="pt-abbr">Ac</div>
+              <div class="pt-name">Acts</div>
+            </a>
+          </div>
+        </div>
 
-    <!-- F. Prophecy -->
-    <section class="pt-section">
-      <div class="pt-heading">
-        <div class="h">Prophecy</div>
-        <div class="sub">Apocalyptic</div>
-      </div>
-      <div class="nt-pt">
-        <a class="pt-card" href="#">
-          <div class="pt-top"><span class="year">AD 90–96</span></div>
-          <div class="abbr">Rev</div>
-          <div class="fullname">Revelation</div>
-        </a>
+        <!-- C. Paul’s Epistles to Congregations -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">Paul’s Epistles A</h2>
+            <p class="nt-sub">Scattered Elect</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Romans&chapter=1"><div class="pt-date">c. AD 57</div><div class="pt-abbr">Rom</div><div class="pt-name">Romans</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=1%20Corinthians&chapter=1"><div class="pt-date">c. AD 55</div><div class="pt-abbr">1Co</div><div class="pt-name">1 Corinthians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=2%20Corinthians&chapter=1"><div class="pt-date">c. AD 56</div><div class="pt-abbr">2Co</div><div class="pt-name">2 Corinthians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Galatians&chapter=1"><div class="pt-date">c. AD 48–49</div><div class="pt-abbr">Gal</div><div class="pt-name">Galatians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Ephesians&chapter=1"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Eph</div><div class="pt-name">Ephesians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Philippians&chapter=1"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Php</div><div class="pt-name">Philippians</div></a>
+          </div>
+        </div>
+
+        <!-- D. Paul’s Letters to Friends -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">Paul’s Epistles B</h2>
+            <p class="nt-sub">Instruction</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Colossians&chapter=1"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Col</div><div class="pt-name">Colossians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=1%20Thessalonians&chapter=1"><div class="pt-date">c. AD 50–51</div><div class="pt-abbr">1Th</div><div class="pt-name">1 Thessalonians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=2%20Thessalonians&chapter=1"><div class="pt-date">c. AD 51–52</div><div class="pt-abbr">2Th</div><div class="pt-name">2 Thessalonians</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=1%20Timothy&chapter=1"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr">1Ti</div><div class="pt-name">1 Timothy</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=2%20Timothy&chapter=1"><div class="pt-date">c. AD 64–67</div><div class="pt-abbr">2Ti</div><div class="pt-name">2 Timothy</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Titus&chapter=1"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr">Tit</div><div class="pt-name">Titus</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Philemon&chapter=1"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Phm</div><div class="pt-name">Philemon</div></a>
+          </div>
+        </div>
+
+        <!-- E. Israelite Epistles -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">Israelite Epistles</h2>
+            <p class="nt-sub">Scattered Elect</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Hebrews&chapter=1"><div class="pt-date">c. AD 60–70</div><div class="pt-abbr">Heb</div><div class="pt-name">Hebrews</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=James&chapter=1"><div class="pt-date">c. AD 40–45</div><div class="pt-abbr">Jas</div><div class="pt-name">James</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=1%20Peter&chapter=1"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr">1Pe</div><div class="pt-name">1 Peter</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=2%20Peter&chapter=1"><div class="pt-date">c. AD 64–67</div><div class="pt-abbr">2Pe</div><div class="pt-name">2 Peter</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=1%20John&chapter=1"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr">1Jn</div><div class="pt-name">1 John</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=2%20John&chapter=1"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr">2Jn</div><div class="pt-name">2 John</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=3%20John&chapter=1"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr">3Jn</div><div class="pt-name">3 John</div></a>
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Jude&chapter=1"><div class="pt-date">c. AD 65–80</div><div class="pt-abbr">Jud</div><div class="pt-name">Jude</div></a>
+          </div>
+        </div>
+
+        <!-- F. Prophecy -->
+        <div class="nt-row">
+          <aside class="nt-left">
+            <h2 class="nt-group">Prophecy</h2>
+            <p class="nt-sub">Apocalyptic</p>
+          </aside>
+          <div class="nt-right periodic-grid">
+            <a class="pt-card" href="/israelite-research/tanakh/chapter.html?book=Revelation&chapter=1">
+              <div class="pt-date">c. AD 95–96</div>
+              <div class="pt-abbr">Rev</div>
+              <div class="pt-name">Revelation</div>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
   </main>
