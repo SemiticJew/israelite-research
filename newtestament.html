@@ -3,265 +3,232 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>New Testament — Semitic Jew</title>
+  <title>The New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Page-local tweaks for NT layout */
-    .hero-nt .page-title { color: var(--accent, #F17300); }
-    .nt-wrap .container { max-width: 1200px; margin: 0 auto; }
+    .hero-simple{background:#fff;padding:28px 0 18px;border-bottom:1px solid #e6ebf2}
+    .hero-simple .page-title{color:#F17300;font-family:var(--ff-serif,"Adobe Garamond Pro",serif);margin:0}
+    .hero-simple .page-subtitle{color:#555;margin:.35rem 0 0}
+    .breadcrumb{margin:10px 0 14px}
 
-    /* Breadcrumbs sit directly above the left column */
-    .nt-breadcrumbs { margin: 0.75rem auto 1rem; }
+    .two-col-matrix{display:grid;grid-template-columns:260px 1fr;gap:24px 28px;align-items:start;margin-top:18px}
+    .two-col-matrix .left{position:relative;padding-right:20px;border-right:1px solid #e6ebf2}
+    .two-col-matrix .cat-name{font-weight:700;color:#81A4CD;margin:0;line-height:1.2}
+    .two-col-matrix .cat-note{margin:.15rem 0 .75rem;color:#9aa9c2;font-size:.95rem}
 
-    /* Two-column rows: left = category, right = cards */
-    .nt-row{
-      display:grid;
-      grid-template-columns: 220px 1fr;
-      gap: 1rem 2rem;
-      align-items:start;
-      margin-bottom: 1.25rem;
-    }
-    .nt-cat{
-      /* match abbr size; blue-grey per request */
-      --nt-abbr-size: clamp(1.05rem, 1.8vw, 1.25rem);
-      color:#81A4CD;
-      font-weight:700;
-      font-size: var(--nt-abbr-size);
-      line-height:1.2;
-      padding-top:.25rem;
-    }
-
-    /* Card grid on the right */
-    .nt-cards{
-      display:grid;
-      grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
-      gap: 12px;
-    }
-    .nt-card{
-      display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-      text-decoration:none; background:#fff; border:1px solid #e6ebf2;
-      border-radius:12px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,.04);
-      transition:transform .12s ease, box-shadow .12s ease;
-    }
-    .nt-card:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
-    .nt-card .date{ font-size:.8rem; color:#667; margin-bottom:.25rem; text-align:center; }
-    .nt-card .abbr{
-      /* same size token as category label */
-      font-weight:800; font-size: var(--nt-abbr-size);
-      color: var(--accent, #F17300);
-      line-height:1; text-align:center;
-    }
-    .nt-card .abbr sup{ font-size:.7em; top:-.4em; position:relative; }
-    .nt-card .full{
-      font-size:.9rem; color:#054A91; text-align:center; margin-top:.35rem;
-    }
+    .cat-row{display:flex;flex-wrap:wrap;gap:14px 12px}
+    .pcard{width:120px;border:1px solid #e6ebf2;border-radius:12px;background:#fff;
+           text-decoration:none;display:flex;flex-direction:column;align-items:center;
+           padding:10px 8px;transition:transform .08s ease, box-shadow .15s ease}
+    .pcard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+    .pc-date{font-size:.8rem;color:#666;text-align:center}
+    .pc-abbr{font-weight:800;color:#F17300;font-size:1.45rem;line-height:1.1;margin:.2rem 0 .3rem}
+    .pc-abbr sup{font-size:.7em;vertical-align:super}
+    .pc-name{font-size:.9rem;color:#054A91;text-align:center;margin-top:auto}
   </style>
 </head>
 <body>
-  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="nt-wrap">
-    <!-- Hero -->
-    <section class="page-hero hero-nt">
-      <div class="container">
-        <h1 class="page-title">New Testament</h1>
-        <p class="page-subtitle">Apostolic writings: gospel, history, epistles, and prophecy.</p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
-
-    <!-- Breadcrumbs (under hero, above the left column) -->
-    <div class="container nt-breadcrumbs">
-      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+  <section class="hero-simple">
+    <div class="container">
+      <h1 class="page-title">The New Testament</h1>
+      <p class="page-subtitle">Gospels, history, epistles, and prophecy of the Messiah and his apostles.</p>
     </div>
+  </section>
 
-    <!-- Catalog -->
-    <section class="container">
-      <!-- A -->
-      <div class="nt-row">
-        <div class="nt-cat">Synoptic Gospels</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Matthew">
-            <div class="date">c. AD 60–70</div>
-            <div class="abbr">Mt</div>
-            <div class="full">Matthew</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Mark">
-            <div class="date">c. AD 55–65</div>
-            <div class="abbr">Mk</div>
-            <div class="full">Mark</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Luke">
-            <div class="date">c. AD 60–70</div>
-            <div class="abbr">Lk</div>
-            <div class="full">Luke</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=John">
-            <div class="date">c. AD 80–90</div>
-            <div class="abbr">Jn</div>
-            <div class="full">John</div>
-          </a>
-        </div>
-      </div>
+  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-      <!-- B -->
-      <div class="nt-row">
-        <div class="nt-cat">History</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Acts">
-            <div class="date">c. AD 62–64</div>
-            <div class="abbr">Ac</div>
-            <div class="full">Acts</div>
-          </a>
-        </div>
+  <main class="container">
+    <div class="two-col-matrix">
+      <!-- A: Synoptic Gospels -->
+      <div class="left">
+        <h2 class="cat-name">Synoptic Gospels</h2>
+        <div class="cat-note">Biography of Jesus</div>
       </div>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Matthew">
+          <div class="pc-date">c. AD 60–70</div>
+          <div class="pc-abbr">Mt</div>
+          <div class="pc-name">Matthew</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Mark">
+          <div class="pc-date">c. AD 50–60</div>
+          <div class="pc-abbr">Mk</div>
+          <div class="pc-name">Mark</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Luke">
+          <div class="pc-date">c. AD 60–70</div>
+          <div class="pc-abbr">Lk</div>
+          <div class="pc-name">Luke</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=John">
+          <div class="pc-date">c. AD 80–90</div>
+          <div class="pc-abbr">Jn</div>
+          <div class="pc-name">John</div>
+        </a>
+      </section>
 
-      <!-- C -->
-      <div class="nt-row">
-        <div class="nt-cat">Paul Epistles A</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Romans">
-            <div class="date">c. AD 57</div>
-            <div class="abbr">Rom</div>
-            <div class="full">Romans</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=1%20Corinthians">
-            <div class="date">c. AD 55</div>
-            <div class="abbr"><sup>1</sup>Co</div>
-            <div class="full">1 Corinthians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=2%20Corinthians">
-            <div class="date">c. AD 56</div>
-            <div class="abbr"><sup>2</sup>Co</div>
-            <div class="full">2 Corinthians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Galatians">
-            <div class="date">c. AD 48–55</div>
-            <div class="abbr">Gal</div>
-            <div class="full">Galatians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Ephesians">
-            <div class="date">c. AD 60–62</div>
-            <div class="abbr">Eph</div>
-            <div class="full">Ephesians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Philippians">
-            <div class="date">c. AD 60–62</div>
-            <div class="abbr">Phil</div>
-            <div class="full">Philippians</div>
-          </a>
-        </div>
+      <!-- B: History -->
+      <div class="left">
+        <h2 class="cat-name">History</h2>
+        <div class="cat-note">Acts of the Apostles</div>
       </div>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Acts">
+          <div class="pc-date">c. AD 62–70</div>
+          <div class="pc-abbr">Ac</div>
+          <div class="pc-name">Acts</div>
+        </a>
+      </section>
 
-      <!-- D -->
-      <div class="nt-row">
-        <div class="nt-cat">Paul Epistles B</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Colossians">
-            <div class="date">c. AD 60–62</div>
-            <div class="abbr">Col</div>
-            <div class="full">Colossians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=1%20Thessalonians">
-            <div class="date">c. AD 50–51</div>
-            <div class="abbr"><sup>1</sup>Th</div>
-            <div class="full">1 Thessalonians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=2%20Thessalonians">
-            <div class="date">c. AD 51–52</div>
-            <div class="abbr"><sup>2</sup>Th</div>
-            <div class="full">2 Thessalonians</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=1%20Timothy">
-            <div class="date">c. AD 63–65</div>
-            <div class="abbr"><sup>1</sup>Tim</div>
-            <div class="full">1 Timothy</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=2%20Timothy">
-            <div class="date">c. AD 64–67</div>
-            <div class="abbr"><sup>2</sup>Tim</div>
-            <div class="full">2 Timothy</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Titus">
-            <div class="date">c. AD 63–65</div>
-            <div class="abbr">Tit</div>
-            <div class="full">Titus</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Philemon">
-            <div class="date">c. AD 60–62</div>
-            <div class="abbr">Phlm</div>
-            <div class="full">Philemon</div>
-          </a>
-        </div>
+      <!-- C: Paul’s Epistles A -->
+      <div class="left">
+        <h2 class="cat-name">Paul Epistles A</h2>
+        <div class="cat-note">To congregations</div>
       </div>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Romans">
+          <div class="pc-date">c. AD 57</div>
+          <div class="pc-abbr">Rom</div>
+          <div class="pc-name">Romans</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=1 Corinthians">
+          <div class="pc-date">c. AD 55</div>
+          <div class="pc-abbr"><sup>1</sup>Co</div>
+          <div class="pc-name">1 Corinthians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=2 Corinthians">
+          <div class="pc-date">c. AD 56</div>
+          <div class="pc-abbr"><sup>2</sup>Co</div>
+          <div class="pc-name">2 Corinthians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Galatians">
+          <div class="pc-date">c. AD 48–55</div>
+          <div class="pc-abbr">Gal</div>
+          <div class="pc-name">Galatians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Ephesians">
+          <div class="pc-date">c. AD 60–62</div>
+          <div class="pc-abbr">Eph</div>
+          <div class="pc-name">Ephesians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Philippians">
+          <div class="pc-date">c. AD 60–62</div>
+          <div class="pc-abbr">Phil</div>
+          <div class="pc-name">Philippians</div>
+        </a>
+      </section>
 
-      <!-- E -->
-      <div class="nt-row">
-        <div class="nt-cat">Israelite Epistles</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Hebrews">
-            <div class="date">c. AD 60–70</div>
-            <div class="abbr">Heb</div>
-            <div class="full">Hebrews</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=James">
-            <div class="date">c. AD 45–48</div>
-            <div class="abbr">Jas</div>
-            <div class="full">James</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=1%20Peter">
-            <div class="date">c. AD 62–64</div>
-            <div class="abbr"><sup>1</sup>Pet</div>
-            <div class="full">1 Peter</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=2%20Peter">
-            <div class="date">c. AD 64–67</div>
-            <div class="abbr"><sup>2</sup>Pet</div>
-            <div class="full">2 Peter</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=1%20John">
-            <div class="date">c. AD 85–95</div>
-            <div class="abbr"><sup>1</sup>Jn</div>
-            <div class="full">1 John</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=2%20John">
-            <div class="date">c. AD 85–95</div>
-            <div class="abbr"><sup>2</sup>Jn</div>
-            <div class="full">2 John</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=3%20John">
-            <div class="date">c. AD 85–95</div>
-            <div class="abbr"><sup>3</sup>Jn</div>
-            <div class="full">3 John</div>
-          </a>
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Jude">
-            <div class="date">c. AD 60–80</div>
-            <div class="abbr">Jude</div>
-            <div class="full">Jude</div>
-          </a>
-        </div>
+      <!-- D: Paul’s Epistles B -->
+      <div class="left">
+        <h2 class="cat-name">Paul Epistles B</h2>
+        <div class="cat-note">To friends (instruction)</div>
       </div>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Colossians">
+          <div class="pc-date">c. AD 60–62</div>
+          <div class="pc-abbr">Col</div>
+          <div class="pc-name">Colossians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=1 Thessalonians">
+          <div class="pc-date">c. AD 50–51</div>
+          <div class="pc-abbr"><sup>1</sup>Th</div>
+          <div class="pc-name">1 Thessalonians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=2 Thessalonians">
+          <div class="pc-date">c. AD 51–52</div>
+          <div class="pc-abbr"><sup>2</sup>Th</div>
+          <div class="pc-name">2 Thessalonians</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=1 Timothy">
+          <div class="pc-date">c. AD 62–64</div>
+          <div class="pc-abbr"><sup>1</sup>Tm</div>
+          <div class="pc-name">1 Timothy</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=2 Timothy">
+          <div class="pc-date">c. AD 64–67</div>
+          <div class="pc-abbr"><sup>2</sup>Tm</div>
+          <div class="pc-name">2 Timothy</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Titus">
+          <div class="pc-date">c. AD 62–64</div>
+          <div class="pc-abbr">Tit</div>
+          <div class="pc-name">Titus</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Philemon">
+          <div class="pc-date">c. AD 60–62</div>
+          <div class="pc-abbr">Phm</div>
+          <div class="pc-name">Philemon</div>
+        </a>
+      </section>
 
-      <!-- F -->
-      <div class="nt-row">
-        <div class="nt-cat">Prophecy</div>
-        <div class="nt-cards">
-          <a class="nt-card" href="/israelite-research/newtestament/book.html?book=Revelation">
-            <div class="date">c. AD 90–96</div>
-            <div class="abbr">Rev</div>
-            <div class="full">Revelation</div>
-          </a>
-        </div>
+      <!-- E: Israelite Epistles -->
+      <div class="left">
+        <h2 class="cat-name">Israelite Epistles</h2>
+        <div class="cat-note">To scattered elect</div>
       </div>
-    </section>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Hebrews">
+          <div class="pc-date">c. AD 60–70</div>
+          <div class="pc-abbr">Heb</div>
+          <div class="pc-name">Hebrews</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=James">
+          <div class="pc-date">c. AD 40–50</div>
+          <div class="pc-abbr">Jas</div>
+          <div class="pc-name">James</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=1 Peter">
+          <div class="pc-date">c. AD 60–64</div>
+          <div class="pc-abbr"><sup>1</sup>Pe</div>
+          <div class="pc-name">1 Peter</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=2 Peter">
+          <div class="pc-date">c. AD 64–68</div>
+          <div class="pc-abbr"><sup>2</sup>Pe</div>
+          <div class="pc-name">2 Peter</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=1 John">
+          <div class="pc-date">c. AD 85–95</div>
+          <div class="pc-abbr"><sup>1</sup>Jn</div>
+          <div class="pc-name">1 John</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=2 John">
+          <div class="pc-date">c. AD 85–95</div>
+          <div class="pc-abbr"><sup>2</sup>Jn</div>
+          <div class="pc-name">2 John</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=3 John">
+          <div class="pc-date">c. AD 85–95</div>
+          <div class="pc-abbr"><sup>3</sup>Jn</div>
+          <div class="pc-name">3 John</div>
+        </a>
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Jude">
+          <div class="pc-date">c. AD 65–80</div>
+          <div class="pc-abbr">Jud</div>
+          <div class="pc-name">Jude</div>
+        </a>
+      </section>
+
+      <!-- F: Prophecy -->
+      <div class="left">
+        <h2 class="cat-name">Prophecy</h2>
+        <div class="cat-note">Apocalyptic</div>
+      </div>
+      <section class="right cat-row">
+        <a class="pcard" href="/israelite-research/newtestament/book.html?book=Revelation">
+          <div class="pc-date">c. AD 90–96</div>
+          <div class="pc-abbr">Rv</div>
+          <div class="pc-name">Revelation</div>
+        </a>
+      </section>
+    </div>
   </main>
 
-  <!-- Footer partial -->
   <div id="site-footer"></div>
-
-  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 </body>
 </html>
+
