@@ -3,68 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chapter — Semitic Jew</title>
+  <title>Chapter — New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    .chapter-wrap{max-width:960px;margin:0 auto;padding:1rem 1rem 2.5rem}
-    .chapter-header{margin:0 0 1rem}
-    .chapter-title{font-family:var(--ff-serif, "Adobe Garamond Pro", serif);margin:0 0 .25rem}
-    .chapter-sub{color:#555;margin:0 0 .75rem}
-    .chapter-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}
-
+    /* Light safety styles so content renders even if main CSS is late */
+    .chapter-wrap{max-width:900px;margin:0 auto;padding:1rem}
     .verses{display:flex;flex-direction:column;gap:.5rem}
-    .verse-row{
-      display:grid;
-      grid-template-columns: 52px 1fr;
-      gap:0.75rem;
-      border:1px solid #e6ebf2;
-      background:#fff;
-      border-radius:8px;
-      padding:.65rem .75rem;
-    }
-    .verse-num{
-      font-weight:700; color:#333; text-decoration:none;
-      display:inline-block; width:42px; text-align:right;
-      position:sticky; left:0; align-self:flex-start;
-      scroll-margin-top:96px;
-    }
-    .verse-text{color:#0b2340; line-height:1.7}
-    .verse-actions{grid-column:1 / -1; display:flex; gap:.5rem; margin-top:.35rem}
-    .btn-sm{
-      font:inherit; font-size:.85rem; padding:.35rem .6rem; border-radius:6px;
-      border:1px solid #d9e1ee; background:#f7f9fd; color:#054A91; cursor:pointer;
-    }
-    .btn-sm:hover{background:#eef3fb}
-    .panel{
-      grid-column:1 / -1; display:none; border-top:1px dashed #e1e6f0;
-      padding:.55rem .25rem .25rem; color:#333; background:#fafcff; border-radius:0 0 6px 6px;
-    }
-    .panel.open{display:block}
-    .xref-list{display:flex; flex-wrap:wrap; gap:.4rem .8rem; padding:.25rem 0}
-    .xref-list a{color:#054A91; text-decoration:underline dotted}
   </style>
 </head>
-<body>
+<body class="nt-chapter-page">
+  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <main class="container chapter-page">
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
+  <!-- Hero -->
+  <section class="page-hero hero-texts">
+    <div class="container">
+      <h1 id="chapterTitle" class="page-title">Loading…</h1>
+      <p id="chapterDesc" class="page-subtitle"></p>
+    </div>
+    <div class="hero-divider"></div>
+  </section>
 
-    <section class="chapter-wrap">
-      <header class="chapter-header">
-        <h1 class="chapter-title" id="chapterTitle">Loading…</h1>
-        <p class="chapter-sub" id="chapterSub"></p>
-        <div class="chapter-controls" id="chapterControls"></div>
-      </header>
+  <!-- Breadcrumbs (under hero) -->
+  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-      <div class="verses" id="verses"></div>
+  <main class="chapter-wrap">
+    <!-- Verses (populated by JS) -->
+    <section id="verses" class="verses" aria-live="polite">
+      <div class="muted">Loading…</div>
     </section>
+
+    <!-- Prev / Next chapter controls -->
+    <nav class="chapter-nav container" style="display:flex;justify-content:space-between;margin:1.25rem 0 0;">
+      <a id="prevChapter" class="btn prev" href="#" style="visibility:hidden">← Previous</a>
+      <a id="nextChapter" class="btn next" href="#">Next →</a>
+    </nav>
   </main>
 
+  <!-- Footer partial -->
   <div id="site-footer"></div>
 
+  <!-- Partials + Breadcrumbs + NT chapter loader -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <!-- This script should mirror your Tanakh chapter.js but read /data/newtestament/... and wire prev/next -->
   <script src="/israelite-research/js/chapter-nt.js" defer></script>
 </body>
 </html>
