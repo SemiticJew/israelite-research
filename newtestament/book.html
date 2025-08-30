@@ -1,46 +1,38 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>New Testament — Book — Semitic Jew</title>
+  <title>Book — New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 </head>
-<body class="text-book-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Hero -->
-  <section class="page-hero hero-texts">
+  <!-- Breadcrumbs (under hero, consistent sitewide) -->
+  <section class="page-hero hero-text">
     <div class="container">
       <h1 id="bookTitle" class="page-title">Loading…</h1>
-      <p id="bookDesc" class="page-subtitle"></p>
+      <p id="bookSubtitle" class="page-subtitle"></p>
     </div>
     <div class="hero-divider"></div>
   </section>
 
-  <!-- Breadcrumbs (under hero) -->
   <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-  <main>
-    <section class="container" style="padding-top:1rem;">
-      <!-- Chapter grid (populated by JS) -->
-      <div id="chaptersGrid" class="chapters-grid" aria-live="polite">
-        <!-- JS will render 1..N chapter cards -->
-      </div>
+  <main class="container" style="padding-top:1rem;">
+    <section id="chapters" class="chapters-grid" aria-live="polite">
+      <div class="muted">Loading…</div>
     </section>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + NT book loader -->
+  <!-- Partials + NT Book loader (absolute paths) -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
- <script src="/israelite-research/js/book-nt.js" defer></script>
-  <!-- This script should already exist; it mirrors the Tanakh book loader but reads /data/newtestament/... -->
   <script src="/israelite-research/js/book-nt.js" defer></script>
 </body>
 </html>

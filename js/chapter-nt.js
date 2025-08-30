@@ -1,7 +1,3 @@
-// Chapter loader for New Testament pages (GitHub Pages friendly)
-// Order per verse: [Tools] [Copy] [#] [Text]
-// Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
-
 (function () {
   const BASE = '/israelite-research';
 
@@ -9,10 +5,9 @@
   const book = qs.get('book') || 'Revelation';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  // folder = lowercase book name, keep letters/numbers/hyphens only
   const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  // Breadcrumbs (under hero)
+  // Breadcrumbs
   try {
     const bc = document.getElementById('breadcrumbs');
     if (bc) {
@@ -47,7 +42,7 @@
         versesEl.innerHTML =
           `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code>.</div>`;
       }
-      console.error('Chapter load error:', err);
+      console.error('NT chapter load error:', err);
     });
 
   function renderChapter(data) {
@@ -56,21 +51,20 @@
       versesEl.innerHTML = `<div class="muted">No verses found.</div>`;
       return;
     }
-
     const frag = document.createDocumentFragment();
-
     data.verses.forEach(v => {
-      const row = el('div', 'verse-row');
-      // Four columns to match control order: [Tools] [Copy] [#] [Text]
+      const row = document.createElement('div');
+      row.className = 'verse-row';
       row.style.display = 'grid';
-      row.style.gridTemplateColumns = 'auto auto 44px 1fr';
+      row.style.gridTemplateColumns = 'auto auto 44px 1fr'; // [Tools] [Copy] [#] [Text]
       row.style.gap = '0.6rem';
       row.style.alignItems = 'start';
       row.id = `v${v.num}`;
 
-      // Tools button (leftmost) — blue background per site palette
-      const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
+      const toolsBtn = document.createElement('button');
+      toolsBtn.className = 'tools-btn';
       toolsBtn.type = 'button';
+      toolsBtn.textContent = 'Tools ▾';
       toolsBtn.setAttribute('aria-expanded', 'false');
       toolsBtn.style.background = '#054A91';
       toolsBtn.style.color = '#fff';
@@ -78,13 +72,9 @@
       toolsBtn.style.borderRadius = '8px';
       toolsBtn.style.padding = '.25rem .6rem';
       toolsBtn.style.cursor = 'pointer';
-      toolsBtn.style.transition = 'transform .06s ease';
-      toolsBtn.addEventListener('mousedown', () => { toolsBtn.style.transform = 'translateY(1px)'; });
-      toolsBtn.addEventListener('mouseup',   () => { toolsBtn.style.transform = 'translateY(0)'; });
-      toolsBtn.addEventListener('mouseleave',() => { toolsBtn.style.transform = 'translateY(0)'; });
 
-      // Copy button (icon-only)
-      const copyBtn = el('button', 'copy-btn');
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
       copyBtn.type = 'button';
       copyBtn.title = 'Copy verse';
       copyBtn.setAttribute('aria-label', 'Copy verse');
@@ -96,98 +86,53 @@
       copyBtn.style.border = '1px solid #e6ebf2';
       copyBtn.style.background = '#fff';
       copyBtn.style.borderRadius = '8px';
-      copyBtn.style.cursor = 'pointer';
       copyBtn.innerHTML =
         '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
         '<path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/>' +
         '</svg>';
 
-      // Verse number
-      const num = el('div', 'vnum', String(v.num));
+      const num = document.createElement('div');
+      num.className = 'vnum';
+      num.textContent = String(v.num);
 
-      // Verse text
-      const txt = el('div', 'vtext', v.text || '');
+      const txt = document.createElement('div');
+      txt.className = 'vtext';
+      txt.textContent = v.text || '';
 
-      // Tools panel (tabs)
       const panel = buildToolsPanel(v, { book, chapter });
       panel.hidden = true;
-      panel.style.gridColumn = '1 / -1'; // full width when opened
+      panel.style.gridColumn = '1 / -1';
       panel.style.marginTop = '.5rem';
       panel.style.borderTop = '1px dashed #e0e6ef';
       panel.style.paddingTop = '.5rem';
 
-      // Interactions
       toolsBtn.addEventListener('click', () => {
         const open = panel.hidden;
         panel.hidden = !open;
         toolsBtn.textContent = open ? 'Tools ▴' : 'Tools ▾';
         toolsBtn.setAttribute('aria-expanded', String(open));
       });
-
       copyBtn.addEventListener('click', async () => {
         const payload = `${book} ${chapter}:${v.num} ${v.text || ''}`.trim();
-        try {
-          await navigator.clipboard.writeText(payload);
-          flash(copyBtn, '✓');
-        } catch {
-          flash(copyBtn, '⌘/Ctrl+C');
-        }
+        try { await navigator.clipboard.writeText(payload); copyBtn.innerHTML = '<span style="font-size:12px;color:#054A91;">✓</span>'; }
+        catch { copyBtn.innerHTML = '<span style="font-size:12px;color:#054A91;">⌘/Ctrl+C</span>'; }
+        setTimeout(()=>copyBtn.innerHTML =
+          '<svg width="16" height="16" viewBox="0 0 24 24"><path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/></svg>',
+        900);
       });
 
-      // Append in requested order
       row.append(toolsBtn, copyBtn, num, txt, panel);
       frag.appendChild(row);
     });
 
     versesEl.innerHTML = '';
     versesEl.appendChild(frag);
-
-    // Prev / Next chapter links
-    const prev = document.getElementById('prevChapter');
-    const next = document.getElementById('nextChapter');
-    if (prev && chapter > 1) {
-      prev.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter-1}`;
-      prev.style.visibility = 'visible';
-      prev.textContent = `← Chapter ${chapter-1}`;
-    }
-    if (next) {
-      next.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
-      next.style.visibility = 'visible';
-      next.textContent = `Chapter ${chapter+1} →`;
-    }
   }
 
-  // ------- helpers -------
-
-  function el(tag, cls, text) {
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function flash(btn, msg) {
-    const old = btn.innerHTML;
-    btn.innerHTML = `<span style="font-size:12px;color:#054A91;">${msg}</span>`;
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.innerHTML = old;
-      btn.disabled = false;
-    }, 900);
-  }
-
-  // Build tabbed tools panel for one verse
   function buildToolsPanel(v, ctx) {
-    const wrap = el('div', 'tools');
-
-    // Tab header
-    const tabsBar = el('div', 'tools-tabs');
-    tabsBar.style.display = 'flex';
-    tabsBar.style.flexWrap = 'wrap';
-    tabsBar.style.gap = '.4rem';
-    tabsBar.style.marginBottom = '.5rem';
-
-    const contentWrap = el('div', 'tools-contents');
+    const wrap = document.createElement('div'); wrap.className = 'tools';
+    const tabsBar = document.createElement('div'); tabsBar.style.display='flex'; tabsBar.style.gap='.4rem'; tabsBar.style.marginBottom='.5rem';
+    const contentWrap = document.createElement('div');
 
     const sections = [
       ['Cross-Refs', buildCrossRefs(v)],
@@ -197,47 +142,33 @@
     ];
 
     const btns = sections.map(([label, content], i) => {
-      const b = el('button', 'tab-btn', label);
-      b.type = 'button';
-      b.style.border = '1px solid #e6ebf2';
-      b.style.background = '#f8fafc';
-      b.style.borderRadius = '8px';
-      b.style.padding = '.25rem .6rem';
-      b.style.cursor = 'pointer';
-      b.setAttribute('aria-controls', `pane-${label}`);
+      const b = document.createElement('button');
+      b.type='button'; b.textContent=label;
+      b.style.border='1px solid #e6ebf2'; b.style.background='#f8fafc'; b.style.borderRadius='8px';
+      b.style.padding='.25rem .6rem'; b.style.cursor='pointer';
       b.addEventListener('click', () => activate(i));
       tabsBar.appendChild(b);
-
-      content.id = `pane-${label}`;
-      content.style.display = 'none';
-      contentWrap.appendChild(content);
+      content.style.display='none'; contentWrap.appendChild(content);
       return b;
     });
 
-    function activate(idx) {
-      sections.forEach(([, node], i) => {
-        node.style.display = i === idx ? 'block' : 'none';
-      });
-      btns.forEach((b, i) => {
-        b.style.background = i === idx ? '#fff' : '#f8fafc';
-      });
+    function activate(idx){
+      sections.forEach(([,node],i)=> node.style.display = (i===idx?'block':'none'));
+      btns.forEach((b,i)=> b.style.background = (i===idx?'#fff':'#f8fafc'));
     }
-    activate(0); // Cross-Refs first
-
+    activate(0);
     wrap.append(tabsBar, contentWrap);
     return wrap;
   }
 
-  function buildCrossRefs(v) {
-    const box = el('div');
-    if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
-      v.crossRefs.forEach(cr => {
+  function buildCrossRefs(v){
+    const box = document.createElement('div');
+    if (Array.isArray(v.crossRefs) && v.crossRefs.length){
+      v.crossRefs.forEach(cr=>{
         const a = document.createElement('a');
-        a.className = 'xref';
-        a.href = '#';
-        a.textContent = cr.ref + (cr.note ? ` — ${cr.note}` : '');
-        a.style.display = 'block';
-        a.style.margin = '.15rem 0';
+        a.className='xref'; a.href='#';
+        a.textContent = cr.ref + (cr.note?` — ${cr.note}`:'');
+        a.style.display='block'; a.style.margin='.15rem 0';
         box.appendChild(a);
       });
     } else {
@@ -246,92 +177,46 @@
     return box;
   }
 
-  // Commentary with localStorage save per verse
-  function buildCommentary(v, { book, chapter }) {
+  function buildCommentary(v, {book,chapter}){
     const key = `commentary:${book}:${chapter}:${v.num}`;
-
-    const box = el('div');
-    const ta = document.createElement('textarea');
-    ta.rows = 4;
-    ta.style.width = '100%';
-    ta.style.border = '1px solid #e6ebf2';
-    ta.style.borderRadius = '8px';
-    ta.style.padding = '.5rem';
-    ta.placeholder = 'Write personal commentary… (saved locally)';
-
+    const box = document.createElement('div');
+    const ta = document.createElement('textarea'); ta.rows=4; ta.style.width='100%';
+    ta.style.border='1px solid #e6ebf2'; ta.style.borderRadius='8px'; ta.style.padding='.5rem';
+    ta.placeholder='Write personal commentary… (saved locally)';
     ta.value = (localStorage.getItem(key) || v.commentary || '').trim();
-
-    const save = el('button', 'save-comm', 'Save');
-    save.type = 'button';
-    save.style.marginTop = '.4rem';
-    save.style.border = '1px solid #e6ebf2';
-    save.style.background = '#fff';
-    save.style.borderRadius = '8px';
-    save.style.padding = '.25rem .6rem';
-    save.style.cursor = 'pointer';
-    save.addEventListener('click', () => {
-      localStorage.setItem(key, ta.value.trim());
-      flash(save, 'Saved');
-    });
-
-    box.append(ta, save);
-    return box;
+    const save = document.createElement('button'); save.type='button'; save.textContent='Save';
+    save.style.marginTop='.4rem'; save.style.border='1px solid #e6ebf2'; save.style.background='#fff';
+    save.style.borderRadius='8px'; save.style.padding='.25rem .6rem';
+    save.addEventListener('click', ()=>{ localStorage.setItem(key, ta.value.trim()); save.textContent='Saved'; setTimeout(()=>save.textContent='Save',900); });
+    box.append(ta, save); return box;
   }
 
-  // Lexicon: compact list from v.strongs (if present)
-  function buildLexicon(v) {
-    const box = el('div');
+  function buildLexicon(v){
+    const box = document.createElement('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
-    if (!arr.length) {
-      box.innerHTML = `<div class="muted">—</div>`;
-      return box;
-    }
-    const ul = document.createElement('ul');
-    ul.style.margin = '0';
-    ul.style.paddingLeft = '1rem';
-    arr.forEach(s => {
-      const li = document.createElement('li');
-      const num = s.num || '';
-      const lemma = s.lemma || '';
-      const gloss = s.gloss || '';
-      li.textContent = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
+    if (!arr.length){ box.innerHTML = `<div class="muted">—</div>`; return box; }
+    const ul = document.createElement('ul'); ul.style.margin='0'; ul.style.paddingLeft='1rem';
+    arr.forEach(s=>{
+      const li=document.createElement('li');
+      li.textContent = `${s.num||''} — ${(s.lemma||'')}${s.gloss?`: ${s.gloss}`:''}`;
       ul.appendChild(li);
     });
-    box.appendChild(ul);
-    return box;
+    box.appendChild(ul); return box;
   }
 
-  // Strong's: compact sentence line with hover details
-  function buildStrongsSentence(v) {
-    const box = el('div');
+  function buildStrongsSentence(v){
+    const box = document.createElement('div');
     const arr = Array.isArray(v.strongs) ? v.strongs : [];
-    if (!arr.length) {
-      box.innerHTML = `<div class="muted">—</div>`;
-      return box;
-    }
-    const p = document.createElement('p');
-    p.style.margin = '0';
-    p.style.lineHeight = '1.6';
-
-    arr.forEach((s, i) => {
-      const span = document.createElement('span');
-      span.className = 'strong-token';
-      span.style.whiteSpace = 'nowrap';
-      span.style.borderBottom = '1px dotted #c9d4e5';
-      span.style.cursor = 'help';
-
-      const num = s.num || '';
-      const lemma = s.lemma || '';
-      const gloss = s.gloss || '';
-
-      span.title = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
-      span.textContent = `${num}${lemma ? ` (${lemma}` : ''}${gloss ? ` — ${gloss}` : ''}${lemma ? `)` : ''}`;
-
-      p.appendChild(span);
-      if (i !== arr.length - 1) p.appendChild(document.createTextNode('; '));
+    if (!arr.length){ box.innerHTML = `<div class="muted">—</div>`; return box; }
+    const p = document.createElement('p'); p.style.margin='0'; p.style.lineHeight='1.6';
+    arr.forEach((s,i)=>{
+      const span=document.createElement('span');
+      span.style.whiteSpace='nowrap'; span.style.borderBottom='1px dotted #c9d4e5'; span.style.cursor='help';
+      const num=s.num||'', lemma=s.lemma||'', gloss=s.gloss||'';
+      span.title = `${num} — ${lemma}${gloss?`: ${gloss}`:''}`;
+      span.textContent = `${num}${lemma?` (${lemma}`:''}${gloss?` — ${gloss}`:''}${lemma?`)`:''}`;
+      p.appendChild(span); if(i!==arr.length-1) p.appendChild(document.createTextNode('; '));
     });
-
-    box.appendChild(p);
-    return box;
+    box.appendChild(p); return box;
   }
 })();
