@@ -1,242 +1,337 @@
-// /israelite-research/js/chapter.js
-(() => {
-  const ROOT = location.pathname.includes('/israelite-research/')
-    ? '/israelite-research/'
-    : '/';
-  const params = new URLSearchParams(location.search);
-  const rawBook = params.get('book') || '';
-  const chapter = params.get('chapter') || '1';
+// Chapter loader for New Testament pages (GitHub Pages friendly)
+// Order per verse: [Tools] [Copy] [#] [Text]
+// Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)
 
-  // Detect corpus from URL path
-  const corpus = location.pathname.includes('/newtestament/')
-    ? 'newtestament'
-    : 'tanakh';
+(function () {
+  const BASE = '/israelite-research';
 
-  // Slug rules for your data folders (lowercase, words -> hyphens)
-  const slugify = s => s
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+  const qs = new URLSearchParams(location.search);
+  const book = qs.get('book') || 'Revelation';
+  const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
 
-  const bookSlug = slugify(rawBook);
-  const dataURL = `${ROOT}data/${corpus}/${bookSlug}/${chapter}.json`;
+  // folder = lowercase book name, keep letters/numbers/hyphens only
+  const folder = book.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
-  const el = {
-    header: document.getElementById('chapterHeader'),
-    verses: document.getElementById('verses'),
-    crumb: document.getElementById('breadcrumbs')
-  };
+  // Breadcrumbs (under hero)
+  try {
+    const bc = document.getElementById('breadcrumbs');
+    if (bc) {
+      bc.innerHTML = `
+        <ol>
+          <li><a href="${BASE}/index.html">Home</a></li>
+          <li><a href="${BASE}/texts.html">Texts</a></li>
+          <li><a href="${BASE}/newtestament.html">New Testament</a></li>
+          <li><a href="${BASE}/newtestament/book.html?book=${encodeURIComponent(book)}">${book}</a></li>
+          <li>Chapter ${chapter}</li>
+        </ol>`;
+    }
+  } catch {}
 
-  // Build breadcrumbs (keeps your universal logic, just a safe fallback)
-  function renderCrumbs() {
-    if (!el.crumb) return;
-    const home = `${ROOT}index.html`;
-    const texts = `${ROOT}texts.html`;
-    const tanakh = `${ROOT}${corpus === 'tanakh' ? 'tanakh.html' : 'newtestament.html'}`;
-    const bookPage = `${ROOT}${corpus}/book.html?book=${encodeURIComponent(rawBook)}`;
-    el.crumb.innerHTML = `
-      <ol>
-        <li><a href="${home}">Home</a></li>
-        <li><a href="${texts}">Texts</a></li>
-        <li><a href="${tanakh}">${corpus === 'tanakh' ? 'Tanakh' : 'New Testament'}</a></li>
-        <li><a href="${bookPage}">${rawBook}</a></li>
-        <li>Chapter ${chapter}</li>
-      </ol>
-    `;
-  }
+  const titleEl  = document.getElementById('chapterTitle');
+  const descEl   = document.getElementById('chapterDesc');
+  const versesEl = document.getElementById('verses');
 
-  function emptyMsg(label = 'Coming soon') {
-    return `<div class="empty-msg" style="color:#666;font-size:.95rem;">${label}</div>`;
-  }
+  if (titleEl) titleEl.textContent = `${book} ${chapter}`;
+  if (descEl)  descEl.textContent  = '';
 
-  function notesKey(vnum) {
-    return `notes:${corpus}:${bookSlug}:${chapter}:${vnum}`;
-  }
+  const url = `${BASE}/data/newtestament/${folder}/${chapter}.json`;
 
-  function renderCrossRefs(list = []) {
-    if (!list.length) return emptyMsg('No cross references yet.');
-    return `
-      <ul class="xrefs-list" style="padding-left:1rem; margin:.5rem 0;">
-        ${list.map(x => `
-          <li style="margin:.25rem 0;">
-            <strong>${x.ref || ''}</strong>${x.note ? ` — ${x.note}` : ''}
-          </li>
-        `).join('')}
-      </ul>
-    `;
-  }
-
-  function renderCommentary(text = '') {
-    return text?.trim()
-      ? `<div class="commentary-text" style="white-space:pre-wrap">${text}</div>`
-      : emptyMsg('No commentary yet.');
-  }
-
-  function renderLexicon(list = []) {
-    if (!list || !list.length) return emptyMsg('No lexicon entries for this verse (yet).');
-    return `
-      <table class="lexicon-table" style="width:100%;border-collapse:collapse;border:1px solid #e6ebf2;">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding:.4rem;border-bottom:1px solid #e6ebf2;">Lemma</th>
-            <th style="text-align:left;padding:.4rem;border-bottom:1px solid #e6ebf2;">Strong’s</th>
-            <th style="text-align:left;padding:.4rem;border-bottom:1px solid #e6ebf2;">Gloss</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${list.map(row => `
-            <tr>
-              <td style="padding:.4rem;border-top:1px solid #f1f3f7;">${row.lemma || ''}</td>
-              <td style="padding:.4rem;border-top:1px solid #f1f3f7;">${row.strong || ''}</td>
-              <td style="padding:.4rem;border-top:1px solid #f1f3f7;">${row.gloss || ''}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    `;
-  }
-
-  function renderStrongs(list = []) {
-    if (!list || !list.length) return emptyMsg('No Strong’s entries for this verse (yet).');
-    return `
-      <ul class="strongs-list" style="padding-left:1rem; margin:.5rem 0;">
-        ${list.map(s => `
-          <li style="margin:.25rem 0;">
-            <strong>${s.number || ''}</strong>
-            ${s.lemma ? ` — ${s.lemma}` : ''}
-            ${s.meaning ? `: ${s.meaning}` : ''}
-          </li>
-        `).join('')}
-      </ul>
-    `;
-  }
-
-  function renderNotesArea(vnum) {
-    const saved = localStorage.getItem(notesKey(vnum)) || '';
-    const id = `notes-ta-${vnum}`;
-    return `
-      <div class="notes-wrap">
-        <textarea id="${id}" rows="5" style="width:100%;padding:.6rem;border:1px solid #e6ebf2;border-radius:8px;">${saved}</textarea>
-        <button class="btn-save-note" data-v="${vnum}" style="margin-top:.5rem;padding:.4rem .8rem;border:1px solid #e6ebf2;border-radius:8px;background:#fff;cursor:pointer;">
-          Save notes
-        </button>
-        <span class="notes-status" id="${id}-status" style="margin-left:.5rem;color:#666;font-size:.9rem;"></span>
-      </div>
-    `;
-  }
-
-  function buildVerseRow(v) {
-    const vnum = v.num;
-    return `
-      <div class="verse-row" id="v${vnum}" style="border-bottom:1px solid #eef2f7;padding:.6rem 0;">
-        <div class="verse-head" style="display:flex;align-items:flex-start;gap:.6rem;">
-          <div class="verse-num" style="min-width:2.2rem;text-align:right;color:#666;">${vnum}</div>
-          <div class="verse-text" style="flex:1 1 auto;">${v.text || ''}</div>
-          <button class="tools-btn" data-v="${vnum}" aria-expanded="false"
-            style="margin-left:auto;padding:.25rem .5rem;border:1px solid #e6ebf2;border-radius:6px;background:#fff;cursor:pointer;">
-            Tools
-          </button>
-        </div>
-
-        <div class="verse-tools" id="tools-${vnum}" hidden style="margin:.5rem 0 .75rem; padding:.6rem; border:1px solid #e6ebf2; border-radius:10px; background:#fafcff;">
-          <div class="tabs" role="tablist" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem;">
-            <button class="tab active" data-tab="xrefs" role="tab" aria-selected="true"
-              style="padding:.3rem .6rem;border:1px solid #e6ebf2;border-radius:999px;background:#fff;cursor:pointer;">Cross Refs</button>
-            <button class="tab" data-tab="commentary" role="tab" aria-selected="false"
-              style="padding:.3rem .6rem;border:1px solid #e6ebf2;border-radius:999px;background:#fff;cursor:pointer;">Commentary</button>
-            <button class="tab" data-tab="lexicon" role="tab" aria-selected="false"
-              style="padding:.3rem .6rem;border:1px solid #e6ebf2;border-radius:999px;background:#fff;cursor:pointer;">Lexicon</button>
-            <button class="tab" data-tab="strongs" role="tab" aria-selected="false"
-              style="padding:.3rem .6rem;border:1px solid #e6ebf2;border-radius:999px;background:#fff;cursor:pointer;">Strong’s</button>
-            <button class="tab" data-tab="notes" role="tab" aria-selected="false"
-              style="padding:.3rem .6rem;border:1px solid #e6ebf2;border-radius:999px;background:#fff;cursor:pointer;">Notes</button>
-          </div>
-
-          <div class="panels">
-            <div class="panel" data-panel="xrefs">${renderCrossRefs(v.crossRefs)}</div>
-            <div class="panel" data-panel="commentary" hidden>${renderCommentary(v.commentary)}</div>
-            <div class="panel" data-panel="lexicon" hidden>${renderLexicon(v.lexicon)}</div>
-            <div class="panel" data-panel="strongs" hidden>${renderStrongs(v.strongs)}</div>
-            <div class="panel" data-panel="notes" hidden>${renderNotesArea(vnum)}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function wireEvents(container, data) {
-    // Tools open/close
-    container.addEventListener('click', (e) => {
-      const btn = e.target.closest('.tools-btn');
-      if (btn) {
-        const v = btn.getAttribute('data-v');
-        const panel = document.getElementById(`tools-${v}`);
-        const open = panel.hasAttribute('hidden') ? false : true;
-        if (open) {
-          panel.setAttribute('hidden', '');
-          btn.setAttribute('aria-expanded', 'false');
-        } else {
-          panel.removeAttribute('hidden');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+  fetch(url, { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(renderChapter)
+    .catch(err => {
+      if (versesEl) {
+        versesEl.innerHTML =
+          `<div class="muted">Could not load ${book} ${chapter}. Check <code>${url}</code>.</div>`;
       }
-
-      // Tabs switch
-      const tab = e.target.closest('.tab');
-      if (tab) {
-        const tabsWrap = tab.parentElement;
-        const toolsWrap = tabsWrap.parentElement;
-        const target = tab.getAttribute('data-tab');
-
-        tabsWrap.querySelectorAll('.tab').forEach(b => {
-          b.classList.toggle('active', b === tab);
-          b.setAttribute('aria-selected', b === tab ? 'true' : 'false');
-        });
-        toolsWrap.querySelectorAll('.panel').forEach(p => {
-          p.toggleAttribute('hidden', p.getAttribute('data-panel') !== target);
-        });
-      }
-
-      // Save notes
-      const saveBtn = e.target.closest('.btn-save-note');
-      if (saveBtn) {
-        const vnum = saveBtn.getAttribute('data-v');
-        const ta = document.getElementById(`notes-ta-${vnum}`);
-        const status = document.getElementById(`notes-ta-${vnum}-status`);
-        localStorage.setItem(notesKey(vnum), ta.value);
-        if (status) { status.textContent = 'Saved'; setTimeout(()=>status.textContent='', 1200); }
-      }
+      console.error('Chapter load error:', err);
     });
-  }
 
-  async function init() {
-    renderCrumbs();
-
-    if (el.header) {
-      el.header.innerHTML = `
-        <h1 class="page-title" style="margin:0 0 .25rem 0;">${rawBook} ${chapter}</h1>
-      `;
+  function renderChapter(data) {
+    if (!versesEl) return;
+    if (!data || !Array.isArray(data.verses)) {
+      versesEl.innerHTML = `<div class="muted">No verses found.</div>`;
+      return;
     }
 
-    if (!el.verses) return;
+    const frag = document.createDocumentFragment();
 
-    try {
-      const res = await fetch(dataURL, { cache: 'no-cache' });
-      if (!res.ok) throw new Error('Failed to load chapter JSON');
-      const data = await res.json();
+    data.verses.forEach(v => {
+      const row = el('div', 'verse-row');
+      // Four columns to match control order: [Tools] [Copy] [#] [Text]
+      row.style.display = 'grid';
+      row.style.gridTemplateColumns = 'auto auto 44px 1fr';
+      row.style.gap = '0.6rem';
+      row.style.alignItems = 'start';
+      row.id = `v${v.num}`;
 
-      // Render verses
-      el.verses.innerHTML = (data.verses || [])
-        .map(buildVerseRow)
-        .join('');
+      // Tools button (leftmost) — blue background per site palette
+      const toolsBtn = el('button', 'tools-btn', 'Tools ▾');
+      toolsBtn.type = 'button';
+      toolsBtn.setAttribute('aria-expanded', 'false');
+      toolsBtn.style.background = '#054A91';
+      toolsBtn.style.color = '#fff';
+      toolsBtn.style.border = '1px solid #054A91';
+      toolsBtn.style.borderRadius = '8px';
+      toolsBtn.style.padding = '.25rem .6rem';
+      toolsBtn.style.cursor = 'pointer';
+      toolsBtn.style.transition = 'transform .06s ease';
+      toolsBtn.addEventListener('mousedown', () => { toolsBtn.style.transform = 'translateY(1px)'; });
+      toolsBtn.addEventListener('mouseup',   () => { toolsBtn.style.transform = 'translateY(0)'; });
+      toolsBtn.addEventListener('mouseleave',() => { toolsBtn.style.transform = 'translateY(0)'; });
 
-      wireEvents(el.verses, data);
-    } catch (err) {
-      el.verses.innerHTML = `<div style="color:#b00020;">Could not load chapter data.</div>`;
-      console.error(err);
+      // Copy button (icon-only)
+      const copyBtn = el('button', 'copy-btn');
+      copyBtn.type = 'button';
+      copyBtn.title = 'Copy verse';
+      copyBtn.setAttribute('aria-label', 'Copy verse');
+      copyBtn.style.display = 'inline-flex';
+      copyBtn.style.alignItems = 'center';
+      copyBtn.style.justifyContent = 'center';
+      copyBtn.style.width = '36px';
+      copyBtn.style.height = '28px';
+      copyBtn.style.border = '1px solid #e6ebf2';
+      copyBtn.style.background = '#fff';
+      copyBtn.style.borderRadius = '8px';
+      copyBtn.style.cursor = 'pointer';
+      copyBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path fill="#054A91" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16h-9V7h9v14z"/>' +
+        '</svg>';
+
+      // Verse number
+      const num = el('div', 'vnum', String(v.num));
+
+      // Verse text
+      const txt = el('div', 'vtext', v.text || '');
+
+      // Tools panel (tabs)
+      const panel = buildToolsPanel(v, { book, chapter });
+      panel.hidden = true;
+      panel.style.gridColumn = '1 / -1'; // full width when opened
+      panel.style.marginTop = '.5rem';
+      panel.style.borderTop = '1px dashed #e0e6ef';
+      panel.style.paddingTop = '.5rem';
+
+      // Interactions
+      toolsBtn.addEventListener('click', () => {
+        const open = panel.hidden;
+        panel.hidden = !open;
+        toolsBtn.textContent = open ? 'Tools ▴' : 'Tools ▾';
+        toolsBtn.setAttribute('aria-expanded', String(open));
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        const payload = `${book} ${chapter}:${v.num} ${v.text || ''}`.trim();
+        try {
+          await navigator.clipboard.writeText(payload);
+          flash(copyBtn, '✓');
+        } catch {
+          flash(copyBtn, '⌘/Ctrl+C');
+        }
+      });
+
+      // Append in requested order
+      row.append(toolsBtn, copyBtn, num, txt, panel);
+      frag.appendChild(row);
+    });
+
+    versesEl.innerHTML = '';
+    versesEl.appendChild(frag);
+
+    // Prev / Next chapter links
+    const prev = document.getElementById('prevChapter');
+    const next = document.getElementById('nextChapter');
+    if (prev && chapter > 1) {
+      prev.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter-1}`;
+      prev.style.visibility = 'visible';
+      prev.textContent = `← Chapter ${chapter-1}`;
+    }
+    if (next) {
+      next.href = `${BASE}/newtestament/chapter.html?book=${encodeURIComponent(book)}&chapter=${chapter+1}`;
+      next.style.visibility = 'visible';
+      next.textContent = `Chapter ${chapter+1} →`;
     }
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  // ------- helpers -------
+
+  function el(tag, cls, text) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function flash(btn, msg) {
+    const old = btn.innerHTML;
+    btn.innerHTML = `<span style="font-size:12px;color:#054A91;">${msg}</span>`;
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = old;
+      btn.disabled = false;
+    }, 900);
+  }
+
+  // Build tabbed tools panel for one verse
+  function buildToolsPanel(v, ctx) {
+    const wrap = el('div', 'tools');
+
+    // Tab header
+    const tabsBar = el('div', 'tools-tabs');
+    tabsBar.style.display = 'flex';
+    tabsBar.style.flexWrap = 'wrap';
+    tabsBar.style.gap = '.4rem';
+    tabsBar.style.marginBottom = '.5rem';
+
+    const contentWrap = el('div', 'tools-contents');
+
+    const sections = [
+      ['Cross-Refs', buildCrossRefs(v)],
+      ['Commentary', buildCommentary(v, ctx)],
+      ['Lexicon', buildLexicon(v)],
+      ['Strong’s', buildStrongsSentence(v)],
+    ];
+
+    const btns = sections.map(([label, content], i) => {
+      const b = el('button', 'tab-btn', label);
+      b.type = 'button';
+      b.style.border = '1px solid #e6ebf2';
+      b.style.background = '#f8fafc';
+      b.style.borderRadius = '8px';
+      b.style.padding = '.25rem .6rem';
+      b.style.cursor = 'pointer';
+      b.setAttribute('aria-controls', `pane-${label}`);
+      b.addEventListener('click', () => activate(i));
+      tabsBar.appendChild(b);
+
+      content.id = `pane-${label}`;
+      content.style.display = 'none';
+      contentWrap.appendChild(content);
+      return b;
+    });
+
+    function activate(idx) {
+      sections.forEach(([, node], i) => {
+        node.style.display = i === idx ? 'block' : 'none';
+      });
+      btns.forEach((b, i) => {
+        b.style.background = i === idx ? '#fff' : '#f8fafc';
+      });
+    }
+    activate(0); // Cross-Refs first
+
+    wrap.append(tabsBar, contentWrap);
+    return wrap;
+  }
+
+  function buildCrossRefs(v) {
+    const box = el('div');
+    if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
+      v.crossRefs.forEach(cr => {
+        const a = document.createElement('a');
+        a.className = 'xref';
+        a.href = '#';
+        a.textContent = cr.ref + (cr.note ? ` — ${cr.note}` : '');
+        a.style.display = 'block';
+        a.style.margin = '.15rem 0';
+        box.appendChild(a);
+      });
+    } else {
+      box.innerHTML = `<div class="muted">—</div>`;
+    }
+    return box;
+  }
+
+  // Commentary with localStorage save per verse
+  function buildCommentary(v, { book, chapter }) {
+    const key = `commentary:${book}:${chapter}:${v.num}`;
+
+    const box = el('div');
+    const ta = document.createElement('textarea');
+    ta.rows = 4;
+    ta.style.width = '100%';
+    ta.style.border = '1px solid #e6ebf2';
+    ta.style.borderRadius = '8px';
+    ta.style.padding = '.5rem';
+    ta.placeholder = 'Write personal commentary… (saved locally)';
+
+    ta.value = (localStorage.getItem(key) || v.commentary || '').trim();
+
+    const save = el('button', 'save-comm', 'Save');
+    save.type = 'button';
+    save.style.marginTop = '.4rem';
+    save.style.border = '1px solid #e6ebf2';
+    save.style.background = '#fff';
+    save.style.borderRadius = '8px';
+    save.style.padding = '.25rem .6rem';
+    save.style.cursor = 'pointer';
+    save.addEventListener('click', () => {
+      localStorage.setItem(key, ta.value.trim());
+      flash(save, 'Saved');
+    });
+
+    box.append(ta, save);
+    return box;
+  }
+
+  // Lexicon: compact list from v.strongs (if present)
+  function buildLexicon(v) {
+    const box = el('div');
+    const arr = Array.isArray(v.strongs) ? v.strongs : [];
+    if (!arr.length) {
+      box.innerHTML = `<div class="muted">—</div>`;
+      return box;
+    }
+    const ul = document.createElement('ul');
+    ul.style.margin = '0';
+    ul.style.paddingLeft = '1rem';
+    arr.forEach(s => {
+      const li = document.createElement('li');
+      const num = s.num || '';
+      const lemma = s.lemma || '';
+      const gloss = s.gloss || '';
+      li.textContent = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+
+  // Strong's: compact sentence line with hover details
+  function buildStrongsSentence(v) {
+    const box = el('div');
+    const arr = Array.isArray(v.strongs) ? v.strongs : [];
+    if (!arr.length) {
+      box.innerHTML = `<div class="muted">—</div>`;
+      return box;
+    }
+    const p = document.createElement('p');
+    p.style.margin = '0';
+    p.style.lineHeight = '1.6';
+
+    arr.forEach((s, i) => {
+      const span = document.createElement('span');
+      span.className = 'strong-token';
+      span.style.whiteSpace = 'nowrap';
+      span.style.borderBottom = '1px dotted #c9d4e5';
+      span.style.cursor = 'help';
+
+      const num = s.num || '';
+      const lemma = s.lemma || '';
+      const gloss = s.gloss || '';
+
+      span.title = `${num} — ${lemma}${gloss ? `: ${gloss}` : ''}`;
+      span.textContent = `${num}${lemma ? ` (${lemma}` : ''}${gloss ? ` — ${gloss}` : ''}${lemma ? `)` : ''}`;
+
+      p.appendChild(span);
+      if (i !== arr.length - 1) p.appendChild(document.createTextNode('; '));
+    });
+
+    box.appendChild(p);
+    return box;
+  }
 })();
