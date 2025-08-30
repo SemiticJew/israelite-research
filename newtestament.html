@@ -3,173 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>The New Testament — Semitic Jew</title>
+  <title>New Testament — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* --- Page-local tweaks (scoped) --- */
-    .hero-white { background:#fff; }
-    .hero-white .page-title { color:#F17300; }
-    .hero-white .container { max-width:1200px; margin:0 auto; padding:2rem 1rem 1rem; }
-    .breadcrumb.bar { background:#fff; }
-    .breadcrumb .container { max-width:1200px; margin:0 auto; padding:0 1rem 1rem; }
+    :root{ --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --blue-600:#054A91; }
+    .hero--white{ background:#fff; }
+    .hero--white .page-title{ color:var(--accent); }
+    .breadcrumb.container{ max-width:1200px; margin:0 auto; }
 
-    .canon-wrap { max-width:1200px; margin:0 auto; padding:0 1rem 2rem; display:grid; grid-template-columns:280px 1fr; gap:2rem; }
-
-    /* Left column */
-    .canon-left { position:sticky; top:6rem; align-self:start; }
-    .canon-section { margin:0 0 2rem; }
-    .canon-section h2 { font-size:1.35rem; line-height:1.2; margin:0 0 .25rem; color:#000; font-weight:700; }
-    .canon-section .sub { color:#777; font-size:.98rem; margin:0; } /* grey subtitle */
-    .canon-left .divider { height:1px; background:#e6ebf2; margin:1rem 0; }
-
-    /* Right column periodic cards (tighter) */
-    .canon-right { position:relative; }
-    .canon-right .col-divider { position:absolute; left:-1rem; top:0; bottom:0; width:1px; background:#e6ebf2; }
-
-    .pt-row { display:flex; flex-wrap:wrap; gap:.5rem .75rem; margin:0 0 2rem; }
-    .pt-card {
-      width:120px; height:150px; /* tighter */
-      border:1px solid #e6ebf2; background:#fff; border-radius:12px;
-      display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-      padding:.5rem .4rem; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.04);
-      transition:transform .12s ease, box-shadow .12s ease;
+    .canon { max-width:1200px; margin: 0 auto; padding: 1rem 1rem 2rem; }
+    .canon-row {
+      display:grid; grid-template-columns: 260px 1fr;
+      gap: 24px; align-items:start; padding: 1rem 0; border-bottom:1px solid #e6ebf2;
     }
-    .pt-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,.08); }
-    .pt-date { font-size:.74rem; color:#76859a; margin-top:.1rem; }
-    .pt-abbr { font-weight:800; font-size:1.35rem; line-height:1; color:#F17300; } /* NT abbr color */
-    .pt-abbr sup { font-size:.7em; top:-.45em; position:relative; }
-    .pt-name { font-size:.86rem; color:#054A91; margin-bottom:.1rem; }
+    .canon-row:last-child{ border-bottom:none; }
 
-    @media (max-width:900px){
-      .canon-wrap{ grid-template-columns:1fr; }
-      .canon-right .col-divider{ display:none; }
-      .canon-left{ position:static; }
+    .canon-left h2{
+      margin:0; font-weight:700; color:#000; font-size:1.125rem;
     }
+    .canon-left .sub{
+      margin:.25rem 0 0; color:#777; font-size:.95rem;
+    }
+
+    .books { display:flex; flex-wrap:wrap; gap:12px; }
+    .pt-card{
+      width:140px; height:140px; border:1px solid #e6ebf2; background:#fff;
+      border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;
+      align-items:center; padding:8px; text-decoration:none; color:inherit;
+      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .pt-card:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.08); }
+    .pt-date{ font-size:12px; color:#666; line-height:1; margin-top:2px; }
+    .pt-abbr{ font-size:22px; font-weight:800; color:var(--accent); line-height:1; }
+    .pt-name{ font-size:.9rem; color:#054A91; text-align:center; }
+    .pt-abbr sup{ font-size:12px; vertical-align:super; margin-left:2px; }
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header partial -->
   <div id="site-header"></div>
 
   <!-- Hero -->
-  <section class="page-hero hero-white">
+  <section class="page-hero hero--white">
     <div class="container">
-      <h1 class="page-title">The New Testament</h1>
-      <p class="page-subtitle">Gospels, History, Epistles, and Prophecy.</p>
+      <h1 class="page-title">New Testament</h1>
+      <p class="page-subtitle">Gospels, history, epistles, and apocalyptic prophecy.</p>
     </div>
   </section>
 
-  <!-- Breadcrumbs (under hero, centered container) -->
-  <nav id="breadcrumbs" class="breadcrumb bar" aria-label="Breadcrumb">
-    <div class="container">
-      <ol>
-        <li><a href="/israelite-research/index.html">Home</a></li>
-        <li><a href="/israelite-research/texts.html">Texts</a></li>
-        <li>The New Testament</li>
-      </ol>
-    </div>
+  <!-- Breadcrumbs (under hero) -->
+  <nav id="breadcrumbs" class="breadcrumb container" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/israelite-research/index.html">Home</a></li>
+      <li><a href="/israelite-research/texts.html">Texts</a></li>
+      <li>New Testament</li>
+    </ol>
   </nav>
 
-  <main class="canon-wrap">
-    <!-- Left column -->
-    <aside class="canon-left">
-      <div class="canon-section">
-        <h2>Synoptic Gospels</h2>
-        <p class="sub">Biography of Jesus</p>
-      </div>
-      <div class="divider"></div>
-      <div class="canon-section">
-        <h2>History</h2>
-        <p class="sub">Acts of the Apostles</p>
-      </div>
-      <div class="divider"></div>
-      <div class="canon-section">
-        <h2>Paul’s Epistles (A)</h2>
-        <p class="sub">To congregations</p>
-      </div>
-      <div class="divider"></div>
-      <div class="canon-section">
-        <h2>Paul’s Epistles (B)</h2>
-        <p class="sub">To friends & coworkers</p>
-      </div>
-      <div class="divider"></div>
-      <div class="canon-section">
-        <h2>Israelite Epistles</h2>
-        <p class="sub">General letters</p>
-      </div>
-      <div class="divider"></div>
-      <div class="canon-section">
-        <h2>Prophecy</h2>
-        <p class="sub">Apocalyptic</p>
-      </div>
-    </aside>
-
-    <!-- Right column -->
-    <section class="canon-right">
-      <div class="col-divider" aria-hidden="true"></div>
-
-      <!-- Gospels -->
-      <div class="pt-row" aria-label="Gospels">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Matthew"><div class="pt-date">c. AD 60–70</div><div class="pt-abbr">Mt</div><div class="pt-name">Matthew</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Mark"><div class="pt-date">c. AD 55–65</div><div class="pt-abbr">Mk</div><div class="pt-name">Mark</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Luke"><div class="pt-date">c. AD 60–70</div><div class="pt-abbr">Lk</div><div class="pt-name">Luke</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=John"><div class="pt-date">c. AD 80–90</div><div class="pt-abbr">Jn</div><div class="pt-name">John</div></a>
-      </div>
-
-      <!-- History -->
-      <div class="pt-row" aria-label="History">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Acts"><div class="pt-date">c. AD 62–70</div><div class="pt-abbr">Ac</div><div class="pt-name">Acts</div></a>
-      </div>
-
-      <!-- Paul A (congregations) -->
-      <div class="pt-row" aria-label="Paul A">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Romans"><div class="pt-date">c. AD 57</div><div class="pt-abbr">Rom</div><div class="pt-name">Romans</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=1%20Corinthians"><div class="pt-date">c. AD 55</div><div class="pt-abbr"><sup>1</sup>Co</div><div class="pt-name">1 Corinthians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=2%20Corinthians"><div class="pt-date">c. AD 56</div><div class="pt-abbr"><sup>2</sup>Co</div><div class="pt-name">2 Corinthians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Galatians"><div class="pt-date">c. AD 48–55</div><div class="pt-abbr">Gal</div><div class="pt-name">Galatians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Ephesians"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Eph</div><div class="pt-name">Ephesians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Philippians"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Php</div><div class="pt-name">Philippians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Colossians"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Col</div><div class="pt-name">Colossians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=1%20Thessalonians"><div class="pt-date">c. AD 50–51</div><div class="pt-abbr"><sup>1</sup>Th</div><div class="pt-name">1 Thessalonians</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=2%20Thessalonians"><div class="pt-date">c. AD 50–52</div><div class="pt-abbr"><sup>2</sup>Th</div><div class="pt-name">2 Thessalonians</div></a>
-      </div>
-
-      <!-- Paul B (to friends) -->
-      <div class="pt-row" aria-label="Paul B">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=1%20Timothy"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr"><sup>1</sup>Tm</div><div class="pt-name">1 Timothy</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=2%20Timothy"><div class="pt-date">c. AD 64–67</div><div class="pt-abbr"><sup>2</sup>Tm</div><div class="pt-name">2 Timothy</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Titus"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr">Ti</div><div class="pt-name">Titus</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Philemon"><div class="pt-date">c. AD 60–62</div><div class="pt-abbr">Phm</div><div class="pt-name">Philemon</div></a>
-      </div>
-
-      <!-- General / Israelite Epistles -->
-      <div class="pt-row" aria-label="General Epistles">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Hebrews"><div class="pt-date">c. AD 60–70</div><div class="pt-abbr">Heb</div><div class="pt-name">Hebrews</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=James"><div class="pt-date">c. AD 44–62</div><div class="pt-abbr">Jas</div><div class="pt-name">James</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=1%20Peter"><div class="pt-date">c. AD 62–64</div><div class="pt-abbr"><sup>1</sup>Pe</div><div class="pt-name">1 Peter</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=2%20Peter"><div class="pt-date">c. AD 64–67</div><div class="pt-abbr"><sup>2</sup>Pe</div><div class="pt-name">2 Peter</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=1%20John"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr"><sup>1</sup>Jn</div><div class="pt-name">1 John</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=2%20John"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr"><sup>2</sup>Jn</div><div class="pt-name">2 John</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=3%20John"><div class="pt-date">c. AD 85–95</div><div class="pt-abbr"><sup>3</sup>Jn</div><div class="pt-name">3 John</div></a>
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Jude"><div class="pt-date">c. AD 65–80</div><div class="pt-abbr">Jud</div><div class="pt-name">Jude</div></a>
-      </div>
-
-      <!-- Prophecy -->
-      <div class="pt-row" aria-label="Prophecy">
-        <a class="pt-card" href="/israelite-research/nt/book.html?book=Revelation">
-          <div class="pt-date">c. AD 90–95</div>
-          <div class="pt-abbr">Rv</div>
-          <div class="pt-name">Revelation</div>
-        </a>
-      </div>
-    </section>
+  <main class="canon" id="nt-root">
+    <!-- rows render here -->
   </main>
 
-  <!-- Footer -->
+  <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials & breadcrumbs -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+
+  <!-- Render NT periodic cards -->
+  <script>
+    (function(){
+      const BASE = '/israelite-research';
+      const s = (abbr,name,date,book) => ({ abbr, name, date, href:`${BASE}/newtestament/book.html?book=${encodeURIComponent(book||name)}` });
+
+      const rows = [
+        {
+          title: 'Synoptic Gospels',
+          sub: 'Biography',
+          books: [
+            s('Mt','Matthew','AD 50–60','Matthew'),
+            s('Mk','Mark','AD 50–60','Mark'),
+            s('Lk','Luke','AD 60–62','Luke'),
+            s('Jn','John','AD 80–90','John'),
+          ]
+        },
+        {
+          title: 'History',
+          sub: 'Acts of Israelite Apostles',
+          books: [
+            s('Ac','Acts','AD 62–64','Acts'),
+          ]
+        },
+        {
+          title: 'Paul’s Epistles A',
+          sub: 'To Congregations (Scattered Elect)',
+          books: [
+            s('Rom','Romans','AD 57','Romans'),
+            s('1 Co','1 Corinthians','AD 55','1 Corinthians'),
+            s('2 Co','2 Corinthians','AD 56','2 Corinthians'),
+            s('Gal','Galatians','AD 48–49','Galatians'),
+            s('Eph','Ephesians','AD 60–62','Ephesians'),
+            s('Php','Philippians','AD 60–62','Philippians'),
+          ]
+        },
+        {
+          title: 'Paul’s Epistles B',
+          sub: 'To Friends (Instruction)',
+          books: [
+            s('Col','Colossians','AD 60–62','Colossians'),
+            s('1 Th','1 Thessalonians','AD 50–51','1 Thessalonians'),
+            s('2 Th','2 Thessalonians','AD 51–52','2 Thessalonians'),
+            s('1 Tm','1 Timothy','AD 63–65','1 Timothy'),
+            s('2 Tm','2 Timothy','AD 64–67','2 Timothy'),
+            s('Ti','Titus','AD 63–65','Titus'),
+            s('Phm','Philemon','AD 60–62','Philemon'),
+          ]
+        },
+        {
+          title: 'Israelite Epistles',
+          sub: 'Scattered Elect',
+          books: [
+            s('Heb','Hebrews','AD 60–70','Hebrews'),
+            s('Jas','James','AD 40–50','James'),
+            s('1 Pe','1 Peter','AD 62–64','1 Peter'),
+            s('2 Pe','2 Peter','AD 64–68','2 Peter'),
+            s('1 Jn','1 John','AD 80–90','1 John'),
+            s('2 Jn','2 John','AD 80–90','2 John'),
+            s('3 Jn','3 John','AD 80–90','3 John'),
+            s('Jud','Jude','AD 65–80','Jude'),
+          ]
+        },
+        {
+          title: 'Prophecy',
+          sub: 'Apocalyptic',
+          books: [
+            s('Rv','Revelation','AD 90–95','Revelation'),
+          ]
+        },
+      ];
+
+      const root = document.getElementById('nt-root');
+      rows.forEach(({title, sub, books})=>{
+        const row = document.createElement('section');
+        row.className = 'canon-row';
+
+        const left = document.createElement('div');
+        left.className = 'canon-left';
+        left.innerHTML = `<h2>${title}</h2><div class="sub">${sub}</div>`;
+
+        const right = document.createElement('div');
+        right.className = 'canon-right';
+        const wrap = document.createElement('div'); wrap.className='books';
+
+        books.forEach(b=>{
+          const a = document.createElement('a');
+          a.className='pt-card';
+          a.href = b.href;
+          a.innerHTML = `
+            <div class="pt-date">${b.date}</div>
+            <div class="pt-abbr">${formatAbbr(b.abbr)}</div>
+            <div class="pt-name">${b.name}</div>
+          `;
+          wrap.appendChild(a);
+        });
+
+        right.appendChild(wrap);
+        row.append(left,right);
+        root.appendChild(row);
+      });
+
+      function formatAbbr(ab){
+        // render things like "1 Th" with the number as superscript
+        const m = ab.match(/^(\d)\s*(.+)$/);
+        if(!m) return ab;
+        return `${m[2]}<sup>${m[1]}</sup>`;
+      }
+    })();
+  </script>
 </body>
 </html>
