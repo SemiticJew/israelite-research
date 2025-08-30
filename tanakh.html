@@ -6,152 +6,282 @@
   <title>The Tanakh — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Periodic-table layout for Tanakh */
-    .tanakh-pt .container{max-width:1200px;margin:0 auto;padding:0 16px;}
-    .pt-section{margin:2rem 0;}
-    .pt-heading{display:flex;align-items:flex-end;gap:1rem;margin:0 0 .75rem;}
-    .pt-heading h2{margin:0;font-family:var(--ff-serif,"Adobe Garamond Pro",serif);font-size:1.25rem;letter-spacing:.5px}
-    .pt-sub{margin:0;color:#6b7280;font-size:.95rem}
+    /* Page-scoped tweaks for Tanakh only */
+    :root { --accent:#F17300; --tanakh-abbrev:#3E7CB1; }
 
-    .pt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.75rem}
-    .pt-card{display:flex;flex-direction:column;justify-content:space-between;
-      border:1px solid #e6ebf2;background:#fff;border-radius:12px;padding:.75rem;min-height:110px;
-      box-shadow:0 2px 6px rgba(0,0,0,.04);transition:transform .12s ease, box-shadow .12s ease}
-    .pt-card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.08)}
-    .pt-card a{display:block;text-decoration:none}
-    .pt-abbr{font-weight:800; font-size:1.25rem; line-height:1; color:#3E7CB1; /* requested */ }
-    .pt-name{margin-top:.35rem;font-weight:600;color:#054A91;font-size:.95rem}
-    .pt-meta{margin-top:.25rem;color:#9aa6b2;font-size:.8rem}
+    .tanakh-hero { background:#fff; }
+    .tanakh-hero .page-title { color: var(--accent); }
+    .tanakh-hero .page-subtitle { color:#333; }
 
-    /* Breadcrumbs under hero */
-    .breadcrumb { margin: .75rem 0 1.25rem; }
+    .tanakh-page .container { max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Keep pills/links consistent */
-    .pt-card:focus-within{outline:2px solid var(--accent,#F17300);outline-offset:2px;border-color:transparent}
+    /* Two-column category rows */
+    .cat-row { display:grid; grid-template-columns: 230px 1fr; gap: 16px; align-items:start; margin: 24px 0; }
+    .cat-left h2 { margin:.2rem 0; font-weight:700; }
+    .cat-left .sub { margin:0; color:#666; font-size:.95rem; }
+
+    /* Periodic-style book grid */
+    .books-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(140px,1fr)); gap: 12px; }
+    .book-card { display:block; background:#fff; border:1px solid #e6ebf2; border-radius:12px; padding:10px 10px 12px;
+                 text-decoration:none; color:inherit; box-shadow:0 2px 8px rgba(0,0,0,.04); transition:transform .08s ease, box-shadow .12s ease; }
+    .book-card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.08); }
+
+    .book-date { text-align:center; font-size:.8rem; color:#777; margin-bottom:.25rem; }
+    .book-abbrev { text-align:center; font-weight:700; font-size:1.35rem; color:var(--tanakh-abbrev); letter-spacing:.3px; }
+    .book-name { text-align:center; font-size:.95rem; color:#054A91; margin-top:.15rem; }
+
+    /* Breadcrumb placement under hero (keep consistent across site) */
+    .breadcrumb { margin: 16px auto 8px; }
   </style>
 </head>
-<body class="tanakh-pt">
+<body class="tanakh-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Hero (universal) -->
-    <section class="page-hero hero-articles">
+    <!-- Hero (white background, orange title) -->
+    <section class="page-hero tanakh-hero">
       <div class="container">
         <h1 class="page-title">The Tanakh</h1>
-        <p class="page-subtitle">The Law, History, Wisdom, and the Prophets.</p>
+        <p class="page-subtitle">Explore the Law, History, Wisdom, and the Prophets.</p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
     <!-- Breadcrumbs (under hero) -->
-    <div class="container">
-      <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
-    </div>
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="tanakh"></nav>
 
     <section class="container">
       <!-- A. The Law (Torah — 5 books of Moses) -->
-      <div class="pt-section" id="law">
-        <div class="pt-heading">
+      <div class="cat-row">
+        <div class="cat-left">
           <h2>The Law</h2>
-          <p class="pt-sub">(Torah — 5 books of Moses)</p>
+          <p class="sub">(Torah — 5 Books of Moses)</p>
         </div>
-        <div class="pt-grid">
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Genesis">
-            <div>
-              <div class="pt-abbr">Gn</div>
-              <div class="pt-name">Genesis</div>
-            </div>
+        <div class="books-grid">
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Genesis">
+            <div class="book-date">c. 15th–13th c. BCE</div>
+            <div class="book-abbrev">Gen</div>
+            <div class="book-name">Genesis</div>
           </a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Exodus">
-            <div>
-              <div class="pt-abbr">Ex</div>
-              <div class="pt-name">Exodus</div>
-            </div>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Exodus">
+            <div class="book-date">c. 15th–13th c. BCE</div>
+            <div class="book-abbrev">Exod</div>
+            <div class="book-name">Exodus</div>
           </a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Leviticus">
-            <div>
-              <div class="pt-abbr">Lv</div>
-              <div class="pt-name">Leviticus</div>
-            </div>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Leviticus">
+            <div class="book-date">c. 15th–13th c. BCE</div>
+            <div class="book-abbrev">Lev</div>
+            <div class="book-name">Leviticus</div>
           </a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Numbers">
-            <div>
-              <div class="pt-abbr">Nm</div>
-              <div class="pt-name">Numbers</div>
-            </div>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Numbers">
+            <div class="book-date">c. 15th–13th c. BCE</div>
+            <div class="book-abbrev">Num</div>
+            <div class="book-name">Numbers</div>
           </a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Deuteronomy">
-            <div>
-              <div class="pt-abbr">Dt</div>
-              <div class="pt-name">Deuteronomy</div>
-            </div>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Deuteronomy">
+            <div class="book-date">c. 15th–13th c. BCE</div>
+            <div class="book-abbrev">Deut</div>
+            <div class="book-name">Deuteronomy</div>
           </a>
         </div>
       </div>
 
       <!-- B. History (God’s providence) -->
-      <div class="pt-section" id="history">
-        <div class="pt-heading">
+      <div class="cat-row">
+        <div class="cat-left">
           <h2>History</h2>
-          <p class="pt-sub">(God’s providence)</p>
+          <p class="sub">(God’s providence)</p>
         </div>
-        <div class="pt-grid">
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Joshua"><div><div class="pt-abbr">Js</div><div class="pt-name">Joshua</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Judges"><div><div class="pt-abbr">Jdg</div><div class="pt-name">Judges</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Ruth"><div><div class="pt-abbr">Ru</div><div class="pt-name">Ruth</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=1%20Samuel"><div><div class="pt-abbr">1Sa</div><div class="pt-name">1&nbsp;Samuel</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=2%20Samuel"><div><div class="pt-abbr">2Sa</div><div class="pt-name">2&nbsp;Samuel</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=1%20Kings"><div><div class="pt-abbr">1Ki</div><div class="pt-name">1&nbsp;Kings</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=2%20Kings"><div><div class="pt-abbr">2Ki</div><div class="pt-name">2&nbsp;Kings</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=1%20Chronicles"><div><div class="pt-abbr">1Ch</div><div class="pt-name">1&nbsp;Chronicles</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=2%20Chronicles"><div><div class="pt-abbr">2Ch</div><div class="pt-name">2&nbsp;Chronicles</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Ezra"><div><div class="pt-abbr">Ezr</div><div class="pt-name">Ezra</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Nehemiah"><div><div class="pt-abbr">Neh</div><div class="pt-name">Nehemiah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Esther"><div><div class="pt-abbr">Est</div><div class="pt-name">Esther</div></div></a>
+        <div class="books-grid">
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Joshua">
+            <div class="book-date">c. 13th–12th c. BCE</div>
+            <div class="book-abbrev">Josh</div>
+            <div class="book-name">Joshua</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Judges">
+            <div class="book-date">c. 12th–11th c. BCE</div>
+            <div class="book-abbrev">Judg</div>
+            <div class="book-name">Judges</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Ruth">
+            <div class="book-date">c. 11th–10th c. BCE</div>
+            <div class="book-abbrev">Ruth</div>
+            <div class="book-name">Ruth</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=1%20Samuel">
+            <div class="book-date">c. 11th–10th c. BCE</div>
+            <div class="book-abbrev">1 Sam</div>
+            <div class="book-name">1 Samuel</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=2%20Samuel">
+            <div class="book-date">c. 10th c. BCE</div>
+            <div class="book-abbrev">2 Sam</div>
+            <div class="book-name">2 Samuel</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=1%20Kings">
+            <div class="book-date">c. 10th–9th c. BCE</div>
+            <div class="book-abbrev">1 Kgs</div>
+            <div class="book-name">1 Kings</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=2%20Kings">
+            <div class="book-date">c. 9th–6th c. BCE</div>
+            <div class="book-abbrev">2 Kgs</div>
+            <div class="book-name">2 Kings</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=1%20Chronicles">
+            <div class="book-date">c. 5th–4th c. BCE</div>
+            <div class="book-abbrev">1 Chr</div>
+            <div class="book-name">1 Chronicles</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=2%20Chronicles">
+            <div class="book-date">c. 5th–4th c. BCE</div>
+            <div class="book-abbrev">2 Chr</div>
+            <div class="book-name">2 Chronicles</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Ezra">
+            <div class="book-date">c. 5th c. BCE</div>
+            <div class="book-abbrev">Ezra</div>
+            <div class="book-name">Ezra</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Nehemiah">
+            <div class="book-date">c. 5th c. BCE</div>
+            <div class="book-abbrev">Neh</div>
+            <div class="book-name">Nehemiah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Esther">
+            <div class="book-date">c. 5th–4th c. BCE</div>
+            <div class="book-abbrev">Esth</div>
+            <div class="book-name">Esther</div>
+          </a>
         </div>
       </div>
 
-      <!-- C. Wisdom (Poetry | Wise Writings.) -->
-      <div class="pt-section" id="wisdom">
-        <div class="pt-heading">
+      <!-- C. Wisdom (Poetry | Wise Writings) -->
+      <div class="cat-row">
+        <div class="cat-left">
           <h2>Wisdom</h2>
-          <p class="pt-sub">(Poetry | Wise Writings)</p>
+          <p class="sub">(Poetry | Wise Writings)</p>
         </div>
-        <div class="pt-grid">
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Job"><div><div class="pt-abbr">Job</div><div class="pt-name">Job</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Psalms"><div><div class="pt-abbr">Ps</div><div class="pt-name">Psalms</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Proverbs"><div><div class="pt-abbr">Pr</div><div class="pt-name">Proverbs</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Ecclesiastes"><div><div class="pt-abbr">Ec</div><div class="pt-name">Ecclesiastes</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Song%20of%20Songs"><div><div class="pt-abbr">SoS</div><div class="pt-name">Song of Songs</div></div></a>
+        <div class="books-grid">
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Job">
+            <div class="book-date">c. 10th–6th c. BCE</div>
+            <div class="book-abbrev">Job</div>
+            <div class="book-name">Job</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Psalms">
+            <div class="book-date">c. 10th–5th c. BCE</div>
+            <div class="book-abbrev">Ps</div>
+            <div class="book-name">Psalms</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Proverbs">
+            <div class="book-date">c. 10th–6th c. BCE</div>
+            <div class="book-abbrev">Prov</div>
+            <div class="book-name">Proverbs</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Ecclesiastes">
+            <div class="book-date">c. 10th–3rd c. BCE</div>
+            <div class="book-abbrev">Eccl</div>
+            <div class="book-name">Ecclesiastes</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Song%20of%20Songs">
+            <div class="book-date">c. 10th–4th c. BCE</div>
+            <div class="book-abbrev">Song</div>
+            <div class="book-name">Song of Songs</div>
+          </a>
         </div>
       </div>
 
       <!-- D. The Prophets (Major | Minor Prophets) -->
-      <div class="pt-section" id="prophets">
-        <div class="pt-heading">
+      <div class="cat-row">
+        <div class="cat-left">
           <h2>The Prophets</h2>
-          <p class="pt-sub">(Major | Minor Prophets)</p>
+          <p class="sub">(Major & Minor Prophets)</p>
         </div>
-        <div class="pt-grid">
+        <div class="books-grid">
           <!-- Major -->
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Isaiah"><div><div class="pt-abbr">Is</div><div class="pt-name">Isaiah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Jeremiah"><div><div class="pt-abbr">Je</div><div class="pt-name">Jeremiah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Ezekiel"><div><div class="pt-abbr">Ezk</div><div class="pt-name">Ezekiel</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Daniel"><div><div class="pt-abbr">Dn</div><div class="pt-name">Daniel</div></div></a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Isaiah">
+            <div class="book-date">c. 8th–7th c. BCE</div>
+            <div class="book-abbrev">Isa</div>
+            <div class="book-name">Isaiah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Jeremiah">
+            <div class="book-date">c. 7th–6th c. BCE</div>
+            <div class="book-abbrev">Jer</div>
+            <div class="book-name">Jeremiah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Ezekiel">
+            <div class="book-date">c. 6th c. BCE</div>
+            <div class="book-abbrev">Ezek</div>
+            <div class="book-name">Ezekiel</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Daniel">
+            <div class="book-date">c. 6th–2nd c. BCE</div>
+            <div class="book-abbrev">Dan</div>
+            <div class="book-name">Daniel</div>
+          </a>
+
           <!-- Minor -->
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Hosea"><div><div class="pt-abbr">Ho</div><div class="pt-name">Hosea</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Joel"><div><div class="pt-abbr">Jl</div><div class="pt-name">Joel</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Amos"><div><div class="pt-abbr">Am</div><div class="pt-name">Amos</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Obadiah"><div><div class="pt-abbr">Ob</div><div class="pt-name">Obadiah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Jonah"><div><div class="pt-abbr">Jon</div><div class="pt-name">Jonah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Micah"><div><div class="pt-abbr">Mi</div><div class="pt-name">Micah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Nahum"><div><div class="pt-abbr">Na</div><div class="pt-name">Nahum</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Habakkuk"><div><div class="pt-abbr">Hab</div><div class="pt-name">Habakkuk</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Zephaniah"><div><div class="pt-abbr">Zep</div><div class="pt-name">Zephaniah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Haggai"><div><div class="pt-abbr">Hg</div><div class="pt-name">Haggai</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Zechariah"><div><div class="pt-abbr">Zec</div><div class="pt-name">Zechariah</div></div></a>
-          <a class="pt-card" href="/israelite-research/tanakh/book.html?book=Malachi"><div><div class="pt-abbr">Mal</div><div class="pt-name">Malachi</div></div></a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Hosea">
+            <div class="book-date">c. 8th c. BCE</div>
+            <div class="book-abbrev">Hos</div>
+            <div class="book-name">Hosea</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Joel">
+            <div class="book-date">c. 9th–5th c. BCE</div>
+            <div class="book-abbrev">Joel</div>
+            <div class="book-name">Joel</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Amos">
+            <div class="book-date">c. 8th c. BCE</div>
+            <div class="book-abbrev">Am</div>
+            <div class="book-name">Amos</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Obadiah">
+            <div class="book-date">c. 6th–5th c. BCE</div>
+            <div class="book-abbrev">Obad</div>
+            <div class="book-name">Obadiah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Jonah">
+            <div class="book-date">c. 8th–5th c. BCE</div>
+            <div class="book-abbrev">Jon</div>
+            <div class="book-name">Jonah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Micah">
+            <div class="book-date">c. 8th c. BCE</div>
+            <div class="book-abbrev">Mic</div>
+            <div class="book-name">Micah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Nahum">
+            <div class="book-date">c. 7th c. BCE</div>
+            <div class="book-abbrev">Nah</div>
+            <div class="book-name">Nahum</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Habakkuk">
+            <div class="book-date">c. 7th–6th c. BCE</div>
+            <div class="book-abbrev">Hab</div>
+            <div class="book-name">Habakkuk</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Zephaniah">
+            <div class="book-date">c. 7th c. BCE</div>
+            <div class="book-abbrev">Zeph</div>
+            <div class="book-name">Zephaniah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Haggai">
+            <div class="book-date">520 BCE</div>
+            <div class="book-abbrev">Hag</div>
+            <div class="book-name">Haggai</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Zechariah">
+            <div class="book-date">c. 6th–5th c. BCE</div>
+            <div class="book-abbrev">Zech</div>
+            <div class="book-name">Zechariah</div>
+          </a>
+          <a class="book-card" href="/israelite-research/tanakh/book.html?book=Malachi">
+            <div class="book-date">c. 5th c. BCE</div>
+            <div class="book-abbrev">Mal</div>
+            <div class="book-name">Malachi</div>
+          </a>
         </div>
       </div>
     </section>
