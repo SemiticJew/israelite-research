@@ -2,52 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>New Testament — Book</title>
-  <link rel="stylesheet" href="../styles.css" />
-  <script src="../js/include.js" defer></script>
-  <script src="../js/breadcrumbs.js" defer></script>
-  <script src="../js/book-nt.js" defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>New Testament Book — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    .book-wrap { max-width: 1000px; margin: 0 auto 2rem; }
-    .book-head h1 { margin: .25rem 0; font-family: var(--ff-serif); }
-    .book-desc { color:#555; margin: .25rem 0 1rem; }
-    .chapters-grid {
-      display: grid; grid-template-columns: repeat(11, minmax(36px,1fr));
-      gap: 6px; margin: .75rem 0 2rem;
-    }
-    .chapters-grid a {
-      display: grid; place-items: center; padding: 10px 0;
-      border: 1px solid #DBE4EE; border-radius: 8px; text-decoration: none;
-      color: #054A91; font-weight: 600;
-    }
-    .chapters-grid a:hover { background:#DBE4EE; border-color:#81A4CD; }
-    .label { color:#666; font-size:.9rem; margin:.25rem 0 .4rem; }
+    .nt-wrap{max-width:1200px;margin:0 auto;padding:1rem}
+    .chapters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:.6rem}
+    .chapter-card{display:grid;place-items:center;height:56px;border:1px solid #e6ebf2;background:#fff;
+      text-decoration:none;color:#054A91;border-radius:8px;font-weight:600}
+    .chapter-card:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
   </style>
 </head>
 <body>
-<div id="site-header"></div>
-  <!-- nested header -->
-  <div data-include="../partials/header-nested.html"></div>
+  <div id="site-header"></div>
 
-  <main class="container">
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1 id="bookTitle" class="page-title">Loading…</h1>
+        <p id="bookDesc" class="page-subtitle"></p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
+
     <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-    <div class="book-wrap">
-      <div class="book-head">
-        <div class="label" id="path">Texts / The New Testament / <span id="book-label"></span></div>
-        <h1 id="book-title">Book</h1>
-        <p class="book-desc" id="book-desc"></p>
+    <section class="nt-wrap">
+      <div id="chaptersGrid" class="chapters-grid" aria-live="polite">
+        <div class="muted">Loading…</div>
       </div>
-
-      <div class="label">Chapters</div>
-      <div class="chapters-grid" id="chapters"></div>
-    </div>
+    </section>
   </main>
 
-  <!-- nested footer -->
-  <div data-include="../partials/footer.html"></div>
-<div id="site-footer"></div>
-<script src="/israelite-research/js/include.js"></script>
+  <div id="site-footer"></div>
+
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+  <script src="/israelite-research/js/nt-book.js" defer></script>
 </body>
 </html>
