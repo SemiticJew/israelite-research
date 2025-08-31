@@ -1,3 +1,4 @@
+<!-- newtestament/revelation.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,69 +7,67 @@
   <title>Revelation — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    .book-wrap{max-width:1200px;margin:0 auto;padding:1rem}
-    .book-meta{margin:.5rem 0 1.25rem;color:#555;font-size:.95rem}
-    .chapters-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
-      gap:.6rem; margin-top:1rem;
+    /* Minimal scoped helpers to ensure grid renders, without touching site-wide CSS */
+    .chapters-wrap { padding: 1.25rem 0 2.5rem; }
+    .chapter-grid {
+      list-style: none; margin: 0 auto; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(64px, 1fr));
+      gap: .75rem; max-width: 720px;
     }
-    .chap-card{
-      display:flex;align-items:center;justify-content:center;
-      height:64px;border:1px solid #e6ebf2;background:#fff;text-decoration:none;color:#0b2340;
-      border-radius:10px; font-weight:600;
+    .chapter-card {
+      display: grid; place-items: center;
+      height: 64px; border: 1px solid #e6ebf2; background: #fff;
+      text-decoration: none; color: #0b2340; font-weight: 600;
+      border-radius: 12px;
     }
-    .chap-card:hover{box-shadow:0 6px 16px rgba(0,0,0,.06); transform:translateY(-1px)}
+    .chapter-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.07); transform: translateY(-1px); }
   </style>
 </head>
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Hero (universal) -->
-  <section class="page-hero hero-texts" style="background:#fff;">
-    <div class="container">
-      <h1 class="page-title" style="color:#F17300;">Revelation</h1>
-      <p class="page-subtitle">“The Revelation of Jesus Christ” — a prophetic vision given to John.</p>
-    </div>
-    <div class="hero-divider"></div>
-  </section>
+  <main>
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="page-title">Revelation</h1>
+        <p class="page-subtitle">The Apocalypse of Jesus Christ — 22 chapters.</p>
+      </div>
+      <div class="hero-divider"></div>
+    </section>
 
-  <!-- Breadcrumbs (under hero) -->
-  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+    <!-- Breadcrumbs (universally placed under hero) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
 
-  <main class="book-wrap">
-    <div class="book-meta">
-      <strong>Author:</strong> John&nbsp;the&nbsp;Apostle &nbsp;•&nbsp;
-      <strong>Date:</strong> c. AD&nbsp;90–95
-    </div>
-
-    <section aria-labelledby="chapters">
-      <h2 id="chapters" class="visually-hidden">Chapters</h2>
-      <div class="chapters-grid">
-        <!-- 1–22 -->
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=1">1</a>
-        <a class="chap-card" href="/israelite-research/newtestment/chapter.html?book=Revelation&chapter=2">2</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=3">3</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=4">4</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=5">5</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=6">6</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=7">7</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=8">8</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=9">9</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=10">10</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=11">11</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=12">12</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=13">13</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=14">14</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=15">15</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=16">16</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=17">17</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=18">18</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=19">19</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=20">20</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=21">21</a>
-        <a class="chap-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=22">22</a>
+    <!-- Chapters grid -->
+    <section class="chapters-wrap">
+      <div class="container">
+        <ol class="chapter-grid">
+          <!-- 1–22 -->
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=1">1</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=2">2</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=3">3</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=4">4</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=5">5</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=6">6</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=7">7</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=8">8</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=9">9</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=10">10</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=11">11</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=12">12</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=13">13</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=14">14</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=15">15</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=16">16</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=17">17</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=18">18</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=19">19</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=20">20</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=21">21</a></li>
+          <li><a class="chapter-card" href="/israelite-research/newtestament/chapter.html?book=Revelation&chapter=22">22</a></li>
+        </ol>
       </div>
     </section>
   </main>
@@ -76,23 +75,8 @@
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs (absolute paths) -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <script>
-    // Ensure breadcrumb matches New Testament route
-    (function(){
-      const BASE='/israelite-research';
-      const bc=document.getElementById('breadcrumbs');
-      if(!bc) return;
-      bc.innerHTML = `
-        <ol>
-          <li><a href="${BASE}/index.html">Home</a></li>
-          <li><a href="${BASE}/texts.html">Texts</a></li>
-          <li><a href="${BASE}/newtestament.html">New Testament</a></li>
-          <li>Revelation</li>
-        </ol>`;
-    })();
-  </script>
 </body>
 </html>
