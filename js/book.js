@@ -21,7 +21,11 @@
 
   // Build absolute paths (GitHub Pages safe)
   const base = '/israelite-research';
-  const bookMetaURL = `${base}/data/tanakh/${slug}/book.json`;
+  const bookMetaURLS = [
+    `${base}/data/tanakh/${slug}/${slug}.json`,
+    `${base}/data/tanakh/${slug}.json`,
+    `${base}/data/tanakh/${slug}/book.json`
+  ];
   const bookDescURL = `${base}/data/tanakh/descriptions.json`;
 
   // Helper to render chapters 1..N
@@ -37,20 +41,25 @@
     }
   }
 
-  // Load chapter count from book.json; fall back if missing
-  fetch(bookMetaURL)
-    .then(r => r.ok ? r.json() : Promise.reject(r))
-    .then(meta => {
-      const chapters = Number(meta?.chapters) || Number(meta?.chapterCount) || 50;
-      renderChapters(chapters);
-    })
-    .catch(() => {
-      // Fallbacks for common books; default to 50 if unknown
-      const defaults = {
-        genesis: 50, exodus: 40, leviticus: 27, numbers: 36, deuteronomy: 34
-      };
-      renderChapters(defaults[slug] || 50);
-    });
+  // Load chapter count from manifest; fall back if missing
+  (async () => {
+    for (const url of bookMetaURLS) {
+      try {
+        const r = await fetch(url, { cache: 'no-store' });
+        if (r.ok) {
+          const meta = await r.json();
+          const chapters = Number(meta?.chapters) || Number(meta?.chapterCount);
+          if (chapters && chapters > 0) {
+            renderChapters(chapters);
+            return;
+          }
+        }
+      } catch (_) {}
+    }
+    // Fallbacks for common books; default to 50 if unknown
+    const defaults = { genesis: 50, exodus: 40, leviticus: 27, numbers: 36, deuteronomy: 34 };
+    renderChapters(defaults[slug] || 50);
+  })();
 
   // Load description (optional)
   fetch(bookDescURL)

@@ -8,6 +8,27 @@
   const BASE = '/israelite-research';
 
   // -------- context --------
+  // -------- helpers: per-book manifest (chapters count) --------
+  async function fetchBookManifest(bookName, folderName, isNT) {
+    // Try nested manifest first: /data/.../{folder}/{folder}.json (e.g., tanakh/exodus/exodus.json)
+    const nested = `${BASE}/data/${isNT ? 'newtestament' : 'tanakh'}/${folderName}/${folderName}.json`;
+    // Fallback to root manifest: /data/.../{folder}.json (e.g., tanakh/exodus.json)
+    const root   = `${BASE}/data/${isNT ? 'newtestament' : 'tanakh'}/${folderName}.json`;
+
+    for (const url of [nested, root]) {
+      try {
+        const r = await fetch(url, { cache: 'no-store' });
+        if (r.ok) {
+          const j = await r.json();
+          if (j && typeof j.chapters === 'number' && j.chapters > 0) {
+            return { url, name: j.name || bookName, chapters: j.chapters };
+          }
+        }
+      } catch (_) {}
+    }
+    return { url: null, name: bookName, chapters: null };
+  }
+
   const qs = new URLSearchParams(location.search);
   const book = qs.get('book') || 'Genesis';
   const chapter = parseInt(qs.get('chapter') || '1', 10) || 1;
@@ -92,13 +113,17 @@
 
   // Begin both fetches in parallel
   const lexPromise = preloadLexicon(langForBook(book));
+  const manifestPromise = fetchBookManifest(book, folder, NT_BOOKS.has(book));
   const chapPromise = fetch(dataUrl, { cache: 'no-store' }).then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
   });
 
-  Promise.all([lexPromise, chapPromise])
-    .then(([lex, data]) => renderChapter(data))
+  Promise.all([lexPromise, chapPromise, manifestPromise])
+    .then(([lex, data, manifest]) => {
+      // Attach manifest to window for debugging/use elsewhere
+      window.__BOOK_MANIFEST__ = manifest;
+      return renderChapter(data))
     .catch(err => {
       if (versesEl) {
         versesEl.innerHTML =
@@ -427,7 +452,18 @@
         }
       }
       if (next) {
-        next.href = `${hrefBase}&chapter=${chapter + 1}`;
+        const maxCh = (window.__BOOK_MANIFEST__ && window.__BOOK_MANIFEST__.chapters) ? window.__BOOK_MANIFEST__.chapters : null;
+        if (maxCh && chapter >= maxCh) {
+          // At or beyond last chapter — hide Next
+          next.style.visibility = 'hidden';
+          next.removeAttribute('href');
+          next.textContent = 'End of book';
+        } else {
+          next.href = `${hrefBase}&chapter=${chapter + 1}`;
+          next.textContent = `Next: Chapter ${chapter + 1} →`;
+          next.style.visibility = 'visible';
+        }
+      }&chapter=${chapter + 1}`;
         next.textContent = `Next: Chapter ${chapter + 1} →`;
         next.style.visibility = 'visible';
       }

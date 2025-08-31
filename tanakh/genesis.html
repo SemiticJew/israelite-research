@@ -3,10 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Genesis — Semitic Jew</title>
+  <title>Tanakh — Book</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-local grid styling to guarantee visibility */
+    .chapters-section{ padding:1.5rem 0 2.5rem; }
+    .chapters-wrap{ display:flex; justify-content:center; }
+    .chapters-grid{
+      display:grid; grid-template-columns: repeat(11, 1fr);
+      gap:.5rem; max-width:720px; width:100%;
+    }
+    .chapter-tile{
+      display:flex; align-items:center; justify-content:center;
+      height:44px; border:1px solid #e2e6ef; background:#fff; color:#0b2340;
+      text-decoration:none; font-weight:600; border-radius:8px;
+    }
+    .chapter-tile:hover{ box-shadow:0 6px 16px rgba(0,0,0,.06); transform:translateY(-1px); }
+    @media (max-width:700px){ .chapters-grid{ grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width:460px){ .chapters-grid{ grid-template-columns: repeat(5, 1fr); } }
+  </style>
+
+  <script>
+    (function(){
+      const qs = new URLSearchParams(location.search);
+      if (!qs.has('book')) {
+        const url = new URL(location.href);
+        qs.set('book', 'Genesis');
+        url.search = qs.toString();
+        location.replace(url.toString());
+      }
+    })();
+  </script>
+
 </head>
-<body class="book-page">
+<body>
   <!-- Header partial -->
   <div id="site-header"></div>
 
@@ -14,77 +44,22 @@
     <!-- Universal hero -->
     <section class="page-hero hero-texts">
       <div class="container">
-        <h1 class="page-title">Genesis</h1>
-        <p class="page-subtitle">Creation, the beginning of mankind, and stories of the patriarchs and matriarchs.</p>
+        <h1 class="page-title" id="book-title">Loading…</h1>
+        <p class="page-subtitle" id="book-desc"></p>
       </div>
       <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (under hero, left-aligned) -->
-    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb">
-      <ol>
-        <li><a href="/israelite-research/index.html">Home</a></li>
-        <li><a href="/israelite-research/texts.html">Texts</a></li>
-        <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
-        <li>Genesis</li>
-      </ol>
-    </nav>
+    <!-- Breadcrumbs (under hero) -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb" data-scope="texts"></nav>
 
-    <!-- Chapters grid (centered) -->
-    <section class="container" style="margin-top:1rem;">
-      <h2 class="visually-hidden">Chapters</h2>
-      <div class="chapters-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.5rem;max-width:720px;margin:0 auto;">
-        <!-- 1–50 -->
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=1">1</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=2">2</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=3">3</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=4">4</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=5">5</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=6">6</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=7">7</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=8">8</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=9">9</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=10">10</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=11">11</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=12">12</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=13">13</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=14">14</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=15">15</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=16">16</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=17">17</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=18">18</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=19">19</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=20">20</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=21">21</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=22">22</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=23">23</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=24">24</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=25">25</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=26">26</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=27">27</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=28">28</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=29">29</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=30">30</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=31">31</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=32">32</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=33">33</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=34">34</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=35">35</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=36">36</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=37">37</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=38">38</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=39">39</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=40">40</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=41">41</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=42">42</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=43">43</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=44">44</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=45">45</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=46">46</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=47">47</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=48">48</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=49">49</a>
-        <a class="chapter-tile" href="/israelite-research/tanakh/chapter.html?book=Genesis&chapter=50">50</a>
+    <!-- Chapters grid -->
+    <section class="chapters-section">
+      <div class="container">
+        <h2 class="section-title" style="margin-bottom:.75rem;">Contents</h2>
+        <div class="chapters-wrap">
+          <div id="chapters-grid" class="chapters-grid" aria-label="Chapters"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -92,8 +67,63 @@
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + breadcrumbs -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
+
+  <!-- Book grid loader (absolute paths + safe fallbacks) -->
+  <script>
+    (async function(){
+      const params = new URLSearchParams(location.search);
+      const bookParam = params.get('book') || 'Genesis';
+
+      const titleEl = document.getElementById('book-title');
+      const descEl  = document.getElementById('book-desc');
+      const gridEl  = document.getElementById('chapters-grid');
+
+      // Helper: title-case fallback
+      const titleCase = s => s.replace(/\b\w/g, c => c.toUpperCase());
+
+      // 1) Set title immediately
+      titleEl.textContent = bookParam;
+
+      // 2) Try to load description
+      try {
+        const dres = await fetch('/israelite-research/data/tanakh/descriptions.json', {cache:'no-store'});
+        if (dres.ok) {
+          const descs = await dres.json();
+          const key = bookParam.toLowerCase();
+          descEl.textContent = (descs[key] || descs[bookParam] || '');
+        }
+      } catch {}
+
+      // 3) Determine number of chapters
+      let chapters = 50; // safe default for Genesis
+      try {
+        const bres = await fetch('/israelite-research/data/tanakh/books.json', {cache:'no-store'});
+        if (bres.ok) {
+          const books = await bres.json();
+          const match = books.find(b =>
+            (b.name && (b.name.toLowerCase() === bookParam.toLowerCase())) ||
+            (b.slug && (b.slug.toLowerCase() === bookParam.toLowerCase()))
+          );
+          if (match && Number(match.chapters) > 0) chapters = Number(match.chapters);
+        }
+      } catch {}
+
+      // 4) Render centered grid with links to chapter page
+      const frag = document.createDocumentFragment();
+      for (let i=1; i<=chapters; i++){
+        const a = document.createElement('a');
+        a.className = 'chapter-tile';
+        a.href = `/israelite-research/tanakh/chapter.html?book=${encodeURIComponent(bookParam)}&chapter=${i}`;
+        a.textContent = i;
+        a.setAttribute('aria-label', `Open ${titleCase(bookParam)} ${i}`);
+        frag.appendChild(a);
+      }
+      gridEl.innerHTML = '';
+      gridEl.appendChild(frag);
+    })();
+  </script>
 </body>
 </html>
