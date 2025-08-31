@@ -18,42 +18,52 @@
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Page title + subtitle */
+    /* Title + subtitle */
     .site-header-block{ padding:32px 0 20px; text-align:left; }
     .site-title{ font-size:2.25rem; font-weight:800; color:var(--ink); margin:0; }
     .site-subtitle{ font-size:1.1rem; color:var(--muted); margin-top:6px; }
 
-    /* Three-column grid */
-    .features{
+    /* Category rows (each row is horizontal: 3-up) */
+    .feature-row{ margin:32px 0; }
+    .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
+    .cards{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:24px;
-      margin-top:32px;
     }
-    @media(max-width:900px){ .features{ grid-template-columns:1fr; } }
+    @media (max-width: 960px){ .cards{ grid-template-columns: 1fr; } }
 
-    .feature-col h2{
-      font-size:1.25rem; font-weight:700; margin-bottom:12px; color:var(--ink);
-    }
-
-    /* Card styles */
+    /* Card */
     .card{
+      display:flex;
+      flex-direction:column;
       background:#fff;
       border:1px solid #e6ebf2;
       border-radius:12px;
       box-shadow:var(--card-shadow);
-      padding:16px;
-      text-align:center;
-      text-decoration:none;
-      color:inherit;
+      text-decoration:none; color:inherit;
+      overflow:hidden;
       transition: transform .12s ease, box-shadow .12s ease;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      height:120px;
+      min-height: 260px; /* keeps nice stature even with short text */
     }
     .card:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); }
-    .card-title{ font-size:1rem; font-weight:600; color:var(--accent); }
+
+    /* Image placeholder (700x394) */
+    .card img{
+      display:block; width:100%; height:auto;
+      aspect-ratio: 700 / 394;            /* modern browsers */
+      object-fit: cover; object-position:center;
+      background:#f5f7fa;
+    }
+
+    /* Content area */
+    .card-body{
+      padding:14px 14px 16px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .card-title{ font-size:1rem; font-weight:700; color:var(--ink); }
+    .card-kicker{ font-size:.85rem; color:var(--muted); }
+    .card-cta{ font-size:.9rem; color:var(--accent); font-weight:600; }
   </style>
 </head>
 <body>
@@ -65,35 +75,107 @@
     <p class="site-subtitle">A project dedicated to the logical, historical, and faithful study of the Scriptures.</p>
   </section>
 
-  <!-- Three feature regions -->
   <main class="container">
-    <div class="features">
-      
-      <!-- Featured Podcast -->
-      <div class="feature-col">
-        <h2>Featured Podcast</h2>
-        <a href="https://open.spotify.com/show/7qFqkqP5a3RZ0z4Y3f6nKb" class="card" target="_blank"><span class="card-title">Spotify Podcast</span></a>
-        <a href="https://www.youtube.com/@semiticjew" class="card" target="_blank"><span class="card-title">YouTube Podcast</span></a>
-        <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1740586968" class="card" target="_blank"><span class="card-title">Apple Podcast</span></a>
-      </div>
 
-      <!-- Featured Library -->
-      <div class="feature-col">
-        <h2>Featured Library</h2>
-        <a href="/israelite-research/catechism.html" class="card"><span class="card-title">Israelite Catechism</span></a>
-        <a href="#" class="card"><span class="card-title">Articles</span></a>
-        <a href="#" class="card"><span class="card-title">Podcast Archive</span></a>
-      </div>
+    <!-- A. Featured Podcast (horizontal row) -->
+    <section class="feature-row">
+      <h2>Featured Podcast</h2>
+      <div class="cards">
+        <a class="card" href="https://open.spotify.com/show/7qFqkqP5a3RZ0z4Y3f6nKb" target="_blank">
+          <img src="/israelite-research/images/700x394.jpg" alt="Spotify Podcast cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Podcast • Spotify</div>
+            <div class="card-title">Semitic Jew on Spotify</div>
+            <div class="card-cta">Listen now →</div>
+          </div>
+        </a>
 
-      <!-- Featured Communities -->
-      <div class="feature-col">
-        <h2>Featured Communities</h2>
-        <a href="#" class="card"><span class="card-title">Discord (Coming Soon)</span></a>
-        <a href="#" class="card"><span class="card-title">Community</span></a>
-        <a href="#" class="card"><span class="card-title">X Spaces</span></a>
-      </div>
+        <a class="card" href="https://www.youtube.com/@semiticjew" target="_blank">
+          <img src="/israelite-research/images/700x394.jpg" alt="YouTube channel banner (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Podcast • YouTube</div>
+            <div class="card-title">Semitic Jew on YouTube</div>
+            <div class="card-cta">Watch now →</div>
+          </div>
+        </a>
 
-    </div>
+        <a class="card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1740586968" target="_blank">
+          <img src="/israelite-research/images/700x394.jpg" alt="Apple Podcasts cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Podcast • Apple</div>
+            <div class="card-title">Semitic Jew on Apple Podcasts</div>
+            <div class="card-cta">Listen now →</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- B. Featured Library (horizontal row) -->
+    <section class="feature-row">
+      <h2>Featured Library</h2>
+      <div class="cards">
+        <a class="card" href="/israelite-research/catechism.html">
+          <img src="/israelite-research/images/700x394.jpg" alt="Israelite Catechism cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Library</div>
+            <div class="card-title">Israelite Catechism</div>
+            <div class="card-cta">Open →</div>
+          </div>
+        </a>
+
+        <a class="card" href="#">
+          <img src="/israelite-research/images/700x394.jpg" alt="Articles cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Library</div>
+            <div class="card-title">Featured Articles</div>
+            <div class="card-cta">Explore →</div>
+          </div>
+        </a>
+
+        <a class="card" href="#">
+          <img src="/israelite-research/images/700x394.jpg" alt="Podcast archive cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Library</div>
+            <div class="card-title">Podcast Archive</div>
+            <div class="card-cta">Browse →</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- C. Featured Communities (horizontal row) -->
+    <section class="feature-row">
+      <h2>Featured Communities</h2>
+      <div class="cards">
+        <a class="card" href="#">
+          <img src="/israelite-research/images/700x394.jpg" alt="Discord server cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Community</div>
+            <div class="card-title">Discord (Coming Soon)</div>
+            <div class="card-cta">Notify me →</div>
+          </div>
+        </a>
+
+        <a class="card" href="#">
+          <img src="/israelite-research/images/700x394.jpg" alt="Community page cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Community</div>
+            <div class="card-title">Community</div>
+            <div class="card-cta">Join →</div>
+          </div>
+        </a>
+
+        <a class="card" href="#">
+          <img src="/israelite-research/images/700x394.jpg" alt="X Spaces cover (placeholder)" width="700" height="394" />
+          <div class="card-body">
+            <div class="card-kicker">Community</div>
+            <div class="card-title">X Spaces</div>
+            <div class="card-cta">Tune in →</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
   </main>
 
   <div id="site-footer"></div>
