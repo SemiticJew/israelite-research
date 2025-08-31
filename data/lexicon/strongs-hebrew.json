@@ -1,27 +1,106 @@
 {
-  "H7225": { "lemma": "רֵאשִׁית", "translit": "reʾshith", "gloss": "beginning; first; chief" },
-  "H0430": { "lemma": "אֱלֹהִים", "translit": "Elohim", "gloss": "God; gods (pl.)" },
-  "H1254": { "lemma": "בָּרָא", "translit": "bara", "gloss": "create; shape; form" },
-  "H0853": { "lemma": "אֵת", "translit": "ʾet", "gloss": "direct object marker" },
-  "H8064": { "lemma": "שָׁמַיִם", "translit": "shamayim", "gloss": "heavens; sky" },
-  "H0776": { "lemma": "אֶרֶץ", "translit": "ʾerets", "gloss": "earth; land" },
-  "H07307": { "lemma": "רוּחַ", "translit": "ruach", "gloss": "spirit; wind; breath" },
-  "H08415": { "lemma": "תְּהוֹם", "translit": "tehom", "gloss": "deep; primeval ocean" },
-  "H04325": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "see; observe" },
-  "H02896": { "lemma": "טוֹב", "translit": "tov", "gloss": "good; pleasant" },
-  "H0216": { "lemma": "אוֹר", "translit": "ʾor", "gloss": "light" },
-  "H02822": { "lemma": "חֹשֶׁךְ", "translit": "choshekh", "gloss": "darkness" },
-  "H0914":  { "lemma": "בָּדַל", "translit": "badal", "gloss": "divide; separate" },
-  "H03117": { "lemma": "יוֹם", "translit": "yom", "gloss": "day" },
-  "H03915": { "lemma": "לַיְלָה", "translit": "laylah", "gloss": "night" },
-  "H07121": { "lemma": "קָרָא", "translit": "qara", "gloss": "call; name; proclaim" },
-  "H07549": { "lemma": "רָקִיעַ", "translit": "raqiaʿ", "gloss": "expanse; firmament" },
-  "H04325b": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "saw (pf.)" },
-  "H07363": { "lemma": "רָחַף", "translit": "rachaph", "gloss": "hover; move gently" },
-  "H04325c": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (root)" },
-  "H04325d": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (variant key)" },
-  "H04325e": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (variant key)" },
-  "H04325f": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (variant key)" },
-  "H04325g": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (variant key)" },
-  "H04325h": { "lemma": "רָאָה", "translit": "raʾah", "gloss": "to see (variant key)" }
+  "H7225": {
+    "lemma": "רֵאשִׁית",
+    "translit": "rēʼšîth",
+    "pos": "Noun (fem.)",
+    "gloss": "beginning; first; chief",
+    "defs": ["beginning", "first, earliest time", "best, choice portion"],
+    "refs": ["Gen 1:1", "Prov 8:22", "Jer 26:1"]
+  },
+  "H430": {
+    "lemma": "אֱלֹהִים",
+    "translit": "ʼĕlōhîm",
+    "pos": "Noun (masc. pl., often singular sense)",
+    "gloss": "God; gods",
+    "defs": ["God (of Israel)", "gods", "judges, mighty ones"],
+    "refs": ["Gen 1:1", "Exod 20:2", "Ps 82:1"]
+  },
+  "H1254": {
+    "lemma": "בָּרָא",
+    "translit": "bārāʼ",
+    "pos": "Verb",
+    "gloss": "create; shape",
+    "defs": ["create (ex nihilo or fashion)", "shape, form"],
+    "refs": ["Gen 1:1", "Isa 40:26", "Ps 51:10"]
+  },
+  "H8064": {
+    "lemma": "שָׁמַיִם",
+    "translit": "šāmayim",
+    "pos": "Noun (pl.)",
+    "gloss": "heavens; sky",
+    "defs": ["heavens, sky", "the abode of God", "atmosphere"],
+    "refs": ["Gen 1:1", "Deut 10:14", "Ps 19:1"]
+  },
+  "H776": {
+    "lemma": "אֶרֶץ",
+    "translit": "ʼereṣ",
+    "pos": "Noun (fem.)",
+    "gloss": "earth; land",
+    "defs": ["earth, world", "land, territory, country", "ground, soil"],
+    "refs": ["Gen 1:1", "Gen 12:1", "Ps 24:1"]
+  },
+  "H1961": {
+    "lemma": "הָיָה",
+    "translit": "hāyāh",
+    "pos": "Verb",
+    "gloss": "to be; become; happen",
+    "defs": ["to be, exist", "to become, come to pass"],
+    "refs": ["Gen 1:2", "Exod 3:14", "Eccl 1:9"]
+  },
+  "H2822": {
+    "lemma": "חֹשֶׁךְ",
+    "translit": "ḥōšeḵ",
+    "pos": "Noun (masc.)",
+    "gloss": "darkness",
+    "defs": ["darkness", "obscurity"],
+    "refs": ["Gen 1:2", "Exod 10:21", "Isa 9:2"]
+  },
+  "H216": {
+    "lemma": "אוֹר",
+    "translit": "ʼôr",
+    "pos": "Noun (masc.)",
+    "gloss": "light",
+    "defs": ["light, daylight", "illumination"],
+    "refs": ["Gen 1:3", "Ps 27:1", "Isa 9:2"]
+  },
+  "H7307": {
+    "lemma": "רוּחַ",
+    "translit": "rûaḥ",
+    "pos": "Noun (fem.; masc.)",
+    "gloss": "spirit; wind; breath",
+    "defs": ["Spirit (of God)", "wind", "breath, life force"],
+    "refs": ["Gen 1:2", "Gen 6:3", "Ps 51:11"]
+  },
+  "H6440": {
+    "lemma": "פָּנִים",
+    "translit": "pānîm",
+    "pos": "Noun (pl.)",
+    "gloss": "face; presence",
+    "defs": ["face, surface", "presence, before"],
+    "refs": ["Gen 1:2", "Exod 33:14", "Ps 16:11"]
+  },
+  "H4325": {
+    "lemma": "מַיִם",
+    "translit": "mayim",
+    "pos": "Noun (pl.)",
+    "gloss": "waters",
+    "defs": ["waters, seas", "rain, flood"],
+    "refs": ["Gen 1:2", "Gen 6:17", "Ps 29:3"]
+  },
+  "H8414": {
+    "lemma": "תֹּהוּ",
+    "translit": "tōhû",
+    "pos": "Noun (masc.)",
+    "gloss": "formless; chaos",
+    "defs": ["waste, emptiness", "formlessness, confusion"],
+    "refs": ["Gen 1:2", "Isa 45:18", "Deut 32:10"]
+  },
+  "H922": {
+    "lemma": "בֹּהוּ",
+    "translit": "bōhû",
+    "pos": "Noun (masc.)",
+    "gloss": "void; emptiness",
+    "defs": ["emptiness, desolation"],
+    "refs": ["Gen 1:2", "Isa 34:11", "Jer 4:23"]
+  }
 }
