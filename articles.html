@@ -4,77 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Articles — Semitic Jew</title>
+
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+
+  <!-- Layout-only tweaks; does NOT change your card sizes -->
   <style>
-    /* Page-scoped layout (won't affect other pages) */
-    .articles-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
-
-    /* Featured pair: 880px (left) + 290px (right) with 24px gap */
-    .featured-grid{display:grid;grid-template-columns:880px 290px;gap:24px;align-items:start}
-
-    .card-featured.primary .inner{
-      display:grid;grid-template-columns:590px 290px;height:450px;
-      border:1px solid #e6ebf2;background:#fff;
+    :root{
+      --ink:#0b2340;
+      --muted:#6b7280;
+      --accent:#F17300;
     }
-    .card-featured.primary .media{position:relative;overflow:hidden}
-    .card-featured.primary .media img{width:590px;height:450px;object-fit:cover;display:block}
-    .card-featured.primary .content{
-      padding:14px 14px 12px;display:flex;flex-direction:column;gap:.4rem;background:#fff;
-    }
-    .card-featured.primary .content .title{font-size:1.2rem;margin:0}
-    .card-featured.primary .content .excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
-    .card-featured.primary .content .date{color:#666;font-size:.9rem;margin:.25rem 0 .5rem}
-    .card-featured .foot{margin-top:auto;display:flex;align-items:center;gap:.5rem;padding-top:.4rem;border-top:1px solid #eef2f7}
-    .author-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover}
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Secondary featured 290×450; image 290×163.13 */
-    .card-featured.secondary .inner{
-      display:block;width:290px;height:450px;border:1px solid #e6ebf2;background:#fff;
-    }
-    .card-featured.secondary .media{position:relative;overflow:hidden}
-    .card-featured.secondary .media img{width:290px;height:163.13px;object-fit:cover;display:block}
-    .card-featured.secondary .body{
-      padding:12px;display:flex;flex-direction:column;height:calc(450px - 163.13px);
-    }
-    .card-featured.secondary .body .title{font-size:1.05rem;margin:0}
-    .card-featured.secondary .body .excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
-    .card-featured.secondary .body .card-date{color:#666;font-size:.9rem;margin:.25rem 0 .5rem}
-    .card-featured.secondary .card-foot{margin-top:auto;display:flex;align-items:center;gap:.5rem;padding-top:.4rem;border-top:1px solid #eef2f7}
+    /* Simple page title (no hero, no breadcrumbs) */
+    .page-header{ padding:24px 0 8px; }
+    .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
 
-    /* Label pill inside images - squared, dark transparent */
-    .label-pill{
-      position:absolute;left:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;
-      font-size:.75rem;letter-spacing:.25px;padding:4px 8px;border-radius:0
+    /* Sections */
+    main.articles{ padding:8px 0 40px; }
+    .section{ margin:28px 0; }
+    .section h2{ margin:0 0 12px; font-size:1.25rem; font-weight:700; color:var(--ink); }
+
+    /* Grids — rely on your existing card sizing; we just place them */
+    .featured-grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:24px;
+    }
+    .recent-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:24px;
+    }
+    @media (max-width: 960px){
+      .featured-grid{ grid-template-columns: 1fr; }
+      .recent-grid{ grid-template-columns: 1fr; }
     }
 
-    /* Recent grid: fixed 290×450 cards, left-aligned */
-    .articles-list .grid{display:flex;flex-wrap:wrap;gap:24px;align-items:stretch}
-    .articles-list .card{width:290px;height:450px;border:1px solid #e6ebf2;background:#fff;display:flex;flex-direction:column}
-    .articles-list .card-media{position:relative}
-    .articles-list .card-media img{width:290px;height:163.13px;object-fit:cover;display:block}
-    .articles-list .card-body{padding:12px;display:flex;flex-direction:column}
-    .articles-list .card-title{font-size:1.02rem;margin:0}
-    .articles-list .card-excerpt{font-size:.95rem;line-height:1.45;margin:.35rem 0}
-    .articles-list .card-date{color:#666;font-size:.9rem;margin-top:.25rem}
-    .articles-list .card-foot{margin-top:auto;padding:12px;display:flex;align-items:center;gap:.5rem;border-top:1px solid #eef2f7}
-
-    /* Keep page bottom comfortable without overlapping footer */
-    .articles-list{margin-bottom:2.5rem}
+    /* Optional: if your cards need a container to stretch images nicely */
+    .article-card a{ text-decoration: none; }
+    .section .view-all{
+      margin-top:8px; font-size:.95rem; color:var(--accent); text-decoration:none; font-weight:600;
+      display:inline-block;
+    }
   </style>
 </head>
-<body class="articles-page">
-  <!-- Header partial -->
+<body>
+  <!-- Site header partial -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Universal hero (title + sub) -->
-    <section class="page-hero hero-universal">
-      <div class="container">
-        <h1 class="page-title">Articles</h1>
-        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
-      </div>
-      <div class="hero-divider"></div>
-    </section>
-
-    <!-- Breadcrumbs under hero -->
+  <!-- Simple title only -->
+  <header class="page-header">
     <div class="container">
+      <h1 class="page-title">Articles</h1>
+    </div>
+  </header>
+
+  <main class="articles">
+    <div class="container">
+
+      <!-- A) Featured Articles (2 cards) -->
+      <section class="section" id="featured-articles">
+        <h2>Featured</h2>
+        <div class="featured-grid">
+          <!-- Keep your existing markup for each article card; this preserves sizes -->
+          <article class="article-card">
+            <a href="/israelite-research/articles/featured-1.html">
+              <!-- Example image path; swap to your real asset -->
+              <img src="/israelite-research/images/articles/featured-1-1200x675.jpg" alt="Featured article 1" />
+              <h3>Featured Article Title One</h3>
+              <p class="muted">A concise description for the featured article goes here.</p>
+            </a>
+          </article>
+
+          <article class="article-card">
+            <a href="/israelite-research/articles/featured-2.html">
+              <img src="/israelite-research/images/articles/featured-2-1200x675.jpg" alt="Featured article 2" />
+              <h3>Featured Article Title Two</h3>
+              <p class="muted">Another concise description for the second featured article.</p>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- B) Recent Articles -->
+      <section class="section" id="recent-articles">
+        <h2>Recent Articles</h2>
+        <div class="recent-grid">
+          <!-- Repeat as needed. Using your existing .article-card structure keeps size consistent -->
+          <article class="article-card">
+            <a href="/israelite-research/articles/recent-1.html">
+              <img src="/israelite-research/images/articles/recent-1-700x394.jpg" alt="Recent article 1" />
+              <h3>Recent Article Title One</h3>
+              <p class="muted">Brief teaser for the article.</p>
+            </a>
+          </article>
+
+          <article class="article-card">
+            <a href="/israelite-research/articles/recent-2.html">
+              <img src="/israelite-research/images/articles/recent-2-700x394.jpg" alt="Recent article 2" />
+              <h3>Recent Article Title Two</h3>
+              <p class="muted">Brief teaser for the article.</p>
+            </a>
+          </article>
+
+          <article class="article-card">
+            <a href="/israelite-research/articles/recent-3.html">
+              <img src="/israelite-research/images/articles/recent-3-700x394.jpg" alt="Recent article 3" />
+              <h3>Recent Article Title Three</h3>
+              <p class="muted">Brief teaser for the article.</p>
+            </a>
+          </article>
+        </div>
+
+        <!-- Optional “View all” link; remove if you don’t need it -->
+        <!-- <a class="view-all" href="/israelite-research/articles/">View all →</a> -->
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+
+  <!-- Partials loader -->
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
