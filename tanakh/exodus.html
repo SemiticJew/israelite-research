@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Exodus — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <script>
+    (function(){
+      // Ensure the page runs in "Exodus" context by adding ?book=Exodus if not present
+      var qs = new URLSearchParams(location.search);
+      if (!qs.has('book')) {
+        var url = new URL(location.href);
+        qs.set('book', 'Exodus');
+        url.search = qs.toString();
+        location.replace(url.toString());
+      }
+    })();
+  </script>
+</head>
+<body class="book-page">
+  <!-- Header placeholder (optional site header injection) -->
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Universal hero -->
+    <section class="page-hero hero-texts">
+      <div class="container">
+        <h1 id="book-title" class="hero-title">Exodus</h1>
+        <p id="book-desc" class="hero-subtitle"></p>
+      </div>
+    </section>
+
+    <!-- Breadcrumbs -->
+    <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/israelite-research/index.html">Home</a></li>
+        <li><a href="/israelite-research/texts.html">Texts</a></li>
+        <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
+        <li>Exodus</li>
+      </ol>
+    </nav>
+
+    <!-- Chapters grid -->
+    <section class="container" style="margin-top:1rem;">
+      <h2 class="visually-hidden">Chapters</h2>
+      <div id="chapters" class="chapters-grid"
+           style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.5rem;max-width:720px;margin:0 auto;">
+        <!-- js/book.js will populate 1..N based on the Exodus manifest -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer placeholder (optional site footer injection) -->
+  <div id="site-footer"></div>
+
+  <!-- Script that builds the chapter cards dynamically from the book manifest -->
+  <script src="/israelite-research/js/book.js"></script>
+</body>
+</html>
