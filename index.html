@@ -6,34 +6,98 @@
   <title>Israelite Research</title>
 
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+
+  <style>
+    :root{
+      --accent:#F17300;
+      --ink:#0b2340;
+      --muted:#6b7280;
+      --card-shadow: 0 2px 8px rgba(0,0,0,.06);
+      --card-shadow-hover: 0 10px 20px rgba(0,0,0,.12);
+    }
+
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+
+    /* Page title + subtitle */
+    .site-header-block{ padding:32px 0 20px; text-align:left; }
+    .site-title{ font-size:2.25rem; font-weight:800; color:var(--ink); margin:0; }
+    .site-subtitle{ font-size:1.1rem; color:var(--muted); margin-top:6px; }
+
+    /* Three-column grid */
+    .features{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:24px;
+      margin-top:32px;
+    }
+    @media(max-width:900px){ .features{ grid-template-columns:1fr; } }
+
+    .feature-col h2{
+      font-size:1.25rem; font-weight:700; margin-bottom:12px; color:var(--ink);
+    }
+
+    /* Card styles */
+    .card{
+      background:#fff;
+      border:1px solid #e6ebf2;
+      border-radius:12px;
+      box-shadow:var(--card-shadow);
+      padding:16px;
+      text-align:center;
+      text-decoration:none;
+      color:inherit;
+      transition: transform .12s ease, box-shadow .12s ease;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      height:120px;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); }
+    .card-title{ font-size:1rem; font-weight:600; color:var(--accent); }
+  </style>
 </head>
 <body>
-  <!-- Site header -->
   <div id="site-header"></div>
 
-  <!-- Main content (you can keep your landing layout here) -->
-  <main class="container" style="max-width:1200px; margin:0 auto; padding:40px 16px;">
-    <h1>Welcome to Israelite Research</h1>
-    <p>This is the homepage of your project. From here you can explore the Tanakh, New Testament, and other resources.</p>
+  <!-- Top title block -->
+  <section class="site-header-block container">
+    <h1 class="site-title">Israelite Research</h1>
+    <p class="site-subtitle">A project dedicated to the logical, historical, and faithful study of the Scriptures.</p>
+  </section>
 
-    <section>
-      <h2>Explore Texts</h2>
-      <ul>
-        <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
-        <li><a href="/israelite-research/nt.html">New Testament</a></li>
-      </ul>
-    </section>
+  <!-- Three feature regions -->
+  <main class="container">
+    <div class="features">
+      
+      <!-- Featured Podcast -->
+      <div class="feature-col">
+        <h2>Featured Podcast</h2>
+        <a href="https://open.spotify.com/show/7qFqkqP5a3RZ0z4Y3f6nKb" class="card" target="_blank"><span class="card-title">Spotify Podcast</span></a>
+        <a href="https://www.youtube.com/@semiticjew" class="card" target="_blank"><span class="card-title">YouTube Podcast</span></a>
+        <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1740586968" class="card" target="_blank"><span class="card-title">Apple Podcast</span></a>
+      </div>
 
-    <section>
-      <h2>About</h2>
-      <p>Israelite Research is dedicated to studying the biblical text logically, historically, and faithfully.</p>
-    </section>
+      <!-- Featured Library -->
+      <div class="feature-col">
+        <h2>Featured Library</h2>
+        <a href="/israelite-research/catechism.html" class="card"><span class="card-title">Israelite Catechism</span></a>
+        <a href="#" class="card"><span class="card-title">Articles</span></a>
+        <a href="#" class="card"><span class="card-title">Podcast Archive</span></a>
+      </div>
+
+      <!-- Featured Communities -->
+      <div class="feature-col">
+        <h2>Featured Communities</h2>
+        <a href="#" class="card"><span class="card-title">Discord (Coming Soon)</span></a>
+        <a href="#" class="card"><span class="card-title">Community</span></a>
+        <a href="#" class="card"><span class="card-title">X Spaces</span></a>
+      </div>
+
+    </div>
   </main>
 
-  <!-- Site footer -->
   <div id="site-footer"></div>
 
-  <!-- Partials -->
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
