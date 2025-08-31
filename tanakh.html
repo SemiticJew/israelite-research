@@ -38,8 +38,22 @@
     .pt-abbr{ font-size:22px; font-weight:800; color:#3E7CB1; line-height:1; }
     .pt-name{ font-size:.9rem; color:#054A91; text-align:center; }
     .pt-abbr sup{ font-size:12px; vertical-align:super; margin-left:2px; }
+  
+    /* --- Pillar layout (categories as vertical columns) --- */
+    .canon-pillars { max-width:1200px; margin:0 auto; padding: 1rem 1rem 2rem; }
+    .pillars-grid { display: grid; grid-template-columns: repeat( auto-fit, minmax(240px, 1fr) ); gap: 24px; align-items: start; }
+    .pillar { display:flex; flex-direction:column; gap:12px; }
+    .pillar-head { position:sticky; top:0; background:#fff; z-index:1; padding-bottom:.25rem; border-bottom:1px solid #eef2f7; }
+    .pillar-title { margin:0; font-weight:700; color:#000; font-size:1.125rem; text-align:center; }
+    .pillar-sub   { margin:.25rem 0 0; color:#777; font-size:.95rem; text-align:center; }
+    .pillar-books { display:flex; flex-direction:column; gap:12px; }
+    .pillar-books .books { display:flex; flex-wrap:wrap; gap:12px; }
+
   </style>
 </head>
+<body>
+  <section class="canon"><div id="canon-root"></div></section>
+
 <body>
   <!-- Header partial -->
   <div id="site-header"></div>
