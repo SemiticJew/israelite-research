@@ -8,66 +8,92 @@
   <!-- Site styles -->
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 
-  <!-- Page-specific CSS: centered layout + periodic-table cards -->
+  <!-- Page-specific styles -->
   <style>
-    :root{ --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --blue-600:#054A91; }
-
-    /* Center the main content on the page */
-    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-
-    /* Canon section wrapper */
-    .canon{ padding:1.25rem 0 2.5rem; }
-
-    /* Category blocks (you can keep these as rows or turn into columns later) */
-    .canon-row{
-      display:grid;
-      grid-template-columns:minmax(220px, 280px) 1fr;
-      gap:28px;
-      align-items:start;
-      padding:1rem 0;
-      border-bottom:1px solid #e6ebf2;
+    :root{
+      --accent:#F17300; --ink:#0b2340; --muted:#6b7280;
+      --blue-900:#054A91; /* The Law */
+      --orange:#F17300;   /* History */
+      --blue-600:#3E7CB1; /* Wisdom */
+      --blue-300:#81A4CD; /* Prophets */
+      --date-gray:#9aa0a6;
+      --card-shadow: 0 2px 8px rgba(0,0,0,.06);
+      --card-shadow-hover: 0 10px 20px rgba(0,0,0,.12);
     }
-    .canon-row:last-child{ border-bottom:none; }
 
-    .canon-left{ text-align:center; }
+    /* Center page sections */
+    .container{ max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    /* Canon wrapper */
+    .canon{ padding: 1.25rem 0 2.5rem; }
+
+    /* SINGLE-COLUMN category block */
+    .canon-row{
+      display: block;           /* one column: heading, then books */
+      padding: 1.25rem 0;
+      border-bottom: 1px solid #e6ebf2;
+    }
+    .canon-row:last-child{ border-bottom: none; }
+
+    .canon-left{ text-align: center; margin-bottom: .75rem; }
     .canon-left h2{
-      margin:0; font-weight:800; color:#000; font-size:1.125rem;
+      margin: 0; font-weight: 800; color: #000; font-size: 1.125rem;
     }
     .canon-left .sub{
-      margin:.35rem 0 0; color:#666; font-size:.95rem;
+      margin: .35rem 0 0; color: #666; font-size: .95rem;
     }
 
-    /* Books grid inside each category (centered, wraps nicely) */
+    /* Books grid (keeps periodic card size; auto-fills per row) */
     .books{
-      display:grid;
+      display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap:12px;
-      align-items:start;
+      gap: 12px;
+      align-items: start;
+      justify-items: center;   /* center cards in their grid cells */
     }
 
-    /* Periodic-table card styling (140x140 with stacked regions) */
+    /* Base periodic-table card */
     .pt-card{
-      width:140px; height:140px;
-      border:1px solid #e6ebf2; background:#fff; border-radius:12px;
-      display:flex; flex-direction:column; justify-content:space-between; align-items:center;
-      text-decoration:none; color:inherit; padding:8px;
-      box-shadow:0 2px 8px rgba(0,0,0,.04);
-      transition: transform .12s ease, box-shadow .12s ease;
+      width: 140px; height: 140px;
+      border: 1px solid transparent;
+      border-radius: 12px; background: #fff;
+      box-shadow: var(--card-shadow);
+      display: flex; flex-direction: column;
+      justify-content: space-between; align-items: center;
+      padding: 8px; text-decoration: none; color: inherit;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
     }
-    .pt-card:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.08); }
+    .pt-card:hover{ transform: translateY(-2px); box-shadow: var(--card-shadow-hover); filter: brightness(1.02); }
 
-    /* Top: book date (centered) */
-    .pt-date{ font-size:12px; color:#666; line-height:1; margin-top:2px; text-align:center; }
+    /* Regions — background + text palette */
+    /* 1) The Law */
+    .canon-row.law .pt-card { background: var(--blue-900); border-color: #043b72; }
+    .canon-row.law .pt-abbr, .canon-row.law .pt-name { color: #fff; }
+    .canon-row.law .pt-date { color: var(--date-gray); }
 
-    /* Middle: periodic abbreviation (centered, bold) */
-    .pt-abbr{ font-size:22px; font-weight:800; color:#3E7CB1; line-height:1; text-align:center; }
+    /* 2) History */
+    .canon-row.history .pt-card { background: var(--orange); border-color: #c65f00; }
+    .canon-row.history .pt-abbr, .canon-row.history .pt-name { color: #fff; }
+    .canon-row.history .pt-date { color: var(--date-gray); }
 
-    /* Bottom: book name (centered) */
-    .pt-name{ font-size:.9rem; color:#054A91; text-align:center; }
+    /* 3) Wisdom */
+    .canon-row.wisdom .pt-card { background: var(--blue-600); border-color: #2e6796; }
+    .canon-row.wisdom .pt-abbr, .canon-row.wisdom .pt-name { color: #fff; }
+    .canon-row.wisdom .pt-date { color: var(--date-gray); }
 
-    /* Small screens: stack the category label above the grid */
+    /* 4) Prophets */
+    .canon-row.prophets .pt-card { background: var(--blue-300); border-color: #6d90b9; }
+    .canon-row.prophets .pt-abbr, .canon-row.prophets .pt-name { color: #fff; }
+    .canon-row.prophets .pt-date { color: var(--date-gray); }
+
+    /* Card internals (top/mid/bottom) */
+    .pt-date { font-size: 12px; line-height: 1; margin-top: 2px; text-align: center; }
+    .pt-abbr { font-size: 22px; font-weight: 800; line-height: 1; text-align: center; }
+    .pt-name { font-size: .9rem; line-height: 1.15; text-align: center; }
+
+    /* Small screens: keep one column; grid still wraps cards per row */
     @media (max-width: 720px){
-      .canon-row{ grid-template-columns: 1fr; }
+      .books{ grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
     }
   </style>
 </head>
@@ -75,7 +101,7 @@
   <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Universal hero (white background, centered content) -->
+  <!-- Universal hero -->
   <section class="page-hero hero--white">
     <div class="container">
       <h1 class="page-title" style="color:var(--accent); text-align:center;">The Tanakh</h1>
@@ -83,7 +109,7 @@
     </div>
   </section>
 
-  <!-- Breadcrumbs (centered) -->
+  <!-- Breadcrumbs -->
   <nav id="breadcrumbs" class="breadcrumb">
     <div class="container">
       <ol>
@@ -94,22 +120,30 @@
     </div>
   </nav>
 
-  <!-- Main content (centered) -->
+  <!-- Main -->
   <main class="canon">
-    <div class="container" id="tanakh-root"><!-- JS injects rows here --></div>
+    <div class="container" id="tanakh-root"><!-- JS injects categories here --></div>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs scripts -->
+  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 
-  <!-- Render periodic-table cards by category -->
+  <!-- Render periodic-table cards -->
   <script>
     (function(){
       const BASE = '/israelite-research';
+
+      /* Map of region -> CSS class (for coloring) */
+      const REGION_CLASS = {
+        'The Law': 'law',
+        'History': 'history',
+        'Wisdom': 'wisdom',
+        'The Prophets': 'prophets'
+      };
 
       const rows = [
         {
@@ -176,7 +210,7 @@
 
       rows.forEach(({title, sub, books})=>{
         const row = document.createElement('section');
-        row.className = 'canon-row';
+        row.className = 'canon-row ' + (REGION_CLASS[title] || '');
 
         const left = document.createElement('div');
         left.className = 'canon-left';
