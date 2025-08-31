@@ -19,21 +19,11 @@
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Title and breadcrumbs block */
-    .page-header{ padding:24px 0 8px; }
+    /* Page header: only title */
+    .page-header{ padding:24px 0 20px; }
     .page-title{
       margin:0; font-size:2rem; font-weight:800; color:var(--ink); text-align:left;
     }
-    .breadcrumb{
-      padding:6px 0 20px;
-    }
-    .breadcrumb ol{
-      list-style:none; margin:0; padding:0;
-      display:flex; gap:8px; flex-wrap:wrap;
-      font-size:.95rem; color:#6b7280;
-    }
-    .breadcrumb li+li::before{ content:"›"; margin:0 6px; color:#9aa0a6; }
-    .breadcrumb a{ color:inherit; text-decoration:none; }
 
     /* Main grid */
     .canon{ padding:0 0 40px; }
@@ -70,20 +60,14 @@
 <body>
   <div id="site-header"></div>
 
-  <!-- Title + breadcrumbs grouped in one container -->
+  <!-- Simple page header -->
   <header class="page-header">
     <div class="container">
       <h1 class="page-title">The Tanakh</h1>
-      <nav id="breadcrumbs" class="breadcrumb">
-        <ol>
-          <li><a href="/israelite-research/index.html">Home</a></li>
-          <li><a href="/israelite-research/texts.html">Texts</a></li>
-          <li>The Tanakh</li>
-        </ol>
-      </nav>
     </div>
   </header>
 
+  <!-- Main: book grid -->
   <main class="canon">
     <div class="container">
       <div id="books" class="books"></div>
@@ -93,19 +77,16 @@
   <div id="site-footer"></div>
 
   <script src="/israelite-research/js/include.js"></script>
-  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 
   <script>
     (function(){
       const BASE = '/israelite-research';
-
       function abbrWithExponent(abbr, name){
         const m = /^(1|2)\s+/.exec(name || '');
         if (!m) return abbr;
         const exp = m[1] === '1' ? '¹' : '²';
         return `${abbr}<sup>${exp}</sup>`;
       }
-
       const books = [
         { abbr:'Gn',  name:'Genesis',      date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Genesis` },
         { abbr:'Ex',  name:'Exodus',       date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Exodus` },
@@ -146,7 +127,6 @@
         { abbr:'Zc',  name:'Zechariah',    date:'6th–5th c. BCE', href:`${BASE}/tanakh/book.html?book=Zechariah` },
         { abbr:'Ml',  name:'Malachi',      date:'5th c. BCE', href:`${BASE}/tanakh/book.html?book=Malachi` },
       ];
-
       const grid = document.getElementById('books');
       books.forEach(b=>{
         const a = document.createElement('a');
