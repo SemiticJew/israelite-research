@@ -1,64 +1,39 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Home — Semitic Jew</title>
+  <title>Israelite Research</title>
+
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* ====== Home (page-local) ====== */
-    :root { --frame:#fff; --stroke:#e6ebf2; --ink:#0b2340; --muted:#666; --accent:#F17300; }
-
-    /* Keep hero consistent with the rest of the site */
-    .page-hero.hero-home { background: linear-gradient(180deg,#0b2340, #163a6b 60%, #0b2340); color:#fff; }
-    .page-hero.hero-home .page-title { color:#fff; }
-    .hero-divider { height: 12px; background: linear-gradient(90deg, var(--accent) 0 140px, transparent 140px) bottom/100% 6px no-repeat; }
-
-    /* Section wrapper -> rounded grid “frame” */
-    .home-section { padding: 1.25rem 0; }
-    .round-grid { background: var(--frame); border:1px solid var(--stroke); border-radius: 20px; padding: 1rem; }
-
-    /* 3-up cards grid (uniform across sections) */
-    .cards { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
-    @media (max-width: 1024px){ .cards{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-    @media (max-width: 640px){ .cards{ grid-template-columns: 1fr; } }
-
-    /* Card */
-    .card { border:1px solid var(--stroke); border-radius:16px; background:#fff; overflow:hidden;
-            box-shadow:0 2px 10px rgba(0,0,0,.04); transition: transform .15s ease, box-shadow .15s ease; }
-    .card:hover{ transform: translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.10); }
-
-    /* Uniform size: image ratio + fixed-ish body height keeps grid tidy */
-    .card-media { aspect-ratio: 700 / 394; background:#f6f8fb; }
-    .card-media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .card-body { padding: .85rem .9rem 1rem; display:flex; flex-direction:column; gap:.5rem; min-height: 150px; }
-    .card-title{ margin:0; font-size:1.05rem; color:#000; }
-    .card-text{ margin:0; color:#555; font-size:.95rem; }
-    .card-actions{ padding: 0 .9rem 1rem; display:flex; gap:.5rem; flex-wrap:wrap; }
-
-    /* Buttons (podcast platforms etc.) */
-    .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.5rem .75rem; border-radius:999px;
-          border:1px solid var(--accent); color:var(--accent); background:#fff; text-decoration:none; font-size:.9rem; }
-    .btn:hover{ background:var(--accent); color:#fff; }
-    .btn svg{ width:18px; height:18px; }
-
-    /* Section titles */
-    .section-head{ display:flex; align-items:center; justify-content:space-between; margin: .25rem 0 .75rem; }
-    .section-head h2{ margin:0; font-family:var(--ff-serif); font-size:1.15rem; letter-spacing:.3px; color: var(--ink); }
-  </style>
 </head>
-<body class="home">
-  <!-- Header partial -->
+<body>
+  <!-- Site header -->
   <div id="site-header"></div>
 
-  <main>
-    <!-- Hero -->
-    <section class="page-hero hero-home">
-      <div class="container">
-        <h1 class="page-title">Semitic Jew</h1>
-        <p class="page-subtitle">Free, research-driven resources to help you read Scripture with logic, care, and context.</p>
-      </div>
-      <div class="hero-divider"></div>
+  <!-- Main content (you can keep your landing layout here) -->
+  <main class="container" style="max-width:1200px; margin:0 auto; padding:40px 16px;">
+    <h1>Welcome to Israelite Research</h1>
+    <p>This is the homepage of your project. From here you can explore the Tanakh, New Testament, and other resources.</p>
+
+    <section>
+      <h2>Explore Texts</h2>
+      <ul>
+        <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
+        <li><a href="/israelite-research/nt.html">New Testament</a></li>
+      </ul>
     </section>
 
-    <!-- Breadcrumbs (you asked to keep site-wide standard; if you prefer none on home, remove this nav) -->
+    <section>
+      <h2>About</h2>
+      <p>Israelite Research is dedicated to studying the biblical text logically, historically, and faithfully.</p>
+    </section>
+  </main>
+
+  <!-- Site footer -->
+  <div id="site-footer"></div>
+
+  <!-- Partials -->
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
