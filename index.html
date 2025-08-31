@@ -18,49 +18,33 @@
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Title + subtitle */
     .site-header-block{ padding:32px 0 20px; text-align:left; }
     .site-title{ font-size:2.25rem; font-weight:800; color:var(--ink); margin:0; }
     .site-subtitle{ font-size:1.1rem; color:var(--muted); margin-top:6px; }
 
-    /* Category rows (each row is horizontal: 3-up) */
     .feature-row{ margin:32px 0; }
     .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:24px;
-    }
+    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; }
     @media (max-width: 960px){ .cards{ grid-template-columns: 1fr; } }
 
-    /* Card */
     .card{
-      display:flex;
-      flex-direction:column;
-      background:#fff;
-      border:1px solid #e6ebf2;
-      border-radius:12px;
+      display:flex; flex-direction:column;
+      background:#fff; border:1px solid #e6ebf2; border-radius:12px;
       box-shadow:var(--card-shadow);
       text-decoration:none; color:inherit;
       overflow:hidden;
       transition: transform .12s ease, box-shadow .12s ease;
-      min-height: 260px;
+      min-height:260px;
     }
     .card:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); }
 
-    /* Image placeholder (700x394) */
     .card img{
       display:block; width:100%; height:auto;
-      aspect-ratio: 700 / 394;
-      object-fit: cover; object-position:center;
+      aspect-ratio:700/394; object-fit:cover; object-position:center;
       background:#f5f7fa;
     }
 
-    /* Content area */
-    .card-body{
-      padding:14px 14px 16px;
-      display:flex; flex-direction:column; gap:6px;
-    }
+    .card-body{ padding:14px 14px 16px; display:flex; flex-direction:column; gap:6px; }
     .card-title{ font-size:1rem; font-weight:700; color:var(--ink); }
     .card-kicker{ font-size:.85rem; color:var(--muted); }
     .card-cta{ font-size:.9rem; color:var(--accent); font-weight:600; }
@@ -69,7 +53,6 @@
 <body>
   <div id="site-header"></div>
 
-  <!-- Top title block -->
   <section class="site-header-block container">
     <h1 class="site-title">Israelite Research</h1>
     <p class="site-subtitle">A project dedicated to the logical, historical, and faithful study of the Scriptures.</p>
@@ -77,12 +60,12 @@
 
   <main class="container">
 
-    <!-- A. Featured Podcast -->
+    <!-- Featured Podcast -->
     <section class="feature-row">
       <h2>Featured Podcast</h2>
       <div class="cards">
         <a class="card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank">
-          <img src="/israelite-research/images/spotify-700x394.jpg" alt="Spotify Podcast" width="700" height="394" />
+          <img src="/israelite-research/images/podcast/spotify-700x394.jpg" alt="Spotify Podcast" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Podcast • Spotify</div>
             <div class="card-title">Semitic Jew on Spotify</div>
@@ -91,7 +74,7 @@
         </a>
 
         <a class="card" href="https://www.youtube.com/@semiticjew" target="_blank">
-          <img src="/israelite-research/images/youtube-700x394.jpg" alt="YouTube Podcast" width="700" height="394" />
+          <img src="/israelite-research/images/podcast/youtube-700x394.jpg" alt="YouTube Podcast" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Podcast • YouTube</div>
             <div class="card-title">Semitic Jew on YouTube</div>
@@ -100,7 +83,7 @@
         </a>
 
         <a class="card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">
-          <img src="/israelite-research/images/apple-700x394.jpg" alt="Apple Podcast" width="700" height="394" />
+          <img src="/israelite-research/images/podcast/apple-700x394.jpg" alt="Apple Podcast" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Podcast • Apple</div>
             <div class="card-title">Semitic Jew on Apple Podcasts</div>
@@ -110,12 +93,12 @@
       </div>
     </section>
 
-    <!-- B. Featured Library -->
+    <!-- Featured Library -->
     <section class="feature-row">
       <h2>Featured Library</h2>
       <div class="cards">
         <a class="card" href="/israelite-research/catechism.html">
-          <img src="/israelite-research/images/featured-israelite-catechism-700x394.jpg" alt="Israelite Catechism" width="700" height="394" />
+          <img src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg" alt="Israelite Catechism" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Library</div>
             <div class="card-title">Israelite Catechism</div>
@@ -124,7 +107,7 @@
         </a>
 
         <a class="card" href="#">
-          <img src="/israelite-research/images/featured-articles-700x394.jpg" alt="Articles" width="700" height="394" />
+          <img src="/israelite-research/images/index/featured-articles-700x394.jpg" alt="Articles" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Library</div>
             <div class="card-title">Featured Articles</div>
@@ -133,7 +116,7 @@
         </a>
 
         <a class="card" href="#">
-          <img src="/israelite-research/images/season-2-700x394.jpg" alt="Podcast Archive Season 2" width="700" height="394" />
+          <img src="/israelite-research/images/index/season-2-700x394.jpg" alt="Podcast Archive Season 2" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Library</div>
             <div class="card-title">Podcast Archive (Season 2)</div>
@@ -143,12 +126,12 @@
       </div>
     </section>
 
-    <!-- C. Featured Communities -->
+    <!-- Featured Communities -->
     <section class="feature-row">
       <h2>Featured Communities</h2>
       <div class="cards">
         <a class="card" href="#">
-          <img src="/israelite-research/images/coming-discord-700x394.jpg" alt="Discord (Coming Soon)" width="700" height="394" />
+          <img src="/israelite-research/images/index/coming-discord-700x394.jpg" alt="Discord (Coming Soon)" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Community</div>
             <div class="card-title">Discord (Coming Soon)</div>
@@ -157,7 +140,7 @@
         </a>
 
         <a class="card" href="#">
-          <img src="/israelite-research/images/community-700x394.jpg" alt="Community" width="700" height="394" />
+          <img src="/israelite-research/images/index/community-700x394.jpg" alt="Community" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Community</div>
             <div class="card-title">Community</div>
@@ -166,7 +149,7 @@
         </a>
 
         <a class="card" href="#">
-          <img src="/israelite-research/images/x-spaces-700x394.jpg" alt="X Spaces" width="700" height="394" />
+          <img src="/israelite-research/images/index/x-spaces-700x394.jpg" alt="X Spaces" width="700" height="394" />
           <div class="card-body">
             <div class="card-kicker">Community</div>
             <div class="card-title">X Spaces</div>
