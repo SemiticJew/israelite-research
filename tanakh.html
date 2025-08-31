@@ -5,119 +5,96 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>The Tanakh — Semitic Jew</title>
 
-  <!-- Site styles -->
   <link rel="stylesheet" href="/israelite-research/styles.css" />
 
-  <!-- Page-specific styles -->
   <style>
     :root{
-      --accent:#F17300;                 /* periodic abbreviation + exponents */
+      --accent:#F17300;        /* periodic abbreviation + exponents */
       --ink:#0b2340;
-      --date-gray:#9aa0a6;              /* dates */
-      --book-blue:#054A91;              /* book name */
+      --date-gray:#9aa0a6;     /* dates */
+      --book-blue:#054A91;     /* book name */
       --card-shadow: 0 2px 8px rgba(0,0,0,.06);
       --card-shadow-hover: 0 10px 20px rgba(0,0,0,.12);
     }
 
-    /* Shared page container: max 1200px, centered */
-    .container{ max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Page title section: simple, left-aligned, no background */
-    .page-header{ padding: 24px 0 8px; }
+    /* Title and breadcrumbs block */
+    .page-header{ padding:24px 0 8px; }
     .page-title{
-      margin: 0;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--ink);
-      text-align: left;     /* left-aligned within the container */
+      margin:0; font-size:2rem; font-weight:800; color:var(--ink); text-align:left;
     }
-
-    /* Breadcrumbs aligned to same container width */
-    .breadcrumb{ padding: 8px 0 16px; }
+    .breadcrumb{
+      padding:6px 0 20px;
+    }
     .breadcrumb ol{
-      list-style: none; padding: 0; margin: 0;
-      display: flex; gap: 8px; flex-wrap: wrap;
-      font-size: .95rem; color: #6b7280;
+      list-style:none; margin:0; padding:0;
+      display:flex; gap:8px; flex-wrap:wrap;
+      font-size:.95rem; color:#6b7280;
     }
-    .breadcrumb a{ color: inherit; text-decoration: none; }
-    .breadcrumb li+li::before{ content: "›"; margin: 0 6px; color: #9aa0a6; }
+    .breadcrumb li+li::before{ content:"›"; margin:0 6px; color:#9aa0a6; }
+    .breadcrumb a{ color:inherit; text-decoration:none; }
 
-    /* Main wrapper */
-    .canon{ padding: 8px 0 40px; }
-
-    /* Single grid of all books (no category headers) */
+    /* Main grid */
+    .canon{ padding:0 0 40px; }
     .books{
-      display: grid;
+      display:grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 12px;
-      align-items: start;
-      justify-items: center;
+      gap:12px;
+      align-items:start;
+      justify-items:center;
     }
 
-    /* Periodic-table card: smaller and white */
+    /* Periodic card */
     .pt-card{
-      width: 120px; height: 120px;
-      background: #fff; border: 1px solid #e6ebf2; border-radius: 12px;
-      box-shadow: var(--card-shadow);
-      display: flex; flex-direction: column;
-      justify-content: space-between; align-items: center;
-      padding: 8px; text-decoration: none; color: inherit;
-      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      width:120px; height:120px;
+      background:#fff; border:1px solid #e6ebf2; border-radius:12px;
+      box-shadow:var(--card-shadow);
+      display:flex; flex-direction:column;
+      justify-content:space-between; align-items:center;
+      padding:8px; text-decoration:none; color:inherit;
+      transition: transform .12s ease, box-shadow .12s ease;
     }
-    .pt-card:hover{ transform: translateY(-2px); box-shadow: var(--card-shadow-hover); filter: brightness(1.02); }
+    .pt-card:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); }
 
-    /* Top: date (grey, centered) */
-    .pt-date{ font-size: 11px; color: var(--date-gray); line-height: 1; margin-top: 2px; text-align: center; }
+    .pt-date{ font-size:11px; color:var(--date-gray); margin-top:2px; text-align:center; }
+    .pt-abbr{ font-size:20px; font-weight:800; color:var(--accent); text-align:center; }
+    .pt-abbr sup{ font-size:11px; vertical-align:super; margin-left:2px; color:var(--accent); }
+    .pt-name{ font-size:.85rem; color:var(--book-blue); text-align:center; }
 
-    /* Middle: abbreviation (accent/orange, centered, bold) */
-    .pt-abbr{ font-size: 20px; font-weight: 800; color: var(--accent); line-height: 1; text-align: center; }
-    .pt-abbr sup{ font-size: 11px; vertical-align: super; margin-left: 2px; color: var(--accent); }
-
-    /* Bottom: book name (blue, centered) */
-    .pt-name{ font-size: .85rem; color: var(--book-blue); line-height: 1.15; text-align: center; }
-
-    @media (max-width: 720px){
-      .books{ grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+    @media(max-width:720px){
+      .books{ grid-template-columns: repeat(auto-fill, minmax(112px,1fr)); }
     }
   </style>
 </head>
 <body>
-  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- Simple page title (left) -->
+  <!-- Title + breadcrumbs grouped in one container -->
   <header class="page-header">
     <div class="container">
       <h1 class="page-title">The Tanakh</h1>
+      <nav id="breadcrumbs" class="breadcrumb">
+        <ol>
+          <li><a href="/israelite-research/index.html">Home</a></li>
+          <li><a href="/israelite-research/texts.html">Texts</a></li>
+          <li>The Tanakh</li>
+        </ol>
+      </nav>
     </div>
   </header>
 
-  <!-- Breadcrumbs (aligned to same container) -->
-  <nav id="breadcrumbs" class="breadcrumb">
-    <div class="container">
-      <ol>
-        <li><a href="/israelite-research/index.html">Home</a></li>
-        <li><a href="/israelite-research/texts.html">Texts</a></li>
-        <li>The Tanakh</li>
-      </ol>
-    </div>
-  </nav>
-
-  <!-- Main: single grid of books -->
   <main class="canon">
     <div class="container">
-      <div id="books" class="books"><!-- JS injects all book cards here --></div>
+      <div id="books" class="books"></div>
     </div>
   </main>
 
-  <!-- Footer partial -->
   <div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs -->
   <script src="/israelite-research/js/include.js"></script>
   <script src="/israelite-research/js/breadcrumbs.js" defer></script>
 
-  <!-- Build the periodic cards -->
   <script>
     (function(){
       const BASE = '/israelite-research';
@@ -130,47 +107,44 @@
       }
 
       const books = [
-        { abbr:'Gn',  name:'Genesis',        date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Genesis` },
-        { abbr:'Ex',  name:'Exodus',         date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Exodus` },
-        { abbr:'Lv',  name:'Leviticus',      date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Leviticus` },
-        { abbr:'Nm',  name:'Numbers',        date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Numbers` },
-        { abbr:'Dt',  name:'Deuteronomy',    date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Deuteronomy` },
-
-        { abbr:'Jo',  name:'Joshua',         date:'c. 13th–12th c. BCE', href:`${BASE}/tanakh/book.html?book=Joshua` },
-        { abbr:'Jg',  name:'Judges',         date:'c. 12th–11th c. BCE', href:`${BASE}/tanakh/book.html?book=Judges` },
-        { abbr:'Ru',  name:'Ruth',           date:'c. 11th–10th c. BCE', href:`${BASE}/tanakh/book.html?book=Ruth` },
-        { abbr:'Sm',  name:'1 Samuel',       date:'c. 10th–9th c. BCE',  href:`${BASE}/tanakh/book.html?book=1%20Samuel` },
-        { abbr:'Sm',  name:'2 Samuel',       date:'c. 10th–9th c. BCE',  href:`${BASE}/tanakh/book.html?book=2%20Samuel` },
-        { abbr:'Kg',  name:'1 Kings',        date:'c. 9th–6th c. BCE',   href:`${BASE}/tanakh/book.html?book=1%20Kings` },
-        { abbr:'Kg',  name:'2 Kings',        date:'c. 9th–6th c. BCE',   href:`${BASE}/tanakh/book.html?book=2%20Kings` },
-        { abbr:'Ch',  name:'1 Chronicles',   date:'c. 5th–4th c. BCE',   href:`${BASE}/tanakh/book.html?book=1%20Chronicles` },
-        { abbr:'Ch',  name:'2 Chronicles',   date:'c. 5th–4th c. BCE',   href:`${BASE}/tanakh/book.html?book=2%20Chronicles` },
-        { abbr:'Ezr', name:'Ezra',           date:'c. 5th c. BCE',       href:`${BASE}/tanakh/book.html?book=Ezra` },
-        { abbr:'Neh', name:'Nehemiah',       date:'c. 5th c. BCE',       href:`${BASE}/tanakh/book.html?book=Nehemiah` },
-        { abbr:'Est', name:'Esther',         date:'c. 5th–4th c. BCE',   href:`${BASE}/tanakh/book.html?book=Esther` },
-
-        { abbr:'Job', name:'Job',            date:'various, ancient',    href:`${BASE}/tanakh/book.html?book=Job` },
-        { abbr:'Ps',  name:'Psalms',         date:'c. 10th–5th c. BCE',  href:`${BASE}/tanakh/book.html?book=Psalms` },
-        { abbr:'Pr',  name:'Proverbs',       date:'c. 10th–6th c. BCE',  href:`${BASE}/tanakh/book.html?book=Proverbs` },
-        { abbr:'Ec',  name:'Ecclesiastes',   date:'c. 10th–3rd c. BCE',  href:`${BASE}/tanakh/book.html?book=Ecclesiastes` },
-        { abbr:'SoS', name:'Song of Songs',  date:'c. 10th–3rd c. BCE',  href:`${BASE}/tanakh/book.html?book=Song%20of%20Songs` },
-
-        { abbr:'Is',  name:'Isaiah',         date:'8th–7th c. BCE',      href:`${BASE}/tanakh/book.html?book=Isaiah` },
-        { abbr:'Jr',  name:'Jeremiah',       date:'7th–6th c. BCE',      href:`${BASE}/tanakh/book.html?book=Jeremiah` },
-        { abbr:'Ezk', name:'Ezekiel',        date:'6th c. BCE',          href:`${BASE}/tanakh/book.html?book=Ezekiel` },
-        { abbr:'Dn',  name:'Daniel',         date:'6th–2nd c. BCE',      href:`${BASE}/tanakh/book.html?book=Daniel` },
-        { abbr:'Hs',  name:'Hosea',          date:'8th c. BCE',          href:`${BASE}/tanakh/book.html?book=Hosea` },
-        { abbr:'Jl',  name:'Joel',           date:'9th–5th c. BCE',      href:`${BASE}/tanakh/book.html?book=Joel` },
-        { abbr:'Am',  name:'Amos',           date:'8th c. BCE',          href:`${BASE}/tanakh/book.html?book=Amos` },
-        { abbr:'Ob',  name:'Obadiah',        date:'6th–5th c. BCE',      href:`${BASE}/tanakh/book.html?book=Obadiah` },
-        { abbr:'Jon', name:'Jonah',          date:'8th–4th c. BCE',      href:`${BASE}/tanakh/book.html?book=Jonah` },
-        { abbr:'Mi',  name:'Micah',          date:'8th c. BCE',          href:`${BASE}/tanakh/book.html?book=Micah` },
-        { abbr:'Na',  name:'Nahum',          date:'7th c. BCE',          href:`${BASE}/tanakh/book.html?book=Nahum` },
-        { abbr:'Hb',  name:'Habakkuk',       date:'7th c. BCE',          href:`${BASE}/tanakh/book.html?book=Habakkuk` },
-        { abbr:'Zp',  name:'Zephaniah',      date:'7th c. BCE',          href:`${BASE}/tanakh/book.html?book=Zephaniah` },
-        { abbr:'Hg',  name:'Haggai',         date:'6th c. BCE',          href:`${BASE}/tanakh/book.html?book=Haggai` },
-        { abbr:'Zc',  name:'Zechariah',      date:'6th–5th c. BCE',      href:`${BASE}/tanakh/book.html?book=Zechariah` },
-        { abbr:'Ml',  name:'Malachi',        date:'5th c. BCE',          href:`${BASE}/tanakh/book.html?book=Malachi` },
+        { abbr:'Gn',  name:'Genesis',      date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Genesis` },
+        { abbr:'Ex',  name:'Exodus',       date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Exodus` },
+        { abbr:'Lv',  name:'Leviticus',    date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Leviticus` },
+        { abbr:'Nm',  name:'Numbers',      date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Numbers` },
+        { abbr:'Dt',  name:'Deuteronomy',  date:'c. 15–13th c. BCE', href:`${BASE}/tanakh/book.html?book=Deuteronomy` },
+        { abbr:'Jo',  name:'Joshua',       date:'c. 13th–12th c. BCE', href:`${BASE}/tanakh/book.html?book=Joshua` },
+        { abbr:'Jg',  name:'Judges',       date:'c. 12th–11th c. BCE', href:`${BASE}/tanakh/book.html?book=Judges` },
+        { abbr:'Ru',  name:'Ruth',         date:'c. 11th–10th c. BCE', href:`${BASE}/tanakh/book.html?book=Ruth` },
+        { abbr:'Sm',  name:'1 Samuel',     date:'c. 10th–9th c. BCE', href:`${BASE}/tanakh/book.html?book=1%20Samuel` },
+        { abbr:'Sm',  name:'2 Samuel',     date:'c. 10th–9th c. BCE', href:`${BASE}/tanakh/book.html?book=2%20Samuel` },
+        { abbr:'Kg',  name:'1 Kings',      date:'c. 9th–6th c. BCE', href:`${BASE}/tanakh/book.html?book=1%20Kings` },
+        { abbr:'Kg',  name:'2 Kings',      date:'c. 9th–6th c. BCE', href:`${BASE}/tanakh/book.html?book=2%20Kings` },
+        { abbr:'Ch',  name:'1 Chronicles', date:'c. 5th–4th c. BCE', href:`${BASE}/tanakh/book.html?book=1%20Chronicles` },
+        { abbr:'Ch',  name:'2 Chronicles', date:'c. 5th–4th c. BCE', href:`${BASE}/tanakh/book.html?book=2%20Chronicles` },
+        { abbr:'Ezr', name:'Ezra',         date:'c. 5th c. BCE', href:`${BASE}/tanakh/book.html?book=Ezra` },
+        { abbr:'Neh', name:'Nehemiah',     date:'c. 5th c. BCE', href:`${BASE}/tanakh/book.html?book=Nehemiah` },
+        { abbr:'Est', name:'Esther',       date:'c. 5th–4th c. BCE', href:`${BASE}/tanakh/book.html?book=Esther` },
+        { abbr:'Job', name:'Job',          date:'various, ancient', href:`${BASE}/tanakh/book.html?book=Job` },
+        { abbr:'Ps',  name:'Psalms',       date:'c. 10th–5th c. BCE', href:`${BASE}/tanakh/book.html?book=Psalms` },
+        { abbr:'Pr',  name:'Proverbs',     date:'c. 10th–6th c. BCE', href:`${BASE}/tanakh/book.html?book=Proverbs` },
+        { abbr:'Ec',  name:'Ecclesiastes', date:'c. 10th–3rd c. BCE', href:`${BASE}/tanakh/book.html?book=Ecclesiastes` },
+        { abbr:'SoS', name:'Song of Songs',date:'c. 10th–3rd c. BCE', href:`${BASE}/tanakh/book.html?book=Song%20of%20Songs` },
+        { abbr:'Is',  name:'Isaiah',       date:'8th–7th c. BCE', href:`${BASE}/tanakh/book.html?book=Isaiah` },
+        { abbr:'Jr',  name:'Jeremiah',     date:'7th–6th c. BCE', href:`${BASE}/tanakh/book.html?book=Jeremiah` },
+        { abbr:'Ezk', name:'Ezekiel',      date:'6th c. BCE', href:`${BASE}/tanakh/book.html?book=Ezekiel` },
+        { abbr:'Dn',  name:'Daniel',       date:'6th–2nd c. BCE', href:`${BASE}/tanakh/book.html?book=Daniel` },
+        { abbr:'Hs',  name:'Hosea',        date:'8th c. BCE', href:`${BASE}/tanakh/book.html?book=Hosea` },
+        { abbr:'Jl',  name:'Joel',         date:'9th–5th c. BCE', href:`${BASE}/tanakh/book.html?book=Joel` },
+        { abbr:'Am',  name:'Amos',         date:'8th c. BCE', href:`${BASE}/tanakh/book.html?book=Amos` },
+        { abbr:'Ob',  name:'Obadiah',      date:'6th–5th c. BCE', href:`${BASE}/tanakh/book.html?book=Obadiah` },
+        { abbr:'Jon', name:'Jonah',        date:'8th–4th c. BCE', href:`${BASE}/tanakh/book.html?book=Jonah` },
+        { abbr:'Mi',  name:'Micah',        date:'8th c. BCE', href:`${BASE}/tanakh/book.html?book=Micah` },
+        { abbr:'Na',  name:'Nahum',        date:'7th c. BCE', href:`${BASE}/tanakh/book.html?book=Nahum` },
+        { abbr:'Hb',  name:'Habakkuk',     date:'7th c. BCE', href:`${BASE}/tanakh/book.html?book=Habakkuk` },
+        { abbr:'Zp',  name:'Zephaniah',    date:'7th c. BCE', href:`${BASE}/tanakh/book.html?book=Zephaniah` },
+        { abbr:'Hg',  name:'Haggai',       date:'6th c. BCE', href:`${BASE}/tanakh/book.html?book=Haggai` },
+        { abbr:'Zc',  name:'Zechariah',    date:'6th–5th c. BCE', href:`${BASE}/tanakh/book.html?book=Zechariah` },
+        { abbr:'Ml',  name:'Malachi',      date:'5th c. BCE', href:`${BASE}/tanakh/book.html?book=Malachi` },
       ];
 
       const grid = document.getElementById('books');
