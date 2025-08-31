@@ -1442,3 +1442,29 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   align-items:center;
 }
 .nav-search:hover { color:#F17300; }
+/* Responsive featured cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card image responsiveness */
+.card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 394;   /* keep proportion */
+  object-fit: cover;
+  object-position: center;
+  border-bottom: 1px solid #e6ebf2;
+}
