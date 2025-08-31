@@ -33,3 +33,26 @@
   flex-wrap:wrap;
   gap:12px;
 }
+/* --- Per-pillar grid layouts (keep 140×140 cards) --- */
+.pillar-books .books{
+  display:grid;
+  grid-template-columns: 1fr;   /* default = single column stack */
+  gap:12px;
+}
+
+/* Use a data attribute to pick columns per category/pillar */
+.pillar[data-cols="2"] .books{ grid-template-columns: repeat(2, minmax(140px,1fr)); }
+.pillar[data-cols="3"] .books{ grid-template-columns: repeat(3, minmax(140px,1fr)); }
+.pillar[data-cols="4"] .books{ grid-template-columns: repeat(4, minmax(140px,1fr)); }
+
+/* Responsive: collapse gracefully on small screens */
+@media (max-width: 900px){
+  .pillar[data-cols="4"] .books{ grid-template-columns: repeat(3, minmax(140px,1fr)); }
+}
+@media (max-width: 700px){
+  .pillar[data-cols="4"] .books,
+  .pillar[data-cols="3"] .books{ grid-template-columns: repeat(2, minmax(140px,1fr)); }
+}
+@media (max-width: 480px){
+  .pillar[data-cols] .books{ grid-template-columns: 1fr; }
+}
