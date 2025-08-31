@@ -1392,3 +1392,53 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   font-size: 1.1rem;
   line-height: 1;
 }
+/* Navigation container */
+.site-nav {
+  background:#fff;
+  border-bottom:1px solid #e6ebf2;
+  padding:12px 0;
+}
+
+.nav-container {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 16px;
+}
+
+/* Site name styled same as nav links */
+.nav-logo {
+  font-family: inherit;   /* same font as links */
+  font-weight:600;
+  font-size:1rem;         /* match link size */
+  color:#0b2340;
+  text-decoration:none;
+}
+
+/* Nav links */
+.nav-links {
+  display:flex;
+  gap:24px;
+}
+.nav-links a {
+  font-weight:500;
+  font-size:1rem;
+  color:#0b2340;
+  text-decoration:none;
+}
+.nav-links a:hover {
+  color:#F17300;
+}
+
+/* Search button with clean SVG */
+.nav-search {
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:#0b2340;
+  display:flex;
+  align-items:center;
+}
+.nav-search:hover { color:#F17300; }
