@@ -6,54 +6,34 @@
   <title>Articles — Semitic Jew</title>
 
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-
-  <!-- Layout-only tweaks; does NOT change your card sizes -->
   <style>
-    :root{
-      --ink:#0b2340;
-      --muted:#6b7280;
-      --accent:#F17300;
-    }
+    :root{ --ink:#0b2340; --muted:#6b7280; --accent:#F17300; }
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Simple page title (no hero, no breadcrumbs) */
+    /* Page title */
     .page-header{ padding:24px 0 8px; }
     .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
 
-    /* Sections */
     main.articles{ padding:8px 0 40px; }
     .section{ margin:28px 0; }
     .section h2{ margin:0 0 12px; font-size:1.25rem; font-weight:700; color:var(--ink); }
 
-    /* Grids — rely on your existing card sizing; we just place them */
-    .featured-grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:24px;
-    }
-    .recent-grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:24px;
-    }
+    .featured-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:24px; }
+    .recent-grid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:24px; }
     @media (max-width: 960px){
       .featured-grid{ grid-template-columns: 1fr; }
       .recent-grid{ grid-template-columns: 1fr; }
     }
 
-    /* Optional: if your cards need a container to stretch images nicely */
-    .article-card a{ text-decoration: none; }
-    .section .view-all{
-      margin-top:8px; font-size:.95rem; color:var(--accent); text-decoration:none; font-weight:600;
-      display:inline-block;
-    }
+    .article-card a{ text-decoration:none; color:inherit; display:block; }
+    .article-card img{ width:100%; height:auto; border-radius:8px; margin-bottom:8px; }
+    .article-card h3{ margin:.5rem 0 0; font-size:1.1rem; color:var(--ink); }
+    .muted{ color:var(--muted); font-size:.9rem; }
   </style>
 </head>
 <body>
-  <!-- Site header partial -->
   <div id="site-header"></div>
 
-  <!-- Simple title only -->
   <header class="page-header">
     <div class="container">
       <h1 class="page-title">Articles</h1>
@@ -63,71 +43,70 @@
   <main class="articles">
     <div class="container">
 
-      <!-- A) Featured Articles (2 cards) -->
+      <!-- Featured -->
       <section class="section" id="featured-articles">
         <h2>Featured</h2>
         <div class="featured-grid">
-          <!-- Keep your existing markup for each article card; this preserves sizes -->
           <article class="article-card">
-            <a href="/israelite-research/articles/featured-1.html">
-              <!-- Example image path; swap to your real asset -->
-              <img src="/israelite-research/images/articles/featured-1-1200x675.jpg" alt="Featured article 1" />
-              <h3>Featured Article Title One</h3>
-              <p class="muted">A concise description for the featured article goes here.</p>
+            <a href="/israelite-research/articles/is-creation-logical.html">
+              <img src="/israelite-research/images/articles/is-creation-logical-1200x675.jpg" alt="Is Creation Logical?" />
+              <h3>Is Creation Logical?</h3>
+              <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
             </a>
           </article>
 
           <article class="article-card">
-            <a href="/israelite-research/articles/featured-2.html">
-              <img src="/israelite-research/images/articles/featured-2-1200x675.jpg" alt="Featured article 2" />
-              <h3>Featured Article Title Two</h3>
-              <p class="muted">Another concise description for the second featured article.</p>
+            <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+              <img src="/israelite-research/images/articles/is-scripture-and-logic-compatible-1200x675.jpg" alt="Is Scripture &amp; Logic Compatible?" />
+              <h3>Is Scripture &amp; Logic Compatible?</h3>
+              <p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
             </a>
           </article>
         </div>
       </section>
 
-      <!-- B) Recent Articles -->
+      <!-- Recent -->
       <section class="section" id="recent-articles">
         <h2>Recent Articles</h2>
         <div class="recent-grid">
-          <!-- Repeat as needed. Using your existing .article-card structure keeps size consistent -->
           <article class="article-card">
-            <a href="/israelite-research/articles/recent-1.html">
-              <img src="/israelite-research/images/articles/recent-1-700x394.jpg" alt="Recent article 1" />
-              <h3>Recent Article Title One</h3>
-              <p class="muted">Brief teaser for the article.</p>
+            <a href="/israelite-research/articles/hamites-historicity.html">
+              <img src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" alt="The Historicity of the Hamites" />
+              <h3>The Historicity of the Hamites</h3>
+              <p class="muted">Surveying historical claims around the descendants of Ham.</p>
             </a>
           </article>
 
           <article class="article-card">
-            <a href="/israelite-research/articles/recent-2.html">
-              <img src="/israelite-research/images/articles/recent-2-700x394.jpg" alt="Recent article 2" />
-              <h3>Recent Article Title Two</h3>
-              <p class="muted">Brief teaser for the article.</p>
+            <a href="/israelite-research/articles/gentiles.html">
+              <img src="/israelite-research/images/articles/gentiles-700x394.jpg" alt="Who Are the “Gentiles”?" />
+              <h3>Who Are the “Gentiles”?</h3>
+              <p class="muted">A study on terminology, context, and people groups.</p>
             </a>
           </article>
 
           <article class="article-card">
-            <a href="/israelite-research/articles/recent-3.html">
-              <img src="/israelite-research/images/articles/recent-3-700x394.jpg" alt="Recent article 3" />
-              <h3>Recent Article Title Three</h3>
-              <p class="muted">Brief teaser for the article.</p>
+            <a href="/israelite-research/articles/three-laws-of-logic.html">
+              <img src="/israelite-research/images/articles/three-laws-of-logic-700x394.jpg" alt="Three Laws of Logic" />
+              <h3>Three Laws of Logic</h3>
+              <p class="muted">Identity, non-contradiction, and excluded middle explained.</p>
+            </a>
+          </article>
+
+          <article class="article-card">
+            <a href="/israelite-research/articles/is-truth-reliable.html">
+              <img src="/israelite-research/images/articles/is-truth-reliable-700x394.jpg" alt="Is Truth Reliable?" />
+              <h3>Is Truth Reliable?</h3>
+              <p class="muted">Reliability, revelation, and reason.</p>
             </a>
           </article>
         </div>
-
-        <!-- Optional “View all” link; remove if you don’t need it -->
-        <!-- <a class="view-all" href="/israelite-research/articles/">View all →</a> -->
       </section>
 
     </div>
   </main>
 
-  <!-- Footer partial -->
   <div id="site-footer"></div>
-
-  <!-- Partials loader -->
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
