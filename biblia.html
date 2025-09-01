@@ -6,37 +6,130 @@
   <title>Biblia — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* Scoped spacing so removal of hero/breadcrumbs doesn't collapse layout */
-    .biblia-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-    .biblia-page .page-header{ padding:24px 0 8px; }
-    .biblia-page .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
+    :root{
+      --ink:#0b2340;
+      --muted:#6b7280;
+      --blue:#054A91;
+      --accent:#F17300;
+      --card:#ffffff;
+      --border:#e6ebf2;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:0 16px;}
+    header.page-header{padding:24px 0 12px;}
+    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink);}
+    .page-sub{margin:.25rem 0 0;color:var(--muted);}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:18px 0 40px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow:hidden;display:flex;flex-direction:column}
+    .thumb{height:140px;background:linear-gradient(135deg,#eaf1fb,#f7fafc);display:flex;align-items:center;justify-content:center}
+    .thumb span{font-weight:800;letter-spacing:.04em;color:#8aa3c4}
+    .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+    .kicker{font-size:.8rem;font-weight:700;color:#8aa3c4;text-transform:uppercase;letter-spacing:.08em}
+    .title{margin:0;font-size:1.05rem;font-weight:800;color:var(--blue);line-height:1.35}
+    .desc{margin:0;color:#4b5563;font-size:.95rem}
+    .card a{display:block;text-decoration:none;color:inherit}
+    .card:hover{box-shadow:0 8px 20px rgba(0,0,0,.08);transform:translateY(-1px)}
+    .go{margin-top:8px;font-size:.9rem;color:var(--accent);font-weight:700}
   </style>
 </head>
 <body class="biblia-page">
   <!-- Header partial -->
-  <div id="site-header"></div>
+  <div id="site-header" data-include="partials/header.html"></div>
 
   <main>
-    <!-- Simple page title (no universal hero, no breadcrumbs) -->
     <header class="page-header">
       <div class="container">
         <h1 class="page-title">Biblia</h1>
+        <p class="page-sub">Explore Scripture, related texts, and research tools.</p>
       </div>
     </header>
 
-    <!-- Categories (kept exactly as in your file) -->
-    <section class="container" id="categories">
-      <!-- Paste/keep your existing card category markup here unchanged.
-           If it already exists below the old hero/breadcrumbs, leave it as-is. -->
-      <!-- Example wrapper only; your actual cards remain the same -->
-      <div class="categories-grid">
-        <!-- … your existing category cards … -->
+    <section class="container">
+      <div class="grid">
+        <!-- Tanakh -->
+        <article class="card">
+          <a href="/israelite-research/tanakh.html">
+            <div class="thumb"><span>TANAKH</span></div>
+            <div class="body">
+              <div class="kicker">Canon</div>
+              <h3 class="title">The Tanakh</h3>
+              <p class="desc">Torah, Prophets, and Writings with periodic-style book cards.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
+
+        <!-- New Testament -->
+        <article class="card">
+          <a href="/israelite-research/newtestament.html">
+            <div class="thumb"><span>NEW TESTAMENT</span></div>
+            <div class="body">
+              <div class="kicker">Canon</div>
+              <h3 class="title">New Testament</h3>
+              <p class="desc">Gospels, Acts, Epistles, and Revelation organized in rows.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Apocrypha -->
+        <article class="card">
+          <a href="/israelite-research/apocrypha.html">
+            <div class="thumb"><span>APOCRYPHA</span></div>
+            <div class="body">
+              <div class="kicker">Second Temple</div>
+              <h3 class="title">The Apocrypha</h3>
+              <p class="desc">Explore Tobit, Judith, Sirach, Wisdom, Maccabees, and more.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Extra-Biblical Sources -->
+        <article class="card">
+          <a href="/israelite-research/extra-biblical-sources.html">
+            <div class="thumb"><span>EXTRA SOURCES</span></div>
+            <div class="body">
+              <div class="kicker">History</div>
+              <h3 class="title">Extra-Biblical Sources</h3>
+              <p class="desc">Timeline and references that illuminate the biblical world.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Bible References -->
+        <article class="card">
+          <a href="/israelite-research/biblical_references.html">
+            <div class="thumb"><span>REFERENCES</span></div>
+            <div class="body">
+              <div class="kicker">Study Tools</div>
+              <h3 class="title">Bible References</h3>
+              <p class="desc">Dictionary and encyclopedia entries for quick lookup.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Historical & Textual Variants -->
+        <article class="card">
+          <a href="/israelite-research/historical_textual_variants.html">
+            <div class="thumb"><span>VARIANTS</span></div>
+            <div class="body">
+              <div class="kicker">Textual</div>
+              <h3 class="title">Historical & Textual Variants</h3>
+              <p class="desc">Survey manuscript families and key textual notes.</p>
+              <div class="go">Open →</div>
+            </div>
+          </a>
+        </article>
       </div>
     </section>
   </main>
 
   <!-- Footer partial -->
-  <div id="site-footer"></div>
+  <div id="site-footer" data-include="partials/footer.html"></div>
+
+  <!-- Partials include loader -->
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
