@@ -1,44 +1,21 @@
-<header class="site-header">
+<!-- partials/header.html -->
+<header class="site-nav">
   <div class="container nav-container">
-    <!-- Left: Site title -->
-    <div class="logo">
-      <a href="/index.html" class="site-title">Semitic Jew</a>
-    </div>
+    <a href="/israelite-research/index.html" class="nav-logo">Semitic Jew</a>
 
-    <!-- Middle: Page links (no bullets, centered) -->
-    <nav class="site-nav" role="navigation" aria-label="Main">
-      <ul class="nav-list">
-        <li><a href="/articles.html">Articles</a></li>
-        <li><a href="/apologetics.html">Apologetics</a></li>
-        <li><a href="/biblia.html">Biblia</a></li>
-        <li><a href="/events.html">Events</a></li>
-        <li><a href="/media.html">Media</a></li>
-      </ul>
+    <nav class="nav-links">
+      <a href="/israelite-research/articles.html">Articles</a>
+      <a href="/israelite-research/events.html">Events</a>
+      <a href="/israelite-research/media.html">Media</a>
+      <a href="/israelite-research/newtestament.html">New Testament</a>
+      <a href="/israelite-research/texts.html">Texts</a>
     </nav>
 
-    <!-- Right: Search / extras -->
-    <div class="nav-extra">
-      <button class="search-toggle" aria-label="Search" title="Search">
-        <!-- modern magnifying glass (stroke, rounded) -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
-    </div>
+    <button class="nav-search" aria-label="Search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="10" r="7"></circle>
+        <line x1="21" y1="21" x2="15" y2="15"></line>
+      </svg>
+    </button>
   </div>
-
-  <!-- Tiny, scoped fixes to ensure no bullets & centered nav without disturbing your global CSS -->
-  <style>
-    .nav-container{
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-    }
-    .site-title{ text-decoration:none; }
-    .site-nav{ flex:1 1 auto; display:flex; justify-content:center; }
-    .nav-list{
-      list-style:none; margin:0; padding:0;
-      display:flex; align-items:center; gap:22px;
-    }
-    .nav-list a{ text-decoration:none; }
-  </style>
 </header>
