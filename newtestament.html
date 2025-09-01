@@ -10,7 +10,7 @@
       --ink:#0b2340;
       --accent:#F17300;   /* abbreviations */
       --brand:#054A91;    /* footer name */
-      --muted:#6b7280;    /* dates + subtle text */
+      --muted:#6b7280;    /* dates */
       --sky:#DBE4EE;      /* borders */
       --white:#ffffff;
     }
@@ -40,10 +40,9 @@
     }
     .pt-card:hover{ box-shadow:0 4px 10px rgba(0,0,0,.06); transform:translateY(-1px); }
 
-    /* Top: date + index number (centered) */
+    /* Top: date only (centered) */
     .pt-top{ display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.1; margin-top:2px; }
     .pt-date{ font-size:.78rem; color:var(--muted); }
-    .pt-idx{ font-size:.8rem; color:var(--muted); }
 
     /* Middle: abbreviation (centered) */
     .pt-abbr{ font-size:1.6rem; font-weight:800; color:var(--accent); margin:6px 0; line-height:1.1; }
@@ -76,270 +75,189 @@
       <div class="nt-grid">
         <!-- 1 Matthew -->
         <a class="pt-card" href="/israelite-research/media.html#Matthew" aria-label="Matthew">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 60–70</div>
-            <div class="pt-idx">#1</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
           <div class="pt-abbr">Mt</div>
           <div class="pt-footer">Matthew</div>
         </a>
 
         <!-- 2 Mark -->
         <a class="pt-card" href="/israelite-research/media.html#Mark" aria-label="Mark">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 55–65</div>
-            <div class="pt-idx">#2</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 55–65</div></div>
           <div class="pt-abbr">Mk</div>
           <div class="pt-footer">Mark</div>
         </a>
 
         <!-- 3 Luke -->
         <a class="pt-card" href="/israelite-research/media.html#Luke" aria-label="Luke">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 60–70</div>
-            <div class="pt-idx">#3</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
           <div class="pt-abbr">Lk</div>
           <div class="pt-footer">Luke</div>
         </a>
 
         <!-- 4 John -->
         <a class="pt-card" href="/israelite-research/media.html#John" aria-label="John">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 80–90</div>
-            <div class="pt-idx">#4</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 80–90</div></div>
           <div class="pt-abbr">Jn</div>
           <div class="pt-footer">John</div>
         </a>
 
         <!-- 5 Acts -->
         <a class="pt-card" href="/israelite-research/media.html#Acts" aria-label="Acts">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 62–70</div>
-            <div class="pt-idx">#5</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 62–70</div></div>
           <div class="pt-abbr">Ac</div>
           <div class="pt-footer">Acts</div>
         </a>
 
         <!-- 6 Romans -->
         <a class="pt-card" href="/israelite-research/media.html#Romans" aria-label="Romans">
-          <div class="pt-top">
-            <div class="pt-date">AD 57</div>
-            <div class="pt-idx">#6</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 57</div></div>
           <div class="pt-abbr">Ro</div>
           <div class="pt-footer">Romans</div>
         </a>
 
         <!-- 7 1 Corinthians -->
         <a class="pt-card" href="/israelite-research/media.html#1-Corinthians" aria-label="1 Corinthians">
-          <div class="pt-top">
-            <div class="pt-date">AD 55</div>
-            <div class="pt-idx">#7</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 55</div></div>
           <div class="pt-abbr"><sup>1</sup>Co</div>
-          <div class="pt-footer">1 Corinthians</div>
+          <div class="pt-footer">1 Thessalonians</div>
         </a>
 
         <!-- 8 2 Corinthians -->
         <a class="pt-card" href="/israelite-research/media.html#2-Corinthians" aria-label="2 Corinthians">
-          <div class="pt-top">
-            <div class="pt-date">AD 56</div>
-            <div class="pt-idx">#8</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 56</div></div>
           <div class="pt-abbr"><sup>2</sup>Co</div>
           <div class="pt-footer">2 Corinthians</div>
         </a>
 
         <!-- 9 Galatians -->
         <a class="pt-card" href="/israelite-research/media.html#Galatians" aria-label="Galatians">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 48–55</div>
-            <div class="pt-idx">#9</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 48–55</div></div>
           <div class="pt-abbr">Ga</div>
           <div class="pt-footer">Galatians</div>
         </a>
 
         <!-- 10 Ephesians -->
         <a class="pt-card" href="/israelite-research/media.html#Ephesians" aria-label="Ephesians">
-          <div class="pt-top">
-            <div class="pt-date">AD 60–62</div>
-            <div class="pt-idx">#10</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 60–62</div></div>
           <div class="pt-abbr">Eph</div>
           <div class="pt-footer">Ephesians</div>
         </a>
 
         <!-- 11 Philippians -->
         <a class="pt-card" href="/israelite-research/media.html#Philippians" aria-label="Philippians">
-          <div class="pt-top">
-            <div class="pt-date">AD 60–62</div>
-            <div class="pt-idx">#11</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 60–62</div></div>
           <div class="pt-abbr">Php</div>
           <div class="pt-footer">Philippians</div>
         </a>
 
         <!-- 12 Colossians -->
         <a class="pt-card" href="/israelite-research/media.html#Colossians" aria-label="Colossians">
-          <div class="pt-top">
-            <div class="pt-date">AD 60–62</div>
-            <div class="pt-idx">#12</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 60–62</div></div>
           <div class="pt-abbr">Col</div>
           <div class="pt-footer">Colossians</div>
         </a>
 
         <!-- 13 1 Thessalonians -->
         <a class="pt-card" href="/israelite-research/media.html#1-Thessalonians" aria-label="1 Thessalonians">
-          <div class="pt-top">
-            <div class="pt-date">AD 50–51</div>
-            <div class="pt-idx">#13</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 50–51</div></div>
           <div class="pt-abbr"><sup>1</sup>Th</div>
           <div class="pt-footer">1 Thessalonians</div>
         </a>
 
         <!-- 14 2 Thessalonians -->
         <a class="pt-card" href="/israelite-research/media.html#2-Thessalonians" aria-label="2 Thessalonians">
-          <div class="pt-top">
-            <div class="pt-date">AD 51–52</div>
-            <div class="pt-idx">#14</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 51–52</div></div>
           <div class="pt-abbr"><sup>2</sup>Th</div>
           <div class="pt-footer">2 Thessalonians</div>
         </a>
 
         <!-- 15 1 Timothy -->
         <a class="pt-card" href="/israelite-research/media.html#1-Timothy" aria-label="1 Timothy">
-          <div class="pt-top">
-            <div class="pt-date">AD 62–64</div>
-            <div class="pt-idx">#15</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 62–64</div></div>
           <div class="pt-abbr"><sup>1</sup>Ti</div>
           <div class="pt-footer">1 Timothy</div>
         </a>
 
         <!-- 16 2 Timothy -->
         <a class="pt-card" href="/israelite-research/media.html#2-Timothy" aria-label="2 Timothy">
-          <div class="pt-top">
-            <div class="pt-date">AD 64–67</div>
-            <div class="pt-idx">#16</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 64–67</div></div>
           <div class="pt-abbr"><sup>2</sup>Ti</div>
           <div class="pt-footer">2 Timothy</div>
         </a>
 
         <!-- 17 Titus -->
         <a class="pt-card" href="/israelite-research/media.html#Titus" aria-label="Titus">
-          <div class="pt-top">
-            <div class="pt-date">AD 63–65</div>
-            <div class="pt-idx">#17</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 63–65</div></div>
           <div class="pt-abbr">Tit</div>
           <div class="pt-footer">Titus</div>
         </a>
 
         <!-- 18 Philemon -->
         <a class="pt-card" href="/israelite-research/media.html#Philemon" aria-label="Philemon">
-          <div class="pt-top">
-            <div class="pt-date">AD 60–62</div>
-            <div class="pt-idx">#18</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 60–62</div></div>
           <div class="pt-abbr">Phm</div>
           <div class="pt-footer">Philemon</div>
         </a>
 
         <!-- 19 Hebrews -->
         <a class="pt-card" href="/israelite-research/media.html#Hebrews" aria-label="Hebrews">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 60–70</div>
-            <div class="pt-idx">#19</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
           <div class="pt-abbr">Heb</div>
           <div class="pt-footer">Hebrews</div>
         </a>
 
         <!-- 20 James -->
         <a class="pt-card" href="/israelite-research/media.html#James" aria-label="James">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 48</div>
-            <div class="pt-idx">#20</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 48</div></div>
           <div class="pt-abbr">Jas</div>
           <div class="pt-footer">James</div>
         </a>
 
         <!-- 21 1 Peter -->
         <a class="pt-card" href="/israelite-research/media.html#1-Peter" aria-label="1 Peter">
-          <div class="pt-top">
-            <div class="pt-date">AD 62–64</div>
-            <div class="pt-idx">#21</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 62–64</div></div>
           <div class="pt-abbr"><sup>1</sup>Pe</div>
           <div class="pt-footer">1 Peter</div>
         </a>
 
         <!-- 22 2 Peter -->
         <a class="pt-card" href="/israelite-research/media.html#2-Peter" aria-label="2 Peter">
-          <div class="pt-top">
-            <div class="pt-date">AD 64–68</div>
-            <div class="pt-idx">#22</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 64–68</div></div>
           <div class="pt-abbr"><sup>2</sup>Pe</div>
           <div class="pt-footer">2 Peter</div>
         </a>
 
         <!-- 23 1 John -->
         <a class="pt-card" href="/israelite-research/media.html#1-John" aria-label="1 John">
-          <div class="pt-top">
-            <div class="pt-date">AD 85–95</div>
-            <div class="pt-idx">#23</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 85–95</div></div>
           <div class="pt-abbr"><sup>1</sup>Jn</div>
           <div class="pt-footer">1 John</div>
         </a>
 
         <!-- 24 2 John -->
         <a class="pt-card" href="/israelite-research/media.html#2-John" aria-label="2 John">
-          <div class="pt-top">
-            <div class="pt-date">AD 85–95</div>
-            <div class="pt-idx">#24</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 85–95</div></div>
           <div class="pt-abbr"><sup>2</sup>Jn</div>
           <div class="pt-footer">2 John</div>
         </a>
 
         <!-- 25 3 John -->
         <a class="pt-card" href="/israelite-research/media.html#3-John" aria-label="3 John">
-          <div class="pt-top">
-            <div class="pt-date">AD 85–95</div>
-            <div class="pt-idx">#25</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 85–95</div></div>
           <div class="pt-abbr"><sup>3</sup>Jn</div>
           <div class="pt-footer">3 John</div>
         </a>
 
         <!-- 26 Jude -->
         <a class="pt-card" href="/israelite-research/media.html#Jude" aria-label="Jude">
-          <div class="pt-top">
-            <div class="pt-date">c. AD 65–80</div>
-            <div class="pt-idx">#26</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">c. AD 65–80</div></div>
           <div class="pt-abbr">Jud</div>
           <div class="pt-footer">Jude</div>
         </a>
 
         <!-- 27 Revelation -->
         <a class="pt-card" href="/israelite-research/media.html#Revelation" aria-label="Revelation">
-          <div class="pt-top">
-            <div class="pt-date">AD 95–96</div>
-            <div class="pt-idx">#27</div>
-          </div>
+          <div class="pt-top"><div class="pt-date">AD 95–96</div></div>
           <div class="pt-abbr">Rev</div>
           <div class="pt-footer">Revelation</div>
         </a>
