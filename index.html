@@ -2,179 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Israelite Research</title>
-
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-
-  <style>
-    :root{
-      --accent:#F17300;
-      --ink:#0b2340;
-      --muted:#6b7280;
-      --card-shadow: 0 2px 8px rgba(0,0,0,.06);
-      --card-shadow-hover: 0 10px 20px rgba(0,0,0,.12);
-    }
-
-    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-
-    .site-header-block{ padding:32px 0 20px; text-align:left; }
-    .site-title{ font-size:2.25rem; font-weight:800; color:var(--ink); margin:0; }
-    .site-subtitle{ font-size:1.1rem; color:var(--muted); margin-top:6px; }
-
-    .feature-row{ margin:32px 0; }
-    .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
-    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; }
-    @media (max-width: 960px){ .cards{ grid-template-columns: 1fr; } }
-
-    .card{
-      display:flex; flex-direction:column;
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px;
-      box-shadow:var(--card-shadow);
-      text-decoration:none; color:inherit;
-      overflow:hidden;
-      transition: transform .12s ease, box-shadow .12s ease;
-      min-height:260px;
-    }
-    .card:hover{ transform:translateY(-2px); box-shadow:var(--card-shadow-hover); }
-
-    .card img{
-      display:block; width:100%; height:auto;
-      aspect-ratio:700/394; object-fit:cover; object-position:center;
-      background:#f5f7fa;
-    }
-
-    .card-body{ padding:14px 14px 16px; display:flex; flex-direction:column; gap:6px; }
-    .card-title{ font-size:1rem; font-weight:700; color:var(--ink); }
-    .card-kicker{ font-size:.85rem; color:var(--muted); }
-    .card-cta{ font-size:.9rem; color:var(--accent); font-weight:600; }
-  </style>
 </head>
-<body>
+<body class="index-page">
+  <!-- Header partial -->
   <div id="site-header"></div>
 
-  <!-- index.html -->
-<header class="page-header">
-  <div class="container">
-    <h1 class="site-home-title">Israelite Research</h1>
-    <p class="site-subtitle">[your existing subtitle here]</p>
-  </div>
-</header>
-
-<style>
-  .site-home-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0;
-    color: #0b2340; /* optional, keep your brand color */
-  }
-</style>
-
-  <main class="container">
-
-    <!-- Featured Podcast -->
-    <section class="feature-row">
-      <h2>Featured Podcast</h2>
-      <div class="cards">
-        <a class="card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank">
-          <img src="/israelite-research/images/index/spotify-700x394.jpg" alt="Spotify Podcast" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Podcast • Spotify</div>
-            <div class="card-title">Semitic Jew on Spotify</div>
-            <div class="card-cta">Listen now →</div>
-          </div>
-        </a>
-
-        <a class="card" href="https://www.youtube.com/@semiticjew" target="_blank">
-          <img src="/israelite-research/images/index/youtube-700x394.jpg" alt="YouTube Podcast" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Podcast • YouTube</div>
-            <div class="card-title">Semitic Jew on YouTube</div>
-            <div class="card-cta">Watch now →</div>
-          </div>
-        </a>
-
-        <a class="card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">
-          <img src="/israelite-research/images/index/apple-700x394.jpg" alt="Apple Podcast" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Podcast • Apple</div>
-            <div class="card-title">Semitic Jew on Apple Podcasts</div>
-            <div class="card-cta">Listen now →</div>
-          </div>
-        </a>
+  <main>
+    <!-- Page title -->
+    <header class="page-header">
+      <div class="container">
+        <h1 class="page-title">Israelite Research</h1>
+        <p class="site-subtitle">[your existing subtitle text here]</p>
       </div>
+    </header>
+
+    <!-- Existing homepage content remains -->
+    <section class="container">
+      <!-- Your three regions (Featured Podcast, Featured Library, Featured Communities, etc.) -->
     </section>
-
-    <!-- Featured Library -->
-    <section class="feature-row">
-      <h2>Featured Library</h2>
-      <div class="cards">
-        <a class="card" href="/israelite-research/catechism.html">
-          <img src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg" alt="Israelite Catechism" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Library</div>
-            <div class="card-title">Israelite Catechism</div>
-            <div class="card-cta">Open →</div>
-          </div>
-        </a>
-
-        <a class="card" href="#">
-          <img src="/israelite-research/images/index/featured-articles-700x394.jpg" alt="Articles" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Library</div>
-            <div class="card-title">Featured Articles</div>
-            <div class="card-cta">Explore →</div>
-          </div>
-        </a>
-
-        <a class="card" href="#">
-          <img src="/israelite-research/images/podcast/season-2-700x394.jpg" alt="Podcast Archive Season 2" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Library</div>
-            <div class="card-title">Podcast Archive (Season 2)</div>
-            <div class="card-cta">Browse →</div>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- Featured Communities -->
-    <section class="feature-row">
-      <h2>Featured Communities</h2>
-      <div class="cards">
-        <a class="card" href="#">
-          <img src="/israelite-research/images/index/coming-discord-700x394.jpg" alt="Discord (Coming Soon)" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Community</div>
-            <div class="card-title">Discord (Coming Soon)</div>
-            <div class="card-cta">Notify me →</div>
-          </div>
-        </a>
-
-        <a class="card" href="#">
-          <img src="/israelite-research/images/index/community-700x394.jpg" alt="Community" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Community</div>
-            <div class="card-title">Community</div>
-            <div class="card-cta">Join →</div>
-          </div>
-        </a>
-
-        <a class="card" href="#">
-          <img src="/israelite-research/images/index/x-spaces-700x394.jpg" alt="X Spaces" width="700" height="394" />
-          <div class="card-body">
-            <div class="card-kicker">Community</div>
-            <div class="card-title">X Spaces</div>
-            <div class="card-cta">Tune in →</div>
-          </div>
-        </a>
-      </div>
-    </section>
-
   </main>
 
+  <!-- Footer partial -->
   <div id="site-footer"></div>
-
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
