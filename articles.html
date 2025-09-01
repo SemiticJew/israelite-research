@@ -9,18 +9,71 @@
   <style>
     :root{ --ink:#0b2340; --muted:#6b7280; --accent:#F17300; }
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+
+    /* Page title */
     .page-header{ padding:24px 0 8px; }
     .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
+
     main.articles{ padding:8px 0 40px; }
     .section{ margin:28px 0; }
     .section h2{ margin:0 0 12px; font-size:1.25rem; font-weight:700; color:var(--ink); }
-    .featured-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:24px; }
-    .recent-grid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:24px; }
-    @media (max-width:960px){ .featured-grid, .recent-grid{ grid-template-columns:1fr; } }
-    .article-card a{ text-decoration:none; color:inherit; display:block; }
-    .article-card img{ width:100%; height:auto; border-radius:8px; margin-bottom:8px; }
-    .article-card h3{ margin:.5rem 0 0; font-size:1.1rem; color:var(--ink); }
+
+    /* === Featured split layout === */
+    .featured-split{
+      display:grid;
+      grid-template-columns: 934px 290px;
+      gap:24px;
+    }
+    .featured-left, .featured-right{
+      background:#fff;
+      border:1px solid #e6ebf2;
+      border-radius:12px;
+      overflow:hidden;
+      display:flex; flex-direction:column;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+      height:450px;
+    }
+    .featured-left a,
+    .featured-right a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
+
+    .image-block{ position:relative; }
+    .featured-left .image-block img{
+      width:622.66px; height:450px; object-fit:cover; display:block;
+    }
+    .featured-right .image-block img{
+      width:290px; height:163.13px; object-fit:cover; display:block;
+    }
+
+    .resource-label{
+      position:absolute; top:10px; left:10px;
+      width:70px; height:30px; border-radius:4px;
+      background:var(--accent); color:#fff; font-weight:600; font-size:.8rem;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    .featured-left .card-body,
+    .featured-right .card-body{
+      padding:12px; flex:1; display:flex; flex-direction:column; gap:6px;
+    }
+    .featured-left h3, .featured-right h3{ margin:.25rem 0 0; font-size:1.2rem; color:var(--ink); }
     .muted{ color:var(--muted); font-size:.9rem; }
+
+    /* === Recent grid (keeps your existing card sizing) === */
+    .recent-grid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:24px; }
+    .article-card a{ text-decoration:none; color:inherit; display:block; }
+    .article-card img{ width:100%; height:auto; border-radius:8px; margin-bottom:8px; aspect-ratio:700/394; object-fit:cover; }
+    .article-card h3{ margin:.5rem 0 0; font-size:1.1rem; color:var(--ink); }
+
+    /* Simple responsiveness for small screens */
+    @media (max-width:1260px){
+      .featured-split{ grid-template-columns: 1fr; }
+      .featured-left, .featured-right{ height:auto; }
+      .featured-left .image-block img{ width:100%; height:auto; }
+      .featured-right .image-block img{ width:100%; height:auto; }
+    }
+    @media (max-width:960px){
+      .recent-grid{ grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body>
@@ -38,22 +91,36 @@
       <!-- Featured -->
       <section class="section" id="featured-articles">
         <h2>Featured</h2>
-        <div class="featured-grid">
-          <article class="article-card">
+        <div class="featured-split">
+
+          <!-- Left Featured (934x450 card, 622.66x450 image) -->
+          <article class="featured-left">
             <a href="/israelite-research/articles/is-creation-logical.html">
-              <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?" />
-              <h3>Is Creation Logical?</h3>
-              <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
+              <div class="image-block">
+                <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?" />
+                <span class="resource-label">Article</span>
+              </div>
+              <div class="card-body">
+                <h3>Is Creation Logical?</h3>
+                <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
+              </div>
             </a>
           </article>
 
-          <article class="article-card">
+          <!-- Right Featured (290x450 card, 290x163.13 image) -->
+          <article class="featured-right">
             <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-              <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?" />
-              <h3>Is Scripture &amp; Logic Compatible?</h3>
-              <p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
+              <div class="image-block">
+                <img src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture &amp; Logic Compatible?" />
+                <span class="resource-label">Article</span>
+              </div>
+              <div class="card-body">
+                <h3>Is Scripture &amp; Logic Compatible?</h3>
+                <p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
+              </div>
             </a>
           </article>
+
         </div>
       </section>
 
