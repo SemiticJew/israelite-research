@@ -1,21 +1,28 @@
-<!-- partials/header.html -->
-<header class="site-nav">
+<header class="site-header">
   <div class="container nav-container">
-    <a href="/israelite-research/index.html" class="nav-logo">Semitic Jew</a>
+    <div class="logo">
+      <a href="/index.html">Semitic Jew</a>
+    </div>
 
-    <nav class="nav-links">
-      <a href="/israelite-research/articles.html">Articles</a>
-      <a href="/israelite-research/events.html">Events</a>
-      <a href="/israelite-research/media.html">Media</a>
-      <a href="/israelite-research/newtestament.html">New Testament</a>
-      <a href="/israelite-research/texts.html">Texts</a>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="/articles.html">Articles</a></li>
+        <li><a href="/apologetics.html">Apologetics</a></li>
+        <li><a href="/biblia.html">Biblia</a></li>
+        <li><a href="/events.html">Events</a></li>
+        <li><a href="/media.html">Media</a></li>
+      </ul>
     </nav>
 
-    <button class="nav-search" aria-label="Search">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="10" cy="10" r="7"></circle>
-        <line x1="21" y1="21" x2="15" y2="15"></line>
-      </svg>
-    </button>
+    <!-- Keep your existing search / other header features -->
+    <div class="nav-extra">
+      <button class="search-toggle" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 
+          1.415-1.414l-3.85-3.85zm-5.242 1.106a5.5 5.5 0 1 
+          1 0-11 5.5 5.5 0 0 1 0 11z"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </header>
