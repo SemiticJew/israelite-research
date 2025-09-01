@@ -32,6 +32,11 @@
     .topic-body h3 a{ text-decoration:none; color:#0b2340; }
     .topic-body h3 a:hover{ text-decoration:underline; }
     .topic-body p{ margin:0; color:#555; font-size:.95rem; line-height:1.5; }
+
+    /* Simple page title spacing */
+    .page-header{ padding:24px 0 8px; }
+    .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
   </style>
 </head>
 <body class="apologetics-page">
@@ -39,13 +44,32 @@
   <div id="site-header"></div>
 
   <main>
-    <!-- Hero -->
-    <section class="page-hero hero-apologetics">
+    <!-- Simple title (no universal hero, no breadcrumbs) -->
+    <header class="page-header">
       <div class="container">
         <h1 class="page-title">Apologetics</h1>
-        <p class="page-subtitle">Concise topics to help you think clearly and biblically.</p>
       </div>
-      <div class="hero-divider"></div>
-    </section>
+    </header>
 
-    <!-- Breadcrumbs (under hero, left aligned) -->
+    <!-- Topics -->
+    <section class="topics-wrap">
+      <div class="topics-grid">
+        <!-- Keep your existing topic cards here -->
+        <!-- Example card (leave/remove as needed) -->
+        <article class="topic-card">
+          <div class="topic-icon">AP</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
+            <p>Concise topics to help you think clearly and biblically.</p>
+          </div>
+        </article>
+        <!-- /example -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
