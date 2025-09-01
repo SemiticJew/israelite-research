@@ -4,46 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Events — Semitic Jew</title>
+
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    /* ===== Scoped calendar styles (won't leak) ===== */
-    .events-page .calendar-wrap{max-width:1000px;margin:0 auto;}
-    .events-page .cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1rem 0 1.25rem;}
-    .events-page .cal-title{font-family:var(--ff-serif,serif);font-size:1.5rem;margin:0;}
-    .events-page .cal-nav{display:flex;gap:.5rem;}
-    .events-page .btn{padding:.45rem .7rem;border:1px solid #e6ebf2;background:#fff;border-radius:10px;cursor:pointer}
-    .events-page .btn:hover{background:#f8fafc}
-    .events-page .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-    .events-page .cal-dow{text-align:center;font-weight:600;color:#555;padding:.4rem 0}
-    .events-page .cal-cell{min-height:92px;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
-    .events-page .cal-cell.is-today{outline:2px solid var(--accent,#F17300)}
-    .events-page .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
-    .events-page .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer}
-    .events-page .cal-empty{opacity:.4}
-    .events-page .cal-legend{display:flex;gap:.5rem;align-items:center;margin:.75rem 0 0;color:#666;font-size:.9rem}
-    .events-page .dot{width:10px;height:10px;border-radius:50%;background:#054A91;display:inline-block}
+    :root{ --accent:#F17300; }
+    .events-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    /* Modal */
-    .events-page .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:1rem;z-index:9999}
-    .events-page .modal.open{display:flex}
-    .events-page .modal-card{width:min(560px,92vw);background:#fff;border-radius:14px;border:1px solid #e6ebf2;box-shadow:0 8px 30px rgba(0,0,0,.12)}
-    .events-page .modal-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1rem .5rem 1rem;border-bottom:1px solid #eef2f7}
-    .events-page .modal-title{font-family:var(--ff-serif,serif);font-size:1.25rem;margin:0}
-    .events-page .modal-body{padding:1rem}
-    .events-page .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-    .events-page label{font-size:.9rem;color:#333;margin:.35rem 0 .25rem;display:block}
-    .events-page input[type="text"],
-    .events-page input[type="date"],
-    .events-page input[type="time"],
-    .events-page textarea{
-      width:100%;border:1px solid #e6ebf2;border-radius:10px;padding:.55rem .65rem;font:inherit
-    }
-    .events-page textarea{min-height:90px;resize:vertical}
-    .events-page .modal-foot{display:flex;justify-content:space-between;gap:.5rem;padding:0 1rem 1rem}
-    .events-page .btn-primary{background:var(--accent,#F17300);color:#fff;border-color:transparent}
-    .events-page .btn-danger{border-color:#ffd8d8;background:#fff;color:#b42318}
-    .events-page .btn-ghost{background:transparent}
-    .events-page .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+    /* Title */
+    .events-page .page-header{ padding:24px 0 8px; }
+    .events-page .page-title{ margin:0; font-size:2rem; font-weight:800; }
+
+    /* Calendar wrapper */
+    .calendar-wrap{ max-width:1000px; margin:0 auto 40px; }
+    /* Ensure calendar area is visible */
+    #calendar-app{ min-height:400px; display:block; }
+
+    /* Optional: keep your existing calendar look if CSS was scoped earlier */
+    .cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1rem 0 1.25rem;}
+    .cal-title{font-size:1.5rem;margin:0;}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .cal-dow{text-align:center;font-weight:600;color:#555;padding:.4rem 0}
+    .cal-cell{min-height:92px;border:1px solid #e6ebf2;background:#fff;padding:.5rem;display:flex;flex-direction:column}
+    .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
+    .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer}
   </style>
 </head>
 <body class="events-page">
@@ -58,14 +41,43 @@
       </div>
     </header>
 
-    <!-- Calendar and rest of page content -->
+    <!-- Calendar -->
     <div class="calendar-wrap">
-      <!-- calendar code stays unchanged -->
+      <!-- MOUNT POINT (do not remove) -->
+      <div id="calendar-app" data-source="/israelite-research/data/events.json"></div>
+      <!-- If you render server-side HTML for the calendar, place it INSIDE #calendar-app instead. -->
     </div>
   </main>
 
   <!-- Footer partial -->
   <div id="site-footer"></div>
-  <script src="/israelite-research/js/include.js"></script>
+
+  <!-- Include partials -->
+  <script src="/israelite-research/js/include.js" defer></script>
+
+  <!-- Include your calendar scripts (adjust paths to match your repo) -->
+  <script src="/israelite-research/js/calendar.lib.js" defer></script>
+  <script src="/israelite-research/js/calendar.js" defer></script>
+
+  <!-- Bootstrap: try to mount if a global Calendar API exists -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var mount = document.getElementById('calendar-app');
+      if (!mount) return;
+      // If your app exposes Calendar.mount(el, dataSource)
+      if (window.Calendar && typeof window.Calendar.mount === 'function') {
+        var src = mount.getAttribute('data-source');
+        try { window.Calendar.mount(mount, src); } catch (e) { console.error(e); }
+      } else {
+        // Graceful fallback if script didn’t load / API name changed
+        if (!mount.querySelector('.cal-grid')) {
+          mount.innerHTML =
+            '<div style="padding:12px;border:1px dashed #e6ebf2;background:#fff;">' +
+            'Calendar script not found. Ensure <code>/js/calendar.lib.js</code> and <code>/js/calendar.js</code> are included and expose <code>window.Calendar.mount(el, dataSource)</code>.' +
+            '</div>';
+        }
+      }
+    });
+  </script>
 </body>
 </html>
