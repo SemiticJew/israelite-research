@@ -11,7 +11,7 @@
       --ink:#0b2340;
       --muted:#6b7280;
       --accent:#F17300;
-      --label-bg:#3a3a3a;      /* dark grey label bg (for image labels) */
+      --label-bg:#3a3a3a;      /* dark grey for in-image labels */
       --label-ink:#ffffff;     /* white label text */
       --card-border:#e6ebf2;
       --shadow:0 2px 8px rgba(0,0,0,.06);
@@ -27,13 +27,6 @@
     .section{ margin:28px 0; }
     .section h2{ margin:0 0 12px; font-size:1.25rem; font-weight:700; color:var(--ink); }
 
-    /* === Featured split layout (fixed card sizes) === */
-    .featured-split{
-      display:grid;
-      grid-template-columns: 880px 290px;
-      gap:24px;
-    }
-
     .boxed{
       background:#fff;
       border:1px solid var(--card-border);
@@ -42,84 +35,101 @@
       overflow:hidden;
     }
 
-    /* Left featured card: 880x450 */
+    /* === Featured split: columns are 880px and 290px === */
+    .featured-split{
+      display:grid;
+      grid-template-columns: 880px 290px;
+      gap:24px;
+      align-items:start;
+    }
+
+    /* Left featured: 880x450, with image 590x450 and excerpt 290x450 */
     .featured-left{
       width:880px; height:450px;
-      display:flex; flex-direction:column;
+      display:block;
     }
-    .featured-left a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
-
-    /* Right featured card: 290x450 */
-    .featured-right{
-      width:290px; height:450px;
-      display:flex; flex-direction:column;
+    .featured-left a{
+      display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit;
     }
-    .featured-right a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
-
-    /* Image blocks */
-    .image-block{ position:relative; }
+    .featured-left .image-block{
+      position:relative; width:590px; height:450px; flex:0 0 590px;
+    }
     .featured-left .image-block img{
-      width:100%; height:260px; object-fit:cover; display:block;
+      width:590px; height:450px; object-fit:cover; display:block;
     }
-    .featured-right .image-block img{
-      width:100%; height:163.13px; object-fit:cover; display:block;
-    }
-
-    /* Resource label (default: dark grey bg, white text; no rounded edges) */
-    .resource-label{
-      position:absolute; top:10px; left:10px;
-      background:var(--label-bg); color:var(--label-ink);
-      font-size:.8rem; font-weight:700; letter-spacing:.02em;
-      width:70px; height:30px; display:flex; align-items:center; justify-content:center;
-      border-radius:0;
-      text-transform:uppercase;
+    .featured-left .excerpt-block{
+      width:290px; height:450px; flex:0 0 290px;
+      padding:12px 14px; display:flex; flex-direction:column; gap:8px;
     }
 
-    /* Transparent variant used ONLY in left featured excerpt */
-    .resource-label.resource-transparent{
-      position:static;          /* sits inline in excerpt */
-      background:transparent;
-      color:#3a3a3a;            /* dark grey text for contrast on white */
-      border:1px solid #3a3a3a; /* keep the 70x30 badge shape visible */
+    /* Transparent label inside excerpt (no rounded edges, 70x30) */
+    .resource-label.transparent{
+      background:transparent; color:#3a3a3a;
+      border:1px solid #3a3a3a;
       width:70px; height:30px;
-      margin-bottom:8px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.8rem; font-weight:700; text-transform:uppercase;
+      border-radius:0; margin-bottom:8px;
     }
 
-    /* Featured bodies */
-    .featured-left .card-body,
-    .featured-right .card-body{
-      padding:12px 14px; display:flex; flex-direction:column; gap:8px; flex:1;
-    }
-    .featured-left h3, .featured-right h3{ margin:.25rem 0 0; font-size:1.2rem; color:var(--ink); }
+    .featured-left h3{ margin:.25rem 0 0; font-size:1.2rem; color:var(--ink); }
     .muted{ color:var(--muted); font-size:.9rem; line-height:1.35; }
-
-    /* CTA button in LEFT featured excerpt */
     .cta-row{ margin-top:auto; }
     .cta-btn{
       display:inline-block; padding:8px 14px; font-weight:700; font-size:.9rem;
       background:var(--accent); color:#fff; text-decoration:none; border-radius:8px;
     }
 
-    /* === Recent grid (boxed cards) === */
+    /* Right featured: 290x450; image 290x163.13 with dark in-image label */
+    .featured-right{
+      width:290px; height:450px; display:flex; flex-direction:column;
+    }
+    .featured-right a{
+      display:flex; flex-direction:column; height:100%; text-decoration:none; color:inherit;
+    }
+    .featured-right .image-block{ position:relative; width:290px; height:163.13px; }
+    .featured-right .image-block img{
+      width:290px; height:163.13px; object-fit:cover; display:block;
+    }
+
+    /* In-image label (no rounded edges, 70x30) */
+    .resource-label{
+      position:absolute; top:10px; left:10px;
+      background:var(--label-bg); color:var(--label-ink);
+      width:70px; height:30px; display:flex; align-items:center; justify-content:center;
+      font-size:.8rem; font-weight:700; text-transform:uppercase; border-radius:0;
+    }
+
+    .featured-right .card-body{
+      padding:12px 14px; display:flex; flex-direction:column; gap:8px; flex:1;
+    }
+    .featured-right h3{ margin:.25rem 0 0; font-size:1.2rem; color:var(--ink); }
+
+    /* === Recent: fixed cards 290x450, image 290x163.16 with in-image label === */
     .recent-grid{
-      display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:24px;
+      display:flex; flex-wrap:wrap; gap:24px;
     }
-    .article-card.boxed a{ text-decoration:none; color:inherit; display:block; }
+    .article-card{
+      width:290px; height:450px; display:flex; flex-direction:column;
+    }
+    .article-card a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
+    .article-card .image-block{ position:relative; width:290px; height:163.16px; }
     .article-card .image-block img{
-      width:100%; height:200px; object-fit:cover; display:block;
+      width:290px; height:163.16px; object-fit:cover; display:block;
     }
-    .article-card .card-body{ padding:12px 14px; }
+    .article-card .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
     .article-card h3{ margin:.5rem 0 0; font-size:1.1rem; color:var(--ink); }
 
-    /* Responsive fallback: stack featured on small screens */
+    /* Responsive: stack on small screens */
     @media (max-width:1260px){
       .featured-split{ grid-template-columns: 1fr; }
       .featured-left, .featured-right{ width:100%; height:auto; }
-      .featured-left .image-block img{ height:auto; aspect-ratio:700/394; }
-      .featured-right .image-block img{ height:auto; aspect-ratio:700/394; }
-    }
-    @media (max-width:960px){
-      .recent-grid{ grid-template-columns: 1fr; }
+      .featured-left a{ flex-direction:column; }
+      .featured-left .image-block,
+      .featured-left .image-block img{ width:100%; height:auto; }
+      .featured-left .excerpt-block{ width:100%; height:auto; }
+      .featured-right .image-block,
+      .featured-right .image-block img{ width:100%; height:auto; }
     }
   </style>
 </head>
@@ -140,14 +150,14 @@
         <h2>Featured</h2>
         <div class="featured-split">
 
-          <!-- Left Featured (880x450; transparent label in excerpt + CTA button) -->
+          <!-- Left Featured (880x450, with 590x450 image and 290x450 excerpt) -->
           <article class="featured-left boxed">
             <a href="/israelite-research/articles/is-creation-logical.html">
               <div class="image-block">
                 <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?" />
               </div>
-              <div class="card-body">
-                <span class="resource-label resource-transparent">Article</span>
+              <div class="excerpt-block">
+                <span class="resource-label transparent">Article</span>
                 <h3>Is Creation Logical?</h3>
                 <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
                 <div class="cta-row">
@@ -157,7 +167,7 @@
             </a>
           </article>
 
-          <!-- Right Featured (290x450; dark label inside image) -->
+          <!-- Right Featured (290x450; image 290x163.13; in-image label) -->
           <article class="featured-right boxed">
             <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
               <div class="image-block">
@@ -174,7 +184,7 @@
         </div>
       </section>
 
-      <!-- Recent (boxed; dark label inside image) -->
+      <!-- Recent (each 290x450; image 290x163.16; in-image label) -->
       <section class="section" id="recent-articles">
         <h2>Recent Articles</h2>
         <div class="recent-grid">
