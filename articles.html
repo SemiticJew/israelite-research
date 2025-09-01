@@ -18,7 +18,6 @@
     }
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-
     .page-header{ padding:24px 0 8px; }
     .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
 
@@ -30,11 +29,11 @@
       background:#fff;
       border:1px solid var(--card-border);
       box-shadow:var(--shadow);
-      border-radius:0;            /* square cards */
+      border-radius:0;
       overflow:hidden;
     }
 
-    /* Resource label (fixed 70x30, dark grey transparent bg, white text) */
+    /* Resource label */
     .resource-label{
       background:var(--label-bg);
       color:var(--label-ink);
@@ -44,15 +43,15 @@
       border-radius:0; letter-spacing:.02em; line-height:1;
     }
     .resource-in-image{ position:absolute; top:10px; left:10px; }
-    .resource-in-excerpt{ position:static; margin-bottom:6px; }
+    .resource-in-excerpt{ margin-bottom:6px; }
 
     .muted{ color:var(--muted); font-size:.9rem; line-height:1.35; }
     .meta-date{ display:block; margin-top:2px; font-size:.85rem; color:var(--muted); }
 
-    /* Standardized card footer (only avatar + author name) */
+    /* Card footer (no border-top anymore) */
     .card-footer{
       display:flex; align-items:center; gap:10px;
-      padding:12px 14px; border-top:1px solid var(--card-border);
+      padding:12px 14px;
       margin-top:auto;
     }
     .avatar{
@@ -60,7 +59,7 @@
     }
     .author{ font-size:.9rem; color:var(--ink); font-weight:600; }
 
-    /* === Featured split layout === */
+    /* Featured split */
     .featured-split{
       display:grid;
       grid-template-columns: 880px 290px;
@@ -68,37 +67,28 @@
       align-items:start;
     }
 
-    /* Left featured: card 880x450; image 590x450; excerpt 290x450 */
     .featured-left{ width:880px; height:450px; display:block; }
     .featured-left a{ display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit; }
     .featured-left .image-block{ position:relative; width:590px; height:450px; flex:0 0 590px; }
     .featured-left .image-block img{ width:590px; height:450px; object-fit:cover; display:block; }
-    .featured-left .excerpt-wrap{
-      display:flex; flex-direction:column; width:290px; height:450px; flex:0 0 290px;
-    }
-    .featured-left .excerpt-block{
-      padding:12px 14px; display:flex; flex-direction:column; gap:8px;
-      /* take content height, footer sits at the bottom via margin-top:auto there */
-    }
-
+    .featured-left .excerpt-wrap{ display:flex; flex-direction:column; width:290px; height:450px; flex:0 0 290px; }
+    .featured-left .excerpt-block{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
     .featured-left h3{ margin:.15rem 0 0; font-size:1.2rem; color:var(--ink); }
 
-    /* Right featured: 290x450; image 290x163.13 */
     .featured-right{ width:290px; height:450px; display:flex; flex-direction:column; }
     .featured-right a{ display:flex; flex-direction:column; height:100%; text-decoration:none; color:inherit; }
     .featured-right .image-block{ position:relative; width:290px; height:163.13px; }
     .featured-right .image-block img{ width:290px; height:163.13px; object-fit:cover; display:block; }
     .featured-right .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
 
-    /* Recent: 290x450; image 290x163.16 */
     .recent-grid{ display:flex; flex-wrap:wrap; gap:24px; }
     .article-card{ width:290px; height:450px; display:flex; flex-direction:column; }
     .article-card a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
     .article-card .image-block{ position:relative; width:290px; height:163.16px; }
     .article-card .image-block img{ width:290px; height:163.16px; object-fit:cover; display:block; }
     .article-card .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+    .article-card h3{ margin:.4rem 0 0; font-size:1.1rem; color:var(--ink); }
 
-    /* Responsive */
     @media (max-width:1260px){
       .featured-split{ grid-template-columns: 1fr; }
       .featured-left, .featured-right{ width:100%; height:auto; }
@@ -125,22 +115,19 @@
         <h2>Featured</h2>
         <div class="featured-split">
 
-          <!-- Left Featured (image left 590x450, excerpt right 290x450) -->
+          <!-- Left Featured -->
           <article class="featured-left boxed">
             <a href="/israelite-research/articles/is-creation-logical.html">
               <div class="image-block">
                 <img src="/israelite-research/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?" />
               </div>
-
               <div class="excerpt-wrap">
                 <div class="excerpt-block">
-                  <!-- Label above title in excerpt -->
                   <span class="resource-label resource-in-excerpt">Article</span>
                   <h3>Is Creation Logical?</h3>
                   <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
                   <time class="meta-date"></time>
                 </div>
-                <!-- Standardized footer (only avatar + author) -->
                 <div class="card-footer">
                   <img class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Author avatar" />
                   <span class="author">Semitic Jew</span>
@@ -149,7 +136,7 @@
             </a>
           </article>
 
-          <!-- Right Featured (290x450; with in-image label) -->
+          <!-- Right Featured -->
           <article class="featured-right boxed">
             <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
               <div class="image-block">
