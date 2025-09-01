@@ -38,10 +38,13 @@
       display:flex; align-items:center; justify-content:space-between; gap:16px;
       min-height:64px;
     }
-    /* Font style refresh (leans on site variables if present) */
+
+    /* Site title font matches nav links */
     .site-title{
       font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
-      font-weight:800; letter-spacing:.2px; text-decoration:none; color:inherit;
+      font-weight:600; letter-spacing:.1px;
+      font-size:1rem; /* same as nav links */
+      text-decoration:none; color:inherit;
       display:inline-block; line-height:1;
     }
 
@@ -51,6 +54,7 @@
       display:flex; align-items:center; gap:22px;
       font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
       font-weight:600; letter-spacing:.1px;
+      font-size:1rem;
     }
     .nav-list a{
       text-decoration:none; color:inherit; padding:6px 2px; line-height:1;
@@ -62,10 +66,10 @@
       appearance:none; border:0; background:transparent; padding:6px; cursor:pointer; color:inherit;
     }
 
-    /* Small screens: keep layout clean */
     @media (max-width:768px){
       .nav-container{ gap:10px; }
       .nav-list{ gap:14px; font-weight:600; font-size:.95rem; overflow-x:auto; }
+      .site-title{ font-size:.95rem; }
     }
   </style>
 </header>
