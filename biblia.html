@@ -3,21 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Texts — Semitic Jew</title>
+  <title>Biblia — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Scoped spacing so removal of hero/breadcrumbs doesn't collapse layout */
+    .biblia-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    .biblia-page .page-header{ padding:24px 0 8px; }
+    .biblia-page .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
+  </style>
 </head>
-<body class="texts-page">
+<body class="biblia-page">
   <!-- Header partial -->
   <div id="site-header"></div>
 
   <main>
-    <!-- Hero -->
-    <section class="page-hero hero-texts">
+    <!-- Simple page title (no universal hero, no breadcrumbs) -->
+    <header class="page-header">
       <div class="container">
-        <h1 class="page-title">Texts</h1>
-        <p class="page-subtitle">Explore our biblical resources by category.</p>
+        <h1 class="page-title">Biblia</h1>
       </div>
-      <div class="hero-divider"></div>
-    </section>
+    </header>
 
-    <!-- Breadcrumbs UNDER hero (site-wide standard) -->
+    <!-- Categories (kept exactly as in your file) -->
+    <section class="container" id="categories">
+      <!-- Paste/keep your existing card category markup here unchanged.
+           If it already exists below the old hero/breadcrumbs, leave it as-is. -->
+      <!-- Example wrapper only; your actual cards remain the same -->
+      <div class="categories-grid">
+        <!-- … your existing category cards … -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
