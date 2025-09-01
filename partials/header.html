@@ -1,28 +1,71 @@
 <header class="site-header">
   <div class="container nav-container">
+    <!-- Left: Site name -->
     <div class="logo">
-      <a href="/index.html">Semitic Jew</a>
+      <a href="/index.html" class="site-title">Semitic Jew</a>
     </div>
 
-    <nav class="site-nav">
-      <ul>
+    <!-- Middle: Navigation (centered) -->
+    <nav class="site-nav" role="navigation" aria-label="Main">
+      <ul class="nav-list">
         <li><a href="/articles.html">Articles</a></li>
         <li><a href="/apologetics.html">Apologetics</a></li>
         <li><a href="/biblia.html">Biblia</a></li>
+        <li><a href="/donations.html">Donations</a></li>
         <li><a href="/events.html">Events</a></li>
         <li><a href="/media.html">Media</a></li>
       </ul>
     </nav>
 
-    <!-- Keep your existing search / other header features -->
+    <!-- Right: Search -->
     <div class="nav-extra">
-      <button class="search-toggle" aria-label="Search">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-search" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 
-          1.415-1.414l-3.85-3.85zm-5.242 1.106a5.5 5.5 0 1 
-          1 0-11 5.5 5.5 0 0 1 0 11z"/>
+      <button class="search-toggle" aria-label="Search" title="Search">
+        <!-- clean stroked magnifying glass -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </div>
   </div>
+
+  <!-- Scoped header styles -->
+  <style>
+    .nav-container{
+      max-width:1200px; margin:0 auto; padding:0 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      min-height:64px;
+    }
+    /* Font style refresh (leans on site variables if present) */
+    .site-title{
+      font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
+      font-weight:800; letter-spacing:.2px; text-decoration:none; color:inherit;
+      display:inline-block; line-height:1;
+    }
+
+    .site-nav{ flex:1 1 auto; display:flex; justify-content:center; }
+    .nav-list{
+      list-style:none; margin:0; padding:0;
+      display:flex; align-items:center; gap:22px;
+      font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
+      font-weight:600; letter-spacing:.1px;
+    }
+    .nav-list a{
+      text-decoration:none; color:inherit; padding:6px 2px; line-height:1;
+    }
+    .nav-list a:hover{ text-decoration:underline; }
+
+    .nav-extra{ display:flex; align-items:center; gap:10px; }
+    .search-toggle{
+      appearance:none; border:0; background:transparent; padding:6px; cursor:pointer; color:inherit;
+    }
+
+    /* Small screens: keep layout clean */
+    @media (max-width:768px){
+      .nav-container{ gap:10px; }
+      .nav-list{ gap:14px; font-weight:600; font-size:.95rem; overflow-x:auto; }
+    }
+  </style>
 </header>
