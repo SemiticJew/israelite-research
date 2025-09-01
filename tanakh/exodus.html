@@ -1,52 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Exodus — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <script>
-    (function(){
-      // Ensure the page runs in "Exodus" context by adding ?book=Exodus if not present
-      var qs = new URLSearchParams(location.search);
-      if (!qs.has('book')) {
-        var url = new URL(location.href);
-        qs.set('book', 'Exodus');
-        url.search = qs.toString();
-        location.replace(url.toString());
-      }
-    })();
-  </script>
-</head>
-<body class="book-page">
-  <!-- Header placeholder (optional site header injection) -->
-  <div id="site-header"></div>
-
-  <main>
-    <!-- Universal hero -->
-    <section class="page-hero hero-texts">
-      <div class="container">
-        <h1 id="book-title" class="hero-title">Exodus</h1>
-        <p id="book-desc" class="hero-subtitle"></p>
-      </div>
-    </section>
-
-    <!-- Breadcrumbs -->
-
-    <!-- Chapters grid -->
-    <section class="container" style="margin-top:1rem;">
-      <h2 class="visually-hidden">Chapters</h2>
-      <div id="chapters" class="chapters-grid"
-           style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.5rem;max-width:720px;margin:0 auto;">
-        <!-- js/book.js will populate 1..N based on the Exodus manifest -->
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer placeholder (optional site footer injection) -->
-  <div id="site-footer"></div>
-
-  <!-- Script that builds the chapter cards dynamically from the book manifest -->
-  <script src="/israelite-research/js/book.js"></script>
-</body>
-</html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Exodus — Chapters</title><link rel="stylesheet" href="/israelite-research/styles.css"/><style>
+:root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.page-header{padding:24px 0 8px}.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:10px;margin:16px 0 36px}
+.ch{display:flex;align-items:center;justify-content:center;height:56px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
+.ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
+.breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
+</style></head><body>
+<div id="site-header"></div>
+<main><header class="page-header"><div class="container"><h1 class="page-title">Exodus</h1><div class="breadcrumb">Tanakh → Exodus</div></div></header>
+<section class="container"><div id="chapGrid" class="grid"></div></section></main>
+<div id="site-footer"></div><script src="/israelite-research/js/include.js"></script>
+<script>
+const book='exodus',total=40,base=`/israelite-research/tanakh/${book}/chapter-`;
+const g=document.getElementById('chapGrid');
+for(let i=1;i<=total;i++){const a=document.createElement('a');a.href=`${base}${i}.html`;a.className='ch';a.textContent=i;g.appendChild(a);}
+</script></body></html>
