@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Matthew — Chapter</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .page-header{padding:24px 0 8px}
+  .page-title{margin:0;font-size:2rem;font-weight:800}
+  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
+  .muted{color:var(--muted)}
+  .verse{display:flex;gap:8px;margin:.45rem 0}
+  .vnum{min-width:26px;text-align:right;color:var(--muted)}
+  .vtext{color:#111;line-height:1.5}
+  .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
+  .commentary textarea{width:100%;min-height:140px;border:1px solid var(--sky);border-radius:10px;padding:.6rem}
+  .lex{margin:0;padding-left:1.1rem}
+  .lex li{margin:.35rem 0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <header class="page-header">
+    <h1 class="page-title" id="pageTitle">Matthew (KJV)</h1>
+    <div class="crumbs" id="crumbs">New Testament → Matthew → Chapter</div>
+  </header>
+
+  <section class="layout">
+    <div class="panel">
+      <h3>Text</h3>
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
+    <aside class="panel">
+      <h3>Strong’s (Lexicon)</h3>
+      <div id="lexicon"><p class="muted">Loading…</p></div>
+      <hr style="border:none;border-top:1px solid var(--sky);margin:12px 0">
+      <h3>Personal Commentary</h3>
+      <div class="commentary">
+        <textarea id="commentaryBox" placeholder="Write your personal notes for this chapter here…"></textarea>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/israelite-research/js/include.js"></script>
+<script src="/israelite-research/js/nt-chapter.js"></script>
+<script>
+  // Set title & crumbs after nt-chapter.js reads chapter (?c=)
+  (function(){
+    const params = new URLSearchParams(location.search);
+    const c = parseInt(params.get('c') || '1', 10);
+    document.getElementById('pageTitle').textContent = `Matthew ${c} (KJV)`;
+    document.getElementById('crumbs').textContent = `New Testament → Matthew → Chapter ${c}`;
+  })();
+</script>
+</body>
+</html>

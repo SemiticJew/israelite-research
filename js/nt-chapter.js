@@ -1,53 +1,50 @@
 <script>
-/*
-  Generic NT chapter renderer
-  Expects URL like: /israelite-research/newtestament/matthew/chapter-1.html
-  Loads:
-    /israelite-research/data/bible/kjv/matthew/1.json
-    /israelite-research/data/lexicon/strongs/matthew/1.json
-*/
-
 (async function () {
-  const container = document.getElementById('verses');
-  const lexiconBox = document.getElementById('lexicon');
-  const status = (msg) => { if (container) container.innerHTML = `<p class="muted">${msg}</p>`; };
+  const $verses = document.getElementById('verses');
+  const $lex = document.getElementById('lexicon');
+  const status = (msg) => { if ($verses) $verses.innerHTML = `<p class="muted">${msg}</p>`; };
 
-  function parsePath() {
+  function getContext() {
     const parts = location.pathname.split('/').filter(Boolean);
-    // [..., "newtestament", "<book>", "chapter-<n>.html"]
     const idx = parts.indexOf('newtestament');
-    if (idx === -1 || idx + 2 >= parts.length) return null;
-    const book = parts[idx + 1];
-    const chapterFile = parts[idx + 2] || '';
-    const m = chapterFile.match(/chapter-(\d+)\.html/i);
-    const chapter = m ? parseInt(m[1], 10) : 1;
-    return { book, chapter };
+    const book = (idx !== -1 && parts[idx+1]) ? parts[idx+1] : 'matthew'; // default safety
+    // Prefer query (?c=) for chapter
+    const q = new URLSearchParams(location.search);
+    const qc = parseInt(q.get('c') || '0', 10);
+    if (qc > 0) return { book, chapter: qc };
+
+    // Fallback: parse /chapter-<n>.html
+    const last = parts[parts.length-1] || '';
+    const m = last.match(/chapter-(\d+)\.html/i);
+    return { book, chapter: m ? parseInt(m[1],10) : 1 };
   }
 
-  const ctx = parsePath();
-  if (!ctx) { status('Invalid chapter URL'); return; }
+  const ctx = getContext();
 
-  // Paths to data
   const verseURL  = `/israelite-research/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`;
   const strongURL = `/israelite-research/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
 
-  // Render helpers
   function renderVerses(data) {
     if (!data || !Array.isArray(data.verses) || data.verses.length === 0) {
       status('Verses coming soon.'); return;
     }
-    container.innerHTML = data.verses.map(v =>
+    $verses.innerHTML = data.verses.map(v =>
       `<article class="verse" id="v${v.v}">
          <span class="vnum">${v.v}</span>
-         <span class="vtext">${v.t}</span>
+         <span class="vtext">${v.t || ''}</span>
        </article>`
     ).join('');
+    // Optional: load/commentary default if present in chapter JSON
+    const cmt = (data.commentary || '').trim();
+    if (cmt && document.getElementById('commentaryBox')) {
+      document.getElementById('commentaryBox').value = cmt;
+    }
   }
 
   function renderLexicon(data) {
-    if (!lexiconBox) return;
+    if (!$lex) return;
     if (!data || !data.entries || Object.keys(data.entries).length === 0) {
-      lexiconBox.innerHTML = '<p class="muted">Strong’s entries coming soon.</p>'; return;
+      $lex.innerHTML = '<p class="muted">Strong’s entries coming soon.</p>'; return;
     }
     const items = Object.entries(data.entries).map(([num, info]) => {
       const head = (info.headword || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -55,25 +52,20 @@
       const gloss = info.gloss ? ` — ${info.gloss}` : '';
       return `<li><strong>${num}</strong> ${head}${translit}${gloss}</li>`;
     }).join('');
-    lexiconBox.innerHTML = `<ul class="lex">${items}</ul>`;
+    $lex.innerHTML = `<ul class="lex">${items}</ul>`;
   }
 
-  // Load both in parallel (resilient)
   try {
-    const [vRes, sRes] = await Promise.allSettled([
-      fetch(verseURL), fetch(strongURL)
-    ]);
-
+    const [vRes, sRes] = await Promise.allSettled([ fetch(verseURL), fetch(strongURL) ]);
     if (vRes.status === 'fulfilled' && vRes.value.ok) {
-      const vJson = await vRes.value.json();
-      renderVerses(vJson);
+      renderVerses(await vRes.value.json());
     } else {
       status('Verses coming soon.');
     }
-
     if (sRes.status === 'fulfilled' && sRes.value.ok) {
-      const sJson = await sRes.value.json();
-      renderLexicon(sJson);
+      const sj = await sRes.value.json();
+      // support both shapes: entries{} or top-level lexicon{}
+      renderLexicon(sj.entries ? sj : { entries: sj.lexicon || {} });
     } else {
       renderLexicon(null);
     }
