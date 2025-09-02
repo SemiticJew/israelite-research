@@ -14,11 +14,12 @@ Usage (from repo root):
   python3 tools/build_book_json.py --canon tanakh --book exodus
   python3 tools/build_book_json.py --canon tanakh --book exodus --force
 """
-import csv, json, sys
+import csv, json, sys, shutil, time
 from pathlib import Path
 import argparse
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+BAK_ROOT = REPO_ROOT / "tools" / "_bak"
 
 def out_dir(canon:str, book:str) -> Path:
     return REPO_ROOT / "data" / canon.lower() / book.lower()
@@ -31,6 +32,18 @@ def vc_path(book:str) -> Path:
 
 def ensure_dir(p:Path):
     p.mkdir(parents=True, exist_ok=True)
+
+def backup_book_dir(canon: str, book: str):
+    out = out_dir(canon, book)
+    if not out.exists():
+        return None
+    BAK_ROOT.mkdir(parents=True, exist_ok=True)
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    rel = out.relative_to(REPO_ROOT).as_posix().replace("/", "-")
+    dst = BAK_ROOT / f"{rel}.bak.{stamp}"
+    shutil.copytree(out, dst)
+    print(f"[Backup] Saved existing {out} to {dst}")
+    return dst
 
 def write_chapter_json(fp:Path, rows, force: bool) -> tuple[bool,bool]:
     """
@@ -100,6 +113,9 @@ def main():
     ap.add_argument("--book", required=True, help="book slug, e.g. exodus")
     ap.add_argument("--force", action="store_true", help="overwrite existing chapter files")
     args = ap.parse_args()
+
+    if args.force:
+        backup_book_dir(args.canon, args.book)
 
     w1,s1 = build_from_csv(args.canon, args.book, args.force)
     if w1+s1 == 0:  # no CSV present
