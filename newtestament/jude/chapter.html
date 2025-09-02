@@ -37,15 +37,33 @@
 <script src="/israelite-research/js/nt-chapter.js"></script>
 <script>
 (function(){
-  const params=new URLSearchParams(location.search);
-  const c=parseInt(params.get("c")||"1",10);
-  const parts=location.pathname.split("/").filter(Boolean);
-  const bi=parts.indexOf("newtestament");
-  const slug=(bi!==-1&&parts[bi+1])?parts[bi+1]:"matthew";
-  // Pretty name from slug
-  const name=slug.replace(/-/g," ").replace(/\\b(\\d)\\s/g,"$1 ").replace(/\\b\\w/g,m=>m.toUpperCase());
-  document.getElementById("pageTitle").textContent=`${name} ${c} (KJV)`;
-  document.getElementById("crumbs").textContent=`New Testament → ${name} → Chapter ${c}`;
+  const params = new URLSearchParams(location.search);
+  const c = parseInt(params.get("c") || "1", 10);
+  const parts = location.pathname.split("/").filter(Boolean);
+  const bi = parts.indexOf("newtestament");
+  const slug = (bi !== -1 && parts[bi+1]) ? parts[bi+1] : "matthew";
+
+  function firstCase(str){
+    if(!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  let name;
+  if (/^\d/.test(slug)) {
+    // e.g., "1-john" -> "1 John"
+    const [num, ...restParts] = slug.split("-");
+    const rest = restParts.join(" ");
+    name = num + " " + firstCase(rest);
+  } else {
+    // e.g., "luke" or "song-of-songs" -> "Luke" / "Song of songs" (first letter upper, rest lower)
+    name = firstCase(slug.replace(/-/g," "));
+  }
+
+  const title = document.getElementById("pageTitle");
+  const crumbs = document.getElementById("crumbs");
+  if (title) title.textContent = `${name} ${c} (KJV)`;
+  if (crumbs) crumbs.textContent = `New Testament → ${name} → Chapter ${c}`;
 })();
 </script>
+
 </body></html>
