@@ -5,7 +5,7 @@
 (function () {
   const LEX_ROOT  = "/israelite-research/data/lexicon";
 
-  // Routing helpers (tweak: honor ?book=)
+  // Routing helpers
   function getBookSlug() {
     const qp = new URLSearchParams(location.search).get("book");
     if (qp) return qp.toLowerCase();
@@ -24,26 +24,36 @@
     location.href = url.toString();
   }
 
-  // Compute site base (prefix before /newtestament/)
-  function getSiteBase() {
-    const path = location.pathname.replace(/\/+$/,'');
-    const idx = path.toLowerCase().indexOf("/newtestament/");
-    return idx > -1 ? path.slice(0, idx) : "";
-  }
-
-  // Fetch chapter from the canonical location
+  // Robust fetchChapter with multiple fallbacks
   async function fetchChapter(book, ch) {
-    const base = getSiteBase() || "/israelite-research";
-    const url  = `${base}/data/newtestament/${book}/${ch}.json`;
-    const res  = await fetch(url, { cache: "no-store" });
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status} at ${url}`);
+    const rel1  = new URL(`../data/newtestament/${book}/${ch}.json`, location.href).pathname;
+    const rel2  = new URL(`../../data/newtestament/${book}/${ch}.json`, location.href).pathname;
+    const base  = (() => {
+      const p = location.pathname.replace(/\/+$/,'');
+      const i = p.toLowerCase().indexOf("/newtestament/");
+      return i > -1 ? p.slice(0, i) : "";
+    })() || "/israelite-research";
+    const abs1  = `${base}/data/newtestament/${book}/${ch}.json`;
+    const abs2  = `/israelite-research/data/newtestament/${book}/${ch}.json`;
+    const abs3  = `/data/newtestament/${book}/${ch}.json`;
+
+    const candidates = [rel1, rel2, abs1, abs2, abs3];
+
+    let lastErr;
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
+        console.info("[nt-chapter] loaded:", url);
+        return data;
+      } catch (e) { 
+        lastErr = e; 
+        console.warn("[nt-chapter] failed:", url, e.message);
+      }
     }
-    const data = await res.json();
-    if (!Array.isArray(data)) {
-      throw new Error("Chapter JSON must be an array of {v,t,c,s}");
-    }
-    return data;
+    throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
   }
 
   // Hovercard / Strong's
