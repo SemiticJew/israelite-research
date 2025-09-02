@@ -1,252 +1,219 @@
-<script>
-(async function () {
-  // ---- DOM handles ----
-  const $verses = document.getElementById('verses');
-  const $lex = document.getElementById('lexicon');
-  const $hover = document.getElementById('hovercard');
-  const $sel = document.getElementById('chSelect');
-  const $prev = document.getElementById('btnPrev');
-  const $next = document.getElementById('btnNext');
-  const $title = document.getElementById('pageTitle');
-  const $crumbs = document.getElementById('crumbs');
+/* nt-chapter.js
+ * Expects chapter JSON as an ARRAY of objects:
+ *   [{ v: <number>, t: <string>, c: <string[]>, s: <string[]> }, ...]
+ * Leaves the rest of the page behavior intact (toolbar, etc.).
+ */
 
-  const status = (msg) => { if ($verses) $verses.innerHTML = `<p class="muted">${msg}</p>`; };
+(function () {
+  const DATA_ROOT = "/israelite-research/data/newtestament";
+  const LEX_ROOT  = "/israelite-research/data/lexicon"; // optional (if present): strongs-hebrew.json, strongs-greek.json
 
-  // ---- Context / routing ----
-  function getContext() {
-    const parts = location.pathname.split('/').filter(Boolean);
-    const idx = parts.indexOf('newtestament');
-    const book = (idx !== -1 && parts[idx+1]) ? parts[idx+1] : 'matthew';
-    const q = new URLSearchParams(location.search);
-    const qc = parseInt(q.get('c') || '0', 10);
-    const last = parts[parts.length-1] || '';
-    const m = last.match(/chapter-(\d+)\.html/i);
-    const chapter = qc > 0 ? qc : (m ? parseInt(m[1],10) : 1);
-    return { book, chapter };
+  // ---- Routing helpers -----------------------------------------------------
+  function getBookSlug() {
+    const parts = location.pathname.split("/").filter(Boolean);
+    const i = parts.findIndex(p => p.toLowerCase() === "newtestament");
+    return (i >= 0 && parts[i + 1]) ? decodeURIComponent(parts[i + 1]).toLowerCase() : "";
   }
-  const ctx = getContext();
-
-  // ---- Title/crumbs helpers ----
-  function firstCase(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s; }
-  function prettyBook(slug){
-    // e.g. "1-john" -> "1 John", "song-of-songs" -> "Song of songs" (first letter upper, rest lower)
-    if (/^\d-/.test(slug)) {
-      const [num, rest] = slug.split('-', 2);
-      return `${num} ${firstCase(rest.replace(/-/g,' '))}`;
-    }
-    return firstCase(slug.replace(/-/g,' '));
+  function getChapter() {
+    const m = new URLSearchParams(location.search).get("ch");
+    const n = parseInt(m, 10);
+    return Number.isFinite(n) && n > 0 ? n : 1;
   }
-  const bookLabel = prettyBook(ctx.book);
-  if ($title)  $title.textContent  = `${bookLabel} ${ctx.chapter} (KJV)`;
-  if ($crumbs) $crumbs.textContent = `New Testament → ${bookLabel} → Chapter ${ctx.chapter}`;
-
-  // ---- Data URLs (primary + resilient fallbacks) ----
-  const versePrimary        = `/israelite-research/data/newtestament/${ctx.book}/${ctx.chapter}.json`; // expected lowercase slug
-  const verseFallbackTitle  = `/israelite-research/data/newtestament/${bookLabel.toLowerCase().replace(/\s+/g,'-').replace(/^(\d)/,'$1-')}/${ctx.chapter}.json`;
-  const verseLegacy         = `/israelite-research/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`; // very old location
-  const strongURL           = `/israelite-research/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
-
-  async function fetchFirstOk(urls){
-    for(const u of urls){
-      try { const r = await fetch(u, { cache: 'no-store' }); if (r.ok) return r.json(); } catch {}
-    }
-    return null;
+  function setChapter(n) {
+    const url = new URL(location.href);
+    url.searchParams.set("ch", String(n));
+    location.href = url.toString();
   }
 
-  // ---- Strong's state ----
-  let LEX = { entries: {} }; // normalized shape
-  let TOTAL = 150;           // default upper bound for chapter picker (book-specific optional)
+  // ---- Fetch chapter (array of {v,t,c,s}) ----------------------------------
+  async function fetchChapter(book, ch) {
+    const url = `${DATA_ROOT}/${book}/${ch}.json`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load ${url} (HTTP ${res.status})`);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
+    return data;
+  }
 
-  function clampChapter(n){ return Math.max(1, Math.min(TOTAL, n)); }
+  // ---- Minimal Strong’s hovercard support ----------------------------------
+  const hovercard = document.getElementById("hovercard");
+  let strongsCache = Object.create(null);
+  async function lookupStrongs(code) {
+    // Try cache
+    if (strongsCache[code]) return strongsCache[code];
 
-  // ---- Toolbar wiring ----
-  function buildToolbar(totalCh) {
-    TOTAL = totalCh || TOTAL;
-    if ($sel) {
-      $sel.innerHTML = '';
-      for (let i=1;i<=TOTAL;i++){
-        const o = document.createElement('option');
-        o.value = i; o.textContent = `Chapter ${i}`;
-        if (i === ctx.chapter) o.selected = true;
-        $sel.appendChild(o);
+    // Lazy load by code prefix if optional lexicon files exist
+    const isHeb = /^H\d+/i.test(code);
+    const isGrk = /^G\d+/i.test(code);
+    const file  = isHeb ? "strongs-hebrew.json" : (isGrk ? "strongs-greek.json" : null);
+    if (!file) return (strongsCache[code] = { code, gloss: "", def: "" });
+
+    try {
+      if (!strongsCache["__" + file]) {
+        const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
+        if (resp.ok) strongsCache["__" + file] = await resp.json();
+        else strongsCache["__" + file] = {};
       }
-      $sel.addEventListener('change', e => {
-        const n = parseInt(e.target.value,10);
-        location.href = `/israelite-research/newtestament/${ctx.book}/chapter.html?c=${n}`;
+      const lex = strongsCache["__" + file] || {};
+      const entry = lex[code] || lex[String(code).toUpperCase()] || lex[String(code).toLowerCase()] || {};
+      return (strongsCache[code] = {
+        code,
+        gloss: entry.gloss || entry.translation || "",
+        def: entry.def || entry.definition || entry.meaning || ""
       });
+    } catch {
+      return (strongsCache[code] = { code, gloss: "", def: "" });
     }
-    if ($prev) $prev.onclick = () => {
-      const n = clampChapter(ctx.chapter - 1);
-      location.href = `/israelite-research/newtestament/${ctx.book}/chapter.html?c=${n}`;
-    };
-    if ($next) $next.onclick = () => {
-      const n = clampChapter(ctx.chapter + 1);
-      location.href = `/israelite-research/newtestament/${ctx.book}/chapter.html?c=${n}`;
-    };
+  }
+  function showHovercard(x, y, html) {
+    if (!hovercard) return;
+    hovercard.innerHTML = html;
+    hovercard.style.left = Math.max(8, x + 12) + "px";
+    hovercard.style.top  = Math.max(8, y + 12) + "px";
+    hovercard.classList.add("open");
+    hovercard.setAttribute("aria-hidden", "false");
+  }
+  function hideHovercard() {
+    if (!hovercard) return;
+    hovercard.classList.remove("open");
+    hovercard.setAttribute("aria-hidden", "true");
   }
 
-  // ---- Utilities ----
-  function copyText(txt){
-    if (!navigator.clipboard) return Promise.reject(new Error('No clipboard'));
-    return navigator.clipboard.writeText(txt);
-  }
-  function shareURL(url, text){
-    if (navigator.share) return navigator.share({ url, text }).catch(()=>{});
-    return copyText(url);
+  // ---- Renderer (this is the requested change) ------------------------------
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[m]));
   }
 
-  function openHoverCard(html, x, y){
-    if (!$hover) return;
-    $hover.innerHTML = html;
-    $hover.style.left = (x + 12) + 'px';
-    $hover.style.top  = (y + 12) + 'px';
-    $hover.classList.add('open');
-    $hover.setAttribute('aria-hidden','false');
-  }
-  function closeHoverCard(){
-    if (!$hover) return;
-    $hover.classList.remove('open');
-    $hover.setAttribute('aria-hidden','true');
-  }
-  document.addEventListener('scroll', () => closeHoverCard());
-  document.addEventListener('click', (e) => {
-    if ($hover && !$hover.contains(e.target) && !e.target.classList?.contains('badge')) closeHoverCard();
-  });
+  function renderChapter(chapterData) {
+    const versesEl = document.getElementById("verses");
+    if (!versesEl) return;
 
-  // ---- Renderers ----
-  function renderLexicon(data) {
-    if (!$lex) return;
-    const entries = data?.entries || data?.lexicon || {};
-    LEX = { entries };
-    if (!entries || Object.keys(entries).length === 0) {
-      $lex.innerHTML = '<p class="muted">Strong’s entries coming soon.</p>'; return;
+    if (!Array.isArray(chapterData) || !chapterData.length) {
+      versesEl.innerHTML = '<p class="muted">No verses found for this chapter.</p>';
+      return;
     }
-    const items = Object.entries(entries).map(([num, info]) => {
-      const head = (info.headword || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const translit = info.translit ? ` — <em>${info.translit}</em>` : '';
-      const gloss = info.gloss ? ` — ${info.gloss}` : '';
-      return `<li data-strong="${num}"><strong>${num}</strong> ${head}${translit}${gloss}</li>`;
-    }).join('');
-    $lex.innerHTML = `<ul class="lex">${items}</ul>`;
-  }
 
-  function strongCard(num){
-    const e = LEX.entries?.[num];
-    if (!e) return `<strong>${num}</strong><div class="muted">No entry</div>`;
-    const head = (e.headword||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const tr = e.translit ? `<div><em>${e.translit}</em></div>` : '';
-    const gl = e.gloss ? `<div>${e.gloss}</div>` : '';
-    return `<div style="font-weight:700;margin-bottom:.25rem">${num} — ${head}</div>${tr}${gl}`;
-  }
+    const html = chapterData.map(v => {
+      const vnum = Number.isFinite(v.v) ? v.v : "";
+      const text = escapeHtml(v.t || "");
+      const strongs = Array.isArray(v.s) ? v.s : [];
+      const xrefs = Array.isArray(v.c) ? v.c : [];
 
-  function renderVerses(chData) {
-    const verses = Array.isArray(chData?.verses) ? chData.verses : [];
-    if (!verses.length){ status('Verses coming soon.'); return; }
+      const sBadges = strongs.map(tag =>
+        `<span class="badge" data-strong="${escapeHtml(tag)}" title="Strong’s ${escapeHtml(tag)}">${escapeHtml(tag)}</span>`
+      ).join("");
 
-    // allow JSON to define total chapters for toolbar (optional)
-    if (Number.isInteger(chData.total) && chData.total > 0) TOTAL = chData.total;
+      const xBtn = xrefs.length
+        ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="See cross references">xrefs</button>`
+        : "";
 
-    const frag = document.createDocumentFragment();
+      return `
+        <div class="verse" data-verse="${vnum}">
+          <span class="vnum">${vnum}</span>
+          <span class="vtext">${text} ${sBadges}</span>
+          <div class="v-actions">${xBtn}</div>
+        </div>
+      `;
+    }).join("");
 
-    verses.forEach(v => {
-      const art = document.createElement('article');
-      art.className = 'verse';
-      art.id = `v${v.v}`;
+    versesEl.innerHTML = html;
 
-      const num = document.createElement('span');
-      num.className = 'vnum';
-      num.textContent = v.v;
-
-      const txt = document.createElement('span');
-      txt.className = 'vtext';
-      txt.textContent = v.t || '';
-
-      // actions: Copy / Link
-      const actions = document.createElement('div');
-      actions.className = 'v-actions';
-
-      const btnCopy = document.createElement('button');
-      btnCopy.type = 'button';
-      btnCopy.textContent = 'Copy';
-      btnCopy.title = 'Copy verse text';
-      btnCopy.onclick = () => {
-        const payload = `${bookLabel} ${ctx.chapter}:${v.v} ${v.t || ''}`.trim();
-        copyText(payload);
-      };
-
-      const btnShare = document.createElement('button');
-      btnShare.type = 'button';
-      btnShare.textContent = 'Link';
-      btnShare.title = 'Share direct link';
-      btnShare.onclick = () => {
-        const url = `${location.origin}${location.pathname}?c=${ctx.chapter}#v${v.v}`;
-        shareURL(url, `${bookLabel} ${ctx.chapter}:${v.v}`);
-      };
-
-      actions.appendChild(btnCopy);
-      actions.appendChild(btnShare);
-
-      art.appendChild(num);
-      art.appendChild(txt);
-      art.appendChild(actions);
-
-      // Strong’s badges (from verse.s, e.g., ["G2424","G5547"])
-      if (Array.isArray(v.s) && v.s.length){
-        const seen = new Set();
-        v.s.forEach(code => {
-          if (!code || seen.has(code)) return; seen.add(code);
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'badge';
-          b.dataset.strong = code;
-          b.textContent = code;
-          b.onclick = (ev) => {
-            const el = $lex?.querySelector(`[data-strong="${code}"]`);
-            if (el) {
-              el.style.background = '#fff5e6';
-              setTimeout(()=>{ el.style.background=''; }, 900);
-            }
-            const rect = ev.target.getBoundingClientRect();
-            openHoverCard(strongCard(code), rect.left + window.scrollX, rect.top + window.scrollY);
-          };
-          txt.appendChild(b);
-        });
-      }
-
-      frag.appendChild(art);
+    // Strong’s hover (lazy)
+    versesEl.querySelectorAll(".badge[data-strong]").forEach(badge => {
+      badge.addEventListener("mouseenter", async (e) => {
+        const code = badge.getAttribute("data-strong");
+        const rect = badge.getBoundingClientRect();
+        const info = await lookupStrongs(code);
+        const body = `
+          <div><strong>${escapeHtml(info.code || code)}</strong>${info.gloss ? ` — ${escapeHtml(info.gloss)}` : ""}</div>
+          ${info.def ? `<div class="muted" style="margin-top:.25rem">${escapeHtml(info.def)}</div>` : ""}
+        `;
+        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
+      });
+      badge.addEventListener("mouseleave", hideHovercard);
+      badge.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      });
     });
 
-    $verses.innerHTML = '';
-    $verses.appendChild(frag);
+    // Cross-ref click (simple inline list)
+    versesEl.querySelectorAll(".xref-btn[data-xref]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const refs = (btn.getAttribute("data-xref") || "").split("|").filter(Boolean);
+        if (!refs.length) return;
+        const list = refs.map(r => `<li>${escapeHtml(r)}</li>`).join("");
+        const rect = btn.getBoundingClientRect();
+        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, `<ul class="lex">${list}</ul>`);
+      });
+    });
 
-    // hash anchor scroll
-    if (location.hash && /^#v\d+$/.test(location.hash)){
-      const anchor = document.getElementById(location.hash.slice(1));
-      if (anchor) anchor.scrollIntoView({ behavior:'instant', block:'start' });
+    document.addEventListener("scroll", hideHovercard, { passive: true });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".badge,[data-xref],#hovercard")) hideHovercard();
+    });
+
+    // Populate lexicon side panel with unique Strong’s codes for the chapter
+    const lexEl = document.getElementById("lexicon");
+    if (lexEl) {
+      const codes = Array.from(new Set(
+        chapterData.flatMap(v => Array.isArray(v.s) ? v.s : [])
+      ));
+      if (!codes.length) {
+        lexEl.innerHTML = '<p class="muted">No Strong’s tags in this chapter.</p>';
+      } else {
+        lexEl.innerHTML = `<ul class="lex">${codes.map(c => `<li><a href="#" class="lex-link" data-strong="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join("")}</ul>`;
+        lexEl.querySelectorAll(".lex-link").forEach(a => {
+          a.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const code = a.getAttribute("data-strong");
+            const info = await lookupStrongs(code);
+            alert(`${info.code}\n${info.gloss || ""}\n${info.def || ""}`.trim());
+          });
+        });
+      }
     }
   }
 
-  // ---- Load & init ----
-  try {
-    const [vJson, sRes] = await Promise.all([
-      fetchFirstOk([versePrimary, verseFallbackTitle, verseLegacy]),
-      fetch(strongURL).catch(() => null)
-    ]);
+  // ---- Minimal bootstrapping (non-invasive) --------------------------------
+  async function init() {
+    const book = getBookSlug();
+    const ch = getChapter();
 
-    if (sRes && sRes.ok) renderLexicon(await sRes.json());
-    else renderLexicon({ entries:{} });
+    // Wire toolbar if present (keeps existing markup)
+    const prev = document.getElementById("btnPrev");
+    const next = document.getElementById("btnNext");
+    const sel  = document.getElementById("chSelect");
 
-    if (vJson){
-      renderVerses(vJson);
-      buildToolbar(vJson.total || undefined);
-    } else {
-      status('Verses coming soon.');
-      buildToolbar();
+    if (prev) prev.onclick = () => setChapter(Math.max(1, getChapter() - 1));
+    if (next) next.onclick = () => setChapter(getChapter() + 1);
+    if (sel) {
+      // Do not rebuild options; honor existing. Only sync value & change handler.
+      sel.value = String(ch);
+      sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
     }
-  } catch {
-    status('Verses coming soon.');
-    renderLexicon({ entries:{} });
-    buildToolbar();
+
+    try {
+      const data = await fetchChapter(book, ch);
+      renderChapter(data);
+    } catch (err) {
+      const versesEl = document.getElementById("verses");
+      if (versesEl) {
+        versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
+      }
+      console.error(err);
+    }
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+
+  // Expose renderer in case other scripts call it directly
+  window.renderChapter = renderChapter;
 })();
-</script>
