@@ -1,13 +1,14 @@
 /* nt-chapter.js
  * Shared loader for NT and Tanakh.
- * Expects chapter JSON as: [{ v:number, t:string, c:string[], s:string[] }, ...]
- * Right panel: Insight Bible Dictionary (search Strong's by code or gloss/def).
- * Per-verse note button opens an editor saved to localStorage.
+ * Renders verse toolbar (note / xrefs / lex) UNDER each verse line.
+ * Right panel = Zondervan Dictionary search (optional local JSON).
+ * Chapter select fixed and populated.
+ * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
 (function () {
-  const LEX_ROOT  = "/israelite-research/data/lexicon";
   const DEFAULT_MAX_CH = 150;
+  const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional local data
 
   // ---------------- Canon / routing ----------------
   function getCanon() {
@@ -63,43 +64,6 @@
       } catch (e) { lastErr = e; console.warn("[chapter] failed:", url, e.message); }
     }
     throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
-  }
-
-  // ---------------- Strong's / Lexicon ----------------
-  let strongsCache = Object.create(null);
-  let lexiconCache = { "strongs-hebrew.json": null, "strongs-greek.json": null };
-
-  async function loadLexicon(which /* "hebrew" | "greek" */) {
-    const file = which === "hebrew" ? "strongs-hebrew.json" : "strongs-greek.json";
-    if (lexiconCache[file]) return lexiconCache[file];
-    const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
-    if (!resp.ok) return {};
-    const json = await resp.json();
-    lexiconCache[file] = json || {};
-    return lexiconCache[file];
-  }
-
-  async function lookupStrongs(code) {
-    if (strongsCache[code]) return strongsCache[code];
-    const isHeb = /^H\d+/i.test(code);
-    const isGrk = /^G\d+/i.test(code);
-    if (!isHeb && !isGrk) return (strongsCache[code] = { code, gloss: "", def: "" });
-    const file = isHeb ? "strongs-hebrew.json" : "strongs-greek.json";
-    try {
-      if (!lexiconCache[file]) {
-        const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
-        lexiconCache[file] = resp.ok ? await resp.json() : {};
-      }
-      const lex = lexiconCache[file] || {};
-      const entry = lex[code] || lex[String(code).toUpperCase()] || lex[String(code).toLowerCase()] || {};
-      return (strongsCache[code] = {
-        code,
-        gloss: entry.gloss || entry.translation || "",
-        def: entry.def || entry.definition || entry.meaning || ""
-      });
-    } catch {
-      return (strongsCache[code] = { code, gloss: "", def: "" });
-    }
   }
 
   // ---------------- UI helpers ----------------
@@ -160,8 +124,7 @@
     sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
   }
 
-  // ---------------- Renderer ----------------
-  // per-verse notes (localStorage)
+  // ---------------- Per-verse notes storage ----------------
   function notesKey(canon, book, ch) {
     return `notes:${canon}:${book}:${ch}`;
   }
@@ -173,7 +136,8 @@
     localStorage.setItem(notesKey(canon, book, ch), JSON.stringify(data));
   }
 
-  function renderChapter(chapterData) {
+  // ---------------- Renderer ----------------
+  async function renderChapter(chapterData) {
     const versesEl = document.getElementById("verses");
     if (!versesEl) return;
 
@@ -194,72 +158,55 @@
       const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
 
       const xBtn = xrefs.length
-        ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="See cross references">xrefs</button>`
-        : "";
+        ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="Cross references">xrefs</button>`
+        : `<button class="xref-btn" data-xref="" disabled title="No cross references">xrefs</button>`;
 
       const lexBtn = strongs.length
-        ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="Strong’s for this verse">lex</button>`
-        : `<button class="lex-btn" data-strongs="" disabled title="No Strong’s in this verse">lex</button>`;
+        ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="Lexical info for this verse">lex</button>`
+        : `<button class="lex-btn" data-strongs="" disabled title="No lexical tags">lex</button>`;
 
       const noteBtn = `<button class="note-btn" data-verse="${vnum}" title="Add personal commentary">note</button>`;
       const hasNote = (notes[String(vnum)] || "").trim().length > 0;
 
       return `
         <div class="verse" data-verse="${vnum}">
-          <span class="vnum">${vnum}</span>
-          <span class="vtext">${text}</span>
-          <div class="v-actions">
+          <div class="vline">
+            <span class="vnum">${vnum}</span>
+            <span class="vtext">${text}</span>
+          </div>
+          <div class="v-toolbar">
+            ${noteBtn}
             ${xBtn}
             ${lexBtn}
-            ${noteBtn}
           </div>
-          ${hasNote ? `<div class="muted" style="font-size:.85rem;margin-top:.2rem">📝 note saved</div>` : ""}
+          ${hasNote ? `<div class="muted" style="font-size:.85rem; padding-left:36px">📝 note saved</div>` : ""}
         </div>
       `;
     }).join("");
 
     versesEl.innerHTML = html;
 
-    // xrefs
-    versesEl.querySelectorAll(".xref-btn[data-xref]").forEach(btn => {
+    // xrefs hover
+    versesEl.querySelectorAll(".xref-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const refs = (btn.getAttribute("data-xref") || "").split("|").filter(Boolean);
-        if (!refs.length) return;
-        const list = refs.map(r => `<li>${escapeHtml(r)}</li>`).join("");
+        const x = (btn.getAttribute("data-xref") || "").split("|").filter(Boolean);
+        if (!x.length) return;
         const rect = btn.getBoundingClientRect();
+        const list = x.map(r => `<li>${escapeHtml(r)}</li>`).join("");
         showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, `<ul class="lex">${list}</ul>`);
       });
     });
 
-    // lex per-verse
+    // lex list hover (no right-panel Strong's; lightweight inline)
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
-      btn.addEventListener("click", async (e) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
         if (!codes.length) return;
         const rect = btn.getBoundingClientRect();
-        const listHtml = `<ul class="lex">${codes.map(c => `<li><a href="#" class="lex-code" data-code="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join("")}</ul>`;
+        const listHtml = `<ul class="lex">${codes.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>`;
         showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
-
-        const hc = document.getElementById("hovercard");
-        if (hc) {
-          hc.querySelectorAll('.lex-code[data-code]').forEach(a => {
-            a.addEventListener('click', async (ev) => {
-              ev.preventDefault();
-              const code = a.getAttribute('data-code');
-              const info = await lookupStrongs(code);
-              const body = `
-                <div><strong>${escapeHtml(info.code || code)}</strong>${info.gloss ? ` — ${escapeHtml(info.gloss)}` : ""}</div>
-                ${info.def ? `<div class="muted" style="margin-top:.25rem">${escapeHtml(info.def)}</div>` : ""}
-                <div style="margin-top:.4rem"><a href="#" id="hc-back">◀ back</a></div>
-              `;
-              showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
-              const back = document.getElementById('hc-back');
-              if (back) back.addEventListener('click', (ee) => { ee.preventDefault(); showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml); });
-            });
-          });
-        }
       });
     });
 
@@ -289,14 +236,13 @@
           if (val) notes[v] = val; else delete notes[v];
           saveNotes(canon, book, ch, notes);
           hideHovercard();
-          // mark verse as saved
           const verseEl = btn.closest(".verse");
           if (verseEl) {
             let mark = verseEl.querySelector(".note-mark");
             if (!mark) {
               mark = document.createElement("div");
               mark.className = "note-mark muted";
-              mark.style.cssText = "font-size:.85rem;margin-top:.2rem";
+              mark.style.cssText = "font-size:.85rem; padding-left:36px";
               verseEl.appendChild(mark);
             }
             mark.textContent = val ? "📝 note saved" : "";
@@ -316,72 +262,39 @@
       if (!e.target.closest(".lex-btn,.xref-btn,.note-btn,#hovercard")) hideHovercard();
     });
 
-    // ----- Insight Bible Dictionary (right panel) -----
+    // ---------- Zondervan dictionary (right panel) ----------
     const dictRoot = document.getElementById("dictPanel");
     const dictSearch = document.getElementById("dictSearch");
     if (dictRoot) {
-      dictRoot.innerHTML = '<p class="muted">Type a Strong’s code (e.g., H7225, G3056) or an English term to search.</p>';
-      const canon = getCanon();
-      const which = canon === "tanakh" ? "hebrew" : "greek";
-      let lex = null;
-
-      async function ensureLex() { if (!lex) lex = await loadLexicon(which); return lex || {}; }
-
-      async function doSearch(q) {
+      let dict = null;
+      async function ensureDict(){
+        if (dict) return dict;
+        try {
+          const r = await fetch(ZONDERVAN_PATH, { cache: "force-cache" });
+          if (!r.ok) throw 0;
+          dict = await r.json();
+        } catch { dict = null; }
+        return dict;
+      }
+      async function doSearch(q){
         q = (q || "").trim();
-        if (!q) { dictRoot.innerHTML = '<p class="muted">Enter a query above.</p>'; return; }
-
-        const L = await ensureLex();
-
-        // If query looks like a code:
-        if (/^[HG]\d{1,5}$/i.test(q)) {
-          const code = q.toUpperCase();
-          const hit = L[code];
-          if (!hit) { dictRoot.innerHTML = `<p class="muted">No entry for ${escapeHtml(code)}.</p>`; return; }
-          const gloss = hit.gloss || hit.translation || "";
-          const def = hit.def || hit.definition || hit.meaning || "";
-          dictRoot.innerHTML = `
-            <div><strong>${escapeHtml(code)}</strong>${gloss ? ` — ${escapeHtml(gloss)}` : ""}</div>
-            ${def ? `<div class="muted" style="margin-top:.35rem">${escapeHtml(def)}</div>` : ""}
-          `;
-          return;
-        }
-
-        // Term search over gloss/definition
+        const data = await ensureDict();
+        if (!data) { dictRoot.innerHTML = '<p class="muted">Dictionary data not found. Add <code>data/dictionaries/zondervan.json</code>.</p>'; return; }
+        if (!q) { dictRoot.innerHTML = '<p class="muted">Enter a term above.</p>'; return; }
         const term = q.toLowerCase();
-        const results = [];
-        for (const [code, entry] of Object.entries(L)) {
-          const gloss = (entry.gloss || entry.translation || "").toString();
-          const def = (entry.def || entry.definition || entry.meaning || "").toString();
-          if (gloss.toLowerCase().includes(term) || def.toLowerCase().includes(term)) {
-            results.push({ code, gloss, def });
-            if (results.length >= 50) break; // cap results
-          }
+        const hits = [];
+        for (const item of data) {
+          const t = String(item.term || "").toLowerCase();
+          const d = String(item.def || "").toLowerCase();
+          if (t.includes(term) || d.includes(term)) { hits.push(item); if (hits.length >= 50) break; }
         }
-        if (!results.length) { dictRoot.innerHTML = `<p class="muted">No results for “${escapeHtml(q)}”.</p>`; return; }
+        if (!hits.length) { dictRoot.innerHTML = `<p class="muted">No results for “${escapeHtml(q)}”.</p>`; return; }
         dictRoot.innerHTML = `
           <ul class="lex">
-            ${results.map(r => `<li><a href="#" class="dict-code" data-code="${escapeHtml(r.code)}"><strong>${escapeHtml(r.code)}</strong>${r.gloss ? ` — ${escapeHtml(r.gloss)}` : ""}</a></li>`).join("")}
+            ${hits.map(h => `<li><strong>${escapeHtml(h.term || "")}</strong>${h.def ? ` — ${escapeHtml(h.def)}` : ""}</li>`).join("")}
           </ul>
         `;
-        dictRoot.querySelectorAll(".dict-code").forEach(a => {
-          a.addEventListener("click", async (e) => {
-            e.preventDefault();
-            const code = a.getAttribute("data-code");
-            const entry = L[code] || {};
-            const gloss = entry.gloss || entry.translation || "";
-            const def = entry.def || entry.definition || entry.meaning || "";
-            dictRoot.innerHTML = `
-              <div style="margin-bottom:.5rem"><a href="#" id="dict-back">◀ back</a></div>
-              <div><strong>${escapeHtml(code)}</strong>${gloss ? ` — ${escapeHtml(gloss)}` : ""}</div>
-              ${def ? `<div class="muted" style="margin-top:.35rem">${escapeHtml(def)}</div>` : ""}
-            `;
-            const back = document.getElementById("dict-back");
-            if (back) back.addEventListener("click", (ev) => { ev.preventDefault(); doSearch(q); });
-          });
-        });
       }
-
       if (dictSearch) {
         dictSearch.addEventListener("keydown", (e) => { if (e.key === "Enter") doSearch(dictSearch.value); });
         dictSearch.addEventListener("change", () => doSearch(dictSearch.value));
@@ -404,7 +317,7 @@
 
     try {
       const data = await fetchChapter(book, ch);
-      renderChapter(data);
+      await renderChapter(data);
 
       // Prefetch neighbors
       const canon = getCanon();
@@ -418,11 +331,6 @@
       if (versesEl) versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
       console.error(err);
     }
-
-    document.addEventListener("scroll", hideHovercard, { passive: true });
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".lex-btn,.xref-btn,.note-btn,#hovercard")) hideHovercard();
-    });
   }
 
   if (document.readyState === "loading") {
@@ -430,5 +338,4 @@
   } else {
     init();
   }
-
 })();

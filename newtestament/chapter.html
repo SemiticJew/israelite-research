@@ -6,6 +6,16 @@
 <title>New Testament — Chapter</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
+/* Verse layout: toolbar under each verse (like BLB) */
+.verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
+.vline{display:flex; gap:.6rem}
+.vnum{min-width:28px; text-align:right; color:var(--muted)}
+.vtext{line-height:1.55}
+.v-toolbar{display:flex; gap:.4rem; padding-left:36px}
+.v-toolbar button{
+  border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer;
+}
+.v-toolbar button:hover{ background:#f8fafc }
   :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:24px 0 8px}
@@ -95,25 +105,13 @@
     </div>
 
     <aside class="panel">
-      <h3>Strong’s (Lexicon)</h3>
-      <div id="lexicon"><p class="muted">Loading…</p></div>
-
-      <hr style="border:none;border-top:1px solid var(--sky);margin:12px 0">
-
-      <h3>Insight Bible Dictionary</h3>
-<div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
-  <input id="dictSearch" type="search" placeholder="Search Strong’s code (H####/G####) or term…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
-</div>
-<div id="dictPanel"><p class="muted">Type a Strong’s code or term above.</p></div>
-
-        <details style="margin-top:.6rem">
-          <summary>All notes in this chapter</summary>
-          <ul class="vc-list" id="vcList"><li class="vc-empty">No verse notes yet.</li></ul>
-        </details>
-      </div>
-    </aside>
-  </section>
-</main>
+  <h3>Zondervan Compact Bible Dictionary</h3>
+  <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
+    <input id="dictSearch" type="search" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
+  </div>
+  <div id="dictPanel"><p class="muted">Add <code>data/dictionaries/zondervan.json</code> to enable offline lookups.</p></div>
+</aside>
+<main>
 
 <div id="site-footer"></div>
 <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
