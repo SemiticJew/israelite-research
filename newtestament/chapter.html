@@ -22,6 +22,7 @@
     .lex li{margin:.35rem 0}
     @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
+    /* Toolbar */
     .reader-toolbar{
       position: sticky; top: 0; z-index: 50;
       display:flex; align-items:center; justify-content:center; gap:.75rem;
@@ -36,6 +37,7 @@
       border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
     }
 
+    /* Verse actions */
     .v-actions{position:absolute; right:6px; top:2px; display:flex; gap:6px}
     .v-actions button{
       border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.15rem .35rem;
@@ -43,11 +45,13 @@
     }
     .v-actions button:hover{ background:#f8fafc }
 
+    /* Strong’s badges */
     .badge{
       display:inline-block; margin-left:.35rem; padding:.05rem .35rem; border:1px solid var(--sky);
       border-radius:8px; font-size:.78rem; color:#333; background:#054A910D; cursor:pointer;
     }
 
+    /* Hover card */
     .hovercard{
       position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
       background:#fff; border:1px solid #e6ebf2; border-radius:10px;
@@ -56,6 +60,9 @@
     }
     .hovercard.open{ display:block }
 
+    .sr-only{ position:absolute!important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px) }
+
+    /* Verse Commentary UI */
     .vc-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin-bottom:.4rem}
     .vc-ref{font-weight:700; color:var(--ink)}
     .vc-buttons{display:flex; gap:.4rem}
@@ -79,6 +86,7 @@
     <div class="crumbs" id="crumbs">New Testament → Book → Chapter</div>
   </header>
 
+  <!-- Sticky reader toolbar -->
   <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
     <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
     <div class="ch-picker">
@@ -105,10 +113,10 @@
         <div class="vc-head">
           <div class="vc-ref" id="vcRef">Click a verse to add a note</div>
           <div class="vc-buttons">
-            <button class="vc-btn" id="vcClear" disabled>Clear</button>
+            <button class="vc-btn" id="vcClear" title="Clear note for this verse" disabled>Clear</button>
           </div>
         </div>
-        <textarea class="vc-text" id="vcText" placeholder="Start typing your personal commentary…" disabled></textarea>
+        <textarea class="vc-text" id="vcText" placeholder="Start typing your personal commentary for the selected verse…" disabled></textarea>
         <div class="vc-foot">
           <button class="vc-btn" id="vcSave" disabled>Save</button>
           <div class="vc-saved" id="vcSaved"></div>
@@ -125,9 +133,161 @@
 
 <div id="site-footer"></div>
 
+<!-- Hovercard for Strong’s -->
 <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
 
 <script src="/israelite-research/js/include.js"></script>
 <script src="/israelite-research/js/nt-chapter.js"></script>
+
+<!-- Dynamic title & breadcrumbs -->
+<script>
+(function(){
+  const qp = new URLSearchParams(location.search);
+  const bookSlug = (qp.get('book') || '').toLowerCase();
+  const ch = parseInt(qp.get('ch') || '1', 10) || 1;
+
+  function toTitle(slug){
+    if(!slug) return 'New Testament';
+    // turn "1-john" -> "1 John", "philippians" -> "Philippians"
+    return slug
+      .replace(/[_-]+/g, ' ')
+      .split(' ')
+      .map(w => /^\d+$/.test(w) ? w : (w.charAt(0).toUpperCase() + w.slice(1)))
+      .join(' ');
+  }
+
+  const bookTitle = toTitle(bookSlug);
+  const h1 = document.getElementById('pageTitle');
+  const crumbs = document.getElementById('crumbs');
+
+  if (h1) h1.textContent = `${bookTitle} (KJV) — Chapter ${ch}`;
+  if (crumbs) crumbs.textContent = `New Testament → ${bookTitle} → Chapter ${ch}`;
+  document.title = `${bookTitle} — Chapter ${ch}`;
+})();
+</script>
+
+<!-- Minimal inline logic for verse-by-verse notes (localStorage) -->
+<script>
+(function(){
+  const $ = sel => document.querySelector(sel);
+  const versesEl = $('#verses');
+  const vcRef = $('#vcRef');
+  const vcText = $('#vcText');
+  const vcSave = $('#vcSave');
+  const vcClear = $('#vcClear');
+  const vcSaved = $('#vcSaved');
+  const vcList = $('#vcList');
+
+  const chapterKey = (location.pathname.replace(/\.html?$/,'') + location.search) || 'nt-chapter';
+  const storeKey = 'vc:' + chapterKey;
+
+  let notes = {};
+  try { notes = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(_) { notes = {}; }
+  let currentVerse = null;
+  let saveTimer = null;
+
+  function verseNumberFrom(el){
+    const verse = el.closest('.verse');
+    if(!verse) return null;
+    const d = verse.getAttribute('data-verse');
+    if(d) return String(d).trim();
+    const num = verse.querySelector('.vnum')?.textContent?.trim();
+    return num || null;
+  }
+
+  function selectVerseByElement(el){
+    const vnum = verseNumberFrom(el);
+    if(!vnum) return;
+
+    document.querySelectorAll('.verse').forEach(v=>v.classList.remove('active'));
+    const verseEl = el.closest('.verse');
+    if(verseEl) verseEl.classList.add('active');
+
+    currentVerse = vnum;
+    const existing = notes[vnum] || '';
+    vcRef.textContent = `Commentary on verse ${vnum}`;
+    vcText.disabled = false;
+    vcSave.disabled = false;
+    vcClear.disabled = false;
+    vcText.value = existing;
+    vcText.focus();
+    vcText.setSelectionRange(vcText.value.length, vcText.value.length);
+    vcSaved.textContent = existing ? 'Loaded saved note.' : '';
+  }
+
+  function persist(){
+    localStorage.setItem(storeKey, JSON.stringify(notes));
+    renderList();
+  }
+
+  function renderList(){
+    const entries = Object.entries(notes).filter(([_,v])=>v && v.trim().length);
+    entries.sort((a,b)=>Number(a[0]) - Number(b[0]));
+    vcList.innerHTML = '';
+    if(!entries.length){
+      vcList.innerHTML = '<li class="vc-empty">No verse notes yet.</li>';
+      return;
+    }
+    for(const [v,txt] of entries){
+      const li = document.createElement('li');
+      const safe = txt.length > 140 ? txt.slice(0,140) + '…' : txt;
+      li.innerHTML = `<a href="#" data-jump="${v}">v${v}</a> — ${escapeHtml(safe)}`;
+      vcList.appendChild(li);
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  versesEl.addEventListener('click', (e) => {
+    const verseEl = e.target.closest('.verse');
+    if(!verseEl) return;
+    selectVerseByElement(verseEl);
+  });
+
+  vcList.addEventListener('click', (e)=>{
+    const a = e.target.closest('a[data-jump]');
+    if(!a) return;
+    e.preventDefault();
+    const vnum = a.getAttribute('data-jump');
+    const target = Array.from(document.querySelectorAll('.verse'))
+      .find(v => v.getAttribute('data-verse') === vnum || v.querySelector('.vnum')?.textContent?.trim() === vnum);
+    if(target){ target.scrollIntoView({behavior:'smooth', block:'center'}); selectVerseByElement(target); }
+  });
+
+  vcSave.addEventListener('click', ()=>{
+    if(!currentVerse) return;
+    notes[currentVerse] = vcText.value.trim();
+    persist();
+    vcSaved.textContent = 'Saved.';
+    setTimeout(()=>vcSaved.textContent = '', 1200);
+  });
+
+  vcText.addEventListener('input', ()=>{
+    if(!currentVerse) return;
+    vcSaved.textContent = 'Saving…';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      notes[currentVerse] = vcText.value.trim();
+      persist();
+      vcSaved.textContent = 'Saved.';
+      setTimeout(()=>vcSaved.textContent = '', 900);
+    }, 400);
+  });
+
+  vcClear.addEventListener('click', ()=>{
+    if(!currentVerse) return;
+    delete notes[currentVerse];
+    persist();
+    vcText.value = '';
+    vcSaved.textContent = 'Cleared.';
+    setTimeout(()=>vcSaved.textContent = '', 900);
+    renderList();
+  });
+
+  renderList();
+})();
+</script>
 </body>
 </html>
