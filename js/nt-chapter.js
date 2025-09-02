@@ -1,14 +1,18 @@
 <script>
 (async function () {
+  // ---- DOM handles ----
   const $verses = document.getElementById('verses');
   const $lex = document.getElementById('lexicon');
   const $hover = document.getElementById('hovercard');
   const $sel = document.getElementById('chSelect');
   const $prev = document.getElementById('btnPrev');
   const $next = document.getElementById('btnNext');
+  const $title = document.getElementById('pageTitle');
+  const $crumbs = document.getElementById('crumbs');
 
   const status = (msg) => { if ($verses) $verses.innerHTML = `<p class="muted">${msg}</p>`; };
 
+  // ---- Context / routing ----
   function getContext() {
     const parts = location.pathname.split('/').filter(Boolean);
     const idx = parts.indexOf('newtestament');
@@ -22,23 +26,40 @@
   }
   const ctx = getContext();
 
-  // NEW path for NT JSON data
-  const versePrimary = `/israelite-research/data/newtestament/${ctx.book}/${ctx.chapter}.json`;
-  const verseFallback = `/israelite-research/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`; // safety
-  const strongURL = `/israelite-research/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
+  // ---- Title/crumbs helpers ----
+  function firstCase(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s; }
+  function prettyBook(slug){
+    // e.g. "1-john" -> "1 John", "song-of-songs" -> "Song of songs" (first letter upper, rest lower)
+    if (/^\d-/.test(slug)) {
+      const [num, rest] = slug.split('-', 2);
+      return `${num} ${firstCase(rest.replace(/-/g,' '))}`;
+    }
+    return firstCase(slug.replace(/-/g,' '));
+  }
+  const bookLabel = prettyBook(ctx.book);
+  if ($title)  $title.textContent  = `${bookLabel} ${ctx.chapter} (KJV)`;
+  if ($crumbs) $crumbs.textContent = `New Testament → ${bookLabel} → Chapter ${ctx.chapter}`;
+
+  // ---- Data URLs (primary + resilient fallbacks) ----
+  const versePrimary        = `/israelite-research/data/newtestament/${ctx.book}/${ctx.chapter}.json`; // expected lowercase slug
+  const verseFallbackTitle  = `/israelite-research/data/newtestament/${bookLabel.toLowerCase().replace(/\s+/g,'-').replace(/^(\d)/,'$1-')}/${ctx.chapter}.json`;
+  const verseLegacy         = `/israelite-research/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`; // very old location
+  const strongURL           = `/israelite-research/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
 
   async function fetchFirstOk(urls){
     for(const u of urls){
-      try { const r = await fetch(u); if (r.ok) return r.json(); } catch {}
+      try { const r = await fetch(u, { cache: 'no-store' }); if (r.ok) return r.json(); } catch {}
     }
     return null;
   }
 
-  let LEX = { entries: {} };     // normalized { entries: { Gxxxx: {headword,translit,gloss} } }
-  let TOTAL = 150;               // max select options default; we’ll clamp after load
+  // ---- Strong's state ----
+  let LEX = { entries: {} }; // normalized shape
+  let TOTAL = 150;           // default upper bound for chapter picker (book-specific optional)
 
   function clampChapter(n){ return Math.max(1, Math.min(TOTAL, n)); }
 
+  // ---- Toolbar wiring ----
   function buildToolbar(totalCh) {
     TOTAL = totalCh || TOTAL;
     if ($sel) {
@@ -64,6 +85,7 @@
     };
   }
 
+  // ---- Utilities ----
   function copyText(txt){
     if (!navigator.clipboard) return Promise.reject(new Error('No clipboard'));
     return navigator.clipboard.writeText(txt);
@@ -91,6 +113,7 @@
     if ($hover && !$hover.contains(e.target) && !e.target.classList?.contains('badge')) closeHoverCard();
   });
 
+  // ---- Renderers ----
   function renderLexicon(data) {
     if (!$lex) return;
     const entries = data?.entries || data?.lexicon || {};
@@ -120,8 +143,8 @@
     const verses = Array.isArray(chData?.verses) ? chData.verses : [];
     if (!verses.length){ status('Verses coming soon.'); return; }
 
-    // try to infer TOTAL from a sibling index page reference in JSON (optional future)
-    // otherwise leave as default and selector remains wide; you can pass total via chData.total
+    // allow JSON to define total chapters for toolbar (optional)
+    if (Number.isInteger(chData.total) && chData.total > 0) TOTAL = chData.total;
 
     const frag = document.createDocumentFragment();
 
@@ -147,7 +170,7 @@
       btnCopy.textContent = 'Copy';
       btnCopy.title = 'Copy verse text';
       btnCopy.onclick = () => {
-        const payload = `Matthew ${ctx.chapter}:${v.v} ${v.t || ''}`.trim();
+        const payload = `${bookLabel} ${ctx.chapter}:${v.v} ${v.t || ''}`.trim();
         copyText(payload);
       };
 
@@ -157,7 +180,7 @@
       btnShare.title = 'Share direct link';
       btnShare.onclick = () => {
         const url = `${location.origin}${location.pathname}?c=${ctx.chapter}#v${v.v}`;
-        shareURL(url, `Matthew ${ctx.chapter}:${v.v}`);
+        shareURL(url, `${bookLabel} ${ctx.chapter}:${v.v}`);
       };
 
       actions.appendChild(btnCopy);
@@ -178,13 +201,11 @@
           b.dataset.strong = code;
           b.textContent = code;
           b.onclick = (ev) => {
-            // highlight matching entry in sidebar (simple flash)
             const el = $lex?.querySelector(`[data-strong="${code}"]`);
             if (el) {
               el.style.background = '#fff5e6';
               setTimeout(()=>{ el.style.background=''; }, 900);
             }
-            // show hovercard near click
             const rect = ev.target.getBoundingClientRect();
             openHoverCard(strongCard(code), rect.left + window.scrollX, rect.top + window.scrollY);
           };
@@ -198,17 +219,17 @@
     $verses.innerHTML = '';
     $verses.appendChild(frag);
 
-    // If URL has #vN, scroll to it
+    // hash anchor scroll
     if (location.hash && /^#v\d+$/.test(location.hash)){
       const anchor = document.getElementById(location.hash.slice(1));
       if (anchor) anchor.scrollIntoView({ behavior:'instant', block:'start' });
     }
   }
 
+  // ---- Load & init ----
   try {
-    // Load chapter JSON + lexicon (in parallel)
     const [vJson, sRes] = await Promise.all([
-      fetchFirstOk([versePrimary, verseFallback]),
+      fetchFirstOk([versePrimary, verseFallbackTitle, verseLegacy]),
       fetch(strongURL).catch(() => null)
     ]);
 
@@ -217,7 +238,7 @@
 
     if (vJson){
       renderVerses(vJson);
-      buildToolbar(vJson.total || undefined); // if you later add "total" to JSON
+      buildToolbar(vJson.total || undefined);
     } else {
       status('Verses coming soon.');
       buildToolbar();
