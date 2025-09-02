@@ -1,38 +1,65 @@
+<!-- newtestament/matthew.html -->
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Matthew — Chapters</title>
-<link rel="stylesheet" href="/israelite-research/styles.css"/>
-<style>
-:root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
-.container{max-width:1200px;margin:0 auto;padding:0 16px}
-.page-header{padding:24px 0 8px}.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:12px;margin:16px 0 36px}
-.ch-card{display:flex;align-items:center;justify-content:center;height:90px;background:var(--white);border:1px solid var(--sky);
-  border-radius:8px;text-decoration:none;font-size:1.2rem;font-weight:700;color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.ch-card:hover{box-shadow:0 4px 10px rgba(0,0,0,.1);transform:translateY(-2px)}
-</style></head><body>
-<div id="site-header"></div>
-<main class="container">
-  <header class="page-header">
-    <h1 class="page-title">Matthew</h1>
-    <div class="crumbs">New Testament → Matthew</div>
-  </header>
-  <section class="container"><div id="chapGrid" class="grid"></div></section>
-</main>
-<div id="site-footer"></div>
-<script src="/israelite-research/js/include.js"></script>
-<script>
-(function(){
-  const total=28;
-  const base="/israelite-research/newtestament/matthew/chapter.html?c=";
-  const g=document.getElementById("chapGrid");
-  for(let i=1;i<=total;i++){
-    const a=document.createElement("a");
-    a.href=base+i;
-    a.className="ch-card";
-    a.textContent=i;
-    g.appendChild(a);
-  }
-})();
-</script>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Matthew — Chapters</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
+  <style>
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .page-header{padding:24px 0 8px}
+    .page-title{margin:0;font-size:2rem;font-weight:800}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:12px;margin:20px 0 40px}
+    .ch-card{display:flex;align-items:center;justify-content:center;border:1px solid #DBE4EE;border-radius:10px;padding:14px;background:#fff;text-decoration:none;color:#0b2340;font-weight:700}
+    .ch-card:hover{background:#f8fafc}
+    .ch-missing{opacity:.45;filter:grayscale(1)}
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <h1 class="page-title">Matthew — Chapters</h1>
+      <div class="crumbs">New Testament → Matthew → Chapters</div>
+    </header>
+
+    <section class="grid">
+      <a class="ch-card" data-ch="1">1</a>
+      <a class="ch-card" data-ch="2">2</a>
+      <a class="ch-card" data-ch="3">3</a>
+      <a class="ch-card" data-ch="4">4</a>
+      <a class="ch-card" data-ch="5">5</a>
+      <a class="ch-card" data-ch="6">6</a>
+      <a class="ch-card" data-ch="7">7</a>
+      <a class="ch-card" data-ch="8">8</a>
+      <a class="ch-card" data-ch="9">9</a>
+      <a class="ch-card" data-ch="10">10</a>
+      <a class="ch-card" data-ch="11">11</a>
+      <a class="ch-card" data-ch="12">12</a>
+      <a class="ch-card" data-ch="13">13</a>
+      <a class="ch-card" data-ch="14">14</a>
+      <a class="ch-card" data-ch="15">15</a>
+      <a class="ch-card" data-ch="16">16</a>
+      <a class="ch-card" data-ch="17">17</a>
+      <a class="ch-card" data-ch="18">18</a>
+      <a class="ch-card" data-ch="19">19</a>
+      <a class="ch-card" data-ch="20">20</a>
+      <a class="ch-card" data-ch="21">21</a>
+      <a class="ch-card" data-ch="22">22</a>
+      <a class="ch-card" data-ch="23">23</a>
+      <a class="ch-card" data-ch="24">24</a>
+      <a class="ch-card" data-ch="25">25</a>
+      <a class="ch-card" data-ch="26">26</a>
+      <a class="ch-card" data-ch="27">27</a>
+      <a class="ch-card" data-ch="28">28</a>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/nt-book.js"></script>
+</body>
+</html>

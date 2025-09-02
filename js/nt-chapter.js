@@ -1,11 +1,14 @@
 /* nt-chapter.js
  * Expects chapter JSON as: [{ v: number, t: string, c: string[], s: string[] }, ...]
  */
+
 (function () {
   const LEX_ROOT  = "/israelite-research/data/lexicon";
 
-  // Routing helpers
+  // Routing helpers (tweak: honor ?book=)
   function getBookSlug() {
+    const qp = new URLSearchParams(location.search).get("book");
+    if (qp) return qp.toLowerCase();
     const parts = location.pathname.split("/").filter(Boolean);
     const i = parts.findIndex(p => p.toLowerCase() === "newtestament");
     return (i >= 0 && parts[i + 1]) ? decodeURIComponent(parts[i + 1]).toLowerCase() : "";
@@ -28,7 +31,7 @@
     return idx > -1 ? path.slice(0, idx) : "";
   }
 
-  // Fetch chapter from the ONE canonical location
+  // Fetch chapter from the canonical location
   async function fetchChapter(book, ch) {
     const base = getSiteBase() || "/israelite-research";
     const url  = `${base}/data/newtestament/${book}/${ch}.json`;
@@ -43,7 +46,7 @@
     return data;
   }
 
-  // Hovercard / Strong's (unchanged)
+  // Hovercard / Strong's
   const hovercard = document.getElementById("hovercard");
   let strongsCache = Object.create(null);
   async function lookupStrongs(code) {
