@@ -165,9 +165,15 @@ def load_mapping():
     print("No mapping file found. Provide tools/genesis_xrefs.json or tools/genesis_xrefs.csv", file=sys.stderr)
     sys.exit(1)
 
+# near the top with other imports/paths
+BAK_ROOT = REPO_ROOT / "tools" / "_bak"
+
 def backup_dir(src: Path) -> Path:
+    BAK_ROOT.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    dst = src.parent / f"{src.name}.bak.{stamp}"
+    # create a descriptive backup path: tools/_bak/data-tanakh-genesis.bak.YYYYmmdd-HHMMSS
+    rel = src.relative_to(REPO_ROOT).as_posix().replace("/", "-")
+    dst = BAK_ROOT / f"{rel}.bak.{stamp}"
     shutil.copytree(src, dst)
     return dst
 

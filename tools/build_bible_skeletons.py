@@ -20,17 +20,17 @@ from pathlib import Path
 import argparse
 
 REPO = Path(__file__).resolve().parents[1]
-VC_ROOT = REPO / "tools" / "verse_counts"
-COUNTS_PACK = VC_ROOT / "chapter_counts.json"
-REPORTS = REPO / "tools" / "reports"
+BAK_ROOT = REPO / "tools" / "_bak"
 
 def backup_dir(p: Path) -> Path | None:
+    if not p.exists():
+        return None
+    BAK_ROOT.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    dst = p.parent / f"{p.name}.bak.{stamp}"
-    if p.exists():
-        shutil.copytree(p, dst)
-        return dst
-    return None
+    rel = p.relative_to(REPO).as_posix().replace("/", "-")
+    dst = BAK_ROOT / f"{rel}.bak.{stamp}"
+    shutil.copytree(p, dst)
+    return dst
 
 def ensure_dir(p: Path): p.mkdir(parents=True, exist_ok=True)
 
