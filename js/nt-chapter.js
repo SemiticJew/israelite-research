@@ -4,7 +4,6 @@
  */
 
 (function () {
-  const DATA_ROOT = "/israelite-research/data/newtestament";
   const LEX_ROOT  = "/israelite-research/data/lexicon"; // optional (if present): strongs-hebrew.json, strongs-greek.json
 
   // ---- Routing helpers -----------------------------------------------------
@@ -26,12 +25,36 @@
 
   // ---- Fetch chapter (array of {v,t,c,s}) ----------------------------------
   async function fetchChapter(book, ch) {
+    // Derive a site base from the current page URL:
+    // e.g. /israelite-research/newtestament/matthew/chapter.html -> base = /israelite-research
+    const path = location.pathname.replace(/\/+$/,'');
+    const ntIdx = path.toLowerCase().indexOf("/newtestament/");
+    const siteBase = ntIdx > -1 ? path.slice(0, ntIdx) : "";
+
+    // Relative candidates (from chapter.html location)
+    const relUp1   = new URL(`../data/newtestament/${book}/${ch}.json`, location.href).pathname;
+    const relUp1B  = new URL(`../data/newtestament/book/${book}/${ch}.json`, location.href).pathname;
+    const relUp2   = new URL(`../../data/newtestament/${book}/${ch}.json`, location.href).pathname;
+    const relUp2B  = new URL(`../../data/newtestament/book/${book}/${ch}.json`, location.href).pathname;
+
+    // Absolute candidates using derived siteBase (if any)
+    const absA     = `${siteBase}/data/newtestament/${book}/${ch}.json`;
+    const absB     = `${siteBase}/data/newtestament/book/${book}/${ch}.json`;
+
+    // Absolute candidates assuming /israelite-research deployment root
+    const absIRa   = `/israelite-research/data/newtestament/${book}/${ch}.json`;
+    const absIRb   = `/israelite-research/data/newtestament/book/${book}/${ch}.json`;
+
+    // Bare absolute fallbacks
+    const bareA    = `/data/newtestament/${book}/${ch}.json`;
+    const bareB    = `/data/newtestament/book/${book}/${ch}.json`;
+
     const candidates = [
-      `${DATA_ROOT}/${book}/${ch}.json`,
-      `${DATA_ROOT}/book/${book}/${ch}.json`,
-      `/data/newtestament/${book}/${ch}.json`,
-      `/data/newtestament/book/${book}/${ch}.json`
+      relUp1, relUp1B, relUp2, relUp2B,
+      absA, absB, absIRa, absIRb,
+      bareA, bareB,
     ];
+
     let lastErr;
     for (const url of candidates) {
       try {
@@ -39,11 +62,11 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
-        console.info("[nt-chapter] loaded", url);
+        console.info("[nt-chapter] loaded:", url);
         return data;
       } catch (e) {
         lastErr = e;
-        console.warn("[nt-chapter] failed", e.message);
+        console.warn("[nt-chapter] tried:", url, "->", e.message);
       }
     }
     throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
