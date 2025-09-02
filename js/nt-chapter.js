@@ -3,12 +3,62 @@
  * - Verse toolbar under each verse: commentary / xrefs / lex
  * - Commentary opens inline beneath its verse (toggle), saved to localStorage
  * - Right panel = Zondervan dictionary search (optional local JSON)
+ * - Chapter selector shows the real chapter count per book
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
 (function () {
-  const DEFAULT_MAX_CH = 150;
   const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional local data
+
+  // ---------------- Chapter counts (common slug variants included) ----------
+  const NT = {
+    "matthew":28, "mark":16, "luke":24, "john":21, "acts":28, "romans":16,
+    "1-corinthians":16, "2-corinthians":13,
+    "galatians":6, "ephesians":6, "philippians":4, "colossians":4,
+    "1-thessalonians":5, "2-thessalonians":3,
+    "1-timothy":6, "2-timothy":4,
+    "titus":3, "philemon":1, "hebrews":13, "james":5,
+    "1-peter":5, "2-peter":3,
+    "1-john":5, "2-john":1, "3-john":1,
+    "jude":1, "revelation":22,
+
+    // aliases
+    "1corinthians":16, "2corinthians":13,
+    "1thessalonians":5, "2thessalonians":3,
+    "1timothy":6, "2timothy":4,
+    "1peter":5, "2peter":3,
+    "1john":5, "2john":1, "3john":1
+  };
+
+  const OT = {
+    "genesis":50, "exodus":40, "leviticus":27, "numbers":36, "deuteronomy":34,
+    "joshua":24, "judges":21, "ruth":4,
+    "1-samuel":31, "2-samuel":24, "1-kings":22, "2-kings":25,
+    "1-chronicles":29, "2-chronicles":36,
+    "ezra":10, "nehemiah":13, "esther":10, "job":42, "psalms":150, "proverbs":31,
+    "ecclesiastes":12, "song-of-solomon":8, "song-of-songs":8,
+    "isaiah":66, "jeremiah":52, "lamentations":5, "ezekiel":48, "daniel":12,
+    "hosea":14, "joel":3, "amos":9, "obadiah":1, "jonah":4, "micah":7,
+    "nahum":3, "habakkuk":3, "zephaniah":3, "haggai":2, "zechariah":14, "malachi":4,
+
+    // aliases
+    "1samuel":31, "2samuel":24, "1kings":22, "2kings":25,
+    "1chronicles":29, "2chronicles":36, "psalm":150, "songofsongs":8, "songofsolomon":8
+  };
+
+  function normalizeSlug(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-") // "1 john" -> "1-john"
+      .replace(/[^a-z0-9\-]/g, "");
+  }
+
+  function getChapterCount(canon, bookSlug) {
+    const slug = normalizeSlug(bookSlug);
+    const table = canon === "tanakh" ? OT : NT;
+    return table[slug] || table[slug.replace(/-/g, "")] || 150; // fallback
+  }
 
   // ---------------- Canon / routing ----------------
   function getCanon() {
@@ -103,24 +153,22 @@
     if (crumbs) crumbs.textContent = `${canonTitle} → ${bookTitle} → Chapter ${ch}`;
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
+
+  // Populate chapter selector to EXACT chapter count for the current book
   function populateChapterSelect(current) {
     const sel = document.getElementById("chSelect");
     if (!sel) return;
-    const bodyMax = parseInt(document.body.getAttribute("data-max-chapters") || "", 10);
-    const globalMax = (typeof window !== "undefined" && Number.isFinite(window.CHAPTER_COUNT)) ? window.CHAPTER_COUNT : null;
-    const max = Number.isFinite(bodyMax) && bodyMax > 0 ? bodyMax
-             : (Number.isFinite(globalMax) && globalMax > 0 ? globalMax : DEFAULT_MAX_CH);
-    if (!sel.options.length) {
-      const frag = document.createDocumentFragment();
-      for (let i = 1; i <= max; i++) {
-        const opt = document.createElement("option");
-        opt.value = String(i);
-        opt.textContent = String(i);
-        frag.appendChild(opt);
-      }
-      sel.appendChild(frag);
+    const count = getChapterCount(getCanon(), getBookSlug());
+    sel.innerHTML = ""; // rebuild to exact size
+    const frag = document.createDocumentFragment();
+    for (let i = 1; i <= count; i++) {
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = String(i);
+      frag.appendChild(opt);
     }
-    sel.value = String(current);
+    sel.appendChild(frag);
+    sel.value = String(Math.min(current, count));
     sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
   }
 
@@ -236,6 +284,8 @@
         const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
         if (!textarea) return;
         const val = (textarea.value || "").trim();
+        const canon = getCanon(), book = getBookSlug(), ch = getChapter();
+        const notes = loadNotes(canon, book, ch);
         if (val) notes[v] = val; else delete notes[v];
         saveNotes(canon, book, ch, notes);
         const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");
@@ -249,6 +299,8 @@
         const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
         if (!textarea) return;
         textarea.value = "";
+        const canon = getCanon(), book = getBookSlug(), ch = getChapter();
+        const notes = loadNotes(canon, book, ch);
         delete notes[v];
         saveNotes(canon, book, ch, notes);
         const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");

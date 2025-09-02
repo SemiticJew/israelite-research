@@ -6,6 +6,7 @@
 <title>New Testament — Chapter</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
+#dictAside h3 { text-align: center; }
 /* Verse layout: toolbar under each verse (like BLB) */
 .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
 .vline{display:flex; gap:.6rem}
@@ -104,7 +105,7 @@
       <div id="verses"><p class="muted">Loading…</p></div>
     </div>
 
-    <aside class="panel">
+    <aside class="panel" id="dictAside">
   <h3>Zondervan Compact Bible Dictionary</h3>
   <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
     <input id="dictSearch" type="search" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
