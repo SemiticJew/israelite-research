@@ -1,7 +1,6 @@
 /* nt-chapter.js
  * Expects chapter JSON as an ARRAY of objects:
  *   [{ v: <number>, t: <string>, c: <string[]>, s: <string[]> }, ...]
- * Leaves the rest of the page behavior intact (toolbar, etc.).
  */
 
 (function () {
@@ -27,27 +26,38 @@
 
   // ---- Fetch chapter (array of {v,t,c,s}) ----------------------------------
   async function fetchChapter(book, ch) {
-    const url = `${DATA_ROOT}/${book}/${ch}.json`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Failed to load ${url} (HTTP ${res.status})`);
-    const data = await res.json();
-    if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
-    return data;
+    const candidates = [
+      `${DATA_ROOT}/${book}/${ch}.json`,
+      `${DATA_ROOT}/book/${book}/${ch}.json`,
+      `/data/newtestament/${book}/${ch}.json`,
+      `/data/newtestament/book/${book}/${ch}.json`
+    ];
+    let lastErr;
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
+        console.info("[nt-chapter] loaded", url);
+        return data;
+      } catch (e) {
+        lastErr = e;
+        console.warn("[nt-chapter] failed", e.message);
+      }
+    }
+    throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
   }
 
   // ---- Minimal Strong’s hovercard support ----------------------------------
   const hovercard = document.getElementById("hovercard");
   let strongsCache = Object.create(null);
   async function lookupStrongs(code) {
-    // Try cache
     if (strongsCache[code]) return strongsCache[code];
-
-    // Lazy load by code prefix if optional lexicon files exist
     const isHeb = /^H\d+/i.test(code);
     const isGrk = /^G\d+/i.test(code);
     const file  = isHeb ? "strongs-hebrew.json" : (isGrk ? "strongs-greek.json" : null);
     if (!file) return (strongsCache[code] = { code, gloss: "", def: "" });
-
     try {
       if (!strongsCache["__" + file]) {
         const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
@@ -79,7 +89,7 @@
     hovercard.setAttribute("aria-hidden", "true");
   }
 
-  // ---- Renderer (this is the requested change) ------------------------------
+  // ---- Renderer -------------------------------------------------------------
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -89,26 +99,21 @@
   function renderChapter(chapterData) {
     const versesEl = document.getElementById("verses");
     if (!versesEl) return;
-
     if (!Array.isArray(chapterData) || !chapterData.length) {
       versesEl.innerHTML = '<p class="muted">No verses found for this chapter.</p>';
       return;
     }
-
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
       const text = escapeHtml(v.t || "");
       const strongs = Array.isArray(v.s) ? v.s : [];
       const xrefs = Array.isArray(v.c) ? v.c : [];
-
       const sBadges = strongs.map(tag =>
         `<span class="badge" data-strong="${escapeHtml(tag)}" title="Strong’s ${escapeHtml(tag)}">${escapeHtml(tag)}</span>`
       ).join("");
-
       const xBtn = xrefs.length
         ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="See cross references">xrefs</button>`
         : "";
-
       return `
         <div class="verse" data-verse="${vnum}">
           <span class="vnum">${vnum}</span>
@@ -117,12 +122,10 @@
         </div>
       `;
     }).join("");
-
     versesEl.innerHTML = html;
 
-    // Strong’s hover (lazy)
     versesEl.querySelectorAll(".badge[data-strong]").forEach(badge => {
-      badge.addEventListener("mouseenter", async (e) => {
+      badge.addEventListener("mouseenter", async () => {
         const code = badge.getAttribute("data-strong");
         const rect = badge.getBoundingClientRect();
         const info = await lookupStrongs(code);
@@ -133,13 +136,8 @@
         showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
       });
       badge.addEventListener("mouseleave", hideHovercard);
-      badge.addEventListener("click", (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      });
     });
 
-    // Cross-ref click (simple inline list)
     versesEl.querySelectorAll(".xref-btn[data-xref]").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -156,7 +154,6 @@
       if (!e.target.closest(".badge,[data-xref],#hovercard")) hideHovercard();
     });
 
-    // Populate lexicon side panel with unique Strong’s codes for the chapter
     const lexEl = document.getElementById("lexicon");
     if (lexEl) {
       const codes = Array.from(new Set(
@@ -178,24 +175,19 @@
     }
   }
 
-  // ---- Minimal bootstrapping (non-invasive) --------------------------------
+  // ---- Bootstrap ------------------------------------------------------------
   async function init() {
     const book = getBookSlug();
     const ch = getChapter();
-
-    // Wire toolbar if present (keeps existing markup)
     const prev = document.getElementById("btnPrev");
     const next = document.getElementById("btnNext");
     const sel  = document.getElementById("chSelect");
-
     if (prev) prev.onclick = () => setChapter(Math.max(1, getChapter() - 1));
     if (next) next.onclick = () => setChapter(getChapter() + 1);
     if (sel) {
-      // Do not rebuild options; honor existing. Only sync value & change handler.
       sel.value = String(ch);
       sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
     }
-
     try {
       const data = await fetchChapter(book, ch);
       renderChapter(data);
@@ -214,6 +206,5 @@
     init();
   }
 
-  // Expose renderer in case other scripts call it directly
   window.renderChapter = renderChapter;
 })();
