@@ -277,5 +277,21 @@
   renderList();
 })();
 </script>
+<script>
+(function(){
+  const path = location.pathname.replace(/\/+$/,'');
+  const parts = path.split('/');
+  const i = parts.findIndex(p => p.toLowerCase() === 'newtestament');
+  const bookSlug = (i >= 0 && parts[i+1]) ? decodeURIComponent(parts[i+1]) : '';
+  const toTitle = s => s.replace(/[-_]/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+  const book = bookSlug ? toTitle(bookSlug) : 'New Testament';
+
+  const h1 = document.getElementById('pageTitle');
+  const crumbs = document.getElementById('crumbs');
+  if (h1) h1.textContent = `${book} (KJV)`;
+  if (crumbs) crumbs.textContent = `New Testament → ${book} → Chapter`;
+  document.title = `${book} — Chapter`;
+})();
+</script>
 </body>
 </html>
