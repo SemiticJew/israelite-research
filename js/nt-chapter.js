@@ -5,6 +5,7 @@
 
 (function () {
   const LEX_ROOT  = "/israelite-research/data/lexicon";
+  const DEFAULT_MAX_CH = 150; // selector will populate 1..DEFAULT_MAX_CH unless overridden
 
   // ---- Canon / routing helpers ---------------------------------------------
   function getCanon() {
@@ -107,13 +108,12 @@
     hovercard.setAttribute("aria-hidden", "true");
   }
 
-  // ---- Renderer -------------------------------------------------------------
+  // ---- UI helpers -----------------------------------------------------------
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[m]));
   }
-
   function titleCaseFromSlug(slug){
     if(!slug) return "";
     return slug.replace(/[_-]+/g, " ")
@@ -121,7 +121,6 @@
                .map(w => /^\d+$/.test(w) ? w : (w.charAt(0).toUpperCase() + w.slice(1)))
                .join(" ");
   }
-
   function setDynamicTitles() {
     const canon = getCanon();
     const canonTitle = canon === "tanakh" ? "Tanakh" : "New Testament";
@@ -135,6 +134,32 @@
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
 
+  // Populate chapter selector (1..max). max can be overridden via:
+  //  - <body data-max-chapters="28">, or
+  //  - window.CHAPTER_COUNT
+  function populateChapterSelect(current) {
+    const sel = document.getElementById("chSelect");
+    if (!sel) return;
+    const bodyMax = parseInt(document.body.getAttribute("data-max-chapters") || "", 10);
+    const globalMax = (typeof window !== "undefined" && Number.isFinite(window.CHAPTER_COUNT)) ? window.CHAPTER_COUNT : null;
+    const max = Number.isFinite(bodyMax) && bodyMax > 0 ? bodyMax
+             : (Number.isFinite(globalMax) && globalMax > 0 ? globalMax : DEFAULT_MAX_CH);
+
+    if (!sel.options.length) {
+      const frag = document.createDocumentFragment();
+      for (let i = 1; i <= max; i++) {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = String(i);
+        frag.appendChild(opt);
+      }
+      sel.appendChild(frag);
+    }
+    sel.value = String(current);
+    sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
+  }
+
+  // ---- Renderer -------------------------------------------------------------
   function renderChapter(chapterData) {
     const versesEl = document.getElementById("verses");
     if (!versesEl) return;
@@ -147,44 +172,32 @@
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
       const text = escapeHtml(v.t || "");
-      const strongs = Array.isArray(v.s) ? v.s : [];
       const xrefs = Array.isArray(v.c) ? v.c : [];
-
-      const sBadges = strongs.map(tag =>
-        `<span class="badge" data-strong="${escapeHtml(tag)}" title="Strong’s ${escapeHtml(tag)}">${escapeHtml(tag)}</span>`
-      ).join("");
+      const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
 
       const xBtn = xrefs.length
         ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="See cross references">xrefs</button>`
         : "";
 
+      const lexBtn = strongs.length
+        ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="See Strong’s entries for this verse">lex</button>`
+        : "";
+
       return `
         <div class="verse" data-verse="${vnum}">
           <span class="vnum">${vnum}</span>
-          <span class="vtext">${text} ${sBadges}</span>
-          <div class="v-actions">${xBtn}</div>
+          <span class="vtext">${text}</span>
+          <div class="v-actions">
+            ${xBtn}
+            ${lexBtn}
+          </div>
         </div>
       `;
     }).join("");
 
     versesEl.innerHTML = html;
 
-    // Strong’s hover
-    versesEl.querySelectorAll(".badge[data-strong]").forEach(badge => {
-      badge.addEventListener("mouseenter", async () => {
-        const code = badge.getAttribute("data-strong");
-        const rect = badge.getBoundingClientRect();
-        const info = await lookupStrongs(code);
-        const body = `
-          <div><strong>${escapeHtml(info.code || code)}</strong>${info.gloss ? ` — ${escapeHtml(info.gloss)}` : ""}</div>
-          ${info.def ? `<div class="muted" style="margin-top:.25rem">${escapeHtml(info.def)}</div>` : ""}
-        `;
-        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
-      });
-      badge.addEventListener("mouseleave", hideHovercard);
-    });
-
-    // Cross-refs
+    // Cross-refs (unchanged)
     versesEl.querySelectorAll(".xref-btn[data-xref]").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -196,12 +209,51 @@
       });
     });
 
-    document.addEventListener("scroll", hideHovercard, { passive: true });
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".badge,[data-xref],#hovercard")) hideHovercard();
+    // Strong’s button per-verse
+    versesEl.querySelectorAll(".lex-btn[data-strongs]").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
+        if (!codes.length) return;
+        const rect = btn.getBoundingClientRect();
+
+        // Build a quick list view; clicking code fetches & shows its details inline
+        const listHtml = `<ul class="lex">${codes.map(c => `<li><a href="#" class="lex-code" data-code="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join("")}</ul>`;
+        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
+
+        // Bind clicks to fetch definitions
+        const hc = document.getElementById("hovercard");
+        if (hc) {
+          hc.querySelectorAll('.lex-code[data-code]').forEach(a => {
+            a.addEventListener('click', async (ev) => {
+              ev.preventDefault();
+              const code = a.getAttribute('data-code');
+              const info = await lookupStrongs(code);
+              const body = `
+                <div><strong>${escapeHtml(info.code || code)}</strong>${info.gloss ? ` — ${escapeHtml(info.gloss)}` : ""}</div>
+                ${info.def ? `<div class="muted" style="margin-top:.25rem">${escapeHtml(info.def)}</div>` : ""}
+                <div style="margin-top:.4rem"><a href="#" id="hc-back">◀ back</a></div>
+              `;
+              showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
+              const back = document.getElementById('hc-back');
+              if (back) {
+                back.addEventListener('click', (ee) => {
+                  ee.preventDefault();
+                  showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
+                });
+              }
+            });
+          });
+        }
+      });
     });
 
-    // Populate lexicon panel with unique codes in chapter
+    document.addEventListener("scroll", hideHovercard, { passive: true });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard")) hideHovercard();
+    });
+
+    // Update lexicon panel summary for the whole chapter (unique codes)
     const lexEl = document.getElementById("lexicon");
     if (lexEl) {
       const codes = Array.from(new Set(
@@ -210,15 +262,7 @@
       if (!codes.length) {
         lexEl.innerHTML = '<p class="muted">No Strong’s tags in this chapter.</p>';
       } else {
-        lexEl.innerHTML = `<ul class="lex">${codes.map(c => `<li><a href="#" class="lex-link" data-strong="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join("")}</ul>`;
-        lexEl.querySelectorAll(".lex-link").forEach(a => {
-          a.addEventListener("click", async (e) => {
-            e.preventDefault();
-            const code = a.getAttribute("data-strong");
-            const info = await lookupStrongs(code);
-            alert(`${info.code}\n${info.gloss || ""}\n${info.def || ""}`.trim());
-          });
-        });
+        lexEl.innerHTML = `<ul class="lex">${codes.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>`;
       }
     }
   }
@@ -229,21 +273,19 @@
 
     const prev = document.getElementById("btnPrev");
     const next = document.getElementById("btnNext");
-    const sel  = document.getElementById("chSelect");
+    const chNow = getChapter();
+    populateChapterSelect(chNow);
+
     if (prev) prev.onclick = () => setChapter(Math.max(1, getChapter() - 1));
     if (next) next.onclick = () => setChapter(getChapter() + 1);
 
     const book = getBookSlug();
     const ch   = getChapter();
 
-    if (sel) {
-      sel.value = String(ch);
-      sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
-    }
-
     try {
       const data = await fetchChapter(book, ch);
       renderChapter(data);
+
       // Prefetch neighbors for snappier nav
       const canon = getCanon();
       const base = getSiteBase() || "/israelite-research";
