@@ -100,19 +100,11 @@
 
       <hr style="border:none;border-top:1px solid var(--sky);margin:12px 0">
 
-      <h3>Verse Commentary</h3>
-      <div id="vcPanel" aria-live="polite">
-        <div class="vc-head">
-          <div class="vc-ref" id="vcRef">Click a verse to add a note</div>
-          <div class="vc-buttons">
-            <button class="vc-btn" id="vcClear" disabled>Clear</button>
-          </div>
-        </div>
-        <textarea class="vc-text" id="vcText" placeholder="Start typing your personal commentary…" disabled></textarea>
-        <div class="vc-foot">
-          <button class="vc-btn" id="vcSave" disabled>Save</button>
-          <div class="vc-saved" id="vcSaved"></div>
-        </div>
+      <h3>Insight Bible Dictionary</h3>
+<div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
+  <input id="dictSearch" type="search" placeholder="Search Strong’s code (H####/G####) or term…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
+</div>
+<div id="dictPanel"><p class="muted">Type a Strong’s code or term above.</p></div>
 
         <details style="margin-top:.6rem">
           <summary>All notes in this chapter</summary>

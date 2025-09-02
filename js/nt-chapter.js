@@ -1,19 +1,19 @@
 /* nt-chapter.js
  * Shared loader for NT and Tanakh.
  * Expects chapter JSON as: [{ v:number, t:string, c:string[], s:string[] }, ...]
+ * Right panel: Insight Bible Dictionary (search Strong's by code or gloss/def).
+ * Per-verse note button opens an editor saved to localStorage.
  */
 
 (function () {
   const LEX_ROOT  = "/israelite-research/data/lexicon";
-  const DEFAULT_MAX_CH = 150; // selector will populate 1..DEFAULT_MAX_CH unless overridden
+  const DEFAULT_MAX_CH = 150;
 
-  // ---- Canon / routing helpers ---------------------------------------------
+  // ---------------- Canon / routing ----------------
   function getCanon() {
     const qp = new URLSearchParams(location.search).get("canon");
     if (qp) return qp.toLowerCase() === "tanakh" ? "tanakh" : "newtestament";
-    const p = location.pathname.toLowerCase();
-    if (p.includes("/tanakh/")) return "tanakh";
-    return "newtestament";
+    return location.pathname.toLowerCase().includes("/tanakh/") ? "tanakh" : "newtestament";
   }
   function getBookSlug() {
     const qp = new URLSearchParams(location.search).get("book");
@@ -40,7 +40,7 @@
     return idx > -1 ? path.slice(0, idx) : "";
   }
 
-  // ---- Fetch chapter (array of {v,t,c,s}) ----------------------------------
+  // ---------------- Fetch chapter ----------------
   async function fetchChapter(book, ch) {
     const canon = getCanon();
     const rel1  = new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname;
@@ -49,7 +49,6 @@
     const abs1  = `${base}/data/${canon}/${book}/${ch}.json`;
     const abs2  = `/israelite-research/data/${canon}/${book}/${ch}.json`;
     const abs3  = `/data/${canon}/${book}/${ch}.json`;
-
     const candidates = [rel1, rel2, abs1, abs2, abs3];
 
     let lastErr;
@@ -61,29 +60,37 @@
         if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
         console.info("[chapter] loaded:", url);
         return data;
-      } catch (e) {
-        lastErr = e;
-        console.warn("[chapter] failed:", url, e.message);
-      }
+      } catch (e) { lastErr = e; console.warn("[chapter] failed:", url, e.message); }
     }
     throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
   }
 
-  // ---- Hovercard / Strong's -------------------------------------------------
-  const hovercard = document.getElementById("hovercard");
+  // ---------------- Strong's / Lexicon ----------------
   let strongsCache = Object.create(null);
+  let lexiconCache = { "strongs-hebrew.json": null, "strongs-greek.json": null };
+
+  async function loadLexicon(which /* "hebrew" | "greek" */) {
+    const file = which === "hebrew" ? "strongs-hebrew.json" : "strongs-greek.json";
+    if (lexiconCache[file]) return lexiconCache[file];
+    const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
+    if (!resp.ok) return {};
+    const json = await resp.json();
+    lexiconCache[file] = json || {};
+    return lexiconCache[file];
+  }
+
   async function lookupStrongs(code) {
     if (strongsCache[code]) return strongsCache[code];
     const isHeb = /^H\d+/i.test(code);
     const isGrk = /^G\d+/i.test(code);
-    const file  = isHeb ? "strongs-hebrew.json" : (isGrk ? "strongs-greek.json" : null);
-    if (!file) return (strongsCache[code] = { code, gloss: "", def: "" });
+    if (!isHeb && !isGrk) return (strongsCache[code] = { code, gloss: "", def: "" });
+    const file = isHeb ? "strongs-hebrew.json" : "strongs-greek.json";
     try {
-      if (!strongsCache["__" + file]) {
+      if (!lexiconCache[file]) {
         const resp = await fetch(`${LEX_ROOT}/${file}`, { cache: "force-cache" });
-        strongsCache["__" + file] = resp.ok ? await resp.json() : {};
+        lexiconCache[file] = resp.ok ? await resp.json() : {};
       }
-      const lex = strongsCache["__" + file] || {};
+      const lex = lexiconCache[file] || {};
       const entry = lex[code] || lex[String(code).toUpperCase()] || lex[String(code).toLowerCase()] || {};
       return (strongsCache[code] = {
         code,
@@ -94,6 +101,9 @@
       return (strongsCache[code] = { code, gloss: "", def: "" });
     }
   }
+
+  // ---------------- UI helpers ----------------
+  const hovercard = document.getElementById("hovercard");
   function showHovercard(x, y, html) {
     if (!hovercard) return;
     hovercard.innerHTML = html;
@@ -107,12 +117,8 @@
     hovercard.classList.remove("open");
     hovercard.setAttribute("aria-hidden", "true");
   }
-
-  // ---- UI helpers -----------------------------------------------------------
   function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[m]));
+    return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
   }
   function titleCaseFromSlug(slug){
     if(!slug) return "";
@@ -133,10 +139,6 @@
     if (crumbs) crumbs.textContent = `${canonTitle} → ${bookTitle} → Chapter ${ch}`;
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
-
-  // Populate chapter selector (1..max). max can be overridden via:
-  //  - <body data-max-chapters="28">, or
-  //  - window.CHAPTER_COUNT
   function populateChapterSelect(current) {
     const sel = document.getElementById("chSelect");
     if (!sel) return;
@@ -144,7 +146,6 @@
     const globalMax = (typeof window !== "undefined" && Number.isFinite(window.CHAPTER_COUNT)) ? window.CHAPTER_COUNT : null;
     const max = Number.isFinite(bodyMax) && bodyMax > 0 ? bodyMax
              : (Number.isFinite(globalMax) && globalMax > 0 ? globalMax : DEFAULT_MAX_CH);
-
     if (!sel.options.length) {
       const frag = document.createDocumentFragment();
       for (let i = 1; i <= max; i++) {
@@ -159,7 +160,19 @@
     sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
   }
 
-  // ---- Renderer -------------------------------------------------------------
+  // ---------------- Renderer ----------------
+  // per-verse notes (localStorage)
+  function notesKey(canon, book, ch) {
+    return `notes:${canon}:${book}:${ch}`;
+  }
+  function loadNotes(canon, book, ch) {
+    try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
+    catch { return {}; }
+  }
+  function saveNotes(canon, book, ch, data) {
+    localStorage.setItem(notesKey(canon, book, ch), JSON.stringify(data));
+  }
+
   function renderChapter(chapterData) {
     const versesEl = document.getElementById("verses");
     if (!versesEl) return;
@@ -168,6 +181,11 @@
       versesEl.innerHTML = '<p class="muted">No verses found for this chapter.</p>';
       return;
     }
+
+    const canon = getCanon();
+    const book = getBookSlug();
+    const ch   = getChapter();
+    const notes = loadNotes(canon, book, ch);
 
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
@@ -180,8 +198,11 @@
         : "";
 
       const lexBtn = strongs.length
-        ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="See Strong’s entries for this verse">lex</button>`
-        : "";
+        ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="Strong’s for this verse">lex</button>`
+        : `<button class="lex-btn" data-strongs="" disabled title="No Strong’s in this verse">lex</button>`;
+
+      const noteBtn = `<button class="note-btn" data-verse="${vnum}" title="Add personal commentary">note</button>`;
+      const hasNote = (notes[String(vnum)] || "").trim().length > 0;
 
       return `
         <div class="verse" data-verse="${vnum}">
@@ -190,14 +211,16 @@
           <div class="v-actions">
             ${xBtn}
             ${lexBtn}
+            ${noteBtn}
           </div>
+          ${hasNote ? `<div class="muted" style="font-size:.85rem;margin-top:.2rem">📝 note saved</div>` : ""}
         </div>
       `;
     }).join("");
 
     versesEl.innerHTML = html;
 
-    // Cross-refs (unchanged)
+    // xrefs
     versesEl.querySelectorAll(".xref-btn[data-xref]").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -209,19 +232,16 @@
       });
     });
 
-    // Strong’s button per-verse
-    versesEl.querySelectorAll(".lex-btn[data-strongs]").forEach(btn => {
+    // lex per-verse
+    versesEl.querySelectorAll(".lex-btn").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
         const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
         if (!codes.length) return;
         const rect = btn.getBoundingClientRect();
-
-        // Build a quick list view; clicking code fetches & shows its details inline
         const listHtml = `<ul class="lex">${codes.map(c => `<li><a href="#" class="lex-code" data-code="${escapeHtml(c)}">${escapeHtml(c)}</a></li>`).join("")}</ul>`;
         showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
 
-        // Bind clicks to fetch definitions
         const hc = document.getElementById("hovercard");
         if (hc) {
           hc.querySelectorAll('.lex-code[data-code]').forEach(a => {
@@ -236,46 +256,146 @@
               `;
               showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, body);
               const back = document.getElementById('hc-back');
-              if (back) {
-                back.addEventListener('click', (ee) => {
-                  ee.preventDefault();
-                  showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
-                });
-              }
+              if (back) back.addEventListener('click', (ee) => { ee.preventDefault(); showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml); });
             });
           });
         }
       });
     });
 
-    document.addEventListener("scroll", hideHovercard, { passive: true });
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard")) hideHovercard();
+    // per-verse note editor
+    versesEl.querySelectorAll(".note-btn[data-verse]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = String(btn.getAttribute("data-verse") || "").trim();
+        const rect = btn.getBoundingClientRect();
+        const existing = notes[v] || "";
+        const editor = `
+          <div style="width:min(420px,90vw)">
+            <div style="font-weight:700;margin-bottom:.35rem">Commentary — v${escapeHtml(v)}</div>
+            <textarea id="hc-note" style="width:100%;min-height:140px;border:1px solid #DBE4EE;border-radius:10px;padding:.6rem">${escapeHtml(existing)}</textarea>
+            <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.5rem">
+              <button id="hc-save" class="vc-btn">Save</button>
+              <button id="hc-clear" class="vc-btn">Clear</button>
+              <button id="hc-close" class="vc-btn">Close</button>
+            </div>
+          </div>
+        `;
+        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, editor);
+
+        const hc = document.getElementById("hovercard");
+        if (!hc) return;
+        hc.querySelector("#hc-save").addEventListener("click", () => {
+          const val = (hc.querySelector("#hc-note").value || "").trim();
+          if (val) notes[v] = val; else delete notes[v];
+          saveNotes(canon, book, ch, notes);
+          hideHovercard();
+          // mark verse as saved
+          const verseEl = btn.closest(".verse");
+          if (verseEl) {
+            let mark = verseEl.querySelector(".note-mark");
+            if (!mark) {
+              mark = document.createElement("div");
+              mark.className = "note-mark muted";
+              mark.style.cssText = "font-size:.85rem;margin-top:.2rem";
+              verseEl.appendChild(mark);
+            }
+            mark.textContent = val ? "📝 note saved" : "";
+          }
+        });
+        hc.querySelector("#hc-clear").addEventListener("click", () => {
+          delete notes[v];
+          saveNotes(canon, book, ch, notes);
+          const ta = hc.querySelector("#hc-note"); if (ta) ta.value = "";
+        });
+        hc.querySelector("#hc-close").addEventListener("click", hideHovercard);
+      });
     });
 
-    // Update lexicon panel summary for the whole chapter (unique codes)
-    const lexEl = document.getElementById("lexicon");
-    if (lexEl) {
-      const codes = Array.from(new Set(
-        chapterData.flatMap(v => Array.isArray(v.s) ? v.s : [])
-      ));
-      if (!codes.length) {
-        lexEl.innerHTML = '<p class="muted">No Strong’s tags in this chapter.</p>';
-      } else {
-        lexEl.innerHTML = `<ul class="lex">${codes.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>`;
+    document.addEventListener("scroll", hideHovercard, { passive: true });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".lex-btn,.xref-btn,.note-btn,#hovercard")) hideHovercard();
+    });
+
+    // ----- Insight Bible Dictionary (right panel) -----
+    const dictRoot = document.getElementById("dictPanel");
+    const dictSearch = document.getElementById("dictSearch");
+    if (dictRoot) {
+      dictRoot.innerHTML = '<p class="muted">Type a Strong’s code (e.g., H7225, G3056) or an English term to search.</p>';
+      const canon = getCanon();
+      const which = canon === "tanakh" ? "hebrew" : "greek";
+      let lex = null;
+
+      async function ensureLex() { if (!lex) lex = await loadLexicon(which); return lex || {}; }
+
+      async function doSearch(q) {
+        q = (q || "").trim();
+        if (!q) { dictRoot.innerHTML = '<p class="muted">Enter a query above.</p>'; return; }
+
+        const L = await ensureLex();
+
+        // If query looks like a code:
+        if (/^[HG]\d{1,5}$/i.test(q)) {
+          const code = q.toUpperCase();
+          const hit = L[code];
+          if (!hit) { dictRoot.innerHTML = `<p class="muted">No entry for ${escapeHtml(code)}.</p>`; return; }
+          const gloss = hit.gloss || hit.translation || "";
+          const def = hit.def || hit.definition || hit.meaning || "";
+          dictRoot.innerHTML = `
+            <div><strong>${escapeHtml(code)}</strong>${gloss ? ` — ${escapeHtml(gloss)}` : ""}</div>
+            ${def ? `<div class="muted" style="margin-top:.35rem">${escapeHtml(def)}</div>` : ""}
+          `;
+          return;
+        }
+
+        // Term search over gloss/definition
+        const term = q.toLowerCase();
+        const results = [];
+        for (const [code, entry] of Object.entries(L)) {
+          const gloss = (entry.gloss || entry.translation || "").toString();
+          const def = (entry.def || entry.definition || entry.meaning || "").toString();
+          if (gloss.toLowerCase().includes(term) || def.toLowerCase().includes(term)) {
+            results.push({ code, gloss, def });
+            if (results.length >= 50) break; // cap results
+          }
+        }
+        if (!results.length) { dictRoot.innerHTML = `<p class="muted">No results for “${escapeHtml(q)}”.</p>`; return; }
+        dictRoot.innerHTML = `
+          <ul class="lex">
+            ${results.map(r => `<li><a href="#" class="dict-code" data-code="${escapeHtml(r.code)}"><strong>${escapeHtml(r.code)}</strong>${r.gloss ? ` — ${escapeHtml(r.gloss)}` : ""}</a></li>`).join("")}
+          </ul>
+        `;
+        dictRoot.querySelectorAll(".dict-code").forEach(a => {
+          a.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const code = a.getAttribute("data-code");
+            const entry = L[code] || {};
+            const gloss = entry.gloss || entry.translation || "";
+            const def = entry.def || entry.definition || entry.meaning || "";
+            dictRoot.innerHTML = `
+              <div style="margin-bottom:.5rem"><a href="#" id="dict-back">◀ back</a></div>
+              <div><strong>${escapeHtml(code)}</strong>${gloss ? ` — ${escapeHtml(gloss)}` : ""}</div>
+              ${def ? `<div class="muted" style="margin-top:.35rem">${escapeHtml(def)}</div>` : ""}
+            `;
+            const back = document.getElementById("dict-back");
+            if (back) back.addEventListener("click", (ev) => { ev.preventDefault(); doSearch(q); });
+          });
+        });
+      }
+
+      if (dictSearch) {
+        dictSearch.addEventListener("keydown", (e) => { if (e.key === "Enter") doSearch(dictSearch.value); });
+        dictSearch.addEventListener("change", () => doSearch(dictSearch.value));
       }
     }
   }
 
-  // ---- Bootstrap ------------------------------------------------------------
+  // ---------------- Bootstrap ----------------
   async function init() {
     setDynamicTitles();
+    populateChapterSelect(getChapter());
 
     const prev = document.getElementById("btnPrev");
     const next = document.getElementById("btnNext");
-    const chNow = getChapter();
-    populateChapterSelect(chNow);
-
     if (prev) prev.onclick = () => setChapter(Math.max(1, getChapter() - 1));
     if (next) next.onclick = () => setChapter(getChapter() + 1);
 
@@ -286,7 +406,7 @@
       const data = await fetchChapter(book, ch);
       renderChapter(data);
 
-      // Prefetch neighbors for snappier nav
+      // Prefetch neighbors
       const canon = getCanon();
       const base = getSiteBase() || "/israelite-research";
       const nextUrl = `${base}/data/${canon}/${book}/${ch + 1}.json`;
@@ -295,11 +415,14 @@
       if (prevUrl) try { fetch(prevUrl, { cache: "force-cache" }); } catch {}
     } catch (err) {
       const versesEl = document.getElementById("verses");
-      if (versesEl) {
-        versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
-      }
+      if (versesEl) versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
       console.error(err);
     }
+
+    document.addEventListener("scroll", hideHovercard, { passive: true });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".lex-btn,.xref-btn,.note-btn,#hovercard")) hideHovercard();
+    });
   }
 
   if (document.readyState === "loading") {
@@ -308,6 +431,4 @@
     init();
   }
 
-  // Expose for debugging
-  window.__chapter = { getCanon, getBookSlug, getChapter };
 })();
