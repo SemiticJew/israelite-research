@@ -1,8 +1,8 @@
 /* nt-chapter.js
  * Shared loader for NT and Tanakh.
- * Renders verse toolbar (note / xrefs / lex) UNDER each verse line.
- * Right panel = Zondervan Dictionary search (optional local JSON).
- * Chapter select fixed and populated.
+ * - Verse toolbar under each verse: commentary / xrefs / lex
+ * - Commentary opens inline beneath its verse (toggle), saved to localStorage
+ * - Right panel = Zondervan dictionary search (optional local JSON)
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
@@ -67,7 +67,7 @@
   }
 
   // ---------------- UI helpers ----------------
-  const hovercard = document.getElementById("hovercard");
+  const hovercard = document.getElementById("hovercard"); // used for xrefs/lex quick popovers
   function showHovercard(x, y, html) {
     if (!hovercard) return;
     hovercard.innerHTML = html;
@@ -124,9 +124,9 @@
     sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
   }
 
-  // ---------------- Per-verse notes storage ----------------
+  // ---------------- Per-verse commentary storage ----------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`;
+    return `notes:${canon}:${book}:${ch}`; // kept key name for backward-compat
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -156,6 +156,7 @@
       const text = escapeHtml(v.t || "");
       const xrefs = Array.isArray(v.c) ? v.c : [];
       const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
+      const saved = (notes[String(vnum)] || "").trim();
 
       const xBtn = xrefs.length
         ? `<button class="xref-btn" data-xref="${escapeHtml(xrefs.join("|"))}" title="Cross references">xrefs</button>`
@@ -165,8 +166,7 @@
         ? `<button class="lex-btn" data-strongs="${escapeHtml(strongs.join("|"))}" title="Lexical info for this verse">lex</button>`
         : `<button class="lex-btn" data-strongs="" disabled title="No lexical tags">lex</button>`;
 
-      const noteBtn = `<button class="note-btn" data-verse="${vnum}" title="Add personal commentary">note</button>`;
-      const hasNote = (notes[String(vnum)] || "").trim().length > 0;
+      const commBtn = `<button class="commentary-btn" data-verse="${vnum}" aria-expanded="${saved ? "true" : "false"}" title="Add commentary">commentary</button>`;
 
       return `
         <div class="verse" data-verse="${vnum}">
@@ -175,11 +175,18 @@
             <span class="vtext">${text}</span>
           </div>
           <div class="v-toolbar">
-            ${noteBtn}
+            ${commBtn}
             ${xBtn}
             ${lexBtn}
           </div>
-          ${hasNote ? `<div class="muted" style="font-size:.85rem; padding-left:36px">📝 note saved</div>` : ""}
+          <div class="v-commentary" id="comm-${vnum}" style="display:${saved ? "block" : "none"}; padding-left:36px; margin:.35rem 0 .1rem;">
+            <textarea class="comm-text" data-verse="${vnum}" style="width:100%; min-height:120px; border:1px solid #DBE4EE; border-radius:10px; padding:.6rem;">${escapeHtml(saved)}</textarea>
+            <div style="display:flex; gap:.5rem; justify-content:flex-end; margin-top:.4rem;">
+              <button class="comm-save vc-btn" data-verse="${vnum}">Save</button>
+              <button class="comm-clear vc-btn" data-verse="${vnum}">Clear</button>
+            </div>
+            <div class="comm-status muted" style="margin-top:.2rem; font-size:.85rem;">${saved ? "📝 commentary saved" : ""}</div>
+          </div>
         </div>
       `;
     }).join("");
@@ -198,7 +205,7 @@
       });
     });
 
-    // lex list hover (no right-panel Strong's; lightweight inline)
+    // lex list hover (lightweight)
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -210,56 +217,48 @@
       });
     });
 
-    // per-verse note editor
-    versesEl.querySelectorAll(".note-btn[data-verse]").forEach(btn => {
+    // commentary toggle + save/clear
+    versesEl.querySelectorAll(".commentary-btn[data-verse]").forEach(btn => {
       btn.addEventListener("click", () => {
         const v = String(btn.getAttribute("data-verse") || "").trim();
-        const rect = btn.getBoundingClientRect();
-        const existing = notes[v] || "";
-        const editor = `
-          <div style="width:min(420px,90vw)">
-            <div style="font-weight:700;margin-bottom:.35rem">Commentary — v${escapeHtml(v)}</div>
-            <textarea id="hc-note" style="width:100%;min-height:140px;border:1px solid #DBE4EE;border-radius:10px;padding:.6rem">${escapeHtml(existing)}</textarea>
-            <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.5rem">
-              <button id="hc-save" class="vc-btn">Save</button>
-              <button id="hc-clear" class="vc-btn">Clear</button>
-              <button id="hc-close" class="vc-btn">Close</button>
-            </div>
-          </div>
-        `;
-        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, editor);
+        const panel = document.getElementById(`comm-${v}`);
+        if (!panel) return;
+        const open = panel.style.display !== "none";
+        const willOpen = !open;
+        panel.style.display = willOpen ? "block" : "none";
+        btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
+    });
 
-        const hc = document.getElementById("hovercard");
-        if (!hc) return;
-        hc.querySelector("#hc-save").addEventListener("click", () => {
-          const val = (hc.querySelector("#hc-note").value || "").trim();
-          if (val) notes[v] = val; else delete notes[v];
-          saveNotes(canon, book, ch, notes);
-          hideHovercard();
-          const verseEl = btn.closest(".verse");
-          if (verseEl) {
-            let mark = verseEl.querySelector(".note-mark");
-            if (!mark) {
-              mark = document.createElement("div");
-              mark.className = "note-mark muted";
-              mark.style.cssText = "font-size:.85rem; padding-left:36px";
-              verseEl.appendChild(mark);
-            }
-            mark.textContent = val ? "📝 note saved" : "";
-          }
-        });
-        hc.querySelector("#hc-clear").addEventListener("click", () => {
-          delete notes[v];
-          saveNotes(canon, book, ch, notes);
-          const ta = hc.querySelector("#hc-note"); if (ta) ta.value = "";
-        });
-        hc.querySelector("#hc-close").addEventListener("click", hideHovercard);
+    versesEl.querySelectorAll(".comm-save").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = String(btn.getAttribute("data-verse") || "").trim();
+        const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
+        if (!textarea) return;
+        const val = (textarea.value || "").trim();
+        if (val) notes[v] = val; else delete notes[v];
+        saveNotes(canon, book, ch, notes);
+        const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");
+        if (status) status.textContent = val ? "📝 commentary saved" : "";
+      });
+    });
+
+    versesEl.querySelectorAll(".comm-clear").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = String(btn.getAttribute("data-verse") || "").trim();
+        const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
+        if (!textarea) return;
+        textarea.value = "";
+        delete notes[v];
+        saveNotes(canon, book, ch, notes);
+        const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");
+        if (status) status.textContent = "";
       });
     });
 
     document.addEventListener("scroll", hideHovercard, { passive: true });
     document.addEventListener("click", (e) => {
-      if (!e.target.closest(".lex-btn,.xref-btn,.note-btn,#hovercard")) hideHovercard();
+      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard")) hideHovercard();
     });
 
     // ---------- Zondervan dictionary (right panel) ----------
