@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Numbers - Tanakh</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
   <header><h1>Numbers</h1></header>
+
   <main>
-    <div class="chapter-grid">
-      <a class="chapter-card" href="#">1</a><a class="chapter-card" href="#">2</a><a class="chapter-card" href="#">3</a>
-      <a class="chapter-card" href="#">4</a><a class="chapter-card" href="#">5</a><a class="chapter-card" href="#">6</a>
-      <a class="chapter-card" href="#">7</a><a class="chapter-card" href="#">8</a><a class="chapter-card" href="#">9</a>
-      <a class="chapter-card" href="#">10</a><a class="chapter-card" href="#">11</a><a class="chapter-card" href="#">12</a>
-      <a class="chapter-card" href="#">13</a><a class="chapter-card" href="#">14</a><a class="chapter-card" href="#">15</a>
-      <a class="chapter-card" href="#">16</a><a class="chapter-card" href="#">17</a><a class="chapter-card" href="#">18</a>
-      <a class="chapter-card" href="#">19</a><a class="chapter-card" href="#">20</a><a class="chapter-card" href="#">21</a>
-      <a class="chapter-card" href="#">22</a><a class="chapter-card" href="#">23</a><a class="chapter-card" href="#">24</a>
-      <a class="chapter-card" href="#">25</a><a class="chapter-card" href="#">26</a><a class="chapter-card" href="#">27</a>
-      <a class="chapter-card" href="#">28</a><a class="chapter-card" href="#">29</a><a class="chapter-card" href="#">30</a>
-      <a class="chapter-card" href="#">31</a><a class="chapter-card" href="#">32</a><a class="chapter-card" href="#">33</a>
-      <a class="chapter-card" href="#">34</a><a class="chapter-card" href="#">35</a><a class="chapter-card" href="#">36</a>
-    </div>
+    <div id="chapters" class="chapter-grid"></div>
   </main>
+
   <footer><p>&copy; Israelite Research</p></footer>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const book = "numbers";
-      document.querySelectorAll(".chapter-card").forEach((card, i) => {
-        const ch = i + 1;
-        card.setAttribute("href", `chapter.html?book=${book}&ch=${ch}`);
-      });
+      const total = 36;
+      const grid = document.getElementById("chapters");
+      for (let ch = 1; ch <= total; ch++) {
+        const a = document.createElement("a");
+        a.className = "chapter-card";
+        a.href = `chapter.html?book=${book}&ch=${ch}`;
+        a.textContent = ch;
+        grid.appendChild(a);
+      }
     });
   </script>
 </body>
