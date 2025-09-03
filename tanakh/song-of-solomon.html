@@ -12,8 +12,14 @@
 <section class="container"><div id="chapGrid" class="grid"></div></section></main>
 <div id="site-footer"></div><script src="/israelite-research/js/include.js"></script>
 <script>
-const book='song-of-solomon',total=8,base=`/israelite-research/tanakh/${book}/chapter-`;
+const book='song-of-solomon',total=8;
 const g=document.getElementById('chapGrid');
-for(let i=1;i<=total;i++){const a=document.createElement('a');a.href=`${base}${i}.html`;a.className='ch';a.textContent=i;g.appendChild(a);}
+for(let i=1;i<=total;i++){
+  const a=document.createElement('a');
+  a.href=`/israelite-research/tanakh/chapter.html?book=${book}&ch=${i}`;
+  a.className='ch';
+  a.textContent=i;
+  g.appendChild(a);
+}
 </script><script src="/israelite-research/js/wire-chapter-cards.js"></script>
 </body></html>
