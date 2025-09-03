@@ -10,7 +10,7 @@
     "Genesis":50,"Exodus":40,"Leviticus":27,"Numbers":36,"Deuteronomy":34,
     "Joshua":24,"Judges":21,"Ruth":4,"I Samuel":31,"II Samuel":24,"I Kings":22,"II Kings":25,
     "I Chronicles":29,"II Chronicles":36,"Ezra":10,"Nehemiah":13,"Esther":10,"Job":42,
-    "Psalms":150,"Proverbs":31,"Ecclesiastes":12,"Song of Solomon":8,"Isaiah":66,"Jeremiah":52,
+    "Psalms":150,"Proverbs":31,"Ecclesiastes":12,"Songs of Solomon":8,"Isaiah":66,"Jeremiah":52,
     "Lamentations":5,"Ezekiel":48,"Daniel":12,"Hosea":14,"Joel":3,"Amos":9,"Obadiah":1,"Jonah":4,
     "Micah":7,"Nahum":3,"Habakkuk":3,"Zephaniah":3,"Haggai":2,"Zechariah":14,"Malachi":4,
 
@@ -35,7 +35,7 @@
       "I John":"i-john","II John":"ii-john","III John":"iii-john",
 
       // Special titles
-      "Song of Solomon":"song-of-solomon"
+      "Songs of Solomon":"songs-of-solomon"
     };
     if (map[name]) return map[name];
     return name.toLowerCase().replace(/\s+/g, '-');
