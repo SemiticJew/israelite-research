@@ -4,10 +4,12 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # -------- Strong's patterns (Greek + Hebrew) --------
-P_GH_BARE  = re.compile(r'\b([GH])(\d{1,5})\b')            # G5055 / H0430 / H430
-P_ATTR     = re.compile(r'data-strongs="([GH]\d{1,5})"')    # data-strongs="G5055"
-P_BRACKETS = re.compile(r'\[([GH]\d{1,5})\]')               # [G5055]
-P_PARENS   = re.compile(r'\(([GH]\d{1,5})\)')               # (H0430)
+# Supports bare codes, and codes inside {}, [], (), and data-strongs="..."
+P_GH_BARE   = re.compile(r'([GH])(\d{1,5})', re.I)           # catches H430, G5055 even without word boundaries
+P_ATTR      = re.compile(r'data-strongs="([GH]\d{1,5})"', re.I)
+P_BRACES    = re.compile(r'\{([GH]\d{1,5})\}', re.I)
+P_BRACKETS  = re.compile(r'\[([GH]\d{1,5})\]', re.I)
+P_PARENS    = re.compile(r'\(([GH]\d{1,5})\)', re.I)
 
 # -------- Canon + slug map (book name -> (canon, slug)) --------
 BOOK_MAP: Dict[str, Tuple[str, str]] = {
@@ -52,6 +54,7 @@ BOOK_MAP: Dict[str, Tuple[str, str]] = {
     "haggai": ("tanakh","haggai"),
     "zechariah": ("tanakh","zechariah"),
     "malachi": ("tanakh","malachi"),
+
     # New Testament (NT)
     "matthew": ("newtestament","matthew"),
     "mark": ("newtestament","mark"),
@@ -91,15 +94,12 @@ def norm_book(name: str) -> str:
     return s
 
 def extract_codes(text: str) -> List[str]:
+    """Pull clean H####/G#### codes from a verse text."""
     codes = set()
     if not text:
         return []
-    for kind, num in P_GH_BARE.findall(text):
-        try:
-            codes.add(f"{kind.upper()}{int(num)}")
-        except ValueError:
-            pass
-    for pat in (P_ATTR, P_BRACKETS, P_PARENS):
+    # Explicit wrappers first
+    for pat in (P_ATTR, P_BRACES, P_BRACKETS, P_PARENS):
         for c in pat.findall(text):
             try:
                 kind = c[0].upper()
@@ -107,6 +107,12 @@ def extract_codes(text: str) -> List[str]:
                 codes.add(f"{kind}{num}")
             except Exception:
                 pass
+    # Then catch bare codes (or anything else containing GH + digits)
+    for kind, num in P_GH_BARE.findall(text):
+        try:
+            codes.add(f"{kind.upper()}{int(num)}")
+        except ValueError:
+            pass
     return sorted(codes, key=lambda x: (x[0], int(x[1:])))
 
 def load_chapter_json(path: Path) -> List[dict]:
@@ -123,31 +129,61 @@ def save_chapter_json(path: Path, verses: List[dict]):
     path.write_text(json.dumps(verses, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_codes: List[str], force_text: bool):
+    """
+    Ensure verse exists; optionally overwrite text; merge Strong's codes.
+    Safely normalizes any weird existing s[] entries to GH####.
+    Returns (changed: bool, codes_added: int)
+    """
     changed = False
     added   = 0
-    target = None
-    for d in verses:
-        if isinstance(d, dict) and d.get("v") == vnum:
-            target = d
-            break
+
+    # Find existing verse or create
+    target = next((d for d in verses if isinstance(d, dict) and d.get("v") == vnum), None)
     if target is None:
         target = {"v": vnum, "t": new_text or "", "c": [], "s": []}
         verses.append(target)
         changed = True
 
+    # Text update
     existing_text = target.get("t") or ""
     if force_text or not existing_text.strip():
         if (new_text or "") != existing_text:
             target["t"] = new_text or ""
             changed = True
 
-    if new_codes:
-        exist = sorted({str(c).upper() for c in target.get("s", [])})
-        merged = sorted({*exist, *[c.upper() for c in new_codes]}, key=lambda x: (x[0], int(x[1:])))
-        if merged != exist:
-            target["s"] = merged
-            changed = True
-            added = max(0, len(merged) - len(exist))
+    # Codes update (normalize existing + merge new)
+    CODE_RE  = re.compile(r'^[GH]\d+$', re.I)
+    GH_SCAN  = re.compile(r'([GH])(\d{1,5})', re.I)
+
+    exist_raw = target.get("s", [])
+    exist_codes = set()
+    for e in exist_raw:
+        if isinstance(e, str):
+            es = e.strip()
+            if CODE_RE.match(es):
+                exist_codes.add(es.upper())
+            else:
+                m = GH_SCAN.search(es)
+                if m:
+                    exist_codes.add(f"{m.group(1).upper()}{int(m.group(2))}")
+
+    new_codes_norm = set()
+    for c in new_codes:
+        if isinstance(c, str):
+            cs = c.strip().upper()
+            if CODE_RE.match(cs):
+                new_codes_norm.add(cs)
+            else:
+                m = GH_SCAN.search(cs)
+                if m:
+                    new_codes_norm.add(f"{m.group(1).upper()}{int(m.group(2))}")
+
+    before_sorted = sorted(exist_codes, key=lambda x: (x[0], int(x[1:])))
+    merged = sorted(exist_codes | new_codes_norm, key=lambda x: (x[0], int(x[1:])))
+    if merged != before_sorted:
+        target["s"] = merged
+        changed = True
+        added = max(0, len(merged) - len(before_sorted))
 
     return changed, added
 
@@ -161,7 +197,7 @@ def main():
                     help="Do not overwrite existing text if present.")
     ap.add_argument("--inplace", action="store_true", help="Write changes to disk")
     ap.add_argument("--dry-run", action="store_true", help="Show changes, do not write")
-    ap.add_argument("--only-book", help='Limit to one book (e.g., "Matthew", "1 Samuel", "II Kings")')
+    ap.add_argument("--only-book", help='Limit to one book (e.g., "Genesis", "Matthew", "1 Samuel", "II Kings")')
     args = ap.parse_args()
 
     csv_path = Path(args.csv)
@@ -175,13 +211,13 @@ def main():
     verses_changed = 0
     codes_added_total = 0
 
+    # Cache by (canon, slug, chapter) and a touched flag to write only changed files
     cache: Dict[Tuple[str,str,int], List[dict]] = {}
     touched: Dict[Tuple[str,str,int], bool] = {}
 
-    # --- CSV open with utf-8-sig to strip BOM; build safe keymap ---
+    # --- CSV open with utf-8-sig to strip BOM; normalized header mapping ---
     with csv_path.open("r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
-        # Build a normalized header map: "book name" -> original header key
         keymap: Dict[str, str] = {}
         if reader.fieldnames:
             for k in reader.fieldnames:
@@ -192,7 +228,6 @@ def main():
                     keymap[nk] = k
 
         def get(row: dict, key: str) -> str:
-            # tolerant lookup by normalized header name
             nk = key.strip().lower()
             korig = keymap.get(nk)
             if korig is None:
@@ -217,6 +252,7 @@ def main():
 
             meta = BOOK_MAP.get(book_key)
             if not meta:
+                # Roman numerals I/II/III → 1/2/3
                 book_key2 = re.sub(r'^(i{1,3})\s+', lambda m: str(len(m.group(1))) + ' ', book_key)
                 meta = BOOK_MAP.get(book_key2)
             if not meta:
@@ -246,6 +282,7 @@ def main():
                 touched[key] = True
                 print(f"[update] {slug} {ch}:{vs}  +{added} codes{'  (text overwritten)' if args.force_text else ''}")
 
+    # Write back only touched chapters
     if args.inplace and not args.dry_run:
         for (canon, slug, ch), verses in cache.items():
             if not touched.get((canon, slug, ch)):
