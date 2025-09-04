@@ -1475,3 +1475,25 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   margin: 0;
   color: #0b2340; /* keep brand color, or adjust if needed */
 }
+/* Verse xref preview hovercard */
+#hovercard {
+  position: fixed;                /* JS controls left/top */
+  display: none;                  /* toggled by JS */
+  max-width: min(420px, 92vw);
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  padding: .6rem .7rem;
+  font-size: .92rem;
+  line-height: 1.45;
+  z-index: 9999;
+}
+
+#hovercard .vc-head {
+  display:flex; align-items:center; justify-content:space-between; gap:.5rem;
+  margin-bottom:.35rem;
+}
+
+#hovercard .vc-ref { font-weight:700; color: var(--ink, #0b2340); }
+#hovercard .vc-text { white-space: normal; word-break: break-word; }
