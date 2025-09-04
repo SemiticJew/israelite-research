@@ -75,17 +75,16 @@
     return String(s || "")
       .toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-") // "1 john" -> "1-john"
+      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-")
       .replace(/[^a-z0-9\-]/g, "");
   }
 
-  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
     const normalized = ord ? `${ord}-${base}` : raw;
     const table = canon === "tanakh" ? OT : NT;
-    return table[normalized] || table[normalized.replace(/-/g, "")] || 150; // fallback
+    return table[normalized] || table[normalized.replace(/-/g, "")] || 150;
   }
 
   // ---------------- Canon / routing ----------------
@@ -145,7 +144,7 @@
   }
 
   // ---------------- UI helpers ----------------
-  const hovercard = document.getElementById("hovercard"); // used for xrefs/lex quick popovers
+  const hovercard = document.getElementById("hovercard");
   function showHovercard(x, y, html) {
     if (!hovercard) return;
     hovercard.innerHTML = html;
@@ -216,6 +215,18 @@
     return { code: n, entry: dict[n] || null };
   }
 
+  // ---------------- Strong’s markers → strip from verse text ----------------
+  // Removes inline markers like {H430}, {(H8804)}, [G5055], (H0430), etc.
+  function stripStrongsMarkers(text){
+    let t = String(text || "");
+    t = t.replace(/\{[GH]\d{1,5}\}/gi, "");          // {H430}
+    t = t.replace(/\{\([GH]\d{1,5}\)\}/gi, "");      // {(H8804)}
+    t = t.replace(/\[[GH]\d{1,5}\]/gi, "");          // [G5055]
+    t = t.replace(/\(([GH])\d{1,5}\)/gi, "");        // (H0430)
+    t = t.replace(/\s{2,}/g, " ");                   // collapse doubles
+    return t.trim();
+  }
+
   // ---------------- Strong’s minimal info panel -----------------------------
   let _lexPanel;
   function ensureLexPanel() {
@@ -275,16 +286,11 @@
       return;
     }
 
-    // Prefer the first code for the panel (consistent with prior behavior)
     const first = codes[0];
-
     (async () => {
       try {
         const { code, entry } = await getLexEntry(first);
-        if (!entry) {
-          showLexiconPanel({ code, error: "No entry found." });
-          return;
-        }
+        if (!entry) { showLexiconPanel({ code, error: "No entry found." }); return; }
         showLexiconPanel({
           code,
           lemma: entry.lemma || entry.xlit || entry.translit,
@@ -293,7 +299,7 @@
           def: entry.strongs_def || "",
           deriv: entry.derivation || entry.deriv || ""
         });
-      } catch (err) {
+      } catch {
         showLexiconPanel({ code: first, error: "Lookup failed." });
       }
     })();
@@ -319,7 +325,7 @@
 
   // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
+    return `notes:${canon}:${book}:${ch}`;
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -346,7 +352,7 @@
 
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
-      const text = escapeHtml(v.t || "");
+      const text = escapeHtml(stripStrongsMarkers(v.t || "")); // <— strip inline Strong’s markers
       const xrefs = Array.isArray(v.c) ? v.c : [];
       const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
       const saved = (notes[String(vnum)] || "").trim();
@@ -398,12 +404,10 @@
       });
     });
 
-    // lex list hover (now handled by global click to open panel)
+    // lex list hover (panel opens on document click handler)
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        // The global click handler on document will handle the panel opening.
-        // We keep this to stop propagation from closing the hovercard immediately.
         const rect = btn.getBoundingClientRect();
         const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
         if (!codes.length) return;
