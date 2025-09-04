@@ -107,7 +107,15 @@ def main():
         print(f"[error] root not found: {root}")
         return
 
-    sidecar = load_sidecar_mapping(Path(args.mapping)) if args.mapping else {}
+    sidecar = {}
+if args.mapping:
+    mpath = Path(args.mapping)
+    if not mpath.exists():
+        # try relative to root
+        candidate = Path(args.root) / args.mapping
+        if candidate.exists():
+            mpath = candidate
+    sidecar = load_sidecar_mapping(mpath)
 
     total_files = total_seen = total_changed = total_added = 0
 
