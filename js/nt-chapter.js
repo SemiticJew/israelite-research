@@ -184,18 +184,39 @@
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
 
-  // ---------------- Strong’s (A) helper: safe lookup ------------------------
-  function getGreekEntry(strongsCode) {
-    // strongs-greek-dictionary.js declares: var strongsGreekDictionary = { "G3056": {...} }
-    const dict = (typeof window !== "undefined" && (window.strongsGreekDictionary || window.strongsGreekDictionary))
-                 || (typeof strongsGreekDictionary !== "undefined" && strongsGreekDictionary)
-                 || null;
-    if (!dict) return null;
-    const code = String(strongsCode || "").toUpperCase().replace(/^G?(\d+)$/, "G$1");
-    return dict[code] || null;
+  // ---------------- Strong’s lookup (H & G) ---------------------------------
+  function normalizeStrongs(code){
+    return String(code || "")
+      .toUpperCase()
+      .replace(/^([GH])0+(\d+)/, "$1$2")   // H0430 -> H430
+      .replace(/^(\d+)$/, "G$1");         // bare number -> assume Greek
+  }
+  function loadScript(src){
+    return new Promise((resolve,reject)=>{
+      const s = document.createElement("script");
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  async function ensureLexicon(which){
+    if (which === "H" && !window.strongsHebrewDictionary) {
+      try { await loadScript("/israelite-research/js/lexicon/strongs-hebrew-dictionary.js"); } catch {}
+    }
+    if (which === "G" && !window.strongsGreekDictionary) {
+      try { await loadScript("/israelite-research/js/lexicon/strongs-greek-dictionary.js"); } catch {}
+    }
+  }
+  async function getLexEntry(strongsCode){
+    const n = normalizeStrongs(strongsCode);
+    await ensureLexicon(n[0]);
+    const dict = n.startsWith("H") ? (window.strongsHebrewDictionary || {})
+                                   : (window.strongsGreekDictionary  || {});
+    return { code: n, entry: dict[n] || null };
   }
 
-  // ---------------- Strong’s (C) minimal info panel -------------------------
+  // ---------------- Strong’s minimal info panel -----------------------------
   let _lexPanel;
   function ensureLexPanel() {
     if (_lexPanel) return _lexPanel;
@@ -237,25 +258,45 @@
     panel.querySelector("button")?.addEventListener("click", () => panel.remove(), { once:true });
   }
 
-  // ---------------- Strong’s (B) event delegation ---------------------------
+  // ---------------- Strong’s event delegation (click) -----------------------
   document.addEventListener("click", (e) => {
-    const el = e.target.closest("[data-strongs]");
+    const el = e.target.closest("[data-strongs], .lex-btn");
     if (!el) return;
-    const raw = el.getAttribute("data-strongs") || "";
-    const code = raw.split("|")[0]; // if multiple, show the first
-    const entry = getGreekEntry(code);
-    if (!entry) {
-      showLexiconPanel({ code, error: "No entry found." });
+
+    // Accept either a data-strongs element in verse text OR the lex button
+    const raw =
+      el.getAttribute?.("data-strongs") ||
+      (el.classList?.contains("lex-btn") ? (el.getAttribute("data-strongs") || "") : "") ||
+      "";
+
+    const codes = raw.split("|").filter(Boolean);
+    if (!codes.length) {
+      showLexiconPanel({ code: "", error: "No Strong’s codes on this verse." });
       return;
     }
-    showLexiconPanel({
-      code: code.toUpperCase().replace(/^G?(\d+)$/, "G$1"),
-      lemma: entry.lemma,
-      translit: entry.translit,
-      gloss: entry.kjv_def,
-      def: entry.strongs_def,
-      deriv: entry.derivation
-    });
+
+    // Prefer the first code for the panel (consistent with prior behavior)
+    const first = codes[0];
+
+    (async () => {
+      try {
+        const { code, entry } = await getLexEntry(first);
+        if (!entry) {
+          showLexiconPanel({ code, error: "No entry found." });
+          return;
+        }
+        showLexiconPanel({
+          code,
+          lemma: entry.lemma || entry.xlit || entry.translit,
+          translit: entry.translit || entry.xlit || "",
+          gloss: entry.kjv_def || entry.strongs_def || "",
+          def: entry.strongs_def || "",
+          deriv: entry.derivation || entry.deriv || ""
+        });
+      } catch (err) {
+        showLexiconPanel({ code: first, error: "Lookup failed." });
+      }
+    })();
   });
 
   // ---------------- Chapter select (exact sizing) ---------------------------
@@ -357,13 +398,15 @@
       });
     });
 
-    // lex list hover (lightweight)
+    // lex list hover (now handled by global click to open panel)
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
+        // The global click handler on document will handle the panel opening.
+        // We keep this to stop propagation from closing the hovercard immediately.
+        const rect = btn.getBoundingClientRect();
         const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
         if (!codes.length) return;
-        const rect = btn.getBoundingClientRect();
         const listHtml = `<ul class="lex">${codes.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>`;
         showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
       });
@@ -414,7 +457,7 @@
 
     document.addEventListener("scroll", hideHovercard, { passive: true });
     document.addEventListener("click", (e) => {
-      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard")) hideHovercard();
+      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard,[data-strongs]")) hideHovercard();
     });
 
     // ---------- Zondervan dictionary (right panel) ----------
