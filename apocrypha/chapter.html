@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Apocrypha — Chapter</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  /* optional: minimal tweaks to match your reader layout if needed */
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <header class="page-header">
+    <h1 class="page-title" id="pageTitle">Apocrypha (KJV)</h1>
+    <div class="crumbs" id="crumbs">Apocrypha → Book → Chapter</div>
+  </header>
+
+  <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
+    <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
+    <div class="ch-picker">
+      <label for="chSelect" class="sr-only">Select chapter</label>
+      <select id="chSelect"></select>
+    </div>
+    <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
+  </div>
+
+  <section class="layout">
+    <div class="panel">
+      <h3>Text</h3>
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
+
+    <aside class="panel" id="dictAside">
+      <h3>Zondervan Compact Bible Dictionary</h3>
+      <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
+        <input id="dictSearch" type="search" placeholder="Search term…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
+      </div>
+      <div id="dictPanel"><p class="muted">Add <code>data/dictionaries/zondervan.json</code> to enable offline lookups.</p></div>
+    </aside>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
+
+<!-- Optional Strong’s (some Apocrypha are Greek) -->
+<script src="/israelite-research/js/lexicon/strongs-greek-dictionary.js"></script>
+<script src="/israelite-research/js/lexicon/strongs-hebrew-dictionary.js"></script>
+
+<!-- Apocrypha loader -->
+<script src="/israelite-research/js/apoc-chapter.js"></script>
+
+<script src="/israelite-research/js/include.js"></script>
+<script src="/israelite-research/js/wire-chapter-cards.js"></script>
+</body>
+</html>
