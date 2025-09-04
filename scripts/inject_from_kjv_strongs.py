@@ -3,14 +3,13 @@ import csv, json, re, argparse
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-# --- Strong's patterns (Greek + Hebrew) we will extract from CSV "Text" ---
-P_GH_BARE    = re.compile(r'\b([GH])(\d{1,5})\b')                 # G5055 / H0430 / H430
-P_ATTR       = re.compile(r'data-strongs="([GH]\d{1,5})"')         # data-strongs="G5055"
-P_BRACKETS   = re.compile(r'\[([GH]\d{1,5})\]')                    # [G5055]
-P_PARENS     = re.compile(r'\(([GH]\d{1,5})\)')                    # (H0430)
+# -------- Strong's patterns (Greek + Hebrew) --------
+P_GH_BARE  = re.compile(r'\b([GH])(\d{1,5})\b')            # G5055 / H0430 / H430
+P_ATTR     = re.compile(r'data-strongs="([GH]\d{1,5})"')    # data-strongs="G5055"
+P_BRACKETS = re.compile(r'\[([GH]\d{1,5})\]')               # [G5055]
+P_PARENS   = re.compile(r'\(([GH]\d{1,5})\)')               # (H0430)
 
-# --- Canon + slug map (book name -> (canon, slug)) ---
-# Slugs match your repo conventions (OT: 1-samuel, 2-kings, etc.; NT: 1-corinthians, 2-john, etc.)
+# -------- Canon + slug map (book name -> (canon, slug)) --------
 BOOK_MAP: Dict[str, Tuple[str, str]] = {
     # Tanakh (OT)
     "genesis": ("tanakh","genesis"),
@@ -31,7 +30,7 @@ BOOK_MAP: Dict[str, Tuple[str, str]] = {
     "nehemiah": ("tanakh","nehemiah"),
     "esther": ("tanakh","esther"),
     "job": ("tanakh","job"),
-    "psalms": ("tanakh","psalms"), "psalm": ("tanakh","psalms"),  # alias
+    "psalms": ("tanakh","psalms"), "psalm": ("tanakh","psalms"),
     "proverbs": ("tanakh","proverbs"),
     "ecclesiastes": ("tanakh","ecclesiastes"),
     "song of solomon": ("tanakh","song-of-solomon"),
@@ -53,7 +52,6 @@ BOOK_MAP: Dict[str, Tuple[str, str]] = {
     "haggai": ("tanakh","haggai"),
     "zechariah": ("tanakh","zechariah"),
     "malachi": ("tanakh","malachi"),
-
     # New Testament (NT)
     "matthew": ("newtestament","matthew"),
     "mark": ("newtestament","mark"),
@@ -84,29 +82,33 @@ BOOK_MAP: Dict[str, Tuple[str, str]] = {
     "revelation": ("newtestament","revelation"),
 }
 
-# Normalize book name from CSV to key used above
 def norm_book(name: str) -> str:
     s = (name or "").strip().lower()
-    s = re.sub(r'\s+', ' ', s)  # collapse spaces
-    # normalize leading numeric/roman
+    s = re.sub(r'\s+', ' ', s)
     s = re.sub(r'^(1st|first)\s+', '1 ', s)
     s = re.sub(r'^(2nd|second)\s+', '2 ', s)
     s = re.sub(r'^(3rd|third)\s+', '3 ', s)
-    # leave "i/ii/iii" as-is
     return s
 
 def extract_codes(text: str) -> List[str]:
     codes = set()
-    if not text: return []
-    # bare G/H#### (with or without leading zeroes)
+    if not text:
+        return []
+    # bare G/H#### (optionally zero-padded)
     for kind, num in P_GH_BARE.findall(text):
-        codes.add(f"{kind}{int(num)}")  # strip leading zeros
-    # attribute, brackets, parens (already prefixed)
+        try:
+            codes.add(f"{kind.upper()}{int(num)}")
+        except ValueError:
+            pass
+    # attribute, brackets, parens
     for pat in (P_ATTR, P_BRACKETS, P_PARENS):
         for c in pat.findall(text):
-            kind = c[0].upper()
-            num  = int(c[1:]) if c[1:].isdigit() else None
-            if num is not None: codes.add(f"{kind}{num}")
+            try:
+                kind = c[0].upper()
+                num  = int(c[1:])
+                codes.add(f"{kind}{num}")
+            except Exception:
+                pass
     return sorted(codes, key=lambda x: (x[0], int(x[1:])))
 
 def load_chapter_json(path: Path) -> List[dict]:
@@ -122,12 +124,10 @@ def save_chapter_json(path: Path, verses: List[dict]):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(verses, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_codes: List[str], force_text: bool) -> Tuple[bool, int]:
+def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_codes: List[str], force_text: bool):
     """
-    Insert or update verse dict:
-    - If force_text=True, always set 't' from CSV; else only set if existing 't' is empty.
-    - Merge Strong's codes into 's' (unique, sorted), creating 's' if absent.
-    Returns: (changed?, codes_added_count)
+    Ensure verse entry exists; merge text/codes.
+    Returns (changed: bool, codes_added: int)
     """
     changed = False
     added   = 0
@@ -142,8 +142,9 @@ def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_cod
         changed = True
 
     # text
-    if force_text or not (target.get("t") or "").strip():
-        if (new_text or "") != target.get("t"):
+    existing_text = target.get("t") or ""
+    if force_text or not existing_text.strip():
+        if (new_text or "") != existing_text:
             target["t"] = new_text or ""
             changed = True
 
@@ -159,14 +160,16 @@ def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_cod
     return changed, added
 
 def main():
-    ap = argparse.ArgumentParser(description="Inject KJV text and Strong's codes into Tanakh/NT JSON from a single CSV.")
+    ap = argparse.ArgumentParser(description="Inject KJV text + Strong's codes into Tanakh/NT JSON from kjv_strongs.csv")
     ap.add_argument("--csv", required=True, help="Path to kjv_strongs.csv")
     ap.add_argument("--data-root", default="data", help="Root data folder (default: data)")
-    ap.add_argument("--force-text", action="true", default=True, help="Always overwrite verse text from CSV (default True).")
-    ap.add_argument("--no-force-text", dest="force_text", action="store_false", help="Do not overwrite existing text if present.")
+    ap.add_argument("--force-text", action="store_true", default=True,
+                    help="Always overwrite verse text from CSV (default True).")
+    ap.add_argument("--no-force-text", dest="force_text", action="store_false",
+                    help="Do not overwrite existing text if present.")
     ap.add_argument("--inplace", action="store_true", help="Write changes to disk")
     ap.add_argument("--dry-run", action="store_true", help="Show changes, do not write")
-    ap.add_argument("--only-book", help="Limit to one book name (e.g., 'Matthew' or '1 Samuel')")
+    ap.add_argument("--only-book", help='Limit to one book (e.g., "Matthew", "1 Samuel", "II Kings")')
     args = ap.parse_args()
 
     csv_path = Path(args.csv)
@@ -175,17 +178,20 @@ def main():
         return
     data_root = Path(args.data_root)
 
-    # Stats
-    files_scanned = verses_seen = verses_changed = codes_added_total = 0
+    files_scanned = 0
+    verses_seen = 0
+    verses_changed = 0
+    codes_added_total = 0
 
-    # Cache of chapters loaded per (canon, slug, chapter)
+    # Cache by (canon, slug, chapter)
     cache: Dict[Tuple[str,str,int], List[dict]] = {}
+    touched: Dict[Tuple[str,str,int], bool] = {}
 
-    # CSV columns (be lenient)
     def get(row: dict, key: str) -> str:
-        # normalize keys like "Book Name" vs "Bookname"
+        # tolerant header lookup ("Book Name" vs "Book", etc.)
+        k_norm = key.strip().lower()
         for k in row.keys():
-            if k.strip().lower() == key.strip().lower():
+            if k.strip().lower() == k_norm:
                 return row[k]
         return ""
 
@@ -206,11 +212,10 @@ def main():
             if only_book_norm and book_key != only_book_norm:
                 continue
 
-            # map book -> (canon, slug)
             meta = BOOK_MAP.get(book_key)
             if not meta:
-                # try normalizing Roman numerals to arabic (I/II/III -> 1/2/3) then re-map
-                book_key2 = re.sub(r'^(i{1,3})\s+', lambda m: str(len(m.group(1))), book_key)
+                # try roman I/II/III → 1/2/3
+                book_key2 = re.sub(r'^(i{1,3})\s+', lambda m: str(len(m.group(1))) + ' ', book_key)
                 meta = BOOK_MAP.get(book_key2)
             if not meta:
                 print(f"[warn] unmapped book: '{book_name}'")
@@ -223,14 +228,12 @@ def main():
             except ValueError:
                 continue
 
-            # path to chapter JSON
             ch_path = data_root / canon / slug / f"{ch}.json"
-
-            # load from cache or disk
             key = (canon, slug, ch)
             if key not in cache:
                 cache[key] = load_chapter_json(ch_path)
                 files_scanned += 1
+                touched[key] = False
 
             codes = extract_codes(text)
             changed, added = upsert_verse(cache[key], vs, text, codes, force_text=args.force_text)
@@ -238,12 +241,14 @@ def main():
             if changed:
                 verses_changed += 1
                 codes_added_total += added
-                print(f"[update] {slug} {ch}:{vs}  +{added} codes  {'(text overwritten)' if args.force_text else ''}")
+                touched[key] = True
+                print(f"[update] {slug} {ch}:{vs}  +{added} codes{'  (text overwritten)' if args.force_text else ''}")
 
-    # write all changed chapters
+    # write back only touched chapters
     if args.inplace and not args.dry_run:
         for (canon, slug, ch), verses in cache.items():
-            # We could track per-file changed status; for simplicity, write any non-empty loaded file.
+            if not touched.get((canon, slug, ch)):
+                continue
             out = data_root / canon / slug / f"{ch}.json"
             save_chapter_json(out, verses)
 
