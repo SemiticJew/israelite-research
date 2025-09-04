@@ -161,24 +161,43 @@
   }
 
   // ---------------- UI helpers ----------------------------------------------
-  const hovercard = document.getElementById("hovercard");
-  function showHovercard(x, y, html) {
-    if (!hovercard) return;
-    hovercard.innerHTML = html;
-    hovercard.style.left = Math.max(8, x + 12) + "px";
-    hovercard.style.top  = Math.max(8, y + 12) + "px";
-    hovercard.classList.add("open");
-    hovercard.setAttribute("aria-hidden", "false");
-  }
-  function hideHovercard() {
-    if (!hovercard) return;
-    hovercard.classList.remove("open");
-    hovercard.setAttribute("aria-hidden", "true");
-  }
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-  }
+// --- Replace the old helpers ---
+const hovercard = document.getElementById("hovercard");
 
+function showHovercardAt(el, html) {
+  if (!hovercard || !el) return;
+  const rect = el.getBoundingClientRect();
+
+  hovercard.innerHTML = html;
+  hovercard.style.position = "fixed";
+  hovercard.style.display = "block";
+  hovercard.classList.add("open");
+  hovercard.setAttribute("aria-hidden", "false");
+
+  // Place below the link, clamped within viewport
+  const pad = 8;
+  let top  = rect.bottom + pad;          // no window.scrollY for fixed
+  let left = rect.left + rect.width/2;   // center-ish
+
+  // Clamp so it stays on screen
+  const maxLeft = window.innerWidth - 16;
+  const maxTop  = window.innerHeight - 16;
+  if (left > maxLeft) left = maxLeft;
+  if (top  > maxTop)  top  = Math.max(16, rect.top - hovercard.offsetHeight - pad);
+
+  // Center align via transform
+  hovercard.style.left = `${left}px`;
+  hovercard.style.top  = `${top}px`;
+  hovercard.style.transform = "translateX(-50%)"; // center under the link
+}
+
+function hideHovercard() {
+  if (!hovercard) return;
+  hovercard.classList.remove("open");
+  hovercard.setAttribute("aria-hidden", "true");
+  hovercard.style.display = "none";
+  hovercard.style.transform = "";
+}
   // Inline panels (lex / xref)
   function ensureInlinePanel(verseEl, kind){
     const id = kind === 'lex' ? 'lex-inline' : 'xref-inline';
