@@ -1,9 +1,10 @@
 /* nt-chapter.js
  * Shared loader for NT and Tanakh.
- * - Verse toolbar under each verse: commentary / xrefs / lex
- * - Commentary opens inline beneath its verse (toggle), saved to localStorage
- * - Right panel = Zondervan dictionary search (optional local JSON)
- * - Chapter selector shows the real chapter count per book
+ * - Verse toolbar per verse: commentary / xrefs / lex
+ * - Commentary saved per-verse to localStorage
+ * - Optional right-panel dictionary (Zondervan JSON)
+ * - Chapter selector sized to actual chapter count per book
+ * - Strong’s Greek integration: click [data-strongs] to open panel
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
@@ -22,7 +23,7 @@
     "1-john":5, "2-john":1, "3-john":1,
     "jude":1, "revelation":22,
 
-    // aliases
+    // aliases (dashless)
     "1corinthians":16, "2corinthians":13,
     "1thessalonians":5, "2thessalonians":3,
     "1timothy":6, "2timothy":4,
@@ -41,10 +42,34 @@
     "hosea":14, "joel":3, "amos":9, "obadiah":1, "jonah":4, "micah":7,
     "nahum":3, "habakkuk":3, "zephaniah":3, "haggai":2, "zechariah":14, "malachi":4,
 
-    // aliases
+    // aliases (dashless + common)
     "1samuel":31, "2samuel":24, "1kings":22, "2kings":25,
     "1chronicles":29, "2chronicles":36, "psalm":150, "songofsongs":8, "songofsolomon":8
   };
+
+  // ---------------- Roman/Arabic helpers (multi-book support) ---------------
+  function toRoman(n){ return ({1:"I",2:"II",3:"III"})[n] || String(n); }
+  function fromRomanToken(tok){
+    const t = String(tok||"").toLowerCase();
+    if (t === "i") return 1;
+    if (t === "ii") return 2;
+    if (t === "iii") return 3;
+    return null;
+  }
+  // Split slug into optional leading ordinal + base (e.g., "1-samuel", "i-samuel")
+  function splitOrdinalSlug(slug){
+    const s = String(slug||"").toLowerCase();
+    const m = s.match(/^((?:[123])|(?:i{1,3}))-(.+)$/);
+    if (!m) return { ord:null, base:s };
+    const ord = /^[123]$/.test(m[1]) ? parseInt(m[1],10) : fromRomanToken(m[1]);
+    return { ord: ord || null, base: m[2] };
+  }
+  // Human-readable book title (Roman numerals for multi-book series)
+  function makeDisplayTitleFromSlug(slug){
+    const { ord, base } = splitOrdinalSlug(slug);
+    const titledBase = base.replace(/[_-]+/g," ").replace(/\b\w/g, c => c.toUpperCase());
+    return ord ? `${toRoman(ord)} ${titledBase}` : titledBase;
+  }
 
   function normalizeSlug(s) {
     return String(s || "")
@@ -54,10 +79,13 @@
       .replace(/[^a-z0-9\-]/g, "");
   }
 
+  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
-    const slug = normalizeSlug(bookSlug);
+    const raw = normalizeSlug(bookSlug);
+    const { ord, base } = splitOrdinalSlug(raw);
+    const normalized = ord ? `${ord}-${base}` : raw;
     const table = canon === "tanakh" ? OT : NT;
-    return table[slug] || table[slug.replace(/-/g, "")] || 150; // fallback
+    return table[normalized] || table[normalized.replace(/-/g, "")] || 150; // fallback
   }
 
   // ---------------- Canon / routing ----------------
@@ -141,11 +169,13 @@
                .map(w => /^\d+$/.test(w) ? w : (w.charAt(0).toUpperCase() + w.slice(1)))
                .join(" ");
   }
+
+  // Use Roman numerals in UI titles/crumbs for multi-book series
   function setDynamicTitles() {
     const canon = getCanon();
     const canonTitle = canon === "tanakh" ? "Tanakh" : "New Testament";
     const bookSlug = getBookSlug();
-    const bookTitle = titleCaseFromSlug(bookSlug) || canonTitle;
+    const bookTitle = makeDisplayTitleFromSlug(bookSlug) || canonTitle;
     const ch = getChapter();
     const h1 = document.getElementById("pageTitle");
     const crumbs = document.getElementById("crumbs");
@@ -154,12 +184,86 @@
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
 
-  // Populate chapter selector to EXACT chapter count for the current book
+  // ---------------- Strong’s (A) helper: safe lookup ------------------------
+  function getGreekEntry(strongsCode) {
+    // strongs-greek-dictionary.js declares: var strongsGreekDictionary = { "G3056": {...} }
+    const dict = (typeof window !== "undefined" && (window.strongsGreekDictionary || window.strongsGreekDictionary))
+                 || (typeof strongsGreekDictionary !== "undefined" && strongsGreekDictionary)
+                 || null;
+    if (!dict) return null;
+    const code = String(strongsCode || "").toUpperCase().replace(/^G?(\d+)$/, "G$1");
+    return dict[code] || null;
+  }
+
+  // ---------------- Strong’s (C) minimal info panel -------------------------
+  let _lexPanel;
+  function ensureLexPanel() {
+    if (_lexPanel) return _lexPanel;
+    _lexPanel = document.createElement("aside");
+    _lexPanel.id = "lexicon-panel";
+    _lexPanel.style.position = "fixed";
+    _lexPanel.style.right = "12px";
+    _lexPanel.style.bottom = "12px";
+    _lexPanel.style.maxWidth = "420px";
+    _lexPanel.style.background = "var(--white, #fff)";
+    _lexPanel.style.border = "1px solid var(--sky, #DBE4EE)";
+    _lexPanel.style.boxShadow = "0 6px 24px rgba(0,0,0,.12)";
+    _lexPanel.style.padding = "12px 14px";
+    _lexPanel.style.borderRadius = "10px";
+    _lexPanel.style.fontSize = "14px";
+    _lexPanel.style.zIndex = "9999";
+    document.body.appendChild(_lexPanel);
+    return _lexPanel;
+  }
+  function showLexiconPanel({ code, lemma, translit, gloss, def, deriv, error }) {
+    const panel = ensureLexPanel();
+    panel.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px">
+        <strong style="font-size:16px">Strong’s ${escapeHtml(code || "")}</strong>
+        <button aria-label="Close" style="border:0;background:transparent;font-size:18px;cursor:pointer">&times;</button>
+      </div>
+      ${
+        error
+          ? `<div style="color:#b91c1c">${escapeHtml(error)}</div>`
+          : `
+            <div><b>Lemma:</b> ${escapeHtml(lemma ?? "—")}</div>
+            <div><b>Translit:</b> ${escapeHtml(translit ?? "—")}</div>
+            <div><b>Gloss (KJV):</b> ${escapeHtml(gloss ?? "—")}</div>
+            <div><b>Definition:</b> ${escapeHtml(def ?? "—")}</div>
+            <div><b>Derivation:</b> ${escapeHtml(deriv ?? "—")}</div>
+          `
+      }
+    `;
+    panel.querySelector("button")?.addEventListener("click", () => panel.remove(), { once:true });
+  }
+
+  // ---------------- Strong’s (B) event delegation ---------------------------
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-strongs]");
+    if (!el) return;
+    const raw = el.getAttribute("data-strongs") || "";
+    const code = raw.split("|")[0]; // if multiple, show the first
+    const entry = getGreekEntry(code);
+    if (!entry) {
+      showLexiconPanel({ code, error: "No entry found." });
+      return;
+    }
+    showLexiconPanel({
+      code: code.toUpperCase().replace(/^G?(\d+)$/, "G$1"),
+      lemma: entry.lemma,
+      translit: entry.translit,
+      gloss: entry.kjv_def,
+      def: entry.strongs_def,
+      deriv: entry.derivation
+    });
+  });
+
+  // ---------------- Chapter select (exact sizing) ---------------------------
   function populateChapterSelect(current) {
     const sel = document.getElementById("chSelect");
     if (!sel) return;
     const count = getChapterCount(getCanon(), getBookSlug());
-    sel.innerHTML = ""; // rebuild to exact size
+    sel.innerHTML = "";
     const frag = document.createDocumentFragment();
     for (let i = 1; i <= count; i++) {
       const opt = document.createElement("option");
@@ -172,9 +276,9 @@
     sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
   }
 
-  // ---------------- Per-verse commentary storage ----------------
+  // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`; // kept key name for backward-compat
+    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -184,7 +288,7 @@
     localStorage.setItem(notesKey(canon, book, ch), JSON.stringify(data));
   }
 
-  // ---------------- Renderer ----------------
+  // ---------------- Renderer -------------------------------------------------
   async function renderChapter(chapterData) {
     const versesEl = document.getElementById("verses");
     if (!versesEl) return;
