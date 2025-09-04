@@ -1,12 +1,15 @@
 /* nt-chapter.js
- * Adds: toggleable inline xrefs + verse-preview tooltip on hover (Tanakh + NT)
- * Also includes: per-verse anchors & copy-link, inline lex panel, notes, etc.
+ * Reader loader for Tanakh + New Testament
+ * - Inline xrefs + hover previews positioned relative to the link
+ * - Inline lex panel (Strong’s H/G), per-verse commentary, anchors + copy-link
+ * - Roman numeral titles/crumbs for multi-book series
+ * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
 (function () {
-  const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional
+  const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional local data
 
-  // ---------------- Chapter counts ------------------------------------------
+  // ---------------- Chapter counts (common slug variants included) ----------
   const NT = {
     "matthew":28, "mark":16, "luke":24, "john":21, "acts":28, "romans":16,
     "1-corinthians":16, "2-corinthians":13,
@@ -42,7 +45,7 @@
     "1chronicles":29, "2chronicles":36, "psalm":150, "songofsongs":8, "songofsolomon":8
   };
 
-  // ---------------- Roman/Arabic helpers ------------------------------------
+  // ---------------- Roman/Arabic helpers (multi-book support) ---------------
   function toRoman(n){ return ({1:"I",2:"II",3:"III"})[n] || String(n); }
   function fromRomanToken(tok){
     const t = String(tok||"").toLowerCase();
@@ -63,22 +66,25 @@
     const titledBase = base.replace(/[_-]+/g," ").replace(/\b\w/g, c => c.toUpperCase());
     return ord ? `${toRoman(ord)} ${titledBase}` : titledBase;
   }
+
   function normalizeSlug(s) {
     return String(s || "")
       .toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-")
+      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-") // "1 john" -> "1-john"
       .replace(/[^a-z0-9\-]/g, "");
   }
+
+  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
     const normalized = ord ? `${ord}-${base}` : raw;
     const table = canon === "tanakh" ? OT : NT;
-    return table[normalized] || table[normalized.replace(/-/g, "")] || 150;
+    return table[normalized] || table[normalized.replace(/-/g, "")] || 150; // fallback
   }
 
-  // ---------------- Canon / routing -----------------------------------------
+  // ---------------- Canon / routing ----------------
   function getCanon() {
     const qp = new URLSearchParams(location.search).get("canon");
     if (qp) return qp.toLowerCase() === "tanakh" ? "tanakh" : "newtestament";
@@ -109,7 +115,7 @@
     return idx > -1 ? path.slice(0, idx) : "";
   }
 
-  // ---------------- Fetch chapter JSON --------------------------------------
+  // ---------------- Fetch chapter ----------------
   async function fetchChapter(book, ch) {
     const canon = getCanon();
     const rel1  = new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname;
@@ -134,12 +140,11 @@
     throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
   }
 
-  // Cache other chapters for tooltip previews
+  // Cache for verse-preview lookups (xref hover)
   const chapterCache = new Map();
   async function fetchChapterForPreview(canon, bookSlug, ch){
     const key = `${canon}:${bookSlug}:${ch}`;
     if (chapterCache.has(key)) return chapterCache.get(key);
-    // Build absolute (site-base) candidate list similar to fetchChapter, but explicit canon
     const base  = getSiteBase() || "/israelite-research";
     const urls = [
       `${base}/data/${canon}/${bookSlug}/${ch}.json`,
@@ -160,46 +165,48 @@
     return null;
   }
 
-  // ---------------- UI helpers ----------------------------------------------
-// --- Replace the old helpers ---
-const hovercard = document.getElementById("hovercard");
+  // ---------------- UI helpers (UPDATED hovercards) ----------------
+  const hovercard = document.getElementById("hovercard");
 
-function showHovercardAt(el, html) {
-  if (!hovercard || !el) return;
-  const rect = el.getBoundingClientRect();
+  function showHovercardAt(el, html) {
+    if (!hovercard || !el) return;
+    const rect = el.getBoundingClientRect();
 
-  hovercard.innerHTML = html;
-  hovercard.style.position = "fixed";
-  hovercard.style.display = "block";
-  hovercard.classList.add("open");
-  hovercard.setAttribute("aria-hidden", "false");
+    hovercard.innerHTML = html;
+    hovercard.style.position = "fixed";
+    hovercard.style.display = "block";
+    hovercard.classList.add("open");
+    hovercard.setAttribute("aria-hidden", "false");
 
-  // Place below the link, clamped within viewport
-  const pad = 8;
-  let top  = rect.bottom + pad;          // no window.scrollY for fixed
-  let left = rect.left + rect.width/2;   // center-ish
+    // Place under the link and keep within viewport
+    const pad = 8;
+    let top  = rect.bottom + pad;             // fixed: no scrollY
+    let left = rect.left + rect.width / 2;
 
-  // Clamp so it stays on screen
-  const maxLeft = window.innerWidth - 16;
-  const maxTop  = window.innerHeight - 16;
-  if (left > maxLeft) left = maxLeft;
-  if (top  > maxTop)  top  = Math.max(16, rect.top - hovercard.offsetHeight - pad);
+    const maxLeft = window.innerWidth - 16;
+    const maxTop  = window.innerHeight - 16;
+    if (left > maxLeft) left = maxLeft;
+    if (top  > maxTop)  top  = Math.max(16, rect.top - hovercard.offsetHeight - pad);
 
-  // Center align via transform
-  hovercard.style.left = `${left}px`;
-  hovercard.style.top  = `${top}px`;
-  hovercard.style.transform = "translateX(-50%)"; // center under the link
-}
+    hovercard.style.left = `${left}px`;
+    hovercard.style.top  = `${top}px`;
+    hovercard.style.transform = "translateX(-50%)";
+  }
 
-function hideHovercard() {
-  if (!hovercard) return;
-  hovercard.classList.remove("open");
-  hovercard.setAttribute("aria-hidden", "true");
-  hovercard.style.display = "none";
-  hovercard.style.transform = "";
-}
-  // Inline panels (lex / xref)
-  function ensureInlinePanel(verseEl, kind){
+  function hideHovercard() {
+    if (!hovercard) return;
+    hovercard.classList.remove("open");
+    hovercard.setAttribute("aria-hidden", "true");
+    hovercard.style.display = "none";
+    hovercard.style.transform = "";
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  }
+
+  // Inline panels under each verse (lex / xrefs)
+  function ensureInlinePanel(verseEl, kind/* 'lex' | 'xref' */){
     const id = kind === 'lex' ? 'lex-inline' : 'xref-inline';
     let panel = verseEl.querySelector(`.${id}`);
     if (!panel) {
@@ -224,29 +231,21 @@ function hideHovercard() {
     return !!el && el.style.display !== 'none' && el.innerHTML.trim() !== '';
   }
 
-  // Title / crumbs
+  // Use Roman numerals in UI titles/crumbs for multi-book series
   function setDynamicTitles() {
     const canon = getCanon();
     const canonTitle = canon === "tanakh" ? "Tanakh" : "New Testament";
     const bookSlug = getBookSlug();
-    const bookTitle = (function(slug){
-      const s = String(slug||"");
-      const m = s.match(/^((?:[123])|(?:i{1,3}))-(.+)$/);
-      if (!m) return s.replace(/[_-]+/g," ").replace(/\b\w/g, c => c.toUpperCase());
-      const ord = /^[123]$/.test(m[1]) ? parseInt(m[1],10) : ({i:1,ii:2,iii:3})[m[1]];
-      const base = m[2].replace(/[_-]+/g," ").replace(/\b\w/g, c => c.toUpperCase());
-      const roman = ({1:"I",2:"II",3:"III"})[ord] || String(ord);
-      return `${roman} ${base}`;
-    })(bookSlug) || (canon === "tanakh" ? "Tanakh" : "New Testament");
+    const bookTitle = makeDisplayTitleFromSlug(bookSlug) || canonTitle;
     const ch = getChapter();
     const h1 = document.getElementById("pageTitle");
     const crumbs = document.getElementById("crumbs");
     if (h1) h1.textContent = `${bookTitle} (KJV) — Chapter ${ch}`;
-    if (crumbs) crumbs.textContent = `${canon === "tanakh" ? "Tanakh" : "New Testament"} → ${bookTitle} → Chapter ${ch}`;
+    if (crumbs) crumbs.textContent = `${canonTitle} → ${bookTitle} → Chapter ${ch}`;
     document.title = `${bookTitle} — Chapter ${ch}`;
   }
 
-  // Strong’s helpers (kept)
+  // ---------------- Strong’s (H/G) ------------------------------------------
   function normalizeStrongs(code){
     return String(code || "")
       .toUpperCase()
@@ -279,16 +278,46 @@ function hideHovercard() {
   }
   function stripStrongsMarkers(text){
     let t = String(text || "");
-    t = t.replace(/\{[GH]\d{1,5}\}/gi, "");
-    t = t.replace(/\{\([GH]\d{1,5}\)\}/gi, "");
-    t = t.replace(/\[[GH]\d{1,5}\]/gi, "");
-    t = t.replace(/\(([GH])\d{1,5}\)/gi, "");
+    t = t.replace(/\{[GH]\d{1,5}\}/gi, "");          // {H430}
+    t = t.replace(/\{\([GH]\d{1,5}\)\}/gi, "");      // {(H8804)}
+    t = t.replace(/\[[GH]\d{1,5}\]/gi, "");          // [G5055]
+    t = t.replace(/\(([GH])\d{1,5}\)/gi, "");        // (H0430)
     t = t.replace(/\s{2,}/g, " ");
     return t.trim();
   }
 
-  // Permalinks
-  function verseId(n){ return `v${n}`; }
+  // ---------------- Chapter select (exact sizing) ---------------------------
+  function populateChapterSelect(current) {
+    const sel = document.getElementById("chSelect");
+    if (!sel) return;
+    const count = getChapterCount(getCanon(), getBookSlug());
+    sel.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    for (let i = 1; i <= count; i++) {
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = String(i);
+      frag.appendChild(opt);
+    }
+    sel.appendChild(frag);
+    sel.value = String(Math.min(current, count));
+    sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
+  }
+
+  // ---------------- Per-verse commentary storage ----------------------------
+  function notesKey(canon, book, ch) {
+    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
+  }
+  function loadNotes(canon, book, ch) {
+    try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
+    catch { return {}; }
+  }
+  function saveNotes(canon, book, ch, data) {
+    localStorage.setItem(notesKey(canon, book, ch), JSON.stringify(data));
+  }
+
+  // ---------------- Permalinks ----------------------------------------------
+  function verseId(n){ return `v${n}`; } // anchor id format
   function buildVersePermalink(n){
     const url = new URL(location.href);
     url.hash = `#${verseId(n)}`;
@@ -296,15 +325,23 @@ function hideHovercard() {
   }
   async function copyToClipboard(text){
     try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
-      else { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); ta.remove();
+      }
       return true;
     } catch { return false; }
   }
-  function flash(el){ if (!el) return; el.classList.add('active'); setTimeout(()=> el.classList.remove('active'), 600); }
+  function flash(el){
+    if (!el) return;
+    el.classList.add('active');
+    setTimeout(()=> el.classList.remove('active'), 600);
+  }
 
   // --------- Build href + parsing helpers for xref strings ------------------
-  // Accept "Genesis 1:1", "I Kings 3:9", "1 John 4:8" → {canon, slug, ch, v, href}
   function parseHumanRef(ref){
     const r = String(ref || "").trim();
     const m = r.match(/^((?:(?:[1-3])|(?:I{1,3}))\s+)?([A-Za-z][A-Za-z\s]+?)\s+(\d+):(\d+)$/i);
@@ -321,11 +358,9 @@ function hideHovercard() {
     }
     const display = (ordNum ? ({1:"I",2:"II",3:"III"})[ordNum] + " " : "") + base;
 
-    // slug
     const baseSlug = base.toLowerCase().replace(/\s+/g, "-");
     const slug = ordNum ? `${({1:"i",2:"ii",3:"iii"})[ordNum]}-${baseSlug}` : baseSlug;
 
-    // canon guess (mirrors server data layout)
     const flat = (display || "").toLowerCase();
     const isOT = /^(genesis|exodus|leviticus|numbers|deuteronomy|joshua|judges|ruth|[i1] ?samuel|[i1] ?kings|[i1] ?chronicles|ezra|nehemiah|esther|job|psalms?|proverbs|ecclesiastes|song|isaiah|jeremiah|lamentations|ezekiel|daniel|hosea|joel|amos|obadiah|jonah|micah|nahum|habakkuk|zephaniah|haggai|zechariah|malachi)\b/.test(flat);
     const canon = isOT ? "tanakh" : "newtestament";
@@ -348,17 +383,7 @@ function hideHovercard() {
     const canon = getCanon();
     const book = getBookSlug();
     const ch   = getChapter();
-
-    // notes
-    function notesKey(){ return `notes:${canon}:${book}:${ch}`; }
-    function loadNotes(){
-      try { return JSON.parse(localStorage.getItem(notesKey()) || "{}"); }
-      catch { return {}; }
-    }
-    function saveNotes(data){
-      localStorage.setItem(notesKey(), JSON.stringify(data));
-    }
-    const notes = loadNotes();
+    const notes = loadNotes(canon, book, ch);
 
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
@@ -367,7 +392,7 @@ function hideHovercard() {
       const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
       const saved = (notes[String(vnum)] || "").trim();
 
-      const anchorId = `v${vnum}`;
+      const anchorId = verseId(vnum);
       const copyBtn = `<button class="copy-link-btn" data-verse="${vnum}" title="Copy link to this verse">link</button>`;
 
       const xBtn = xrefs.length
@@ -406,7 +431,7 @@ function hideHovercard() {
 
     versesEl.innerHTML = html;
 
-    // ---------- XREFS: toggle inline + live hover preview ----------
+    // xrefs button → inline toggle panel
     versesEl.querySelectorAll(".xref-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -414,7 +439,6 @@ function hideHovercard() {
         const verseEl = btn.closest(".verse");
         if (!verseEl) return;
 
-        // toggle
         if (isPanelOpen(verseEl, 'xref')) {
           verseEl.querySelector('.xref-inline').style.display = 'none';
           return;
@@ -427,7 +451,6 @@ function hideHovercard() {
           return;
         }
 
-        // Build a linked list; each link gets data-* attrs for preview fetch
         const links = refsRaw.map(r => {
           const p = parseHumanRef(r);
           if (!p) return `<span>${escapeHtml(r)}</span>`;
@@ -443,7 +466,7 @@ function hideHovercard() {
       });
     });
 
-    // Hover preview for xrefs: fetch chapter JSON once, show verse text
+    // Hover preview for xrefs: fetch chapter JSON once, show verse text UNDER LINK
     versesEl.addEventListener("mouseover", async (e) => {
       const a = e.target.closest(".xref-link");
       if (!a) return;
@@ -452,7 +475,6 @@ function hideHovercard() {
       const ch    = parseInt(a.getAttribute("data-ch"),10);
       const v     = parseInt(a.getAttribute("data-v"),10);
       const data  = await fetchChapterForPreview(canon, slug, ch);
-      const rect  = a.getBoundingClientRect();
       let html = `<div class="muted">Preview unavailable.</div>`;
       if (Array.isArray(data)) {
         const verse = data.find(x => x && typeof x === "object" && x.v === v);
@@ -461,14 +483,14 @@ function hideHovercard() {
           html = `<div class="vc-head"><span class="vc-ref"><b>${escapeHtml(a.getAttribute("data-ref") || "")}</b></span></div><div class="vc-text">${text}</div>`;
         }
       }
-      showHovercard(rect.left + rect.width/2, rect.top + window.scrollY, html);
+      showHovercardAt(a, html);
     });
     versesEl.addEventListener("mouseout", (e) => {
       if (e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest("#hovercard")) return;
       hideHovercard();
     });
 
-    // ---------- LEX: inline toggle + sentence + code detail ----------
+    // lex button → inline toggle panel + sentence; click code to load details
     function formatSentenceList(arr){
       const a = arr.slice();
       if (a.length <= 1) return a.join('');
@@ -493,13 +515,19 @@ function hideHovercard() {
           renderInlinePanel(verseEl, 'lex', `<p class="muted">No lexical tags on this verse.</p>`);
           return;
         }
-        const buttons = codes.map(c => `<button class="vc-btn code-pill" data-code="${escapeHtml(c)}">${escapeHtml(c)}</button>`);
-        const sentence = `Strong’s codes in this verse: ${formatSentenceList(buttons)}.`;
-        const template = `<p>${sentence}</p><div class="lex-detail muted" style="margin-top:.35rem">Select a code above…</div>`;
+
+        const sentenceButtons = codes.map(c => `<button class="vc-btn code-pill" data-code="${escapeHtml(c)}">${escapeHtml(c)}</button>`);
+        const sentence = `Strong’s codes in this verse: ${formatSentenceList(sentenceButtons)}.`;
+
+        const template = `
+          <p>${sentence}</p>
+          <div class="lex-detail muted" style="margin-top:.35rem">Select a code above…</div>
+        `;
         renderInlinePanel(verseEl, 'lex', template);
 
         const panel = verseEl.querySelector('.lex-inline');
         const detail = panel?.querySelector('.lex-detail');
+
         panel?.querySelectorAll('button[data-code]').forEach(b => {
           b.addEventListener('click', async () => {
             const raw = b.getAttribute('data-code') || '';
@@ -520,7 +548,7 @@ function hideHovercard() {
       });
     });
 
-    // Copy-link buttons
+    // copy-link buttons
     versesEl.querySelectorAll(".copy-link-btn").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -535,7 +563,7 @@ function hideHovercard() {
       });
     });
 
-    // Commentary save/clear (unchanged)
+    // commentary toggle + save/clear
     versesEl.querySelectorAll(".commentary-btn[data-verse]").forEach(btn => {
       btn.addEventListener("click", () => {
         const v = String(btn.getAttribute("data-verse") || "").trim();
@@ -547,36 +575,36 @@ function hideHovercard() {
         btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
       });
     });
+
     versesEl.querySelectorAll(".comm-save").forEach(btn => {
       btn.addEventListener("click", () => {
         const v = String(btn.getAttribute("data-verse") || "").trim();
         const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
         if (!textarea) return;
         const val = (textarea.value || "").trim();
-        const key = `notes:${getCanon()}:${getBookSlug()}:${getChapter()}`;
-        const cur = (()=>{ try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }})();
-        if (val) cur[v] = val; else delete cur[v];
-        localStorage.setItem(key, JSON.stringify(cur));
+        const notes = loadNotes(getCanon(), getBookSlug(), getChapter());
+        if (val) notes[v] = val; else delete notes[v];
+        saveNotes(getCanon(), getBookSlug(), getChapter(), notes);
         const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");
         if (status) status.textContent = val ? "📝 commentary saved" : "";
       });
     });
+
     versesEl.querySelectorAll(".comm-clear").forEach(btn => {
       btn.addEventListener("click", () => {
         const v = String(btn.getAttribute("data-verse") || "").trim();
         const textarea = versesEl.querySelector(`.comm-text[data-verse="${CSS.escape(v)}"]`);
         if (!textarea) return;
         textarea.value = "";
-        const key = `notes:${getCanon()}:${getBookSlug()}:${getChapter()}`;
-        const cur = (()=>{ try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }})();
-        delete cur[v];
-        localStorage.setItem(key, JSON.stringify(cur));
+        const notes = loadNotes(getCanon(), getBookSlug(), getChapter());
+        delete notes[v];
+        saveNotes(getCanon(), getBookSlug(), getChapter(), notes);
         const status = textarea.closest(".v-commentary")?.querySelector(".comm-status");
         if (status) status.textContent = "";
       });
     });
 
-    // Outside click/scroll closes hovercard & panels
+    // Close popovers/panels on outside click/scroll
     document.addEventListener("scroll", hideHovercard, { passive: true });
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".lex-btn,.xref-btn,#hovercard,[data-strongs],.lex-inline,.xref-inline,.copy-link-btn,.xref-link")) {
@@ -585,7 +613,7 @@ function hideHovercard() {
       }
     });
 
-    // Hash scroll
+    // If there's a verse hash, scroll it into view and flash it
     const hash = location.hash.replace(/^#/, "");
     if (hash && /^v\d+$/.test(hash)) {
       const target = document.getElementById(hash);
@@ -596,14 +624,17 @@ function hideHovercard() {
     }
   }
 
-  // Zondervan mini-panel (unchanged)
+  // ---------- Zondervan dictionary (right panel) ----------
   async function wireZondervanPanel(){
     const dictRoot = document.getElementById("dictPanel");
     const dictSearch = document.getElementById("dictSearch");
     if (!dictRoot) return;
     const ensureDict = async () => {
-      try { const r = await fetch(ZONDERVAN_PATH, { cache: "force-cache" }); if (!r.ok) throw 0; return await r.json(); }
-      catch { return null; }
+      try {
+        const r = await fetch(ZONDERVAN_PATH, { cache: "force-cache" });
+        if (!r.ok) throw 0;
+        return await r.json();
+      } catch { return null; }
     };
     const doSearch = async (q) => {
       q = (q || "").trim();
@@ -630,16 +661,10 @@ function hideHovercard() {
     }
   }
 
-  // ---------------- Bootstrap -----------------------------------------------
+  // ---------------- Bootstrap ----------------
   async function init() {
     setDynamicTitles();
-    const sel = document.getElementById("chSelect");
-    if (sel) {
-      const count = getChapterCount(getCanon(), getBookSlug());
-      sel.innerHTML = Array.from({length: count}, (_,i)=> `<option value="${i+1}">${i+1}</option>`).join("");
-      sel.value = String(Math.min(getChapter(), count));
-      sel.onchange = () => setChapter(parseInt(sel.value, 10) || 1);
-    }
+    populateChapterSelect(getChapter());
 
     const prev = document.getElementById("btnPrev");
     const next = document.getElementById("btnNext");
@@ -655,8 +680,8 @@ function hideHovercard() {
       await wireZondervanPanel();
 
       // Prefetch neighbors
-      const base = getSiteBase() || "/israelite-research";
       const canon = getCanon();
+      const base = getSiteBase() || "/israelite-research";
       const nextUrl = `${base}/data/${canon}/${book}/${ch + 1}.json`;
       const prevUrl = ch > 1 ? `${base}/data/${canon}/${book}/${ch - 1}.json` : null;
       try { fetch(nextUrl, { cache: "force-cache" }); } catch {}
