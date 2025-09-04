@@ -94,13 +94,11 @@ def extract_codes(text: str) -> List[str]:
     codes = set()
     if not text:
         return []
-    # bare G/H#### (optionally zero-padded)
     for kind, num in P_GH_BARE.findall(text):
         try:
             codes.add(f"{kind.upper()}{int(num)}")
         except ValueError:
             pass
-    # attribute, brackets, parens
     for pat in (P_ATTR, P_BRACKETS, P_PARENS):
         for c in pat.findall(text):
             try:
@@ -125,10 +123,6 @@ def save_chapter_json(path: Path, verses: List[dict]):
     path.write_text(json.dumps(verses, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_codes: List[str], force_text: bool):
-    """
-    Ensure verse entry exists; merge text/codes.
-    Returns (changed: bool, codes_added: int)
-    """
     changed = False
     added   = 0
     target = None
@@ -141,14 +135,12 @@ def upsert_verse(verses: List[dict], vnum: int, new_text: Optional[str], new_cod
         verses.append(target)
         changed = True
 
-    # text
     existing_text = target.get("t") or ""
     if force_text or not existing_text.strip():
         if (new_text or "") != existing_text:
             target["t"] = new_text or ""
             changed = True
 
-    # codes
     if new_codes:
         exist = sorted({str(c).upper() for c in target.get("s", [])})
         merged = sorted({*exist, *[c.upper() for c in new_codes]}, key=lambda x: (x[0], int(x[1:])))
@@ -183,22 +175,33 @@ def main():
     verses_changed = 0
     codes_added_total = 0
 
-    # Cache by (canon, slug, chapter)
     cache: Dict[Tuple[str,str,int], List[dict]] = {}
     touched: Dict[Tuple[str,str,int], bool] = {}
 
-    def get(row: dict, key: str) -> str:
-        # tolerant header lookup ("Book Name" vs "Book", etc.)
-        k_norm = key.strip().lower()
-        for k in row.keys():
-            if k.strip().lower() == k_norm:
-                return row[k]
-        return ""
-
-    only_book_norm = norm_book(args.only_book) if args.only_book else None
-
-    with csv_path.open("r", encoding="utf-8", newline="") as f:
+    # --- CSV open with utf-8-sig to strip BOM; build safe keymap ---
+    with csv_path.open("r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
+        # Build a normalized header map: "book name" -> original header key
+        keymap: Dict[str, str] = {}
+        if reader.fieldnames:
+            for k in reader.fieldnames:
+                if k is None:
+                    continue
+                nk = k.strip().lower()
+                if nk and nk not in keymap:
+                    keymap[nk] = k
+
+        def get(row: dict, key: str) -> str:
+            # tolerant lookup by normalized header name
+            nk = key.strip().lower()
+            korig = keymap.get(nk)
+            if korig is None:
+                return ""
+            val = row.get(korig)
+            return "" if val is None else str(val)
+
+        only_book_norm = norm_book(args.only_book) if args.only_book else None
+
         for row in reader:
             book_name = get(row, "Book Name") or get(row, "Book")
             chap      = get(row, "Chapter")
@@ -214,7 +217,6 @@ def main():
 
             meta = BOOK_MAP.get(book_key)
             if not meta:
-                # try roman I/II/III → 1/2/3
                 book_key2 = re.sub(r'^(i{1,3})\s+', lambda m: str(len(m.group(1))) + ' ', book_key)
                 meta = BOOK_MAP.get(book_key2)
             if not meta:
@@ -244,7 +246,6 @@ def main():
                 touched[key] = True
                 print(f"[update] {slug} {ch}:{vs}  +{added} codes{'  (text overwritten)' if args.force_text else ''}")
 
-    # write back only touched chapters
     if args.inplace and not args.dry_run:
         for (canon, slug, ch), verses in cache.items():
             if not touched.get((canon, slug, ch)):
