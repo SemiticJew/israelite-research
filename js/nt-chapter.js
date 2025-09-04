@@ -4,7 +4,7 @@
  * - Commentary saved per-verse to localStorage
  * - Optional right-panel dictionary (Zondervan JSON)
  * - Chapter selector sized to actual chapter count per book
- * - Strong’s Greek integration: click [data-strongs] to open panel
+ * - Strong’s integration (Hebrew + Greek): click lex to open inline panel
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
@@ -75,16 +75,17 @@
     return String(s || "")
       .toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-")
+      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-") // "1 john" -> "1-john"
       .replace(/[^a-z0-9\-]/g, "");
   }
 
+  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
     const normalized = ord ? `${ord}-${base}` : raw;
     const table = canon === "tanakh" ? OT : NT;
-    return table[normalized] || table[normalized.replace(/-/g, "")] || 150;
+    return table[normalized] || table[normalized.replace(/-/g, "")] || 150; // fallback
   }
 
   // ---------------- Canon / routing ----------------
@@ -144,7 +145,7 @@
   }
 
   // ---------------- UI helpers ----------------
-  const hovercard = document.getElementById("hovercard");
+  const hovercard = document.getElementById("hovercard"); // legacy popover (kept but unused for lex/xrefs now)
   function showHovercard(x, y, html) {
     if (!hovercard) return;
     hovercard.innerHTML = html;
@@ -167,6 +168,28 @@
                .split(" ")
                .map(w => /^\d+$/.test(w) ? w : (w.charAt(0).toUpperCase() + w.slice(1)))
                .join(" ");
+  }
+
+  // Inline panels under each verse (lex / xrefs)
+  function ensureInlinePanel(verseEl, kind/* 'lex' | 'xref' */){
+    const id = kind === 'lex' ? 'lex-inline' : 'xref-inline';
+    let panel = verseEl.querySelector(`.${id}`);
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = id;
+      panel.style.margin = '0.35rem 0 0.1rem';
+      panel.style.paddingLeft = '36px';
+      verseEl.appendChild(panel);
+    }
+    return panel;
+  }
+  function renderInlinePanel(verseEl, kind, html){
+    const panel = ensureInlinePanel(verseEl, kind);
+    panel.innerHTML = html;
+    panel.style.display = 'block';
+  }
+  function hideInlinePanels(){
+    document.querySelectorAll('.lex-inline, .xref-inline').forEach(el => el.style.display = 'none');
   }
 
   // Use Roman numerals in UI titles/crumbs for multi-book series
@@ -227,84 +250,6 @@
     return t.trim();
   }
 
-  // ---------------- Strong’s minimal info panel -----------------------------
-  let _lexPanel;
-  function ensureLexPanel() {
-    if (_lexPanel) return _lexPanel;
-    _lexPanel = document.createElement("aside");
-    _lexPanel.id = "lexicon-panel";
-    _lexPanel.style.position = "fixed";
-    _lexPanel.style.right = "12px";
-    _lexPanel.style.bottom = "12px";
-    _lexPanel.style.maxWidth = "420px";
-    _lexPanel.style.background = "var(--white, #fff)";
-    _lexPanel.style.border = "1px solid var(--sky, #DBE4EE)";
-    _lexPanel.style.boxShadow = "0 6px 24px rgba(0,0,0,.12)";
-    _lexPanel.style.padding = "12px 14px";
-    _lexPanel.style.borderRadius = "10px";
-    _lexPanel.style.fontSize = "14px";
-    _lexPanel.style.zIndex = "9999";
-    document.body.appendChild(_lexPanel);
-    return _lexPanel;
-  }
-  function showLexiconPanel({ code, lemma, translit, gloss, def, deriv, error }) {
-    const panel = ensureLexPanel();
-    panel.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px">
-        <strong style="font-size:16px">Strong’s ${escapeHtml(code || "")}</strong>
-        <button aria-label="Close" style="border:0;background:transparent;font-size:18px;cursor:pointer">&times;</button>
-      </div>
-      ${
-        error
-          ? `<div style="color:#b91c1c">${escapeHtml(error)}</div>`
-          : `
-            <div><b>Lemma:</b> ${escapeHtml(lemma ?? "—")}</div>
-            <div><b>Translit:</b> ${escapeHtml(translit ?? "—")}</div>
-            <div><b>Gloss (KJV):</b> ${escapeHtml(gloss ?? "—")}</div>
-            <div><b>Definition:</b> ${escapeHtml(def ?? "—")}</div>
-            <div><b>Derivation:</b> ${escapeHtml(deriv ?? "—")}</div>
-          `
-      }
-    `;
-    panel.querySelector("button")?.addEventListener("click", () => panel.remove(), { once:true });
-  }
-
-  // ---------------- Strong’s event delegation (click) -----------------------
-  document.addEventListener("click", (e) => {
-    const el = e.target.closest("[data-strongs], .lex-btn");
-    if (!el) return;
-
-    // Accept either a data-strongs element in verse text OR the lex button
-    const raw =
-      el.getAttribute?.("data-strongs") ||
-      (el.classList?.contains("lex-btn") ? (el.getAttribute("data-strongs") || "") : "") ||
-      "";
-
-    const codes = raw.split("|").filter(Boolean);
-    if (!codes.length) {
-      showLexiconPanel({ code: "", error: "No Strong’s codes on this verse." });
-      return;
-    }
-
-    const first = codes[0];
-    (async () => {
-      try {
-        const { code, entry } = await getLexEntry(first);
-        if (!entry) { showLexiconPanel({ code, error: "No entry found." }); return; }
-        showLexiconPanel({
-          code,
-          lemma: entry.lemma || entry.xlit || entry.translit,
-          translit: entry.translit || entry.xlit || "",
-          gloss: entry.kjv_def || entry.strongs_def || "",
-          def: entry.strongs_def || "",
-          deriv: entry.derivation || entry.deriv || ""
-        });
-      } catch {
-        showLexiconPanel({ code: first, error: "Lookup failed." });
-      }
-    })();
-  });
-
   // ---------------- Chapter select (exact sizing) ---------------------------
   function populateChapterSelect(current) {
     const sel = document.getElementById("chSelect");
@@ -325,7 +270,7 @@
 
   // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`;
+    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -352,7 +297,7 @@
 
     const html = chapterData.map(v => {
       const vnum = Number.isFinite(v.v) ? v.v : "";
-      const text = escapeHtml(stripStrongsMarkers(v.t || "")); // <— strip inline Strong’s markers
+      const text = escapeHtml(stripStrongsMarkers(v.t || ""));
       const xrefs = Array.isArray(v.c) ? v.c : [];
       const strongs = Array.isArray(v.s) ? v.s.filter(Boolean) : [];
       const saved = (notes[String(vnum)] || "").trim();
@@ -392,27 +337,65 @@
 
     versesEl.innerHTML = html;
 
-    // xrefs hover
+    // xrefs button → inline panel under this verse
     versesEl.querySelectorAll(".xref-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
+        hideHovercard();
+        const verseEl = btn.closest(".verse");
+        if (!verseEl) return;
+
         const x = (btn.getAttribute("data-xref") || "").split("|").filter(Boolean);
-        if (!x.length) return;
-        const rect = btn.getBoundingClientRect();
+        if (!x.length) {
+          renderInlinePanel(verseEl, 'xref', `<p class="muted">No cross references for this verse.</p>`);
+          return;
+        }
         const list = x.map(r => `<li>${escapeHtml(r)}</li>`).join("");
-        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, `<ul class="lex">${list}</ul>`);
+        renderInlinePanel(verseEl, 'xref', `<ul class="lex">${list}</ul>`);
       });
     });
 
-    // lex list hover (panel opens on document click handler)
+    // lex button → inline panel under this verse
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
+      btn.addEventListener("click", async (e) => {
         e.stopPropagation();
-        const rect = btn.getBoundingClientRect();
+        hideHovercard();
+        const verseEl = btn.closest(".verse");
+        if (!verseEl) return;
+
         const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
-        if (!codes.length) return;
-        const listHtml = `<ul class="lex">${codes.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>`;
-        showHovercard(rect.left + rect.width / 2, rect.top + window.scrollY, listHtml);
+        if (!codes.length) {
+          renderInlinePanel(verseEl, 'lex', `<p class="muted">No lexical tags on this verse.</p>`);
+          return;
+        }
+
+        const listHtml = `
+          <ul class="lex">
+            ${codes.map(c => `<li><button class="vc-btn" data-code="${escapeHtml(c)}">${escapeHtml(c)}</button></li>`).join("")}
+          </ul>
+          <div class="lex-detail muted" style="margin-top:.35rem">Select a code above…</div>`;
+        renderInlinePanel(verseEl, 'lex', listHtml);
+
+        const panel = verseEl.querySelector('.lex-inline');
+        const detail = panel?.querySelector('.lex-detail');
+
+        panel?.querySelectorAll('button[data-code]').forEach(b => {
+          b.addEventListener('click', async () => {
+            const raw = b.getAttribute('data-code') || '';
+            const { code, entry } = await getLexEntry(raw);
+            if (!detail) return;
+            if (!entry) { detail.innerHTML = `<span style="color:#b91c1c">No entry for ${escapeHtml(code)}.</span>`; return; }
+            detail.classList.remove('muted');
+            detail.innerHTML = `
+              <div><b>Strong’s:</b> ${escapeHtml(code)}</div>
+              <div><b>Lemma:</b> ${escapeHtml(entry.lemma || entry.xlit || entry.translit || "—")}</div>
+              <div><b>Translit:</b> ${escapeHtml(entry.translit || entry.xlit || "—")}</div>
+              <div><b>Gloss (KJV):</b> ${escapeHtml(entry.kjv_def || entry.strongs_def || "—")}</div>
+              <div><b>Definition:</b> ${escapeHtml(entry.strongs_def || "—")}</div>
+              <div><b>Derivation:</b> ${escapeHtml(entry.derivation || entry.deriv || "—")}</div>
+            `;
+          });
+        });
       });
     });
 
@@ -459,9 +442,13 @@
       });
     });
 
+    // Close popovers/panels on outside click/scroll
     document.addEventListener("scroll", hideHovercard, { passive: true });
     document.addEventListener("click", (e) => {
-      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard,[data-strongs]")) hideHovercard();
+      if (!e.target.closest(".lex-btn,.xref-btn,#hovercard,[data-strongs],.lex-inline,.xref-inline")) {
+        hideHovercard();
+        hideInlinePanels();
+      }
     });
 
     // ---------- Zondervan dictionary (right panel) ----------
