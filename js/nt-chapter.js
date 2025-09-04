@@ -56,7 +56,6 @@
     if (t === "iii") return 3;
     return null;
   }
-  // Split slug into optional leading ordinal + base (e.g., "1-samuel", "i-samuel")
   function splitOrdinalSlug(slug){
     const s = String(slug||"").toLowerCase();
     const m = s.match(/^((?:[123])|(?:i{1,3}))-(.+)$/);
@@ -64,28 +63,24 @@
     const ord = /^[123]$/.test(m[1]) ? parseInt(m[1],10) : fromRomanToken(m[1]);
     return { ord: ord || null, base: m[2] };
   }
-  // Human-readable book title (Roman numerals for multi-book series)
   function makeDisplayTitleFromSlug(slug){
     const { ord, base } = splitOrdinalSlug(slug);
     const titledBase = base.replace(/[_-]+/g," ").replace(/\b\w/g, c => c.toUpperCase());
     return ord ? `${toRoman(ord)} ${titledBase}` : titledBase;
   }
-
   function normalizeSlug(s) {
     return String(s || "")
       .toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-") // "1 john" -> "1-john"
+      .replace(/(^|\b)(1|2|3)[ ](?=[a-z])/g, "$1$2-")
       .replace(/[^a-z0-9\-]/g, "");
   }
-
-  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
     const normalized = ord ? `${ord}-${base}` : raw;
     const table = canon === "tanakh" ? OT : NT;
-    return table[normalized] || table[normalized.replace(/-/g, "")] || 150; // fallback
+    return table[normalized] || table[normalized.replace(/-/g, "")] || 150;
   }
 
   // ---------------- Canon / routing ----------------
@@ -145,7 +140,7 @@
   }
 
   // ---------------- UI helpers ----------------
-  const hovercard = document.getElementById("hovercard"); // legacy popover (kept but unused for lex/xrefs now)
+  const hovercard = document.getElementById("hovercard");
   function showHovercard(x, y, html) {
     if (!hovercard) return;
     hovercard.innerHTML = html;
@@ -191,6 +186,24 @@
   function hideInlinePanels(){
     document.querySelectorAll('.lex-inline, .xref-inline').forEach(el => el.style.display = 'none');
   }
+  function isPanelOpen(verseEl, kind){
+    const el = verseEl.querySelector(kind === 'lex' ? '.lex-inline' : '.xref-inline');
+    return !!el && el.style.display !== 'none' && el.innerHTML.trim() !== '';
+  }
+
+  // Sentence helpers
+  function formatSentenceList(arr){
+    const a = arr.slice();
+    if (a.length <= 1) return a.join('');
+    const last = a.pop();
+    return a.join(', ') + ' and ' + last;
+  }
+  function normalizeStrongs(code){
+    return String(code || "")
+      .toUpperCase()
+      .replace(/^([GH])0+(\d+)/, "$1$2")
+      .replace(/^(\d+)$/, "G$1");
+  }
 
   // Use Roman numerals in UI titles/crumbs for multi-book series
   function setDynamicTitles() {
@@ -207,12 +220,6 @@
   }
 
   // ---------------- Strong’s lookup (H & G) ---------------------------------
-  function normalizeStrongs(code){
-    return String(code || "")
-      .toUpperCase()
-      .replace(/^([GH])0+(\d+)/, "$1$2")   // H0430 -> H430
-      .replace(/^(\d+)$/, "G$1");         // bare number -> assume Greek
-  }
   function loadScript(src){
     return new Promise((resolve,reject)=>{
       const s = document.createElement("script");
@@ -242,11 +249,11 @@
   // Removes inline markers like {H430}, {(H8804)}, [G5055], (H0430), etc.
   function stripStrongsMarkers(text){
     let t = String(text || "");
-    t = t.replace(/\{[GH]\d{1,5}\}/gi, "");          // {H430}
-    t = t.replace(/\{\([GH]\d{1,5}\)\}/gi, "");      // {(H8804)}
-    t = t.replace(/\[[GH]\d{1,5}\]/gi, "");          // [G5055]
-    t = t.replace(/\(([GH])\d{1,5}\)/gi, "");        // (H0430)
-    t = t.replace(/\s{2,}/g, " ");                   // collapse doubles
+    t = t.replace(/\{[GH]\d{1,5}\}/gi, "");
+    t = t.replace(/\{\([GH]\d{1,5}\)\}/gi, "");
+    t = t.replace(/\[[GH]\d{1,5}\]/gi, "");
+    t = t.replace(/\(([GH])\d{1,5}\)/gi, "");
+    t = t.replace(/\s{2,}/g, " ");
     return t.trim();
   }
 
@@ -270,7 +277,7 @@
 
   // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
+    return `notes:${canon}:${book}:${ch}`;
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -337,7 +344,7 @@
 
     versesEl.innerHTML = html;
 
-    // xrefs button → inline panel under this verse
+    // xrefs button → inline toggle panel under this verse
     versesEl.querySelectorAll(".xref-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -345,17 +352,24 @@
         const verseEl = btn.closest(".verse");
         if (!verseEl) return;
 
+        // Toggle behavior
+        if (isPanelOpen(verseEl, 'xref')) {
+          verseEl.querySelector('.xref-inline').style.display = 'none';
+          return;
+        }
+        hideInlinePanels();
+
         const x = (btn.getAttribute("data-xref") || "").split("|").filter(Boolean);
         if (!x.length) {
           renderInlinePanel(verseEl, 'xref', `<p class="muted">No cross references for this verse.</p>`);
           return;
         }
-        const list = x.map(r => `<li>${escapeHtml(r)}</li>`).join("");
-        renderInlinePanel(verseEl, 'xref', `<ul class="lex">${list}</ul>`);
+        const sentence = `Cross references: ${escapeHtml(formatSentenceList(x))}.`;
+        renderInlinePanel(verseEl, 'xref', `<p>${sentence}</p>`);
       });
     });
 
-    // lex button → inline panel under this verse
+    // lex button → inline toggle panel + sentence; click code to load details
     versesEl.querySelectorAll(".lex-btn").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -363,18 +377,28 @@
         const verseEl = btn.closest(".verse");
         if (!verseEl) return;
 
-        const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean);
+        // Toggle behavior
+        if (isPanelOpen(verseEl, 'lex')) {
+          verseEl.querySelector('.lex-inline').style.display = 'none';
+          return;
+        }
+        hideInlinePanels();
+
+        const codes = (btn.getAttribute("data-strongs") || "").split("|").filter(Boolean).map(normalizeStrongs);
         if (!codes.length) {
           renderInlinePanel(verseEl, 'lex', `<p class="muted">No lexical tags on this verse.</p>`);
           return;
         }
 
-        const listHtml = `
-          <ul class="lex">
-            ${codes.map(c => `<li><button class="vc-btn" data-code="${escapeHtml(c)}">${escapeHtml(c)}</button></li>`).join("")}
-          </ul>
-          <div class="lex-detail muted" style="margin-top:.35rem">Select a code above…</div>`;
-        renderInlinePanel(verseEl, 'lex', listHtml);
+        // Sentence-style list with inline buttons for each code
+        const sentenceButtons = codes.map(c => `<button class="vc-btn code-pill" data-code="${escapeHtml(c)}">${escapeHtml(c)}</button>`);
+        const sentence = `Strong’s codes in this verse: ${formatSentenceList(sentenceButtons)}.`;
+
+        const template = `
+          <p>${sentence}</p>
+          <div class="lex-detail muted" style="margin-top:.35rem">Select a code above…</div>
+        `;
+        renderInlinePanel(verseEl, 'lex', template);
 
         const panel = verseEl.querySelector('.lex-inline');
         const detail = panel?.querySelector('.lex-detail');
