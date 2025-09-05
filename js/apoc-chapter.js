@@ -10,6 +10,20 @@
   const BASE_FALLBACK = "/israelite-research";
 
   // --- tiny helpers copied from your loader ---
+// Map human-readable slugs → data folder slugs
+const APOC_ALIASES = {
+  "additions-to-esther": "aes",
+  "letter-of-jeremiah":  "epj",
+  "prayer-of-azariah":   "aza",
+  "laodiceans":          "lao",
+  "epistle-to-the-laodiceans": "lao",
+  "psalm-151":           "psalm-151" // already matches, keep explicit
+};
+
+function resolveApocSlug(slug) {
+  const s = String(slug || "").toLowerCase();
+  return APOC_ALIASES[s] || s;
+}
   function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
   function normalizeSlug(s){return String(s||"").toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9\-]/g,"");}
   function verseId(n){ return `v${n}`; }
