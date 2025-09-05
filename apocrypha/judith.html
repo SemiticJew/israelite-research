@@ -1,89 +1,20 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Apocrypha — Chapters</title>
+<title>Judith — Chapters</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
-<style>
-:root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
-.container{max-width:1200px;margin:0 auto;padding:0 16px}
-.page-header{padding:24px 0 8px}.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+<style>:root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}.page-header{padding:24px 0 8px}
+.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:10px;margin:16px 0 36px}
 .ch{display:flex;align-items:center;justify-content:center;height:56px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
 .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
-.breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
-</style>
-</head><body>
-<div id="site-header"></div>
-
-<main>
-  <header class="page-header"><div class="container">
-    <h1 class="page-title" id="bookTitle">Apocrypha</h1>
-    <div class="breadcrumb" id="crumbs">Apocrypha → Book</div>
-  </div></header>
-
-  <section class="container">
-    <div id="chapGrid" class="grid"></div>
-  </section>
-</main>
-
-<div id="site-footer"></div>
-<script src="/israelite-research/js/include.js"></script>
+.breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}</style></head>
+<body><div id="site-header"></div>
+<main><header class="page-header"><div class="container"><h1 class="page-title">Judith</h1><div class="breadcrumb">Apocrypha → Judith</div></div></header>
+<section class="container"><div id="chapGrid" class="grid"></div></section></main>
+<div id="site-footer"></div><script src="/israelite-research/js/include.js"></script>
 <script>
-(function(){
-  function getBase(){
-    return location.pathname.includes("/israelite-research/") ? "/israelite-research" : "";
-  }
-  function getSlug(){
-    const parts = location.pathname.split("/").filter(Boolean);
-    const i = parts.findIndex(p => p.toLowerCase() === "apocrypha");
-    return (i >= 0 && parts[i+1]) ? decodeURIComponent(parts[i+1]).toLowerCase() : "";
-  }
-  function humanize(slug){
-    if(!slug) return "Apocrypha";
-    return slug.split("-").map(w => /^\d+$/.test(w) ? w : (w[0].toUpperCase()+w.slice(1))).join(" ");
-  }
-  async function loadMeta(slug){
-    const base = getBase();
-    const urls = [
-      `${base}/data/apocrypha/${slug}/_meta.json`,
-      `/data/apocrypha/${slug}/_meta.json`
-    ];
-    for(const u of urls){
-      try{
-        const r = await fetch(u, {cache:"force-cache"});
-        if(r.ok) return r.json();
-      }catch{}
-    }
-    return null;
-  }
-
-  async function init(){
-    const slug = getSlug();
-    const meta = await loadMeta(slug);
-    const title = meta?.book || humanize(slug);
-    const chapters = Math.max(1, parseInt(meta?.chapters||1,10));
-
-    // header
-    const h = document.getElementById('bookTitle');
-    const c = document.getElementById('crumbs');
-    if(h) h.textContent = title;
-    if(c) c.textContent = `Apocrypha → ${title}`;
-    document.title = `${title} — Chapters`;
-
-    // grid
-    const g = document.getElementById('chapGrid');
-    const base = getBase();
-    for(let i=1;i<=chapters;i++){
-      const a = document.createElement('a');
-      a.href = `${base}/apocrypha/chapter.html?book=${slug}&ch=${i}`;
-      a.className = 'ch';
-      a.textContent = i;
-      g.appendChild(a);
-    }
-  }
-
-  if(document.readyState === "loading"){ document.addEventListener("DOMContentLoaded", init, {once:true}); }
-  else { init(); }
-})();
-</script>
-<script src="/israelite-research/js/wire-chapter-cards.js"></script>
-</body></html>
+const book='judith',total=16;
+const g=document.getElementById('chapGrid');
+for(let i=1;i<=total;i++){const a=document.createElement('a');a.href=`/israelite-research/apocrypha/chapter.html?book=${book}&ch=${i}`;a.className='ch';a.textContent=i;g.appendChild(a);}
+</script><script src="/israelite-research/js/wire-chapter-cards.js"></script></body></html>
