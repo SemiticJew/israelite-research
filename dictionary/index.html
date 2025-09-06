@@ -1,0 +1,22 @@
+cat <<'EOF' > dictionary/index.html
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Israelite Bible Dictionary</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid #DBE4EE;border-radius:12px;padding:16px}
+  .chip{display:inline-block;font-size:.8rem;padding:2px 8px;border:1px solid #DBE4EE;border-radius:999px;margin-right:6px;margin-bottom:6px}
+  .search{width:100%;max-width:520px;padding:10px 12px;border:1px solid #DBE4EE;border-radius:10px}
+</style>
+</head><body class="container">
+<header class="page-header">
+  <h1 class="page-title">Israelite Bible Dictionary</h1>
+  <input id="dictSearch" class="search" type="search" placeholder="Search terms, refs, or tags…"/>
+</header>
+<main>
+  <section id="results" class="grid" aria-live="polite"></section>
+</main>
+<script src="/israelite-research/js/dictionary.js"></script>
+</body></html>
+EOF

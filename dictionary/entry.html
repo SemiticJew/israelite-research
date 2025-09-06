@@ -1,0 +1,31 @@
+cat <<'EOF' > dictionary/entry.html
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dictionary Entry</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  .meta{color:#6b7280;margin:8px 0}
+  .block{background:#fff;border:1px solid #DBE4EE;border-radius:12px;padding:16px;margin:12px 0}
+  .h{margin:0 0 8px}
+  code.kv{background:#DBE4EE;padding:2px 6px;border-radius:6px}
+</style>
+</head><body class="container">
+  <a href="/israelite-research/dictionary/" class="meta">← Back to Dictionary</a>
+  <h1 id="term" class="page-title"></h1>
+  <div id="summary" class="meta"></div>
+
+  <div id="biblical_refs" class="block"></div>
+  <div id="hebrew_greek" class="block"></div>
+  <div id="complexion_context" class="block"></div>
+  <div id="african_context" class="block"></div>
+  <div id="claims" class="block"></div>
+  <div id="evidence" class="block"></div>
+  <div id="counterpoints" class="block"></div>
+  <div id="analysis" class="block"></div>
+  <div id="linguistics" class="block"></div>
+  <div id="related_entries" class="block"></div>
+  <div id="provenance" class="block"></div>
+
+  <script src="/israelite-research/js/dictionary-entry.js"></script>
+</body></html>
+EOF
