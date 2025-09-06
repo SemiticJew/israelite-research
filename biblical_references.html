@@ -28,7 +28,12 @@
   .panel{background:#fff; border:1px solid var(--sky); border-radius:10px}
   .panel h3{margin:10px 14px; font-size:1rem; color:var(--brand)}
 
-  /* Results */
+  /* Results + facets */
+  .facets{border-bottom:1px solid var(--sky); padding:10px 12px}
+  .az{display:grid; grid-template-columns:repeat(13,1fr); gap:4px}
+  .az button{border:1px solid var(--sky); background:#fff; border-radius:6px; padding:.3rem 0; font:inherit; cursor:pointer}
+  .az button:hover{background:#f8fafc}
+
   .results{max-height:calc(100vh - 260px); overflow:auto; padding:8px 8px 12px}
   .card{border:1px solid var(--sky); border-radius:10px; padding:10px; margin:8px 4px; cursor:pointer; background:#fff}
   .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
@@ -41,8 +46,6 @@
   .reader .head{display:flex; align-items:center; justify-content:space-between; gap:8px; border-bottom:1px solid var(--sky); padding-bottom:8px}
   .reader .r-title{margin:0; font-size:1.4rem; font-weight:800}
   .reader article{line-height:1.55; margin-top:10px}
-  .reader .refs a{color:var(--brand); text-decoration:none; border-bottom:1px solid transparent}
-  .reader .refs a:hover{border-bottom-color:var(--brand)}
   .cite{margin-top:16px; padding-top:8px; border-top:1px solid var(--sky); color:var(--muted); font-size:.9rem}
   .empty{padding:22px; color:var(--muted)}
 
@@ -70,9 +73,14 @@
   </div>
 
   <main class="container layout">
-    <!-- Left: results -->
+    <!-- Left: results + facets -->
     <section class="panel panel-left" aria-label="Results and facets">
       <h3>Browse</h3>
+      <div class="facets">
+        <div class="az" aria-label="A–Z jump">
+          <!-- A–Z buttons injected by JS -->
+        </div>
+      </div>
       <div id="results" class="results" role="listbox" aria-label="Search results">
         <div class="empty">Type in the search or select an entry.</div>
       </div>
@@ -109,12 +117,13 @@
   <script>
     const COMBINED_URL = "/israelite-research/data/dictionaries/_normalized/combined.json";
     const DB = [];
+    let activeLetter = null;
 
     function normalizeCombined(row,i){
       const term = String(row.term||"").trim();
       const defs = Array.isArray(row.definitions)?row.definitions:[];
       const abstract = defs.length? defs[0].slice(0,220):"";
-      return { id:`${row.source}:${term}:${i}`, term, source:row.source, defs, abstract };
+      return { id:`${row.source}:${term}:${i}`, term, source:row.source, defs, abstract, letter:(term[0]||"#").toUpperCase() };
     }
 
     async function loadCombined(){
@@ -132,12 +141,18 @@
 
     const resultsEl=document.getElementById('results');
     const readerEl=document.getElementById('reader');
+    const azRoot=document.querySelector('.az');
     const q=document.getElementById('q');
     const clearQ=document.getElementById('clearQ');
 
     function renderResults(){
       const query=q.value.trim().toLowerCase();
-      const hits=DB.filter(e=>!query||e.term.toLowerCase().includes(query)).slice(0,400);
+      const hits=DB.filter(e=>{
+        if(activeLetter && e.letter!==activeLetter) return false;
+        if(query && !e.term.toLowerCase().includes(query)) return false;
+        return true;
+      }).slice(0,400);
+
       if(!hits.length){ resultsEl.innerHTML='<div class="empty">No results.</div>'; return; }
       const frag=document.createDocumentFragment();
       hits.forEach(e=>{
@@ -164,11 +179,22 @@
     const doFilter=debounce(()=>renderResults(),120);
     q.addEventListener('input',doFilter);
     clearQ.addEventListener('click',()=>{ q.value=''; renderResults(); q.focus(); });
-
     q.setAttribute('autocomplete','off'); // safety
+
+    // Build A–Z bar
+    (function buildAZ(){
+      const frag=document.createDocumentFragment();
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("").forEach(ch=>{
+        const b=document.createElement('button');
+        b.textContent=ch;
+        b.title="Jump to "+ch;
+        b.addEventListener('click',()=>{ activeLetter=(ch==="#"?null:ch); renderResults(); });
+        frag.appendChild(b);
+      });
+      azRoot.appendChild(frag);
+    })();
 
     (async function(){ await loadCombined(); renderResults(); })();
   </script>
 </body>
 </html>
-
