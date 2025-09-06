@@ -12,6 +12,20 @@
     .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
     .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
 
+    /* Search bar */
+    .searchbar{
+      display:flex; gap:.5rem; align-items:center;
+      background:var(--white); border:1px solid var(--sky); border-radius:10px;
+      padding:.5rem; margin:12px 0 10px;
+    }
+    .searchbar input[type="search"]{
+      flex:1; border:1px solid #e6ebf2; border-radius:10px; padding:.55rem .7rem; font:inherit;
+    }
+    .searchbar .btn{
+      border:1px solid #e6ebf2; background:#fff; border-radius:10px; padding:.5rem .8rem; cursor:pointer; font:inherit;
+    }
+    .searchbar .btn:hover{ background:#f8fafc }
+
     /* Tree */
     .tree{margin:14px 0 36px}
     .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
@@ -29,8 +43,11 @@
     .chip small{color:var(--muted)}
     .note{color:var(--muted); font-size:.85rem; margin-top:.35rem}
 
-    /* Small icon bullets */
-    .emoji{width:1.15rem; text-align:center}
+    /* Highlight */
+    .hl{ background:#fff3c4; box-shadow:0 0 0 2px #fde68a inset; }
+
+    /* Hidden during filter */
+    .hide{ display:none !important; }
   </style>
 </head>
 <body>
@@ -42,10 +59,16 @@
       <div class="breadcrumb">Biblia → Dietary Laws</div>
     </header>
 
+    <!-- Search / Filter -->
+    <div class="searchbar" role="search">
+      <input id="dietSearch" type="search" placeholder="Search animals, fish, birds, or laws (e.g., pig, salmon, blood, catfish, locust)…" aria-label="Search dietary items">
+      <button id="dietClear" class="btn" type="button">Clear</button>
+    </div>
+
     <section class="tree" id="dietTree" aria-label="Collapsible tree of dietary laws"></section>
 
     <p class="note">
-      <strong>Note:</strong> “Modern examples” are practical guides based on the biblical categories (e.g., fins & scales; cloven hoof & chewing cud).
+      <strong>Note:</strong> “Modern examples” are practical guides based on the biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud).
       Local traditions may vary on certain birds/insects; always verify sourcing and preparation (e.g., blood removal per Lev 17).
     </p>
   </main>
@@ -59,7 +82,6 @@
       "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans"
     };
 
-    // "Lev 11:3" -> {book:"Leviticus", ch:11, v:3, slug:"leviticus"}
     function parseRef(ref){
       const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
       if(!m) return null;
@@ -84,7 +106,7 @@
             {name:"Cattle (beef)", why:"cloven hoof, chews cud"},
             {name:"Sheep (lamb/mutton)", why:"cloven hoof, chews cud"},
             {name:"Goat (chevon)", why:"cloven hoof, chews cud"},
-            {name:"Deer/Antelope", why:"listed wild clean (Deut 14:5: hart, roebuck, etc.)"}
+            {name:"Deer/Antelope", why:"clean wild species (Deut 14:5)"}
           ]
         },
         "🐟 Fish (fins & scales)": {
@@ -172,14 +194,16 @@
       }
     };
 
-    // ---------- Renderer ----------
-    (function renderTree(){
-      const root = document.getElementById('dietTree');
+    // ---------- Render & Search ----------
+    const tree = document.getElementById('dietTree');
+
+    function renderTree(){
       const frag = document.createDocumentFragment();
 
       Object.entries(DATA).forEach(([section, groups]) => {
         const sec = document.createElement('details');
         sec.open = true;
+        sec.className = 'sec';
         const sum = document.createElement('summary');
         sum.textContent = section;
         sec.appendChild(sum);
@@ -189,17 +213,15 @@
 
         Object.entries(groups).forEach(([label, payload]) => {
           const grp = document.createElement('details');
-          const gsum = document.createElement('summary');
+          grp.className = 'grp';
 
-          // Normalize payload -> {refs:[], examples:[]}
+          const gsum = document.createElement('summary');
           let refs = [], examples = [];
-          if (Array.isArray(payload)) {
-            refs = payload;
-          } else if (payload && typeof payload === 'object') {
+          if (Array.isArray(payload)) refs = payload;
+          else if (payload && typeof payload === 'object') {
             refs = Array.isArray(payload.refs) ? payload.refs : [];
             examples = Array.isArray(payload.examples) ? payload.examples : [];
           }
-
           gsum.innerHTML = `${label} <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
           grp.appendChild(gsum);
 
@@ -210,6 +232,8 @@
             refs.forEach(r => {
               const li = document.createElement('li'); li.className = 'leaf';
               const a = document.createElement('a'); a.className = 'law-link'; a.href = refHref(r); a.textContent = r;
+              // searchable text for this item
+              a.dataset.search = `ref ${r.toLowerCase()}`;
               li.appendChild(a);
               ul.appendChild(li);
             });
@@ -222,16 +246,21 @@
             chipWrap.className = 'chips';
             examples.forEach(ex => {
               const chip = document.createElement('span'); chip.className = 'chip';
-              chip.textContent = ex.name || '';
+              const main = document.createElement('span'); main.textContent = ex.name || '';
+              chip.appendChild(main);
               if (ex.why) {
                 const sm = document.createElement('small'); sm.textContent = '— ' + ex.why;
                 chip.appendChild(sm);
               }
+              // searchable text for this example
+              chip.dataset.search = `${(ex.name||'').toLowerCase()} ${(ex.why||'').toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
               chipWrap.appendChild(chip);
             });
             grp.appendChild(chipWrap);
           }
 
+          // For group-level searching as well
+          grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
           wrap.appendChild(grp);
         });
 
@@ -239,9 +268,70 @@
         frag.appendChild(sec);
       });
 
-      root.innerHTML = '';
-      root.appendChild(frag);
-    })();
+      tree.innerHTML = '';
+      tree.appendChild(frag);
+    }
+
+    function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
+
+    function applyFilter(q){
+      const query = (q||'').trim().toLowerCase();
+      const groups = Array.from(tree.querySelectorAll('.grp'));
+      const sections = Array.from(tree.querySelectorAll('.sec'));
+
+      // reset state
+      tree.querySelectorAll('.hl').forEach(el => el.classList.remove('hl'));
+      groups.forEach(g => { g.classList.remove('hide'); g.open = false; });
+      sections.forEach(s => { s.classList.remove('hide'); s.open = true; });
+
+      if (!query) return;
+
+      // filter items
+      groups.forEach(grp => {
+        const chips = Array.from(grp.querySelectorAll('.chip'));
+        const links = Array.from(grp.querySelectorAll('.law-link'));
+
+        let anyMatch = false;
+
+        chips.forEach(ch => {
+          const hay = (ch.dataset.search || ch.textContent || '').toLowerCase();
+          const match = hay.includes(query);
+          ch.classList.toggle('hl', match);
+          if (match) anyMatch = true;
+        });
+
+        links.forEach(a => {
+          const hay = (a.dataset.search || a.textContent || '').toLowerCase();
+          const match = hay.includes(query);
+          a.classList.toggle('hl', match);
+          if (match) anyMatch = true;
+        });
+
+        // if no chip/link matched, check group label text
+        if (!anyMatch) {
+          const hay = (grp.dataset.search || '').toLowerCase();
+          anyMatch = hay.includes(query);
+        }
+
+        grp.classList.toggle('hide', !anyMatch);
+        grp.open = anyMatch; // open matched groups
+      });
+
+      // hide sections with no visible groups
+      sections.forEach(sec => {
+        const visible = sec.querySelector('.grp:not(.hide)');
+        sec.classList.toggle('hide', !visible);
+        sec.open = !!visible;
+      });
+    }
+
+    // Bootstrap
+    renderTree();
+    const search = document.getElementById('dietSearch');
+    const clearBtn = document.getElementById('dietClear');
+    const doFilter = debounce(applyFilter, 120);
+    search.addEventListener('input', e => doFilter(e.target.value));
+    clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
   </script>
 </body>
 </html>
