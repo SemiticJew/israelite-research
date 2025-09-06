@@ -5,24 +5,24 @@
 <title>Israelite Encyclopedia</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340;--accent:#F17300;--border:#e6ebf2;--muted:#6b7280}
+  :root{--ink:#0b2340;--accent:#F17300;--border:#e6ebf2;--muted:#6b7280;--blue:#054A91}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   header.page-header{padding:24px 0 12px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
   .page-sub{margin:.25rem 0 0;color:var(--muted)}
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
   .search{width:100%;max-width:540px;padding:10px 12px;border:1px solid var(--border);border-radius:10px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:18px 0 40px}
-  .card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow:hidden;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
-  .card:focus-within,.card:hover{border-color:#cdd8e6;box-shadow:0 10px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
-  .card a{display:block;color:inherit;text-decoration:none}
-  .thumb{height:140px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#054A91,#81A4CD)}
-  .thumb span{font-weight:800;letter-spacing:.06em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.18);background:rgba(0,0,0,.12);padding:6px 10px;border-radius:999px;font-size:.88rem}
-  .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-  .kicker{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.1em}
-  .title{margin:0;font-size:1.08rem;font-weight:900;color:#054A91;line-height:1.35}
-  .desc{margin:0;color:#4b5563;font-size:.95rem}
-  .chips{margin-top:6px}
-  .chip{display:inline-block;font-size:.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:999px;margin-right:6px;margin-bottom:6px}
+  .letters{display:flex;gap:6px;flex-wrap:wrap}
+  .letters a{display:inline-block;padding:6px 10px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--blue);font-weight:700}
+  .letters a.active{border-color:var(--accent);color:var(--accent)}
+  .index{margin:20px 0 40px}
+  .letter-group{break-inside:avoid;margin:18px 0}
+  .letter-head{font-weight:900;letter-spacing:.08em;color:var(--blue);margin:0 0 6px}
+  .entry-list{columns:2;column-gap:28px}
+  @media (max-width:800px){.entry-list{columns:1}}
+  .entry-list a{display:block;padding:6px 0;border-bottom:1px dotted #e9eef6;color:var(--ink);text-decoration:none}
+  .entry-list a:hover{color:var(--accent)}
+  .badge{font-size:.72rem;color:#7387a6;text-transform:uppercase;margin-left:6px}
 </style>
 </head>
 <body class="encyclopedia-page">
@@ -32,14 +32,15 @@
     <header class="page-header">
       <div class="container">
         <h1 class="page-title">Israelite Encyclopedia</h1>
-        <p class="page-sub">People, places, and concepts with Semitic–African context and sources.</p>
-        <input id="encySearch" class="search" type="search" placeholder="Search terms, refs, or tags…"/>
+        <p class="page-sub">Alphabetical index of people, places, and concepts (Encyclopaedia-style).</p>
+        <div class="controls">
+          <input id="encySearch" class="search" type="search" placeholder="Search headwords, refs, or tags…"/>
+          <nav class="letters" id="letters"></nav>
+        </div>
       </div>
     </header>
 
-    <section class="container">
-      <div id="results" class="grid" aria-live="polite"></div>
-    </section>
+    <section class="container index" id="encyIndex" aria-live="polite"></section>
   </main>
 
   <div id="site-footer" data-include="partials/footer.html"></div>
