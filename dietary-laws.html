@@ -293,19 +293,31 @@
             grp.appendChild(ul);
           }
 
-          // Examples chips
+          // Examples chips (TOOLTIPS ADDED HERE)
           if (examples.length) {
             const chipWrap = document.createElement('div');
             chipWrap.className = 'chips';
             examples.forEach(ex => {
-              const chip = document.createElement('span'); chip.className = 'chip';
-              const main = document.createElement('span'); main.textContent = ex.name || '';
+              const chip = document.createElement('span');
+              chip.className = 'chip';
+
+              const name = ex.name || '';
+              const why  = ex.why  || '';
+              const tip  = why ? `${name}: ${why}` : name;
+              chip.title = tip;                 // native tooltip
+              chip.setAttribute('aria-label', tip); // accessibility
+
+              const main = document.createElement('span'); 
+              main.textContent = name;
               chip.appendChild(main);
-              if (ex.why) {
-                const sm = document.createElement('small'); sm.textContent = '— ' + ex.why;
+
+              if (why) {
+                const sm = document.createElement('small'); 
+                sm.textContent = '— ' + why;
                 chip.appendChild(sm);
               }
-              chip.dataset.search = `${(ex.name||'').toLowerCase()} ${(ex.why||'').toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+
+              chip.dataset.search = `${name.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
               chipWrap.appendChild(chip);
             });
             grp.appendChild(chipWrap);
