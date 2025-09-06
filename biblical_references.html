@@ -1,342 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Bible References — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css"/>
-  <style>
-    :root{
-      --ink:#0b2340; --muted:#6b7280; --brand:#054A91; --accent:#F17300;
-      --sky:#DBE4EE; --card:#fff; --border:#e6ebf2; --bg:#f7fafc;
-    }
-    body{background:#fff}
-    .container{max-width:1200px;margin:0 auto;padding:0 16px}
-    header.page-header{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--sky);padding:10px 0 12px}
-    .head-row{display:grid;grid-template-columns:1fr 560px;gap:12px;align-items:center}
-    .page-title{margin:0;font-size:1.35rem;font-weight:800;color:var(--ink)}
-    /* Omnibar */
-    .omnibar{display:flex;gap:.5rem;align-items:center}
-    .omnibar input[type="search"]{flex:1;border:1px solid var(--border);border-radius:10px;padding:.55rem .7rem;font:inherit}
-    .omnibar .btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:.5rem .8rem;cursor:pointer;font:inherit}
-    .omnibar .btn:hover{background:#f8fafc}
-    /* Quick filters */
-    .quick-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:6px}
-    .qchip{border:1px solid var(--sky);background:#fff;border-radius:999px;padding:.18rem .6rem;font-size:.82rem;cursor:pointer}
-    .qchip[data-active="1"]{background:#054A910D}
-    /* A–Z bar */
-    .azbar{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:6px}
-    .azbar button{border:1px solid var(--sky);background:#fff;border-radius:6px;padding:.2rem .45rem;font-size:.8rem;cursor:pointer}
-    .azbar button:hover{background:#f8fafc}
-    /* Layout */
-    .layout{display:grid;grid-template-columns:380px 1fr;gap:16px;margin:14px 0 40px}
-    @media (max-width:980px){ .layout{grid-template-columns:1fr} .head-row{grid-template-columns:1fr} }
-    /* Results list */
-    .results{background:var(--card);border:1px solid var(--sky);border-radius:12px;padding:10px;max-height:calc(100vh - 180px);overflow:auto}
-    .r-card{border:1px solid var(--border);border-radius:10px;background:#fff;padding:10px;margin:8px 0}
-    .r-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-    .r-term{font-weight:800;color:var(--brand)}
-    .r-src{font-size:.78rem;border:1px solid var(--sky);border-radius:999px;padding:.05rem .4rem;background:#f8fafc}
-    .r-abs{margin-top:4px;color:#374151;font-size:.95rem}
-    .r-actions{display:flex;gap:.35rem;margin-top:6px}
-    .r-actions button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:.25rem .5rem;font-size:.82rem;cursor:pointer}
-    .r-actions button:hover{background:#f8fafc}
-    /* Reader */
-    .reader{background:var(--card);border:1px solid var(--sky);border-radius:12px;padding:12px;min-height:320px}
-    .rd-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .rd-title{margin:0;font-size:1.25rem;font-weight:800;color:var(--ink)}
-    .rd-badges{display:flex;gap:.35rem;flex-wrap:wrap}
-    .badge{border:1px solid var(--sky);background:#fff;border-radius:999px;padding:.12rem .5rem;font-size:.78rem}
-    .rd-body{margin-top:8px}
-    .rd-body p{margin:.5rem 0}
-    .muted{color:var(--muted)}
-    /* Hover verse card reused from dietary page */
-    .hovercard{
-      position:absolute; z-index:9999; display:none; max-width:min(380px, 92vw);
-      background:#fff; border:1px solid var(--border); border-radius:10px;
-      box-shadow:0 8px 30px rgba(0,0,0,.12); padding:.6rem .7rem; font-size:.9rem;
-    }
-    .hovercard.open{display:block}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bible References — Semitic Jew</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  body{background:#fff;color:var(--ink)}
+  .container{max-width:1400px;margin:0 auto;padding:0 16px}
+
+  /* Sticky top bar */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:#fff; border-bottom:1px solid var(--sky);
+  }
+  .topbar-inner{
+    display:grid; grid-template-columns: 1fr auto; gap:12px;
+    align-items:center; padding:10px 16px;
+  }
+  .title{font-size:1.2rem; font-weight:800; margin:0}
+  .omnibar{
+    display:flex; gap:.5rem; align-items:center;
+    border:1px solid var(--sky); border-radius:10px; padding:.4rem; background:#fff;
+  }
+  .omnibar input[type="search"]{flex:1; border:1px solid #e6ebf2; border-radius:8px; padding:.55rem .7rem; font:inherit}
+  .omnibar .btn{border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.5rem .7rem; cursor:pointer}
+
+  .quick-filters{
+    display:flex; gap:.4rem; flex-wrap:wrap; padding:0 16px 10px;
+  }
+  .qf{border:1px solid var(--sky); background:#f9fafb; border-radius:999px; padding:.22rem .6rem; font-size:.86rem; cursor:pointer}
+  .qf[aria-pressed="true"]{background:#054A910D}
+
+  /* Two-pane layout */
+  .layout{display:grid; grid-template-columns: 380px 1fr; gap:16px; margin:14px 0 32px}
+  @media (max-width: 980px){ .layout{grid-template-columns:1fr} .panel-right{order:-1} }
+
+  .panel{background:#fff; border:1px solid var(--sky); border-radius:10px}
+  .panel h3{margin:10px 14px; font-size:1rem; color:var(--brand)}
+
+  /* Facets + list */
+  .facets{border-bottom:1px solid var(--sky); padding:10px 12px}
+  .az{display:grid; grid-template-columns:repeat(13,1fr); gap:4px}
+  .az button{border:1px solid var(--sky); background:#fff; border-radius:6px; padding:.3rem 0; font:inherit; cursor:pointer}
+  .az button:hover{background:#f8fafc}
+  .facet-line{display:flex; gap:.4rem; margin-top:8px; flex-wrap:wrap}
+  .badge{display:inline-flex; align-items:center; gap:.3rem; border:1px solid var(--sky); border-radius:999px; padding:.1rem .5rem; font-size:.8rem}
+  .badge input{margin:0}
+
+  .results{max-height:calc(100vh - 260px); overflow:auto; padding:8px 8px 12px}
+  .card{border:1px solid var(--sky); border-radius:10px; padding:10px; margin:8px 4px; cursor:pointer; background:#fff}
+  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+  .card .line1{display:flex; align-items:baseline; gap:.5rem}
+  .card .term{font-weight:800}
+  .card .src{font-size:.8rem; color:#374151; background:#EEF2FF; border:1px solid #E5E7EB; border-radius:6px; padding:.05rem .35rem}
+  .chips{display:flex; gap:.35rem; flex-wrap:wrap; margin-top:.25rem}
+  .chip{border:1px solid var(--sky); background:#f9fafb; border-radius:999px; padding:.12rem .5rem; font-size:.76rem}
+
+  /* Reader */
+  .reader{padding:10px 14px}
+  .reader .head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; border-bottom:1px solid var(--sky); padding-bottom:8px}
+  .reader .r-title{margin:0; font-size:1.4rem; font-weight:800}
+  .reader .r-meta{display:flex; gap:.35rem; align-items:center}
+  .reader .btn{border:1px solid var(--sky); background:#fff; border-radius:8px; padding:.35rem .55rem; font:inherit; cursor:pointer}
+  .reader article{line-height:1.55; margin-top:10px}
+  .reader .refs a{color:var(--brand); text-decoration:none; border-bottom:1px solid transparent}
+  .reader .refs a:hover{border-bottom-color:var(--brand)}
+  .cite{margin-top:16px; padding-top:8px; border-top:1px solid var(--sky); color:var(--muted); font-size:.9rem}
+  .muted{color:var(--muted)}
+
+  .empty{padding:22px; color:var(--muted)}
+</style>
 </head>
-<body class="bibrefs-page">
+<body>
+  <!-- Header include -->
   <div id="site-header" data-include="partials/header.html"></div>
 
-  <header class="page-header">
-    <div class="container">
-      <div class="head-row">
-        <h1 class="page-title">Bible References</h1>
-        <form class="omnibar" role="search" onsubmit="return false;">
-          <input id="q" type="search" placeholder="Search terms (e.g., Zion, Sabbath, covenant)…  Try filters like: src:Easton type:Dictionary" aria-label="Search dictionary entries"/>
-          <button id="clearBtn" class="btn" type="button">Clear</button>
-        </form>
+  <div class="topbar">
+    <div class="topbar-inner container">
+      <h1 class="title">Bible References</h1>
+      <div class="omnibar" role="search">
+        <input id="q" type="search" placeholder="Search (e.g., sabbath, covenant, Zion, lemma:hesed, src:Easton, type:Dictionary)…" aria-label="Search dictionaries">
+        <button id="clearQ" class="btn" type="button">Clear</button>
       </div>
-      <div class="quick-filters" id="qf">
-        <button class="qchip" data-filter="type:Dictionary">Dictionary</button>
-        <button class="qchip" data-filter="type:Encyclopedia">Encyclopedia</button>
-        <button class="qchip" data-filter="type:Lexicon">Lexicon</button>
-        <button class="qchip" data-filter="scope:Tanakh">Tanakh</button>
-        <button class="qchip" data-filter="scope:NT">NT</button>
-        <button class="qchip" data-filter="scope:Apocrypha">Apocrypha</button>
-        <button class="qchip" data-filter="src:Easton">Easton</button>
-        <button class="qchip" data-filter="src:Hitchcock">Hitchcock</button>
-        <button class="qchip" data-filter="src:ISD">ISD</button>
-      </div>
-      <div class="azbar" id="az"></div>
     </div>
-  </header>
+    <div class="quick-filters container" role="toolbar" aria-label="Quick filters">
+      <button class="qf" data-type="Dictionary" aria-pressed="false">Dictionary</button>
+      <button class="qf" data-type="Encyclopedia" aria-pressed="false">Encyclopedia</button>
+      <button class="qf" data-type="Lexicon" aria-pressed="false">Lexicon</button>
+      <button class="qf" data-type="Person" aria-pressed="false">People</button>
+      <button class="qf" data-type="Place" aria-pressed="false">Places</button>
+      <button class="qf" data-type="Concept" aria-pressed="false">Concepts</button>
+    </div>
+  </div>
 
-  <main class="container">
-    <section class="layout">
-      <aside class="results" id="results" aria-label="Results list"></aside>
-      <article class="reader" id="reader" aria-live="polite">
-        <div class="muted">Select an entry to read.</div>
-      </article>
+  <main class="container layout">
+    <!-- Left: facets + results -->
+    <section class="panel panel-left" aria-label="Results and facets">
+      <h3>Browse & Filter</h3>
+      <div class="facets">
+        <div class="az" aria-label="A–Z jump"></div>
+        <div class="facet-line" style="margin-top:10px">
+          <span class="badge"><input type="checkbox" id="facetTanakh" checked> Tanakh</span>
+          <span class="badge"><input type="checkbox" id="facetNT" checked> New Testament</span>
+          <span class="badge"><input type="checkbox" id="facetApoc" checked> Apocrypha</span>
+          <span class="badge"><input type="checkbox" id="facetHeb" checked> Hebrew/Aramaic</span>
+          <span class="badge"><input type="checkbox" id="facetGrk" checked> Greek</span>
+        </div>
+      </div>
+      <div id="results" class="results" role="listbox" aria-label="Search results">
+        <div class="empty">Type in the search or use A–Z to browse.</div>
+      </div>
     </section>
+
+    <!-- Right: reader -->
+    <aside class="panel panel-right" aria-label="Reading panel">
+      <div class="reader" id="reader">
+        <div class="empty">Select an entry to read.</div>
+      </div>
+    </aside>
   </main>
 
+  <!-- Footer include -->
   <div id="site-footer" data-include="partials/footer.html"></div>
-  <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
-
   <script src="/israelite-research/js/include.js"></script>
   <script>
-    // ---------- Utility ----------
+    // ===== Combined dictionary index =====
     const COMBINED_URL = "/israelite-research/data/dictionaries/_normalized/combined.json";
-    const resultsEl = document.getElementById('results');
-    const readerEl  = document.getElementById('reader');
-    const qEl = document.getElementById('q');
-    const clearBtn = document.getElementById('clearBtn');
-    const hovercard = document.getElementById('hovercard');
 
-    function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+    // Normalized entry: { id, term, source, type, lang, scope, tags:[], abstract, defs:[...], lettersKey }
+    const DB = [];
 
-    function showHoverNear(anchorEl, html){
-      if(!hovercard || !anchorEl) return;
-      const r = anchorEl.getBoundingClientRect();
-      hovercard.innerHTML = html;
-      hovercard.style.left = (window.scrollX + r.left + Math.min(240, r.width)) + "px";
-      hovercard.style.top  = (window.scrollY + r.top) + "px";
-      hovercard.classList.add("open");
-      hovercard.setAttribute("aria-hidden","false");
-    }
-    function hideHover(){
-      if(!hovercard) return;
-      hovercard.classList.remove("open");
-      hovercard.setAttribute("aria-hidden","true");
-    }
-    document.addEventListener('click', (e)=>{ if(!e.target.closest('#hovercard,[data-ref]')) hideHover(); });
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":'&#39;'}[m])); }
 
-    // ---------- Ingest combined index ----------
-    let ALL = [];      // {id,term,source,type,defs[],abstract,lettersKey,scope}
-    let ACTIVE = [];   // filtered view
-    let PINNED = [];   // for compare drawer later
-    const A2Z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-    function detectScopeFromDefs(defs){
-      const body = (defs||[]).join(" ").toLowerCase();
-      if (body.includes("new testament") || body.includes("nt")) return "NT";
-      if (body.includes("apocrypha")) return "Apocrypha";
-      return "Tanakh/General";
+    function detectLangAndScope(text=''){
+      const t = text.toLowerCase();
+      const lang = (/\bhebrew\b|\baramaic\b|\bchaldee\b/.test(t)) ? 'Heb/Aram'
+                 : (/\bgreek\b/.test(t) ? 'Greek' : 'English');
+      const scope = (/\bold testament|tanakh\b/.test(t)) ? 'Tanakh'
+                   : (/\bnew testament\b/.test(t)) ? 'NT'
+                   : (/\bapocrypha|maccabees|esdras|tobit|sirach|wisdom|baruch|susanna|bel|laodiceans\b/.test(t)) ? 'Apocrypha'
+                   : 'General';
+      return { lang, scope };
     }
 
-    function normalizeRow(row, i){
-      const term = String(row.term||"").trim();
+    function abstractFromDefs(defs){
+      const first = (defs && defs[0]) ? String(defs[0]) : "";
+      const m = first.match(/^(.{0,220}?[\.\u203D\u203C\!;:])\s/);
+      return (m ? m[1] : first.slice(0, 220)).trim();
+    }
+
+    // combined.json rows: { term, definitions, source, type? }
+    function normalizeCombined(row, idx){
+      const term = String(row.term || "").trim();
       const defs = Array.isArray(row.definitions) ? row.definitions.filter(Boolean) : [];
-      const source = String(row.source||"Unknown").trim();
+      const source = String(row.source || "Unknown").trim();
       const type = row.type ? String(row.type) : "Dictionary";
-      const abstract = (defs[0]||"").replace(/\s+/g," ").trim().slice(0,300);
-      const scope = row.scope || detectScopeFromDefs(defs);
+      const { lang, scope } = detectLangAndScope(defs.join(" "));
+      const abstract = abstractFromDefs(defs);
       return {
-        id:`${source}:${term.toLowerCase()}:${i}`, term, source, type, defs, abstract,
-        lettersKey: term ? term[0].toUpperCase() : '#', scope
+        id: `${source}:${term.toLowerCase()}:${idx}`,
+        term, source, type, lang, scope, tags: [],
+        abstract, defs, lettersKey: (term[0] || '#').toUpperCase()
       };
     }
 
     async function loadCombined(){
       const res = await fetch(COMBINED_URL, { cache: "no-store" });
-      if(!res.ok) throw new Error("HTTP "+res.status);
+      if(!res.ok) throw new Error("HTTP " + res.status);
       const arr = await res.json();
       if(!Array.isArray(arr)) throw new Error("combined.json must be an array");
-      ALL = arr.map(normalizeRow);
-      ACTIVE = ALL.slice();
-      renderAZ();
-      renderResults();
+      DB.length = 0;
+      arr.forEach((row,i)=>{ if(row && row.term) DB.push(normalizeCombined(row,i)); });
+      DB.sort((a,b)=> a.term.localeCompare(b.term));
     }
 
-    // ---------- Filters / Search ----------
-    const quickWrap = document.getElementById('qf');
-    let activeFilters = new Set(); // strings like "src:Easton", "type:Dictionary", "scope:NT"
-    function toggleFilter(f){
-      if(activeFilters.has(f)) activeFilters.delete(f); else activeFilters.add(f);
-      // reflect UI
-      quickWrap.querySelectorAll('.qchip').forEach(ch=>{
-        const key = ch.getAttribute('data-filter');
-        ch.dataset.active = activeFilters.has(key) ? "1" : "0";
+    // ---------- UI wiring ----------
+    const azRoot = document.querySelector('.az');
+    const resultsEl = document.getElementById('results');
+    const readerEl = document.getElementById('reader');
+    const q = document.getElementById('q');
+    const clearQ = document.getElementById('clearQ');
+
+    const activeFilters = {
+      types: new Set(), // 'Dictionary','Encyclopedia','Lexicon','Person','Place','Concept'
+      scope: { Tanakh:true, NT:true, Apoc:true },
+      lang: { Heb:true, Grk:true },
+      letter: null
+    };
+
+    // A–Z bar
+    (function buildAZ(){
+      const frag = document.createDocumentFragment();
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('').forEach(ch=>{
+        const b = document.createElement('button');
+        b.textContent = ch;
+        b.title = `Jump to ${ch}`;
+        b.addEventListener('click', ()=>{
+          activeFilters.letter = ch === '#' ? null : ch;
+          renderResults();
+        });
+        frag.appendChild(b);
       });
-      applyQuery(qEl.value);
-    }
-    quickWrap.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.qchip');
-      if(!btn) return;
-      toggleFilter(btn.getAttribute('data-filter'));
+      azRoot.appendChild(frag);
+    })();
+
+    // Quick filters
+    document.querySelectorAll('.qf').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const t = btn.dataset.type;
+        const pressed = btn.getAttribute('aria-pressed') === 'true';
+        if (pressed){ activeFilters.types.delete(t); } else { activeFilters.types.add(t); }
+        btn.setAttribute('aria-pressed', (!pressed).toString());
+        renderResults();
+      });
     });
 
-    function applyQuery(q){
-      const query = String(q||"").trim().toLowerCase();
-      ACTIVE = ALL.filter(row=>{
-        // filter chips
-        for(const f of activeFilters){
-          const [k,v] = f.split(":");
-          if(k==="src"   && row.source.toLowerCase() !== v.toLowerCase()) return false;
-          if(k==="type"  && row.type.toLowerCase()   !== v.toLowerCase()) return false;
-          if(k==="scope" && String(row.scope||"").toLowerCase().indexOf(v.toLowerCase())===-1) return false;
+    // Checkboxes
+    function bindCheck(id, obj, key){
+      const el = document.getElementById(id);
+      el.addEventListener('change', (e)=>{ obj[key]=!!e.target.checked; renderResults(); });
+    }
+    bindCheck('facetTanakh', activeFilters.scope, 'Tanakh');
+    bindCheck('facetNT', activeFilters.scope, 'NT');
+    bindCheck('facetApoc', activeFilters.scope, 'Apoc');
+    bindCheck('facetHeb', activeFilters.lang, 'Heb');
+    bindCheck('facetGrk', activeFilters.lang, 'Grk');
+
+    // Search parsing
+    function parseQuery(s){
+      const tokens = String(s||'').trim().split(/\s+/);
+      const res = { text:[], src:[], type:[], lang:[], scope:[], lemma:null };
+      tokens.forEach(tok=>{
+        const m = tok.match(/^(\w+):(.*)$/);
+        if (m){
+          const k = m[1].toLowerCase(), v = m[2];
+          if (k==='src') res.src.push(v);
+          if (k==='type') res.type.push(v);
+          if (k==='lang') res.lang.push(v);
+          if (k==='scope') res.scope.push(v);
+          if (k==='lemma') res.lemma = v;
+        }else{
+          res.text.push(tok);
         }
-        // free-text
-        if(!query) return true;
-        const hay = (row.term+" "+row.source+" "+row.abstract+" "+row.defs.join(" ")).toLowerCase();
-        return hay.includes(query);
       });
-      renderResults();
+      res.text = res.text.join(' ').toLowerCase();
+      return res;
     }
 
-    qEl.addEventListener('input', e=>applyQuery(e.target.value));
-    clearBtn.addEventListener('click', ()=>{ qEl.value=""; activeFilters.clear(); quickWrap.querySelectorAll('.qchip').forEach(ch=>ch.dataset.active="0"); applyQuery(""); qEl.focus(); });
+    function matches(entry, qp){
+      if (activeFilters.letter && entry.lettersKey !== activeFilters.letter) return false;
 
-    function renderAZ(){
-      const az = document.getElementById('az'); az.innerHTML="";
-      A2Z.forEach(letter=>{
-        const btn = document.createElement('button');
-        btn.textContent = letter;
-        btn.addEventListener('click', ()=>{
-          applyQuery(qEl.value);
-          // find first with this letter
-          const idx = ACTIVE.findIndex(x=>x.lettersKey===letter);
-          if(idx>-1){
-            const target = resultsEl.querySelector(`[data-idx="${idx}"]`);
-            if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
-          }
+      // scope
+      const scopeHit = (entry.scope==='Tanakh' && activeFilters.scope.Tanakh)
+                    || (entry.scope==='NT' && activeFilters.scope.NT)
+                    || (entry.scope==='Apocrypha' && activeFilters.scope.Apoc)
+                    || (entry.scope==='General');
+      if (!scopeHit) return false;
+
+      // lang
+      const langHit = (entry.lang==='Heb/Aram' && activeFilters.lang.Heb)
+                   || (entry.lang==='Greek' && activeFilters.lang.Grk)
+                   || (entry.lang==='English');
+      if (!langHit) return false;
+
+      // quick types
+      if (activeFilters.types.size && !activeFilters.types.has(entry.type)) return false;
+
+      // query params
+      const lc = s => String(s||"").toLowerCase();
+      if (qp.src.length && !qp.src.some(s=> lc(s)===lc(entry.source))) return false;
+      if (qp.type.length && !qp.type.some(t=> lc(t)===lc(entry.type))) return false;
+      if (qp.scope.length && !qp.scope.some(sc=> lc(sc)===lc(entry.scope))) return false;
+      if (qp.lang.length){
+        const l = lc(entry.lang);
+        const ok = qp.lang.some(x=>{
+          const xx = lc(x);
+          return (xx==='hebrew' && l.includes('heb')) || (xx==='greek' && l.includes('greek')) || (xx==='aramaic' && l.includes('aram'));
         });
-        az.appendChild(btn);
-      });
+        if (!ok) return false;
+      }
+
+      // text
+      if (qp.text){
+        const hay = (entry.term + ' ' + entry.abstract + ' ' + entry.defs.join(' ')).toLowerCase();
+        if (!hay.includes(qp.text)) return false;
+      }
+      return true;
     }
 
-    // ---------- Rendering ----------
     function renderResults(){
-      if(!ACTIVE.length){
-        resultsEl.innerHTML = `<p class="muted" style="padding:.3rem">No results.</p>`;
-        readerEl.innerHTML  = `<div class="muted">Select an entry to read.</div>`;
+      const qp = parseQuery(q.value);
+      const hits = DB.filter(e => matches(e, qp)).slice(0, 400);
+
+      if (!hits.length){
+        resultsEl.innerHTML = '<div class="empty">No results. Try fewer filters or another keyword.</div>';
         return;
       }
-      const html = ACTIVE.map((e,i)=>`
-        <article class="r-card" data-idx="${i}">
-          <div class="r-top">
-            <strong class="r-term">${escapeHtml(e.term)}</strong>
-            <span class="r-src">${escapeHtml(e.source)}</span>
+
+      const frag = document.createDocumentFragment();
+      hits.forEach(e=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.role = 'option';
+        card.innerHTML = `
+          <div class="line1">
+            <div class="term">${escapeHtml(e.term)}</div>
+            <span class="src" title="${escapeHtml(e.source)}">${escapeHtml(e.source)}</span>
+            <span class="chip" title="Type">${escapeHtml(e.type)}</span>
+            <span class="chip" title="Scope">${escapeHtml(e.scope)}</span>
+            <span class="chip" title="Language">${escapeHtml(e.lang)}</span>
           </div>
-          <div class="r-abs">${escapeHtml(e.abstract||"(no preview)")}</div>
-          <div class="r-actions">
-            <button data-open="${i}">Open</button>
-            <button data-copy="${i}">Copy permalink</button>
-            <button data-pin="${i}">Pin</button>
+          <div class="abstract">${escapeHtml(e.abstract || '')}</div>
+        `;
+        card.addEventListener('click', ()=> openEntry(e));
+        frag.appendChild(card);
+      });
+      resultsEl.innerHTML = '';
+      resultsEl.appendChild(frag);
+    }
+
+    function openEntry(e){
+      const permalink = new URL(location.href);
+      permalink.hash = '#ref=' + encodeURIComponent(e.id);
+
+      readerEl.innerHTML = `
+        <div class="head">
+          <h2 class="r-title">${escapeHtml(e.term)}</h2>
+          <div class="r-meta">
+            <span class="chip">${escapeHtml(e.source)}</span>
+            <span class="chip">${escapeHtml(e.type)}</span>
+            <button class="btn" id="copyLink">Copy permalink</button>
+          </div>
+        </div>
+        <article class="refs">
+          ${e.defs.map(d => `<p>${linkifyBibleRefs(escapeHtml(d))}</p>`).join('')}
+          <div class="cite">
+            Source: ${escapeHtml(e.source)}. Provide publisher/year and link when available.
           </div>
         </article>
-      `).join("");
-      resultsEl.innerHTML = html;
-
-      resultsEl.querySelectorAll('[data-open]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const i = +btn.getAttribute('data-open');
-          const ent = ACTIVE[i];
-          if(ent) openInReader(ent);
-        });
-      });
-      resultsEl.querySelectorAll('[data-copy]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const i = +btn.getAttribute('data-copy');
-          const ent = ACTIVE[i];
-          const url = new URL(location.href);
-          url.searchParams.set("term", ent.term);
-          navigator.clipboard.writeText(url.toString());
-          btn.textContent = "Copied!";
-          setTimeout(()=>btn.textContent="Copy permalink",900);
-        });
-      });
-      resultsEl.querySelectorAll('[data-pin]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const i = +btn.getAttribute('data-pin');
-          const ent = ACTIVE[i];
-          if(!ent) return;
-          if(!PINNED.find(p=>p.id===ent.id)){ PINNED.push(ent); }
-          btn.textContent = "Pinned";
-          // Future: open compare drawer UI
-        });
-      });
-    }
-
-    function linkifyBibleRefs(text){
-      // Simple pattern: Book Name 0:0  (basic, not exhaustive)
-      return text.replace(/([1-3]?\s?[A-Z][a-z]+)\s(\d+):(\d+)/g, (m,book,chap,ver)=>{
-        const href = `#`; // could deep-link into your chapter route if desired
-        return `<a href="${href}" data-ref="${escapeHtml(book)} ${chap}:${ver}">${escapeHtml(m)}</a>`;
-      });
-    }
-
-    function openInReader(ent){
-      const defHtml = (ent.defs||[]).map(d=>`<p>${linkifyBibleRefs(escapeHtml(d))}</p>`).join("");
-      readerEl.innerHTML = `
-        <div class="rd-head">
-          <h2 class="rd-title">${escapeHtml(ent.term)}</h2>
-          <div class="rd-badges">
-            <span class="badge">${escapeHtml(ent.source)}</span>
-            <span class="badge">${escapeHtml(ent.type)}</span>
-            <span class="badge">${escapeHtml(ent.scope || "General")}</span>
-            <button class="badge" id="btnCite">Copy citation</button>
-          </div>
-        </div>
-        <div class="rd-body">${defHtml || "<p class='muted'>(no content)</p>"}</div>
-        <div class="muted" style="margin-top:.6rem">
-          Source: ${escapeHtml(ent.source)}. For study use; verify with primary editions.
-        </div>
       `;
-
-      // Hover verses
-      readerEl.querySelectorAll('[data-ref]').forEach(a=>{
-        a.addEventListener('mouseenter', ()=>{
-          const ref = a.getAttribute('data-ref') || "";
-          showHoverNear(a, `<strong>${escapeHtml(ref)}</strong><div class="muted">Preview coming soon.</div>`);
+      readerEl.querySelector('#copyLink')?.addEventListener('click', ()=>{
+        navigator.clipboard.writeText(permalink.toString()).then(()=> {
+          alert('Permalink copied.');
         });
-        a.addEventListener('mouseleave', hideHover);
       });
-
-      // Copy citation (simple)
-      const citeBtn = document.getElementById('btnCite');
-      if(citeBtn){
-        citeBtn.addEventListener('click', ()=>{
-          const cite = `${ent.term}. ${ent.source}, “Bible Dictionary”. Accessed ${new Date().toISOString().slice(0,10)}.`;
-          navigator.clipboard.writeText(cite);
-          citeBtn.textContent = "Copied!";
-          setTimeout(()=>citeBtn.textContent="Copy citation",900);
-        });
+      if (window.innerWidth < 980){
+        readerEl.scrollIntoView({ behavior:'smooth', block:'start' });
       }
     }
 
-    // Deep-link open via ?term=...
-    function tryOpenFromQuery(){
-      const term = new URLSearchParams(location.search).get("term");
-      if(!term) return;
-      const found = ALL.find(x=>x.term.toLowerCase() === term.toLowerCase());
-      if(found) openInReader(found);
+    function restoreFromHash(){
+      const h = new URL(location.href).hash;
+      const m = h.match(/#ref=([^&]+)/);
+      if (m){
+        const id = decodeURIComponent(m[1]);
+        const e = DB.find(x => x.id === id);
+        if (e) openEntry(e);
+      }
+    }
+
+    // Bible ref linkifier
+    function linkifyBibleRefs(text){
+      return text.replace(/\b(Gen(?:esis)?|Ex(?:odus)?|Lev(?:iticus)?|Num(?:bers)?|Deut(?:eronomy)?|Ps(?:alms)?|Prov(?:erbs)?|Isa(?:iah)?|Jer(?:emiah)?|Ezek(?:iel)?|Dan(?:iel)?|Hos(?:ea)?|Joel|Amos|Obad(?:iah)?|Jon(?:ah)?|Mic(?:ah)?|Nah(?:um)?|Hab(?:akkuk)?|Zeph(?:aniah)?|Hag(?:gai)?|Zech(?:ariah)?|Mal(?:achi)?|Matt(?:hew)?|Mark|Luke|John|Acts|Rom(?:ans)?|1 ?Cor(?:inthians)?|2 ?Cor(?:inthians)?|Gal(?:atians)?|Eph(?:esians)?|Phil(?:ippians)?|Col(?:ossians)?|1 ?Thess(?:alonians)?|2 ?Thess(?:alonians)?|1 ?Tim(?:othy)?|2 ?Tim(?:othy)?|Titus|Philem(?:on)?|Heb(?:rews)?|James|1 ?Pet(?:er)?|2 ?Pet(?:er)?|1 ?John|2 ?John|3 ?John|Jude|Rev(?:elation)?)\.?\s+(\d+):(\d+)\b/g,
+        (m,book,ch,v)=>{
+          const canon = (/Gen|Ex|Lev|Num|Deut|Ps|Prov|Isa|Jer|Ezek|Dan|Hos|Joel|Amos|Obad|Jon|Mic|Nah|Hab|Zeph|Hag|Zech|Mal/i.test(book)) ? 'tanakh':'newtestament';
+          const slug = normalizeBookSlug(book);
+          return `<a class="refs" href="/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${ch}#v${v}">${m}</a>`;
+        });
+    }
+
+    function normalizeBookSlug(book){
+      const b = book.toLowerCase().replace(/\./g,'').trim();
+      const map = {
+        'gen':'genesis','genesis':'genesis','ex':'exodus','exodus':'exodus','lev':'leviticus','leviticus':'leviticus',
+        'num':'numbers','numbers':'numbers','deut':'deuteronomy','deuteronomy':'deuteronomy','ps':'psalms','psalms':'psalms',
+        'prov':'proverbs','proverbs':'proverbs','isa':'isaiah','isaiah':'isaiah','jer':'jeremiah','jeremiah':'jeremiah',
+        'ezek':'ezekiel','ezekiel':'ezekiel','dan':'daniel','daniel':'daniel','hos':'hosea','hosea':'hosea','joel':'joel',
+        'amos':'amos','obad':'obadiah','obadiah':'obadiah','jon':'jonah','jonah':'jonah','mic':'micah','micah':'micah',
+        'nah':'nahum','nahum':'nahum','hab':'habakkuk','habakkuk':'habakkuk','zeph':'zephaniah','zephaniah':'zephaniah',
+        'hag':'haggai','haggai':'haggai','zech':'zechariah','zechariah':'zechariah','mal':'malachi','malachi':'malachi',
+        'matt':'matthew','matthew':'matthew','mark':'mark','luke':'luke','john':'john','acts':'acts','rom':'romans','romans':'romans',
+        '1 cor':'1-corinthians','2 cor':'2-corinthians','1 corinthians':'1-corinthians','2 corinthians':'2-corinthians',
+        'gal':'galatians','galatians':'galatians','eph':'ephesians','ephesians':'ephesians','phil':'philippians','philippians':'philippians',
+        'col':'colossians','colossians':'colossians','1 thess':'1-thessalonians','2 thess':'2-thessalonians',
+        '1 thessalonians':'1-thessalonians','2 thessalonians':'2-thessalonians','1 tim':'1-timothy','2 tim':'2-timothy',
+        '1 timothy':'1-timothy','2 timothy':'2-timothy','titus':'titus','philem':'philemon','philemon':'philemon',
+        'heb':'hebrews','hebrews':'hebrews','james':'james','1 pet':'1-peter','2 pet':'2-peter','1 peter':'1-peter','2 peter':'2-peter',
+        '1 john':'1-john','2 john':'2-john','3 john':'3-john','jude':'jude','rev':'revelation','revelation':'revelation'
+      };
+      return map[b] || b.replace(/\s+/g,'-');
     }
 
     // Bootstrap
     (async function(){
       try{
         await loadCombined();
-        tryOpenFromQuery();
+        renderResults();
+        restoreFromHash();
       }catch(e){
-        resultsEl.innerHTML = `<p class="muted">Failed to load dictionary index. ${escapeHtml(e.message)}</p>`;
+        document.getElementById('results').innerHTML =
+          '<div class="empty">Failed to load combined dictionary index.</div>';
+        console.error(e);
       }
     })();
+
+    // Omnibar
+    const doFilter = debounce(()=> renderResults(), 120);
+    q.addEventListener('input', doFilter);
+    clearQ.addEventListener('click', ()=>{ q.value=''; renderResults(); q.focus(); });
+
+    function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
   </script>
 </body>
 </html>
