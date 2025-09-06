@@ -48,6 +48,24 @@
 
     /* Hidden during filter */
     .hide{ display:none !important; }
+
+    /* --- Diet page verse hovercard --- */
+    .diet-hovercard{
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: min(420px, 92vw);
+      background: #fff;
+      border: 1px solid var(--sky);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+      padding: .6rem .7rem;
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+    .diet-hovercard.open{ display:block; }
+    .diet-hover-head{ font-weight:700; color:var(--ink); margin-bottom:.25rem; }
+    .diet-hover-foot{ margin-top:.35rem; font-size:.85rem; color:var(--muted); }
   </style>
 </head>
 <body>
@@ -73,6 +91,10 @@
   </main>
 
   <div id="site-footer"></div>
+
+  <!-- Hover container for Scripture previews -->
+  <div id="dietHover" class="diet-hovercard" role="dialog" aria-hidden="true"></div>
+
   <script src="/israelite-research/js/include.js"></script>
   <script>
     // --- Book slug map for links (extend anytime) ---
@@ -293,7 +315,7 @@
             grp.appendChild(ul);
           }
 
-          // Examples chips (TOOLTIPS ADDED HERE)
+          // Examples chips (with tooltips)
           if (examples.length) {
             const chipWrap = document.createElement('div');
             chipWrap.className = 'chips';
@@ -304,8 +326,8 @@
               const name = ex.name || '';
               const why  = ex.why  || '';
               const tip  = why ? `${name}: ${why}` : name;
-              chip.title = tip;                 // native tooltip
-              chip.setAttribute('aria-label', tip); // accessibility
+              chip.title = tip;                      // native tooltip
+              chip.setAttribute('aria-label', tip);  // accessibility
 
               const main = document.createElement('span'); 
               main.textContent = name;
@@ -385,13 +407,102 @@
       });
     }
 
-    // Bootstrap
+    // Bootstrap render + search
     renderTree();
     const search = document.getElementById('dietSearch');
     const clearBtn = document.getElementById('dietClear');
     const doFilter = debounce(applyFilter, 120);
     search.addEventListener('input', e => doFilter(e.target.value));
     clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+
+    /* ============= Scripture hover for refs on the Dietary page ============= */
+    (function(){
+      const hover = document.getElementById('dietHover');
+      if(!hover) return;
+
+      function canonFor(book){
+        return (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(book) ? "tanakh" : "newtestament");
+      }
+
+      const _chapterCache = new Map(); // key: canon/slug/ch -> array
+      async function fetchVerseText(ref){
+        const p = parseRef(ref);
+        if(!p) return null;
+        const canon = canonFor(p.book);
+        const key = `${canon}/${p.slug}/${p.ch}`;
+        if(_chapterCache.has(key)) {
+          return pick(_chapterCache.get(key), p.v);
+        }
+        const candidates = [
+          `/israelite-research/data/${canon}/${p.slug}/${p.ch}.json`,
+          `/data/${canon}/${p.slug}/${p.ch}.json`,
+          new URL(`../data/${canon}/${p.slug}/${p.ch}.json`, location.href).pathname
+        ];
+        let lastErr;
+        for(const url of candidates){
+          try{
+            const r = await fetch(url, { cache: "force-cache" });
+            if(!r.ok) throw new Error(`HTTP ${r.status}`);
+            const arr = await r.json();
+            if(!Array.isArray(arr)) throw new Error("bad chapter payload");
+            _chapterCache.set(key, arr);
+            return pick(arr, p.v);
+          }catch(e){ lastErr = e; }
+        }
+        console.warn("[diet-hover] could not fetch", ref, lastErr?.message);
+        return null;
+      }
+      function pick(arr, vnum){
+        const v = arr.find(x => Number(x.v) === Number(vnum));
+        return v ? String(v.t || "").trim() : null;
+      }
+
+      function showHoverNear(el, html){
+        hover.innerHTML = html;
+        const rect = el.getBoundingClientRect();
+        const x = Math.min(window.innerWidth - 12, rect.left + rect.width/2 + 12);
+        const y = Math.max(8, rect.bottom + window.scrollY + 8);
+        hover.style.left = x + "px";
+        hover.style.top  = y + "px";
+        hover.classList.add("open");
+        hover.setAttribute("aria-hidden","false");
+      }
+      function hideHover(){
+        hover.classList.remove("open");
+        hover.setAttribute("aria-hidden","true");
+      }
+
+      let openForEl = null;
+      document.addEventListener("mouseover", async (e)=>{
+        const a = e.target.closest(".law-link");
+        if(!a) return;
+        openForEl = a;
+        const ref = a.textContent.trim();
+        showHoverNear(a, `<div class="diet-hover-head">${ref}</div><div>Loading…</div>`);
+        const text = await fetchVerseText(ref);
+        if(openForEl !== a) return; // user moved
+        const safe = (s)=>String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+        const body = text ? safe(text) : '<span style="color:#b91c1c">Verse not found</span>';
+        showHoverNear(a,
+          `<div class="diet-hover-head">${safe(ref)}</div>
+           <div>${body}</div>
+           <div class="diet-hover-foot">Click to open chapter ▸</div>`
+        );
+      }, { passive:true });
+
+      document.addEventListener("mouseout", (e)=>{
+        const rel = e.relatedTarget;
+        if(!rel || (!rel.closest || (!rel.closest(".law-link") && rel !== hover && !hover.contains(rel)))){
+          hideHover();
+          openForEl = null;
+        }
+      }, { passive:true });
+
+      document.addEventListener("scroll", hideHover, { passive:true });
+      document.addEventListener("click", (e)=>{
+        if(!e.target.closest(".law-link, #dietHover")) hideHover();
+      });
+    })();
   </script>
 </body>
 </html>
