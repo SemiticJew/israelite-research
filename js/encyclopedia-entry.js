@@ -4,14 +4,14 @@ cat <<'EOF' > js/dictionary-entry.js
   const id = params.get("id");
   if(!id){ document.body.innerHTML = "<p>Missing id.</p>"; return; }
 
-  const url = `/israelite-research/data/dictionary/isbd/${id}.json`;
+  const url = `/israelite-research/data/encyclopedia/isbd/${id}.json`;
   const data = await fetch(url).then(r=>r.json()).catch(()=>null);
   if(!data){ document.body.innerHTML = "<p>Entry not found.</p>"; return; }
 
   const set = (sel, html) => { const el = document.querySelector(sel); if(el) el.innerHTML = html; };
 
   // Header
-  document.title = `${data.term} — Israelite Bible Dictionary`;
+  document.title = `${data.term} — Israelite Encyclopedia`;
   set("#term", data.term || id);
   set("#summary", data.summary || "");
 
@@ -87,7 +87,7 @@ cat <<'EOF' > js/dictionary-entry.js
   // Related / Provenance
   set("#related_entries", `
     <h2 class="h">Related Entries</h2>
-    ${asList((data.related_entries||[]).map(id=>`<a href="/israelite-research/dictionary/entry.html?id=${encodeURIComponent(id)}">${id}</a>`))}
+    ${asList((data.related_entries||[]).map(id=>`<a href="/israelite-research/encyclopedia/entry.html?id=${encodeURIComponent(id)}">${id}</a>`))}
   `);
 
   const pv = data.provenance || {};

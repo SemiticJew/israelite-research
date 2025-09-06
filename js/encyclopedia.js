@@ -3,7 +3,7 @@ cat <<'EOF' > js/dictionary.js
   const resEl = document.querySelector("#results");
   const qEl = document.querySelector("#dictSearch");
 
-  const manifest = await fetch("/israelite-research/data/dictionary/manifest.json")
+  const manifest = await fetch("/israelite-research/data/encyclopedia/manifest.json")
     .then(r=>r.json());
 
   const render = (items) => {
