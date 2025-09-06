@@ -115,28 +115,41 @@
   <div id="site-footer" data-include="partials/footer.html"></div>
   <script src="/israelite-research/js/include.js"></script>
   <script>
-    const COMBINED_URL = "/israelite-research/data/dictionaries/_normalized/combined.json";
+    // Try multiple candidate paths so the dictionary loads regardless of hosting path depth
+    const COMBINED_URLS = [
+      "/israelite-research/data/dictionaries/_normalized/combined.json",
+      "./data/dictionaries/_normalized/combined.json",
+      "../data/dictionaries/_normalized/combined.json",
+      "/data/dictionaries/_normalized/combined.json"
+    ];
     const DB = [];
     let activeLetter = null;
 
     function normalizeCombined(row,i){
       const term = String(row.term||"").trim();
       const defs = Array.isArray(row.definitions)?row.definitions:[];
-      const abstract = defs.length? defs[0].slice(0,220):"";
+      const abstract = defs.length? String(defs[0]).slice(0,220):"";
       return { id:`${row.source}:${term}:${i}`, term, source:row.source, defs, abstract, letter:(term[0]||"#").toUpperCase() };
     }
 
     async function loadCombined(){
-      try{
-        const res = await fetch(COMBINED_URL,{cache:"no-store"});
-        if(!res.ok) throw new Error("HTTP "+res.status);
-        const arr = await res.json();
-        DB.length=0;
-        arr.forEach((r,i)=>{ if(r && r.term) DB.push(normalizeCombined(r,i)); });
-        DB.sort((a,b)=> a.term.localeCompare(b.term));
-      }catch(e){
-        console.error("Failed to load combined dictionary:",e);
+      let lastErr;
+      for (const url of COMBINED_URLS){
+        try{
+          const res = await fetch(url,{cache:"no-store"});
+          if(!res.ok) throw new Error("HTTP "+res.status);
+          const arr = await res.json();
+          DB.length=0;
+          arr.forEach((r,i)=>{ if(r && r.term) DB.push(normalizeCombined(r,i)); });
+          DB.sort((a,b)=> a.term.localeCompare(b.term));
+          console.info("[bibrefs] loaded:", url, "entries:", DB.length);
+          return; // success
+        }catch(e){
+          lastErr = e;
+          console.warn("[bibrefs] failed:", url, e.message);
+        }
       }
+      console.error("Failed to load combined dictionary:", lastErr?.message || "unknown");
     }
 
     const resultsEl=document.getElementById('results');
