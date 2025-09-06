@@ -61,15 +61,14 @@
 
     <!-- Search / Filter -->
     <div class="searchbar" role="search">
-      <input id="dietSearch" type="search" placeholder="Search animals, fish, birds, or laws (e.g., pig, salmon, blood, catfish, locust)…" aria-label="Search dietary items">
+      <input id="dietSearch" type="search" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" aria-label="Search dietary items">
       <button id="dietClear" class="btn" type="button">Clear</button>
     </div>
 
     <section class="tree" id="dietTree" aria-label="Collapsible tree of dietary laws"></section>
 
     <p class="note">
-      <strong>Note:</strong> “Modern examples” are practical guides based on the biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud).
-      Local traditions may vary on certain birds/insects; always verify sourcing and preparation (e.g., blood removal per Lev 17).
+      <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
     </p>
   </main>
 
@@ -97,7 +96,7 @@
       return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
     }
 
-    // ---------- DATA with modern examples ----------
+    // ---------- DATA with modern examples & hidden-ingredient watchlist ----------
     const DATA = {
       "Clean": {
         "🐄 Mammals": {
@@ -174,7 +173,7 @@
         "Blood": {
           refs: ["Leviticus 17:10", "Leviticus 17:12", "Leviticus 17:14"],
           examples: [
-            {name:"Blood dishes (e.g., blood sausage)", why:"forbidden"},
+            {name:"Blood dishes (e.g., blood sausage/black pudding)", why:"forbidden"},
             {name:"Undrained meat", why:"drain & salt to remove blood"}
           ]
         },
@@ -189,6 +188,61 @@
           refs: ["Leviticus 7:23", "Leviticus 7:25"],
           examples: [
             {name:"Suet/fat reserved from these animals", why:"do not eat"}
+          ]
+        }
+      },
+
+      "Everyday Foods & Hidden Ingredients (Check Labels)": {
+        "Pork-derived (avoid)": {
+          refs: ["Leviticus 11:7", "Deuteronomy 14:8"],
+          examples: [
+            {name:"Gelatin (porcine)", why:"used in gummies, marshmallows, capsules"},
+            {name:"Lard / Pork fat", why:"baked goods, refried beans, pie crusts"},
+            {name:"Mono-/Diglycerides (animal)", why:"E471/E472—origin may be pork; verify plant vs animal"},
+            {name:"Pepsin/Lipase (animal)", why:"enzymes in some cheeses; verify microbial/vegetable"},
+            {name:"‘Natural flavors’ (meat-derived)", why:"can include pork stock/essence—ask vendor"}
+          ]
+        },
+        "Shellfish-derived (avoid)": {
+          refs: ["Leviticus 11:10"],
+          examples: [
+            {name:"Oyster sauce", why:"common in stir-fry sauces"},
+            {name:"Shrimp paste", why:"used in SE Asian condiments/curries"},
+            {name:"Imitation crab (surimi)", why:"often contains shellfish"},
+            {name:"Fish/seafood stock blends", why:"may include shellfish extracts"},
+            {name:"Krill oil supplements", why:"crustacean-derived"}
+          ]
+        },
+        "Insect-derived (avoid except permitted locust kinds)": {
+          refs: ["Leviticus 11:20", "Leviticus 11:23"],
+          examples: [
+            {name:"Carmine/Cochineal (E120)", why:"red color in drinks/candies/yogurts"},
+            {name:"Shellac/Confectioner’s glaze (E904)", why:"candy/produce coating"},
+            {name:"Insect protein flours", why:"marketed as sustainable protein"}
+          ]
+        },
+        "Cheese & Enzymes (verify source)": {
+          refs: ["Leviticus 11 (category context)"],
+          examples: [
+            {name:"Animal rennet cheeses", why:"use microbial/vegetable rennet instead"},
+            {name:"Lipase (animal)", why:"used for flavor development—seek microbial"},
+            {name:"‘Parmesan’ style", why:"often animal rennet; check label or brand policy"}
+          ]
+        },
+        "Stocks, Broths, Flavorings (avoid if unclean)": {
+          refs: ["Leviticus 11 (category context)"],
+          examples: [
+            {name:"Pork broth / ham flavor", why:"soups, legumes, greens"},
+            {name:"Mixed ‘meat flavor’ packets", why:"can blend multiple animal bases"},
+            {name:"Ramen flavor bases", why:"may include pork or shellfish"}
+          ]
+        },
+        "Confectionery & Capsules (verify gelatin source)": {
+          refs: ["Leviticus 11:7-8 (category context)"],
+          examples: [
+            {name:"Marshmallows/Gummies", why:"often porcine gelatin—look for fish/plant gelatin"},
+            {name:"Vitamin/med capsules", why:"ask for fish/plant-based or HPMC capsules"},
+            {name:"Desserts with ‘stabilizers’", why:"may include gelatin—confirm origin"}
           ]
         }
       }
@@ -232,8 +286,7 @@
             refs.forEach(r => {
               const li = document.createElement('li'); li.className = 'leaf';
               const a = document.createElement('a'); a.className = 'law-link'; a.href = refHref(r); a.textContent = r;
-              // searchable text for this item
-              a.dataset.search = `ref ${r.toLowerCase()}`;
+              a.dataset.search = `ref ${r.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
               li.appendChild(a);
               ul.appendChild(li);
             });
@@ -252,14 +305,12 @@
                 const sm = document.createElement('small'); sm.textContent = '— ' + ex.why;
                 chip.appendChild(sm);
               }
-              // searchable text for this example
               chip.dataset.search = `${(ex.name||'').toLowerCase()} ${(ex.why||'').toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
               chipWrap.appendChild(chip);
             });
             grp.appendChild(chipWrap);
           }
 
-          // For group-level searching as well
           grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
           wrap.appendChild(grp);
         });
@@ -279,14 +330,13 @@
       const groups = Array.from(tree.querySelectorAll('.grp'));
       const sections = Array.from(tree.querySelectorAll('.sec'));
 
-      // reset state
+      // reset
       tree.querySelectorAll('.hl').forEach(el => el.classList.remove('hl'));
       groups.forEach(g => { g.classList.remove('hide'); g.open = false; });
       sections.forEach(s => { s.classList.remove('hide'); s.open = true; });
 
       if (!query) return;
 
-      // filter items
       groups.forEach(grp => {
         const chips = Array.from(grp.querySelectorAll('.chip'));
         const links = Array.from(grp.querySelectorAll('.law-link'));
@@ -307,17 +357,15 @@
           if (match) anyMatch = true;
         });
 
-        // if no chip/link matched, check group label text
         if (!anyMatch) {
           const hay = (grp.dataset.search || '').toLowerCase();
           anyMatch = hay.includes(query);
         }
 
         grp.classList.toggle('hide', !anyMatch);
-        grp.open = anyMatch; // open matched groups
+        grp.open = anyMatch;
       });
 
-      // hide sections with no visible groups
       sections.forEach(sec => {
         const visible = sec.querySelector('.grp:not(.hide)');
         sec.classList.toggle('hide', !visible);
