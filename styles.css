@@ -1497,3 +1497,20 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
 
 #hovercard .vc-ref { font-weight:700; color: var(--ink, #0b2340); }
 #hovercard .vc-text { white-space: normal; word-break: break-word; }
+/* --- Diet page verse hovercard --- */
+.diet-hovercard{
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  max-width: min(420px, 92vw);
+  background: #fff;
+  border: 1px solid var(--sky);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  padding: .6rem .7rem;
+  font-size: .92rem;
+  line-height: 1.45;
+}
+.diet-hovercard.open{ display:block; }
+.diet-hover-head{ font-weight:700; color:var(--ink); margin-bottom:.25rem; }
+.diet-hover-foot{ margin-top:.35rem; font-size:.85rem; color:var(--muted); }
