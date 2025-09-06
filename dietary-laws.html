@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dietary Laws — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
+  <style>
+    :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .page-header{padding:24px 0 8px}
+    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+    .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
+
+    /* Tree */
+    .tree{margin:14px 0 36px}
+    .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
+    .tree details>summary{cursor:pointer; font-weight:800; color:var(--brand); outline:none}
+    .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
+    .tree .group{margin:8px 0 0 0; padding:0}
+    .tree .group details{margin:6px 0}
+    .tree .leaf{list-style:none; margin:4px 0; display:flex; align-items:center; gap:.5rem}
+    .law-link{color:var(--brand); text-decoration:none; border-bottom:1px solid transparent}
+    .law-link:hover{border-bottom-color:var(--brand)}
+    .tag{display:inline-block; font-size:.78rem; color:#333; background:#054A910D; border:1px solid var(--sky); border-radius:8px; padding:.05rem .35rem}
+
+    /* Small icon bullets */
+    .emoji{width:1.15rem; text-align:center}
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <h1 class="page-title">Dietary Laws</h1>
+      <div class="breadcrumb">Biblia → Dietary Laws</div>
+    </header>
+
+    <section class="tree" id="dietTree" aria-label="Collapsible tree of dietary laws"></section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/israelite-research/js/include.js"></script>
+  <script>
+    // --- Minimal book slug map for links (extend anytime) ---
+    const BOOK_SLUG = {
+      "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
+      "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts"
+    };
+
+    // Helper: "Lev 11:3" -> {book:"Leviticus", ch:11, v:3, slug:"leviticus"}
+    function parseRef(ref){
+      const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
+      if(!m) return null;
+      const bookName = m[1].replace(/\s+/g," ").trim();
+      const ch = parseInt(m[2],10), v = parseInt(m[3],10);
+      const base = bookName.replace(/^1\s|^2\s|^3\s/,''); // not needed here but safe
+      const slug = BOOK_SLUG[base] || BOOK_SLUG[bookName] || base.toLowerCase();
+      return { book:bookName, ch, v, slug };
+    }
+
+    // Link builder to your unified chapter page
+    function refHref(ref){
+      const p = parseRef(ref); if(!p) return '#';
+      // Detect canon path based on common books (Tanakh vs NT)
+      const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
+      return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
+    }
+
+    // Data: easy to expand. Each array item is a verse ref string.
+    const DATA = {
+      "Clean": {
+        "🐄 Mammals": [
+          "Leviticus 11:3",   // split hoof + chews cud
+          "Deuteronomy 14:6"
+        ],
+        "🐟 Fish": [
+          "Leviticus 11:9",
+          "Deuteronomy 14:9"
+        ],
+        "🐦 Birds (general allowance)": [
+          "Deuteronomy 14:11"
+        ]
+      },
+      "Unclean": {
+        "🐖 Mammals": [
+          "Leviticus 11:4",
+          "Leviticus 11:7",
+          "Deuteronomy 14:8"
+        ],
+        "🐟 Fish": [
+          "Leviticus 11:10"
+        ],
+        "🐦 Birds (lists)": [
+          "Leviticus 11:13",
+          "Leviticus 11:19"
+        ],
+        "🐜 Insects": [
+          "Leviticus 11:20",
+          "Leviticus 11:23"
+        ]
+      },
+      "Prohibited Practices": {
+        "Blood": [
+          "Leviticus 17:10",
+          "Leviticus 17:12",
+          "Leviticus 17:14"
+        ],
+        "Carcasses / That which died of itself": [
+          "Leviticus 11:39",
+          "Leviticus 11:40"
+        ]
+      }
+    };
+
+    // Render
+    (function renderTree(){
+      const root = document.getElementById('dietTree');
+      const frag = document.createDocumentFragment();
+
+      Object.entries(DATA).forEach(([section, groups]) => {
+        const sec = document.createElement('details');
+        sec.open = true;
+        const sum = document.createElement('summary');
+        sum.textContent = section;
+        sec.appendChild(sum);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'group';
+
+        Object.entries(groups).forEach(([label, refs]) => {
+          const grp = document.createElement('details');
+          const gsum = document.createElement('summary');
+          gsum.innerHTML = `${label} <span class="tag">${refs.length} refs</span>`;
+          grp.appendChild(gsum);
+
+          const ul = document.createElement('ul');
+          ul.style.margin = '6px 0 0 18px'; ul.style.padding = '0';
+          refs.forEach(r => {
+            const li = document.createElement('li'); li.className = 'leaf';
+            const a = document.createElement('a'); a.className = 'law-link'; a.href = refHref(r); a.textContent = r;
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+
+          grp.appendChild(ul);
+          wrap.appendChild(grp);
+        });
+
+        sec.appendChild(wrap);
+        frag.appendChild(sec);
+      });
+
+      root.innerHTML = '';
+      root.appendChild(frag);
+    })();
+  </script>
+</body>
+</html>
