@@ -10,13 +10,13 @@
   body{background:#fff;color:var(--ink)}
   .container{max-width:1400px;margin:0 auto;padding:0 16px}
 
-  /* Top bar (title only now) */
+  /* Sticky top bar */
   .topbar{
     position:sticky; top:0; z-index:50;
     background:#fff; border-bottom:1px solid var(--sky);
   }
   .topbar-inner{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    display:flex; justify-content:space-between; align-items:center;
     padding:10px 16px;
   }
   .title{font-size:1.2rem; font-weight:800; margin:0}
@@ -28,42 +28,35 @@
   .panel{background:#fff; border:1px solid var(--sky); border-radius:10px}
   .panel h3{margin:10px 14px; font-size:1rem; color:var(--brand)}
 
-  /* Left: A–Z + results */
-  .facets{border-bottom:1px solid var(--sky); padding:10px 12px}
-  .az{display:grid; grid-template-columns:repeat(13,1fr); gap:4px}
-  .az button{border:1px solid var(--sky); background:#fff; border-radius:6px; padding:.3rem 0; font:inherit; cursor:pointer}
-  .az button:hover{background:#f8fafc}
-  .results{max-height:calc(100vh - 220px); overflow:auto; padding:8px 8px 12px}
+  /* Results */
+  .results{max-height:calc(100vh - 260px); overflow:auto; padding:8px 8px 12px}
   .card{border:1px solid var(--sky); border-radius:10px; padding:10px; margin:8px 4px; cursor:pointer; background:#fff}
   .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
   .card .line1{display:flex; align-items:baseline; gap:.5rem}
   .card .term{font-weight:800}
-  .card .src{font-size:.8rem; color:#374151; background:#EEF2FF; border:1px solid #E5E7EB; border-radius:6px; padding:.05rem .35rem}
-  .abstract{margin-top:.15rem; color:#111}
+  .card .abstract{margin-top:.25rem; font-size:.9rem; color:#374151}
 
-  /* Right: reader with integrated search + copy */
-  .reader{display:flex; flex-direction:column}
-  .r-toolbar{
-    display:flex; gap:.5rem; align-items:center;
-    border-bottom:1px solid var(--sky); padding:10px 12px; flex-wrap:wrap;
-  }
-  .r-toolbar input[type="search"]{
-    min-width:200px; flex:1;
-    border:1px solid #e6ebf2; border-radius:8px; padding:.55rem .7rem; font:inherit;
-  }
-  .btn{border:1px solid var(--sky); background:#fff; border-radius:8px; padding:.45rem .7rem; font:inherit; cursor:pointer}
-  .btn:hover{background:#f8fafc}
-  .reader-body{padding:10px 14px}
-  .r-title{margin:0; font-size:1.4rem; font-weight:800}
-  .r-sub{margin:.15rem 0 0; color:var(--muted); font-size:.92rem}
+  /* Reader */
+  .reader{padding:10px 14px}
+  .reader .head{display:flex; align-items:center; justify-content:space-between; gap:8px; border-bottom:1px solid var(--sky); padding-bottom:8px}
+  .reader .r-title{margin:0; font-size:1.4rem; font-weight:800}
   .reader article{line-height:1.55; margin-top:10px}
   .reader .refs a{color:var(--brand); text-decoration:none; border-bottom:1px solid transparent}
   .reader .refs a:hover{border-bottom-color:var(--brand)}
   .cite{margin-top:16px; padding-top:8px; border-top:1px solid var(--sky); color:var(--muted); font-size:.9rem}
   .empty{padding:22px; color:var(--muted)}
 
-  /* Utilities */
-  .muted{color:var(--muted)}
+  /* Right search toolbar */
+  .r-toolbar{
+    display:flex; gap:.5rem; align-items:center;
+    margin-top:8px;
+  }
+  .r-toolbar input[type="search"]{
+    flex:1; border:1px solid #e6ebf2; border-radius:8px; padding:.55rem .7rem; font:inherit;
+  }
+  .r-toolbar .btn{
+    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.5rem .7rem; cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -77,28 +70,35 @@
   </div>
 
   <main class="container layout">
-    <!-- Left: A–Z + results -->
+    <!-- Left: results -->
     <section class="panel panel-left" aria-label="Results and facets">
-      <h3>Browse & Filter</h3>
-      <div class="facets">
-        <div class="az" aria-label="A–Z jump"><!-- buttons injected by JS --></div>
-      </div>
+      <h3>Browse</h3>
       <div id="results" class="results" role="listbox" aria-label="Search results">
-        <div class="empty">Use the search in the right panel or A–Z to browse.</div>
+        <div class="empty">Type in the search or select an entry.</div>
       </div>
     </section>
 
-    <!-- Right: reader with search + copy -->
+    <!-- Right: reader -->
     <aside class="panel panel-right" aria-label="Reading panel">
-      <div class="reader">
-        <div class="r-toolbar">
-          <input id="q" type="search" placeholder="Search (e.g., sabbath, covenant, Zion, lemma:hesed)…" aria-label="Search dictionaries">
-          <button id="clearQ" class="btn" type="button">Clear</button>
-          <button id="copyLink" class="btn" type="button" disabled>Copy permalink</button>
+      <div class="reader" id="reader">
+        <div class="head">
+          <h2 class="r-title">Select an entry</h2>
+          <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
+            <input id="q"
+                   type="search"
+                   placeholder="Search (e.g., sabbath, covenant, Zion, lemma:hesed)…"
+                   aria-label="Search dictionaries"
+                   autocomplete="off"
+                   autocapitalize="off"
+                   autocorrect="off"
+                   spellcheck="false"
+                   name="q_bibrefs">
+            <button id="clearQ" class="btn" type="button">Clear</button>
+          </form>
         </div>
-        <div class="reader-body" id="reader">
-          <div class="empty">Select an entry to read.</div>
-        </div>
+        <article>
+          <div class="empty">Definitions will appear here when you select a result.</div>
+        </article>
       </div>
     </aside>
   </main>
@@ -107,223 +107,68 @@
   <div id="site-footer" data-include="partials/footer.html"></div>
   <script src="/israelite-research/js/include.js"></script>
   <script>
-    // ===== Combined index loader (robust to paths) =====
-    const COMBINED_CANDIDATES = [
-      "/israelite-research/data/dictionaries/_normalized/combined.json",
-      "/data/dictionaries/_normalized/combined.json",
-      new URL("../data/dictionaries/_normalized/combined.json", location.href).pathname,
-      new URL("../../data/dictionaries/_normalized/combined.json", location.href).pathname
-    ];
-
-    // Normalized entry: { id, term, source, type, lang, scope, tags:[], abstract, defs:[...], lettersKey }
+    const COMBINED_URL = "/israelite-research/data/dictionaries/_normalized/combined.json";
     const DB = [];
 
-    function detectLangAndScope(text=''){
-      const t = text.toLowerCase();
-      const lang = (/\bhebrew\b|\baramaic\b|\bchaldee\b/.test(t)) ? 'Heb/Aram'
-                 : (/\bgreek\b/.test(t) ? 'Greek' : 'English');
-      const scope = (/\bgen|ex|lev|num|deut|ps|isa|jer|ezek|hos|am|mic|zec|mal\b|old testament|ot|tanakh/.test(t)) ? 'Tanakh'
-                   : (/\bmat|mark|luke|john|acts|rom|1 ?cor|2 ?cor|gal|eph|phil|col|heb|rev|new testament|nt\b/.test(t)) ? 'NT'
-                   : (/\besdras|tobit|judith|maccabees|sirach|wisdom|baruch|susanna|bel|laodiceans|apocrypha/.test(t)) ? 'Apocrypha'
-                   : 'General';
-      return { lang, scope };
-    }
-    function abstractFromDefs(defs){
-      const first = (defs && defs[0]) ? String(defs[0]) : "";
-      const m = first.match(/^(.{0,220}?[\.\u203D\u203C\!;:])\s/);
-      return (m ? m[1] : first.slice(0, 220)).trim();
-    }
-    function normalizeCombined(row, idx){
-      const term = String(row.term || "").trim();
-      const defs = Array.isArray(row.defs) ? row.defs
-                 : Array.isArray(row.definitions) ? row.definitions
-                 : [];
-      const src  = row.source || row.src || "Unknown";
-      const type = row.type || "Dictionary";
-      const { lang, scope } = detectLangAndScope(defs.join(" "));
-      const abstract = row.abstract || abstractFromDefs(defs);
-      return {
-        id: row.id || `${src}:${term.toLowerCase()}#${idx}`,
-        term, source: src, type, lang, scope,
-        tags: Array.isArray(row.tags) ? row.tags : [],
-        abstract, defs,
-        lettersKey: (term[0] || '#').toUpperCase()
-      };
+    function normalizeCombined(row,i){
+      const term = String(row.term||"").trim();
+      const defs = Array.isArray(row.definitions)?row.definitions:[];
+      const abstract = defs.length? defs[0].slice(0,220):"";
+      return { id:`${row.source}:${term}:${i}`, term, source:row.source, defs, abstract };
     }
 
     async function loadCombined(){
-      let lastErr;
-      for (const url of COMBINED_CANDIDATES){
-        try{
-          const res = await fetch(url, { cache: "no-store" });
-          if(!res.ok) throw new Error("HTTP " + res.status);
-          const arr = await res.json();
-          if(!Array.isArray(arr)) throw new Error("combined.json must be an array");
-          DB.length = 0;
-          arr.forEach((row,i)=>{ if(row && row.term) DB.push(normalizeCombined(row,i)); });
-          DB.sort((a,b)=> a.term.localeCompare(b.term));
-          console.info("[bibrefs] loaded:", url, "entries:", DB.length);
-          return;
-        }catch(e){
-          lastErr = e;
-          console.warn("[bibrefs] failed:", url, e.message);
-        }
+      try{
+        const res = await fetch(COMBINED_URL,{cache:"no-store"});
+        if(!res.ok) throw new Error("HTTP "+res.status);
+        const arr = await res.json();
+        DB.length=0;
+        arr.forEach((r,i)=>{ if(r && r.term) DB.push(normalizeCombined(r,i)); });
+        DB.sort((a,b)=> a.term.localeCompare(b.term));
+      }catch(e){
+        console.error("Failed to load combined dictionary:",e);
       }
-      const resultsEl = document.getElementById('results');
-      if (resultsEl) {
-        resultsEl.innerHTML = '<div class="empty">Could not load dictionary index (<code>combined.json</code>).</div>';
-      }
-      throw lastErr || new Error("No combined.json found");
     }
 
-    // ---------- UI wiring ----------
-    const azRoot = document.querySelector('.az');
-    const resultsEl = document.getElementById('results');
-    const readerWrap = document.getElementById('reader');
-    const searchInput = document.getElementById('q');
-    const clearQ = document.getElementById('clearQ');
-    const copyBtn = document.getElementById('copyLink');
-
-    const activeFilters = { letter: null };
-
-    // A–Z bar
-    (function buildAZ(){
-      const frag = document.createDocumentFragment();
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('').forEach(ch=>{
-        const b = document.createElement('button');
-        b.textContent = ch;
-        b.title = `Jump to ${ch}`;
-        b.addEventListener('click', ()=>{
-          activeFilters.letter = ch === '#' ? null : ch;
-          renderResults();
-        });
-        frag.appendChild(b);
-      });
-      azRoot.appendChild(frag);
-    })();
-
-    function parseQuery(s){
-      return { text: String(s||'').trim().toLowerCase() };
-    }
-
-    function matches(entry, qp){
-      if (activeFilters.letter && entry.lettersKey !== activeFilters.letter) return false;
-      if (qp.text){
-        const hay = (entry.term + ' ' + entry.abstract + ' ' + entry.defs.join(' ')).toLowerCase();
-        if (!hay.includes(qp.text)) return false;
-      }
-      return true;
-    }
+    const resultsEl=document.getElementById('results');
+    const readerEl=document.getElementById('reader');
+    const q=document.getElementById('q');
+    const clearQ=document.getElementById('clearQ');
 
     function renderResults(){
-      const qp = parseQuery(searchInput.value);
-      const hits = DB.filter(e => matches(e, qp)).slice(0, 400);
-
-      if (!hits.length){
-        resultsEl.innerHTML = '<div class="empty">No results. Try another keyword.</div>';
-        return;
-      }
-
-      const frag = document.createDocumentFragment();
+      const query=q.value.trim().toLowerCase();
+      const hits=DB.filter(e=>!query||e.term.toLowerCase().includes(query)).slice(0,400);
+      if(!hits.length){ resultsEl.innerHTML='<div class="empty">No results.</div>'; return; }
+      const frag=document.createDocumentFragment();
       hits.forEach(e=>{
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.role = 'option';
-        card.innerHTML = `
-          <div class="line1">
-            <div class="term">${escapeHtml(e.term)}</div>
-            <span class="src" title="${escapeHtml(e.source)}">${escapeHtml(e.source)}</span>
-          </div>
-          <div class="abstract">${escapeHtml(e.abstract || '')}</div>
-        `;
-        card.addEventListener('click', ()=> openEntry(e));
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`<div class="line1"><div class="term">${escapeHtml(e.term)}</div></div>
+                        <div class="abstract">${escapeHtml(e.abstract)}</div>`;
+        card.addEventListener('click',()=>openEntry(e));
         frag.appendChild(card);
       });
-      resultsEl.innerHTML = '';
+      resultsEl.innerHTML='';
       resultsEl.appendChild(frag);
     }
 
     function openEntry(e){
-      // Enable copy permalink
-      const permalink = new URL(location.href);
-      permalink.hash = '#ref=' + encodeURIComponent(e.id);
-      copyBtn.disabled = false;
-      copyBtn.onclick = () => {
-        navigator.clipboard.writeText(permalink.toString()).then(()=> alert('Permalink copied.'));
-      };
-
-      readerWrap.innerHTML = `
-        <h2 class="r-title">${escapeHtml(e.term)}</h2>
-        <p class="r-sub">${escapeHtml(e.source)}</p>
-        <article class="refs">
-          ${e.defs.map(d => `<p>${linkifyBibleRefs(escapeHtml(d))}</p>`).join('')}
-          <div class="cite">
-            Source: ${escapeHtml(e.source)}. Provide publisher/year and link where available.
-          </div>
-        </article>
-      `;
-
-      if (window.innerWidth < 980){
-        readerWrap.scrollIntoView({ behavior:'smooth', block:'start' });
-      }
+      readerEl.querySelector('article').innerHTML = e.defs.map(d=>`<p>${escapeHtml(d)}</p>`).join('');
+      readerEl.querySelector('.r-title').textContent = e.term;
     }
 
-    function restoreFromHash(){
-      const h = new URL(location.href).hash;
-      const m = h.match(/#ref=([^&]+)/);
-      if (m){
-        const id = decodeURIComponent(m[1]);
-        const e = DB.find(x => x.id === id);
-        if (e) openEntry(e);
-      }
-    }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    // Bible ref linkifier (lightweight)
-    function linkifyBibleRefs(text){
-      return text.replace(/\b(Gen(?:esis)?|Ex(?:odus)?|Lev(?:iticus)?|Num(?:bers)?|Deut(?:eronomy)?|Ps(?:alms)?|Prov(?:erbs)?|Isa(?:iah)?|Jer(?:emiah)?|Ezek(?:iel)?|Dan(?:iel)?|Hos(?:ea)?|Joel|Amos|Obad(?:iah)?|Jon(?:ah)?|Mic(?:ah)?|Nah(?:um)?|Hab(?:akkuk)?|Zeph(?:aniah)?|Hag(?:gai)?|Zech(?:ariah)?|Mal(?:achi)?|Matt(?:hew)?|Mark|Luke|John|Acts|Rom(?:ans)?|1 ?Cor(?:inthians)?|2 ?Cor(?:inthians)?|Gal(?:atians)?|Eph(?:esians)?|Phil(?:ippians)?|Col(?:ossians)?|1 ?Thess(?:alonians)?|2 ?Thess(?:alonians)?|1 ?Tim(?:othy)?|2 ?Tim(?:othy)?|Titus|Philem(?:on)?|Heb(?:rews)?|James|1 ?Pet(?:er)?|2 ?Pet(?:er)?|1 ?John|2 ?John|3 ?John|Jude|Rev(?:elation)?)\.?\s+(\d+):(\d+)\b/g,
-        (m,book,ch,v)=>{
-          const canon = (/Gen|Ex|Lev|Num|Deut|Ps|Prov|Isa|Jer|Ezek|Dan|Hos|Joel|Amos|Obad|Jon|Mic|Nah|Hab|Zeph|Hag|Zech|Mal/i.test(book)) ? 'tanakh':'newtestament';
-          const slug = normalizeBookSlug(book);
-          return `<a href="/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${ch}#v${v}">${m}</a>`;
-        });
-    }
+    function debounce(fn,ms){ let t; return(...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args),ms); }; }
 
-    function normalizeBookSlug(book){
-      const b = book.toLowerCase().replace(/\./g,'').trim();
-      const map = {
-        'gen':'genesis','genesis':'genesis','ex':'exodus','exodus':'exodus','lev':'leviticus','leviticus':'leviticus',
-        'num':'numbers','numbers':'numbers','deut':'deuteronomy','deuteronomy':'deuteronomy','ps':'psalms','psalms':'psalms',
-        'prov':'proverbs','proverbs':'proverbs','isa':'isaiah','isaiah':'isaiah','jer':'jeremiah','jeremiah':'jeremiah',
-        'ezek':'ezekiel','ezekiel':'ezekiel','dan':'daniel','daniel':'daniel','hos':'hosea','hosea':'hosea','joel':'joel',
-        'amos':'amos','obad':'obadiah','obadiah':'obadiah','jon':'jonah','jonah':'jonah','mic':'micah','micah':'micah',
-        'nah':'nahum','nahum':'nahum','hab':'habakkuk','habakkuk':'habakkuk','zeph':'zephaniah','zephaniah':'zephaniah',
-        'hag':'haggai','haggai':'haggai','zech':'zechariah','zechariah':'zechariah','mal':'malachi','malachi':'malachi',
-        'matt':'matthew','matthew':'matthew','mark':'mark','luke':'luke','john':'john','acts':'acts','rom':'romans','romans':'romans',
-        '1 cor':'1-corinthians','2 cor':'2-corinthians','1 corinthians':'1-corinthians','2 corinthians':'2-corinthians',
-        'gal':'galatians','galatians':'galatians','eph':'ephesians','ephesians':'ephesians','phil':'philippians','philippians':'philippians',
-        'col':'colossians','colossians':'colossians','1 thess':'1-thessalonians','2 thess':'2-thessalonians',
-        '1 thessalonians':'1-thessalonians','2 thessalonians':'2-thessalonians','1 tim':'1-timothy','2 tim':'2-timothy',
-        '1 timothy':'1-timothy','2 timothy':'2-timothy','titus':'titus','philem':'philemon','philemon':'philemon',
-        'heb':'hebrews','hebrews':'hebrews','james':'james','1 pet':'1-peter','2 pet':'2-peter','1 peter':'1-peter','2 peter':'2-peter',
-        '1 john':'1-john','2 john':'2-john','3 john':'3-john','jude':'jude','rev':'revelation','revelation':'revelation'
-      };
-      return map[b] || b.replace(/\s+/g,'-');
-    }
+    const doFilter=debounce(()=>renderResults(),120);
+    q.addEventListener('input',doFilter);
+    clearQ.addEventListener('click',()=>{ q.value=''; renderResults(); q.focus(); });
 
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    q.setAttribute('autocomplete','off'); // safety
 
-    // Bootstrap
-    (async function(){
-      await loadCombined();
-      renderResults();
-      restoreFromHash();
-    })();
-
-    // Search controls in reader toolbar
-    function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
-    const doFilter = debounce(()=> renderResults(), 120);
-    searchInput.addEventListener('input', doFilter);
-    clearQ.addEventListener('click', ()=>{ searchInput.value=''; renderResults(); searchInput.focus(); });
+    (async function(){ await loadCombined(); renderResults(); })();
   </script>
 </body>
 </html>
+
