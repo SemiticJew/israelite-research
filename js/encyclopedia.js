@@ -1,19 +1,21 @@
-cat <<'EOF' > js/dictionary.js
 (async function(){
   const resEl = document.querySelector("#results");
-  const qEl = document.querySelector("#dictSearch");
+  const qEl = document.querySelector("#encySearch");
 
-  const manifest = await fetch("/israelite-research/data/encyclopedia/manifest.json")
-    .then(r=>r.json());
+  const manifest = await fetch("/israelite-research/data/encyclopedia/manifest.json").then(r=>r.json());
 
   const render = (items) => {
     resEl.innerHTML = items.map(it => `
       <article class="card">
-        <h3 style="margin:0 0 6px"><a href="/israelite-research/dictionary/entry.html?id=${encodeURIComponent(it.id)}">${it.term}</a></h3>
-        <div class="meta">${(it.type||[]).join(" · ")}</div>
-        <p>${it.summary||""}</p>
-        <div>${(it.tags||[]).map(t=>`<span class="chip">${t}</span>`).join("")}</div>
-        <div class="meta">Last updated: ${it.last_updated||""}</div>
+        <a href="/israelite-research/encyclopedia/entry.html?id=${encodeURIComponent(it.id)}">
+          <div class="thumb"><span>${(it.badge || "ENTRY").toUpperCase()}</span></div>
+          <div class="body">
+            <div class="kicker">${(it.type||[]).join(" · ")}</div>
+            <h3 class="title">${it.term}</h3>
+            <p class="desc">${it.summary||""}</p>
+            <div class="chips">${(it.tags||[]).map(t=>`<span class="chip">${t}</span>`).join("")}</div>
+          </div>
+        </a>
       </article>
     `).join("");
   };
@@ -31,4 +33,3 @@ cat <<'EOF' > js/dictionary.js
     render(cache.filter(it => it.__t.includes(q)));
   });
 })();
-EOF
