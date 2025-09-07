@@ -2350,3 +2350,61 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   color:var(--ink) !important;
   border-top:1px solid var(--border) !important;
 }
+
+/* === DARK MODE: Articles page — force the LARGE FEATURED card excerpt to adopt dark palette === */
+
+/* Ensure the featured card's text container uses dark surface */
+[data-theme="dark"] body.articles-page .featured .card-body,
+[data-theme="dark"] body.articles-page .feature .card-body,
+[data-theme="dark"] body.articles-page [class*="feature"] .card-body,
+[data-theme="dark"] body.articles-page [class*="hero"] .card-body,
+[data-theme="dark"] body.articles-page [class*="lead"] .card-body {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+}
+
+/* Target common excerpt/summary blocks inside the featured card */
+[data-theme="dark"] body.articles-page .featured .excerpt,
+[data-theme="dark"] body.articles-page .feature .excerpt,
+[data-theme="dark"] body.articles-page [class*="feature"] .excerpt,
+[data-theme="dark"] body.articles-page [class*="hero"] .excerpt,
+[data-theme="dark"] body.articles-page [class*="lead"] .excerpt,
+[data-theme="dark"] body.articles-page .featured .summary,
+[data-theme="dark"] body.articles-page .feature .summary,
+[data-theme="dark"] body.articles-page [class*="feature"] .summary,
+[data-theme="dark"] body.articles-page [class*="hero"] .summary,
+[data-theme="dark"] body.articles-page [class*="lead"] .summary,
+[data-theme="dark"] body.articles-page .featured .desc,
+[data-theme="dark"] body.articles-page .feature .desc,
+[data-theme="dark"] body.articles-page [class*="feature"] .desc,
+[data-theme="dark"] body.articles-page [class*="hero"] .desc,
+[data-theme="dark"] body.articles-page [class*="lead"] .desc,
+[data-theme="dark"] body.articles-page .featured .intro,
+[data-theme="dark"] body.articles-page .feature .intro,
+[data-theme="dark"] body.articles-page [class*="feature"] .intro,
+[data-theme="dark"] body.articles-page [class*="hero"] .intro,
+[data-theme="dark"] body.articles-page [class*="lead"] .intro,
+[data-theme="dark"] body.articles-page .featured .card-text,
+[data-theme="dark"] body.articles-page .feature .card-text,
+[data-theme="dark"] body.articles-page [class*="feature"] .card-text,
+[data-theme="dark"] body.articles-page [class*="hero"] .card-text,
+[data-theme="dark"] body.articles-page [class*="lead"] .card-text {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+}
+
+/* If the featured block itself paints a white background, override it */
+[data-theme="dark"] body.articles-page .featured,
+[data-theme="dark"] body.articles-page .feature,
+[data-theme="dark"] body.articles-page [class*="feature-block"],
+[data-theme="dark"] body.articles-page [class*="hero-block"],
+[data-theme="dark"] body.articles-page [class*="lead-block"]{
+  background: var(--surface) !important;
+}
+
+/* Keep images unaffected */
+[data-theme="dark"] body.articles-page .featured img,
+[data-theme="dark"] body.articles-page .feature img,
+[data-theme="dark"] body.articles-page [class*="feature"] img { background: transparent !important; }
