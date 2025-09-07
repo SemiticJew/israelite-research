@@ -21,36 +21,36 @@
   .search{width:0;opacity:0;padding:0;border:0;border-radius:10px;transition:width .22s ease, opacity .18s ease, padding .18s ease;pointer-events:none}
   .controls.open .search{width:min(540px,85vw);opacity:1;padding:10px 12px;border:1px solid var(--border);pointer-events:auto}
 
-  /* A–Z letters */
+  /* A–Z letters (unchanged) */
   .letters{display:flex;gap:6px;flex-wrap:wrap}
   .letters a{display:inline-block;padding:6px 10px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--blue);font-weight:700}
   .letters a.active{border-color:var(--accent);color:var(--accent)}
 
-  /* Index list (two-column, classic encyclopedia look) */
-  .index{margin:20px 0 40px}
+  /* Filter chips (below A–Z) */
+  .filters{margin:12px 0 4px;display:flex;flex-direction:column;gap:10px}
+  .filter-row{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+  .filter-label{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:#fff;cursor:pointer;user-select:none}
+  .chip[data-active="true"]{border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0}
+  .chip[data-active="true"] .dot{opacity:1}
+
+  /* Index list */
+  .index{margin:14px 0 40px}
   .letter-group{break-inside:avoid;margin:18px 0}
   .letter-head{font-weight:900;letter-spacing:.08em;color:var(--blue);margin:0 0 6px}
   .entry-list{columns:2;column-gap:28px}
   @media (max-width:800px){.entry-list{columns:1}}
   .entry-list a{
-    display:block;
-    padding:8px 0;
-    border-bottom:1px dotted #e9eef6;
-    color:var(--ink);
-    text-decoration:none;
-    transition:color .15s ease, background-color .15s ease;
+    display:block;padding:8px 0;border-bottom:1px dotted #e9eef6;
+    color:var(--ink);text-decoration:none;transition:color .15s ease, background-color .15s ease;
   }
-  .entry-list a:hover{color:var(--accent); background:rgba(241,115,0,0.04)}
+  .entry-list a:hover{color:var(--accent);background:rgba(241,115,0,0.04)}
   .badge{font-size:.72rem;color:#7387a6;text-transform:uppercase;margin-left:6px}
-
-  /* Hide any leftover “meta/count” from previous JS to remove numbering */
-  .entry-list a .meta,
-  .entry-list a .count { display:none !important; }
 </style>
 </head>
 <body class="encyclopedia-page">
 
-  <!-- Header partial (no extra wrapper classes to avoid breaking layout) -->
   <div id="site-header" data-include="partials/header.html"></div>
 
   <main>
@@ -71,18 +71,66 @@
           </div>
           <nav class="letters" id="letters"></nav>
         </div>
+
+        <!-- Chip filters (inside 1200px container, below A–Z) -->
+        <div id="filters" class="filters">
+
+          <div class="filter-row" data-key="type">
+            <span class="filter-label">Type</span>
+            <button class="chip" data-value="people"><span class="dot"></span>People</button>
+            <button class="chip" data-value="nation|tribe"><span class="dot"></span>Nation/Tribe</button>
+            <button class="chip" data-value="place"><span class="dot"></span>Place</button>
+            <button class="chip" data-value="concept|doctrine"><span class="dot"></span>Concept/Doctrine</button>
+            <button class="chip" data-value="text|source"><span class="dot"></span>Text/Source</button>
+          </div>
+
+          <div class="filter-row" data-key="era">
+            <span class="filter-label">Era</span>
+            <button class="chip" data-value="patriarchal"><span class="dot"></span>Patriarchal</button>
+            <button class="chip" data-value="exodus|conquest"><span class="dot"></span>Exodus/Conquest</button>
+            <button class="chip" data-value="monarchy"><span class="dot"></span>Monarchy</button>
+            <button class="chip" data-value="exile"><span class="dot"></span>Exile</button>
+            <button class="chip" data-value="second_temple|second temple"><span class="dot"></span>Second Temple</button>
+            <button class="chip" data-value="nt|new testament"><span class="dot"></span>NT</button>
+            <button class="chip" data-value="post-biblical|post biblical"><span class="dot"></span>Post-biblical</button>
+          </div>
+
+          <div class="filter-row" data-key="region">
+            <span class="filter-label">Region</span>
+            <button class="chip" data-value="egypt"><span class="dot"></span>Egypt</button>
+            <button class="chip" data-value="cush|nubia"><span class="dot"></span>Cush/Nubia</button>
+            <button class="chip" data-value="levant"><span class="dot"></span>Levant</button>
+            <button class="chip" data-value="mesopotamia"><span class="dot"></span>Mesopotamia</button>
+            <button class="chip" data-value="arabia"><span class="dot"></span>Arabia</button>
+            <button class="chip" data-value="mediterranean"><span class="dot"></span>Mediterranean</button>
+          </div>
+
+          <div class="filter-row" data-key="features">
+            <span class="filter-label">Features</span>
+            <button class="chip" data-value="iconography"><span class="dot"></span>Has iconography</button>
+            <button class="chip" data-value="complexion"><span class="dot"></span>Has complexion notes</button>
+            <button class="chip" data-value="maps"><span class="dot"></span>Has maps</button>
+            <button class="chip" data-value="crossrefs"><span class="dot"></span>Cross-refs present</button>
+          </div>
+
+          <div class="filter-row" data-key="status">
+            <span class="filter-label">Status</span>
+            <button class="chip" data-value="draft"><span class="dot"></span>Draft</button>
+            <button class="chip" data-value="reviewed"><span class="dot"></span>Reviewed</button>
+            <button class="chip" data-value="published"><span class="dot"></span>Published</button>
+          </div>
+
+        </div>
       </div>
     </header>
 
-    <!-- Index lives inside the 1200px content region -->
     <section class="container index" id="encyIndex" aria-live="polite"></section>
   </main>
 
-  <!-- Footer partial (plain include so it renders correctly) -->
   <div id="site-footer" data-include="partials/footer.html"></div>
 
+  <!-- Search toggle (unchanged) -->
   <script>
-    // Minimal search toggle so the icon opens/closes the input
     (function(){
       const controlsEl = document.getElementById('controls');
       const toggleEl = document.getElementById('searchToggle');
