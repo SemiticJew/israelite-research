@@ -2658,3 +2658,90 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] body.articles-page .card [style*="color:black"]{
   color:#FFFFFF !important;
 }
+
+/* === DARK MODE: Articles page — FORCE Recent Articles & Large Featured excerpts to white === */
+
+/* Scope to Articles page for safety */
+[data-theme="dark"][data-page="articles"] .recent,
+[data-theme="dark"][data-page="articles"] .recent-articles,
+[data-theme="dark"][data-page="articles"] [class*="recent"]{
+  background: var(--bg) !important;
+  color: #FFFFFF !important;
+}
+
+/* Recent Articles: titles, excerpts, meta/dates -> white */
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .title,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .card-title,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h1,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h2,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h3,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h4,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h5,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card h6,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .excerpt,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .excerpt *,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .summary,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .summary *,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .desc,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .desc *,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .intro,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .intro *,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card p,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card li,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .meta,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .meta *,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card .date,
+[data-theme="dark"][data-page="articles"] [class*="recent"] .card time {
+  color:#FFFFFF !important;
+}
+
+/* Large Featured: ensure excerpt + body/footer adopt dark palette and white text */
+[data-theme="dark"][data-page="articles"] .featured,
+[data-theme="dark"][data-page="articles"] .feature,
+[data-theme="dark"][data-page="articles"] [class*="feature"]{
+  background: var(--surface) !important;
+  color: #FFFFFF !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"][data-page="articles"] .featured .card-body,
+[data-theme="dark"][data-page="articles"] .feature .card-body,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .card-body,
+[data-theme="dark"][data-page="articles"] .featured .card-footer,
+[data-theme="dark"][data-page="articles"] .feature .card-footer,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .card-footer{
+  background: var(--surface) !important;
+  color: #FFFFFF !important;
+  border-color: var(--border) !important;
+}
+[data-theme="dark"][data-page="articles"] .featured .excerpt,
+[data-theme="dark"][data-page="articles"] .feature .excerpt,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .excerpt,
+[data-theme="dark"][data-page="articles"] [class*="feature"] [class*="excerpt"],
+[data-theme="dark"][data-page="articles"] .featured .summary,
+[data-theme="dark"][data-page="articles"] .feature .summary,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .summary,
+[data-theme="dark"][data-page="articles"] [class*="feature"] [class*="summary"],
+[data-theme="dark"][data-page="articles"] .featured .desc,
+[data-theme="dark"][data-page="articles"] .feature .desc,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .desc,
+[data-theme="dark"][data-page="articles"] [class*="feature"] [class*="desc"],
+[data-theme="dark"][data-page="articles"] .featured .intro,
+[data-theme="dark"][data-page="articles"] .feature .intro,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .intro,
+[data-theme="dark"][data-page="articles"] [class*="feature"] [class*="intro"],
+[data-theme="dark"][data-page="articles"] .featured .card-text,
+[data-theme="dark"][data-page="articles"] .feature .card-text,
+[data-theme="dark"][data-page="articles"] [class*="feature"] .card-text {
+  background: var(--surface) !important;
+  color: #FFFFFF !important;
+  border-color: var(--border) !important;
+}
+
+/* Links inside excerpts/titles also white */
+[data-theme="dark"][data-page="articles"] .card .title a,
+[data-theme="dark"][data-page="articles"] .card .excerpt a,
+[data-theme="dark"][data-page="articles"] .card .desc a,
+[data-theme="dark"][data-page="articles"] .card .meta a,
+[data-theme="dark"][data-page="articles"] .card time a{
+  color:#FFFFFF !important;
+}
