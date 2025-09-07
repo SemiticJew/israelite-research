@@ -2127,3 +2127,64 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] body.bib-refs a:active {
   color: #FFFFFF !important;
 }
+
+/* === DARK MODE: Biblical References specific tweaks === */
+
+/* A) A–Z bar text color: white default, orange on hover/active */
+[data-theme="dark"] body.bib-refs .az-bar a,
+[data-theme="dark"] body.bib-refs .az-bar button,
+[data-theme="dark"] body.bib-refs .alphabet a,
+[data-theme="dark"] body.bib-refs .alphabet button,
+[data-theme="dark"] body.bib-refs .alpha-nav a,
+[data-theme="dark"] body.bib-refs .alpha-nav button,
+[data-theme="dark"] body.bib-refs .a-z a,
+[data-theme="dark"] body.bib-refs .a-z button,
+[data-theme="dark"] body.bib-refs .az a,
+[data-theme="dark"] body.bib-refs .az button {
+  color:#FFFFFF !important;
+  background: transparent !important;
+  border-color: transparent;
+}
+[data-theme="dark"] body.bib-refs .az-bar a:hover,
+[data-theme="dark"] body.bib-refs .az-bar button:hover,
+[data-theme="dark"] body.bib-refs .alphabet a:hover,
+[data-theme="dark"] body.bib-refs .alphabet button:hover,
+[data-theme="dark"] body.bib-refs .alpha-nav a:hover,
+[data-theme="dark"] body.bib-refs .alpha-nav button:hover,
+[data-theme="dark"] body.bib-refs .a-z a:hover,
+[data-theme="dark"] body.bib-refs .a-z button:hover,
+[data-theme="dark"] body.bib-refs .az a:hover,
+[data-theme="dark"] body.bib-refs .az button:hover,
+[data-theme="dark"] body.bib-refs .az-bar [aria-pressed="true"],
+[data-theme="dark"] body.bib-refs .alphabet .active,
+[data-theme="dark"] body.bib-refs .alpha-nav .active,
+[data-theme="dark"] body.bib-refs .a-z .active,
+[data-theme="dark"] body.bib-refs .az .active {
+  color: var(--accent) !important; /* Orange */
+}
+
+/* B) Remove stray white bands: keep wrappers same as dark background */
+[data-theme="dark"] body.bib-refs main,
+[data-theme="dark"] body.bib-refs .container,
+[data-theme="dark"] body.bib-refs .wrap,
+[data-theme="dark"] body.bib-refs .content,
+[data-theme="dark"] body.bib-refs section,
+[data-theme="dark"] body.bib-refs .section {
+  background: var(--bg) !important;
+}
+
+/* C) Search bar: dark navy background + white text */
+[data-theme="dark"] body.bib-refs input[type="search"],
+[data-theme="dark"] body.bib-refs .search input[type="text"],
+[data-theme="dark"] body.bib-refs .search-bar input,
+[data-theme="dark"] body.bib-refs .ref-search input {
+  background: var(--brand) !important;   /* Navy #054A91 */
+  color: #FFFFFF !important;
+  border: 1px solid var(--border) !important;
+}
+[data-theme="dark"] body.bib-refs input[type="search"]::placeholder,
+[data-theme="dark"] body.bib-refs .search input[type="text"]::placeholder,
+[data-theme="dark"] body.bib-refs .search-bar input::placeholder,
+[data-theme="dark"] body.bib-refs .ref-search input::placeholder {
+  color: rgba(255,255,255,.8) !important;
+}
