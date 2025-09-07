@@ -2805,3 +2805,9 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   color:#FFFFFF !important;
   border-color: var(--border) !important;
 }
+
+/* --- Fix: Verse spans should not have white blocks; adapt to dark mode --- */
+.verse{background:transparent!important;padding:0!important;border:0!important;box-shadow:none!important;display:inline!important;}
+.verse::after{background:var(--surface)!important;color:var(--ink)!important;border:1px solid var(--border)!important;}
+[data-theme="dark"] .verse{color:#FFFFFF!important;}
+[data-theme="dark"] .verse::after{background:#2f2f2f!important;color:#FFFFFF!important;border-color:var(--border)!important;}
