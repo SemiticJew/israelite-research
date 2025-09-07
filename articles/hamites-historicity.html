@@ -20,7 +20,7 @@
     .article-byline{ display:flex; align-items:center; gap:.65rem; color: var(--ink); }
     .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
 
-    /* NEW: compact author info icon (opens popout) */
+    /* author info icon */
     .author-info-btn{
       display:inline-flex; align-items:center; justify-content:center;
       width:28px; height:28px; border-radius:999px;
@@ -43,15 +43,6 @@
     .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
     .share-btn:hover{ transform:translateY(-1px); }
 
-    /* Author popout (toggles from author name and info icon) */
-    .author-pop{ position:absolute; top:100%; left:0; margin-top:10px; width:min(520px,90vw); background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 30px rgba(0,0,0,.18); padding:12px 14px; display:none; z-index:50; }
-    .author-pop[aria-hidden="false"]{ display:block; }
-    .author-pop .ap-head{ display:flex; gap:12px; align-items:center; }
-    .author-pop .ap-avatar{ width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
-    .author-pop .ap-title{ margin:0; font-weight:800; color:var(--ink); }
-    .author-pop .ap-text{ margin:.35rem 0 0; color:var(--muted); font-size:.95rem; }
-    .author-pop .ap-close{ position:absolute; top:8px; right:8px; background:none; border:none; padding:6px; cursor:pointer; color:var(--muted); }
-
     .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
     .article-content p{ margin:1rem 0; }
     .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
@@ -65,6 +56,47 @@
     .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
     .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
 
+    /* FULL-SCREEN AUTHOR MODAL (DG-style) */
+    .modal-overlay{
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(0,0,0,.62);
+      display:none;
+    }
+    .modal-overlay[aria-hidden="false"]{ display:block; }
+    .modal-panel{
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      padding:20px;
+    }
+    .modal-card{
+      width:min(860px,92vw);
+      max-height:88vh;
+      background:var(--surface);
+      color:var(--ink);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      overflow:auto;
+    }
+    .modal-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-bottom:1px solid var(--border);
+    }
+    .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+    .modal-close{
+      background:none; border:none; padding:8px; cursor:pointer; color:var(--muted);
+    }
+    .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+    .modal-body .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+    .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+    .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
+    .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+    .modal-chip{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border); padding:8px 10px; border-radius:999px;
+      background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem;
+    }
+
     /* Dark mode overrides */
     html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
@@ -72,13 +104,17 @@
     html[data-theme="dark"] body.article-doc .byline-name-btn{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
     html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
-    html[data-theme="dark"] body.article-doc .author-pop{ background:var(--surface); border-color:var(--border); }
-    html[data-theme="dark"] body.article-doc .author-pop .ap-title{ color:#FFFFFF; }
-    html[data-theme="dark"] body.article-doc .author-pop .ap-text{ color:rgba(255,255,255,.9); }
     html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
     html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .verse::after{ background:#2f2f2f; color:#FFFFFF; border-color: var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+
+    /* modal dark */
+    html[data-theme="dark"] .modal-card{ background:#14233a; color:#fff; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .modal-head{ border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .modal-title, html[data-theme="dark"] .ap-name{ color:#fff; }
+    html[data-theme="dark"] .modal-body .ap-text{ color:rgba(255,255,255,.92); }
+    html[data-theme="dark"] .modal-chip{ background:#0f1a2b; color:#fff; border-color:rgba(255,255,255,.15); }
   </style>
 </head>
 <body data-page="article" class="article-doc">
@@ -100,8 +136,6 @@
       <div class="byline-row" id="byline-row">
         <div class="article-byline">
           <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
-
-          <!-- NEW: author info icon button -->
           <button id="author-info" class="author-info-btn" type="button" aria-label="About the author">
             <svg viewBox="0 0 20 20" aria-hidden="true">
               <g stroke="none" fill="currentColor" fill-rule="evenodd">
@@ -109,8 +143,7 @@
               </g>
             </svg>
           </button>
-
-          <button id="author-name" class="byline-name-btn" aria-expanded="false" aria-controls="author-pop">Semitic Jew</button>
+          <button id="author-name" class="byline-name-btn" aria-expanded="false" aria-controls="author-modal">Semitic Jew</button>
           <span class="byline-meta">• Article</span>
         </div>
         <div class="share-min" aria-label="Share">
@@ -123,18 +156,6 @@
           <button id="share-copy" class="share-btn" type="button" aria-label="Copy link">
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
-        </div>
-
-        <!-- Author popout -->
-        <div id="author-pop" class="author-pop" role="dialog" aria-hidden="true" aria-labelledby="ap-title">
-          <button class="ap-close" type="button" aria-label="Close" id="ap-close">✕</button>
-          <div class="ap-head">
-            <img class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="48" height="48"/>
-            <div>
-              <h3 id="ap-title" class="ap-title">Semitic Jew</h3>
-              <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context. Curates resources on Israel and the nations of the ancient Near East.</p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -215,6 +236,36 @@
     </article>
   </main>
 
+  <!-- FULL-SCREEN AUTHOR MODAL -->
+  <div id="author-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="author-modal-title">
+    <div class="modal-panel" data-close>
+      <div class="modal-card" role="document">
+        <div class="modal-head">
+          <h2 id="author-modal-title" class="modal-title">About the Author</h2>
+          <button class="modal-close" type="button" id="author-modal-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+          <div>
+            <div class="ap-name">Semitic Jew</div>
+            <p class="ap-text">
+              Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+              Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
+              and study tools to recover the Bible’s own world and voices.
+            </p>
+            <div class="modal-links">
+              <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
+              <a class="modal-chip" href="/israelite-research/media.html">Media</a>
+              <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="site-footer"></div>
 
   <script>
@@ -229,35 +280,41 @@
       if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
       if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
 
-      // Author popout (toggle from name OR info icon)
-      var btn  = document.getElementById('author-name');
-      var icon = document.getElementById('author-info');
-      var pop  = document.getElementById('author-pop');
-      var close= document.getElementById('ap-close');
+      // Full-screen author modal (open from name or icon)
+      var btn   = document.getElementById('author-name');
+      var icon  = document.getElementById('author-info');
+      var modal = document.getElementById('author-modal');
+      var close = document.getElementById('author-modal-close');
+      var lastFocus;
 
-      function openPop(anchor){
-        pop.setAttribute('aria-hidden','false');
-        if(btn) btn.setAttribute('aria-expanded','true');
-        var ref = anchor || btn;
-        if (ref){
-          var rect=ref.getBoundingClientRect(), vw=window.innerWidth;
-          pop.style.left = (rect.left < vw-380) ? rect.left+'px' : (vw-380-16)+'px';
-        }
+      function openModal(e){
+        if(e){ e.preventDefault(); }
+        lastFocus = document.activeElement;
+        modal.setAttribute('aria-hidden','false');
+        document.documentElement.style.overflow = 'hidden'; // lock scroll
+        // focus close button for accessibility
+        close && close.focus();
       }
-      function closePop(){
-        pop.setAttribute('aria-hidden','true');
-        if(btn) btn.setAttribute('aria-expanded','false');
-      }
-      function togglePop(e, anchor){
-        e.stopPropagation();
-        (pop.getAttribute('aria-hidden')==='true') ? openPop(anchor) : closePop();
+      function closeModal(e){
+        if(e){ e.preventDefault(); }
+        modal.setAttribute('aria-hidden','true');
+        document.documentElement.style.overflow = '';
+        if(lastFocus && lastFocus.focus) lastFocus.focus();
       }
 
-      if(btn)  btn.addEventListener('click', function(e){ togglePop(e, btn); });
-      if(icon) icon.addEventListener('click', function(e){ togglePop(e, icon); });
-      if(close) close.addEventListener('click', function(e){ e.stopPropagation(); closePop(); });
-      document.addEventListener('click', function(e){ if(!pop.contains(e.target) && e.target!==btn && e.target!==icon) closePop(); });
-      document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePop(); });
+      if(btn)  btn.addEventListener('click', openModal);
+      if(icon) icon.addEventListener('click', openModal);
+      if(close) close.addEventListener('click', closeModal);
+
+      // click backdrop to close
+      modal.addEventListener('click', function(e){
+        if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
+      });
+
+      // Esc to close
+      document.addEventListener('keydown', function(e){
+        if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
+      });
     })();
   </script>
 
