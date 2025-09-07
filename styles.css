@@ -2312,3 +2312,41 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   box-shadow: var(--shadow-hover);
   border-color: #cdd8e6;
 }
+
+/* === DARK MODE FIXES: Articles page author/footer/excerpt === */
+
+/* A) Author name (and byline) in article footers must be white in dark mode */
+[data-theme="dark"] body.articles-page .author,
+[data-theme="dark"] body.articles-page .byline,
+[data-theme="dark"] body.articles-page [class*="author"],
+[data-theme="dark"] body.articles-page .card-footer .meta,
+[data-theme="dark"] body.articles-page .post-card footer .meta,
+[data-theme="dark"] body.articles-page .article-card footer .meta {
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] body.articles-page .author a,
+[data-theme="dark"] body.articles-page .byline a,
+[data-theme="dark"] body.articles-page [class*="author"] a {
+  color:#FFFFFF !important;
+}
+
+/* B) Featured card excerpt uses dark-mode surface background + readable text */
+[data-theme="dark"] body.articles-page .featured .excerpt,
+[data-theme="dark"] body.articles-page .feature .excerpt,
+[data-theme="dark"] body.articles-page .hero .excerpt,
+[data-theme="dark"] body.articles-page .lead .excerpt,
+[data-theme="dark"] body.articles-page .post-card.featured .excerpt,
+[data-theme="dark"] body.articles-page .article-card.featured .excerpt {
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  border-color:var(--border) !important;
+}
+
+/* C) Card footers adapt to dark mode palette (covers all, incl. 2nd featured) */
+[data-theme="dark"] body.articles-page .card-footer,
+[data-theme="dark"] body.articles-page .post-card footer,
+[data-theme="dark"] body.articles-page .article-card footer {
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  border-top:1px solid var(--border) !important;
+}
