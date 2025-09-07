@@ -17,10 +17,10 @@
     .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
     .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
-    .article-byline{ display:flex; align-items:center; gap:.65rem; color: var(--ink); }
+    .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
     .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
 
-    /* author info icon */
+    /* author info icon (opens modal) */
     .author-info-btn{
       display:inline-flex; align-items:center; justify-content:center;
       width:28px; height:28px; border-radius:999px;
@@ -31,9 +31,20 @@
     .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
     .author-info-btn svg{ width:18px; height:18px; display:block; }
 
+    /* author X profile link (beside name) */
+    .author-x{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:28px; height:28px; border-radius:999px;
+      border:1px solid var(--border); background:var(--surface);
+      color:var(--muted); text-decoration:none; margin-left:2px;
+      transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+    }
+    .author-x:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .author-x svg{ width:16px; height:16px; display:block; }
+
     /* Author name button (no underline) */
     .byline-name-btn{
-      background:none; border:none; padding:0; margin:0;
+      background:none; border:none; padding:0; margin:0 2px 0 2px;
       font:inherit; font-weight:800; color:var(--ink); cursor:pointer; text-decoration:none;
     }
     .byline-name-btn:hover{ color:var(--brand); }
@@ -56,7 +67,7 @@
     .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
     .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
 
-    /* FULL-SCREEN AUTHOR MODAL (DG-style) */
+    /* FULL-SCREEN AUTHOR MODAL */
     .modal-overlay{
       position:fixed; inset:0; z-index:1000;
       background:rgba(0,0,0,.62);
@@ -103,6 +114,7 @@
     html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
     html[data-theme="dark"] body.article-doc .byline-name-btn{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
+    html[data-theme="dark"] body.article-doc .author-x{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
     html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
     html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
@@ -136,6 +148,7 @@
       <div class="byline-row" id="byline-row">
         <div class="article-byline">
           <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
+
           <button id="author-info" class="author-info-btn" type="button" aria-label="About the author">
             <svg viewBox="0 0 20 20" aria-hidden="true">
               <g stroke="none" fill="currentColor" fill-rule="evenodd">
@@ -143,7 +156,16 @@
               </g>
             </svg>
           </button>
+
           <button id="author-name" class="byline-name-btn" aria-expanded="false" aria-controls="author-modal">Semitic Jew</button>
+
+          <!-- X (Twitter) profile -->
+          <a class="author-x" href="https://x.com/semitic_jew" target="_blank" rel="noopener" aria-label="Semitic Jew on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+
           <span class="byline-meta">• Article</span>
         </div>
         <div class="share-min" aria-label="Share">
@@ -259,6 +281,8 @@
               <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
               <a class="modal-chip" href="/israelite-research/media.html">Media</a>
               <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+              <a class="modal-chip" href="/israelite-research/semitic-jew.html">Bio</a>
+              <a class="modal-chip" href="/israelite-research/semitic-jew.html">More</a>
             </div>
           </div>
         </div>
@@ -280,7 +304,7 @@
       if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
       if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
 
-      // Full-screen author modal (open from name or icon)
+      // Full-screen author modal (open from name or info icon)
       var btn   = document.getElementById('author-name');
       var icon  = document.getElementById('author-info');
       var modal = document.getElementById('author-modal');
@@ -291,8 +315,7 @@
         if(e){ e.preventDefault(); }
         lastFocus = document.activeElement;
         modal.setAttribute('aria-hidden','false');
-        document.documentElement.style.overflow = 'hidden'; // lock scroll
-        // focus close button for accessibility
+        document.documentElement.style.overflow = 'hidden';
         close && close.focus();
       }
       function closeModal(e){
@@ -306,12 +329,10 @@
       if(icon) icon.addEventListener('click', openModal);
       if(close) close.addEventListener('click', closeModal);
 
-      // click backdrop to close
       modal.addEventListener('click', function(e){
         if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
       });
 
-      // Esc to close
       document.addEventListener('keydown', function(e){
         if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
       });
