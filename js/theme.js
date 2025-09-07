@@ -26,6 +26,7 @@
     }
   }
 
+  // Modern icons (sun/moon) using currentColor
   const SUN_SVG = `
     <svg class="sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -40,26 +41,16 @@
     </svg>
   `;
 
-  function ensureToggle(){
-    let btn = document.getElementById('themeToggle');
-    if(!btn){
-      const wrap = document.createElement('div');
-      wrap.className = 'floating-theme-toggle';
-      wrap.innerHTML = `
-        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">
-          ${SUN_SVG}${MOON_SVG}
-        </button>`;
-      document.body.appendChild(wrap);
-      btn = wrap.querySelector('#themeToggle');
-    } else {
-      if(!btn.querySelector('svg')) btn.innerHTML = SUN_SVG + MOON_SVG;
-    }
+  function wireToggle(){
+    const btn = document.getElementById('themeToggle');
+    if(!btn) return; // no fallback injection anywhere else
+    if(!btn.querySelector('svg')) btn.innerHTML = SUN_SVG + MOON_SVG;
     btn.addEventListener('click', ()=>{
       const next = (root.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
-      localStorage.setItem('theme', next);
+      localStorage.setItem(KEY, next);
       apply(next);
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => { init(); ensureToggle(); });
+  document.addEventListener('DOMContentLoaded', () => { init(); wireToggle(); });
 })();
