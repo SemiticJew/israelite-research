@@ -1914,3 +1914,78 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] #site-header .tools .theme-toggle{
   color:#FFFFFF !important;
 }
+
+/* ==== DARK MODE: MEDIA FILTER BUTTONS ==== */
+/* Ensure all filter/tabs/pill controls on media.html use dark-blue bg + white text in dark mode */
+[data-theme="dark"] .media-filters button,
+[data-theme="dark"] .media-filters .btn,
+[data-theme="dark"] .media-filters .chip,
+[data-theme="dark"] .media-filters .pill,
+[data-theme="dark"] .media-filters .tab,
+[data-theme="dark"] .media-nav button,
+[data-theme="dark"] .media-nav .btn,
+[data-theme="dark"] .filters button,
+[data-theme="dark"] .filters .btn,
+[data-theme="dark"] .filters a,
+[data-theme="dark"] .tabs button,
+[data-theme="dark"] .tabs .tab,
+[data-theme="dark"] .segmented-control button {
+  background: var(--brand) !important;  /* Navy Blue #054A91 */
+  color: #FFFFFF !important;            /* White text */
+  border: 1px solid var(--border) !important;
+}
+
+/* Hover/Focus: switch to Teal for strong contrast, keep white text */
+[data-theme="dark"] .media-filters button:hover,
+[data-theme="dark"] .media-filters .btn:hover,
+[data-theme="dark"] .media-filters .chip:hover,
+[data-theme="dark"] .media-filters .pill:hover,
+[data-theme="dark"] .media-filters .tab:hover,
+[data-theme="dark"] .media-nav button:hover,
+[data-theme="dark"] .media-nav .btn:hover,
+[data-theme="dark"] .filters button:hover,
+[data-theme="dark"] .filters .btn:hover,
+[data-theme="dark"] .filters a:hover,
+[data-theme="dark"] .tabs button:hover,
+[data-theme="dark"] .tabs .tab:hover,
+[data-theme="dark"] .segmented-control button:hover,
+[data-theme="dark"] .media-filters button:focus,
+[data-theme="dark"] .media-filters .btn:focus,
+[data-theme="dark"] .media-filters .chip:focus,
+[data-theme="dark"] .media-filters .pill:focus,
+[data-theme="dark"] .media-filters .tab:focus,
+[data-theme="dark"] .media-nav button:focus,
+[data-theme="dark"] .media-nav .btn:focus,
+[data-theme="dark"] .filters button:focus,
+[data-theme="dark"] .filters .btn:focus,
+[data-theme="dark"] .filters a:focus,
+[data-theme="dark"] .tabs button:focus,
+[data-theme="dark"] .tabs .tab:focus,
+[data-theme="dark"] .segmented-control button:focus {
+  background: var(--teal) !important;   /* Teal #009B77 */
+  color: #FFFFFF !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(0,155,119,.35) !important; /* focus ring */
+}
+
+/* Active/Selected states: keep teal + white text for readability */
+[data-theme="dark"] .media-filters [aria-pressed="true"],
+[data-theme="dark"] .media-filters .is-active,
+[data-theme="dark"] .media-filters .active,
+[data-theme="dark"] .media-filters .selected,
+[data-theme="dark"] .media-nav [aria-pressed="true"],
+[data-theme="dark"] .media-nav .is-active,
+[data-theme="dark"] .media-nav .active,
+[data-theme="dark"] .filters [aria-pressed="true"],
+[data-theme="dark"] .filters .is-active,
+[data-theme="dark"] .filters .active,
+[data-theme="dark"] .tabs [aria-pressed="true"],
+[data-theme="dark"] .tabs .is-active,
+[data-theme="dark"] .tabs .active,
+[data-theme="dark"] .segmented-control [aria-pressed="true"],
+[data-theme="dark"] .segmented-control .is-active,
+[data-theme="dark"] .segmented-control .active {
+  background: var(--teal) !important;   /* Teal #009B77 */
+  color: #FFFFFF !important;
+  border-color: var(--teal) !important;
+}
