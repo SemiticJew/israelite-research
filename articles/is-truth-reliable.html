@@ -1,124 +1,282 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Is Truth Reliable? — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
   <style>
-    :root{ --accent:#F17300; --muted:#666; --ink:#0b2340; }
-    .article-shell{ max-width:760px; margin:0 auto; }
-    .article-head{ text-align:center; margin-top:.5rem; }
-    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
-    .article-title{
-      font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(1.9rem,3.4vw,2.6rem);
-      color: var(--ink); line-height:1.15; margin:0 0 .8rem;
-    }
+    :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
 
-    .hero-image{ margin:1rem auto; display:flex; justify-content:center; }
-    .hero-image img{
-      width:700px; height:auto; max-width:100%;
-      display:block; border-radius:0 !important;
-    }
+    .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+    .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin:0 0 .5rem; }
+    .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color: var(--ink); line-height:1.15; margin:0; }
 
-    .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color: var(--ink); }
-    .article-byline .author-avatar{
-      width:40px; height:40px; border-radius:50%; object-fit:cover;
-      border:1px solid var(--border); background:#f0f3f8;
-    }
-    .byline-name{ font-weight:700; }
-    .byline-meta{ color: var(--muted); font-size:.95rem; }
+    .hero-image{ margin:1.1rem auto .5rem; }
+    .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
-    .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
-    .share-btn{
+    .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
+    .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
+    .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
+
+    .author-info-btn{
       display:inline-flex; align-items:center; justify-content:center;
-      width:36px; height:36px; border-radius:999px;
-      border:1px solid var(--border); background: var(--surface); color: var(--brand); text-decoration:none;
+      width:28px; height:28px; border-radius:999px;
+      border:1px solid var(--border); background:var(--surface);
+      color:var(--muted); cursor:pointer; padding:0;
+      transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
     }
+    .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .author-info-btn svg{ width:18px; height:18px; display:block; }
+
+    /* Author name (non-interactive) */
+    .byline-name{ font-weight:800; color:var(--ink); }
+
+    .byline-meta{ color:var(--muted); font-size:.95rem; }
+    .share-min{ display:flex; align-items:center; gap:.4rem; }
+    .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
     .share-btn:hover{ transform:translateY(-1px); }
 
-    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
+    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
     .article-content p{ margin:1rem 0; }
-    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
-    .article-content blockquote{
-      border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink);
-      background:#f9fbfe; border-radius:8px;
-    }
-    .article-content ol{ margin:.5rem 0 1rem 1.25rem; }
+    .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink); background:#f9fbfe; border-radius:8px; }
 
-    .article-notes{ margin-top:2rem; padding-top:1rem; border-top:1px dashed var(--border); }
-    .bibliography li{ margin:.35rem 0; }
+    .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+    .verse::after{ content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30; }
+    .verse:hover::after{ opacity:1; transform:translateY(0); }
 
-    .verse{ position:relative; text-decoration:underline dotted; color: var(--brand); }
-    .verse:hover::after{
-      content:"Open in Logos";
-      position:absolute; left:0; bottom:120%;
-      background: var(--surface); color: var(--brand); border:1px solid var(--border); padding:.25rem .45rem;
-      font-size:.8rem; border-radius:8px; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.08);
+    .footnote-ref{text-decoration:none;} .footnote-ref sup{font-size:.75em;vertical-align:super;}
+    .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+    .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
+
+    /* FULL-SCREEN AUTHOR MODAL */
+    .modal-overlay{ position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.62); display:none; }
+    .modal-overlay[aria-hidden="false"]{ display:block; }
+    .modal-panel{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .modal-card{
+      width:min(860px,92vw); max-height:88vh; background:var(--surface); color:var(--ink);
+      border:1px solid var(--border); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:auto;
     }
+    .modal-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-bottom:1px solid var(--border);
+    }
+    .mh-left{ display:flex; align-items:center; gap:10px; }
+    .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+    .author-x-head{
+      width:32px; height:32px; border-radius:50%;
+      display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid var(--border); background:var(--surface);
+      color:var(--muted); text-decoration:none;
+      transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+    }
+    .author-x-head:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .modal-close{ background:none; border:none; padding:8px; cursor:pointer; color:var(--muted); }
+    .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+    .modal-body .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+    .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+    .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
+    .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+    .modal-chip{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border); padding:8px 10px; border-radius:999px;
+      background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem;
+    }
+
+    /* Dark mode overrides */
+    html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
+    html[data-theme="dark"] body.article-doc .byline-name{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
+    html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
+    html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
+    html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .verse::after{ background:#2f2f2f; color:#FFFFFF; border-color: var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+
+    html[data-theme="dark"] .modal-card{ background:#14233a; color:#fff; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .modal-head{ border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .modal-title, html[data-theme="dark"] .ap-name{ color:#fff; }
+    html[data-theme="dark"] .modal-body .ap-text{ color:rgba(255,255,255,.92); }
+    html[data-theme="dark"] .modal-chip{ background:#0f1a2b; color:#fff; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .author-x-head{ color:#fff; border-color:rgba(255,255,255,.15); background:#0f1a2b; }
   </style>
 </head>
-<body data-page="article" class="article-doc article-doc">
+<body data-page="article" class="article-doc">
   <div id="site-header"></div>
-  <main class="container article-page">
-    <nav class="breadcrumbs" aria-label="Breadcrumbs" style="margin:10px 0 18px;">
-      <a href="/israelite-research/" class="crumb">Home</a>
-      <span aria-hidden="true"> / </span>
-      <a href="/israelite-research/articles/" class="crumb">Articles</a>
-      <span aria-hidden="true"> / </span>
-      <span class="crumb current" aria-current="page">Is Truth Reliable?</span>
-    </nav>
-    <article class="article-shell">
+
+  <main class="article-page">
+    <article class="article-shell" itemscope itemtype="https://schema.org/Article">
       <header class="article-head">
-        <p class="article-date">Published: <time datetime="2025-09-07">September 7, 2025</time></p>
-        <h1 class="article-title">Is Truth Reliable?</h1>
+        <p class="article-date" itemprop="datePublished"><time id="pub-date" datetime=""></time></p>
+        <h1 class="article-title" itemprop="headline">Is Truth Reliable?</h1>
       </header>
-      <figure class="hero-image">
-        <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Truth and reliability — article banner">
+
+      <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <img src="/israelite-research/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?" width="700" height="394" />
+        <meta itemprop="url" content="/israelite-research/images/articles/truth-reliable-700x394.jpg" />
       </figure>
-      <div class="article-byline">
-        <img class="author-avatar" src="/israelite-research/images/authors/darriell.jpg" alt="Author avatar" onerror="this.style.display='none'">
-        <div>
-          <div class="byline-name">Darriell L. Dickerson</div>
-          <div class="byline-meta">Semitic Jew — Essays in Scripture &amp; Reason</div>
+
+      <div class="byline-row" id="byline-row">
+        <div class="article-byline">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
+          <button id="author-info" class="author-info-btn" type="button" aria-label="About the author">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <g stroke="none" fill="currentColor" fill-rule="evenodd">
+                <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+              </g>
+            </svg>
+          </button>
+          <span class="byline-name">Semitic Jew</span>
+          <span class="byline-meta">• Article</span>
         </div>
-        <div class="article-share" style="margin-left:auto">
-          <a class="share-btn" href="https://twitter.com/intent/tweet?text=Is%20Truth%20Reliable%3F&url=https%3A%2F%2Fsemiticjew.github.io%2Fisraelite-research%2Farticles%2Fis-truth-reliable.html" aria-label="Share on X">X</a>
+        <div class="share-min" aria-label="Share">
+          <a id="share-x" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on X">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a id="share-fb" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/></svg>
+          </a>
+          <button id="share-copy" class="share-btn" type="button" aria-label="Copy link">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
         </div>
       </div>
-      <section class="article-content">
-        <p>This essay asks a straightforward question: is truth reliable? Our answer is anchored in three claims that frame a biblical and logical understanding of reality.</p>
-        <h2>A. God is Truth — and what proceeds from Him and His people is truthful</h2>
-        <p>In Scripture, God is not merely a speaker of truth; He is its source and ground...</p>
-        <blockquote>“Sanctify them through thy truth: thy word is truth.” <span class="verse">John 17:17</span></blockquote>
+
+      <div class="article-content" itemprop="articleBody">
+        <p>
+          This article addresses a simple question: <em>Is truth reliable?</em> We answer with three claims rooted in Scripture and reason.
+        </p>
+
+        <h2>A. God is Truth — and everything from Him and His people is truthful</h2>
+        <p>
+          God is not merely a teller of truth; He is the source of it. What proceeds from Him—His word, commandments, covenants—and what proceeds
+          from His covenant people when faithful to Him participates in that truth. Reliability follows from God’s unchanging nature
+          (<span class="verse" data-ref="John 17:17" data-note="“Thy word is truth.”">Jn 17:17</span>).
+        </p>
+
         <h2>B. The devil is the father of lies — and what proceeds from him and his people is deception</h2>
-        <p>In Scripture, falsehood is not neutral error; it is moral rebellion...</p>
-        <blockquote>“When he speaketh a lie, he speaketh of his own: for he is a liar, and the father of it.” <span class="verse">John 8:44</span></blockquote>
-        <h2>C. Restoring what deception obscures — the dignity and history of Israel</h2>
-        <p>One powerful deception is historical: the enemy has labored to sever the public memory...</p>
-        <blockquote>“Truth is fallen in the street, and equity cannot enter.” <span class="verse">Isaiah 59:14</span></blockquote>
-        <h2>Conclusion</h2>
-        <p>Truth is reliable because God is reliable...</p>
-        <section class="article-notes">
-          <h2>Selected Scripture Citations</h2>
-          <ul>
-            <li>John 17:17 — God’s word is truth.</li>
-            <li>John 8:44 — The devil as father of lies.</li>
-            <li>Isaiah 59:14 — Truth fallen in the street.</li>
-          </ul>
-          <h2>Bibliography (Starter List)</h2>
-          <ul class="bibliography">
-            <li><em>The Holy Bible</em> (King James Version). Public domain text.</li>
-            <li>Primary sources and archival materials on Ancient Israel and the Near East (to be itemized).</li>
-            <li>Peer‑reviewed historical and linguistic studies relevant to Israelite identity and diaspora (to be itemized).</li>
-          </ul>
-        </section>
+        <p>
+          Scripture names deception as moral rebellion. Falsehood distorts what God has made plain, mixing fragments of truth to mislead
+          (<span class="verse" data-ref="John 8:44" data-note="“He is a liar, and the father of it.”">Jn 8:44</span>).
+          Discernment tests claims by Scripture and consistent reasoning.
+        </p>
+
+        <h2>C. The world has been manipulated by severing Israel’s identity from history — our work is to restore it</h2>
+        <p>
+          A grave deception is historical: the enemy has labored to divorce the reality of the Israelites—Black, Afro‑Semitic peoples—from
+          the annals of public memory. Our task is to gather primary texts, material culture, and historical witnesses, and to reason soundly,
+          so that the dignity of God’s ancient people is restored to public knowledge
+          (<span class="verse" data-ref="Isaiah 59:14" data-note="“Truth is fallen in the street.”">Isa 59:14</span>).
+        </p>
+
+        <blockquote>
+          Truth is reliable because God is reliable; deception is exposed because Scripture unveils it; research repairs what lies have broken.
+        </blockquote>
+      </div>
+
+      <section class="footnotes" aria-labelledby="fn-heading">
+        <h3 id="fn-heading">Notes &amp; Bibliography</h3>
+        <ol>
+          <li id="fn1">John 17:17; cf. Psalm 119:160. <a class="backref" href="#fnref1">↩︎</a></li>
+          <li id="fn2">John 8:44; cf. 2 Corinthians 11:3. <a class="backref" href="#fnref2">↩︎</a></li>
+          <li id="fn3">Isaiah 59:14; cf. Amos 5:10–15. <a class="backref" href="#fnref3">↩︎</a></li>
+          <li id="fn4"><em>The Holy Bible</em> (King James Version), public domain text.</li>
+          <li id="fn5">Primary sources &amp; archives on Ancient Israel and the Near East (to be itemized in updates).</li>
+          <li id="fn6">Peer‑reviewed historical &amp; linguistic studies relevant to Israelite identity and diaspora (to be itemized).</li>
+        </ol>
       </section>
     </article>
   </main>
+
+  <!-- FULL-SCREEN AUTHOR MODAL -->
+  <div id="author-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="author-modal-title">
+    <div class="modal-panel" data-close>
+      <div class="modal-card" role="document">
+        <div class="modal-head">
+          <div class="mh-left">
+            <h2 id="author-modal-title" class="modal-title">Semitic Jew</h2>
+            <a class="author-x-head" href="https://x.com/semitic_jew" target="_blank" rel="noopener" aria-label="Semitic Jew on X">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+          </div>
+          <button class="modal-close" type="button" id="author-modal-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" />
+          <div>
+            <div class="ap-name">Semitic Jew</div>
+            <p class="ap-text">
+              Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+              Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
+              and study tools to recover the Bible’s own world and voices.
+            </p>
+            <div class="modal-links">
+              <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
+              <a class="modal-chip" href="/israelite-research/media.html">Media</a>
+              <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+              <a class="modal-chip" href="/israelite-research/semitic-jew.html">More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="site-footer"></div>
-  <script src="/israelite-research/js/site-header.js" defer></script>
-  <script src="/israelite-research/js/site-footer.js" defer></script>
+
+  <script>
+    (function(){
+      var now=new Date(), iso=now.toISOString().slice(0,10),
+          text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+      var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+      var url=location.href, title=document.title;
+      var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+      if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+      if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+      if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
+
+      var icon  = document.getElementById('author-info');
+      var modal = document.getElementById('author-modal');
+      var close = document.getElementById('author-modal-close');
+      var lastFocus;
+
+      function openModal(e){
+        if(e){ e.preventDefault(); }
+        lastFocus = document.activeElement;
+        modal.setAttribute('aria-hidden','false');
+        document.documentElement.style.overflow = 'hidden';
+        close && close.focus();
+      }
+      function closeModal(e){
+        if(e){ e.preventDefault(); }
+        modal.setAttribute('aria-hidden','true');
+        document.documentElement.style.overflow = '';
+        if(lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      if(icon) icon.addEventListener('click', openModal);
+      if(close) close.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', function(e){
+        if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
+      });
+
+      document.addEventListener('keydown', function(e){
+        if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
+      });
+    })();
+  </script>
+
+  <script src="/israelite-research/js/theme.js" defer></script>
+  <script src="/israelite-research/js/verses.js" defer></script>
+  <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
