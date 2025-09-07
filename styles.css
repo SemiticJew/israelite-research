@@ -2745,3 +2745,10 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"][data-page="articles"] .card time a{
   color:#FFFFFF !important;
 }
+
+/* Dark mode: 'Featured' header on Articles page must be white */
+[data-theme="dark"] body.articles-page #featured-articles h1,
+[data-theme="dark"] body.articles-page #featured-articles h2,
+[data-theme="dark"] body.articles-page #featured-articles .section-title{
+  color:#FFFFFF !important;
+}
