@@ -2811,3 +2811,26 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 .verse::after{background:var(--surface)!important;color:var(--ink)!important;border:1px solid var(--border)!important;}
 [data-theme="dark"] .verse{color:#FFFFFF!important;}
 [data-theme="dark"] .verse::after{background:#2f2f2f!important;color:#FFFFFF!important;border-color:var(--border)!important;}
+
+/* Verse refs + hover card (article pages) */
+.verse{ background:transparent!important; padding:0!important; border:0!important; box-shadow:none!important; display:inline!important; color:var(--brand); font-weight:600; cursor:help; text-decoration:underline dotted; }
+.verse::after{ display:none!important; content:''; }
+
+html[data-theme="dark"] .verse{ color:#FFFFFF; }
+
+#verse-card{
+  position:absolute; z-index:1000;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--border); border-radius:12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+  padding:10px 12px; width:min(420px,92vw);
+}
+#verse-card .vc-head{ font-weight:800; margin:0 0 6px; color:var(--brand); }
+#verse-card .vc-text{ font-size:.95rem; line-height:1.55; }
+
+html[data-theme="dark"] #verse-card{
+  background:#1f2e44; color:#FFFFFF;
+  border-color:rgba(255,255,255,.15);
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+}
+html[data-theme="dark"] #verse-card .vc-head{ color:#81A4CD; }

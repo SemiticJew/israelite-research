@@ -26,3 +26,19 @@
   rt.defer = true;
   document.head.appendChild(rt);
 })();
+
+/* Bible HoverCard loader (articles only) */
+(function(){
+  try{
+    var b = document.body;
+    var isArticle =
+      (b && (b.classList.contains('article-doc') || b.dataset.page === 'article')) ||
+      /^\/israelite-research\/articles(\/|\.html)/.test(location.pathname);
+    if (isArticle) {
+      var s = document.createElement('script');
+      s.src = '/israelite-research/js/verses.js';
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+  }catch(e){}
+})();
