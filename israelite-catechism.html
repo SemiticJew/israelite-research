@@ -125,10 +125,9 @@
           <h1 class="title">Israelites</h1>
           <div class="divider"></div>
           <p class="lead">
-            We affirm the historic identity of the Israelites as the covenant people descended from Jacob, situated in North East Africa and their subsequent interactions with dark skinned Hamitic ethnicities who descended from Ham.
+            We affirm the historic identity of the Israelites as the covenant people descended from Jacob, situated within the Near Eastern world and intertwined with African contexts through proximity, alliance, and migration.
             <span class="cite">[Gen 32:28; Exod 1:7–14; Amos 9:7]</span>
           </p>
-
           <div class="block">
             <h3>Context</h3>
             <p>Our work emphasizes careful exegesis with attention to language, history, and iconography, resisting anachronistic portrayals and foregrounding the Scriptures as the primary witness.</p>
@@ -164,21 +163,81 @@
           </div>
         </article>
 
-        <!-- Doctrinal Statement -->
+        <!-- Doctrinal Statement (UPDATED) -->
         <article id="panel-doctrine" role="tabpanel" aria-labelledby="tab-doctrine" hidden>
           <h1 class="title">Doctrinal Statement</h1>
           <div class="divider"></div>
-          <div class="block">
+
+          <!-- Scripture -->
+          <div class="block" id="ds-scripture">
             <h3>Scripture</h3>
-            <p>The inspired, sufficient, and trustworthy Word of God; useful for teaching, reproof, correction, and training in righteousness. <span class="cite">[2 Tim 3:16–17]</span></p>
+            <p class="lead">
+              We confess Holy Scripture to be the inspired, sufficient, and self-consistent Word of God. Because God is truthful and not a God of confusion,
+              the Scriptures do not contradict themselves; apparent tensions call us to fuller context and careful exegesis rather than to dismiss the text.
+              Logic serves Scripture—not the reverse—yet logic also reflects God’s own orderly nature and therefore is woven through the Word He breathed.
+              <span class="cite">[2 Tim 3:16–17; Ps 19:7–9; 1 Cor 14:33; Jn 10:35; Tit 1:2]</span>
+            </p>
+            <p>
+              Therefore we read <em>the whole counsel</em> of God, comparing Scripture with Scripture, submitting our reasoning to what God has spoken,
+              confident that sound interpretation will be coherent, faithful, and fruitful in godliness.
+            </p>
           </div>
-          <div class="block">
-            <h3>God & Redemption</h3>
-            <p>YHWH, creator of heaven and earth, redeems a people for His name through covenant faithfulness culminating in Messiah’s work and the hope of resurrection.</p>
+
+          <!-- God & Redemption -->
+          <div class="block" id="ds-god-redemption">
+            <h3>God &amp; Redemption</h3>
+            <p class="lead">
+              The Most High has, in covenant love, rebuked His people Israel throughout history—disciplining disobedience, warning by prophets, and scattering them among the nations—
+              and yet promising mercy and a future regathering by His own hand.
+              <span class="cite">[Lev 26; Deut 28:36–37,64; 2 Kgs 17; 2 Chr 36; Jer 31:31–37; Ezek 36–37]</span>
+            </p>
+            <p>
+              In the New Testament era the dispersion continues (diaspora among the nations) with Jerusalem trampled by Gentiles,
+              yet the Messiah will gather His elect “from the four winds” at His appearing—the consummate restoration foretold by the prophets.
+              <span class="cite">[Lk 21:24; Jas 1:1; Mt 24:30–31; Isa 11:11–12; Ezek 37; Rom 11:25–27]</span>
+            </p>
           </div>
-          <div class="block">
-            <h3>Life & Practice</h3>
-            <p>We pursue holiness, justice, mercy, and humility; we prize unity without compromise, and works that adorn sound teaching. <span class="cite">[Mic 6:8; Tit 2:10]</span></p>
+
+          <!-- Life & Practice -->
+          <div class="block" id="ds-life-practice">
+            <h3>Life &amp; Practice</h3>
+            <p class="lead">
+              We affirm the abiding importance of keeping God’s commandments in love—trusting His ways for holiness, justice, and mercy.
+              <span class="cite">[Deut 6:1–9; Jn 14:15; 1 Jn 5:3]</span>
+            </p>
+            <p>
+              We uphold the dietary distinctions given in the Law as wisdom for God’s people,
+              while confessing that the sacrificial system has been once-for-all fulfilled in the sacrifice of the Messiah, so that animal offerings are no longer required.
+              <span class="cite">[Lev 11; Deut 14; Heb 10:1–14; Eph 2:15; Col 2:14–17]</span>
+            </p>
+          </div>
+
+          <!-- Humanity -->
+          <div class="block" id="ds-humanity">
+            <h3>Humanity</h3>
+            <p class="lead">
+              We hold that Scripture presents Adam as formed from the earth and read this, together with linguistic, historical, and genealogical considerations,
+              as aligning with an origin consistent with dark or Black complexion; we likewise affirm the ancient Israelites as a Black people in antiquity.
+              We recognize diversity within African and Near Eastern populations and see this reflected in Scripture’s own descriptions and comparisons.
+              <span class="cite">[Gen 2:7; Song 1:5–6; Lam 4:8; Amos 9:7]</span>
+            </p>
+            <p>
+              This articulation aims to restore context often obscured in later portrayals, and to encourage reading the Bible within its own geography,
+              peoples, and times rather than through anachronistic lenses.
+            </p>
+          </div>
+
+          <!-- Iconoclasm -->
+          <div class="block" id="ds-iconoclasm">
+            <h3>Iconoclasm</h3>
+            <p class="lead">
+              Across history, conquering peoples have seized resources, recast customs, re-told stories, and absorbed arts and symbols—folding them into their own identity.
+              This cultural overwriting—often accompanied by the destruction or rebranding of images—distorts memory and can obscure the witness of the conquered.
+            </p>
+            <p>
+              We therefore labor to sift sources, recover primary voices, and resist inherited distortions, so that Scripture and credible evidence guide our understanding
+              of Israel and the nations with integrity and justice.
+            </p>
           </div>
         </article>
 
@@ -216,7 +275,7 @@
         tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab===id ? 'true' : 'false'));
         Object.entries(panels).forEach(([key, el]) => {
           if(!el) return;
-          if(key===id){ el.hidden = false; } else { el.hidden = true; }
+          el.hidden = key!==id;
         });
         if(push){
           const url = new URL(location.href);
@@ -225,9 +284,7 @@
         }
       }
 
-      tabs.forEach(t=>{
-        t.addEventListener('click', ()=> show(t.dataset.tab));
-      });
+      tabs.forEach(t=> t.addEventListener('click', ()=> show(t.dataset.tab)));
 
       // keyboard nav: up/down/home/end
       document.getElementById('vtabs').addEventListener('keydown', (e)=>{
