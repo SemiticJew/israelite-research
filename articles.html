@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -96,9 +96,55 @@
       .featured-left .image-block, .featured-left .image-block img{ width:100%; height:auto; }
       .featured-left .excerpt-wrap{ width:100%; height:auto; }
     }
+
+    /* ================== HARD DARK-MODE OVERRIDES (page-scoped) ================== */
+    html[data-theme="dark"] body.articles-page{
+      background: var(--bg);
+      color:#FFFFFF !important;
+    }
+    /* containers */
+    html[data-theme="dark"] body.articles-page .boxed,
+    html[data-theme="dark"] body.articles-page .featured-left .excerpt-wrap,
+    html[data-theme="dark"] body.articles-page .featured-right .card-body,
+    html[data-theme="dark"] body.articles-page .card-footer{
+      background: var(--surface) !important;
+      border-color: var(--border) !important;
+      color:#FFFFFF !important;
+    }
+    /* headings & titles */
+    html[data-theme="dark"] body.articles-page h1,
+    html[data-theme="dark"] body.articles-page h2,
+    html[data-theme="dark"] body.articles-page h3,
+    html[data-theme="dark"] body.articles-page .section h2,
+    html[data-theme="dark"] body.articles-page .featured-left h3,
+    html[data-theme="dark"] body.articles-page .featured-right h3,
+    html[data-theme="dark"] body.articles-page .article-card h3{
+      color:#FFFFFF !important;
+    }
+    /* excerpts / paragraphs / meta */
+    html[data-theme="dark"] body.articles-page .muted,
+    html[data-theme="dark"] body.articles-page .article-card p,
+    html[data-theme="dark"] body.articles-page .featured-left .excerpt-block p,
+    html[data-theme="dark"] body.articles-page .featured-right .card-body p,
+    html[data-theme="dark"] body.articles-page .meta-date,
+    html[data-theme="dark"] body.articles-page .author,
+    html[data-theme="dark"] body.articles-page .card-footer,
+    html[data-theme="dark"] body.articles-page .card-footer *{
+      color:#FFFFFF !important;
+    }
+    /* links inside cards */
+    html[data-theme="dark"] body.articles-page .boxed a{
+      color:#FFFFFF !important;
+    }
+    /* keep resource label visible on dark */
+    html[data-theme="dark"] body.articles-page .resource-label{
+      background: rgba(129,164,205,.28) !important; /* soft-blue translucent */
+      color:#FFFFFF !important;
+      border:1px solid var(--border);
+    }
   </style>
 </head>
-<body class="articles-page articles-page">
+<body class="articles-page" data-page="articles">
   <div id="site-header"></div>
 
   <main class="articles">
