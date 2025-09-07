@@ -1,1 +1,230 @@
-[PASTE THE HTML ABOVE HERE]
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Historicity of the Hamites — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
+
+    .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+    .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin:0 0 .5rem; }
+    .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color: var(--ink); line-height:1.15; margin:0; }
+
+    .hero-image{ margin:1.1rem auto .5rem; }
+    .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
+
+    .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
+    .article-byline{ display:flex; align-items:center; gap:.65rem; color: var(--ink); }
+    .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
+    .byline-name-btn{ background:none; border:none; padding:0; margin:0; font:inherit; font-weight:800; color:var(--ink); cursor:pointer; text-decoration:underline dotted; }
+    .byline-meta{ color:var(--muted); font-size:.95rem; }
+    .share-min{ display:flex; align-items:center; gap:.4rem; }
+    .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
+    .share-btn:hover{ transform:translateY(-1px); }
+
+    /* Author popout (toggles from author name) */
+    .author-pop{ position:absolute; top:100%; left:0; margin-top:10px; width:min(520px,90vw); background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 30px rgba(0,0,0,.18); padding:12px 14px; display:none; z-index:50; }
+    .author-pop[aria-hidden="false"]{ display:block; }
+    .author-pop .ap-head{ display:flex; gap:12px; align-items:center; }
+    .author-pop .ap-avatar{ width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+    .author-pop .ap-title{ margin:0; font-weight:800; color:var(--ink); }
+    .author-pop .ap-text{ margin:.35rem 0 0; color:var(--muted); font-size:.95rem; }
+    .author-pop .ap-close{ position:absolute; top:8px; right:8px; background:none; border:none; padding:6px; cursor:pointer; color:var(--muted); }
+
+    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
+    .article-content p{ margin:1rem 0; }
+    .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink); background:#f9fbfe; border-radius:8px; }
+
+    .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+    .verse::after{ content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30; }
+    .verse:hover::after{ opacity:1; transform:translateY(0); }
+
+    .footnote-ref{text-decoration:none;} .footnote-ref sup{font-size:.75em;vertical-align:super;}
+    .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+    .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
+
+    /* Dark mode overrides */
+    html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
+    html[data-theme="dark"] body.article-doc .byline-name-btn{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
+    html[data-theme="dark"] body.article-doc .author-pop{ background:var(--surface); border-color:var(--border); }
+    html[data-theme="dark"] body.article-doc .author-pop .ap-title{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .author-pop .ap-text{ color:rgba(255,255,255,.9); }
+    html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
+    html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .verse::after{ background:#2f2f2f; color:#FFFFFF; border-color: var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+  </style>
+</head>
+<body data-page="article" class="article-doc">
+  <div id="site-header"></div>
+
+  <main class="article-page">
+    <article class="article-shell" itemscope itemtype="https://schema.org/Article">
+      <header class="article-head">
+        <p class="article-date" itemprop="datePublished"><time id="pub-date" datetime=""></time></p>
+        <h1 class="article-title" itemprop="headline">The Historicity of the Hamites</h1>
+      </header>
+
+      <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <img src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" alt="The Historicity of the Hamites" width="700" height="394" />
+        <meta itemprop="url" content="/israelite-research/images/articles/hamites-historicity-700x394.jpg" />
+      </figure>
+
+      <!-- Byline + shares -->
+      <div class="byline-row" id="byline-row">
+        <div class="article-byline">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
+          <button id="author-name" class="byline-name-btn" aria-expanded="false" aria-controls="author-pop">Semitic Jew</button>
+          <span class="byline-meta">• Article</span>
+        </div>
+        <div class="share-min" aria-label="Share">
+          <a id="share-x" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on X">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a id="share-fb" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/></svg>
+          </a>
+          <button id="share-copy" class="share-btn" type="button" aria-label="Copy link">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Author popout -->
+        <div id="author-pop" class="author-pop" role="dialog" aria-hidden="true" aria-labelledby="ap-title">
+          <button class="ap-close" type="button" aria-label="Close" id="ap-close">✕</button>
+          <div class="ap-head">
+            <img class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="48" height="48"/>
+            <div>
+              <h3 id="ap-title" class="ap-title">Semitic Jew</h3>
+              <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context. Curates resources on Israel and the nations of the ancient Near East.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-content" itemprop="articleBody">
+        <p>
+          The Bible’s “Table of Nations” locates Ham’s descendants—Cush, Mizraim (Egypt), Put, and Canaan—across Africa and its adjoining lands
+          <a class="footnote-ref" href="#fn1" id="fnref1"><sup>1</sup></a>.
+          From the prophets to the psalms, Scripture continually names these peoples and their geographies,
+          inviting readers to recognize the African setting that frames so much of Israel’s story
+          (<span class="verse" data-ref="Psalm 68:31" data-note="Egypt and Cush present before God.">Ps 68:31</span>;
+          <span class="verse" data-ref="Isaiah 20" data-note="Oracle concerning Egypt and Cush.">Isa 20</span>).
+        </p>
+
+        <h2>Scriptural Witness to Dark Complexion</h2>
+        <p>
+          The biblical text uses plain language about skin and appearance in ways that situate Israel and its neighbors in an African–Near Eastern world.
+          The Bride in the Song declares,
+          <span class="verse" data-ref="Song of Songs 1:5–6" data-note="“I am black and lovely … do not gaze at me because the sun has looked upon me.”">Song 1:5–6</span>,
+          while prophetic literature assumes the recognizable darkness of the Cushite
+          (<span class="verse" data-ref="Jeremiah 13:23" data-note="“Can the Ethiopian change his skin?”">Jer 13:23</span>).
+          Descriptions of affliction likewise speak of faces darkened by famine
+          (<span class="verse" data-ref="Lamentations 4:8" data-note="A metaphor drawn from observable darkening.">Lam 4:8</span>).
+        </p>
+
+        <h2>Archaeology & Iconography</h2>
+        <p>
+          Egyptian wall paintings and reliefs—from Theban tombs like those of Rekhmire (TT100) and Huy (TT40)—depict Nubians with very dark skin,
+          Egyptians in brown tones, and Western Asiatics in lighter browns, using consistent chromatic conventions to represent different but neighboring populations
+          <a class="footnote-ref" href="#fn2" id="fnref2"><sup>2</sup></a>.
+          These images are stylized, yet they are historically valuable—attesting to long familiarity with dark-skinned African peoples in the Nile corridor and beyond.
+        </p>
+
+        <h2>Zondervan Compact Bible Dictionary (Ham)</h2>
+        <p>
+          Reference works widely used in evangelical study summarize Ham as the youngest son of Noah and ancestor of peoples settled in Africa,
+          listing Cush (Ethiopia/Nubia), Mizraim (Egypt), Put (Libya), and Canaan
+          <a class="footnote-ref" href="#fn3" id="fnref3"><sup>3</sup></a>.
+          While dictionaries condense complex material, this broad placement aligns with the geographic notices of
+          <span class="verse" data-ref="Genesis 10" data-note="Clans, languages, lands, and nations are named.">Genesis 10</span>
+          and much of the archaeological record.
+        </p>
+
+        <h2>Against Anachronism & “Whitewashing”</h2>
+        <p>
+          A persistent modern mistake is the <em>anachronous fallacy</em>—imposing later cultural ideals and racial categories onto ancient texts and images.
+          Post-medieval art and modern politics have sometimes “whitened” the past, reimagining African and Near Eastern peoples in European likeness.
+          Such retellings conflict with the primary sources. Responsible reading starts with the biblical geography and the ancient world’s own self-presentation,
+          resisting narratives that flatten or erase the identities of the Hamitic peoples
+          <a class="footnote-ref" href="#fn4" id="fnref4"><sup>4</sup></a>.
+        </p>
+
+        <h2>Why It Matters</h2>
+        <p>
+          Attending to the Bible’s world—its peoples, skin tones, and places—does not reduce Scripture to sociology; rather, it protects us from
+          misreading the text through the lens of foreign assumptions. It restores historical integrity, honors neighbors the text names, and
+          strengthens the church’s witness against myths that harm and divide.
+        </p>
+
+        <blockquote>
+          To read Scripture well is to let the ancient authors and their God-given world tell us who they were—before we tell them who we prefer them to be.
+        </blockquote>
+
+        <h2>Conclusion</h2>
+        <p>
+          The historicity of the Hamites emerges from converging lines of evidence: biblical genealogy and prophecy, iconography across the Nile Valley,
+          and reference summaries. Together they point to a plainly African setting for much of Scripture’s story and a frank acknowledgment
+          of dark complexions among Israel’s neighbors and within the broader Semitic–African milieu.
+        </p>
+      </div>
+
+      <section class="footnotes" aria-labelledby="fn-heading">
+        <h3 id="fn-heading">Notes & Bibliography</h3>
+        <ol>
+          <li id="fn1"><strong>Genesis 10 (Table of Nations)</strong>. See also Isa 11:11; Ps 68:31. <a class="backref" href="#fnref1">↩︎</a></li>
+          <li id="fn2">On chromatic conventions and depictions, see publications on Rekhmire (TT100) and Huy (TT40) tombs in New Kingdom Thebes. <a class="backref" href="#fnref2">↩︎</a></li>
+          <li id="fn3"><em>Zondervan Compact Bible Dictionary</em>, s.v. “Ham.” Summarizes descent and African settlements. <a class="backref" href="#fnref3">↩︎</a></li>
+          <li id="fn4">For hermeneutical safeguards against anachronism, compare K. A. Kitchen, <em>On the Reliability of the Old Testament</em> (Eerdmans, 2003). <a class="backref" href="#fnref4">↩︎</a></li>
+        </ol>
+      </section>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    (function(){
+      // Date + share links
+      var now=new Date(), iso=now.toISOString().slice(0,10),
+          text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+      var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+      var url=location.href, title=document.title;
+      var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+      if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+      if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+      if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
+
+      // Author popout
+      var btn=document.getElementById('author-name');
+      var pop=document.getElementById('author-pop');
+      var close=document.getElementById('ap-close');
+      function openPop(){
+        pop.setAttribute('aria-hidden','false');
+        btn.setAttribute('aria-expanded','true');
+        // keep within viewport
+        var rect=btn.getBoundingClientRect(), vw=window.innerWidth;
+        pop.style.left = (rect.left < vw-380) ? rect.left+'px' : (vw-380-16)+'px';
+      }
+      function closePop(){
+        pop.setAttribute('aria-hidden','true');
+        btn.setAttribute('aria-expanded','false');
+      }
+      btn.addEventListener('click', function(e){ e.stopPropagation(); (pop.getAttribute('aria-hidden')==='true')?openPop():closePop(); });
+      close.addEventListener('click', function(e){ e.stopPropagation(); closePop(); });
+      document.addEventListener('click', function(e){ if(!pop.contains(e.target) && e.target!==btn) closePop(); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePop(); });
+    })();
+  </script>
+
+  <script src="/israelite-research/js/theme.js" defer></script>
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
