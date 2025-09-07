@@ -22,6 +22,7 @@
     .hero-image{ margin:1rem auto; }
     .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
+    /* Byline moved BELOW image per request */
     .article-byline{ display:flex; align-items:center; justify-content:center; gap:.65rem; margin:.35rem 0 1.2rem; color: var(--ink); }
     .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
       border:1px solid var(--border); background:#f0f3f8; }
@@ -39,14 +40,27 @@
     .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink);
       background:#f9fbfe; border-radius:8px; }
 
-    /* Scripture link hint */
-    .verse{ position:relative; text-decoration:underline dotted; color: var(--brand); }
-    .verse:hover::after{
-      content:"Open in Logos";
-      position:absolute; left:0; bottom:120%;
-      background: var(--surface); color: var(--brand); border:1px solid var(--border); padding:.25rem .45rem;
-      font-size:.8rem; border-radius:8px; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.08);
+    /* Our OWN Bible hover (replaces Logos links) */
+    .verse{
+      position:relative;
+      text-decoration:underline dotted;
+      cursor:help;
+      color: var(--brand);
+      font-weight:600;
     }
+    .verse::after{
+      content: attr(data-ref) " — " attr(data-note);
+      position:absolute; left:0; bottom:120%;
+      background:#ffffff; color:var(--ink);
+      border:1px solid var(--border);
+      padding:.4rem .55rem; font-size:.85rem; line-height:1.35;
+      border-radius:8px; white-space:normal; width:min(320px,80vw);
+      box-shadow:0 6px 18px rgba(0,0,0,.12);
+      opacity:0; transform:translateY(4px);
+      pointer-events:none; transition:opacity .12s ease, transform .12s ease;
+      z-index:30;
+    }
+    .verse:hover::after{ opacity:1; transform:translateY(0); }
 
     /* References list */
     .refs { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border); }
@@ -54,7 +68,7 @@
     .refs ul { margin:.25rem 0 0 1rem; }
     .refs li { margin:.35rem 0; }
 
-    /* Dark mode hard overrides (page-scoped) */
+    /* ============ Dark mode: page-scoped hard overrides ============ */
     html[data-theme="dark"] body.article-doc{
       background: var(--bg);
       color:#FFFFFF !important;
@@ -63,14 +77,18 @@
     html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF !important; }
     html[data-theme="dark"] body.article-doc .article-date,
     html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9) !important; }
-    html[data-theme="dark"] body.article-doc .article-byline{ color:#FFFFFF !important; }
+    html[data-theme="dark"] body.article-doc .article-byline,
+    html[data-theme="dark"] body.article-doc .byline-name{ color:#FFFFFF !important; }
     html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF !important; }
     html[data-theme="dark"] body.article-doc .article-content blockquote{
       background: rgba(129,164,205,.14) !important; color:#FFFFFF !important; border-left-color: var(--accent) !important;
     }
     html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF !important; }
-    html[data-theme="dark"] body.article-doc .verse:hover::after{
-      background: var(--surface) !important; color:#FFFFFF !important; border-color:var(--border) !important;
+    html[data-theme="dark"] body.article-doc .verse::after{
+      background:#2f2f2f !important;   /* dark grey bubble */
+      color:#FFFFFF !important;
+      border-color: var(--border) !important;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
     html[data-theme="dark"] body.article-doc .share-btn{
       background: var(--surface) !important; color:#FFFFFF !important; border-color:var(--border) !important;
@@ -87,25 +105,15 @@
           <time id="pub-date" datetime=""></time>
         </p>
         <h1 class="article-title" itemprop="headline">The Historicity of the Hamites</h1>
-        <div class="article-byline">
-          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
-          <span class="byline-name" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            <span itemprop="name">Semitic Jew</span>
-          </span>
-          <span class="byline-meta">• Article</span>
-        </div>
 
         <div class="article-share" aria-label="Share">
           <a id="share-x" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on X">
-            <!-- X icon -->
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </a>
           <a id="share-fb" class="share-btn" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">
-            <!-- Facebook icon -->
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/></svg>
           </a>
           <button id="share-copy" class="share-btn" type="button" aria-label="Copy link">
-            <!-- Link icon -->
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
         </div>
@@ -116,18 +124,33 @@
         <meta itemprop="url" content="/israelite-research/images/articles/hamites-historicity-700x394.jpg" />
       </figure>
 
+      <!-- Byline moved here (below image) -->
+      <div class="article-byline">
+        <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
+        <span class="byline-name" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <span itemprop="name">Semitic Jew</span>
+        </span>
+        <span class="byline-meta">• Article</span>
+      </div>
+
       <div class="article-content" itemprop="articleBody">
         <p>
           This essay surveys the historical claims and biblical data surrounding the descendants of Ham—Cush, Mizraim (Egypt), Put, and Canaan—
           tracing references across Scripture and touching primary sources from the ancient Near East.
-          See <a class="verse" href="logosref:Bible?ref=BibleESV.Ge+10" rel="nofollow">Genesis 10</a> and comparative passages in
-          <a class="verse" href="logosref:Bible?ref=BibleESV.Isa+20" rel="nofollow">Isaiah 20</a>.
+          See <span class="verse" data-ref="Genesis 10" data-note="Table of Nations situating Ham’s descendants by clans, tongues, lands, and nations.">Genesis 10</span>
+          and <span class="verse" data-ref="Isaiah 20" data-note="Prophetic sign against Egypt and Cush, highlighting regional entanglements with Israel.">Isaiah 20</span>.
+        </p>
+
+        <h2>Terminology & Scope</h2>
+        <p>
+          “Hamites” denotes the lineages stemming from Ham (Gen 10). The term functions genealogically and geographically rather than as a modern racial label.
+          In Scripture, peoples are identified by <em>households</em>, <em>lands</em>, and <em>tongues</em>, which helps frame how Israel encountered its neighbors in diplomacy, conflict, and worship polemics.
         </p>
 
         <h2>Table of Nations & Proximity</h2>
         <p>
-          The “Table of Nations” situates the Hamite clans in geographies contiguous with Israel’s world. Trade, conflict, intermarriage,
-          and political alliances appear throughout Israel’s story in relation to Egypt and Cush, among others.
+          The Table of Nations situates Hamite clans in geographies contiguous with Israel’s world. Trade, intermarriage, servitude, and war appear across the narratives,
+          particularly with Egypt and Cush. These interactions form a historical backdrop for laws, prophetic warnings, and psalms of deliverance.
         </p>
 
         <blockquote>
@@ -136,15 +159,21 @@
 
         <h2>Historical Signals</h2>
         <p>
-          From Egyptian records to Assyrian annals, proximity and power shaped the rhythms of the Levant.
-          Israel’s prophets speak to and about these neighbors with theological clarity and historical specificity.
+          From Egyptian records to Assyrian annals, proximity and power shaped the rhythms of the Levant. Israel’s prophets speak to and about these neighbors with theological clarity and historical specificity.
+          Recognizing this context enriches our reading of covenant faithfulness and divine justice in Israel’s story.
+        </p>
+
+        <h2>Reading with Context</h2>
+        <p>
+          Recovering the biblical map and family structures guards against anachronism and later iconography that reimagines ancient peoples.
+          It also encourages a fair hearing of the text on its own terms—where genealogies, borders, and alliances matter for understanding the narrative and its claims.
         </p>
       </div>
 
       <section class="refs" aria-labelledby="refs-heading">
         <h3 id="refs-heading">References</h3>
         <ul>
-          <li>Genesis 10; Isaiah 11; Amos 9; 2 Kings 19.</li>
+          <li>Genesis 10; Isaiah 11; Isaiah 20; Amos 9; 2 Kings 19.</li>
           <li>Selections from Egyptian and Assyrian inscriptions (standard translations).</li>
         </ul>
       </section>
