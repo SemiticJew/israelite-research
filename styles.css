@@ -1862,3 +1862,9 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   --shadow-hover:0 12px 24px rgba(0,0,0,.75);
 }
 /* ===== END SITE PALETTE ===== */
+
+/* Force footer links to white in dark mode */
+[data-theme="dark"] #site-footer a{
+  color:#FFFFFF !important;
+  opacity:1 !important;
+}
