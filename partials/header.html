@@ -1,75 +1,127 @@
-<header class="site-header">
-  <div class="container nav-container">
-    <!-- Left: Site name -->
-    <div class="logo">
-      <a href="https://semiticjew.github.io/israelite-research/index.html" class="site-title">Semitic Jew</a>
-    </div>
+<!-- Universal Header Partial -->
+<header class="site-header-bar">
+  <style>
+    /* Scoped header styles (use theme tokens) */
+    #site-header .site-header-bar{
+      background:var(--surface);
+      color:var(--ink);
+      border-bottom:1px solid var(--border);
+    }
+    #site-header .header-inner{
+      max-width:1200px;margin:0 auto;padding:10px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    #site-header .brand{
+      display:inline-flex;align-items:center;gap:10px;
+      text-decoration:none;color:var(--ink);font-weight:900;font-size:1.05rem;
+    }
+    #site-header .brand .mark{
+      width:26px;height:26px;border-radius:7px;border:1px solid var(--border);
+      display:inline-flex;align-items:center;justify-content:center;
+      background:var(--surface);box-shadow:var(--shadow);
+    }
+    #site-header nav.primary{
+      display:flex;gap:6px;align-items:center;flex-wrap:wrap;
+    }
+    #site-header nav.primary a{
+      text-decoration:none;color:var(--ink);opacity:.92;
+      padding:8px 10px;border-radius:8px;border:1px solid transparent;
+    }
+    #site-header nav.primary a:hover{
+      border-color:var(--border);
+      box-shadow:var(--shadow);
+    }
 
-    <!-- Middle: Navigation (centered) -->
-    <nav class="site-nav" role="navigation" aria-label="Main">
-  <ul class="nav-list">
-    <li><a href="/israelite-research/articles.html">Articles</a></li>
-    <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
-    <li><a href="/israelite-research/biblia.html">Biblia</a></li>
-    <li><a href="/israelite-research/donate.html">Donations</a></li>
-    <li><a href="/israelite-research/events.html">Events</a></li>
-    <li><a href="/israelite-research/media.html">Media</a></li>
-  </ul>
-</nav>
+    /* Right-side tools */
+    #site-header .tools{display:flex;align-items:center;gap:10px}
+    #site-header .icon-btn{
+      width:40px;height:40px;border-radius:999px;
+      border:1px solid var(--border);background:var(--surface);color:var(--ink);
+      display:inline-flex;align-items:center;justify-content:center;
+      cursor:pointer;box-shadow:var(--shadow);
+      transition:transform .15s, box-shadow .15s, border-color .15s;
+    }
+    #site-header .icon-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover);border-color:#cdd8e6;}
 
-    <!-- Right: Search -->
-    <div class="nav-extra">
-      <button class="search-toggle" aria-label="Search" title="Search">
-        <!-- clean stroked magnifying glass -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    /* Search panel */
+    #site-header .search-panel{
+      border-top:1px solid var(--border);background:var(--surface);
+    }
+    #site-header .search-wrap{
+      max-width:1200px;margin:0 auto;padding:10px 16px;
+    }
+    #site-header .search-wrap form{display:flex;gap:8px}
+    #site-header .search-wrap input[type="search"]{
+      flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:10px;
+      background:var(--bg);color:var(--ink);
+    }
+    #site-header .search-wrap button[type="submit"]{
+      padding:10px 12px;border-radius:10px;border:1px solid var(--border);
+      background:var(--surface);color:var(--ink);cursor:pointer;
+    }
+
+    /* Hide floating toggle when header toggle is present */
+    #themeToggle ~ .floating-theme-toggle{display:none}
+  </style>
+
+  <div class="header-inner">
+    <a class="brand" href="/israelite-research/">
+      <span class="mark" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12l8-8 8 8-8 8-8-8z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </span>
+      <span>Semitic&nbsp;Jew</span>
+    </a>
+
+    <nav class="primary" aria-label="Primary">
+      <a href="/israelite-research/biblia.html">Biblia</a>
+      <a href="/israelite-research/israelite-catechism.html">Catechism</a>
+      <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank" rel="noopener">Podcast</a>
+      <a href="https://www.youtube.com/@semiticjew" target="_blank" rel="noopener">YouTube</a>
+    </nav>
+
+    <div class="tools">
+      <!-- Search toggle -->
+      <button class="icon-btn" id="headerSearchToggle" aria-label="Open search" aria-expanded="false" aria-controls="headerSearch">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
+
+      <!-- Theme toggle (icons injected by js/theme.js) -->
+      <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode"></button>
     </div>
   </div>
 
-  <!-- Scoped header styles -->
-  <style>
-    .nav-container{
-      max-width:1200px; margin:0 auto; padding:0 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-      min-height:64px;
-    }
+  <!-- Collapsible search panel -->
+  <div class="search-panel" id="headerSearch" hidden>
+    <div class="search-wrap">
+      <form action="/israelite-research/search.html" method="get" role="search" aria-label="Site">
+        <input type="search" name="q" placeholder="Search…" autocomplete="off" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </div>
 
-    /* Site title font matches nav links */
-    .site-title{
-      font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
-      font-weight:600; letter-spacing:.1px;
-      font-size:1rem; /* same as nav links */
-      text-decoration:none; color:inherit;
-      display:inline-block; line-height:1;
-    }
-
-    .site-nav{ flex:1 1 auto; display:flex; justify-content:center; }
-    .nav-list{
-      list-style:none; margin:0; padding:0;
-      display:flex; align-items:center; gap:22px;
-      font-family: var(--ff-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
-      font-weight:600; letter-spacing:.1px;
-      font-size:1rem;
-    }
-    .nav-list a{
-      text-decoration:none; color:inherit; padding:6px 2px; line-height:1;
-    }
-    .nav-list a:hover{ text-decoration:underline; }
-
-    .nav-extra{ display:flex; align-items:center; gap:10px; }
-    .search-toggle{
-      appearance:none; border:0; background:transparent; padding:6px; cursor:pointer; color:inherit;
-    }
-
-    @media (max-width:768px){
-      .nav-container{ gap:10px; }
-      .nav-list{ gap:14px; font-weight:600; font-size:.95rem; overflow-x:auto; }
-      .site-title{ font-size:.95rem; }
-    }
-  </style>
+  <script>
+    // Header search behavior
+    (function(){
+      const btn = document.getElementById('headerSearchToggle');
+      const panel = document.getElementById('headerSearch');
+      if(btn && panel){
+        btn.addEventListener('click', ()=>{
+          const open = !panel.hasAttribute('hidden');
+          if(open){
+            panel.setAttribute('hidden','');
+            btn.setAttribute('aria-expanded','false');
+          }else{
+            panel.removeAttribute('hidden');
+            btn.setAttribute('aria-expanded','true');
+            const input = panel.querySelector('input[type="search"]');
+            if(input) input.focus();
+          }
+        });
+      }
+    })();
+  </script>
 </header>
