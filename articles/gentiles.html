@@ -11,43 +11,43 @@
     .article-head{ text-align:center; margin-top:.5rem; }
     .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
     .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(1.9rem,3.4vw,2.6rem); color:#000; line-height:1.15; margin:0 0 .8rem; }
+      font-size:clamp(1.9rem,3.4vw,2.6rem); color: var(--ink); line-height:1.15; margin:0 0 .8rem; }
 
     /* Article image (not a page hero): fixed 700×394, squared corners */
     .hero-image{ margin:1rem auto; }
     .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
     /* Byline */
-    .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color:#333; }
+    .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color: var(--ink); }
     .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
-      border:1px solid #e6ebf2; background:#f0f3f8; }
+      border:1px solid var(--border); background:#f0f3f8; }
     .byline-name{ font-weight:700; }
-    .byline-meta{ color:#666; font-size:.95rem; }
+    .byline-meta{ color: var(--muted); font-size:.95rem; }
 
     /* Share */
     .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
     .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
-      border-radius:999px; border:1px solid #e6ebf2; background:#fff; color:#054A91; text-decoration:none; }
+      border-radius:999px; border:1px solid var(--border); background: var(--surface); color: var(--brand); text-decoration:none; }
     .share-btn:hover{ transform:translateY(-1px); }
 
     /* Body */
     .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
     .article-content p{ margin:1rem 0; }
-    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color:#000; }
-    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:#333;
+    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink);
       background:#f9fbfe; border-radius:8px; }
 
     /* Verse hover “plugin” (articles-only) */
-    .verse{ position:relative; text-decoration:underline dotted; color:#054A91; }
+    .verse{ position:relative; text-decoration:underline dotted; color: var(--brand); }
     .verse:hover::after{
       content:"Open in Logos";
       position:absolute; left:0; bottom:120%;
-      background:#fff; color:#054A91; border:1px solid #e6ebf2; padding:.25rem .45rem;
+      background: var(--surface); color: var(--brand); border:1px solid var(--border); padding:.25rem .45rem;
       font-size:.8rem; border-radius:8px; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.08);
     }
   </style>
 </head>
-<body>
+<body data-page="article" class="article-doc article-doc">
   <!-- Header partial -->
   <div id="site-header"></div>
 

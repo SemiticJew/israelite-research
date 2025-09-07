@@ -2752,3 +2752,56 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] body.articles-page #featured-articles .section-title{
   color:#FFFFFF !important;
 }
+/* ===== ARTICLE PAGES: dark-mode hard overrides (consistent with site tokens) ===== */
+[data-theme="dark"] body.article-doc,
+[data-theme="dark"] .article-page{
+  background: var(--bg);
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] body.article-doc .article-shell,
+[data-theme="dark"] body.article-doc .article-head,
+[data-theme="dark"] body.article-doc .article-byline,
+[data-theme="dark"] body.article-doc .article-share,
+[data-theme="dark"] body.article-doc .article-content,
+[data-theme="dark"] body.article-doc .refs{
+  background: transparent !important;
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] body.article-doc .article-title,
+[data-theme="dark"] body.article-doc h1,
+[data-theme="dark"] body.article-doc h2,
+[data-theme="dark"] body.article-doc h3,
+[data-theme="dark"] body.article-doc h4{
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] body.article-doc .article-date,
+[data-theme="dark"] body.article-doc .byline-meta,
+[data-theme="dark"] body.article-doc .muted{
+  color:rgba(255,255,255,.9) !important;
+}
+[data-theme="dark"] body.article-doc .article-content a{
+  color:#FFFFFF !important;
+  text-decoration-color: rgba(255,255,255,.6) !important;
+}
+[data-theme="dark"] body.article-doc .share-btn{
+  background: var(--surface) !important;
+  color:#FFFFFF !important;
+  border:1px solid var(--border) !important;
+}
+[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF !important; }
+[data-theme="dark"] body.article-doc .verse:hover::after{
+  background: var(--surface) !important;
+  color:#FFFFFF !important;
+  border:1px solid var(--border) !important;
+}
+[data-theme="dark"] body.article-doc .article-content blockquote{
+  background: rgba(129,164,205,.14) !important;
+  color:#FFFFFF !important;
+  border-left:4px solid var(--accent) !important;
+  border-radius:8px;
+}
+[data-theme="dark"] body.article-doc .refs,
+[data-theme="dark"] body.article-doc .refs *{
+  color:#FFFFFF !important;
+  border-color: var(--border) !important;
+}
