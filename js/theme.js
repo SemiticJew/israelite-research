@@ -2,31 +2,7 @@
   const KEY = 'theme';
   const root = document.documentElement;
 
-  const prefersDark = () =>
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-  function apply(theme){
-    root.setAttribute('data-theme', theme);
-    const btn = document.getElementById('themeToggle');
-    if(btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-  }
-
-  function init(){
-    const saved = localStorage.getItem(KEY);
-    const initial = saved || (prefersDark() ? 'dark' : 'light');
-    apply(initial);
-
-    if(!saved && window.matchMedia){
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      const onChange = e => {
-        if(!localStorage.getItem(KEY)) apply(e.matches ? 'dark' : 'light');
-      };
-      mq.addEventListener ? mq.addEventListener('change', onChange)
-                          : mq.addListener && mq.addListener(onChange);
-    }
-  }
-
-  // Modern icons (sun/moon) using currentColor
+  // SVG icons (modern, currentColor)
   const SUN_SVG = `
     <svg class="sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -41,16 +17,62 @@
     </svg>
   `;
 
-  function wireToggle(){
+  const prefersDark = () =>
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  function apply(theme){
+    root.setAttribute('data-theme', theme);
     const btn = document.getElementById('themeToggle');
-    if(!btn) return; // no fallback injection anywhere else
+    if(btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+  }
+
+  function initTheme(){
+    const saved = localStorage.getItem(KEY);
+    const initial = saved || (prefersDark() ? 'dark' : 'light');
+    apply(initial);
+
+    // Follow system until user chooses
+    if(!saved && window.matchMedia){
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const onChange = e => {
+        if(!localStorage.getItem(KEY)) apply(e.matches ? 'dark' : 'light');
+      };
+      mq.addEventListener ? mq.addEventListener('change', onChange)
+                          : mq.addListener && mq.addListener(onChange);
+    }
+  }
+
+  function mountToggle(btn){
+    if(!btn || btn.dataset.wired === '1') return;
     if(!btn.querySelector('svg')) btn.innerHTML = SUN_SVG + MOON_SVG;
     btn.addEventListener('click', ()=>{
       const next = (root.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
       localStorage.setItem(KEY, next);
       apply(next);
     });
+    // reflect current state
+    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+    btn.dataset.wired = '1';
   }
 
-  document.addEventListener('DOMContentLoaded', () => { init(); wireToggle(); });
+  function waitForHeaderAndWire(){
+    // If header already present, wire immediately
+    const existing = document.getElementById('themeToggle');
+    if(existing){ mountToggle(existing); return; }
+
+    // Otherwise observe for the header being injected by include.js
+    const obs = new MutationObserver(()=>{
+      const btn = document.getElementById('themeToggle');
+      if(btn){
+        mountToggle(btn);
+        obs.disconnect();
+      }
+    });
+    obs.observe(document.documentElement, { childList:true, subtree:true });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    waitForHeaderAndWire();
+  });
 })();
