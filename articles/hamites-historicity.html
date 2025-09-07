@@ -19,13 +19,31 @@
     .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
     .article-byline{ display:flex; align-items:center; gap:.65rem; color: var(--ink); }
     .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
-    .byline-name-btn{ background:none; border:none; padding:0; margin:0; font:inherit; font-weight:800; color:var(--ink); cursor:pointer; text-decoration:underline dotted; }
+
+    /* NEW: compact author info icon (opens popout) */
+    .author-info-btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:28px; height:28px; border-radius:999px;
+      border:1px solid var(--border); background:var(--surface);
+      color:var(--muted); cursor:pointer; padding:0;
+      transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+    }
+    .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .author-info-btn svg{ width:18px; height:18px; display:block; }
+
+    /* Author name button (no underline) */
+    .byline-name-btn{
+      background:none; border:none; padding:0; margin:0;
+      font:inherit; font-weight:800; color:var(--ink); cursor:pointer; text-decoration:none;
+    }
+    .byline-name-btn:hover{ color:var(--brand); }
+
     .byline-meta{ color:var(--muted); font-size:.95rem; }
     .share-min{ display:flex; align-items:center; gap:.4rem; }
     .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
     .share-btn:hover{ transform:translateY(-1px); }
 
-    /* Author popout (toggles from author name) */
+    /* Author popout (toggles from author name and info icon) */
     .author-pop{ position:absolute; top:100%; left:0; margin-top:10px; width:min(520px,90vw); background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 30px rgba(0,0,0,.18); padding:12px 14px; display:none; z-index:50; }
     .author-pop[aria-hidden="false"]{ display:block; }
     .author-pop .ap-head{ display:flex; gap:12px; align-items:center; }
@@ -52,6 +70,7 @@
     html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
     html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
     html[data-theme="dark"] body.article-doc .byline-name-btn{ color:#FFFFFF; }
+    html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
     html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
     html[data-theme="dark"] body.article-doc .author-pop{ background:var(--surface); border-color:var(--border); }
     html[data-theme="dark"] body.article-doc .author-pop .ap-title{ color:#FFFFFF; }
@@ -81,6 +100,16 @@
       <div class="byline-row" id="byline-row">
         <div class="article-byline">
           <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew" width="40" height="40" />
+
+          <!-- NEW: author info icon button -->
+          <button id="author-info" class="author-info-btn" type="button" aria-label="About the author">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <g stroke="none" fill="currentColor" fill-rule="evenodd">
+                <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+              </g>
+            </svg>
+          </button>
+
           <button id="author-name" class="byline-name-btn" aria-expanded="false" aria-controls="author-pop">Semitic Jew</button>
           <span class="byline-meta">• Article</span>
         </div>
@@ -125,7 +154,8 @@
           The Bride in the Song declares,
           <span class="verse" data-ref="Song of Songs 1:5–6" data-note="“I am black and lovely … do not gaze at me because the sun has looked upon me.”">Song 1:5–6</span>,
           while prophetic literature assumes the recognizable darkness of the Cushite
-          (<span class="verse" data-ref="Jeremiah 13:23" data-note="“Can the Ethiopian change his skin?”">Jer 13:23</span>).</p>
+          (<span class="verse" data-ref="Jeremiah 13:23" data-note="“Can the Ethiopian change his skin?”">Jer 13:23</span>).
+        </p>
 
         <h2>Archaeology & Iconography</h2>
         <p>
@@ -199,24 +229,34 @@
       if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
       if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
 
-      // Author popout
-      var btn=document.getElementById('author-name');
-      var pop=document.getElementById('author-pop');
-      var close=document.getElementById('ap-close');
-      function openPop(){
+      // Author popout (toggle from name OR info icon)
+      var btn  = document.getElementById('author-name');
+      var icon = document.getElementById('author-info');
+      var pop  = document.getElementById('author-pop');
+      var close= document.getElementById('ap-close');
+
+      function openPop(anchor){
         pop.setAttribute('aria-hidden','false');
-        btn.setAttribute('aria-expanded','true');
-        // keep within viewport
-        var rect=btn.getBoundingClientRect(), vw=window.innerWidth;
-        pop.style.left = (rect.left < vw-380) ? rect.left+'px' : (vw-380-16)+'px';
+        if(btn) btn.setAttribute('aria-expanded','true');
+        var ref = anchor || btn;
+        if (ref){
+          var rect=ref.getBoundingClientRect(), vw=window.innerWidth;
+          pop.style.left = (rect.left < vw-380) ? rect.left+'px' : (vw-380-16)+'px';
+        }
       }
       function closePop(){
         pop.setAttribute('aria-hidden','true');
-        btn.setAttribute('aria-expanded','false');
+        if(btn) btn.setAttribute('aria-expanded','false');
       }
-      btn.addEventListener('click', function(e){ e.stopPropagation(); (pop.getAttribute('aria-hidden')==='true')?openPop():closePop(); });
-      close.addEventListener('click', function(e){ e.stopPropagation(); closePop(); });
-      document.addEventListener('click', function(e){ if(!pop.contains(e.target) && e.target!==btn) closePop(); });
+      function togglePop(e, anchor){
+        e.stopPropagation();
+        (pop.getAttribute('aria-hidden')==='true') ? openPop(anchor) : closePop();
+      }
+
+      if(btn)  btn.addEventListener('click', function(e){ togglePop(e, btn); });
+      if(icon) icon.addEventListener('click', function(e){ togglePop(e, icon); });
+      if(close) close.addEventListener('click', function(e){ e.stopPropagation(); closePop(); });
+      document.addEventListener('click', function(e){ if(!pop.contains(e.target) && e.target!==btn && e.target!==icon) closePop(); });
       document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePop(); });
     })();
   </script>
