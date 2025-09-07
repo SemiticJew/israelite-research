@@ -1,7 +1,6 @@
 <!-- Universal Header Partial -->
 <header class="site-header-bar">
   <style>
-    /* Header uses theme tokens so it adapts to light/dark globally */
     #site-header .site-header-bar{
       background:var(--surface);
       color:var(--ink);
@@ -11,8 +10,6 @@
       max-width:1200px;margin:0 auto;padding:10px 16px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
-
-    /* Left: Brand */
     #site-header .brand{
       display:inline-flex;align-items:center;gap:10px;
       text-decoration:none;color:var(--ink);font-weight:900;font-size:1.05rem;
@@ -22,8 +19,6 @@
       display:inline-flex;align-items:center;justify-content:center;
       background:var(--surface);box-shadow:var(--shadow);
     }
-
-    /* Middle: Primary Nav */
     #site-header nav.primary{
       display:flex;gap:8px;align-items:center;flex-wrap:wrap;
     }
@@ -36,8 +31,6 @@
       border-color:var(--border);
       box-shadow:var(--shadow);
     }
-
-    /* Right: Tools (search + theme) */
     #site-header .tools{display:flex;align-items:center;gap:10px}
     #site-header .icon-btn, #site-header .theme-toggle{
       width:40px;height:40px;border-radius:999px;
@@ -49,8 +42,6 @@
     #site-header .icon-btn:hover, #site-header .theme-toggle:hover{
       transform:translateY(-1px);box-shadow:var(--shadow-hover);border-color:#cdd8e6;
     }
-
-    /* Theme toggle icon swap handled by CSS */
     .theme-toggle .sun{display:block}
     .theme-toggle .moon{display:none}
     [data-theme="dark"] .theme-toggle .sun{display:none}
@@ -58,15 +49,20 @@
   </style>
 
   <div class="header-inner">
-    <!-- Left: Brand -->
     <a class="brand" href="/israelite-research/">
       <span class="mark" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12l8-8 8 8-8 8-8-8z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+          <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
+          <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
       </span>
       <span>Semitic&nbsp;Jew</span>
     </a>
 
-    <!-- Middle: Primary Pages -->
     <nav class="primary" aria-label="Primary">
       <a href="/israelite-research/apologetics.html">Apologetics</a>
       <a href="/israelite-research/articles.html">Articles</a>
@@ -76,17 +72,13 @@
       <a href="/israelite-research/media.html">Media</a>
     </nav>
 
-    <!-- Right: Tools -->
     <div class="tools">
-      <!-- Modern search icon -> search.html -->
       <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </a>
-
-      <!-- Single global theme toggle (sun/moon injected by js/theme.js) -->
       <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode"></button>
     </div>
   </div>
