@@ -1899,3 +1899,18 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] .card .card-body .card-title{
   color:#FFFFFF !important;
 }
+
+/* Dark mode: force all card titles site-wide to white */
+[data-theme="dark"] .card .card-title,
+[data-theme="dark"] .card .title{
+  color:#FFFFFF !important;
+}
+
+/* Dark mode: header brand (crown + Semitic Jew), middle navs, and right-side icons to white */
+[data-theme="dark"] #site-header .brand,
+[data-theme="dark"] #site-header .brand * ,
+[data-theme="dark"] #site-header nav.primary a,
+[data-theme="dark"] #site-header .tools .icon-btn,
+[data-theme="dark"] #site-header .tools .theme-toggle{
+  color:#FFFFFF !important;
+}
