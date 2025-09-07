@@ -1,18 +1,28 @@
 (async function(){
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
   const indexEl = $("#encyIndex");
   const searchEl = $("#encySearch");
   const lettersEl = $("#letters");
+  const controlsEl = $("#controls");
+  const toggleEl = $("#searchToggle");
+
+  // Toggleable search UI (+ keyboard '/')
+  function openSearch(){ controlsEl.classList.add('open'); toggleEl.setAttribute('aria-expanded','true'); searchEl.focus(); }
+  function closeSearch(){ controlsEl.classList.remove('open'); toggleEl.setAttribute('aria-expanded','false'); searchEl.blur(); }
+  toggleEl.addEventListener('click', ()=> controlsEl.classList.toggle('open') ? openSearch() : closeSearch());
+  document.addEventListener('keydown', (e)=>{ if(e.key === '/') { e.preventDefault(); openSearch(); } });
 
   const manifest = await fetch("/israelite-research/data/encyclopedia/manifest.json").then(r=>r.json());
 
-  // Normalize & group by first letter
+  // Normalize & group
   const firstLetter = (t) => (t||"").trim().toUpperCase().replace(/^[^A-Z].*$/,'#')[0] || '#';
   const AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
   const groupsBase = Object.fromEntries([...AZ,"#"].map(L=>[L,[]]));
   const withIdx = manifest.map(it => ({
     ...it,
+    biblio_count: Number(it.biblio_count||0),
     __t: [it.term, ...(it.type||[]), it.summary, ...(it.biblical_refs||[]), ...(it.tags||[])].join(" ").toLowerCase(),
     __L: firstLetter(it.term)
   }));
@@ -36,6 +46,11 @@
     });
   }
 
+  function meterWidth(count){
+    const capped = Math.min(Number(count)||0, 12); // cap to 12
+    return (capped/12*100).toFixed(0) + '%';
+  }
+
   function renderIndex(){
     const grouped = structuredClone(groupsBase);
     (currentLetter ? dataView.filter(it=>it.__L===currentLetter) : dataView)
@@ -46,16 +61,23 @@
       const items = grouped[L];
       if(!items || !items.length) return '';
       items.sort((a,b)=>a.term.localeCompare(b.term));
-      const list = items.map(it=>`
-        <a href="/israelite-research/encyclopedia/entry.html?id=${encodeURIComponent(it.id)}">
-          ${it.term}${(it.badge?` <span class="badge">${it.badge}</span>`:'')}
-        </a>`).join('');
+      const list = items.map(it=>{
+        const p = meterWidth(it.biblio_count);
+        const badge = it.badge?` <span class="badge">${it.badge}</span>`:'';
+        return `
+          <a href="/israelite-research/encyclopedia/entry.html?id=${encodeURIComponent(it.id)}" title="${it.term}">
+            <span class="label">${it.term}${badge}</span>
+            <span class="meta">
+              <span class="meter" aria-hidden="true"><i style="--p:${p}"></i></span>
+              <span class="count" aria-label="bibliography items">${it.biblio_count}</span>
+            </span>
+          </a>`;
+      }).join('');
       return `
         <section class="letter-group" id="letter-${L}">
           <h2 class="letter-head">${L}</h2>
           <div class="entry-list">${list}</div>
-        </section>
-      `;
+        </section>`;
     }).join('');
   }
 
