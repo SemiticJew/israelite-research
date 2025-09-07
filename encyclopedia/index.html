@@ -5,28 +5,35 @@
 <title>Israelite Encyclopedia</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340;--accent:#F17300;--border:#e6ebf2;--muted:#6b7280;--blue:#054A91}
+  :root{
+    --ink:#0b2340; --muted:#6b7280; --blue:#054A91; --accent:#F17300;
+    --border:#e6ebf2; --bg:#ffffff; --sky:#DBE4EE;
+  }
 
-  /* Global layout */
+  /* Layout */
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   header.page-header{padding:24px 0 12px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
   .page-sub{margin:.25rem 0 0;color:var(--muted)}
 
-  /* Controls with expandable search */
+  /* Controls */
   .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;transition:all .2s ease}
-  .search-wrap{display:flex;align-items:center;gap:10px}
-  .search-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border);border-radius:999px;background:#fff;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease,border-color .18s ease}
-  .search-toggle:hover{box-shadow:0 6px 16px rgba(0,0,0,.08);transform:translateY(-1px);border-color:#cdd8e6}
-  .search{width:0;opacity:0;padding:0;border:0;border-radius:10px;transition:width .22s ease, opacity .18s ease, padding .18s ease;pointer-events:none}
-  .controls.open .search{width:min(540px,85vw);opacity:1;padding:10px 12px;border:1px solid var(--border);pointer-events:auto}
-
-  /* A–Z letters (unchanged) */
   .letters{display:flex;gap:6px;flex-wrap:wrap}
   .letters a{display:inline-block;padding:6px 10px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--blue);font-weight:700}
   .letters a.active{border-color:var(--accent);color:var(--accent)}
 
-  /* Filter chips (below A–Z) */
+  /* Search (expandable) */
+  .search-wrap{display:flex;align-items:center;gap:10px;margin-left:auto}
+  .search-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border:1px solid var(--border);border-radius:999px;
+    background:#fff;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease,border-color .18s ease
+  }
+  .search-toggle:hover{box-shadow:0 6px 16px rgba(0,0,0,.08);transform:translateY(-1px);border-color:#cdd8e6}
+  .search{width:0;opacity:0;padding:0;border:0;border-radius:10px;transition:width .22s ease, opacity .18s ease, padding .18s ease;pointer-events:none}
+  .controls.open .search{width:min(540px,85vw);opacity:1;padding:10px 12px;border:1px solid var(--border);pointer-events:auto}
+
+  /* Chip Filters */
   .filters{margin:12px 0 4px;display:flex;flex-direction:column;gap:10px}
   .filter-row{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
   .filter-label{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
@@ -35,31 +42,60 @@
   .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0}
   .chip[data-active="true"] .dot{opacity:1}
 
-  /* Index list */
-  .index{margin:14px 0 40px}
-  .letter-group{break-inside:avoid;margin:18px 0}
-  .letter-head{font-weight:900;letter-spacing:.08em;color:var(--blue);margin:0 0 6px}
-  .entry-list{columns:2;column-gap:28px}
-  @media (max-width:800px){.entry-list{columns:1}}
-  .entry-list a{
-    display:block;padding:8px 0;border-bottom:1px dotted #e9eef6;
-    color:var(--ink);text-decoration:none;transition:color .15s ease, background-color .15s ease;
+  /* Editor’s Shelf */
+  .shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 8px}
+  .shelf .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
+  .shelf h3{margin:0 0 8px;font-size:.95rem;color:var(--blue)}
+  .shelf ul{list-style:none;margin:0;padding:0}
+  .shelf li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dotted #e9eef6}
+  .shelf li:last-child{border-bottom:0}
+  .shelf a{text-decoration:none;color:var(--ink)}
+  .shelf a:hover{color:var(--accent)}
+
+  /* Split Pane */
+  .split{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start;margin:14px 0 40px}
+  @media (max-width:900px){.split{grid-template-columns:1fr}}
+  .index-pane{
+    background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;
+    max-height:70vh;display:flex;flex-direction:column
   }
-  .entry-list a:hover{color:var(--accent);background:rgba(241,115,0,0.04)}
-  .badge{font-size:.72rem;color:#7387a6;text-transform:uppercase;margin-left:6px}
+  .index-scroll{overflow:auto;padding:12px}
+  .section-head{margin:0 0 6px;color:var(--blue);font-weight:900;letter-spacing:.08em}
+  .entry-list{list-style:none;margin:0;padding:0}
+  .entry-list li{border-bottom:1px dotted #e9eef6}
+  .entry-link{
+    display:flex;justify-content:space-between;gap:10px;align-items:center;
+    padding:8px 2px;text-decoration:none;color:var(--ink)
+  }
+  .entry-link:hover{color:var(--accent);background:rgba(241,115,0,0.04)}
+  .entry-link.active{background:linear-gradient(90deg,#fff, #fffaf5);border-left:3px solid var(--accent);padding-left:6px}
+  .badge{font-size:.72rem;color:#7387a6;text-transform:uppercase;margin-left:6px;white-space:nowrap}
+
+  .detail-pane{
+    background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;min-height:320px
+  }
+  .detail-pane .title{margin:0 0 4px;font-size:1.25rem;color:var(--blue);font-weight:900}
+  .detail-pane .meta{color:var(--muted);margin:2px 0 10px}
+  .block{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;margin:10px 0}
+  .block h4{margin:0 0 6px;color:var(--ink);font-size:1rem}
+  code.kv{background:var(--sky);padding:2px 6px;border-radius:6px}
+  .open-full{display:inline-block;margin-top:6px;color:var(--accent);text-decoration:none;font-weight:700}
 </style>
 </head>
 <body class="encyclopedia-page">
 
+  <!-- Header include -->
   <div id="site-header" data-include="partials/header.html"></div>
 
   <main>
     <header class="page-header">
       <div class="container">
         <h1 class="page-title">Israelite Encyclopedia</h1>
-        <p class="page-sub">Alphabetical index of people, places, and concepts (Encyclopaedia-style).</p>
+        <p class="page-sub">Split-pane index for fast research: browse A–Z on the left, read details on the right.</p>
 
         <div class="controls" id="controls">
+          <nav class="letters" id="letters"></nav>
+
           <div class="search-wrap">
             <button id="searchToggle" class="search-toggle" aria-label="Open search" aria-expanded="false" aria-controls="encySearch">
               <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -69,12 +105,10 @@
             </button>
             <input id="encySearch" class="search" type="search" placeholder="Search headwords, refs, or tags…"/>
           </div>
-          <nav class="letters" id="letters"></nav>
         </div>
 
-        <!-- Chip filters (inside 1200px container, below A–Z) -->
+        <!-- Chip Filters -->
         <div id="filters" class="filters">
-
           <div class="filter-row" data-key="type">
             <span class="filter-label">Type</span>
             <button class="chip" data-value="people"><span class="dot"></span>People</button>
@@ -119,17 +153,45 @@
             <button class="chip" data-value="reviewed"><span class="dot"></span>Reviewed</button>
             <button class="chip" data-value="published"><span class="dot"></span>Published</button>
           </div>
+        </div>
 
+        <!-- Editor’s Shelf -->
+        <div class="shelf" id="shelf">
+          <div class="card">
+            <h3>Recently Updated</h3>
+            <ul id="shelf-updated"></ul>
+          </div>
+          <div class="card">
+            <h3>Most Sources</h3>
+            <ul id="shelf-sources"></ul>
+          </div>
+          <div class="card">
+            <h3>Needs Review</h3>
+            <ul id="shelf-review"></ul>
+          </div>
         </div>
       </div>
     </header>
 
-    <section class="container index" id="encyIndex" aria-live="polite"></section>
+    <!-- Split Pane -->
+    <section class="container split">
+      <aside class="index-pane">
+        <div class="index-scroll" id="indexScroll">
+          <!-- letter groups + entries injected here -->
+        </div>
+      </aside>
+
+      <section class="detail-pane" id="entryPane">
+        <h2 class="title">Select an entry…</h2>
+        <p class="meta">Browse the left index and click a headword to view details here. Press “/” to search.</p>
+      </section>
+    </section>
   </main>
 
+  <!-- Footer include -->
   <div id="site-footer" data-include="partials/footer.html"></div>
 
-  <!-- Search toggle (unchanged) -->
+  <!-- Page JS -->
   <script>
     (function(){
       const controlsEl = document.getElementById('controls');
@@ -140,8 +202,263 @@
       toggleEl.addEventListener('click', ()=> controlsEl.classList.contains('open') ? closeSearch() : openSearch());
       document.addEventListener('keydown', (e)=>{ if(e.key === '/') { e.preventDefault(); openSearch(); } });
     })();
+
+    (async function(){
+      const $ = (s, r=document) => r.querySelector(s);
+      const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+      const lettersEl = $("#letters");
+      const filtersEl = $("#filters");
+      const indexScroll = $("#indexScroll");
+      const entryPane = $("#entryPane");
+      const searchEl = $("#encySearch");
+      const shelfUpdated = $("#shelf-updated");
+      const shelfSources = $("#shelf-sources");
+      const shelfReview = $("#shelf-review");
+
+      const manifest = await fetch("/israelite-research/data/encyclopedia/manifest.json").then(r=>r.json()).catch(()=>[]);
+      const norm = v => String(v||"").toLowerCase().replace(/[-\\s]+/g,"_");
+      const toSet = arr => new Set((arr||[]).map(norm));
+      const firstLetter = t => (t||"").trim().toUpperCase().replace(/^[^A-Z].*$/,'#')[0] || '#';
+      const AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+      const groupsBase = Object.fromEntries([...AZ,"#"].map(L=>[L,[]]));
+
+      const items = manifest.map(it => ({
+        ...it,
+        type_set: toSet(it.type),
+        era_set: toSet(it.era),
+        region_set: toSet(it.region),
+        tags_set: toSet(it.tags),
+        status_val: norm(it.status),
+        crossref_count: Number(it.crossref_count||0),
+        biblio_count: Number(it.biblio_count||0),
+        updated_num: Date.parse(it.updated||0) || 0,
+        has_iconography: !!( (it.has_iconography) || (it.tags_set && it.tags_set.has('iconography')) ),
+        has_complexion: !!( (it.has_complexion_notes) || (it.tags_set && it.tags_set.has('complexion')) ),
+        has_maps: !!( (it.has_maps) || (it.tags_set && (it.tags_set.has('map') || it.tags_set.has('maps'))) ),
+        __t: [it.term, ...(it.type||[]), it.summary, ...(it.biblical_refs||[]), ...(it.tags||[])].join(" ").toLowerCase(),
+        __L: firstLetter(it.term)
+      }));
+
+      // A–Z nav
+      let currentLetter = null;
+      function renderLetters(){
+        lettersEl.innerHTML = ['All',...AZ,'#'].map(L=>{
+          const val = L==='All'? '' : L;
+          const active = (currentLetter===val) || (L==='All' && currentLetter===null);
+          return \`<a href="#" data-letter="\${val}" class="\${active?'active':''}">\${L}</a>\`;
+        }).join('');
+        lettersEl.addEventListener('click',(e)=>{
+          const a = e.target.closest('a'); if(!a) return;
+          e.preventDefault();
+          currentLetter = a.dataset.letter || null;
+          $$('#letters a').forEach(x=>x.classList.remove('active'));
+          a.classList.add('active');
+          computeView();
+        }, { once:true });
+      }
+
+      // Filters
+      let active = { type:[], era:[], region:[], features:[], status:[] };
+      function splitTokens(s){ return String(s||"").toLowerCase().split(/[\\/|,]\\s*/).map(x=>x.trim()).filter(Boolean); }
+      function readActive(){
+        const next = { type:[], era:[], region:[], features:[], status:[] };
+        $$('.filter-row', filtersEl).forEach(row=>{
+          const key = row.getAttribute('data-key');
+          const vals = $$('.chip[data-active="true"]', row).flatMap(btn => splitTokens(btn.getAttribute('data-value')));
+          next[key] = vals.map(norm);
+        });
+        active = next;
+      }
+      filtersEl.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.chip'); if(!btn) return;
+        btn.setAttribute('data-active', btn.getAttribute('data-active') === 'true' ? 'false' : 'true');
+        readActive();
+        computeView();
+      });
+
+      // Search
+      searchEl.addEventListener('input', computeView);
+
+      // Compute filtered view and render left index
+      let view = items.slice();
+      function matches(it){
+        const q = (searchEl.value||'').toLowerCase().trim();
+        const typeOk = !active.type.length || active.type.some(tok => it.type_set.has(tok));
+        const eraOk = !active.era.length || active.era.some(tok => it.era_set.has(tok) || it.era_set.has(tok.replace(/_/g,' ')));
+        const regionOk = !active.region.length || active.region.some(tok => it.region_set.has(tok));
+        const featuresOk = !active.features.length || active.features.every(f=>{
+          if(f==='iconography') return it.has_iconography;
+          if(f==='complexion')  return it.has_complexion;
+          if(f==='maps')        return it.has_maps;
+          if(f==='crossrefs')   return (it.crossref_count > 0);
+          return true;
+        });
+        const statusOk = !active.status.length || active.status.includes(it.status_val);
+        const textOk = !q || it.__t.includes(q);
+        return typeOk && eraOk && regionOk && featuresOk && statusOk && textOk;
+      }
+
+      function computeView(){
+        const grouped = structuredClone(groupsBase);
+        view = items.filter(matches);
+        (currentLetter ? view.filter(it=>it.__L===currentLetter) : view)
+          .forEach(it => grouped[it.__L||'#'].push(it));
+
+        // build left index
+        const order = currentLetter ? [currentLetter] : [...AZ,'#'];
+        indexScroll.innerHTML = order.map(L=>{
+          const arr = grouped[L]; if(!arr || !arr.length) return '';
+          arr.sort((a,b)=>a.term.localeCompare(b.term));
+          const list = arr.map(it=>\`
+            <li>
+              <a class="entry-link" href="/israelite-research/encyclopedia/entry.html?id=\${encodeURIComponent(it.id)}" data-id="\${it.id}" title="\${it.term}">
+                <span>\${it.term}\${it.badge? \` <span class="badge">\${it.badge}</span>\` : ''}</span>
+              </a>
+            </li>\`).join('');
+          return \`
+            <div class="group">
+              <h3 class="section-head">\${L}</h3>
+              <ul class="entry-list">\${list}</ul>
+            </div>\`;
+        }).join('');
+
+        // wire entry clicks
+        $$('.entry-link', indexScroll).forEach(a=>{
+          a.addEventListener('click', (ev)=>{
+            ev.preventDefault();
+            $$('.entry-link', indexScroll).forEach(x=>x.classList.remove('active'));
+            a.classList.add('active');
+            loadEntry(a.getAttribute('data-id'));
+          });
+        });
+      }
+
+      // Editor’s Shelf
+      function renderShelf(){
+        const recent = items.slice().sort((a,b)=>b.updated_num - a.updated_num).slice(0,5);
+        shelfUpdated.innerHTML = recent.map(it=>\`<li><a href="#" data-id="\${it.id}">\${it.term}</a><span class="mini">\${(it.updated||'').slice(0,10)}</span></li>\`).join('');
+        const sources = items.slice().sort((a,b)=>b.biblio_count - a.biblio_count).slice(0,5);
+        shelfSources.innerHTML = sources.map(it=>\`<li><a href="#" data-id="\${it.id}">\${it.term}</a><span class="mini">src:\${it.biblio_count}</span></li>\`).join('');
+        const review = items.filter(it=>it.status_val!=='published').slice(0,5);
+        shelfReview.innerHTML = review.map(it=>\`<li><a href="#" data-id="\${it.id}">\${it.term}</a><span class="mini">\${it.status || ''}</span></li>\`).join('');
+
+        // click-throughs load detail pane
+        [shelfUpdated, shelfSources, shelfReview].forEach(box=>{
+          box.addEventListener('click',(e)=>{
+            const a = e.target.closest('a'); if(!a) return;
+            e.preventDefault();
+            const id = a.getAttribute('data-id');
+            // also highlight in left list if present
+            const target = indexScroll.querySelector(\`.entry-link[data-id="\${CSS.escape(id)}"]\`);
+            if(target){ $$('.entry-link', indexScroll).forEach(x=>x.classList.remove('active')); target.classList.add('active'); target.scrollIntoView({block:'center'}); }
+            loadEntry(id);
+          });
+        });
+      }
+
+      // Detail pane loader
+      async function loadEntry(id){
+        if(!id){ return; }
+        entryPane.innerHTML = '<p class="meta">Loading…</p>';
+        const url = \`/israelite-research/data/encyclopedia/isbd/\${encodeURIComponent(id)}.json\`;
+        const data = await fetch(url).then(r=>r.json()).catch(()=>null);
+        if(!data){ entryPane.innerHTML = '<p class="meta">Entry not found.</p>'; return; }
+
+        const asList = arr => '<ul>'+ (arr||[]).map(x=>'<li>'+x+'</li>').join('') +'</ul>';
+        const hg = data.hebrew_greek || {};
+        const cc = data.complexion_context || {};
+        const ac = data.african_context || {};
+        const an = data.analysis || {};
+        const lg = data.linguistics || {};
+        const pv = data.provenance || {};
+
+        entryPane.innerHTML = \`
+          <h2 class="title">\${data.term || id}</h2>
+          <div class="meta">\${data.summary || ''}</div>
+
+          <div class="block">
+            <h4>Biblical References</h4>
+            \${asList(data.biblical_refs)}
+          </div>
+
+          <div class="block">
+            <h4>Hebrew/Greek</h4>
+            <div><strong>Lemma:</strong> \${hg.lemma||''}</div>
+            <div><strong>Translit:</strong> \${hg.translit||''}</div>
+            <div><strong>Strong’s:</strong> \${(hg.strongs||[]).map(s=>'<code class="kv">'+s+'</code>').join(' ')}</div>
+          </div>
+
+          <div class="block">
+            <h4>Complexion Context</h4>
+            \${cc.descriptions ? '<h5>Descriptions</h5>'+asList(cc.descriptions.map(d=>\`\${d.source}: \${d.note}\`)) : ''}
+            \${cc.iconography ? '<h5>Iconography</h5>'+asList(cc.iconography.map(d=>\`\${d.artifact} (\${d.period}): \${d.note}\`)) : ''}
+            \${cc.interpretive_notes ? '<h5>Interpretive Notes</h5>'+asList(cc.interpretive_notes) : ''}
+          </div>
+
+          <div class="block">
+            <h4>African Context</h4>
+            \${ac.integration ? '<h5>Integration</h5>'+asList(ac.integration.map(i=>\`\${i.group}: \${i.evidence}\`)) : ''}
+            \${ac.geographies ? '<h5>Geographies</h5>'+asList(ac.geographies.map(g=>\`\${g.place}: \${g.role}\`)) : ''}
+            \${ac.timelines ? '<h5>Timelines</h5>'+asList(ac.timelines.map(t=>\`\${t.label}: \${t.from} → \${t.to}\`)) : ''}
+          </div>
+
+          <div class="block">
+            <h4>Claims</h4>
+            \${asList((data.claims||[]).map(c=>\`\${c.statement} <span class="meta">(confidence \${Math.round((c.confidence||0)*100)}%)</span>\`))}
+          </div>
+
+          <div class="block">
+            <h4>Evidence</h4>
+            \${asList((data.evidence||[]).map(e=>\`\${e.type} [\${e.citation_key}]: \${e.excerpt} — <em>\${e.relevance}</em>\`))}
+          </div>
+
+          <div class="block">
+            <h4>Counterpoints</h4>
+            \${asList((data.counterpoints||[]).map(cp=>\`\${cp.argument}\`))}
+          </div>
+
+          <div class="block">
+            <h4>Analysis</h4>
+            <p>\${an.reasoning||''}</p>
+            \${an.limitations?'<p class="meta"><strong>Limitations:</strong> '+an.limitations+'</p>':''}
+          </div>
+
+          <div class="block">
+            <h4>Linguistics</h4>
+            \${lg.loanwords?'<div><strong>Loanwords:</strong> '+asList(lg.loanwords)+'</div>':''}
+            \${lg.onomastics_notes?'<div><strong>Onomastics:</strong> '+lg.onomastics_notes+'</div>':''}
+          </div>
+
+          <div class="block">
+            <h4>Related</h4>
+            \${asList((data.related_entries||[]).map(rid=>'<a href="/israelite-research/encyclopedia/entry.html?id='+encodeURIComponent(rid)+'">'+rid+'</a>'))}
+          </div>
+
+          <div class="block">
+            <h4>Provenance</h4>
+            <div><strong>Compilers:</strong> \${(pv.compilers||[]).join(', ')}</div>
+            <div><strong>Last Updated:</strong> \${pv.last_updated||''}</div>
+            \${pv.sources?'<div><strong>Sources:</strong> '+asList(pv.sources.map(s=>\`\${s.key} (\${s.license})\`))+'</div>':''}
+          </div>
+
+          <a class="open-full" href="/israelite-research/encyclopedia/entry.html?id=\${encodeURIComponent(id)}">Open full entry →</a>
+        \`;
+        window.scrollTo({top: document.querySelector('.split').offsetTop - 12, behavior:'smooth'});
+      }
+
+      // Init
+      renderLetters();
+      // prime filters (none active) and compute view
+      computeView();
+      renderShelf();
+
+      // If there's at least one item, load the first visible entry into pane for a filled look
+      const first = indexScroll.querySelector('.entry-link');
+      if(first){ first.classList.add('active'); loadEntry(first.getAttribute('data-id')); }
+    })();
   </script>
+
   <script src="/israelite-research/js/include.js"></script>
-  <script src="/israelite-research/js/encyclopedia.js"></script>
 </body>
 </html>
