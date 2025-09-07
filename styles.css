@@ -2108,3 +2108,22 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   box-shadow: var(--shadow-hover);
   border-color: #cdd8e6;
 }
+
+/* === DARK MODE: Force all text to white on Biblical References page === */
+[data-theme="dark"] body.bib-refs,
+[data-theme="dark"] body.bib-refs * {
+  color: #FFFFFF !important;
+}
+
+/* Placeholders also readable in dark */
+[data-theme="dark"] body.bib-refs ::placeholder {
+  color: rgba(255,255,255,.75) !important;
+}
+
+/* Ensure links remain white regardless of state */
+[data-theme="dark"] body.bib-refs a,
+[data-theme="dark"] body.bib-refs a:visited,
+[data-theme="dark"] body.bib-refs a:hover,
+[data-theme="dark"] body.bib-refs a:active {
+  color: #FFFFFF !important;
+}
