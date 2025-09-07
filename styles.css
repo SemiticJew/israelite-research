@@ -1989,3 +1989,122 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   color: #FFFFFF !important;
   border-color: var(--teal) !important;
 }
+
+/* === DARK MODE: Biblical References page fixes (scoped) === */
+[data-theme="dark"] body.bib-refs,
+[data-theme="dark"] .bib-refs{
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Core containers/cards */
+[data-theme="dark"] body.bib-refs .card,
+[data-theme="dark"] body.bib-refs .panel,
+[data-theme="dark"] body.bib-refs .pane,
+[data-theme="dark"] body.bib-refs .ref-card,
+[data-theme="dark"] body.bib-refs .ref-item,
+[data-theme="dark"] body.bib-refs .ref-list li,
+[data-theme="dark"] body.bib-refs .callout,
+[data-theme="dark"] body.bib-refs .note,
+[data-theme="dark"] body.bib-refs .sidebar,
+[data-theme="dark"] body.bib-refs .grid > * {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow);
+}
+
+/* Typography */
+[data-theme="dark"] body.bib-refs h1,
+[data-theme="dark"] body.bib-refs h2,
+[data-theme="dark"] body.bib-refs h3,
+[data-theme="dark"] body.bib-refs h4,
+[data-theme="dark"] body.bib-refs .title,
+[data-theme="dark"] body.bib-refs .card-title{ color: #FFFFFF !important; }
+[data-theme="dark"] body.bib-refs .kicker,
+[data-theme="dark"] body.bib-refs .desc,
+[data-theme="dark"] body.bib-refs .muted,
+[data-theme="dark"] body.bib-refs .cite{ color: var(--muted) !important; }
+[data-theme="dark"] body.bib-refs a{ color: var(--blue) !important; }
+
+/* Filters / chips / pills / tags */
+[data-theme="dark"] body.bib-refs .filters button,
+[data-theme="dark"] body.bib-refs .filters .btn,
+[data-theme="dark"] body.bib-refs .chip,
+[data-theme="dark"] body.bib-refs .pill,
+[data-theme="dark"] body.bib-refs .badge,
+[data-theme="dark"] body.bib-refs .tag {
+  background: var(--brand) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--border) !important;
+}
+[data-theme="dark"] body.bib-refs .filters button:hover,
+[data-theme="dark"] body.bib-refs .filters .btn:hover,
+[data-theme="dark"] body.bib-refs .chip:hover,
+[data-theme="dark"] body.bib-refs .pill:hover,
+[data-theme="dark"] body.bib-refs .badge:hover,
+[data-theme="dark"] body.bib-refs .tag:hover,
+[data-theme="dark"] body.bib-refs .filters [aria-pressed="true"],
+[data-theme="dark"] body.bib-refs .chip.is-active,
+[data-theme="dark"] body.bib-refs .pill.is-active,
+[data-theme="dark"] body.bib-refs .badge.is-active,
+[data-theme="dark"] body.bib-refs .tag.is-active{
+  background: var(--teal) !important;
+  color: #FFFFFF !important;
+  border-color: var(--teal) !important;
+}
+
+/* Tables */
+[data-theme="dark"] body.bib-refs table{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--border) !important;
+  border-collapse: collapse;
+}
+[data-theme="dark"] body.bib-refs th,
+[data-theme="dark"] body.bib-refs td{
+  border: 1px solid var(--border) !important;
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+}
+[data-theme="dark"] body.bib-refs thead th{
+  background: rgba(129,164,205,.15) !important;
+  color: #FFFFFF !important;
+}
+
+/* Code/mark/kbd */
+[data-theme="dark"] body.bib-refs code,
+[data-theme="dark"] body.bib-refs kbd,
+[data-theme="dark"] body.bib-refs mark{
+  background: rgba(129,164,205,.18) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px;
+  padding: .1rem .35rem;
+}
+
+/* Inputs */
+[data-theme="dark"] body.bib-refs input,
+[data-theme="dark"] body.bib-refs select,
+[data-theme="dark"] body.bib-refs textarea{
+  background: var(--bg) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--border) !important;
+}
+[data-theme="dark"] body.bib-refs input::placeholder,
+[data-theme="dark"] body.bib-refs textarea::placeholder{ color: var(--muted) !important; }
+
+/* Buttons */
+[data-theme="dark"] body.bib-refs button,
+[data-theme="dark"] body.bib-refs .btn{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow);
+}
+[data-theme="dark"] body.bib-refs button:hover,
+[data-theme="dark"] body.bib-refs .btn:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cdd8e6;
+}
