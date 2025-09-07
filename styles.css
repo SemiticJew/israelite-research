@@ -2485,3 +2485,20 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   background: var(--surface) !important;
   color: var(--ink) !important;
 }
+
+/* === DARK MODE: Articles page — make all excerpt text readable (white) === */
+[data-theme="dark"] body.articles-page .excerpt,
+[data-theme="dark"] body.articles-page .excerpt *,
+[data-theme="dark"] body.articles-page .post-card .excerpt,
+[data-theme="dark"] body.articles-page .article-card .excerpt,
+[data-theme="dark"] body.articles-page .card .excerpt,
+[data-theme="dark"] body.articles-page .summary,
+[data-theme="dark"] body.articles-page .summary *,
+[data-theme="dark"] body.articles-page .desc,
+[data-theme="dark"] body.articles-page .desc *,
+[data-theme="dark"] body.articles-page .intro,
+[data-theme="dark"] body.articles-page .intro *,
+[data-theme="dark"] body.articles-page .card-text,
+[data-theme="dark"] body.articles-page .card-text *{
+  color:#FFFFFF !important;
+}
