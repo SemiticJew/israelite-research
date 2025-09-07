@@ -2408,3 +2408,80 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] body.articles-page .featured img,
 [data-theme="dark"] body.articles-page .feature img,
 [data-theme="dark"] body.articles-page [class*="feature"] img { background: transparent !important; }
+
+/* === DARK MODE: FORCE FEATURED EXCERPT TO ADAPT (Articles page) === */
+/* Ultra-specific overrides to beat inline/legacy styles */
+
+[data-theme="dark"] body.articles-page .featured,
+[data-theme="dark"] body.articles-page .feature,
+[data-theme="dark"] body.articles-page [class*="feature"]{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+}
+
+/* Excerpt/summary containers */
+[data-theme="dark"] body.articles-page .featured .excerpt,
+[data-theme="dark"] body.articles-page .feature .excerpt,
+[data-theme="dark"] body.articles-page [class*="feature"] .excerpt,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="excerpt"],
+[data-theme="dark"] body.articles-page .featured .summary,
+[data-theme="dark"] body.articles-page .feature .summary,
+[data-theme="dark"] body.articles-page [class*="feature"] .summary,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="summary"],
+/* guard for possible misspelling 'except' */
+[data-theme="dark"] body.articles-page .featured .except,
+[data-theme="dark"] body.articles-page .feature .except,
+[data-theme="dark"] body.articles-page [class*="feature"] .except,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="except"]{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+}
+
+/* Text inside the excerpt/summary */
+[data-theme="dark"] body.articles-page .featured .excerpt *,
+[data-theme="dark"] body.articles-page .feature .excerpt *,
+[data-theme="dark"] body.articles-page [class*="feature"] .excerpt *,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="excerpt"] *,
+[data-theme="dark"] body.articles-page .featured .summary *,
+[data-theme="dark"] body.articles-page .feature .summary *,
+[data-theme="dark"] body.articles-page [class*="feature"] .summary *,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="summary"] *,
+[data-theme="dark"] body.articles-page .featured .except *,
+[data-theme="dark"] body.articles-page .feature .except *,
+[data-theme="dark"] body.articles-page [class*="feature"] .except *,
+[data-theme="dark"] body.articles-page [class*="feature"] [class*="except"] *{
+  color: var(--ink) !important;
+}
+
+/* Featured card body/footer wrappers */
+[data-theme="dark"] body.articles-page .featured .card-body,
+[data-theme="dark"] body.articles-page .feature .card-body,
+[data-theme="dark"] body.articles-page [class*="feature"] .card-body,
+[data-theme="dark"] body.articles-page .featured .card-footer,
+[data-theme="dark"] body.articles-page .feature .card-footer,
+[data-theme="dark"] body.articles-page [class*="feature"] .card-footer{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--border) !important;
+}
+
+/* If an overlay/figure/caption paints white, neutralize it */
+[data-theme="dark"] body.articles-page .featured .overlay,
+[data-theme="dark"] body.articles-page .feature .overlay,
+[data-theme="dark"] body.articles-page [class*="feature"] .overlay,
+[data-theme="dark"] body.articles-page .featured figcaption,
+[data-theme="dark"] body.articles-page .feature figcaption,
+[data-theme="dark"] body.articles-page [class*="feature"] figcaption{
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+/* Safety: any element whose inline style forces white background inside featured */
+[data-theme="dark"] body.articles-page [class*="feature"] [style*="background:#fff"],
+[data-theme="dark"] body.articles-page [class*="feature"] [style*="background: #fff"],
+[data-theme="dark"] body.articles-page [class*="feature"] [style*="background:white"]{
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+}
