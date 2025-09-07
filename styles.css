@@ -1894,3 +1894,8 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   font-weight: 800;
   letter-spacing: .06em;
 }
+
+/* Dark mode: force index card titles to white */
+[data-theme="dark"] .card .card-body .card-title{
+  color:#FFFFFF !important;
+}
