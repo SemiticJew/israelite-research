@@ -11,296 +11,237 @@
       --border:#e6ebf2; --bg:#ffffff; --sky:#DBE4EE;
     }
 
-    /* Layout */
+    /* Page layout */
     .container{max-width:1200px;margin:0 auto;padding:0 16px}
-    .page-hero{position:relative;background:linear-gradient(180deg,rgba(241,115,0,.08),rgba(241,115,0,0))}
-    .page-hero .container{padding:32px 16px 24px}
-    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
-    .page-subtitle{margin:.35rem 0 0;color:var(--muted);max-width:70ch}
+    .wrap{padding:16px 0 40px}
+    .split{display:grid;grid-template-columns:300px 1fr;gap:16px}
+    @media (max-width:900px){.split{grid-template-columns:1fr}}
 
-    /* Sticky tabs bar */
-    .tabs-wrap{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.9);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--border)}
-    .tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-    .tabs .label{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
-    .tab{
-      appearance:none;border:1px solid var(--border);background:#fff;color:var(--blue);
-      padding:8px 12px;border-radius:999px;font:inherit;cursor:pointer;transition:box-shadow .15s ease,border-color .15s ease,transform .15s ease
+    /* Left vertical tabs */
+    .vtabs{
+      background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;
+      position:sticky; top:12px;
     }
-    .tab[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 2px rgba(241,115,0,.12) inset}
-    .tab:hover{transform:translateY(-1px)}
-    .tabs-row{padding:10px 0}
+    .vtabs h2{margin:4px 8px 10px;font-size:.9rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em}
+    .vlist{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+    .vtab{
+      width:100%; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
+      background:#fff; border:1px solid var(--border); border-radius:10px;
+      padding:12px 12px; display:flex; align-items:center; gap:10px;
+      transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease, background-color .15s ease;
+    }
+    .vtab:hover{border-color:#cdd8e6; box-shadow:0 2px 10px rgba(0,0,0,.06); transform:translateY(-1px)}
+    .vtab[aria-selected="true"]{
+      border-color:var(--accent); background:linear-gradient(180deg,#fffaf5,#ffffff);
+      box-shadow:0 0 0 2px rgba(241,115,0,.12) inset;
+    }
+    .vicon{flex:0 0 18px; height:18px}
+    .vlabel{font-weight:800;color:var(--blue)}
+    .vdesc{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
 
-    /* Panels */
-    .panels{padding:20px 0 40px}
-    .panel{display:none}
-    .panel.active{display:block;animation:fade .18s ease}
-    @keyframes fade{from{opacity:.4;transform:translateY(-2px)}to{opacity:1;transform:none}}
-
-    /* Panel content helpers */
-    .lead{font-size:1.05rem;color:var(--ink);line-height:1.7}
-    .muted{color:var(--muted)}
-    .grid{display:grid;gap:16px}
-    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    @media (max-width:900px){.grid.cols-3{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
-    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
-    .card h3{margin:.25rem 0 .35rem;font-size:1rem;color:var(--blue)}
-    .badge{display:inline-block;font-size:.72rem;color:#7387a6;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;padding:2px 8px;margin-right:6px}
-    .kicker{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
-    .cta{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:800;text-decoration:none}
-    .hr{height:1px;background:var(--border);margin:10px 0 16px}
-
-    /* Lists */
+    /* Right content pane */
+    .pane{
+      background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;
+      min-height:320px;
+    }
+    .pane .title{margin:0 0 8px;font-size:1.4rem;font-weight:900;color:var(--blue)}
+    .divider{height:1px;background:var(--border);margin:8px 0 14px}
+    .lead{color:var(--ink);line-height:1.7}
+    .cite{color:var(--muted);font-size:.9rem}
+    .block{margin:14px 0}
+    .block h3{margin:0 0 6px;font-size:1.05rem;color:var(--ink)}
+    .block p{margin:.35rem 0;line-height:1.7}
     .bullets{margin:.25rem 0 0 1.15rem}
     .bullets li{line-height:1.7}
-    .checklist{list-style:none;margin:0;padding:0}
-    .checklist li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dotted #e9eef6}
-    .checklist svg{flex:0 0 auto;margin-top:4px}
+    .note{background:#fff7ed;border:1px solid #ffe3c4;border-radius:10px;padding:10px;margin:10px 0}
 
-    /* Small utility */
-    .pill{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px}
-    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    /* Accessibility focus */
+    .vtab:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
   </style>
 </head>
-<body class="catechism-page">
+<body class="israelite-catechism">
+
   <!-- Header include -->
   <div id="site-header" data-include="partials/header.html"></div>
 
-  <main>
-    <!-- HERO -->
-    <section class="page-hero">
-      <div class="container">
-        <h1 class="page-title">Israelite Catechism</h1>
-        <p class="page-subtitle">A concise summary of our convictions, practices, and ministry aims — rooted in Scripture and presented for clarity.</p>
-      </div>
-    </section>
+  <main class="wrap">
+    <div class="container split">
+      <!-- LEFT: Vertical tabs -->
+      <aside class="vtabs" role="tablist" aria-orientation="vertical" id="vtabs">
+        <h2>Sections</h2>
+        <ul class="vlist">
+          <li>
+            <button class="vtab" role="tab" aria-selected="true" aria-controls="panel-israelites" id="tab-israelites" data-tab="israelites">
+              <svg class="vicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7l7-4z" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>
+                <span class="vlabel">Israelites</span>
+                <span class="vdesc">Identity & context</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button class="vtab" role="tab" aria-selected="false" aria-controls="panel-biography" id="tab-biography" data-tab="biography">
+              <svg class="vicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20v-1a4 4 0 014-4h8a4 4 0 014 4v1M12 12a5 5 0 100-10 5 5 0 000 10z" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>
+                <span class="vlabel">Biography</span>
+                <span class="vdesc">Who we are</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button class="vtab" role="tab" aria-selected="false" aria-controls="panel-purpose" id="tab-purpose" data-tab="purpose">
+              <svg class="vicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7h14" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>
+                <span class="vlabel">Purpose Statement</span>
+                <span class="vdesc">Why we exist</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button class="vtab" role="tab" aria-selected="false" aria-controls="panel-doctrine" id="tab-doctrine" data-tab="doctrine">
+              <svg class="vicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M6 12h12M9 17h6" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>
+                <span class="vlabel">Doctrinal Statement</span>
+                <span class="vdesc">What we believe</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button class="vtab" role="tab" aria-selected="false" aria-controls="panel-copyright" id="tab-copyright" data-tab="copyright">
+              <svg class="vicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20a8 8 0 118-8" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="#F17300" stroke-width="2"/></svg>
+              <span>
+                <span class="vlabel">Copyright Policy</span>
+                <span class="vdesc">Use & permissions</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </aside>
 
-    <!-- STICKY TABS -->
-    <div class="tabs-wrap">
-      <div class="container tabs-row">
-        <div role="tablist" aria-label="Sections" class="tabs" id="tabs">
-          <span class="label">Sections</span>
-          <button class="tab" role="tab" aria-selected="true"  aria-controls="panel-ministry"   id="tab-ministry"   data-tab="ministry">Ministry</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-catechism"  id="tab-catechism"  data-tab="catechism">Catechism</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-distinct"   id="tab-distinct"   data-tab="distinctives">Distinctives</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-resources"  id="tab-resources"  data-tab="resources">Resources</button>
-        </div>
-      </div>
+      <!-- RIGHT: Content pane -->
+      <section class="pane">
+        <!-- Israelites -->
+        <article id="panel-israelites" role="tabpanel" aria-labelledby="tab-israelites">
+          <h1 class="title">Israelites</h1>
+          <div class="divider"></div>
+          <p class="lead">
+            We affirm the historic identity of the Israelites as the covenant people descended from Jacob, situated within the Near Eastern world and intertwined with African contexts through proximity, alliance, and migration.
+            <span class="cite">[Gen 32:28; Exod 1:7–14; Amos 9:7]</span>
+          </p>
+
+          <div class="block">
+            <h3>Context</h3>
+            <p>Our work emphasizes careful exegesis with attention to language, history, and iconography, resisting anachronistic portrayals and foregrounding the Scriptures as the primary witness.</p>
+            <div class="note"><strong>Note:</strong> Citations may include canonical text and secondary sources (lexica, histories, and archaeological reports) where appropriate.</div>
+          </div>
+        </article>
+
+        <!-- Biography -->
+        <article id="panel-biography" role="tabpanel" aria-labelledby="tab-biography" hidden>
+          <h1 class="title">Biography</h1>
+          <div class="divider"></div>
+          <p class="lead">
+            This project is curated by teachers and researchers committed to clear biblical instruction, hospitality, and practical discipleship across households and assemblies.
+          </p>
+          <div class="block">
+            <h3>Background</h3>
+            <p>Our contributors draw on studies in the Tanakh, Second Temple literature, and the New Testament, aiming for clarity over novelty and faithfulness over trend.</p>
+          </div>
+        </article>
+
+        <!-- Purpose -->
+        <article id="panel-purpose" role="tabpanel" aria-labelledby="tab-purpose" hidden>
+          <h1 class="title">Purpose Statement</h1>
+          <div class="divider"></div>
+          <p class="lead">To teach the Scriptures plainly, honor Israelite context, and equip disciples for faithfulness in home, assembly, and public life.</p>
+          <div class="block">
+            <h3>Practically</h3>
+            <ul class="bullets">
+              <li>Develop trustworthy study tools and guides</li>
+              <li>Provide contextual notes without speculation</li>
+              <li>Encourage obedience, love, and reconciliation</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Doctrinal Statement -->
+        <article id="panel-doctrine" role="tabpanel" aria-labelledby="tab-doctrine" hidden>
+          <h1 class="title">Doctrinal Statement</h1>
+          <div class="divider"></div>
+          <div class="block">
+            <h3>Scripture</h3>
+            <p>The inspired, sufficient, and trustworthy Word of God; useful for teaching, reproof, correction, and training in righteousness. <span class="cite">[2 Tim 3:16–17]</span></p>
+          </div>
+          <div class="block">
+            <h3>God & Redemption</h3>
+            <p>YHWH, creator of heaven and earth, redeems a people for His name through covenant faithfulness culminating in Messiah’s work and the hope of resurrection.</p>
+          </div>
+          <div class="block">
+            <h3>Life & Practice</h3>
+            <p>We pursue holiness, justice, mercy, and humility; we prize unity without compromise, and works that adorn sound teaching. <span class="cite">[Mic 6:8; Tit 2:10]</span></p>
+          </div>
+        </article>
+
+        <!-- Copyright Policy -->
+        <article id="panel-copyright" role="tabpanel" aria-labelledby="tab-copyright" hidden>
+          <h1 class="title">Copyright Policy</h1>
+          <div class="divider"></div>
+          <p class="lead">Original content is © Semitic Jew. You may quote brief excerpts with attribution. For broader use (print, redistribution, translations), please request permission.</p>
+          <div class="block">
+            <h3>Licensing</h3>
+            <p>Public-domain references are indicated as such. External sources retain their original licenses; citations are provided for scholarly use.</p>
+          </div>
+        </article>
+      </section>
     </div>
-
-    <!-- PANELS -->
-    <section class="container panels">
-      <!-- MINISTRY -->
-      <section class="panel active" id="panel-ministry" role="tabpanel" aria-labelledby="tab-ministry">
-        <p class="lead">Our ministry exists to teach the Scriptures plainly, honor Israelite context, and equip disciples for faithfulness in home, assembly, and public life.</p>
-
-        <div class="hr"></div>
-
-        <div class="grid cols-3">
-          <div class="card">
-            <div class="kicker">Priorities</div>
-            <h3>Exposition</h3>
-            <ul class="bullets">
-              <li>Text-first, context-aware preaching and teaching</li>
-              <li>Original languages where helpful to clarity</li>
-              <li>Historic Israelite &amp; Second Temple background</li>
-            </ul>
-          </div>
-          <div class="card">
-            <div class="kicker">Priorities</div>
-            <h3>Holiness &amp; Love</h3>
-            <ul class="bullets">
-              <li>Obedience shaped by the Law &amp; the Prophets</li>
-              <li>Care for the poor, the sojourner, and the afflicted</li>
-              <li>Reconciliation and peacemaking</li>
-            </ul>
-          </div>
-          <div class="card">
-            <div class="kicker">Priorities</div>
-            <h3>Witness</h3>
-            <ul class="bullets">
-              <li>Ready declaration of hope with gentleness</li>
-              <li>Hospitality, transparency, good works</li>
-              <li>Unity without compromise</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="hr"></div>
-
-        <div class="grid cols-2">
-          <div class="card">
-            <h3>Gatherings</h3>
-            <ul class="checklist">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
-                Weekly assembly with Scripture reading, prayer, teaching, and shared fellowship
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
-                Household discipleship rhythms (daily/weekly)
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
-                Service to neighbors and the poor
-              </li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Study Tracks</h3>
-            <ul class="bullets">
-              <li><span class="badge">Tanakh</span> Torah · Prophets · Writings</li>
-              <li><span class="badge">Second Temple</span> History · literature · background</li>
-              <li><span class="badge">NT Context</span> Gospels · Acts · Epistles · Revelation</li>
-            </ul>
-            <a class="cta" href="/israelite-research/biblia.html">Explore Biblia →</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- CATECHISM -->
-      <section class="panel" id="panel-catechism" role="tabpanel" aria-labelledby="tab-catechism">
-        <p class="lead">This catechism is a concise Q&amp;A summary. It is not exhaustive, but a faithful baseline for teaching and examination.</p>
-
-        <div class="grid cols-2">
-          <div class="card">
-            <div class="kicker">Q1</div>
-            <h3>What is our highest aim?</h3>
-            <p>To love YHWH our God with all our heart, soul, mind, and strength; and our neighbor as ourselves.</p>
-          </div>
-          <div class="card">
-            <div class="kicker">Q2</div>
-            <h3>What is Scripture?</h3>
-            <p>The inspired, sufficient, and trustworthy Word of God, preserved and profitable for teaching, reproof, correction, and training in righteousness.</p>
-          </div>
-          <div class="card">
-            <div class="kicker">Q3</div>
-            <h3>Who are the Israelites?</h3>
-            <p>The covenant people descended from Jacob, called to be a light to the nations and fulfilled in Messiah’s work among all peoples.</p>
-          </div>
-          <div class="card">
-            <div class="kicker">Q4</div>
-            <h3>What is our hope?</h3>
-            <p>Resurrection and the restoration of all things under the reign of the Most High.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- DISTINCTIVES -->
-      <section class="panel" id="panel-distinct" role="tabpanel" aria-labelledby="tab-distinct">
-        <p class="lead">Our distinctives simply clarify emphasis and practice — they do not replace the core confession of the faith.</p>
-
-        <div class="grid cols-3">
-          <div class="card">
-            <h3>Scripture First</h3>
-            <ul class="bullets">
-              <li>Context-aware exegesis</li>
-              <li>Hebrew &amp; Greek engagement where prudent</li>
-              <li>Historical rootedness</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Israelite Context</h3>
-            <ul class="bullets">
-              <li>Near Eastern &amp; African connections</li>
-              <li>Continuity of the story from Abraham to Messiah</li>
-              <li>Respect for the Law’s moral center</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Life Together</h3>
-            <ul class="bullets">
-              <li>Local accountability</li>
-              <li>Hospitality &amp; generosity</li>
-              <li>Every-member participation</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- RESOURCES -->
-      <section class="panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources">
-        <p class="lead">Core tools and study helps we recommend for families, small groups, and teachers.</p>
-
-        <div class="grid cols-3">
-          <div class="card">
-            <h3>Scripture Tools</h3>
-            <ul class="bullets">
-              <li>Digital Tanakh &amp; NT with cross-refs</li>
-              <li>Lexicons &amp; parsing aids</li>
-              <li>Maps, timelines, and articles</li>
-            </ul>
-            <a class="cta" href="/israelite-research/biblical_references.html">Open Bible References →</a>
-          </div>
-          <div class="card">
-            <h3>Reading Plans</h3>
-            <ul class="bullets">
-              <li>Whole-Bible 1-year plan</li>
-              <li>Wisdom &amp; Prophets emphasis plan</li>
-              <li>NT in 90 days</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>For Teachers</h3>
-            <ul class="bullets">
-              <li>Lesson outlines (downloadable)</li>
-              <li>Historical &amp; textual variant notes</li>
-              <li>Discussion questions</li>
-            </ul>
-            <a class="cta" href="/israelite-research/historical_textual_variants.html">Variants &amp; Notes →</a>
-          </div>
-        </div>
-      </section>
-    </section>
   </main>
 
   <!-- Footer include -->
   <div id="site-footer" data-include="partials/footer.html"></div>
 
+  <script src="/israelite-research/js/include.js"></script>
   <script>
-    // header/footer includes
-    (function(){ var s=document.createElement('script'); s.src='/israelite-research/js/include.js'; document.body.appendChild(s); })();
-
-    // Tabs behavior (ARIA-friendly + URL param ?tab=...)
+    // Vertical tabs behavior (ARIA-friendly)
     (function(){
-      const qs = new URLSearchParams(location.search);
-      const initial = (qs.get('tab')||'ministry').toLowerCase();
+      const tabs = Array.from(document.querySelectorAll('.vtab[role="tab"]'));
+      const panels = {
+        israelites: document.getElementById('panel-israelites'),
+        biography:  document.getElementById('panel-biography'),
+        purpose:    document.getElementById('panel-purpose'),
+        doctrine:   document.getElementById('panel-doctrine'),
+        copyright:  document.getElementById('panel-copyright'),
+      };
 
-      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
-      const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
-
-      function select(id, push=true){
-        tabs.forEach(t=>{
-          const on = t.dataset.tab===id;
-          t.setAttribute('aria-selected', on?'true':'false');
-          document.getElementById('panel-'+(t.dataset.tab==='distinctives'?'distinct':t.dataset.tab)).classList.toggle('active', on);
+      function show(id, push=true){
+        tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab===id ? 'true' : 'false'));
+        Object.entries(panels).forEach(([key, el]) => {
+          if(!el) return;
+          if(key===id){ el.hidden = false; } else { el.hidden = true; }
         });
         if(push){
           const url = new URL(location.href);
-          url.searchParams.set('tab', id);
+          url.hash = id;
           history.replaceState(null,'',url);
         }
-        // focus management for a11y (focus active tab)
-        const activeTab = tabs.find(t=>t.getAttribute('aria-selected')==='true');
-        if(activeTab) activeTab.focus({preventScroll:true});
       }
 
       tabs.forEach(t=>{
-        t.addEventListener('click', ()=> select(t.dataset.tab));
+        t.addEventListener('click', ()=> show(t.dataset.tab));
       });
 
-      // keyboard navigation (left/right)
-      document.getElementById('tabs').addEventListener('keydown', (e)=>{
-        if(e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+      // keyboard nav: up/down/home/end
+      document.getElementById('vtabs').addEventListener('keydown', (e)=>{
         const i = tabs.findIndex(t=>t.getAttribute('aria-selected')==='true');
-        const n = (e.key==='ArrowRight') ? (i+1)%tabs.length : (i-1+tabs.length)%tabs.length;
-        e.preventDefault();
-        select(tabs[n].dataset.tab);
+        if(e.key==='ArrowDown'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+        if(e.key==='ArrowUp'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+        if(e.key==='Home'){ e.preventDefault(); tabs[0].focus(); }
+        if(e.key==='End'){ e.preventDefault(); tabs[tabs.length-1].focus(); }
       });
 
-      // init
-      const target = tabs.find(t=>t.dataset.tab===initial) ? initial : 'ministry';
-      select(target,false);
+      // initialize (hash or default)
+      const initial = (location.hash||'#israelites').slice(1);
+      const ok = tabs.some(t=>t.dataset.tab===initial) ? initial : 'israelites';
+      show(ok, false);
     })();
   </script>
 </body>
