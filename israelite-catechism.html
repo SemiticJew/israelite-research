@@ -1,53 +1,307 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Israelite Catechism — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
   <style>
-    /* Page-specific accent & hero tint (keeps your palette, slight variation) */
-    .hero-beliefs { 
-      background:
-        linear-gradient(180deg, rgba(241,115,0,.10), rgba(241,115,0,0)) 0 0/100% 100% no-repeat;
+    :root{
+      --ink:#0b2340; --muted:#6b7280; --blue:#054A91; --accent:#F17300;
+      --border:#e6ebf2; --bg:#ffffff; --sky:#DBE4EE;
     }
-    .hero-beliefs .page-title,
-    .hero-beliefs .page-subtitle { color: #0b2340; }
 
-    /* Simple tabs (page-scoped so it won’t affect other pages) */
-    .beliefs { max-width: 900px; margin: 2rem auto 3rem; }
-    .beliefs .tabs-nav {
-      display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem;
-      border-bottom: 1px solid #e6ebf2; padding-bottom: .5rem;
+    /* Layout */
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .page-hero{position:relative;background:linear-gradient(180deg,rgba(241,115,0,.08),rgba(241,115,0,0))}
+    .page-hero .container{padding:32px 16px 24px}
+    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+    .page-subtitle{margin:.35rem 0 0;color:var(--muted);max-width:70ch}
+
+    /* Sticky tabs bar */
+    .tabs-wrap{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.9);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--border)}
+    .tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+    .tabs .label{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
+    .tab{
+      appearance:none;border:1px solid var(--border);background:#fff;color:var(--blue);
+      padding:8px 12px;border-radius:999px;font:inherit;cursor:pointer;transition:box-shadow .15s ease,border-color .15s ease,transform .15s ease
     }
-    .beliefs .tab {
-      appearance: none; border: 1px solid #e6ebf2; background: #fff; color: #0b2340;
-      padding: .5rem .75rem; border-radius: 10px; font: inherit; cursor: pointer;
-    }
-    .beliefs .tab[aria-selected="true"] {
-      border-color: var(--accent, #F17300);
-      box-shadow: 0 0 0 2px rgba(241,115,0,.12) inset;
-    }
-    .beliefs .tab-panel { display: none; }
-    .beliefs .tab-panel.active { display: block; }
-    .beliefs h3 { margin: 1rem 0 .35rem; font-family: var(--ff-serif, "Adobe Garamond Pro", serif); }
-    .beliefs p, .beliefs li { line-height: 1.7; }
-    .beliefs ul { margin: .5rem 0 1rem 1.25rem; }
+    .tab[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 2px rgba(241,115,0,.12) inset}
+    .tab:hover{transform:translateY(-1px)}
+    .tabs-row{padding:10px 0}
+
+    /* Panels */
+    .panels{padding:20px 0 40px}
+    .panel{display:none}
+    .panel.active{display:block;animation:fade .18s ease}
+    @keyframes fade{from{opacity:.4;transform:translateY(-2px)}to{opacity:1;transform:none}}
+
+    /* Panel content helpers */
+    .lead{font-size:1.05rem;color:var(--ink);line-height:1.7}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:900px){.grid.cols-3{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
+    .card h3{margin:.25rem 0 .35rem;font-size:1rem;color:var(--blue)}
+    .badge{display:inline-block;font-size:.72rem;color:#7387a6;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;padding:2px 8px;margin-right:6px}
+    .kicker{font-size:.78rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+    .cta{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:800;text-decoration:none}
+    .hr{height:1px;background:var(--border);margin:10px 0 16px}
+
+    /* Lists */
+    .bullets{margin:.25rem 0 0 1.15rem}
+    .bullets li{line-height:1.7}
+    .checklist{list-style:none;margin:0;padding:0}
+    .checklist li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dotted #e9eef6}
+    .checklist svg{flex:0 0 auto;margin-top:4px}
+
+    /* Small utility */
+    .pill{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
   </style>
 </head>
-<body>
-  <!-- Header partial -->
-  <div id="site-header"></div>
+<body class="catechism-page">
+  <!-- Header include -->
+  <div id="site-header" data-include="partials/header.html"></div>
 
   <main>
-    <!-- Hero (universal styles) -->
-    <section class="page-hero hero-beliefs">
+    <!-- HERO -->
+    <section class="page-hero">
       <div class="container">
         <h1 class="page-title">Israelite Catechism</h1>
-        <p class="page-subtitle">A concise summary of our convictions, rooted in Scripture and pursued with logic, care, and context.</p>
+        <p class="page-subtitle">A concise summary of our convictions, practices, and ministry aims — rooted in Scripture and presented for clarity.</p>
       </div>
-      <div class="hero-divider"></div>
     </section>
 
-    <!-- Breadcrumbs (under hero, left aligned) -->
+    <!-- STICKY TABS -->
+    <div class="tabs-wrap">
+      <div class="container tabs-row">
+        <div role="tablist" aria-label="Sections" class="tabs" id="tabs">
+          <span class="label">Sections</span>
+          <button class="tab" role="tab" aria-selected="true"  aria-controls="panel-ministry"   id="tab-ministry"   data-tab="ministry">Ministry</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-catechism"  id="tab-catechism"  data-tab="catechism">Catechism</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-distinct"   id="tab-distinct"   data-tab="distinctives">Distinctives</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-resources"  id="tab-resources"  data-tab="resources">Resources</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANELS -->
+    <section class="container panels">
+      <!-- MINISTRY -->
+      <section class="panel active" id="panel-ministry" role="tabpanel" aria-labelledby="tab-ministry">
+        <p class="lead">Our ministry exists to teach the Scriptures plainly, honor Israelite context, and equip disciples for faithfulness in home, assembly, and public life.</p>
+
+        <div class="hr"></div>
+
+        <div class="grid cols-3">
+          <div class="card">
+            <div class="kicker">Priorities</div>
+            <h3>Exposition</h3>
+            <ul class="bullets">
+              <li>Text-first, context-aware preaching and teaching</li>
+              <li>Original languages where helpful to clarity</li>
+              <li>Historic Israelite &amp; Second Temple background</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Priorities</div>
+            <h3>Holiness &amp; Love</h3>
+            <ul class="bullets">
+              <li>Obedience shaped by the Law &amp; the Prophets</li>
+              <li>Care for the poor, the sojourner, and the afflicted</li>
+              <li>Reconciliation and peacemaking</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Priorities</div>
+            <h3>Witness</h3>
+            <ul class="bullets">
+              <li>Ready declaration of hope with gentleness</li>
+              <li>Hospitality, transparency, good works</li>
+              <li>Unity without compromise</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Gatherings</h3>
+            <ul class="checklist">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+                Weekly assembly with Scripture reading, prayer, teaching, and shared fellowship
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+                Household discipleship rhythms (daily/weekly)
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="#F17300" stroke-width="2" stroke-linecap="round"/></svg>
+                Service to neighbors and the poor
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Study Tracks</h3>
+            <ul class="bullets">
+              <li><span class="badge">Tanakh</span> Torah · Prophets · Writings</li>
+              <li><span class="badge">Second Temple</span> History · literature · background</li>
+              <li><span class="badge">NT Context</span> Gospels · Acts · Epistles · Revelation</li>
+            </ul>
+            <a class="cta" href="/israelite-research/biblia.html">Explore Biblia →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATECHISM -->
+      <section class="panel" id="panel-catechism" role="tabpanel" aria-labelledby="tab-catechism">
+        <p class="lead">This catechism is a concise Q&amp;A summary. It is not exhaustive, but a faithful baseline for teaching and examination.</p>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="kicker">Q1</div>
+            <h3>What is our highest aim?</h3>
+            <p>To love YHWH our God with all our heart, soul, mind, and strength; and our neighbor as ourselves.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Q2</div>
+            <h3>What is Scripture?</h3>
+            <p>The inspired, sufficient, and trustworthy Word of God, preserved and profitable for teaching, reproof, correction, and training in righteousness.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Q3</div>
+            <h3>Who are the Israelites?</h3>
+            <p>The covenant people descended from Jacob, called to be a light to the nations and fulfilled in Messiah’s work among all peoples.</p>
+          </div>
+          <div class="card">
+            <div class="kicker">Q4</div>
+            <h3>What is our hope?</h3>
+            <p>Resurrection and the restoration of all things under the reign of the Most High.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DISTINCTIVES -->
+      <section class="panel" id="panel-distinct" role="tabpanel" aria-labelledby="tab-distinct">
+        <p class="lead">Our distinctives simply clarify emphasis and practice — they do not replace the core confession of the faith.</p>
+
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>Scripture First</h3>
+            <ul class="bullets">
+              <li>Context-aware exegesis</li>
+              <li>Hebrew &amp; Greek engagement where prudent</li>
+              <li>Historical rootedness</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Israelite Context</h3>
+            <ul class="bullets">
+              <li>Near Eastern &amp; African connections</li>
+              <li>Continuity of the story from Abraham to Messiah</li>
+              <li>Respect for the Law’s moral center</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Life Together</h3>
+            <ul class="bullets">
+              <li>Local accountability</li>
+              <li>Hospitality &amp; generosity</li>
+              <li>Every-member participation</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESOURCES -->
+      <section class="panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources">
+        <p class="lead">Core tools and study helps we recommend for families, small groups, and teachers.</p>
+
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>Scripture Tools</h3>
+            <ul class="bullets">
+              <li>Digital Tanakh &amp; NT with cross-refs</li>
+              <li>Lexicons &amp; parsing aids</li>
+              <li>Maps, timelines, and articles</li>
+            </ul>
+            <a class="cta" href="/israelite-research/biblical_references.html">Open Bible References →</a>
+          </div>
+          <div class="card">
+            <h3>Reading Plans</h3>
+            <ul class="bullets">
+              <li>Whole-Bible 1-year plan</li>
+              <li>Wisdom &amp; Prophets emphasis plan</li>
+              <li>NT in 90 days</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>For Teachers</h3>
+            <ul class="bullets">
+              <li>Lesson outlines (downloadable)</li>
+              <li>Historical &amp; textual variant notes</li>
+              <li>Discussion questions</li>
+            </ul>
+            <a class="cta" href="/israelite-research/historical_textual_variants.html">Variants &amp; Notes →</a>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Footer include -->
+  <div id="site-footer" data-include="partials/footer.html"></div>
+
+  <script>
+    // header/footer includes
+    (function(){ var s=document.createElement('script'); s.src='/israelite-research/js/include.js'; document.body.appendChild(s); })();
+
+    // Tabs behavior (ARIA-friendly + URL param ?tab=...)
+    (function(){
+      const qs = new URLSearchParams(location.search);
+      const initial = (qs.get('tab')||'ministry').toLowerCase();
+
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+      const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+      function select(id, push=true){
+        tabs.forEach(t=>{
+          const on = t.dataset.tab===id;
+          t.setAttribute('aria-selected', on?'true':'false');
+          document.getElementById('panel-'+(t.dataset.tab==='distinctives'?'distinct':t.dataset.tab)).classList.toggle('active', on);
+        });
+        if(push){
+          const url = new URL(location.href);
+          url.searchParams.set('tab', id);
+          history.replaceState(null,'',url);
+        }
+        // focus management for a11y (focus active tab)
+        const activeTab = tabs.find(t=>t.getAttribute('aria-selected')==='true');
+        if(activeTab) activeTab.focus({preventScroll:true});
+      }
+
+      tabs.forEach(t=>{
+        t.addEventListener('click', ()=> select(t.dataset.tab));
+      });
+
+      // keyboard navigation (left/right)
+      document.getElementById('tabs').addEventListener('keydown', (e)=>{
+        if(e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+        const i = tabs.findIndex(t=>t.getAttribute('aria-selected')==='true');
+        const n = (e.key==='ArrowRight') ? (i+1)%tabs.length : (i-1+tabs.length)%tabs.length;
+        e.preventDefault();
+        select(tabs[n].dataset.tab);
+      });
+
+      // init
+      const target = tabs.find(t=>t.dataset.tab===initial) ? initial : 'ministry';
+      select(target,false);
+    })();
+  </script>
+</body>
+</html>
