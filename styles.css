@@ -1868,3 +1868,13 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
   color:#FFFFFF !important;
   opacity:1 !important;
 }
+
+/* DARK MODE: force footer links to white across all pages (robust selectors) */
+[data-theme="dark"] #site-footer a,
+[data-theme="dark"] footer.site-footer a,
+[data-theme="dark"] #site-footer .footer-nav a,
+[data-theme="dark"] #site-footer .legal-links a,
+[data-theme="dark"] #site-footer .footer-brand .icon{
+  color:#FFFFFF !important;
+  opacity:1 !important;
+}
