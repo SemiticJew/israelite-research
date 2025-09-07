@@ -2,7 +2,7 @@
   const KEY = 'theme';
   const root = document.documentElement;
 
-  const sysPrefersDark = () =>
+  const prefersDark = () =>
     window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   function apply(theme){
@@ -13,7 +13,7 @@
 
   function init(){
     const saved = localStorage.getItem(KEY);
-    const initial = saved || (sysPrefersDark() ? 'dark' : 'light');
+    const initial = saved || (prefersDark() ? 'dark' : 'light');
     apply(initial);
 
     if(!saved && window.matchMedia){
@@ -26,6 +26,20 @@
     }
   }
 
+  const SUN_SVG = `
+    <svg class="sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  `;
+  const MOON_SVG = `
+    <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12.5a8.5 8.5 0 11-8.5-8.5 6.5 6.5 0 008.5 8.5z"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  `;
+
   function ensureToggle(){
     let btn = document.getElementById('themeToggle');
     if(!btn){
@@ -33,21 +47,16 @@
       wrap.className = 'floating-theme-toggle';
       wrap.innerHTML = `
         <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">
-          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 4v2m0 12v2m8-8h-2M6 12H4m12.95 4.95l-1.41-1.41M6.46 6.46L5.05 5.05m12.9 0l-1.41 1.41M6.46 17.54l-1.41 1.41M12 8a4 4 0 100 8 4 4 0 000-8z"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+          ${SUN_SVG}${MOON_SVG}
         </button>`;
       document.body.appendChild(wrap);
       btn = wrap.querySelector('#themeToggle');
+    } else {
+      if(!btn.querySelector('svg')) btn.innerHTML = SUN_SVG + MOON_SVG;
     }
     btn.addEventListener('click', ()=>{
       const next = (root.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
-      localStorage.setItem(KEY, next);
+      localStorage.setItem('theme', next);
       apply(next);
     });
   }
