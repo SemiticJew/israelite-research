@@ -2554,3 +2554,55 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 [data-theme="dark"] body.articles-page .card [style*="color:black"]{
   color:#FFFFFF !important;
 }
+
+/* === DARK MODE: Articles page — FORCE ALL CARD TEXT (titles/excerpts/dates/meta) TO WHITE === */
+[data-theme="dark"] body.articles-page .card .card-title,
+[data-theme="dark"] body.articles-page .card .title,
+[data-theme="dark"] body.articles-page .post-card .title,
+[data-theme="dark"] body.articles-page .article-card .title,
+[data-theme="dark"] body.articles-page .card h1,
+[data-theme="dark"] body.articles-page .card h2,
+[data-theme="dark"] body.articles-page .card h3,
+[data-theme="dark"] body.articles-page .card h4,
+[data-theme="dark"] body.articles-page .card h5,
+[data-theme="dark"] body.articles-page .card h6,
+[data-theme="dark"] body.articles-page .card .excerpt,
+[data-theme="dark"] body.articles-page .card .excerpt *,
+[data-theme="dark"] body.articles-page .card .summary,
+[data-theme="dark"] body.articles-page .card .summary *,
+[data-theme="dark"] body.articles-page .card .desc,
+[data-theme="dark"] body.articles-page .card .desc *,
+[data-theme="dark"] body.articles-page .card .intro,
+[data-theme="dark"] body.articles-page .card .intro *,
+[data-theme="dark"] body.articles-page .card p,
+[data-theme="dark"] body.articles-page .card li,
+[data-theme="dark"] body.articles-page .card .meta,
+[data-theme="dark"] body.articles-page .card .meta *,
+[data-theme="dark"] body.articles-page .card .byline,
+[data-theme="dark"] body.articles-page .card .byline *,
+[data-theme="dark"] body.articles-page .card .author,
+[data-theme="dark"] body.articles-page .card .author *,
+[data-theme="dark"] body.articles-page .card .date,
+[data-theme="dark"] body.articles-page .card time,
+[data-theme="dark"] body.articles-page .card footer,
+[data-theme="dark"] body.articles-page .card footer * {
+  color:#FFFFFF !important;
+}
+
+/* Ensure links inside titles/excerpts are white too */
+[data-theme="dark"] body.articles-page .card .title a,
+[data-theme="dark"] body.articles-page .card .excerpt a,
+[data-theme="dark"] body.articles-page .card .desc a,
+[data-theme="dark"] body.articles-page .card .meta a,
+[data-theme="dark"] body.articles-page .card .byline a,
+[data-theme="dark"] body.articles-page .card .author a,
+[data-theme="dark"] body.articles-page .card .date a {
+  color:#FFFFFF !important;
+}
+
+/* Safety: if any inline style forces dark text inside cards, override to white */
+[data-theme="dark"] body.articles-page .card [style*="color:#000"],
+[data-theme="dark"] body.articles-page .card [style*="color: #000"],
+[data-theme="dark"] body.articles-page .card [style*="color:black"]{
+  color:#FFFFFF !important;
+}
