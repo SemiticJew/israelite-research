@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en"><head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Prayer of Manasseh — Chapters</title>
@@ -10,6 +11,8 @@
 .ch{display:flex;align-items:center;justify-content:center;height:56px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
 .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
 .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
 .verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
 .verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body><div id="site-header"></div>

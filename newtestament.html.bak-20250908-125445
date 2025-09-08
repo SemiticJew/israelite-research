@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>New Testament — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+    :root{
+      --ink:#0b2340;     /* black-ish text */
+      --accent:#F17300;  /* orange */
+      --brand:#054A91;   /* deep blue */
+      --muted:#6b7280;   /* grey for dates */
+      --sky:#DBE4EE;     /* pale border */
+      --white:#ffffff;
+      --blue2:#3E7CB1;
+      --blue3:#81A4CD;
+    }
+
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    .page-header{ padding:24px 0 8px; }
+    .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
+
+    /* Periodic grid (matches Tanakh page) */
+    .nt-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap:12px;
+      margin:12px 0 40px;
+    }
+    .pt-card{
+      background:var(--white);
+      border:1px solid var(--sky);
+      border-radius:0;
+      box-shadow:0 1px 3px rgba(0,0,0,.03);
+      display:flex; flex-direction:column;
+      text-align:center; text-decoration:none; color:inherit;
+      min-height:140px; padding:8px;
+    }
+    .pt-card:hover{ box-shadow:0 4px 10px rgba(0,0,0,.06); transform:translateY(-1px); }
+
+    /* Top: date only (centered) */
+    .pt-top{ display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.1; margin-top:2px; }
+    .pt-date{ font-size:.78rem; color:var(--muted); }
+
+    /* Middle: reserve space and center the abbr perfectly */
+    .pt-mid{
+      flex:1 1 auto;
+      display:flex; align-items:center; justify-content:center; min-height:0;
+    }
+    .pt-abbr{
+      font-size:1.6rem; font-weight:800; color:var(--accent);
+      line-height:1.1; margin:0; letter-spacing:.02em;
+    }
+    .pt-abbr sup{
+      color:var(--accent); font-size:.75em; top:-.3em; position:relative; margin-left:1px;
+    }
+
+    /* Footer: full book name */
+    .pt-footer{
+      margin-top:auto; padding-top:4px;
+      font-size:.95rem; font-weight:700; color:var(--brand);
+      border-top:1px solid var(--sky); line-height:1.2;
+    }
+
+    @media (max-width:480px){
+      .pt-abbr{ font-size:1.45rem; }
+      .pt-footer{ font-size:.9rem; }
+    }
+  </style>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
+<body class="newtestament-page">
+<!-- Header partial -->
+<div id="site-header"></div>
+<main>
+<section class="container">
+<div class="nt-grid">
+<!-- Gospels -->
+<a aria-label="Matthew" class="pt-card" href="/israelite-research/newtestament/matthew.html">
+<div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
+<div class="pt-mid"><div class="pt-abbr">Mt</div></div>
+<div class="pt-footer">Matthew</div>
+</a>
+<a aria-label="Mark" class="pt-card" href="/israelite-research/newtestament/mark.html">
+<div class="pt-top"><div class="pt-date">c. AD 55–65</div></div>
+<div class="pt-mid"><div class="pt-abbr">Mk</div></div>
+<div class="pt-footer">Mark</div>
+</a>
+<a aria-label="Luke" class="pt-card" href="/israelite-research/newtestament/luke.html">
+<div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
+<div class="pt-mid"><div class="pt-abbr">Lk</div></div>
+<div class="pt-footer">Luke</div>
+</a>
+<a aria-label="John" class="pt-card" href="/israelite-research/newtestament/john.html">
+<div class="pt-top"><div class="pt-date">c. AD 80–90</div></div>
+<div class="pt-mid"><div class="pt-abbr">Jn</div></div>
+<div class="pt-footer">John</div>
+</a>
+<!-- Acts -->
+<a aria-label="Acts" class="pt-card" href="/israelite-research/newtestament/acts.html">
+<div class="pt-top"><div class="pt-date">c. AD 62–70</div></div>
+<div class="pt-mid"><div class="pt-abbr">Ac</div></div>
+<div class="pt-footer">Acts</div>
+</a>
+<!-- Pauline Epistles -->
+<a aria-label="Romans" class="pt-card" href="/israelite-research/newtestament/romans.html">
+<div class="pt-top"><div class="pt-date">AD 57</div></div>
+<div class="pt-mid"><div class="pt-abbr">Ro</div></div>
+<div class="pt-footer">Romans</div>
+</a>
+<!-- 1 → I Corinthians -->
+<a aria-label="I Corinthians" class="pt-card" href="/israelite-research/newtestament/i-corinthians.html">
+<div class="pt-top"><div class="pt-date">AD 55</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Co</div></div>
+<div class="pt-footer">I Corinthians</div>
+</a>
+<!-- 2 → II Corinthians -->
+<a aria-label="II Corinthians" class="pt-card" href="/israelite-research/newtestament/ii-corinthians.html">
+<div class="pt-top"><div class="pt-date">AD 56</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Co</div></div>
+<div class="pt-footer">II Corinthians</div>
+</a>
+<a aria-label="Galatians" class="pt-card" href="/israelite-research/newtestament/galatians.html">
+<div class="pt-top"><div class="pt-date">c. AD 48–55</div></div>
+<div class="pt-mid"><div class="pt-abbr">Ga</div></div>
+<div class="pt-footer">Galatians</div>
+</a>
+<a aria-label="Ephesians" class="pt-card" href="/israelite-research/newtestament/ephesians.html">
+<div class="pt-top"><div class="pt-date">AD 60–62</div></div>
+<div class="pt-mid"><div class="pt-abbr">Eph</div></div>
+<div class="pt-footer">Ephesians</div>
+</a>
+<a aria-label="Philippians" class="pt-card" href="/israelite-research/newtestament/philippians.html">
+<div class="pt-top"><div class="pt-date">AD 60–62</div></div>
+<div class="pt-mid"><div class="pt-abbr">Php</div></div>
+<div class="pt-footer">Philippians</div>
+</a>
+<a aria-label="Colossians" class="pt-card" href="/israelite-research/newtestament/colossians.html">
+<div class="pt-top"><div class="pt-date">AD 60–62</div></div>
+<div class="pt-mid"><div class="pt-abbr">Col</div></div>
+<div class="pt-footer">Colossians</div>
+</a>
+<!-- 1 → I Thessalonians -->
+<a aria-label="I Thessalonians" class="pt-card" href="/israelite-research/newtestament/i-thessalonians.html">
+<div class="pt-top"><div class="pt-date">AD 50–51</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Th</div></div>
+<div class="pt-footer">I Thessalonians</div>
+</a>
+<!-- 2 → II Thessalonians -->
+<a aria-label="II Thessalonians" class="pt-card" href="/israelite-research/newtestament/ii-thessalonians.html">
+<div class="pt-top"><div class="pt-date">AD 51–52</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Th</div></div>
+<div class="pt-footer">II Thessalonians</div>
+</a>
+<!-- 1 → I Timothy -->
+<a aria-label="I Timothy" class="pt-card" href="/israelite-research/newtestament/i-timothy.html">
+<div class="pt-top"><div class="pt-date">AD 62–64</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Ti</div></div>
+<div class="pt-footer">I Timothy</div>
+</a>
+<!-- 2 → II Timothy -->
+<a aria-label="II Timothy" class="pt-card" href="/israelite-research/newtestament/ii-timothy.html">
+<div class="pt-top"><div class="pt-date">AD 64–67</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Ti</div></div>
+<div class="pt-footer">II Timothy</div>
+</a>
+<a aria-label="Titus" class="pt-card" href="/israelite-research/newtestament/titus.html">
+<div class="pt-top"><div class="pt-date">AD 63–65</div></div>
+<div class="pt-mid"><div class="pt-abbr">Tit</div></div>
+<div class="pt-footer">Titus</div>
+</a>
+<a aria-label="Philemon" class="pt-card" href="/israelite-research/newtestament/philemon.html">
+<div class="pt-top"><div class="pt-date">AD 60–62</div></div>
+<div class="pt-mid"><div class="pt-abbr">Phm</div></div>
+<div class="pt-footer">Philemon</div>
+</a>
+<!-- General Epistles & Revelation -->
+<a aria-label="Hebrews" class="pt-card" href="/israelite-research/newtestament/hebrews.html">
+<div class="pt-top"><div class="pt-date">c. AD 60–70</div></div>
+<div class="pt-mid"><div class="pt-abbr">Heb</div></div>
+<div class="pt-footer">Hebrews</div>
+</a>
+<a aria-label="James" class="pt-card" href="/israelite-research/newtestament/james.html">
+<div class="pt-top"><div class="pt-date">c. AD 48</div></div>
+<div class="pt-mid"><div class="pt-abbr">Jas</div></div>
+<div class="pt-footer">James</div>
+</a>
+<!-- 1 → I Peter -->
+<a aria-label="I Peter" class="pt-card" href="/israelite-research/newtestament/i-peter.html">
+<div class="pt-top"><div class="pt-date">AD 62–64</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Pe</div></div>
+<div class="pt-footer">I Peter</div>
+</a>
+<!-- 2 → II Peter -->
+<a aria-label="II Peter" class="pt-card" href="/israelite-research/newtestament/ii-peter.html">
+<div class="pt-top"><div class="pt-date">AD 64–68</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Pe</div></div>
+<div class="pt-footer">II Peter</div>
+</a>
+<!-- 1 → I John -->
+<a aria-label="I John" class="pt-card" href="/israelite-research/newtestament/i-john.html">
+<div class="pt-top"><div class="pt-date">AD 85–95</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Jn</div></div>
+<div class="pt-footer">I John</div>
+</a>
+<!-- 2 → II John -->
+<a aria-label="II John" class="pt-card" href="/israelite-research/newtestament/ii-john.html">
+<div class="pt-top"><div class="pt-date">AD 85–95</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Jn</div></div>
+<div class="pt-footer">II John</div>
+</a>
+<!-- 3 → III John -->
+<a aria-label="III John" class="pt-card" href="/israelite-research/newtestament/iii-john.html">
+<div class="pt-top"><div class="pt-date">AD 85–95</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>III</sup>Jn</div></div>
+<div class="pt-footer">III John</div>
+</a>
+<a aria-label="Jude" class="pt-card" href="/israelite-research/newtestament/jude.html">
+<div class="pt-top"><div class="pt-date">c. AD 65–80</div></div>
+<div class="pt-mid"><div class="pt-abbr">Jud</div></div>
+<div class="pt-footer">Jude</div>
+</a>
+<a aria-label="Revelation" class="pt-card" href="/israelite-research/newtestament/revelation.html">
+<div class="pt-top"><div class="pt-date">AD 95–96</div></div>
+<div class="pt-mid"><div class="pt-abbr">Rev</div></div>
+<div class="pt-footer">Revelation</div>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer partial -->
+<div id="site-footer"></div>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Dietary Laws — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+    :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    .page-header{padding:24px 0 8px}
+    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+    .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
+
+    /* Search bar */
+    .searchbar{
+      display:flex; gap:.5rem; align-items:center;
+      background:var(--white); border:1px solid var(--sky); border-radius:10px;
+      padding:.5rem; margin:12px 0 10px;
+    }
+    .searchbar input[type="search"]{
+      flex:1; border:1px solid #e6ebf2; border-radius:10px; padding:.55rem .7rem; font:inherit;
+    }
+    .searchbar .btn{
+      border:1px solid #e6ebf2; background:#fff; border-radius:10px; padding:.5rem .8rem; cursor:pointer; font:inherit;
+    }
+    .searchbar .btn:hover{ background:#f8fafc }
+
+    /* Tree */
+    .tree{margin:14px 0 36px}
+    .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
+    .tree details>summary{cursor:pointer; font-weight:800; color:var(--brand); outline:none}
+    .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
+    .tree .group{margin:8px 0 0 0; padding:0}
+    .tree .group details{margin:6px 0}
+    .tree .leaf{list-style:none; margin:4px 0; display:flex; align-items:center; gap:.5rem}
+    .law-link{color:var(--brand); text-decoration:none; border-bottom:1px solid transparent}
+    .law-link:hover{border-bottom-color:var(--brand)}
+
+    .tag{display:inline-block; font-size:.78rem; color:#333; background:#054A910D; border:1px solid var(--sky); border-radius:8px; padding:.05rem .35rem}
+    .chips{display:flex; flex-wrap:wrap; gap:.35rem; margin:.4rem 0 0 0}
+    .chip{display:inline-flex; align-items:center; gap:.35rem; border:1px solid var(--sky); background:#f9fafb; border-radius:999px; padding:.18rem .55rem; font-size:.82rem}
+    .chip small{color:var(--muted)}
+    .note{color:var(--muted); font-size:.85rem; margin-top:.35rem}
+
+    /* Highlight */
+    .hl{ background:#fff3c4; box-shadow:0 0 0 2px #fde68a inset; }
+
+    /* Hidden during filter */
+    .hide{ display:none !important; }
+
+    /* --- Diet page verse hovercard --- */
+    .diet-hovercard{
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: min(420px, 92vw);
+      background: #fff;
+      border: 1px solid var(--sky);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+      padding: .6rem .7rem;
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+    .diet-hovercard.open{ display:block; }
+    .diet-hover-head{ font-weight:700; color:var(--ink); margin-bottom:.25rem; }
+    .diet-hover-foot{ margin-top:.35rem; font-size:.85rem; color:var(--muted); }
+  </style>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
+<body>
+<div id="site-header"></div>
+<main class="container">
+<!-- Search / Filter -->
+<div class="searchbar" role="search">
+<input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
+<button class="btn" id="dietClear" type="button">Clear</button>
+</div>
+<section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
+<p class="note">
+<strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
+    </p>
+</main>
+<div id="site-footer"></div>
+<!-- Hover container for Scripture previews -->
+<div aria-hidden="true" class="diet-hovercard" id="dietHover" role="dialog"></div>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<script>
+    // --- Book slug map for links (extend anytime) ---
+    const BOOK_SLUG = {
+      "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
+      "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans"
+    };
+
+    function parseRef(ref){
+      const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
+      if(!m) return null;
+      const bookName = m[1].replace(/\s+/g," ").trim();
+      const ch = parseInt(m[2],10), v = parseInt(m[3],10);
+      const base = bookName.replace(/^1\s|^2\s|^3\s/,'');
+      const slug = BOOK_SLUG[base] || BOOK_SLUG[bookName] || base.toLowerCase();
+      return { book:bookName, ch, v, slug };
+    }
+    function refHref(ref){
+      const p = parseRef(ref); if(!p) return '#';
+      const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
+      return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
+    }
+
+    // ---------- DATA with modern examples & hidden-ingredient watchlist ----------
+    const DATA = {
+      "Clean": {
+        "🐄 Mammals": {
+          refs: ["Leviticus 11:3", "Deuteronomy 14:4", "Deuteronomy 14:6"],
+          examples: [
+            {name:"Cattle (beef)", why:"cloven hoof, chews cud"},
+            {name:"Sheep (lamb/mutton)", why:"cloven hoof, chews cud"},
+            {name:"Goat (chevon)", why:"cloven hoof, chews cud"},
+            {name:"Deer/Antelope", why:"clean wild species (Deut 14:5)"}
+          ]
+        },
+        "🐟 Fish (fins & scales)": {
+          refs: ["Leviticus 11:9", "Deuteronomy 14:9"],
+          examples: [
+            {name:"Salmon, Trout, Char"},
+            {name:"Cod, Haddock, Pollock"},
+            {name:"Sardine, Anchovy, Mackerel"},
+            {name:"Carp, Tilapia"},
+            {name:"Tuna*", why:"scales debate by species—verify"}
+          ]
+        },
+        "🐦 Birds (general allowance)": {
+          refs: ["Deuteronomy 14:11"],
+          examples: [
+            {name:"Chicken"},
+            {name:"Turkey"},
+            {name:"Goose* / Duck*", why:"accepted by many; verify local tradition"},
+            {name:"Dove / Pigeon", why:"used for offerings"},
+            {name:"Quail"}
+          ]
+        }
+      },
+
+      "Unclean": {
+        "🐪 Mammals (do not meet both signs)": {
+          refs: ["Leviticus 11:4", "Leviticus 11:7", "Leviticus 11:8", "Deuteronomy 14:7", "Deuteronomy 14:8"],
+          examples: [
+            {name:"Pig (pork)", why:"split hoof but does not chew cud"},
+            {name:"Camel", why:"chews cud but no split hoof"},
+            {name:"Hare / Rabbit", why:"chews cud (appearance) but no split hoof"},
+            {name:"Rock badger (hyrax)", why:"chews cud (appearance) but no split hoof"}
+          ]
+        },
+        "🦐 Aquatic (no fins & scales)": {
+          refs: ["Leviticus 11:10"],
+          examples: [
+            {name:"Shrimp, Prawn"},
+            {name:"Crab, Lobster"},
+            {name:"Oyster, Clam, Mussel, Scallop"},
+            {name:"Squid, Octopus"},
+            {name:"Eel, Catfish*", why:"scales absent/non-removable"}
+          ]
+        },
+        "🦅 Birds (forbidden list patterns)": {
+          refs: ["Leviticus 11:13", "Leviticus 11:19", "Deuteronomy 14:12", "Deuteronomy 14:18"],
+          examples: [
+            {name:"Birds of prey", why:"eagle, hawk, falcon, kite, osprey"},
+            {name:"Carrion/seabirds", why:"vulture, raven, cormorant, pelican"},
+            {name:"Owls & night birds"},
+            {name:"Stork, Heron"},
+            {name:"Bat", why:"explicitly forbidden"}
+          ]
+        },
+        "🐜 Insects": {
+          refs: ["Leviticus 11:20", "Leviticus 11:23"],
+          examples: [
+            {name:"Most winged creeping things", why:"unclean"},
+            {name:"Locust/Grasshopper families", why:"specific kinds permitted (Lev 11:22) if identified correctly"}
+          ]
+        }
+      },
+
+      "Prohibited Practices": {
+        "Blood": {
+          refs: ["Leviticus 17:10", "Leviticus 17:12", "Leviticus 17:14"],
+          examples: [
+            {name:"Blood dishes (e.g., blood sausage/black pudding)", why:"forbidden"},
+            {name:"Undrained meat", why:"drain & salt to remove blood"}
+          ]
+        },
+        "Carcasses / torn animals": {
+          refs: ["Leviticus 11:39", "Leviticus 11:40", "Exodus 22:31", "Leviticus 17:15"],
+          examples: [
+            {name:"Animals dead of themselves", why:"do not eat"},
+            {name:"Torn by beasts", why:"do not eat"}
+          ]
+        },
+        "Certain fats (ox/sheep/goat)": {
+          refs: ["Leviticus 7:23", "Leviticus 7:25"],
+          examples: [
+            {name:"Suet/fat reserved from these animals", why:"do not eat"}
+          ]
+        }
+      },
+
+      "Everyday Foods & Hidden Ingredients (Check Labels)": {
+        "Pork-derived (avoid)": {
+          refs: ["Leviticus 11:7", "Deuteronomy 14:8"],
+          examples: [
+            {name:"Gelatin (porcine)", why:"used in gummies, marshmallows, capsules"},
+            {name:"Lard / Pork fat", why:"baked goods, refried beans, pie crusts"},
+            {name:"Mono-/Diglycerides (animal)", why:"E471/E472—origin may be pork; verify plant vs animal"},
+            {name:"Pepsin/Lipase (animal)", why:"enzymes in some cheeses; verify microbial/vegetable"},
+            {name:"‘Natural flavors’ (meat-derived)", why:"can include pork stock/essence—ask vendor"}
+          ]
+        },
+        "Shellfish-derived (avoid)": {
+          refs: ["Leviticus 11:10"],
+          examples: [
+            {name:"Oyster sauce", why:"common in stir-fry sauces"},
+            {name:"Shrimp paste", why:"used in SE Asian condiments/curries"},
+            {name:"Imitation crab (surimi)", why:"often contains shellfish"},
+            {name:"Fish/seafood stock blends", why:"may include shellfish extracts"},
+            {name:"Krill oil supplements", why:"crustacean-derived"}
+          ]
+        },
+        "Insect-derived (avoid except permitted locust kinds)": {
+          refs: ["Leviticus 11:20", "Leviticus 11:23"],
+          examples: [
+            {name:"Carmine/Cochineal (E120)", why:"red color in drinks/candies/yogurts"},
+            {name:"Shellac/Confectioner’s glaze (E904)", why:"candy/produce coating"},
+            {name:"Insect protein flours", why:"marketed as sustainable protein"}
+          ]
+        },
+        "Cheese & Enzymes (verify source)": {
+          refs: ["Leviticus 11 (category context)"],
+          examples: [
+            {name:"Animal rennet cheeses", why:"use microbial/vegetable rennet instead"},
+            {name:"Lipase (animal)", why:"used for flavor development—seek microbial"},
+            {name:"‘Parmesan’ style", why:"often animal rennet; check label or brand policy"}
+          ]
+        },
+        "Stocks, Broths, Flavorings (avoid if unclean)": {
+          refs: ["Leviticus 11 (category context)"],
+          examples: [
+            {name:"Pork broth / ham flavor", why:"soups, legumes, greens"},
+            {name:"Mixed ‘meat flavor’ packets", why:"can blend multiple animal bases"},
+            {name:"Ramen flavor bases", why:"may include pork or shellfish"}
+          ]
+        },
+        "Confectionery & Capsules (verify gelatin source)": {
+          refs: ["Leviticus 11:7-8 (category context)"],
+          examples: [
+            {name:"Marshmallows/Gummies", why:"often porcine gelatin—look for fish/plant gelatin"},
+            {name:"Vitamin/med capsules", why:"ask for fish/plant-based or HPMC capsules"},
+            {name:"Desserts with ‘stabilizers’", why:"may include gelatin—confirm origin"}
+          ]
+        }
+      }
+    };
+
+    // ---------- Render & Search ----------
+    const tree = document.getElementById('dietTree');
+
+    function renderTree(){
+      const frag = document.createDocumentFragment();
+
+      Object.entries(DATA).forEach(([section, groups]) => {
+        const sec = document.createElement('details');
+        sec.open = true;
+        sec.className = 'sec';
+        const sum = document.createElement('summary');
+        sum.textContent = section;
+        sec.appendChild(sum);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'group';
+
+        Object.entries(groups).forEach(([label, payload]) => {
+          const grp = document.createElement('details');
+          grp.className = 'grp';
+
+          const gsum = document.createElement('summary');
+          let refs = [], examples = [];
+          if (Array.isArray(payload)) refs = payload;
+          else if (payload && typeof payload === 'object') {
+            refs = Array.isArray(payload.refs) ? payload.refs : [];
+            examples = Array.isArray(payload.examples) ? payload.examples : [];
+          }
+          gsum.innerHTML = `${label} <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
+          grp.appendChild(gsum);
+
+          // Refs list
+          if (refs.length) {
+            const ul = document.createElement('ul');
+            ul.style.margin = '6px 0 0 18px'; ul.style.padding = '0';
+            refs.forEach(r => {
+              const li = document.createElement('li'); li.className = 'leaf';
+              const a = document.createElement('a'); a.className = 'law-link'; a.href = refHref(r); a.textContent = r;
+              a.dataset.search = `ref ${r.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+              li.appendChild(a);
+              ul.appendChild(li);
+            });
+            grp.appendChild(ul);
+          }
+
+          // Examples chips (with tooltips)
+          if (examples.length) {
+            const chipWrap = document.createElement('div');
+            chipWrap.className = 'chips';
+            examples.forEach(ex => {
+              const chip = document.createElement('span');
+              chip.className = 'chip';
+
+              const name = ex.name || '';
+              const why  = ex.why  || '';
+              const tip  = why ? `${name}: ${why}` : name;
+              chip.title = tip;                      // native tooltip
+              chip.setAttribute('aria-label', tip);  // accessibility
+
+              const main = document.createElement('span'); 
+              main.textContent = name;
+              chip.appendChild(main);
+
+              if (why) {
+                const sm = document.createElement('small'); 
+                sm.textContent = '— ' + why;
+                chip.appendChild(sm);
+              }
+
+              chip.dataset.search = `${name.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+              chipWrap.appendChild(chip);
+            });
+            grp.appendChild(chipWrap);
+          }
+
+          grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
+          wrap.appendChild(grp);
+        });
+
+        sec.appendChild(wrap);
+        frag.appendChild(sec);
+      });
+
+      tree.innerHTML = '';
+      tree.appendChild(frag);
+    }
+
+    function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
+
+    function applyFilter(q){
+      const query = (q||'').trim().toLowerCase();
+      const groups = Array.from(tree.querySelectorAll('.grp'));
+      const sections = Array.from(tree.querySelectorAll('.sec'));
+
+      // reset
+      tree.querySelectorAll('.hl').forEach(el => el.classList.remove('hl'));
+      groups.forEach(g => { g.classList.remove('hide'); g.open = false; });
+      sections.forEach(s => { s.classList.remove('hide'); s.open = true; });
+
+      if (!query) return;
+
+      groups.forEach(grp => {
+        const chips = Array.from(grp.querySelectorAll('.chip'));
+        const links = Array.from(grp.querySelectorAll('.law-link'));
+
+        let anyMatch = false;
+
+        chips.forEach(ch => {
+          const hay = (ch.dataset.search || ch.textContent || '').toLowerCase();
+          const match = hay.includes(query);
+          ch.classList.toggle('hl', match);
+          if (match) anyMatch = true;
+        });
+
+        links.forEach(a => {
+          const hay = (a.dataset.search || a.textContent || '').toLowerCase();
+          const match = hay.includes(query);
+          a.classList.toggle('hl', match);
+          if (match) anyMatch = true;
+        });
+
+        if (!anyMatch) {
+          const hay = (grp.dataset.search || '').toLowerCase();
+          anyMatch = hay.includes(query);
+        }
+
+        grp.classList.toggle('hide', !anyMatch);
+        grp.open = anyMatch;
+      });
+
+      sections.forEach(sec => {
+        const visible = sec.querySelector('.grp:not(.hide)');
+        sec.classList.toggle('hide', !visible);
+        sec.open = !!visible;
+      });
+    }
+
+    // Bootstrap render + search
+    renderTree();
+    const search = document.getElementById('dietSearch');
+    const clearBtn = document.getElementById('dietClear');
+    const doFilter = debounce(applyFilter, 120);
+    search.addEventListener('input', e => doFilter(e.target.value));
+    clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+
+    /* ============= Scripture hover for refs on the Dietary page ============= */
+    (function(){
+      const hover = document.getElementById('dietHover');
+      if(!hover) return;
+
+      function canonFor(book){
+        return (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(book) ? "tanakh" : "newtestament");
+      }
+
+      const _chapterCache = new Map(); // key: canon/slug/ch -> array
+      async function fetchVerseText(ref){
+        const p = parseRef(ref);
+        if(!p) return null;
+        const canon = canonFor(p.book);
+        const key = `${canon}/${p.slug}/${p.ch}`;
+        if(_chapterCache.has(key)) {
+          return pick(_chapterCache.get(key), p.v);
+        }
+        const candidates = [
+          `/israelite-research/data/${canon}/${p.slug}/${p.ch}.json`,
+          `/data/${canon}/${p.slug}/${p.ch}.json`,
+          new URL(`../data/${canon}/${p.slug}/${p.ch}.json`, location.href).pathname
+        ];
+        let lastErr;
+        for(const url of candidates){
+          try{
+            const r = await fetch(url, { cache: "force-cache" });
+            if(!r.ok) throw new Error(`HTTP ${r.status}`);
+            const arr = await r.json();
+            if(!Array.isArray(arr)) throw new Error("bad chapter payload");
+            _chapterCache.set(key, arr);
+            return pick(arr, p.v);
+          }catch(e){ lastErr = e; }
+        }
+        console.warn("[diet-hover] could not fetch", ref, lastErr?.message);
+        return null;
+      }
+      function pick(arr, vnum){
+        const v = arr.find(x => Number(x.v) === Number(vnum));
+        return v ? String(v.t || "").trim() : null;
+      }
+
+      function showHoverNear(el, html){
+        hover.innerHTML = html;
+        const rect = el.getBoundingClientRect();
+        const x = Math.min(window.innerWidth - 12, rect.left + rect.width/2 + 12);
+        const y = Math.max(8, rect.bottom + window.scrollY + 8);
+        hover.style.left = x + "px";
+        hover.style.top  = y + "px";
+        hover.classList.add("open");
+        hover.setAttribute("aria-hidden","false");
+      }
+      function hideHover(){
+        hover.classList.remove("open");
+        hover.setAttribute("aria-hidden","true");
+      }
+
+      let openForEl = null;
+      document.addEventListener("mouseover", async (e)=>{
+        const a = e.target.closest(".law-link");
+        if(!a) return;
+        openForEl = a;
+        const ref = a.textContent.trim();
+        showHoverNear(a, `<div class="diet-hover-head">${ref}</div><div>Loading…</div>`);
+        const text = await fetchVerseText(ref);
+        if(openForEl !== a) return; // user moved
+        const safe = (s)=>String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+        const body = text ? safe(text) : '<span style="color:#b91c1c">Verse not found</span>';
+        showHoverNear(a,
+          `<div class="diet-hover-head">${safe(ref)}</div>
+           <div>${body}</div>
+           <div class="diet-hover-foot">Click to open chapter ▸</div>`
+        );
+      }, { passive:true });
+
+      document.addEventListener("mouseout", (e)=>{
+        const rel = e.relatedTarget;
+        if(!rel || (!rel.closest || (!rel.closest(".law-link") && rel !== hover && !hover.contains(rel)))){
+          hideHover();
+          openForEl = null;
+        }
+      }, { passive:true });
+
+      document.addEventListener("scroll", hideHover, { passive:true });
+      document.addEventListener("click", (e)=>{
+        if(!e.target.closest(".law-link, #dietHover")) hideHover();
+      });
+    })();
+  </script>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
+</html>
