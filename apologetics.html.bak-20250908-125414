@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Apologetics — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    /* Page-scoped tweaks (safe, minimal) */
+    .apologetics-page .topics-wrap{ margin: 1.25rem auto 2.5rem; max-width: 1200px; }
+    .apologetics-page .topics-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+      gap: 1rem;
+    }
+    .topic-card{
+      display:flex; align-items:flex-start; gap:1rem;
+      padding:1rem 1.25rem; background:#fff; border:1px solid #e6ebf2;
+      box-shadow:0 2px 8px rgba(0,0,0,.04); border-radius:12px;
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    .topic-card:hover{ box-shadow:0 6px 18px rgba(0,0,0,.08); transform:translateY(-1px); }
+    .topic-icon{
+      flex:0 0 48px; height:48px; border-radius:10px;
+      background:#DBE4EE; display:flex; align-items:center; justify-content:center;
+      font-weight:700; color:#054A91;
+    }
+    .topic-body h3{
+      margin:.15rem 0 .35rem; font-size:1.05rem; line-height:1.3;
+      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
+    }
+    .topic-body h3 a{ text-decoration:none; color:#0b2340; }
+    .topic-body h3 a:hover{ text-decoration:underline; }
+    .topic-body p{ margin:0; color:#555; font-size:.95rem; line-height:1.5; }
+
+    /* Simple page title spacing */
+    .page-header{ padding:24px 0 8px; }
+    .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+  </style>
+</head>
+<body class="apologetics-page">
+  <!-- Header partial -->
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Simple title (no universal hero, no breadcrumbs) -->
+    <!-- Topics -->
+    <section class="topics-wrap">
+      <div class="topics-grid">
+        <!-- Keep your existing topic cards here -->
+        <!-- Example card (leave/remove as needed) -->
+        <article class="topic-card">
+          <div class="topic-icon">AP</div>
+          <div class="topic-body">
+            <h3><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
+            <p>Concise topics to help you think clearly and biblically.</p>
+          </div>
+        </article>
+        <!-- /example -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer partial -->
+  <div id="site-footer"></div>
+  <script src="/israelite-research/js/theme.js" defer></script>
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>

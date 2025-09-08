@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Events — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Events — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
     /* ===== Scoped calendar styles (stay on this page only) ===== */
     .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
     .events-page .calendar-wrap{max-width:1000px;margin:0 auto 40px;}
@@ -50,89 +51,83 @@
     .btn-ghost{background:transparent}
     .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
   </style>
-</head>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body class="events-page">
-  <!-- Header partial -->
-  <div id="site-header"></div>
-
-  <main>
-    <!-- Simple title (no universal hero, no breadcrumbs) -->
-    <!-- Calendar -->
-    <div class="calendar-wrap">
-      <div class="cal-toolbar">
-        <div class="cal-nav">
-          <button class="btn" id="prevBtn" aria-label="Previous month">‹ Prev</button>
-          <button class="btn" id="todayBtn" aria-label="Jump to today">Today</button>
-          <button class="btn" id="nextBtn" aria-label="Next month">Next ›</button>
-        </div>
-        <h2 class="cal-title" id="calTitle">Month YYYY</h2>
-        <button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
+<!-- Header partial -->
+<div id="site-header"></div>
+<main>
+<!-- Simple title (no universal hero, no breadcrumbs) -->
+<!-- Calendar -->
+<div class="calendar-wrap">
+<div class="cal-toolbar">
+<div class="cal-nav">
+<button aria-label="Previous month" class="btn" id="prevBtn">‹ Prev</button>
+<button aria-label="Jump to today" class="btn" id="todayBtn">Today</button>
+<button aria-label="Next month" class="btn" id="nextBtn">Next ›</button>
+</div>
+<h2 class="cal-title" id="calTitle">Month YYYY</h2>
+<button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
+</div>
+<div class="cal-grid" id="dowRow">
+<div class="cal-dow">Sun</div>
+<div class="cal-dow">Mon</div>
+<div class="cal-dow">Tue</div>
+<div class="cal-dow">Wed</div>
+<div class="cal-dow">Thu</div>
+<div class="cal-dow">Fri</div>
+<div class="cal-dow">Sat</div>
+</div>
+<div aria-live="polite" class="cal-grid" id="calGrid"></div>
+<div class="cal-legend">
+<span class="dot"></span> Event
       </div>
-
-      <div class="cal-grid" id="dowRow">
-        <div class="cal-dow">Sun</div>
-        <div class="cal-dow">Mon</div>
-        <div class="cal-dow">Tue</div>
-        <div class="cal-dow">Wed</div>
-        <div class="cal-dow">Thu</div>
-        <div class="cal-dow">Fri</div>
-        <div class="cal-dow">Sat</div>
-      </div>
-
-      <div class="cal-grid" id="calGrid" aria-live="polite"></div>
-
-      <div class="cal-legend">
-        <span class="dot"></span> Event
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer partial -->
-  <div id="site-footer"></div>
-
-  <!-- Add/Edit Event Modal -->
-  <div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 class="modal-title" id="modalTitle">Add Event</h3>
-        <button class="btn btn-ghost" id="closeModal" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div>
-            <label for="evtDate">Date</label>
-            <input type="date" id="evtDate" />
-          </div>
-          <div>
-            <label for="evtTime">Time <span class="muted">(optional)</span></label>
-            <input type="time" id="evtTime" />
-          </div>
-        </div>
-        <div>
-          <label for="evtTitle">Title</label>
-          <input type="text" id="evtTitle" placeholder="e.g., Bible Study" />
-        </div>
-        <div>
-          <label for="evtDesc">Description <span class="muted">(optional)</span></label>
-          <textarea id="evtDesc" placeholder="Notes, location, link…"></textarea>
-        </div>
-      </div>
-      <div class="modal-foot">
-        <button class="btn btn-danger" id="deleteEvent" style="display:none">Delete</button>
-        <div style="margin-left:auto;display:flex;gap:.5rem">
-          <button class="btn" id="cancelEvent">Cancel</button>
-          <button class="btn btn-primary" id="saveEvent">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Partials include -->
-  <script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/include.js"></script>
-
-  <!-- Minimal calendar logic (localStorage-based) -->
-  <script>
+</div>
+</main>
+<!-- Footer partial -->
+<div id="site-footer"></div>
+<!-- Add/Edit Event Modal -->
+<div aria-labelledby="modalTitle" aria-modal="true" class="modal" id="eventModal" role="dialog">
+<div class="modal-card">
+<div class="modal-head">
+<h3 class="modal-title" id="modalTitle">Add Event</h3>
+<button aria-label="Close" class="btn btn-ghost" id="closeModal">✕</button>
+</div>
+<div class="modal-body">
+<div class="form-row">
+<div>
+<label for="evtDate">Date</label>
+<input id="evtDate" type="date"/>
+</div>
+<div>
+<label for="evtTime">Time <span class="muted">(optional)</span></label>
+<input id="evtTime" type="time"/>
+</div>
+</div>
+<div>
+<label for="evtTitle">Title</label>
+<input id="evtTitle" placeholder="e.g., Bible Study" type="text"/>
+</div>
+<div>
+<label for="evtDesc">Description <span class="muted">(optional)</span></label>
+<textarea id="evtDesc" placeholder="Notes, location, link…"></textarea>
+</div>
+</div>
+<div class="modal-foot">
+<button class="btn btn-danger" id="deleteEvent" style="display:none">Delete</button>
+<div style="margin-left:auto;display:flex;gap:.5rem">
+<button class="btn" id="cancelEvent">Cancel</button>
+<button class="btn btn-primary" id="saveEvent">Save</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Partials include -->
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<!-- Minimal calendar logic (localStorage-based) -->
+<script>
     (function(){
       const grid = document.getElementById('calGrid');
       const titleEl = document.getElementById('calTitle');
@@ -297,5 +292,5 @@
       render();
     })();
   </script>
-</body>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
 </html>

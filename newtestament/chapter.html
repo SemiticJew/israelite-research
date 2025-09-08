@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Tanakh — Chapter</title>
-<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
 #dictAside h3 { text-align: center; }
 /* Verse layout: toolbar under each verse (like BLB) */
@@ -80,48 +81,43 @@
   .vc-empty{color:var(--muted)}
   .verse.active{background:rgba(5,74,145,.06); border-radius:8px}
 </style>
-</head>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body>
 <div id="site-header"></div>
-
 <main class="container">
-  <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
-    <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
-    <div class="ch-picker">
-      <label for="chSelect" class="sr-only">Select chapter</label>
-      <select id="chSelect"></select>
-    </div>
-    <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
-  </div>
-
-  <section class="layout">
-    <div class="panel">
-      <h3>Text</h3>
-      <div id="verses"><p class="muted">Loading…</p></div>
-    </div>
-
-    <aside class="panel" id="dictAside">
-  <h3>Zondervan Compact Bible Dictionary</h3>
-  <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
-    <input id="dictSearch" type="search" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem">
-  </div>
-  <div id="dictPanel"><p class="muted">Add <code>data/dictionaries/zondervan.json</code> to enable offline lookups.</p></div>
+<div aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar" role="navigation">
+<button aria-label="Previous chapter" class="btn prev" id="btnPrev">← Prev</button>
+<div class="ch-picker">
+<label class="sr-only" for="chSelect">Select chapter</label>
+<select id="chSelect"></select>
+</div>
+<button aria-label="Next chapter" class="btn next" id="btnNext">Next →</button>
+</div>
+<section class="layout">
+<div class="panel">
+<h3>Text</h3>
+<div id="verses"><p class="muted">Loading…</p></div>
+</div>
+<aside class="panel" id="dictAside">
+<h3>Zondervan Compact Bible Dictionary</h3>
+<div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
+<input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
+</div>
+<div id="dictPanel"><p class="muted">Add <code>data/dictionaries/zondervan.json</code> to enable offline lookups.</p></div>
 </aside>
-</main>
-
+</section></main>
 <div id="site-footer"></div>
-<div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
-
+<div aria-hidden="true" class="hovercard" id="hovercard" role="dialog"></div>
 <!-- Strong’s Greek data (defines window.strongsGreekDictionary) -->
 <script src="/israelite-research/js/lexicon/strongs-greek-dictionary.js"></script>
-
 <!-- Your existing NT logic -->
 <script src="/israelite-research/js/nt-chapter.js"></script>
-
-<script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/include.js"></script>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
 <script src="/israelite-research/js/nt-chapter.js"></script>
 <script src="/israelite-research/js/wire-chapter-cards.js"></script>
 <script src="/israelite-research/js/ensure-nt-grid.js"></script>
-</body>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
 </html>

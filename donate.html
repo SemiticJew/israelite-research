@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Donations — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Donations — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
     /* ===== Scoped styles so nothing leaks site-wide ===== */
     .donations-page .container{max-width:1000px;margin:0 auto;padding:0 16px;}
     .donations-page .page-header{padding:24px 0 8px;}
@@ -61,67 +62,61 @@
       .amount-grid{grid-template-columns:repeat(2,1fr)}
     }
   </style>
-</head>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body class="donations-page">
-  <!-- Header partial -->
-  <div id="site-header"></div>
-
-  <main>
-    <!-- Simple title (no universal hero, no breadcrumbs) -->
-    <section class="container">
-      <div class="donations-card" role="region" aria-labelledby="donateTitle">
-        <div class="freq-toggle" role="tablist" aria-label="Donation frequency">
-          <button class="toggle-btn" id="monthlyBtn" role="tab" aria-selected="true" aria-pressed="true">Monthly</button>
-          <button class="toggle-btn" id="onceBtn" role="tab" aria-selected="false" aria-pressed="false">One-time</button>
-        </div>
-
-        <div class="amount-wrap">
-          <div aria-live="polite" class="secure-note">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 1l3 5 5 .5-3.8 3.2 1 5-5.2-2.6L6 14.7l1-5L3 6.5 8 6l4-5z"></path>
-            </svg>
+<!-- Header partial -->
+<div id="site-header"></div>
+<main>
+<!-- Simple title (no universal hero, no breadcrumbs) -->
+<section class="container">
+<div aria-labelledby="donateTitle" class="donations-card" role="region">
+<div aria-label="Donation frequency" class="freq-toggle" role="tablist">
+<button aria-pressed="true" aria-selected="true" class="toggle-btn" id="monthlyBtn" role="tab">Monthly</button>
+<button aria-pressed="false" aria-selected="false" class="toggle-btn" id="onceBtn" role="tab">One-time</button>
+</div>
+<div class="amount-wrap">
+<div aria-live="polite" class="secure-note">
+<svg aria-hidden="true" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewbox="0 0 24 24" width="18">
+<path d="M12 1l3 5 5 .5-3.8 3.2 1 5-5.2-2.6L6 14.7l1-5L3 6.5 8 6l4-5z"></path>
+</svg>
             Card payments are encrypted and secure.
           </div>
-
-          <!-- Amount buttons -->
-          <div class="amount-grid" role="group" aria-label="Choose amount">
-            <button class="amt" data-amount="5"  aria-pressed="false">$5</button>
-            <button class="amt" data-amount="10" aria-pressed="true">$10</button>
-            <button class="amt" data-amount="20" aria-pressed="false">$20</button>
-            <button class="amt" data-amount="other" aria-pressed="false">Other</button>
-          </div>
-
-          <!-- Other amount -->
-          <div class="other-row">
-            <label for="otherAmount" id="otherLabel">Other amount</label>
-            <input type="number" min="1" step="1" inputmode="numeric" class="other-input" id="otherAmount" placeholder="Enter amount" aria-labelledby="otherLabel" style="display:none" />
-          </div>
-        </div>
-
-        <div class="purpose">
-          <h3>Where your gift goes</h3>
-          <ul>
-            <li><strong>Research &amp; resources</strong> — sourcing primary texts and scholarship.</li>
-            <li><strong>Content creation</strong> — articles, studies, and multimedia.</li>
-            <li><strong>Curriculum development</strong> — tools for Israelite families and the nations who love God’s people.</li>
-          </ul>
-          <p class="fineprint">You’ll receive a receipt by email. Recurring gifts can be cancelled anytime.</p>
-        </div>
-
-        <div class="cta">
-          <button class="btn" id="previewBtn" type="button">Preview</button>
-          <button class="btn btn-primary" id="donateBtn" type="button">Donate</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer partial -->
-  <div id="site-footer"></div>
-
-  <script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/include.js"></script>
-  <script>
+<!-- Amount buttons -->
+<div aria-label="Choose amount" class="amount-grid" role="group">
+<button aria-pressed="false" class="amt" data-amount="5">$5</button>
+<button aria-pressed="true" class="amt" data-amount="10">$10</button>
+<button aria-pressed="false" class="amt" data-amount="20">$20</button>
+<button aria-pressed="false" class="amt" data-amount="other">Other</button>
+</div>
+<!-- Other amount -->
+<div class="other-row">
+<label for="otherAmount" id="otherLabel">Other amount</label>
+<input aria-labelledby="otherLabel" class="other-input" id="otherAmount" inputmode="numeric" min="1" placeholder="Enter amount" step="1" style="display:none" type="number"/>
+</div>
+</div>
+<div class="purpose">
+<h3>Where your gift goes</h3>
+<ul>
+<li><strong>Research &amp; resources</strong> — sourcing primary texts and scholarship.</li>
+<li><strong>Content creation</strong> — articles, studies, and multimedia.</li>
+<li><strong>Curriculum development</strong> — tools for Israelite families and the nations who love God’s people.</li>
+</ul>
+<p class="fineprint">You’ll receive a receipt by email. Recurring gifts can be cancelled anytime.</p>
+</div>
+<div class="cta">
+<button class="btn" id="previewBtn" type="button">Preview</button>
+<button class="btn btn-primary" id="donateBtn" type="button">Donate</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer partial -->
+<div id="site-footer"></div>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<script>
     (function(){
       const monthlyBtn = document.getElementById('monthlyBtn');
       const onceBtn    = document.getElementById('onceBtn');
@@ -192,5 +187,5 @@
       setAmount(10);
     })();
   </script>
-</body>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
 </html>

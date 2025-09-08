@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Dietary Laws — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css"/>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Dietary Laws — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
     :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
     .container{max-width:1200px;margin:0 auto;padding:0 16px}
     .page-header{padding:24px 0 8px}
@@ -67,32 +68,28 @@
     .diet-hover-head{ font-weight:700; color:var(--ink); margin-bottom:.25rem; }
     .diet-hover-foot{ margin-top:.35rem; font-size:.85rem; color:var(--muted); }
   </style>
-</head>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body>
-  <div id="site-header"></div>
-
-  <main class="container">
-    <!-- Search / Filter -->
-    <div class="searchbar" role="search">
-      <input id="dietSearch" type="search" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" aria-label="Search dietary items">
-      <button id="dietClear" class="btn" type="button">Clear</button>
-    </div>
-
-    <section class="tree" id="dietTree" aria-label="Collapsible tree of dietary laws"></section>
-
-    <p class="note">
-      <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
+<div id="site-header"></div>
+<main class="container">
+<!-- Search / Filter -->
+<div class="searchbar" role="search">
+<input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
+<button class="btn" id="dietClear" type="button">Clear</button>
+</div>
+<section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
+<p class="note">
+<strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
     </p>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <!-- Hover container for Scripture previews -->
-  <div id="dietHover" class="diet-hovercard" role="dialog" aria-hidden="true"></div>
-
-  <script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/include.js"></script>
-  <script>
+</main>
+<div id="site-footer"></div>
+<!-- Hover container for Scripture previews -->
+<div aria-hidden="true" class="diet-hovercard" id="dietHover" role="dialog"></div>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<script>
     // --- Book slug map for links (extend anytime) ---
     const BOOK_SLUG = {
       "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
@@ -500,5 +497,5 @@
       });
     })();
   </script>
-</body>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
 </html>

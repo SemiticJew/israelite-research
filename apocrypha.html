@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Apocrypha — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Apocrypha — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
     :root{
       --ink:#0b2340;     /* black-ish text */
       --accent:#F17300;  /* orange */
@@ -68,138 +69,118 @@
       .pt-footer{ font-size:.9rem; }
     }
   </style>
-</head>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
 <body class="apocrypha-page">
-  <!-- Header partial -->
-  <div id="site-header"></div>
-
-  <main>
-    <section class="container">
-      <div class="tk-grid">
-
-        <!-- Wisdom / Historical (ordering can be adjusted as you prefer) -->
-        <a class="pt-card" href="/israelite-research/apocrypha/1-esdras.html" aria-label="1 Esdras">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>1</sup>Es</div></div>
-          <div class="pt-footer">1 Esdras</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/2-esdras.html" aria-label="2 Esdras">
-          <div class="pt-top"><div class="pt-date">c. 1st–3rd c. CE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>2</sup>Es</div></div>
-          <div class="pt-footer">2 Esdras</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/tobit.html" aria-label="Tobit">
-          <div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Tob</div></div>
-          <div class="pt-footer">Tobit</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/judith.html" aria-label="Judith">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Jdt</div></div>
-          <div class="pt-footer">Judith</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/additions-to-esther.html" aria-label="Additions to Esther">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">AddEst</div></div>
-          <div class="pt-footer">Additions to Esther</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/wisdom-of-solomon.html" aria-label="Wisdom of Solomon">
-          <div class="pt-top"><div class="pt-date">c. 1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Wis</div></div>
-          <div class="pt-footer">Wisdom of Solomon</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/sirach.html" aria-label="Sirach (Ecclesiasticus)">
-          <div class="pt-top"><div class="pt-date">c. 2nd c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Sir</div></div>
-          <div class="pt-footer">Sirach (Ecclesiasticus)</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/baruch.html" aria-label="Baruch">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Bar</div></div>
-          <div class="pt-footer">Baruch</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/letter-of-jeremiah.html" aria-label="Letter of Jeremiah">
-          <div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">LetJer</div></div>
-          <div class="pt-footer">Letter of Jeremiah</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/prayer-of-azariah.html" aria-label="Prayer of Azariah">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">PrAz</div></div>
-          <div class="pt-footer">Prayer of Azariah</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/susanna.html" aria-label="Susanna">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Sus</div></div>
-          <div class="pt-footer">Susanna</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/bel-and-the-dragon.html" aria-label="Bel and the Dragon">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Bel</div></div>
-          <div class="pt-footer">Bel and the Dragon</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/prayer-of-manasseh.html" aria-label="Prayer of Manasseh">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">PrMan</div></div>
-          <div class="pt-footer">Prayer of Manasseh</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/1-maccabees.html" aria-label="1 Maccabees">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>1</sup>Mac</div></div>
-          <div class="pt-footer">1 Maccabees</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/2-maccabees.html" aria-label="2 Maccabees">
-          <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>2</sup>Mac</div></div>
-          <div class="pt-footer">2 Maccabees</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/3-maccabees.html" aria-label="3 Maccabees">
-          <div class="pt-top"><div class="pt-date">c. 1st c. BCE–1st c. CE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>3</sup>Mac</div></div>
-          <div class="pt-footer">3 Maccabees</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/4-maccabees.html" aria-label="4 Maccabees">
-          <div class="pt-top"><div class="pt-date">c. 1st–2nd c. CE</div></div>
-          <div class="pt-mid"><div class="pt-abbr"><sup>4</sup>Mac</div></div>
-          <div class="pt-footer">4 Maccabees</div>
-        </a>
-
-        <a class="pt-card" href="/israelite-research/apocrypha/psalm-151.html" aria-label="Psalm 151">
-          <div class="pt-top"><div class="pt-date">trad. Davidic</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Ps151</div></div>
-          <div class="pt-footer">Psalm 151</div>
-        </a>
-
-        <!-- Optional: Epistle to the Laodiceans (if in your dataset) -->
-        <a class="pt-card" href="/israelite-research/apocrypha/laodiceans.html" aria-label="Epistle to the Laodiceans">
-          <div class="pt-top"><div class="pt-date">c. 4th–6th c. CE</div></div>
-          <div class="pt-mid"><div class="pt-abbr">Lao</div></div>
-          <div class="pt-footer">Epistle to the Laodiceans</div>
-        </a>
-
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer partial -->
-  <div id="site-footer"></div>
-  <script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/include.js"></script>
-</body>
+<!-- Header partial -->
+<div id="site-header"></div>
+<main>
+<section class="container">
+<div class="tk-grid">
+<!-- Wisdom / Historical (ordering can be adjusted as you prefer) -->
+<a aria-label="1 Esdras" class="pt-card" href="/israelite-research/apocrypha/1-esdras.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>1</sup>Es</div></div>
+<div class="pt-footer">1 Esdras</div>
+</a>
+<a aria-label="2 Esdras" class="pt-card" href="/israelite-research/apocrypha/2-esdras.html">
+<div class="pt-top"><div class="pt-date">c. 1st–3rd c. CE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>2</sup>Es</div></div>
+<div class="pt-footer">2 Esdras</div>
+</a>
+<a aria-label="Tobit" class="pt-card" href="/israelite-research/apocrypha/tobit.html">
+<div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Tob</div></div>
+<div class="pt-footer">Tobit</div>
+</a>
+<a aria-label="Judith" class="pt-card" href="/israelite-research/apocrypha/judith.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Jdt</div></div>
+<div class="pt-footer">Judith</div>
+</a>
+<a aria-label="Additions to Esther" class="pt-card" href="/israelite-research/apocrypha/additions-to-esther.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">AddEst</div></div>
+<div class="pt-footer">Additions to Esther</div>
+</a>
+<a aria-label="Wisdom of Solomon" class="pt-card" href="/israelite-research/apocrypha/wisdom-of-solomon.html">
+<div class="pt-top"><div class="pt-date">c. 1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Wis</div></div>
+<div class="pt-footer">Wisdom of Solomon</div>
+</a>
+<a aria-label="Sirach (Ecclesiasticus)" class="pt-card" href="/israelite-research/apocrypha/sirach.html">
+<div class="pt-top"><div class="pt-date">c. 2nd c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Sir</div></div>
+<div class="pt-footer">Sirach (Ecclesiasticus)</div>
+</a>
+<a aria-label="Baruch" class="pt-card" href="/israelite-research/apocrypha/baruch.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Bar</div></div>
+<div class="pt-footer">Baruch</div>
+</a>
+<a aria-label="Letter of Jeremiah" class="pt-card" href="/israelite-research/apocrypha/letter-of-jeremiah.html">
+<div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">LetJer</div></div>
+<div class="pt-footer">Letter of Jeremiah</div>
+</a>
+<a aria-label="Prayer of Azariah" class="pt-card" href="/israelite-research/apocrypha/prayer-of-azariah.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">PrAz</div></div>
+<div class="pt-footer">Prayer of Azariah</div>
+</a>
+<a aria-label="Susanna" class="pt-card" href="/israelite-research/apocrypha/susanna.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Sus</div></div>
+<div class="pt-footer">Susanna</div>
+</a>
+<a aria-label="Bel and the Dragon" class="pt-card" href="/israelite-research/apocrypha/bel-and-the-dragon.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Bel</div></div>
+<div class="pt-footer">Bel and the Dragon</div>
+</a>
+<a aria-label="Prayer of Manasseh" class="pt-card" href="/israelite-research/apocrypha/prayer-of-manasseh.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr">PrMan</div></div>
+<div class="pt-footer">Prayer of Manasseh</div>
+</a>
+<a aria-label="1 Maccabees" class="pt-card" href="/israelite-research/apocrypha/1-maccabees.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>1</sup>Mac</div></div>
+<div class="pt-footer">1 Maccabees</div>
+</a>
+<a aria-label="2 Maccabees" class="pt-card" href="/israelite-research/apocrypha/2-maccabees.html">
+<div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>2</sup>Mac</div></div>
+<div class="pt-footer">2 Maccabees</div>
+</a>
+<a aria-label="3 Maccabees" class="pt-card" href="/israelite-research/apocrypha/3-maccabees.html">
+<div class="pt-top"><div class="pt-date">c. 1st c. BCE–1st c. CE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>3</sup>Mac</div></div>
+<div class="pt-footer">3 Maccabees</div>
+</a>
+<a aria-label="4 Maccabees" class="pt-card" href="/israelite-research/apocrypha/4-maccabees.html">
+<div class="pt-top"><div class="pt-date">c. 1st–2nd c. CE</div></div>
+<div class="pt-mid"><div class="pt-abbr"><sup>4</sup>Mac</div></div>
+<div class="pt-footer">4 Maccabees</div>
+</a>
+<a aria-label="Psalm 151" class="pt-card" href="/israelite-research/apocrypha/psalm-151.html">
+<div class="pt-top"><div class="pt-date">trad. Davidic</div></div>
+<div class="pt-mid"><div class="pt-abbr">Ps151</div></div>
+<div class="pt-footer">Psalm 151</div>
+</a>
+<!-- Optional: Epistle to the Laodiceans (if in your dataset) -->
+<a aria-label="Epistle to the Laodiceans" class="pt-card" href="/israelite-research/apocrypha/laodiceans.html">
+<div class="pt-top"><div class="pt-date">c. 4th–6th c. CE</div></div>
+<div class="pt-mid"><div class="pt-abbr">Lao</div></div>
+<div class="pt-footer">Epistle to the Laodiceans</div>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer partial -->
+<div id="site-footer"></div>
+<script defer="" src="/israelite-research/js/theme.js"></script>
+<script src="/israelite-research/js/include.js"></script>
+<script defer="True" src="/israelite-research/js/verses.js"></script></body>
 </html>
