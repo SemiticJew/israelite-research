@@ -1,73 +1,223 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Apologetics — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
-<style>
-    /* Page-scoped tweaks (safe, minimal) */
-    .apologetics-page .topics-wrap{ margin: 1.25rem auto 2.5rem; max-width: 1200px; }
-    .apologetics-page .topics-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
-      gap: 1rem;
-    }
-    .topic-card{
-      display:flex; align-items:flex-start; gap:1rem;
-      padding:1rem 1.25rem; background:#fff; border:1px solid #e6ebf2;
-      box-shadow:0 2px 8px rgba(0,0,0,.04); border-radius:12px;
-      transition: box-shadow .2s ease, transform .2s ease;
-    }
-    .topic-card:hover{ box-shadow:0 6px 18px rgba(0,0,0,.08); transform:translateY(-1px); }
-    .topic-icon{
-      flex:0 0 48px; height:48px; border-radius:10px;
-      background:#DBE4EE; display:flex; align-items:center; justify-content:center;
-      font-weight:700; color:#054A91;
-    }
-    .topic-body h3{
-      margin:.15rem 0 .35rem; font-size:1.05rem; line-height:1.3;
-      font-family: var(--ff-sans, Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif);
-    }
-    .topic-body h3 a{ text-decoration:none; color:#0b2340; }
-    .topic-body h3 a:hover{ text-decoration:underline; }
-    .topic-body p{ margin:0; color:#555; font-size:.95rem; line-height:1.5; }
-
-    /* Simple page title spacing */
-    .page-header{ padding:24px 0 8px; }
-    .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
-    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Apologetics — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <style>
+    :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
+    /* Layout */
+    .page-wrap{ display:grid; grid-template-columns: 260px 1fr; gap:22px; max-width:1200px; margin:0 auto; padding:0 16px; }
+    .side-nav{ position:sticky; top:76px; align-self:start; border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:14px; }
+    .side-nav h2{ font-size:1rem; margin:.25rem 0 .5rem; color:var(--ink); letter-spacing:.3px; }
+    .side-nav a{ display:block; padding:.4rem .6rem; border-radius:10px; color:var(--ink); text-decoration:none; }
+    .side-nav a:hover, .side-nav a[aria-current="true"]{ background:rgba(129,164,205,.14); }
+    .apg-main{ padding: 8px 0 60px; }
+    .apg-head{ text-align:center; margin:1.25rem 0 1rem; }
+    .apg-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color:var(--ink); line-height:1.15; margin:0; }
+    .apg-sub{ color:var(--muted); margin:.25rem 0 0; }
+    .mission{ text-align:center; margin:1rem 0 1.4rem; font-weight:700; color:var(--ink); }
+    .section{ border:1px solid var(--border); border-radius:16px; background:var(--surface); padding:16px; margin:16px 0; }
+    .section h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); color:var(--ink); margin:.25rem 0 .75rem; font-size:1.25rem; }
+    .section p{ line-height:1.75; }
+    .section ul{ margin:.35rem 0 1rem 1.25rem; }
+    /* Search bar */
+    .search-box{ display:flex; gap:8px; align-items:center; border:1px solid var(--border); padding:10px 12px; border-radius:12px; background:var(--surface); }
+    .search-box input{ flex:1; border:none; outline:none; background:transparent; color:var(--ink); }
+    /* Accordions */
+    details.apg-acc{ border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:var(--bg); }
+    details.apg-acc + details.apg-acc{ margin-top:10px; }
+    details.apg-acc summary{ cursor:pointer; font-weight:800; color:var(--ink); }
+    details.apg-acc p{ margin:.6rem 0 0; }
+    /* Verse tooltip inline helper */
+    .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+    .verse::after{ content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30; }
+    .verse:hover::after{ opacity:1; transform:translateY(0); }
+    /* Cards / chips */
+    .chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); padding:6px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
+    /* Dark mode overrides */
+    html[data-theme="dark"] body.apg-doc{ background: var(--bg); color:#FFFFFF; }
+    html[data-theme="dark"] body.apg-doc .apg-title, html[data-theme="dark"] body.apg-doc h3{ color:#FFFFFF; }
+    html[data-theme="dark"] body.apg-doc .apg-sub{ color:rgba(255,255,255,.88); }
+    html[data-theme="dark"] body.apg-doc .mission{ color:#FFFFFF; }
+    html[data-theme="dark"] .side-nav{ background:#0f1a2b; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .side-nav a{ color:#FFFFFF; }
+    html[data-theme="dark"] .side-nav a:hover, html[data-theme="dark"] .side-nav a[aria-current="true"]{ background:#14233a; }
+    html[data-theme="dark"] .section{ background:#0f1a2b; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] details.apg-acc{ background:#0b1627; border-color:rgba(255,255,255,.15); }
+    html[data-theme="dark"] .verse::after{ background:#2f2f2f; color:#FFFFFF; border-color: var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
   </style>
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
-<body class="apologetics-page">
-<!-- Header partial -->
-<div id="site-header"></div>
-<main>
-<!-- Simple title (no universal hero, no breadcrumbs) -->
-<!-- Topics -->
-<section class="topics-wrap">
-<div class="topics-grid">
-<!-- Keep your existing topic cards here -->
-<!-- Example card (leave/remove as needed) -->
-<article class="topic-card">
-<div class="topic-icon">AP</div>
-<div class="topic-body">
-<h3><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></h3>
-<p>Concise topics to help you think clearly and biblically.</p>
-</div>
-</article>
-<!-- /example -->
-</div>
-</section>
-</main>
-<!-- Footer partial -->
-<div id="site-footer"></div>
-<script defer="" src="/israelite-research/js/theme.js"></script>
-<script src="/israelite-research/js/include.js"></script>
-<script defer="True" src="/israelite-research/js/verses.js"></script></body>
+</head>
+<body data-page="apologetics" class="apg-doc">
+  <div id="site-header"></div>
+
+  <main class="page-wrap" aria-labelledby="page-title">
+    <nav class="side-nav" aria-label="Apologetics navigation">
+      <h2>Sections</h2>
+      <a href="#foundations">Foundations</a>
+      <a href="#defending-identity">Defending Identity</a>
+      <a href="#objections">Fallacies &amp; Objections</a>
+      <a href="#logic-tools">Tools of Logic</a>
+      <a href="#historical-sources">Historical Sources</a>
+      <a href="#catechism">Catechism &amp; Apologetics</a>
+      <a href="#resources">Resources</a>
+    </nav>
+
+    <div class="apg-main">
+      <header class="apg-head">
+        <h1 id="page-title" class="apg-title">Apologetics</h1>
+        <p class="apg-sub">Apologetics (βἀπολογία): a reasoned defense. In our context, a disciplined case for Israel’s identity and the faith that formed Israel.</p>
+        <p class="mission">“Defending the Truth of Israel’s identity and their lost/hidden history through Scripture, Logic, and Context.”</p>
+      </header>
+
+      <!-- Foundations -->
+      <section id="foundations" class="section" itemscope itemtype="https://schema.org/CreativeWork">
+        <h3>1) Foundations of Israelite Apologetics</h3>
+        <p><strong>Definition.</strong> In Scripture, <em>apologia</em> is a reasoned defense (<span class="verse" data-ref="1 Peter 3:15" data-note="Be ready to give an answer (apologia) with meekness and fear.">1 Peter 3:15</span>). We defend by appealing to God’s truth, not to rhetoric alone.</p>
+        <p><strong>Why identity matters.</strong> Identity is covenantal: promises, curses, and restoration are given to a people (<span class="verse" data-ref="Deuteronomy 7:6" data-note="A holy people unto the LORD, chosen.">Deuteronomy 7:6</span>).</p>
+        <p><strong>Method.</strong> Scripture → Logic → History. We read the text, reason consistently, and test claims against evidence and context.</p>
+      </section>
+
+      <!-- Defending Identity -->
+      <section id="defending-identity" class="section">
+        <h3>2) Defending Israelite Identity</h3>
+        <p><strong>Scripture:</strong> covenant markers and prophecies that identify Israel in history:
+          <span class="verse" data-ref="Deuteronomy 28" data-note="Covenant blessings and curses as historical markers.">Deuteronomy 28</span>,
+          <span class="verse" data-ref="Amos 9:7" data-note="Israel’s relation among nations (Ethiopia/Cush).">Amos 9:7</span>,
+          <span class="verse" data-ref="Song of Songs 1:5–6" data-note="“I am black and lovely… the sun has looked upon me.”">Song of Songs 1:5–6</span>,
+          <span class="verse" data-ref="Lamentations 5:10" data-note="Our skin was black like an oven because of the terrible famine.">Lamentations 5:10</span>.
+        </p>
+        <p><strong>History:</strong> Israelite historians, Arab writers, secular chroniclers, and slave trade records cross‑reference the Scriptural picture.</p>
+        <p><strong>Genealogy &amp; Diaspora:</strong> Migration patterns from Africa to the Americas and beyond, read alongside biblical geography and language.</p>
+      </section>
+
+      <!-- Objections / Fallacies -->
+      <section id="objections" class="section">
+        <h3>3) Answering Common Fallacies (Objections)</h3>
+        <div class="search-box" role="search">
+          <input id="objection-search" type="search" placeholder="Enter an objection… (e.g., 'Skin color doesn’t matter')" aria-label="Search objections">
+        </div>
+        <div id="objection-list" aria-live="polite" style="margin-top:10px;">
+          <details class="apg-acc" data-tags="skin color identity scripture">
+            <summary>“Skin color doesn’t matter.”</summary>
+            <p><strong>Logic:</strong> Distinguish moral worth (equal) from historical description (relevant). The objection confuses categories.</p>
+            <p><strong>Scripture:</strong> The text names complexion and peoples as part of history, not superiority (<span class="verse" data-ref="Jeremiah 13:23" data-note="Can the Ethiopian change his skin?">Jeremiah 13:23</span>; <span class="verse" data-ref="Song of Songs 1:5–6" data-note="I am black and lovely.">Song of Songs 1:5–6</span>).</p>
+            <p><strong>Context:</strong> Recognizing historic identity corrects later distortions and restores accurate reading.</p>
+          </details>
+
+          <details class="apg-acc" data-tags="proof identity black israelites evidence scripture history">
+            <summary>“You can’t prove Israelites were Black.”</summary>
+            <p><strong>Logic:</strong> Burden of proof is shared: weigh primary sources, not modern assumptions.</p>
+            <p><strong>Scripture:</strong> Geographic and descriptive markers locate Israel amid Afro‑Semitic peoples (<span class="verse" data-ref="Amos 9:7" data-note="Comparison with Cush/Ethiopia.">Amos 9:7</span>).</p>
+            <p><strong>History:</strong> Iconography, travelers, and lexicons record dark‑skinned populations across Israel’s sphere.</p>
+          </details>
+
+          <details class="apg-acc" data-tags="theology replacement covenant israel church supersessionism">
+            <summary>“Christianity replaces Israelites.”</summary>
+            <p><strong>Logic:</strong> Replacement claims invert covenant continuity.</p>
+            <p><strong>Scripture:</strong> The promises and covenants remain identified with Israel and the grafted‑in (<span class="verse" data-ref="Romans 11:1–2" data-note="Has God cast away His people? God forbid.">Romans 11:1–2</span>).</p>
+          </details>
+
+          <details class="apg-acc" data-tags="jewish people israel today identity comparison evidence">
+            <summary>“The Jewish people in Israel today are the true Jews.”</summary>
+            <p><strong>Logic:</strong> Present possession ≠ original identity; investigate sources rather than assume.</p>
+            <p><strong>Scripture:</strong> Identity is tested by covenant signs and prophecy, not modern geopolitics (<span class="verse" data-ref="Deuteronomy 28" data-note="Covenant markers across history.">Deuteronomy 28</span>).</p>
+            <p><strong>Context:</strong> This page assembles evidence rather than making ad hominem claims.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Logic Tools -->
+      <section id="logic-tools" class="section">
+        <h3>4) Tools of Logic</h3>
+        <p>Mini‑lessons and short videos on critical reasoning for Israelite apologetics.</p>
+        <ul>
+          <li><strong>Straw man:</strong> misrepresenting a position to refute an easier target (<span class="verse" data-ref="Matthew 4:6–7" data-note="Selective quotation vs. context; Yahusha answers with Scripture.">Matthew 4:6–7</span>).</li>
+          <li><strong>Ad hominem:</strong> attacking the person rather than the claim (<span class="verse" data-ref="Acts 24:5" data-note="Paul slandered as a pestilent fellow.">Acts 24:5</span>).</li>
+          <li><strong>Appeal to popularity:</strong> assuming many voices = truth (<span class="verse" data-ref="John 12:43" data-note="They loved the praise of men more than God.">John 12:43</span>).</li>
+          <li><strong>Consistency &amp; non‑contradiction:</strong> truth coheres because God is faithful (<span class="verse" data-ref="2 Timothy 3:16–17" data-note="Scripture grounds and corrects.">2 Timothy 3:16–17</span>).</li>
+        </ul>
+        <a class="chip" href="/israelite-research/media.html">Watch: Logic Tutorials</a>
+      </section>
+
+      <!-- Historical Sources -->
+      <section id="historical-sources" class="section">
+        <h3>5) Historical Sources</h3>
+        <ul>
+          <li>Zondervan Bible Dictionary (entry “Hamites”) — “progenitor of the dark races...”</li>
+          <li>Babylonian Talmud — self‑descriptions and ethnographic notes</li>
+          <li>Early church fathers &amp; historians on Israelites and neighbors</li>
+          <li><em>Hebrewisms of West Africa</em></li>
+          <li>Timeline: Scripture → Africa → Diaspora (visual link here)</li>
+          <li>Hidden clues across secular records</li>
+        </ul>
+        <p><em>Note:</em> We will continue to expand citations and scans in a forthcoming library view.</p>
+      </section>
+
+      <!-- Catechism -->
+      <section id="catechism" class="section">
+        <h3>6) Israelite Catechism &amp; Apologetics</h3>
+        <p>Catechism‑style Q&amp;A for fast recall and teaching. Cross‑linked to the full catechism.</p>
+        <a class="chip" href="/israelite-research/israelite-catechism.html">Open Catechism</a>
+      </section>
+
+      <!-- Resources / Share -->
+      <section id="resources" class="section">
+        <h3>Resources &amp; Share</h3>
+        <p>Find more in our articles and media libraries. Share this page to help others test claims and recover context.</p>
+        <div class="share-min" aria-label="Share" style="display:flex; gap:.4rem;">
+          <a id="share-x" class="chip" href="#" target="_blank" rel="noopener" aria-label="Share on X">Share on X</a>
+          <a id="share-fb" class="chip" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">Share on Facebook</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // Lightweight active section highlight and share init
+    (function(){
+      // Share links
+      var url=location.href, title=document.title;
+      var x=document.getElementById('share-x'), fb=document.getElementById('share-fb');
+      if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+      if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+
+      // Active anchor on scroll
+      var links=[].slice.call(document.querySelectorAll('.side-nav a'));
+      var ids=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      function onScroll(){
+        var y=window.scrollY+120;
+        var current=null;
+        for(var i=0;i<ids.length;i++){
+          var el=ids[i]; if(el.offsetTop<=y) current=el;
+        }
+        links.forEach(function(a){ a.removeAttribute('aria-current'); });
+        if(current){
+          var link = links.find(a=>a.getAttribute('href')==='#'+current.id);
+          if(link) link.setAttribute('aria-current','true');
+        }
+      }
+      window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+      // Objection search filter
+      var box=document.getElementById('objection-search');
+      var list=document.getElementById('objection-list');
+      function filter(){
+        var q=(box.value||'').toLowerCase().trim();
+        list.querySelectorAll('details.apg-acc').forEach(function(d){
+          var hay=(d.innerText+' '+(d.getAttribute('data-tags')||'')).toLowerCase();
+          d.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+        });
+      }
+      if(box){ box.addEventListener('input', filter); }
+    })();
+  </script>
+
+  <script src="/israelite-research/js/theme.js" defer></script>
+  <script src="/israelite-research/js/verses.js" defer></script>
+  <script src="/israelite-research/js/include.js"></script>
+</body>
 </html>
