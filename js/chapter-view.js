@@ -1,27 +1,68 @@
-/* chapter-view.js — enforce one-verse-per-line with clear spacing */
+/* chapter-view.js — robust mount + one-verse-per-line rendering */
 (function(){
   'use strict';
 
   const ROOT = '/israelite-research/data';
   const PREF_KEYS = ['KJV','Text','text','Darby'];
 
-  const host =
-    document.getElementById('chapter-root') ||
-    document.querySelector('.chapter-root') ||
-    document.querySelector('#content, main, .main, .container, body');
+  // ---------- Find the correct mount ----------
+  function findHost(){
+    // 1) Explicit container
+    let host = document.getElementById('chapter-root') || document.querySelector('[data-chapter-root]');
+    if (host) return host;
 
+    // 2) Follow the "Text" heading (h2/h3) and use the next element (often where "Loading…" lives)
+    const heads = Array.from(document.querySelectorAll('h2, h3'));
+    const textHead = heads.find(h => h.textContent.trim().toLowerCase() === 'text');
+    if (textHead) {
+      // use the block immediately following the heading, or insert a fresh container
+      let next = textHead.nextElementSibling;
+      if (!next || next.tagName.toLowerCase() === 'script') {
+        next = document.createElement('div');
+        textHead.insertAdjacentElement('afterend', next);
+      }
+      next.id = next.id || 'chapter-root';
+      return next;
+    }
+
+    // 3) Fallback: create a fresh container near the end of <main> or <body>
+    const fresh = document.createElement('div');
+    fresh.id = 'chapter-root';
+    const main = document.querySelector('main') || document.body;
+    main.appendChild(fresh);
+    return fresh;
+  }
+
+  const host = findHost();
   if (!host) return;
 
+  // ---------- Styling: each verse clearly separated ----------
+  (function injectCSS(){
+    const css = `
+      #chapter-root .verselist{ display:block; margin:14px 0 28px; }
+      #chapter-root .verse-row{ display:block; margin:.6rem 0 .9rem; padding:0 0 .6rem 0;
+                                border-bottom:1px solid var(--border, rgba(0,0,0,.12)); line-height:1.8; }
+      #chapter-root .verse-row:last-child{ border-bottom:1px solid var(--border, rgba(0,0,0,.12)); }
+      #chapter-root .verse-num{ font-weight:800; color:var(--accent,#F17300); margin-right:.5rem; }
+      #chapter-root .verse-text{ white-space:normal; }
+      html[data-theme="dark"] #chapter-root .verse-row{ border-color: rgba(255,255,255,.18); }
+      html[data-theme="dark"] #chapter-root .verse-text{ color:#fff; }
+      #chapter-root .chapter-title{ margin:.25rem 0 .9rem; font-family:var(--ff-serif,serif); font-weight:900; }
+    `;
+    const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+  })();
+
+  // ---------- Utilities ----------
   function stripArtifacts(text){
     if (!text) return '';
     return String(text)
-      .replace(/\{[^}]*\}/g, '')
-      .replace(/\[(?:H|G)\d{1,5}\]/gi,'')
-      .replace(/<(?:H|G)\d{1,5}>/gi,'')
-      .replace(/\b(?:H|G)\d{3,5}\b/gi,'')
-      .replace(/<\s*\/?\s*strongs[^>]*>/gi,'')
-      .replace(/<\s*w[^>]*>(.*?)<\s*\/\s*w\s*>/gi,'$1')
-      .replace(/<[^>]+>/g,'')
+      .replace(/\{[^}]*\}/g, '')                 // {...}
+      .replace(/\[(?:H|G)\d{1,5}\]/gi,'')        // [H####]/[G####]
+      .replace(/<(?:H|G)\d{1,5}>/gi,'')          // <H####>/<G####>
+      .replace(/\b(?:H|G)\d{3,5}\b/gi,'')        // H#### / G####
+      .replace(/<\s*\/?\s*strongs[^>]*>/gi,'')   // <strongs>
+      .replace(/<\s*w[^>]*>(.*?)<\s*\/\s*w\s*>/gi,'$1') // <w>...</w>
+      .replace(/<[^>]+>/g,'')                    // leftover html
       .replace(/\s{2,}/g,' ')
       .trim();
   }
@@ -32,21 +73,7 @@
   }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-  // 🔧 Stronger CSS: each verse is its own paragraph with margin/border for separation
-  (function injectCSS(){
-    const css = `
-      .verselist{ display:block; margin:14px 0 28px; }
-      .verse-row{ display:block; margin:.55rem 0 .8rem; padding:0 0 .55rem 0;
-                  border-bottom:1px solid var(--border, rgba(0,0,0,.12)); line-height:1.8; }
-      .verse-row:last-child{ border-bottom:1px solid var(--border, rgba(0,0,0,.12)); }
-      .verse-num{ font-weight:800; color:var(--accent,#F17300); margin-right:.5rem; }
-      .verse-text{ white-space:normal; }
-      html[data-theme="dark"] .verse-row{ border-color: rgba(255,255,255,.18); }
-      html[data-theme="dark"] .verse-text{ color:#fff; }
-    `;
-    const s=document.createElement('style'); s.textContent=css; document.head.appendChild(s);
-  })();
-
+  // ---------- Params & canon ----------
   const url = new URL(location.href);
   const rawBook = (url.searchParams.get('book') || '').trim();
   const chParam = parseInt(url.searchParams.get('ch') || url.searchParams.get('chapter') || '1', 10);
@@ -74,6 +101,7 @@
   }
   const bookSlug = normalizeBookSlug(rawBook);
 
+  // ---------- Data ----------
   async function fetchChapter(canon, slug, ch){
     const endpoint = `${ROOT}/${canon}/${slug}/${ch}.json`;
     const res = await fetch(endpoint, {cache:'force-cache'});
@@ -86,21 +114,17 @@
     return json || {};
   }
 
+  // ---------- Render ----------
   function renderHeader(label, ch){
     const wrap = document.createElement('div');
-    wrap.innerHTML = `
-      <h1 class="chapter-title" style="margin:.25rem 0 .9rem;font-family:var(--ff-serif,serif);font-weight:900;">
-        ${escapeHtml(label)} ${ch}
-      </h1>`;
+    wrap.innerHTML = `<h1 class="chapter-title">${escapeHtml(label)} ${ch}</h1>`;
     return wrap;
   }
 
-  // ✅ Each verse is its own <p class="verse-row"> with a <sup> number
   function renderVerses(trans){
     const list = document.createElement('div');
     list.className = 'verselist';
 
-    // Object map
     if (trans && typeof trans === 'object' && !Array.isArray(trans)) {
       Object.keys(trans)
         .map(n=>parseInt(n,10))
@@ -122,7 +146,6 @@
       return list;
     }
 
-    // Array form
     if (Array.isArray(trans)) {
       trans.forEach(item=>{
         const vNum = item?.v ?? item?.verse ?? '';
@@ -156,11 +179,13 @@
       const json = await fetchChapter(CANON, bookSlug, chParam);
       const trans = pickTranslation(json);
 
-      host.innerHTML = '';
+      // If the host currently says "Loading…", wipe it
+      host.textContent = '';
+
       host.appendChild(renderHeader(label, chParam));
       host.appendChild(renderVerses(trans));
     } catch {
-      host.innerHTML = '<p>Could not load chapter.</p>';
+      host.textContent = 'Could not load chapter.';
     }
   })();
 
