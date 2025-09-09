@@ -32,7 +32,6 @@
     details.apg-acc p{ margin:.6rem 0 0; }
     /* Verse tooltip inline helper */
     .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
-    .verse::after{ content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30; }
     .verse:hover::after{ opacity:1; transform:translateY(0); }
     /* Cards / chips */
     .chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); padding:6px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
@@ -46,8 +45,7 @@
     html[data-theme="dark"] .side-nav a:hover, html[data-theme="dark"] .side-nav a[aria-current="true"]{ background:#14233a; }
     html[data-theme="dark"] .section{ background:#0f1a2b; border-color:rgba(255,255,255,.15); }
     html[data-theme="dark"] details.apg-acc{ background:#0b1627; border-color:rgba(255,255,255,.15); }
-    html[data-theme="dark"] .verse::after{ background:#2f2f2f; color:#FFFFFF; border-color: var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
-  </style>
+    html[data-theme="dark"] </style>
 </head>
 <body data-page="apologetics" class="apg-doc">
   <div id="site-header"></div>
@@ -217,7 +215,6 @@
   </script>
 
   <script src="/israelite-research/js/theme.js" defer></script>
-  <script src="/israelite-research/js/verses.js" defer></script>
   <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>

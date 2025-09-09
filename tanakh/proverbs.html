@@ -9,9 +9,7 @@
 .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
 .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
 </style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
 .verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse::after{content: attr(data-ref) " — " attr(data-note); position:absolute; left:0; bottom:120%; background:#ffffff; color:var(--ink); border:1px solid var(--border); padding:.45rem .6rem; font-size:.85rem; line-height:1.35; border-radius:8px; white-space:normal; width:min(360px,85vw); box-shadow:0 8px 20px rgba(0,0,0,.12); opacity:0; transform:translateY(4px); pointer-events:none; transition:opacity .12s ease, transform .12s ease; z-index:30;}
 .verse:hover::after{opacity:1; transform:translateY(0);}</style></head><body>
 <div id="site-header"></div>
 <main><section class="container"><div class="grid" id="chapGrid"></div></section></main>
@@ -22,4 +20,3 @@ const book='proverbs',total=31,base=`/israelite-research/tanakh/${book}/chapter-
 const g=document.getElementById('chapGrid');
 for(let i=1;i<=total;i++){const a=document.createElement('a');a.href=`${base}${i}.html`;a.className='ch';a.textContent=i;g.appendChild(a);}
 </script><script src="/israelite-research/js/wire-chapter-cards.js"></script>
-<script defer="True" src="/israelite-research/js/verses.js"></script></body></html>
