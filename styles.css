@@ -2845,3 +2845,43 @@ html[data-theme="dark"] #verse-card .vc-head{ color:#81A4CD; }
 
 /* Keep tooltip behavior exactly as-is */
 .verse::after { /* no change needed; just ensuring it still shows */ }
+/* Clean, non-link look for citations */
+.verse, .verse a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  color: inherit !important;
+  cursor: help;
+  position: relative;
+}
+
+/* Hover card with actual Scripture text pulled by verses.js */
+.verse::after{
+  content: attr(data-ref) " — " attr(data-text);
+  position:absolute;
+  left:0;
+  bottom:120%;
+  background:#ffffff;
+  color: var(--ink, #0b2340);
+  border:1px solid var(--border, #e5e7eb);
+  padding:.45rem .6rem;
+  font-size:.85rem;
+  line-height:1.35;
+  border-radius:8px;
+  white-space:normal;
+  width:min(520px,85vw);
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  opacity:0;
+  transform:translateY(4px);
+  pointer-events:none;
+  transition:opacity .12s ease, transform .12s ease;
+  z-index:30;
+}
+.verse:hover::after{ opacity:1; transform:translateY(0); }
+
+/* Dark mode hover card */
+html[data-theme="dark"] .verse::after{
+  background:#2f2f2f;
+  color:#ffffff;
+  border-color: rgba(255,255,255,.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
