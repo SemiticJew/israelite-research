@@ -18,27 +18,29 @@
   inject('site-header', '/partials/header.html');
   inject('site-footer', '/partials/footer.html');
 })();
-// Load Reftagger on article pages
-(function () {
-  if (!document.querySelector('.article-page')) return;
+
+/* Utility: check if current page is an article */
+function isArticlePage() {
+  var b = document.body;
+  return (b && (b.classList.contains('article-doc') || b.dataset.page === 'article'))
+    || /^\/israelite-research\/articles(\/|\.html)/.test(location.pathname);
+}
+
+/* Load Reftagger (articles only) */
+(function(){
+  if (!isArticlePage()) return;
+  window.refTagger = { settings: { bibleVersion: 'KJV', autodetect: true } };
   var rt = document.createElement('script');
   rt.src = '/israelite-research/js/reftagger.js';
   rt.defer = true;
   document.head.appendChild(rt);
 })();
 
-/* Bible HoverCard loader (articles only) */
+/* Load Bible HoverCard (articles only) */
 (function(){
-  try{
-    var b = document.body;
-    var isArticle =
-      (b && (b.classList.contains('article-doc') || b.dataset.page === 'article')) ||
-      /^\/israelite-research\/articles(\/|\.html)/.test(location.pathname);
-    if (isArticle) {
-      var s = document.createElement('script');
-      s.src = '/israelite-research/js/verses.js';
-      s.defer = true;
-      document.head.appendChild(s);
-    }
-  }catch(e){}
+  if (!isArticlePage()) return;
+  var s = document.createElement('script');
+  s.src = '/israelite-research/js/verses.js';
+  s.defer = true;
+  document.head.appendChild(s);
 })();
