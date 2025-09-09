@@ -2956,3 +2956,18 @@ a.bible-ref:hover{ color: var(--accent, #F17300); }
 .footnote-ref sup {
   cursor: auto !important;   /* or 'default' if you prefer */
 }
+/* Bible verse citations */
+.verse,
+a.bible-ref {
+  position: relative;
+  text-decoration: underline dotted;
+  cursor: pointer !important;   /* finger hand cursor */
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* Keep footnotes and bibliography numbers normal */
+.footnote-ref,
+.footnote-ref sup {
+  cursor: auto !important;      /* arrow cursor */
+}
