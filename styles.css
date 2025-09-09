@@ -2885,3 +2885,52 @@ html[data-theme="dark"] .verse::after{
   border-color: rgba(255,255,255,.15);
   box-shadow: 0 8px 24px rgba(0,0,0,.4);
 }
+/* Hover card for Bible refs */
+#bible-hovercard {
+  position: absolute;
+  max-width: 520px;
+  z-index: 9999;
+  background: var(--white, #fff);
+  color: var(--ink, #0b2340);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  padding: 10px;
+  transition: opacity .12s ease;
+  opacity: 0;
+}
+#bible-hovercard .bh-inner{ padding: 8px 10px 10px; }
+#bible-hovercard .bh-header{
+  display:flex; align-items:center; justify-content:space-between;
+  font-weight:600; margin-bottom:6px;
+}
+#bible-hovercard .bh-ref{ color: var(--brand, #054A91); }
+#bible-hovercard .bh-close{
+  background: transparent; border: 0; font-size: 20px; line-height: 1;
+  color: var(--muted, #6b7280); cursor: pointer; border-radius: 50%;
+  width: 28px; height: 28px;
+}
+#bible-hovercard .bh-section{ margin: 8px 0; }
+#bible-hovercard .bh-label{
+  font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted, #6b7280); margin-bottom: 4px;
+}
+#bible-hovercard .bh-text{ font-size: 14px; line-height: 1.45; }
+#bible-hovercard .vr{
+  display:inline-block; min-width: 1.75em; font-weight: 600; color: var(--accent, #F17300);
+}
+a.bible-ref{
+  color: var(--brand, #054A91);
+  border-bottom: 1px dotted currentColor;
+  text-decoration: none;
+}
+a.bible-ref:hover{ color: var(--accent, #F17300); }
+@media (prefers-color-scheme: dark){
+  #bible-hovercard{
+    background: #0b1220; color: #e6e8ee; border-color: rgba(255,255,255,.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  }
+  #bible-hovercard .bh-ref{ color: #81A4CD; }
+  a.bible-ref{ color: #81A4CD; }
+  a.bible-ref:hover{ color: #F17300; }
+}
