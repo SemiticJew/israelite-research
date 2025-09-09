@@ -3,7 +3,8 @@
    - Works with <span class="verse" data-ref="...">...</span>
    - Also (optionally) auto-decorates plain-text refs into anchors
    - Uses lowercase, hyphenated, roman-numeral slugs for numbered books
-   - Normalizes en/em dashes in refs
+   - Normalizes en/em/minus dashes in refs
+   - Removes Strong’s numbers/tags from displayed verse text
 */
 
 (() => {
@@ -54,10 +55,10 @@
     'Ruth':'Ruth',
     '1Sam':'1-Samuel','I Sam':'1-Samuel','1 Samuel':'1-Samuel','First Samuel':'1-Samuel',
     '2Sam':'2-Samuel','II Sam':'2-Samuel','2 Samuel':'2-Samuel','Second Samuel':'2-Samuel',
-    '1Kgs':'1-Kings','1 Kings':'1-Kings','I Kgs':'1-Kings','I Kings':'1-Kings','First Kings':'1-Kings',
-    '2Kgs':'2-Kings','2 Kings':'2-Kings','II Kgs':'2-Kings','II Kings':'2-Kings','Second Kings':'2-Kings',
-    '1Chr':'1-Chronicles','1 Chron':'1-Chronicles','I Chr':'1-Chronicles','I Chron':'1-Chronicles','1 Chronicles':'1-Chronicles',
-    '2Chr':'2-Chronicles','2 Chron':'2-Chronicles','II Chr':'2-Chronicles','II Chron':'2-Chronicles','2 Chronicles':'2-Chronicles',
+    '1Kgs':'1-Kings','I Kgs':'1-Kings','I Kings':'1-Kings','1 Kings':'1-Kings','First Kings':'1-Kings',
+    '2Kgs':'2-Kings','II Kgs':'2-Kings','II Kings':'2-Kings','2 Kings':'2-Kings','Second Kings':'2-Kings',
+    '1Chr':'1-Chronicles','I Chr':'1-Chronicles','I Chron':'1-Chronicles','1 Chron':'1-Chronicles','1 Chronicles':'1-Chronicles',
+    '2Chr':'2-Chronicles','II Chr':'2-Chronicles','II Chron':'2-Chronicles','2 Chron':'2-Chronicles','2 Chronicles':'2-Chronicles',
     'Ezra':'Ezra','Neh':'Nehemiah','Nehemiah':'Nehemiah','Esth':'Esther','Esther':'Esther',
 
     // Wisdom/Poetry
@@ -117,12 +118,10 @@
   };
 
   // ----------------------- UTILITIES -----------------------
-  const cache = new Map();
-  const DASH_RE = /[\u2010-\u2015\u2212]/g; // hyphen range, en/em, minus
-
+  const dashRange = /[\u2010-\u2015\u2212]/g; // hyphen range, en/em, minus
   const ARABIC_TO_ROMAN_SLUG = {1:'i',2:'ii',3:'iii'};
 
-  function normalizeDashes(s){ return String(s).replace(DASH_RE, '-'); }
+  function normalizeDashes(s){ return String(s).replace(dashRange, '-'); }
 
   // Create lowercase, hyphenated, roman-numeral slug (e.g., "2-Kings" -> "ii-kings")
   function slugifyBook(bookCanonical){
@@ -140,8 +139,48 @@
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  // Remove Strong’s numbers/tags from a plain string
+  function stripStrongs(text){
+    if (!text) return '';
+    let t = String(text);
+
+    // Common notations: [H7225], <H7225>, {H7225}, H7225 / G3056 as standalone tokens
+    t = t.replace(/\[(?:H|G)\d{1,5}\]/gi, '');
+    t = t.replace(/<(?:H|G)\d{1,5}>/gi, '');
+    t = t.replace(/\{[^{}]*?(?:H|G)\d{1,5}[^{}]*?\}/gi, '');
+    t = t.replace(/\b(?:H|G)\d{3,5}\b/gi, '');
+
+    // Remove simple <strongs ...>…</strongs> or <w s="H7225">word</w> style tags (keep inner words if present)
+    t = t.replace(/<\s*\/?\s*strongs[^>]*>/gi, '');
+    t = t.replace(/<\s*w[^>]*>(.*?)<\s*\/\s*w\s*>/gi, '$1');
+
+    // Strip any lingering HTML tags (your chapter JSON should be plain, but just in case)
+    t = t.replace(/<[^>]+>/g, '');
+
+    // Collapse extra spaces created by removals
+    t = t.replace(/\s{2,}/g, ' ').trim();
+    return t;
+  }
+
+  // Normalize verse value that may be string, object, or array of tokens
+  function normalizeVerseValue(val){
+    if (Array.isArray(val)){
+      // token arrays: prefer word field (w/text), ignore strongs fields
+      return val.map(tok => {
+        if (typeof tok === 'string') return tok;
+        if (tok && typeof tok === 'object') return tok.w || tok.word || tok.text || tok.t || '';
+        return '';
+      }).join(' ');
+    }
+    if (val && typeof val === 'object'){
+      // objects like {t: "..."} or {text: "..."}
+      return normalizeVerseValue(val.t || val.text || '');
+    }
+    return String(val || '');
+  }
+
   // ----------------------- PARSING -----------------------
-  // Accepts: "Ps 68:31", "Song 1:5-6", "Isa 20", "1 Kgs 8:10-11"
+  // Accepts: "Ps 68:31", "Song 1:5-6", "Isa 20", "1 Kgs 8:10-11", "II Kings 8:10"
   function parseRef(ref){
     ref = normalizeDashes(ref);
     const m = /^\s*([^\d]+?)\s+(\d+)(?::([\d,\-\s]+))?\s*$/.exec(ref);
@@ -160,7 +199,7 @@
     // Try direct map first
     if (BOOK_MAP[tokenRaw]) return BOOK_MAP[tokenRaw];
 
-    // Normalize things like "II Kings" → "2 Kings" → BOOK_MAP
+    // Normalize roman numerals at the front: "III", "II", "I" → 3/2/1
     const romanToArabic = tokenRaw
       .replace(/^III(\s|-)/i, '3$1')
       .replace(/^II(\s|-)/i,  '2$1')
@@ -174,7 +213,7 @@
     const compact = romanToArabic.replace(/^([123])([A-Za-z])/, '$1 $2');
     if (BOOK_MAP[compact]) return BOOK_MAP[compact];
 
-    // Fallback: title case words, replace spaces with hyphens only later in slugify
+    // Fallback: title case words and hyphenate
     return tokenRaw
       .split(/\s+/)
       .map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase())
@@ -199,9 +238,11 @@
   }
 
   // ----------------------- DATA FETCH -----------------------
+  const chapterCache = new Map();
+
   async function getChapter(bookCanonical, chapter){
     const key = `${bookCanonical}|${chapter}`;
-    if (cache.has(key)) return cache.get(key);
+    if (chapterCache.has(key)) return chapterCache.get(key);
 
     const canon = canonFor(bookCanonical);
     const slug  = slugifyBook(bookCanonical); // e.g., 'psalms', 'mark', 'ii-kings'
@@ -210,7 +251,7 @@
     const res = await fetch(url, {cache:'force-cache'});
     if (!res.ok) throw new Error(`Missing chapter data: ${url}`);
     const json = await res.json();
-    cache.set(key, json);
+    chapterCache.set(key, json);
     return json;
   }
 
@@ -226,9 +267,11 @@
     const getVerse = (n)=>{
       if (Array.isArray(trans)){
         const hit = trans.find(x => (x.v ?? x.verse) == n);
-        return hit ? (hit.t ?? hit.text ?? '') : '';
+        const raw = hit ? (hit.t ?? hit.text ?? hit) : '';
+        return stripStrongs(normalizeVerseValue(raw));
       } else if (trans && typeof trans === 'object'){
-        return trans[n] || '';
+        const raw = trans[n];
+        return stripStrongs(normalizeVerseValue(raw));
       }
       return '';
     };
@@ -367,10 +410,7 @@
 
   // Optional: auto-decorate plain text citations (e.g., "Ps 68:31") into anchors
   const CITE_RE = new RegExp(
-    // Build a permissive matcher; book token then space, chapter, optional :verses
-    String.raw`(?:^|[\s\(\[\{,;])` + // leading boundary
-    String.raw`(` + [
-      // Build from keys of BOOK_MAP plus a few generic patterns to catch “II Kings”, etc.
+    String.raw`(?:^|[\s\(\[\{,;])(` + [
       ...Object.keys(BOOK_MAP).sort((a,b)=>b.length-a.length).map(escapeRegex),
       'I\\s+Sam','II\\s+Sam','III\\s+John','II\\s+John','I\\s+John',
       'I\\s+Kgs','II\\s+Kgs','I\\s+Chr','II\\s+Chr',
@@ -387,13 +427,12 @@
   function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
 
   function decorateCitations(root=document){
-    const nodeFilter = NodeFilter.SHOW_TEXT;
-    const walker = document.createTreeWalker(root.body || root, nodeFilter, null);
+    const walker = document.createTreeWalker(root.body || root, NodeFilter.SHOW_TEXT, null);
     const targets = [];
     while (walker.nextNode()){
       const node = walker.currentNode;
       if (!node.nodeValue) continue;
-      if (CITE_RE.test(node.nodeValue)){ targets.push(node); }
+      if (CITE_RE.test(node.nodeValue)) targets.push(node);
       CITE_RE.lastIndex = 0;
     }
     targets.forEach(node=>{
