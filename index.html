@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Israelite Research</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
+
+<!-- New theme stylesheet (#2) -->
+<link href="/israelite-research/styles-theme.css" rel="stylesheet"/>
+
 <style>
     :root{
       --accent:#F17300;
@@ -51,8 +54,10 @@
     .card-cta{ display:none; }
   </style>
 <style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
+.verse:hover::after{opacity:1; transform:translateY(0);}</style>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style>
+</head>
 <body>
 <div id="site-header"></div>
 <!-- index.html -->
@@ -148,6 +153,56 @@
 </section>
 </main>
 <div id="site-footer"></div>
-<script defer="" src="/israelite-research/js/theme.js"></script>
+
+<!-- Theme Switcher UI (#3) -->
+<div id="theme-switcher" style="
+  position:fixed; right:16px; bottom:16px; z-index:9999;
+  background:var(--surface); color:var(--text);
+  border:1px solid var(--border); border-radius:14px; padding:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15); display:flex; gap:8px; align-items:center;">
+  <label for="themePicker" style="font:600 12px/1 system-ui;">Theme</label>
+  <select id="themePicker" class="select" style="min-width:160px">
+    <option value="default">Default</option>
+    <option value="sky">Sky</option>
+    <option value="deep">Deep</option>
+    <option value="earth">Earth</option>
+    <option value="contrast">Contrast</option>
+    <option value="dark">Dark</option>
+    <option value="dark-earth">Dark-Earth</option>
+  </select>
+  <button class="btn" id="themeReset" title="Reset to Default">Reset</button>
+</div>
+
+<script defer src="/israelite-research/js/theme.js"></script>
 <script src="/israelite-research/js/include.js"></script>
+
+<!-- Theme Switcher Script (#3) -->
+<script>
+(function(){
+  const KEY = "ir-theme";
+  const html = document.documentElement;
+  const select = document.getElementById("themePicker");
+  const reset = document.getElementById("themeReset");
+
+  function apply(theme){
+    if(!theme) theme = "default";
+    html.setAttribute("data-theme", theme);
+    select.value = theme;
+    try{ localStorage.setItem(KEY, theme); }catch(e){}
+  }
+
+  const saved = (()=>{
+    try{ return localStorage.getItem(KEY); }catch(e){ return null; }
+  })();
+  apply(saved || "default");
+
+  select.addEventListener("change", e=> apply(e.target.value));
+  reset.addEventListener("click", ()=> apply("default"));
+
+  if(!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
+    apply("dark");
+  }
+})();
+</script>
+</body>
 </html>
