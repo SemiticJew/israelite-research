@@ -1,15 +1,13 @@
 /* nt-chapter.js
- * Reader loader for Tanakh + New Testament + Apocrypha
- * - Clean, spaced, per-verse rendering into #verses
- * - Accepts MANY chapter JSON shapes and normalizes to [{v,t,c,s}]
- * - Strong’s artifacts stripped from main text & previews
- * - Xrefs/lex/commentary toolbars preserved
- * - Robust fetch with absolute+relative fallbacks & on-page error details
+ * Reader loader for Tanakh + New Testament
+ * - Inline xrefs + hover previews positioned relative to the link
+ * - Inline lex panel (Strong’s H/G), per-verse commentary, anchors + copy-link
+ * - Roman numeral titles/crumbs for multi-book series
+ * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
 (function () {
-  const EASTON_DICTIONARY_PATH = "/israelite-research/data/dictionaries/easton_dictionary.json"; // optional local data
-  let lastFetchError = { url: "", status: "", message: "" };
+  const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional local data
 
   // ---------------- Chapter counts (common slug variants included) ----------
   const NT = {
@@ -77,6 +75,7 @@
       .replace(/[^a-z0-9\-]/g, "");
   }
 
+  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
@@ -116,107 +115,29 @@
     return idx > -1 ? path.slice(0, idx) : "";
   }
 
-  // ---------------- JSON normalizer (handles many shapes) -------------------
-  function pick(obj, keys) {
-    for (const k of keys) {
-      if (obj != null && Object.prototype.hasOwnProperty.call(obj, k)) return obj[k];
-    }
-    return undefined;
-  }
-  function asInt(x, def=null){
-    const n = parseInt(x, 10);
-    return Number.isFinite(n) ? n : def;
-  }
-  function normalizeOneVerse(o, idx) {
-    // Accepts either string or object
-    if (typeof o === "string") {
-      return { v: idx + 1, t: o, c: [], s: [] };
-    }
-    if (!o || typeof o !== "object") return null;
-
-    const v =
-      asInt(pick(o, ["v","verse","n","num","number","id"]), idx + 1);
-
-    const tRaw =
-      pick(o, ["t","text","line","content","value"]) ?? "";
-
-    const cRaw =
-      pick(o, ["c","xrefs","xref","crossrefs","crossRefs","cross_references"]) || [];
-
-    const sRaw =
-      pick(o, ["s","strongs","strong","strongs_numbers","strongsNumbers"]) || [];
-
-    const text = String(tRaw);
-    const c = Array.isArray(cRaw) ? cRaw.map(String) : [];
-    const s = Array.isArray(sRaw) ? sRaw.map(String) : [];
-
-    return { v, t: text, c, s };
-  }
-  function normalizeChapterJSON(raw) {
-    // 1) Array of objects OR strings
-    if (Array.isArray(raw)) {
-      const out = raw.map((item, i) => normalizeOneVerse(item, i)).filter(Boolean);
-      if (out.length) return out;
-    }
-
-    // 2) Wrapped in { verses: [...] } or { chapter: { verses: [...] } } or { data: { verses: [...] } }
-    const maybeVerses =
-      (raw && (raw.verses || (raw.chapter && raw.chapter.verses) || (raw.data && raw.data.verses))) || null;
-    if (Array.isArray(maybeVerses)) {
-      const out = maybeVerses.map((item, i) => normalizeOneVerse(item, i)).filter(Boolean);
-      if (out.length) return out;
-    }
-
-    // 3) Object map: { "1": "text", "2": "text" } OR { "1": {text:"", ...}, ... }
-    if (raw && typeof raw === "object") {
-      const keys = Object.keys(raw).filter(k => /^\d+$/.test(k)).sort((a,b) => asInt(a)-asInt(b));
-      if (keys.length) {
-        const out = keys.map((k, i) => normalizeOneVerse(raw[k], asInt(k)-1)).filter(Boolean);
-        if (out.length) return out;
-      }
-    }
-
-    // 4) Nothing matched
-    return null;
-  }
-
-  // ---------------- Fetch chapter (robust) ----------------
+  // ---------------- Fetch chapter ----------------
   async function fetchChapter(book, ch) {
     const canon = getCanon();
-    const basePath = getSiteBase() || "/israelite-research";
-    const origin = location.origin;
+    const rel1  = new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname;
+    const rel2  = new URL(`../../data/${canon}/${book}/${ch}.json`, location.href).pathname;
+    const base  = getSiteBase() || "/israelite-research";
+    const abs1  = `${base}/data/${canon}/${book}/${ch}.json`;
+    const abs2  = `/israelite-research/data/${canon}/${book}/${ch}.json`;
+    const abs3  = `/data/${canon}/${book}/${ch}.json`;
+    const candidates = [rel1, rel2, abs1, abs2, abs3];
 
-    // Candidate URLs (relative, absolute with base, absolute with site root)
-    const candidates = [
-      new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname,
-      new URL(`../../data/${canon}/${book}/${ch}.json`, location.href).pathname,
-      `${basePath}/data/${canon}/${book}/${ch}.json`,
-      `/israelite-research/data/${canon}/${book}/${ch}.json`,
-      `/data/${canon}/${book}/${ch}.json`,
-      `${origin}${basePath}/data/${canon}/${book}/${ch}.json`,
-      `${origin}/israelite-research/data/${canon}/${book}/${ch}.json`
-    ].filter((v, i, a) => v && a.indexOf(v) === i); // dedupe
-
+    let lastErr;
     for (const url of candidates) {
       try {
-        const res = await fetch(url, { cache: "force-cache" });
-        if (!res.ok) {
-          lastFetchError = { url, status: `HTTP ${res.status}`, message: "" };
-          continue;
-        }
-        const raw = await res.json();
-        const data = normalizeChapterJSON(raw);
-        if (Array.isArray(data) && data.length) {
-          return data;
-        } else {
-          lastFetchError = { url, status: "OK", message: "Unrecognized JSON structure" };
-          continue;
-        }
-      } catch (e) {
-        lastFetchError = { url, status: "Fetch/parse error", message: e?.message || String(e) };
-      }
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
+        console.info("[chapter] loaded:", url);
+        return data;
+      } catch (e) { lastErr = e; console.warn("[chapter] failed:", url, e.message); }
     }
-    throw new Error(`Could not load chapter JSON. Last: ${lastFetchError.status} at ${lastFetchError.url || "n/a"}`);
+    throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
   }
 
   // Cache for verse-preview lookups (xref hover)
@@ -225,29 +146,28 @@
     const key = `${canon}:${bookSlug}:${ch}`;
     if (chapterCache.has(key)) return chapterCache.get(key);
     const base  = getSiteBase() || "/israelite-research";
-    const origin = location.origin;
     const urls = [
       `${base}/data/${canon}/${bookSlug}/${ch}.json`,
       `/israelite-research/data/${canon}/${bookSlug}/${ch}.json`,
-      `/data/${canon}/${bookSlug}/${ch}.json`,
-      `${origin}${base}/data/${canon}/${bookSlug}/${ch}.json`,
-      `${origin}/israelite-research/data/${canon}/${bookSlug}/${ch}.json`
+      `/data/${canon}/${bookSlug}/${ch}.json`
     ];
+    let lastErr;
     for (const url of urls) {
       try {
         const res = await fetch(url, { cache: "force-cache" });
-        if (!res.ok) continue;
-        const raw = await res.json();
-        const data = normalizeChapterJSON(raw);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
         if (Array.isArray(data)) { chapterCache.set(key, data); return data; }
-      } catch {}
+      } catch (e) { lastErr = e; }
     }
+    console.warn("[xref-preview] failed to load", canon, bookSlug, ch, lastErr?.message);
     chapterCache.set(key, null);
     return null;
   }
 
-  // ---------------- UI helpers (hovercards etc.) ----------------
+  // ---------------- UI helpers (UPDATED hovercards) ----------------
   const hovercard = document.getElementById("hovercard");
+
   function showHovercardAt(el, html) {
     if (!hovercard || !el) return;
     const rect = el.getBoundingClientRect();
@@ -258,8 +178,9 @@
     hovercard.classList.add("open");
     hovercard.setAttribute("aria-hidden", "false");
 
+    // Place under the link and keep within viewport
     const pad = 8;
-    let top  = rect.bottom + pad;
+    let top  = rect.bottom + pad;             // fixed: no scrollY
     let left = rect.left + rect.width / 2;
 
     const maxLeft = window.innerWidth - 16;
@@ -271,6 +192,7 @@
     hovercard.style.top  = `${top}px`;
     hovercard.style.transform = "translateX(-50%)";
   }
+
   function hideHovercard() {
     if (!hovercard) return;
     hovercard.classList.remove("open");
@@ -278,11 +200,52 @@
     hovercard.style.display = "none";
     hovercard.style.transform = "";
   }
+
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
   }
 
-  // ---------------- Strong’s helpers ----------------------------------------
+  // Inline panels under each verse (lex / xrefs)
+  function ensureInlinePanel(verseEl, kind/* 'lex' | 'xref' */){
+    const id = kind === 'lex' ? 'lex-inline' : 'xref-inline';
+    let panel = verseEl.querySelector(`.${id}`);
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = id;
+      panel.style.margin = '0.35rem 0 0.1rem';
+      panel.style.paddingLeft = '36px';
+      verseEl.appendChild(panel);
+    }
+    return panel;
+  }
+  function renderInlinePanel(verseEl, kind, html){
+    const panel = ensureInlinePanel(verseEl, kind);
+    panel.innerHTML = html;
+    panel.style.display = 'block';
+  }
+  function hideInlinePanels(){
+    document.querySelectorAll('.lex-inline, .xref-inline').forEach(el => el.style.display = 'none');
+  }
+  function isPanelOpen(verseEl, kind){
+    const el = verseEl.querySelector(kind === 'lex' ? '.lex-inline' : '.xref-inline');
+    return !!el && el.style.display !== 'none' && el.innerHTML.trim() !== '';
+  }
+
+  // Use Roman numerals in UI titles/crumbs for multi-book series
+  function setDynamicTitles() {
+    const canon = getCanon();
+    const canonTitle = canon === "tanakh" ? "Tanakh" : "New Testament";
+    const bookSlug = getBookSlug();
+    const bookTitle = makeDisplayTitleFromSlug(bookSlug) || canonTitle;
+    const ch = getChapter();
+    const h1 = document.getElementById("pageTitle");
+    const crumbs = document.getElementById("crumbs");
+    if (h1) h1.textContent = `${bookTitle} (KJV) — Chapter ${ch}`;
+    if (crumbs) crumbs.textContent = `${canonTitle} → ${bookTitle} → Chapter ${ch}`;
+    document.title = `${bookTitle} — Chapter ${ch}`;
+  }
+
+  // ---------------- Strong’s (H/G) ------------------------------------------
   function normalizeStrongs(code){
     return String(code || "")
       .toUpperCase()
@@ -343,7 +306,7 @@
 
   // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`;
+    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -354,7 +317,7 @@
   }
 
   // ---------------- Permalinks ----------------------------------------------
-  function verseId(n){ return `v${n}`; }
+  function verseId(n){ return `v${n}`; } // anchor id format
   function buildVersePermalink(n){
     const url = new URL(location.href);
     url.hash = `#${verseId(n)}`;
@@ -405,67 +368,6 @@
     const basePath = getSiteBase() || "/israelite-research";
     const href = `${basePath}/${canon}/chapter.html?book=${slug}&ch=${ch}#v${v}`;
     return { canon, slug, ch, v, href, display };
-  }
-
-  // ---------------- Enforce per-verse spacing (CSS injection) ---------------
-  function injectSpacingCSS(){
-    const css = `
-      #verses .verse{
-        display:flex;
-        flex-direction:column;
-        gap:.5rem;
-        margin:0 0 1.05rem 0;
-        padding:.45rem .1rem;
-      }
-      #verses .vline{
-        display:flex;
-        gap:.6rem;
-        align-items:flex-start;
-      }
-      #verses .vnum{
-        min-width:28px;
-        text-align:right;
-        color:var(--muted, #6b7280);
-        font-weight:800;
-        font-variant-numeric: tabular-nums;
-      }
-      #verses .vtext{
-        line-height:1.85;
-        color:var(--ink, #0b2340);
-        white-space:normal;
-        word-break:break-word;
-      }
-      #verses .v-toolbar{
-        display:flex;
-        gap:.45rem;
-        padding-left:36px;
-        flex-wrap:wrap;
-      }
-      #verses .v-toolbar button{
-        border:1px solid var(--border, #e6ebf2);
-        background:var(--surface, #fff);
-        border-radius:10px;
-        padding:.28rem .55rem;
-        font:inherit;
-        cursor:pointer;
-      }
-      #verses .v-toolbar button:hover{
-        background:rgba(5,74,145,.06);
-      }
-      html[data-theme="dark"] #verses .vtext{ color:#fff; }
-      html[data-theme="dark"] #verses .vnum{ color:rgba(255,255,255,.85); }
-      html[data-theme="dark"] #verses .v-toolbar button{
-        border-color:rgba(255,255,255,.2);
-        background:#0f1a2b;
-        color:#fff;
-      }
-      html[data-theme="dark"] #verses .v-toolbar button:hover{ background:#13233a; }
-      #verses, #verses .vtext { font-size:1rem; }
-      @media (max-width: 640px){ #verses, #verses .vtext { font-size:1.02rem; } }
-    `;
-    const s = document.createElement('style');
-    s.textContent = css;
-    document.head.appendChild(s);
   }
 
   // ---------------- Renderer -------------------------------------------------
@@ -564,7 +466,7 @@
       });
     });
 
-    // Hover preview for xrefs (Strong’s stripped)
+    // Hover preview for xrefs: fetch chapter JSON once, show verse text UNDER LINK
     versesEl.addEventListener("mouseover", async (e) => {
       const a = e.target.closest(".xref-link");
       if (!a) return;
@@ -588,7 +490,7 @@
       hideHovercard();
     });
 
-    // -------- Lex panel (inline), loads Strong’s entry when a code-pill is clicked
+    // lex button → inline toggle panel + sentence; click code to load details
     function formatSentenceList(arr){
       const a = arr.slice();
       if (a.length <= 1) return a.join('');
@@ -722,14 +624,14 @@
     }
   }
 
-  // ---------- Easton dictionary (right panel) ----------
-  async function wireEastonDictionaryPanel(){
+  // ---------- Zondervan dictionary (right panel) ----------
+  async function wireZondervanPanel(){
     const dictRoot = document.getElementById("dictPanel");
     const dictSearch = document.getElementById("dictSearch");
     if (!dictRoot) return;
     const ensureDict = async () => {
       try {
-        const r = await fetch(EASTON_DICTIONARY_PATH, { cache: "force-cache" });
+        const r = await fetch(ZONDERVAN_PATH, { cache: "force-cache" });
         if (!r.ok) throw 0;
         return await r.json();
       } catch { return null; }
@@ -737,7 +639,7 @@
     const doSearch = async (q) => {
       q = (q || "").trim();
       const data = await ensureDict();
-      if (!data) { dictRoot.innerHTML = '<p class="muted">Dictionary data not found. Add <code>data/dictionaries/easton_dictionary.json</code>.</p>'; return; }
+      if (!data) { dictRoot.innerHTML = '<p class="muted">Dictionary data not found. Add <code>data/dictionaries/zondervan.json</code>.</p>'; return; }
       if (!q) { dictRoot.innerHTML = '<p class="muted">Enter a term above.</p>'; return; }
       const term = q.toLowerCase();
       const hits = [];
@@ -761,8 +663,6 @@
 
   // ---------------- Bootstrap ----------------
   async function init() {
-    injectSpacingCSS();
-
     setDynamicTitles();
     populateChapterSelect(getChapter());
 
@@ -774,13 +674,10 @@
     const book = getBookSlug();
     const ch   = getChapter();
 
-    const versesEl = document.getElementById("verses");
-    if (versesEl) versesEl.innerHTML = '<p class="muted">Loading…</p>';
-
     try {
       const data = await fetchChapter(book, ch);
       await renderChapter(data);
-      await wireEastonDictionaryPanel();
+      await wireZondervanPanel();
 
       // Prefetch neighbors
       const canon = getCanon();
@@ -790,11 +687,9 @@
       try { fetch(nextUrl, { cache: "force-cache" }); } catch {}
       if (prevUrl) try { fetch(prevUrl, { cache: "force-cache" }); } catch {}
     } catch (err) {
-      const versesEl2 = document.getElementById("verses");
-      const detail = lastFetchError.url
-        ? `<div style="margin-top:.4rem;font-size:.9rem;color:#b91c1c">Last attempt: <code>${escapeHtml(lastFetchError.url)}</code> — ${escapeHtml(lastFetchError.status || err.message)}${lastFetchError.message ? ` (${escapeHtml(lastFetchError.message)})` : ""}</div>`
-        : '';
-      if (versesEl2) versesEl2.innerHTML = `<p class="muted">Could not load chapter data.</p>${detail}`;
+      const versesEl = document.getElementById("verses");
+      if (versesEl) versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
+      console.error(err);
     }
   }
 
