@@ -1,4 +1,4 @@
-/* chapter-view.js — stacked per-verse rendering with clear separation */
+/* chapter-view.js — enforce one-verse-per-line with clear spacing */
 (function(){
   'use strict';
 
@@ -12,7 +12,6 @@
 
   if (!host) return;
 
-  // Strong’s/artifact stripping
   function stripArtifacts(text){
     if (!text) return '';
     return String(text)
@@ -33,35 +32,32 @@
   }
   function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-  // Inject CSS that guarantees visible separation
+  // 🔧 Stronger CSS: each verse is its own paragraph with margin/border for separation
   (function injectCSS(){
     const css = `
-      .verselist{ display:block; margin:12px 0 28px; }
-      .verse-row{ display:flex; align-items:flex-start; gap:.6rem;
-                  padding:.45rem 0; border-top:1px solid var(--border, rgba(0,0,0,.12)); }
-      .verse-row:first-child{ border-top:1px solid var(--border, rgba(0,0,0,.12)); }
-      .verse-num{ flex:0 0 auto; min-width:2.25rem; text-align:right; font-weight:800; color:var(--accent,#F17300); }
-      .verse-text{ flex:1 1 auto; line-height:1.75; white-space:normal; }
+      .verselist{ display:block; margin:14px 0 28px; }
+      .verse-row{ display:block; margin:.55rem 0 .8rem; padding:0 0 .55rem 0;
+                  border-bottom:1px solid var(--border, rgba(0,0,0,.12)); line-height:1.8; }
+      .verse-row:last-child{ border-bottom:1px solid var(--border, rgba(0,0,0,.12)); }
+      .verse-num{ font-weight:800; color:var(--accent,#F17300); margin-right:.5rem; }
+      .verse-text{ white-space:normal; }
       html[data-theme="dark"] .verse-row{ border-color: rgba(255,255,255,.18); }
       html[data-theme="dark"] .verse-text{ color:#fff; }
     `;
     const s=document.createElement('style'); s.textContent=css; document.head.appendChild(s);
   })();
 
-  // Params
   const url = new URL(location.href);
   const rawBook = (url.searchParams.get('book') || '').trim();
   const chParam = parseInt(url.searchParams.get('ch') || url.searchParams.get('chapter') || '1', 10);
   if (!rawBook || !chParam || Number.isNaN(chParam)) return;
 
-  // Detect canon from path
   const path = location.pathname.toLowerCase();
   const CANON =
     path.includes('/tanakh/') ? 'tanakh' :
     path.includes('/newtestament/') ? 'newtestament' :
     path.includes('/apocrypha/') ? 'apocrypha' : 'tanakh';
 
-  // Normalize slug (supports i-/ii-/iii-)
   function normalizeBookSlug(raw){
     let s = String(raw).toLowerCase().replace(/\s+/g,'-');
     s = s
@@ -93,46 +89,59 @@
   function renderHeader(label, ch){
     const wrap = document.createElement('div');
     wrap.innerHTML = `
-      <h1 class="chapter-title" style="margin:.25rem 0 .75rem;font-family:var(--ff-serif,serif);font-weight:900;">
+      <h1 class="chapter-title" style="margin:.25rem 0 .9rem;font-family:var(--ff-serif,serif);font-weight:900;">
         ${escapeHtml(label)} ${ch}
       </h1>`;
     return wrap;
   }
+
+  // ✅ Each verse is its own <p class="verse-row"> with a <sup> number
   function renderVerses(trans){
     const list = document.createElement('div');
     list.className = 'verselist';
 
-    // Object map { "1": "...", "2":"..." }
+    // Object map
     if (trans && typeof trans === 'object' && !Array.isArray(trans)) {
       Object.keys(trans)
         .map(n=>parseInt(n,10))
         .filter(n=>!Number.isNaN(n))
         .sort((a,b)=>a-b)
         .forEach(n=>{
-          const row = document.createElement('div');
-          row.className = 'verse-row';
-          const text = escapeHtml(stripArtifacts(normVerseVal(trans[n])));
-          row.innerHTML = `<span class="verse-num">${n}</span><span class="verse-text">${text}</span>`;
-          list.appendChild(row);
+          const p = document.createElement('p');
+          p.className = 'verse-row';
+          const num = document.createElement('sup');
+          num.className = 'verse-num';
+          num.textContent = n;
+          const text = document.createElement('span');
+          text.className = 'verse-text';
+          text.textContent = stripArtifacts(normVerseVal(trans[n]));
+          p.appendChild(num);
+          p.appendChild(text);
+          list.appendChild(p);
         });
       return list;
     }
 
-    // Array of { v, t } structures
+    // Array form
     if (Array.isArray(trans)) {
       trans.forEach(item=>{
         const vNum = item?.v ?? item?.verse ?? '';
-        const text = escapeHtml(stripArtifacts(normVerseVal(item?.t ?? item?.text ?? item)));
-        if (!text) return;
-        const row = document.createElement('div');
-        row.className = 'verse-row';
-        row.innerHTML = `<span class="verse-num">${vNum}</span><span class="verse-text">${text}</span>`;
-        list.appendChild(row);
+        const p = document.createElement('p');
+        p.className = 'verse-row';
+        const num = document.createElement('sup');
+        num.className = 'verse-num';
+        num.textContent = vNum;
+        const text = document.createElement('span');
+        text.className = 'verse-text';
+        text.textContent = stripArtifacts(normVerseVal(item?.t ?? item?.text ?? item));
+        p.appendChild(num);
+        p.appendChild(text);
+        list.appendChild(p);
       });
       return list;
     }
 
-    const empty = document.createElement('div');
+    const empty = document.createElement('p');
     empty.textContent = 'No verses found.';
     return empty;
   }
