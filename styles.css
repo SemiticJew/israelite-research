@@ -2934,3 +2934,11 @@ a.bible-ref:hover{ color: var(--accent, #F17300); }
   a.bible-ref{ color: #81A4CD; }
   a.bible-ref:hover{ color: #F17300; }
 }
+/* Update verse hover styling */
+.verse {
+  position: relative;
+  text-decoration: underline dotted;
+  cursor: pointer;   /* finger pointing hand instead of help/question mark */
+  color: var(--brand);
+  font-weight: 600;
+}
