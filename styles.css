@@ -2834,3 +2834,14 @@ html[data-theme="dark"] #verse-card{
   box-shadow:0 16px 40px rgba(0,0,0,.6);
 }
 html[data-theme="dark"] #verse-card .vc-head{ color:#81A4CD; }
+/* Remove underline/link look from all inline Bible citations */
+.verse,
+.verse a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  color: inherit !important;   /* no “link blue” */
+  cursor: help;                /* keep tooltip cue */
+}
+
+/* Keep tooltip behavior exactly as-is */
+.verse::after { /* no change needed; just ensuring it still shows */ }
