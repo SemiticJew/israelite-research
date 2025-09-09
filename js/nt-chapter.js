@@ -368,8 +368,25 @@
 
   // ---------------- Enforce per-verse spacing (CSS injection) ---------------
   function injectSpacingCSS(){
-    const css = `
-      #verses .verse{ display:flex; flex-direction:column; gap:.45rem; margin:0 0 1.05rem 0; padding:.45rem .1rem; }
+  const css = `
+    #verses .verse{ display:flex; flex-direction:column; gap:.5rem; margin:0 0 1.05rem 0; padding:.45rem .1rem; }
+    #verses .vline{ display:flex; gap:.6rem; align-items:flex-start; }
+    #verses .vnum{ min-width:28px; text-align:right; color:var(--muted, #6b7280); font-weight:800; font-variant-numeric: tabular-nums; }
+    #verses .vtext{ line-height:1.85; color:var(--ink, #0b2340); white-space:normal; word-break:break-word; }
+    #verses .v-toolbar{ display:flex; gap:.45rem; padding-left:36px; flex-wrap:wrap; }
+    #verses .v-toolbar button{ border:1px solid var(--border, #e6ebf2); background:var(--surface, #fff); border-radius:10px; padding:.28rem .55rem; font:inherit; cursor:pointer; }
+    #verses .v-toolbar button:hover{ background:rgba(5,74,145,.06); }
+    html[data-theme="dark"] #verses .vtext{ color:#fff; }
+    html[data-theme="dark"] #verses .vnum{ color:rgba(255,255,255,.85); }
+    html[data-theme="dark"] #verses .v-toolbar button{ border-color:rgba(255,255,255,.2); background:#0f1a2b; color:#fff; }
+    html[data-theme="dark"] #verses .v-toolbar button:hover{ background:#13233a; }
+    #verses, #verses .vtext { font-size:1rem; }
+     (max-width: 640px){ #verses, #verses .vtext { font-size:1.02rem; } }
+  `;
+  const s = document.createElement("style");
+  s.textContent = css;
+  document.head.appendChild(s);
+}
       #verses .vline{ display:flex; gap:.6rem; align-items:flex-start; }
       #verses .vnum{ min-width:28px; text-align:right; color:var(--muted); font-weight:800; }
       #verses .vtext{ line-height:1.85; color:var(--ink, #0b2340); white-space:normal; }
