@@ -3028,3 +3028,153 @@ html[data-theme="dark"] #chapter-root .btn-ghost{
 
 #hovercard .vc-ref{ font-weight:700; color: var(--ink, #0b2340); }
 #hovercard .vc-text{ white-space: normal; word-break: break-word; }
+/* styles-theme.css */
+/* Base scale: all components should read from these tokens */
+:root{
+  /* Core brand palette (your colors) */
+  --brand-900:#0b2340; /* ink navy */
+  --brand-800:#054A91; /* deep brand blue */
+  --brand-700:#3E7CB1; /* medium steel blue */
+  --brand-400:#81A4CD; /* pale blue */
+  --brand-100:#DBE4EE; /* light sky */
+  --accent-600:#F17300; /* accent orange */
+  --earth-700:#2E5339; /* deep earthy green (new) */
+  --neutral-0:#ffffff;
+  --neutral-100:#f6f8fb;
+  --neutral-900:#000000;
+  --dark-ink:#0b1220;   /* dark-mode candidate */
+
+  /* Semantic tokens (components use THESE) */
+  --bg: var(--neutral-0);
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --text: var(--brand-900);
+  --muted: #6b7280;
+  --link: var(--brand-800);
+  --link-hover: var(--brand-700);
+  --primary: var(--brand-800);
+  --primary-contrast: #ffffff;
+  --accent: var(--accent-600);
+  --accent-contrast: #ffffff;
+  --success: var(--earth-700);
+  --border: #e6ebf2;
+  --ring: color-mix(in oklab, var(--primary), #000 15%);
+}
+
+/* Theme variants (toggle by setting [data-theme="..."] on <html>) */
+
+/* 1) Default (balanced blues + orange) */
+:root[data-theme="default"]{
+  --bg: var(--neutral-0);
+  --surface:#ffffff;
+  --surface-2:#fafcff;
+  --text: var(--brand-900);
+  --muted:#6b7280;
+  --link: var(--brand-800);
+  --link-hover: var(--brand-700);
+  --primary: var(--brand-800);
+  --accent: var(--accent-600);
+  --border:#e6ebf2;
+}
+
+/* 2) Sky (lighter UI, airy) */
+:root[data-theme="sky"]{
+  --bg: var(--brand-100);
+  --surface:#ffffff;
+  --surface-2:#f3f7fb;
+  --text: var(--brand-900);
+  --muted:#556070;
+  --link: var(--brand-800);
+  --link-hover: var(--brand-700);
+  --primary: var(--brand-700);
+  --accent: var(--accent-600);
+  --border: color-mix(in oklab, var(--brand-100), #000 10%);
+}
+
+/* 3) Deep (ink-first, serious tone) */
+:root[data-theme="deep"]{
+  --bg: #f3f5f8;
+  --surface:#ffffff;
+  --surface-2:#f7f9fc;
+  --text: var(--brand-900);
+  --muted:#4b5563;
+  --link: var(--brand-800);
+  --link-hover: var(--accent-600);
+  --primary: var(--brand-900);
+  --accent: var(--accent-600);
+  --border:#d9e1ea;
+}
+
+/* 4) Earth (brings in the green) */
+:root[data-theme="earth"]{
+  --bg:#f5f8f6;
+  --surface:#ffffff;
+  --surface-2:#f0f5f2;
+  --text:#143222;
+  --muted:#52605a;
+  --link: var(--earth-700);
+  --link-hover: var(--brand-800);
+  --primary: var(--earth-700);
+  --accent: var(--accent-600);
+  --border:#d9e6df;
+}
+
+/* 5) Contrast (blue/orange pop for marketing pages) */
+:root[data-theme="contrast"]{
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --surface-2:#fff7f0;
+  --text:#0a1a2f;
+  --muted:#475569;
+  --link: var(--accent-600);
+  --link-hover: var(--brand-800);
+  --primary: var(--accent-600);
+  --accent: var(--brand-800);
+  --border:#f5d9bd;
+}
+
+/* 6) Dark (brand dark, not charcoal) */
+:root[data-theme="dark"]{
+  --bg: var(--dark-ink);
+  --surface:#0e1626;
+  --surface-2:#0f1b2f;
+  --text:#e9eef6;
+  --muted:#9aa5b1;
+  --link:#9cc7ff;
+  --link-hover:#cfe3ff;
+  --primary:#9cc7ff;
+  --primary-contrast:#0b1220;
+  --accent:#ff9a3b;
+  --accent-contrast:#191b22;
+  --border:#1f2a3f;
+  --ring:#557bc0;
+}
+
+/* 7) Dark-Earth (alt dark using green) */
+:root[data-theme="dark-earth"]{
+  --bg:#0f1714;
+  --surface:#0f1b16;
+  --surface-2:#11201a;
+  --text:#e8f1ec;
+  --muted:#aab8b1;
+  --link:#95d2ae;
+  --link-hover:#bfe7ca;
+  --primary:#7fb38f;
+  --primary-contrast:#0f1714;
+  --accent:#ff9a3b;
+  --accent-contrast:#1a1a1a;
+  --border:#1c2a23;
+  --ring:#5a8e71;
+}
+
+/* Minimal component styles that consume the tokens */
+body{background:var(--bg);color:var(--text);}
+a{color:var(--link);text-decoration:underline;}
+a:hover{color:var(--link-hover);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.btn{display:inline-flex;gap:.5rem;align-items:center;border-radius:999px;padding:.6rem 1rem;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+.btn.primary{background:var(--primary);color:var(--primary-contrast);border-color:transparent}
+.btn.accent{background:var(--accent);color:var(--accent-contrast);border-color:transparent}
+.input, .select{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;color:var(--text)}
+hr{border:0;border-top:1px solid var(--border)}
+.focus-ring:focus{outline:3px solid var(--ring);outline-offset:2px}
