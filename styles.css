@@ -2942,3 +2942,17 @@ a.bible-ref:hover{ color: var(--accent, #F17300); }
   color: var(--brand);
   font-weight: 600;
 }
+/* Ensure Bible verse citations use hand cursor */
+.verse {
+  position: relative;
+  text-decoration: underline dotted;
+  cursor: pointer !important;  /* force override */
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* Keep footnote references normal (superscripts, numbers) */
+.footnote-ref,
+.footnote-ref sup {
+  cursor: auto !important;   /* or 'default' if you prefer */
+}
