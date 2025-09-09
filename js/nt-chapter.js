@@ -3,11 +3,13 @@
  * - Clean, spaced, per-verse rendering into #verses
  * - Strong’s artifacts stripped from main text & previews
  * - Xrefs/lex/commentary toolbars preserved
+ * - Robust fetch with absolute+relative fallbacks & on-page error details
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
 (function () {
-  const ZONDERVAN_PATH = "/israelite-research/data/dictionaries/zondervan.json"; // optional local data
+  const EASTON_DICTIONARY_PATH = "/israelite-research/data/dictionaries/easton_dictionary.json"; // optional local data
+  let lastFetchError = { url: "", status: "", message: "" };
 
   // ---------------- Chapter counts (common slug variants included) ----------
   const NT = {
@@ -75,7 +77,6 @@
       .replace(/[^a-z0-9\-]/g, "");
   }
 
-  // Accept numeric or Roman slug; lookup normalized to numeric for tables
   function getChapterCount(canon, bookSlug) {
     const raw = normalizeSlug(bookSlug);
     const { ord, base } = splitOrdinalSlug(raw);
@@ -115,29 +116,44 @@
     return idx > -1 ? path.slice(0, idx) : "";
   }
 
-  // ---------------- Fetch chapter ----------------
+  // ---------------- Fetch chapter (robust) ----------------
   async function fetchChapter(book, ch) {
     const canon = getCanon();
-    const rel1  = new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname;
-    const rel2  = new URL(`../../data/${canon}/${book}/${ch}.json`, location.href).pathname;
-    const base  = getSiteBase() || "/israelite-research";
-    const abs1  = `${base}/data/${canon}/${book}/${ch}.json`;
-    const abs2  = `/israelite-research/data/${canon}/${book}/${ch}.json`;
-    const abs3  = `/data/${canon}/${book}/${ch}.json`;
-    const candidates = [rel1, rel2, abs1, abs2, abs3];
+    const basePath = getSiteBase() || "/israelite-research";
+    const origin = location.origin;
+
+    // Candidate URLs (relative, absolute with base, absolute with site root)
+    const candidates = [
+      new URL(`../data/${canon}/${book}/${ch}.json`, location.href).pathname,
+      new URL(`../../data/${canon}/${book}/${ch}.json`, location.href).pathname,
+      `${basePath}/data/${canon}/${book}/${ch}.json`,
+      `/israelite-research/data/${canon}/${book}/${ch}.json`,
+      `/data/${canon}/${book}/${ch}.json`,
+      `${origin}${basePath}/data/${canon}/${book}/${ch}.json`,
+      `${origin}/israelite-research/data/${canon}/${book}/${ch}.json`
+    ].filter((v, i, a) => v && a.indexOf(v) === i); // dedupe
 
     let lastErr;
     for (const url of candidates) {
       try {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const res = await fetch(url, { cache: "force-cache" });
+        if (!res.ok) {
+          lastFetchError = { url, status: `HTTP ${res.status}`, message: "" };
+          throw new Error(`HTTP ${res.status}`);
+        }
         const data = await res.json();
-        if (!Array.isArray(data)) throw new Error("Chapter JSON must be an array of {v,t,c,s}");
-        console.info("[chapter] loaded:", url);
+        if (!Array.isArray(data)) {
+          lastFetchError = { url, status: "OK", message: "Invalid JSON shape (expected array)" };
+          throw new Error("Chapter JSON must be an array of {v,t,c,s}");
+        }
+        // console.info("[chapter] loaded:", url);
         return data;
-      } catch (e) { lastErr = e; console.warn("[chapter] failed:", url, e.message); }
+      } catch (e) {
+        lastErr = e;
+        // console.warn("[chapter] failed:", url, e.message);
+      }
     }
-    throw new Error(`Could not load chapter JSON. Last error: ${lastErr?.message || "unknown"}`);
+    throw new Error(`Could not load chapter JSON. Last: ${lastFetchError.status} at ${lastFetchError.url || "n/a"}`);
   }
 
   // Cache for verse-preview lookups (xref hover)
@@ -146,10 +162,13 @@
     const key = `${canon}:${bookSlug}:${ch}`;
     if (chapterCache.has(key)) return chapterCache.get(key);
     const base  = getSiteBase() || "/israelite-research";
+    const origin = location.origin;
     const urls = [
       `${base}/data/${canon}/${bookSlug}/${ch}.json`,
       `/israelite-research/data/${canon}/${bookSlug}/${ch}.json`,
-      `/data/${canon}/${bookSlug}/${ch}.json`
+      `/data/${canon}/${bookSlug}/${ch}.json`,
+      `${origin}${base}/data/${canon}/${bookSlug}/${ch}.json`,
+      `${origin}/israelite-research/data/${canon}/${bookSlug}/${ch}.json`
     ];
     let lastErr;
     for (const url of urls) {
@@ -160,7 +179,7 @@
         if (Array.isArray(data)) { chapterCache.set(key, data); return data; }
       } catch (e) { lastErr = e; }
     }
-    console.warn("[xref-preview] failed to load", canon, bookSlug, ch, lastErr?.message);
+    // console.warn("[xref-preview] failed:", lastErr?.message);
     chapterCache.set(key, null);
     return null;
   }
@@ -227,7 +246,7 @@
     return !!el && el.style.display !== 'none' && el.innerHTML.trim() !== '';
   }
 
-  // Use Roman numerals in UI titles/crumbs for multi-book series
+  // Titles
   function setDynamicTitles() {
     const canon = getCanon();
     const canonTitle = canon === "tanakh" ? "Tanakh" : "New Testament";
@@ -302,7 +321,7 @@
 
   // ---------------- Per-verse commentary storage ----------------------------
   function notesKey(canon, book, ch) {
-    return `notes:${canon}:${book}:${ch}`; // keep backward-compatible key
+    return `notes:${canon}:${book}:${ch}`;
   }
   function loadNotes(canon, book, ch) {
     try { return JSON.parse(localStorage.getItem(notesKey(canon, book, ch)) || "{}"); }
@@ -368,30 +387,59 @@
 
   // ---------------- Enforce per-verse spacing (CSS injection) ---------------
   function injectSpacingCSS(){
-  const css = `
-    #verses .verse{ display:flex; flex-direction:column; gap:.5rem; margin:0 0 1.05rem 0; padding:.45rem .1rem; }
-    #verses .vline{ display:flex; gap:.6rem; align-items:flex-start; }
-    #verses .vnum{ min-width:28px; text-align:right; color:var(--muted, #6b7280); font-weight:800; font-variant-numeric: tabular-nums; }
-    #verses .vtext{ line-height:1.85; color:var(--ink, #0b2340); white-space:normal; word-break:break-word; }
-    #verses .v-toolbar{ display:flex; gap:.45rem; padding-left:36px; flex-wrap:wrap; }
-    #verses .v-toolbar button{ border:1px solid var(--border, #e6ebf2); background:var(--surface, #fff); border-radius:10px; padding:.28rem .55rem; font:inherit; cursor:pointer; }
-    #verses .v-toolbar button:hover{ background:rgba(5,74,145,.06); }
-    html[data-theme="dark"] #verses .vtext{ color:#fff; }
-    html[data-theme="dark"] #verses .vnum{ color:rgba(255,255,255,.85); }
-    html[data-theme="dark"] #verses .v-toolbar button{ border-color:rgba(255,255,255,.2); background:#0f1a2b; color:#fff; }
-    html[data-theme="dark"] #verses .v-toolbar button:hover{ background:#13233a; }
-    #verses, #verses .vtext { font-size:1rem; }
-     (max-width: 640px){ #verses, #verses .vtext { font-size:1.02rem; } }
-  `;
-  const s = document.createElement("style");
-  s.textContent = css;
-  document.head.appendChild(s);
-}
-      #verses .vline{ display:flex; gap:.6rem; align-items:flex-start; }
-      #verses .vnum{ min-width:28px; text-align:right; color:var(--muted); font-weight:800; }
-      #verses .vtext{ line-height:1.85; color:var(--ink, #0b2340); white-space:normal; }
-      #verses .v-toolbar{ display:flex; gap:.4rem; padding-left:36px; }
+    const css = `
+      #verses .verse{
+        display:flex;
+        flex-direction:column;
+        gap:.5rem;
+        margin:0 0 1.05rem 0;
+        padding:.45rem .1rem;
+      }
+      #verses .vline{
+        display:flex;
+        gap:.6rem;
+        align-items:flex-start;
+      }
+      #verses .vnum{
+        min-width:28px;
+        text-align:right;
+        color:var(--muted, #6b7280);
+        font-weight:800;
+        font-variant-numeric: tabular-nums;
+      }
+      #verses .vtext{
+        line-height:1.85;
+        color:var(--ink, #0b2340);
+        white-space:normal;
+        word-break:break-word;
+      }
+      #verses .v-toolbar{
+        display:flex;
+        gap:.45rem;
+        padding-left:36px;
+        flex-wrap:wrap;
+      }
+      #verses .v-toolbar button{
+        border:1px solid var(--border, #e6ebf2);
+        background:var(--surface, #fff);
+        border-radius:10px;
+        padding:.28rem .55rem;
+        font:inherit;
+        cursor:pointer;
+      }
+      #verses .v-toolbar button:hover{
+        background:rgba(5,74,145,.06);
+      }
       html[data-theme="dark"] #verses .vtext{ color:#fff; }
+      html[data-theme="dark"] #verses .vnum{ color:rgba(255,255,255,.85); }
+      html[data-theme="dark"] #verses .v-toolbar button{
+        border-color:rgba(255,255,255,.2);
+        background:#0f1a2b;
+        color:#fff;
+      }
+      html[data-theme="dark"] #verses .v-toolbar button:hover{ background:#13233a; }
+      #verses, #verses .vtext { font-size:1rem; }
+      @media (max-width: 640px){ #verses, #verses .vtext { font-size:1.02rem; } }
     `;
     const s = document.createElement('style');
     s.textContent = css;
@@ -650,14 +698,14 @@
     }
   }
 
-  // ---------- Zondervan dictionary (right panel) ----------
-  async function wireZondervanPanel(){
+  // ---------- Easton dictionary (right panel) ----------
+  async function wireEastonDictionaryPanel(){
     const dictRoot = document.getElementById("dictPanel");
     const dictSearch = document.getElementById("dictSearch");
     if (!dictRoot) return;
     const ensureDict = async () => {
       try {
-        const r = await fetch(ZONDERVAN_PATH, { cache: "force-cache" });
+        const r = await fetch(EASTON_DICTIONARY_PATH, { cache: "force-cache" });
         if (!r.ok) throw 0;
         return await r.json();
       } catch { return null; }
@@ -665,7 +713,7 @@
     const doSearch = async (q) => {
       q = (q || "").trim();
       const data = await ensureDict();
-      if (!data) { dictRoot.innerHTML = '<p class="muted">Dictionary data not found. Add <code>data/dictionaries/zondervan.json</code>.</p>'; return; }
+      if (!data) { dictRoot.innerHTML = '<p class="muted">Dictionary data not found. Add <code>data/dictionaries/easton_dictionary.json</code>.</p>'; return; }
       if (!q) { dictRoot.innerHTML = '<p class="muted">Enter a term above.</p>'; return; }
       const term = q.toLowerCase();
       const hits = [];
@@ -689,7 +737,6 @@
 
   // ---------------- Bootstrap ----------------
   async function init() {
-    // Enforce spacing regardless of page CSS
     injectSpacingCSS();
 
     setDynamicTitles();
@@ -709,7 +756,7 @@
     try {
       const data = await fetchChapter(book, ch);
       await renderChapter(data);
-      await wireZondervanPanel();
+      await wireEastonDictionaryPanel();
 
       // Prefetch neighbors
       const canon = getCanon();
@@ -720,8 +767,11 @@
       if (prevUrl) try { fetch(prevUrl, { cache: "force-cache" }); } catch {}
     } catch (err) {
       const versesEl2 = document.getElementById("verses");
-      if (versesEl2) versesEl2.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
-      console.error(err);
+      const detail = lastFetchError.url
+        ? `<div style="margin-top:.4rem;font-size:.9rem;color:#b91c1c">Last attempt: <code>${escapeHtml(lastFetchError.url)}</code> — ${escapeHtml(lastFetchError.status || err.message)}</div>`
+        : '';
+      if (versesEl2) versesEl2.innerHTML = `<p class="muted">Could not load chapter data.</p>${detail}`;
+      // console.error(err);
     }
   }
 
