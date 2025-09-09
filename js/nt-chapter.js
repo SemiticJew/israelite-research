@@ -146,11 +146,9 @@
           lastFetchError = { url, status: "OK", message: "Invalid JSON shape (expected array)" };
           throw new Error("Chapter JSON must be an array of {v,t,c,s}");
         }
-        // console.info("[chapter] loaded:", url);
         return data;
       } catch (e) {
         lastErr = e;
-        // console.warn("[chapter] failed:", url, e.message);
       }
     }
     throw new Error(`Could not load chapter JSON. Last: ${lastFetchError.status} at ${lastFetchError.url || "n/a"}`);
@@ -179,7 +177,6 @@
         if (Array.isArray(data)) { chapterCache.set(key, data); return data; }
       } catch (e) { lastErr = e; }
     }
-    // console.warn("[xref-preview] failed:", lastErr?.message);
     chapterCache.set(key, null);
     return null;
   }
@@ -771,7 +768,6 @@
         ? `<div style="margin-top:.4rem;font-size:.9rem;color:#b91c1c">Last attempt: <code>${escapeHtml(lastFetchError.url)}</code> — ${escapeHtml(lastFetchError.status || err.message)}</div>`
         : '';
       if (versesEl2) versesEl2.innerHTML = `<p class="muted">Could not load chapter data.</p>${detail}`;
-      // console.error(err);
     }
   }
 
