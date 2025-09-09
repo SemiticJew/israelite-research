@@ -1,8 +1,8 @@
 /* nt-chapter.js
  * Reader loader for Tanakh + New Testament
- * - Inline xrefs + hover previews positioned relative to the link
- * - Inline lex panel (Strong’s H/G), per-verse commentary, anchors + copy-link
- * - Roman numeral titles/crumbs for multi-book series
+ * - Clean, spaced, per-verse rendering into #verses
+ * - Strong’s artifacts stripped from main text & previews
+ * - Xrefs/lex/commentary toolbars preserved
  * Expects chapter JSON: [{ v:number, t:string, c:string[], s:string[] }, ...]
  */
 
@@ -165,9 +165,8 @@
     return null;
   }
 
-  // ---------------- UI helpers (UPDATED hovercards) ----------------
+  // ---------------- UI helpers (hovercards etc.) ----------------
   const hovercard = document.getElementById("hovercard");
-
   function showHovercardAt(el, html) {
     if (!hovercard || !el) return;
     const rect = el.getBoundingClientRect();
@@ -178,9 +177,8 @@
     hovercard.classList.add("open");
     hovercard.setAttribute("aria-hidden", "false");
 
-    // Place under the link and keep within viewport
     const pad = 8;
-    let top  = rect.bottom + pad;             // fixed: no scrollY
+    let top  = rect.bottom + pad;
     let left = rect.left + rect.width / 2;
 
     const maxLeft = window.innerWidth - 16;
@@ -192,7 +190,6 @@
     hovercard.style.top  = `${top}px`;
     hovercard.style.transform = "translateX(-50%)";
   }
-
   function hideHovercard() {
     if (!hovercard) return;
     hovercard.classList.remove("open");
@@ -200,7 +197,6 @@
     hovercard.style.display = "none";
     hovercard.style.transform = "";
   }
-
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
   }
@@ -317,7 +313,7 @@
   }
 
   // ---------------- Permalinks ----------------------------------------------
-  function verseId(n){ return `v${n}`; } // anchor id format
+  function verseId(n){ return `v${n}`; }
   function buildVersePermalink(n){
     const url = new URL(location.href);
     url.hash = `#${verseId(n)}`;
@@ -368,6 +364,21 @@
     const basePath = getSiteBase() || "/israelite-research";
     const href = `${basePath}/${canon}/chapter.html?book=${slug}&ch=${ch}#v${v}`;
     return { canon, slug, ch, v, href, display };
+  }
+
+  // ---------------- Enforce per-verse spacing (CSS injection) ---------------
+  function injectSpacingCSS(){
+    const css = `
+      #verses .verse{ display:flex; flex-direction:column; gap:.45rem; margin:0 0 1.05rem 0; padding:.45rem .1rem; }
+      #verses .vline{ display:flex; gap:.6rem; align-items:flex-start; }
+      #verses .vnum{ min-width:28px; text-align:right; color:var(--muted); font-weight:800; }
+      #verses .vtext{ line-height:1.85; color:var(--ink, #0b2340); white-space:normal; }
+      #verses .v-toolbar{ display:flex; gap:.4rem; padding-left:36px; }
+      html[data-theme="dark"] #verses .vtext{ color:#fff; }
+    `;
+    const s = document.createElement('style');
+    s.textContent = css;
+    document.head.appendChild(s);
   }
 
   // ---------------- Renderer -------------------------------------------------
@@ -466,7 +477,7 @@
       });
     });
 
-    // Hover preview for xrefs: fetch chapter JSON once, show verse text UNDER LINK
+    // Hover preview for xrefs (Strong’s stripped)
     versesEl.addEventListener("mouseover", async (e) => {
       const a = e.target.closest(".xref-link");
       if (!a) return;
@@ -604,7 +615,6 @@
       });
     });
 
-    // Close popovers/panels on outside click/scroll
     document.addEventListener("scroll", hideHovercard, { passive: true });
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".lex-btn,.xref-btn,#hovercard,[data-strongs],.lex-inline,.xref-inline,.copy-link-btn,.xref-link")) {
@@ -613,7 +623,6 @@
       }
     });
 
-    // If there's a verse hash, scroll it into view and flash it
     const hash = location.hash.replace(/^#/, "");
     if (hash && /^v\d+$/.test(hash)) {
       const target = document.getElementById(hash);
@@ -663,6 +672,9 @@
 
   // ---------------- Bootstrap ----------------
   async function init() {
+    // Enforce spacing regardless of page CSS
+    injectSpacingCSS();
+
     setDynamicTitles();
     populateChapterSelect(getChapter());
 
@@ -673,6 +685,9 @@
 
     const book = getBookSlug();
     const ch   = getChapter();
+
+    const versesEl = document.getElementById("verses");
+    if (versesEl) versesEl.innerHTML = '<p class="muted">Loading…</p>';
 
     try {
       const data = await fetchChapter(book, ch);
@@ -687,8 +702,8 @@
       try { fetch(nextUrl, { cache: "force-cache" }); } catch {}
       if (prevUrl) try { fetch(prevUrl, { cache: "force-cache" }); } catch {}
     } catch (err) {
-      const versesEl = document.getElementById("verses");
-      if (versesEl) versesEl.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
+      const versesEl2 = document.getElementById("verses");
+      if (versesEl2) versesEl2.innerHTML = `<p class="muted">Could not load chapter data. ${escapeHtml(err.message)}</p>`;
       console.error(err);
     }
   }
