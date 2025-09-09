@@ -2941,3 +2941,68 @@ a.bible-ref {
 /* Make Bible refs feel like “reftagger” */
 .reftag, .verse, a.bible-ref { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
 .reftag:hover, .verse:hover, a.bible-ref:hover { color: var(--accent, #F17300); }
+/* Chapter view (verse wrappers) */
+#chapter-root .chapter-title{
+  margin:.25rem 0 1rem;
+  font-family:var(--ff-serif, "Adobe Garamond Pro", serif);
+  font-weight:900;
+  color:var(--ink,#0b2340);
+}
+#chapter-root .verselist{
+  display:block;
+  margin:16px 0 32px;
+}
+#chapter-root .verse-wrap{
+  display:block;
+  margin:0 0 1rem 0;        /* spacing between verses */
+  padding:.75rem .75rem;
+  border:1px solid var(--border, rgba(0,0,0,.12));
+  border-radius:10px;
+  background:var(--surface,#ffffff);
+}
+#chapter-root .verse-head{
+  margin:0 0 .25rem 0;
+}
+#chapter-root .verse-num{
+  font-weight:800;
+  color:var(--accent,#F17300);
+  margin-right:.5rem;
+}
+#chapter-root .verse-body{
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+#chapter-root .verse-text{
+  line-height:1.85;
+  color:var(--ink,#0b2340);
+}
+#chapter-root .verse-actions{
+  display:flex;
+  gap:.5rem;
+}
+#chapter-root .btn-ghost{
+  appearance:none;
+  background:transparent;
+  border:1px solid var(--border, rgba(0,0,0,.18));
+  color:inherit;
+  border-radius:8px;
+  padding:.25rem .55rem;
+  font-size:.85rem;
+  cursor:pointer;
+}
+#chapter-root .btn-ghost[disabled]{
+  opacity:.5; cursor:default;
+}
+
+/* Dark mode */
+html[data-theme="dark"] #chapter-root .verse-wrap{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.15);
+}
+html[data-theme="dark"] #chapter-root .verse-text{
+  color:#ffffff;
+}
+html[data-theme="dark"] #chapter-root .btn-ghost{
+  border-color:rgba(255,255,255,.2);
+}
