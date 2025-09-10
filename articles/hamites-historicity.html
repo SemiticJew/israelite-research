@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Hamites — Historicity</title>
+  <link href="/israelite-research/styles.css" rel="stylesheet"/>
+  <style>
+    :root{
+      --ink:#0b2340;
+      --muted:#6b7280;
+      --blue:#054A91;
+      --accent:#F17300;
+      --card:#ffffff;
+      --border:#e6ebf2;
+      --sky:#DBE4EE;
+      --brand2:#3E7CB1;
+      --brand3:#81A4CD;
+    }
+
+    body{margin:0;font-family:system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6;}
+    .container{max-width:1000px;margin:0 auto;padding:0 16px;}
+    header.page-header{padding:24px 0 12px;}
+    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink);}
+    .page-sub{margin:4px 0 0;color:var(--muted);}
+    
+    article{background:var(--card);padding:24px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.05);margin-bottom:40px;}
+    article h2{font-size:1.5rem;margin-top:24px;color:var(--blue);}
+    article p{margin:16px 0;}
+    article a{color:var(--accent);text-decoration:none;}
+    article a:hover{text-decoration:underline;}
+
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:var(--muted);font-size:0.875rem;}
+    .author{display:flex;align-items:center;gap:8px;}
+    .author button{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:0.8rem;font-weight:600;}
+    .author button:hover{opacity:0.85;}
+
+    /* Modal */
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);justify-content:center;align-items:center;z-index:1000;}
+    .modal-content{background:#fff;border-radius:16px;max-width:500px;width:90%;padding:24px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;}
+    .modal-header h3{margin:0;font-size:1.25rem;font-weight:700;color:var(--ink);}
+    .close{background:var(--accent);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;font-weight:bold;cursor:pointer;line-height:1;}
+    .close:hover{opacity:0.8;}
+
+    .modal-body{margin-top:16px;}
+    .modal-body p{margin:0 0 12px;}
+    .modal-social{margin-top:16px;}
+    .modal-social a{color:var(--accent);text-decoration:none;font-weight:600;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-title">Hamites — Historicity</h1>
+      <p class="page-sub">Exploring the historical record of the Hamitic peoples</p>
+    </header>
+
+    <article>
+      <div class="meta">
+        <div class="author">
+          <span>By Semitic Jew</span>
+          <button id="openAuthor">Author</button>
+        </div>
+        <time datetime="2025-09-06">September 6, 2025</time>
+      </div>
+
+      <p>
+        The question of the historicity of the Hamites has long been debated. In biblical tradition, Ham is described as the progenitor of African lineages, and his descendants are often linked to Cush, Mizraim, Put, and Canaan. These lineages form the foundation for connecting the ancient Israelites to their African kin.
+      </p>
+
+      <h2>Biblical Foundations</h2>
+      <p>
+        Genesis 10, often called the Table of Nations, provides the genealogical foundation of the Hamitic peoples. This record has been used as a framework for identifying ancient groups across Africa and the Near East.
+      </p>
+
+      <h2>Historical Evidence</h2>
+      <p>
+        Ancient Egyptian records, archaeological findings, and iconography show clear evidence of dark-skinned populations that align with the biblical description of Hamitic peoples. These records also highlight their cultural and political significance in the ancient world.
+      </p>
+
+      <h2>Conclusion</h2>
+      <p>
+        The Hamites are not simply a biblical category but a historical reality attested by multiple sources. Their role in shaping the heritage of Israel and neighboring peoples underscores their importance in both biblical and historical study.
+      </p>
+    </article>
+  </div>
+
+  <!-- Author Modal -->
+  <div id="authorModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>About the Author</h3>
+        <button class="close" id="closeAuthor">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Semitic Jew is dedicated to research-driven resources helping readers study Scripture with logic, consistency, and historical context.</p>
+        <div class="modal-social">
+          <a href="https://x.com/semiticjew" target="_blank">Follow on X</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal=document.getElementById("authorModal");
+    const openBtn=document.getElementById("openAuthor");
+    const closeBtn=document.getElementById("closeAuthor");
+
+    openBtn.onclick=function(){modal.style.display="flex";}
+    closeBtn.onclick=function(){modal.style.display="none";}
+    window.onclick=function(e){if(e.target==modal){modal.style.display="none";}}
+  </script>
+</body>
+</html>
