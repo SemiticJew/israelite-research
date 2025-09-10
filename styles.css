@@ -3184,3 +3184,8 @@ hr{border:0;border-top:1px solid var(--border)}
 
 /* Articles: remove divider above card footer */
 .articles-page .card-footer{border-top:none!important}
+
+/* Articles: force-remove divider above card footer */
+.articles-page .card-footer,.article-card .card-footer,.featured-left .card-footer,.featured-right .card-footer,.boxed .card-footer{border-top:0!important;border-block-start:0!important;box-shadow:none!important}
+.articles-page .card-footer::before,.articles-page .card-footer::after{content:none!important;border:0!important;box-shadow:none!important}
+.articles-page .card-body{border-bottom:0!important}
