@@ -1,115 +1,271 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="" lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Hamites — Historicity</title>
-  <link href="/israelite-research/styles.css" rel="stylesheet"/>
-  <style>
-    :root{
-      --ink:#0b2340;
-      --muted:#6b7280;
-      --blue:#054A91;
-      --accent:#F17300;
-      --card:#ffffff;
-      --border:#e6ebf2;
-      --sky:#DBE4EE;
-      --brand2:#3E7CB1;
-      --brand3:#81A4CD;
-    }
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Hamites — Historicity — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
 
-    body{margin:0;font-family:system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6;}
-    .container{max-width:1000px;margin:0 auto;padding:0 16px;}
-    header.page-header{padding:24px 0 12px;}
-    .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink);}
-    .page-sub{margin:4px 0 0;color:var(--muted);}
-    
-    article{background:var(--card);padding:24px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.05);margin-bottom:40px;}
-    article h2{font-size:1.5rem;margin-top:24px;color:var(--blue);}
-    article p{margin:16px 0;}
-    article a{color:var(--accent);text-decoration:none;}
-    article a:hover{text-decoration:underline;}
+  .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+  .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+  .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin:0 0 .5rem; }
+  .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color: var(--ink); line-height:1.15; margin:0; }
 
-    .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:var(--muted);font-size:0.875rem;}
-    .author{display:flex;align-items:center;gap:8px;}
-    .author button{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:0.8rem;font-weight:600;}
-    .author button:hover{opacity:0.85;}
+  .hero-image{ margin:1.1rem auto .5rem; }
+  .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
-    /* Modal */
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);justify-content:center;align-items:center;z-index:1000;}
-    .modal-content{background:#fff;border-radius:16px;max-width:500px;width:90%;padding:24px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-    .modal-header{display:flex;align-items:center;justify-content:space-between;}
-    .modal-header h3{margin:0;font-size:1.25rem;font-weight:700;color:var(--ink);}
-    .close{background:var(--accent);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;font-weight:bold;cursor:pointer;line-height:1;}
-    .close:hover{opacity:0.8;}
+  .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
+  .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
+  .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
 
-    .modal-body{margin-top:16px;}
-    .modal-body p{margin:0 0 12px;}
-    .modal-social{margin-top:16px;}
-    .modal-social a{color:var(--accent);text-decoration:none;font-weight:600;}
-  </style>
+  .author-info-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface);
+    color:var(--muted); cursor:pointer; padding:0;
+    transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+  }
+  .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .author-info-btn svg{ width:18px; height:18px; display:block; }
+
+  .byline-name{ font-weight:800; color:var(--ink); }
+
+  .byline-meta{ color:var(--muted); font-size:.95rem; }
+  .share-min{ display:flex; align-items:center; gap:.4rem; }
+  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
+  .share-btn:hover{ transform:translateY(-1px); }
+
+  .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
+  .article-content p{ margin:1rem 0; }
+  .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+  .article-content h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.1rem; margin:1rem 0 .4rem; color: var(--ink); }
+  .article-content ul{ margin:.35rem 0 1rem 1.25rem; }
+  .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink); background:#f9fbfe; border-radius:8px; }
+
+  /* Inline Bible citation tooltip */
+  .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+  .verse:hover::after{ opacity:1; transform:translateY(0); }
+
+  .footnote-ref{text-decoration:none;} .footnote-ref sup{font-size:.75em;vertical-align:super;}
+  .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+  .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
+
+  /* FULL-SCREEN AUTHOR MODAL */
+  .modal-overlay{ position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.62); display:none; }
+  .modal-overlay[aria-hidden="false"]{ display:block; }
+  .modal-panel{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .modal-card{
+    width:min(860px,92vw); max-height:88vh; background:var(--surface); color:var(--ink);
+    border:1px solid var(--border); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:auto;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+  .mh-left{ display:flex; align-items:center; gap:10px; }
+  .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+  .author-x-head{ width:32px; height:32px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); background:var(--surface); color:var(--muted); text-decoration:none; transition:transform .12s ease, box-shadow .12s ease, color .12s ease; }
+  .author-x-head:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .modal-close{ background:none; border:none; padding:8px; cursor:pointer; color:var(--muted); }
+  .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+  .modal-body .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+  .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+  .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
+  .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-chip{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
+
+  /* Dark mode overrides */
+  html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
+  html[data-theme="dark"] body.article-doc .byline-name{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
+  html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
+  html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
+  html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .modal-card{ background:#14233a; color:#fff; border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .modal-head{ border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .modal-title, html[data-theme="dark"] .ap-name{ color:#fff; }
+  html[data-theme="dark"] .modal-body .ap-text{ color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .modal-chip{ background:#0f1a2b; color:#fff; border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .author-x-head{ color:#fff; border-color:rgba(255,255,255,.15); background:#0f1a2b; }
+</style>
 </head>
-<body>
-  <div class="container">
-    <header class="page-header">
-      <h1 class="page-title">Hamites — Historicity</h1>
-      <p class="page-sub">Exploring the historical record of the Hamitic peoples</p>
-    </header>
+<body class="article-doc" data-page="article">
+<div id="site-header"></div>
+<main class="article-page">
+<article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
+    <h1 class="article-title" itemprop="headline">Hamites — Historicity</h1>
+  </header>
 
-    <article>
-      <div class="meta">
-        <div class="author">
-          <span>By Semitic Jew</span>
-          <button id="openAuthor">Author</button>
-        </div>
-        <time datetime="2025-09-06">September 6, 2025</time>
-      </div>
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="Hamites — Historicity" height="394" src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" width="700"/>
+    <meta content="/israelite-research/images/articles/hamites-historicity-700x394.jpg" itemprop="url"/>
+  </figure>
 
-      <p>
-        The question of the historicity of the Hamites has long been debated. In biblical tradition, Ham is described as the progenitor of African lineages, and his descendants are often linked to Cush, Mizraim, Put, and Canaan. These lineages form the foundation for connecting the ancient Israelites to their African kin.
-      </p>
-
-      <h2>Biblical Foundations</h2>
-      <p>
-        Genesis 10, often called the Table of Nations, provides the genealogical foundation of the Hamitic peoples. This record has been used as a framework for identifying ancient groups across Africa and the Near East.
-      </p>
-
-      <h2>Historical Evidence</h2>
-      <p>
-        Ancient Egyptian records, archaeological findings, and iconography show clear evidence of dark-skinned populations that align with the biblical description of Hamitic peoples. These records also highlight their cultural and political significance in the ancient world.
-      </p>
-
-      <h2>Conclusion</h2>
-      <p>
-        The Hamites are not simply a biblical category but a historical reality attested by multiple sources. Their role in shaping the heritage of Israel and neighboring peoples underscores their importance in both biblical and historical study.
-      </p>
-    </article>
+  <div class="byline-row" id="byline-row">
+    <div class="article-byline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+    </div>
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </button>
+    </div>
   </div>
 
-  <!-- Author Modal -->
-  <div id="authorModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>About the Author</h3>
-        <button class="close" id="closeAuthor">&times;</button>
+  <div class="article-content" itemprop="articleBody">
+    <p>
+      This article surveys the <em>historicity</em> of the Hamitic peoples—Cush, Mizraim, Put, and Canaan—as presented in Scripture and echoed in ancient records.
+      Our aim is logical clarity: define the claims, note the sources, and separate inference from assertion.
+    </p>
+
+    <h2>Biblical Foundations</h2>
+    <p>
+      Genesis 10 (“Table of Nations”) identifies Ham and his descendants as distinct lineages integrated across Africa and the Levant
+      (<span class="verse" data-note="Sons of Ham: Cush, Mizraim, Put, and Canaan." data-ref="Genesis 10">Genesis 10</span>).
+      These genealogies supply the framework for later narratives and for mapping peoples and polities across time.
+    </p>
+
+    <h2>Historical Signals</h2>
+    <p>
+      Material culture, inscriptions, and iconography from Egypt and surrounding regions attest to dark-skinned populations interacting with Israel and its neighbors.
+      Such evidence does not “prove” every detail of later traditions; it does, however, corroborate broad population identities and movements.
+    </p>
+
+    <h3>Method: sound inference, not speculation</h3>
+    <ul>
+      <li><strong>Coherence:</strong> align textual claims with archaeological horizons, not cherry-picked curios.</li>
+      <li><strong>Context:</strong> read names and ethnonyms in their period usage before retrofitting later meanings.</li>
+      <li><strong>Constraint:</strong> prefer explanations that require fewer ad-hoc assumptions.</li>
+    </ul>
+
+    <h2>Integration with Israel</h2>
+    <p>
+      The biblical storyline frequently places Israel in contact with Hamitic kin—alliances, servitudes, marriages, trade, and conflict
+      (<span class="verse" data-note="Abraham in Egypt; later Israel in bondage and exodus." data-ref="Genesis 12; Exodus 1–12">Genesis 12; Exodus 1–12</span>).
+      Recognizing these connections helps correct later narratives that artificially segregate peoples who were historically intertwined.
+    </p>
+
+    <h2>Conclusion</h2>
+    <p>
+      The Hamites are not merely a theological category; they are historically attested lineages.
+      Reading Scripture with consistency and checking claims against primary evidence allows the record to stand without polemic:
+      Israel’s story is inseparable from Africa and its peoples.
+    </p>
+  </div>
+
+  <section aria-labelledby="fn-heading" class="footnotes">
+    <h3 id="fn-heading">Notes &amp; Bibliography</h3>
+    <ol>
+      <li id="fn1"><em>The Holy Bible</em> (King James Version), public domain text.</li>
+      <li id="fn2">Primary sources: Egyptian inscriptions, iconography, and ANE records referenced in ongoing updates.</li>
+      <li id="fn3">Method references for historical inference and population studies to be appended as entries are published.</li>
+    </ol>
+  </section>
+</article>
+</main>
+
+<!-- FULL-SCREEN AUTHOR MODAL -->
+<div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-panel" data-close="">
+    <div class="modal-card" role="document">
+      <div class="modal-head">
+        <div class="mh-left">
+          <h2 class="modal-title" id="author-modal-title">Semitic Jew</h2>
+          <a aria-label="Semitic Jew on X" class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank">
+            <svg aria-hidden="true" height="18" viewBox="0 0 24 24" width="18">
+              <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+            </svg>
+          </a>
+        </div>
+        <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
+          <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+        </button>
       </div>
       <div class="modal-body">
-        <p>Semitic Jew is dedicated to research-driven resources helping readers study Scripture with logic, consistency, and historical context.</p>
-        <div class="modal-social">
-          <a href="https://x.com/semiticjew" target="_blank">Follow on X</a>
+        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
+        <div>
+          <div class="ap-name">Semitic Jew</div>
+          <p class="ap-text">
+            Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+            Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
+            and study tools to recover the Bible’s own world and voices.
+          </p>
+          <div class="modal-links">
+            <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
+            <a class="modal-chip" href="/israelite-research/media.html">Media</a>
+            <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+            <a class="modal-chip" href="/israelite-research/semitic-jew.html">More</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    const modal=document.getElementById("authorModal");
-    const openBtn=document.getElementById("openAuthor");
-    const closeBtn=document.getElementById("closeAuthor");
+<div id="site-footer"></div>
 
-    openBtn.onclick=function(){modal.style.display="flex";}
-    closeBtn.onclick=function(){modal.style.display="none";}
-    window.onclick=function(e){if(e.target==modal){modal.style.display="none";}}
-  </script>
+<script>
+  (function(){
+    var now=new Date(), iso=now.toISOString().slice(0,10),
+        text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+
+    var url=location.href, title=document.title;
+    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
+
+    var icon  = document.getElementById('author-info');
+    var modal = document.getElementById('author-modal');
+    var close = document.getElementById('author-modal-close');
+    var lastFocus;
+
+    function openModal(e){
+      if(e){ e.preventDefault(); }
+      lastFocus = document.activeElement;
+      modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = 'hidden';
+      close && close.focus();
+    }
+    function closeModal(e){
+      if(e){ e.preventDefault(); }
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    if(icon) icon.addEventListener('click', openModal);
+    if(close) close.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e){
+      if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
+    });
+  })();
+</script>
+<script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
