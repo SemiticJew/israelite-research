@@ -15,6 +15,7 @@
       --label-ink:#ffffff;        /* white text */
       --card-border:#e6ebf2;
       --shadow:0 2px 8px rgba(0,0,0,.06);
+      --shadow-hover: 0 10px 20px rgba(0,0,0,.12); /* added for hover */
     }
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
@@ -31,7 +32,14 @@
       box-shadow:var(--shadow);
       border-radius:0;
       overflow:hidden;
+      /* subtle interactivity upgrades */
+      transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
     }
+    .boxed:hover{ transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#cdd8e6; }
+    .boxed:focus-within{ outline:3px solid rgba(5,74,145,.18); outline-offset:2px; }
+    .boxed a:focus-visible{ outline:none; }
+    .boxed a:focus-visible .card-body,
+    .boxed a:focus-visible .excerpt-block{ box-shadow:inset 0 0 0 2px rgba(5,74,145,.2); border-radius:8px; }
 
     /* Resource label */
     .resource-label{
@@ -69,25 +77,41 @@
 
     .featured-left{ width:880px; height:450px; display:block; }
     .featured-left a{ display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit; }
-    .featured-left .image-block{ position:relative; width:590px; height:450px; flex:0 0 590px; }
-    .featured-left .image-block img{ width:590px; height:450px; object-fit:cover; display:block; }
+    .featured-left .image-block{ position:relative; width:590px; height:450px; flex:0 0 590px; overflow:hidden; }
+    .featured-left .image-block img{ width:590px; height:450px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .featured-left:hover .image-block img{ transform:scale(1.035); }
+
     .featured-left .excerpt-wrap{ display:flex; flex-direction:column; width:290px; height:450px; flex:0 0 290px; }
     .featured-left .excerpt-block{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
     .featured-left h3{ margin:.15rem 0 0; font-size:1.2rem; color:var(--ink); }
 
     .featured-right{ width:290px; height:450px; display:flex; flex-direction:column; }
     .featured-right a{ display:flex; flex-direction:column; height:100%; text-decoration:none; color:inherit; }
-    .featured-right .image-block{ position:relative; width:290px; height:163.13px; }
-    .featured-right .image-block img{ width:290px; height:163.13px; object-fit:cover; display:block; }
+    .featured-right .image-block{ position:relative; width:290px; height:163.13px; overflow:hidden; }
+    .featured-right .image-block img{ width:290px; height:163.13px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .featured-right:hover .image-block img{ transform:scale(1.035); }
     .featured-right .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
 
     .recent-grid{ display:flex; flex-wrap:wrap; gap:24px; }
     .article-card{ width:290px; height:450px; display:flex; flex-direction:column; }
     .article-card a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
-    .article-card .image-block{ position:relative; width:290px; height:163.16px; }
-    .article-card .image-block img{ width:290px; height:163.16px; object-fit:cover; display:block; }
+    .article-card .image-block{ position:relative; width:290px; height:163.16px; overflow:hidden; }
+    .article-card .image-block img{ width:290px; height:163.16px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .article-card:hover .image-block img{ transform:scale(1.035); }
     .article-card .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
     .article-card h3{ margin:.4rem 0 0; font-size:1.1rem; color:var(--ink); }
+
+    /* "More articles" button */
+    .section-footer{ margin-top:18px; display:flex; justify-content:center; }
+    .more-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:12px 16px; border:1px solid var(--card-border);
+      border-radius:999px; background:#fff; color:var(--ink); text-decoration:none;
+      box-shadow:var(--shadow);
+      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+    }
+    .more-btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-hover); border-color:#cdd8e6; }
+    .more-btn svg{ width:18px; height:18px; }
 
     @media (max-width:1260px){
       .featured-split{ grid-template-columns: 1fr; }
@@ -141,6 +165,12 @@
       background: rgba(129,164,205,.28) !important; /* soft-blue translucent */
       color:#FFFFFF !important;
       border:1px solid var(--border);
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .boxed, .featured-left .image-block img, .featured-right .image-block img,
+      .article-card .image-block img, .more-btn{ transition:none !important; transform:none !important; }
     }
   </style>
 <style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
@@ -266,6 +296,16 @@
 </div>
 </a>
 </article>
+</div>
+
+<!-- More button -->
+<div class="section-footer">
+  <a class="more-btn" href="/israelite-research/all-articles.html" aria-label="Browse all articles">
+    More articles
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
 </div>
 </section>
 </div>
