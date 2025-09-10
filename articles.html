@@ -17,6 +17,20 @@
       --shadow:0 2px 8px rgba(0,0,0,.06);
       --shadow-hover: 0 10px 20px rgba(0,0,0,.12); /* added for hover */
     }
+/* Keep featured-left side-by-side on desktop, stacked on mobile */
+.featured-left a{
+  display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit;
+}
+.featured-left .card-body{
+  width:290px; height:450px; flex:0 0 290px;
+  display:flex; flex-direction:column; gap:8px; padding:12px 14px;
+}
+@media (max-width:1260px){
+  .featured-left a{ flex-direction:column; height:auto; }
+  .featured-left .card-body{ width:100%; height:auto; }
+}
+.card-body .meta-date{ margin-top:2px; }
+.card-body .muted{ margin-top:2px; }
 
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
     .page-header{ padding:24px 0 8px; }
@@ -189,24 +203,26 @@
 <div class="featured-split">
 <!-- Left Featured -->
 <article class="featured-left boxed">
-<a href="/israelite-research/articles/is-creation-logical.html">
-<div class="image-block">
-<img alt="Is Creation Logical?" src="/israelite-research/images/articles/creation-logical-700x394.jpg"/>
-</div>
-<div class="excerpt-wrap">
-<div class="excerpt-block">
-<span class="resource-label resource-in-excerpt">Article</span>
-<h3>Is Creation Logical?</h3>
-<p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
-<time class="meta-date"></time>
-</div>
-<div class="card-footer">
-<img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
-<span class="author">Semitic Jew</span>
-</div>
-</div>
-</a>
+  <a href="/israelite-research/articles/is-creation-logical.html">
+    <div class="image-block">
+      <img alt="Is Creation Logical?" src="/israelite-research/images/articles/creation-logical-700x394.jpg"/>
+    </div>
+
+    <!-- unified body directly after image -->
+    <div class="card-body">
+      <span class="resource-label resource-in-excerpt">Article</span>
+      <h3>Is Creation Logical?</h3>
+      <time class="meta-date"></time>
+      <p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
+    </div>
+
+    <div class="card-footer">
+      <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
+      <span class="author">Semitic Jew</span>
+    </div>
+  </a>
 </article>
+
 <!-- Right Featured -->
 <article class="featured-right boxed">
 <a href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
@@ -215,9 +231,9 @@
 <span class="resource-label resource-in-image">Article</span>
 </div>
 <div class="card-body">
-<h3>Is Scripture &amp; Logic Compatible?</h3>
-<p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
-<time class="meta-date"></time>
+  <h3>Is Scripture &amp; Logic Compatible?</h3>
+  <time class="meta-date"></time>
+  <p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
 </div>
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
@@ -239,8 +255,8 @@
 </div>
 <div class="card-body">
 <h3>The Historicity of the Hamites</h3>
-<p class="muted">Surveying historical claims around the descendants of Ham.</p>
 <time class="meta-date"></time>
+<p class="muted">Surveying historical claims around the descendants of Ham.</p>
 </div>
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
@@ -256,8 +272,8 @@
 </div>
 <div class="card-body">
 <h3>Who Are the “Gentiles”?</h3>
-<p class="muted">A study on terminology, context, and people groups.</p>
 <time class="meta-date"></time>
+<p class="muted">A study on terminology, context, and people groups.</p>
 </div>
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
@@ -273,8 +289,8 @@
 </div>
 <div class="card-body">
 <h3>Three Laws of Logic</h3>
-<p class="muted">Identity, non-contradiction, and excluded middle explained.</p>
 <time class="meta-date"></time>
+<p class="muted">Identity, non-contradiction, and excluded middle explained.</p>
 </div>
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
@@ -290,8 +306,8 @@
 </div>
 <div class="card-body">
 <h3>Is Truth Reliable?</h3>
-<p class="muted">Reliability, revelation, and reason.</p>
 <time class="meta-date"></time>
+<p class="muted">Reliability, revelation, and reason.</p>
 </div>
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
