@@ -1,142 +1,227 @@
 <!DOCTYPE html>
-<html data-theme="" lang="en">
+<html lang="en" data-theme="">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Three Laws of Logic — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
-<style>
-  :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
-  .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
-  .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
-  .article-date{ color:var(--muted); font-size:.95rem; margin:0 0 .5rem; }
-  .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color: var(--ink); line-height:1.15; margin:0; }
-  .hero-image{ margin:1.1rem auto .5rem; }
-  .hero-image img{ width:100%; height:auto; display:block; }
-  .byline-row{ display:flex; align-items:center; justify-content:space-between; margin:.35rem 0 1.25rem; }
-  .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
-  .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
-  .author-info-btn{ display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; }
-  .byline-name{ font-weight:800; color:var(--ink); }
-  .byline-meta{ color:var(--muted); font-size:.95rem; }
-  .share-min{ display:flex; align-items:center; gap:.4rem; }
-  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); }
-  .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
-  .article-content p{ margin:1rem 0; }
-  .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
-  .article-content h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.1rem; margin:1rem 0 .4rem; color: var(--ink); }
-  .article-content ul{ margin:.35rem 0 1rem 1.25rem; }
-  .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink); background:#f9fbfe; border-radius:8px; }
-  .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
-  .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
-  .footnotes ol{ margin:.35rem 0 0 1.1rem; }
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Three Laws of Logic — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
+  <style>
+    :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
+
+    .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+    .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+    .article-date{ color:var(--muted); font-size:.95rem; margin:0 0 .5rem; }
+    .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color:var(--ink); line-height:1.15; margin:0; }
+
+    .hero-image{ margin:1.1rem auto .5rem; }
+    .hero-image img{ width:100%; height:auto; display:block; }
+
+    .byline-row{ display:flex; align-items:center; justify-content:space-between; margin:.35rem 0 1.25rem; gap:.75rem; flex-wrap:wrap; }
+    .article-byline{ display:flex; align-items:center; gap:.55rem; color:var(--ink); }
+    .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
+    .author-info-btn{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; font-weight:700; }
+    .author-info-btn:focus{ outline:2px solid var(--accent); outline-offset:2px; }
+    .byline-name{ font-weight:800; color:var(--ink); }
+    .byline-meta{ color:var(--muted); font-size:.95rem; }
+
+    .share-min{ display:flex; align-items:center; gap:.4rem; }
+    .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
+    .share-btn:focus{ outline:2px solid var(--accent); outline-offset:2px; }
+
+    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
+    .article-content p{ margin:1rem 0; }
+    .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color:var(--ink); }
+    .article-content h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.1rem; margin:1rem 0 .4rem; color:var(--ink); }
+    .article-content ul{ margin:.35rem 0 1rem 1.25rem; }
+    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:var(--ink); background:#f9fbfe; border-radius:8px; }
+
+    .verse{ position:relative; text-decoration:underline dotted; cursor:help; color:var(--brand); font-weight:600; }
+
+    .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+    .footnotes h3{ margin-top:0; }
+    .footnotes ol{ margin:.35rem 0 0 1.1rem; }
+    .backref{ text-decoration:none; margin-left:.4rem; }
+
+    /* Author modal */
+    .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; }
+    .modal{ position:fixed; inset:auto 50% auto 50%; transform:translate(-50%,-50%); width:min(680px,92vw); background:#fff; color:var(--ink); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.2); display:none; }
+    .modal header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+    .modal h4{ margin:0; font-size:1.1rem; }
+    .modal .close-btn{ width:32px; height:32px; border-radius:999px; border:1px solid var(--border); background:var(--surface); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; }
+    .modal .close-btn:focus{ outline:2px solid var(--accent); outline-offset:2px; }
+    .modal .content{ padding:16px; }
+    .modal .socials{ display:flex; gap:8px; margin-top:8px; }
+    .hidden{ display:none !important; }
+    @media (prefers-color-scheme: dark){
+      .modal{ background:#0b1220; color:#f7f7f7; }
+    }
+  </style>
 </head>
 <body class="article-doc" data-page="article">
-<div id="site-header"></div>
-<main class="article-page">
-<article class="article-shell" itemscope itemtype="https://schema.org/Article">
-  <header class="article-head">
-    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
-    <h1 class="article-title" itemprop="headline">Three Laws of Logic</h1>
-  </header>
+  <div id="site-header"></div>
 
-  <figure class="hero-image">
-    <img alt="Three Laws of Logic" height="394" src="/israelite-research/images/articles/three-laws-700x394.jpg" width="700"/>
-  </figure>
+  <main class="article-page">
+    <article class="article-shell" itemscope itemtype="https://schema.org/Article">
 
-  <div class="byline-row">
-    <div class="article-byline">
-      <img alt="Semitic Jew" class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
-      <button aria-label="About the author" class="author-info-btn" id="author-info">i</button>
-      <span class="byline-name">Semitic Jew</span>
-      <span class="byline-meta">• Article</span>
-    </div>
-    <div class="share-min">
-      <a class="share-btn" id="share-x">X</a>
-      <a class="share-btn" id="share-fb">Fb</a>
-      <button class="share-btn" id="share-copy">⧉</button>
+      <header class="article-head">
+        <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
+        <h1 class="article-title" itemprop="headline">Three Laws of Logic</h1>
+      </header>
+
+      <figure class="hero-image">
+        <img src="/israelite-research/images/articles/three-laws-700x394.jpg" width="700" height="394" alt="Three Laws of Logic"/>
+      </figure>
+
+      <div class="byline-row">
+        <div class="article-byline">
+          <img class="author-avatar" src="/israelite-research/images/authors/semitic-jew.jpg" alt="Semitic Jew"/>
+          <button id="author-info" class="author-info-btn" aria-haspopup="dialog" aria-controls="author-modal" aria-label="About the author">i</button>
+          <span class="byline-name">Semitic Jew</span>
+          <span class="byline-meta">• Article</span>
+        </div>
+
+        <div class="share-min">
+          <a id="share-x"  class="share-btn" aria-label="Share on X (Twitter)" target="_blank" rel="noopener">X</a>
+          <a id="share-fb" class="share-btn" aria-label="Share on Facebook"   target="_blank" rel="noopener">Fb</a>
+          <button id="share-copy" class="share-btn" aria-label="Copy link">⧉</button>
+        </div>
+      </div>
+
+      <div class="article-content" itemprop="articleBody">
+        <p>The laws of logic are not man-made inventions. They are reflections of God’s own faithful nature. To know God is to know consistency; to study His creation is to discover order. The three classic laws of logic—identity, non-contradiction, and excluded middle—are everywhere present in Scripture and creation itself.</p>
+
+        <h2>The Law of Identity: A is A</h2>
+        <p>Things are what they are. God revealed Himself to Moses as “I AM THAT I AM” (<span class="verse" data-ref="Exodus 3:14">Exod 3:14</span>), a statement of identity and constancy. Creation also testifies to this: light is light, earth is earth, man is man. To blur identities is to deny reality. This law protects us from collapsing Israel into “just any people” or Christ into “just any man.” Israel is Israel—descendants of Jacob. Jesus is Jesus—Messiah, Son of David, rooted in Judah’s line.</p>
+
+        <h2>The Law of Non-Contradiction: A cannot be both A and not A</h2>
+        <p>God is light, and in Him is no darkness at all (<span class="verse" data-ref="1 John 1:5">1 Jn 1:5</span>). To affirm that something can both be and not be in the same way and at the same time is nonsense. Likewise, it is illogical to claim that the Israelites were simultaneously an African-rooted Semitic people and yet somehow a pale European stock. The biblical, linguistic, and geographic record speaks with one voice: the Israelites were people of color, Black in modern terms<sup class="footnote-ref" id="ref-fn1"><a href="#fn1" aria-describedby="footnote">1</a></sup>.</p>
+
+        <p>The same logic applies to depictions of Jesus. He cannot be both a Judean man of Afro-Asiatic descent and a blond-haired European figure. Scripture grounds Him in the line of David, born in Bethlehem, raised in Galilee, ministering in a land linking Africa and Asia. His appearance must fit His people and His place.</p>
+
+        <h2>The Law of the Excluded Middle: Either A or not A</h2>
+        <p>Either a proposition is true or its negation is true; there is no middle without collapsing meaning. Jesus is either rooted in Israel’s history or He is not. Israel is either God’s chosen nation or it is not. Applied to identity, the excluded middle guards against comfortable evasions. We cannot say, “Israel could be anyone” or “Jesus could look like anyone.” Truth excludes falsehood.</p>
+
+        <h2>Logic Embodied in Creation</h2>
+        <p>Genesis 1 is structured logically: domains formed and then filled. The heavens and earth are ordered, and God declares them good in sequence. That same ordered logic applies to humanity’s origin: Adam from the <em>adamah</em> (soil)—earthy, dark, fertile. To paint Adam and his descendants as pale northern figures is to deny the harmony between word, world, and witness. Logic insists on congruence.</p>
+
+        <h2>Conclusion</h2>
+        <p>The three laws of logic are not abstract games but the fabric of creation and covenant. A is A: Israel is Israel. Not-A is not A: Israel cannot be both Israel and not Israel, Black and not Black. Excluded middle: either the testimony of Scripture is true, or it is false. To confess Scripture is to accept that Israelites were a Black people and that Jesus, son of David, shared in that identity. Truth, reason, and revelation converge.</p>
+      </div>
+
+      <section class="footnotes" aria-label="Notes & Bibliography">
+        <h3>Notes &amp; Bibliography</h3>
+        <ol>
+          <li id="fn1">
+            On the Afro-Asiatic identity of Israel: Genesis 10 (Table of Nations); archaeological, linguistic, and geographic evidence situating Israel within the Afro-Levantine world.
+            <a class="backref" href="#ref-fn1" aria-label="Back to citation">↩</a>
+          </li>
+        </ol>
+      </section>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Author Modal -->
+  <div id="author-overlay" class="modal-overlay" role="presentation" aria-hidden="true"></div>
+  <div id="author-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="author-title" aria-describedby="author-desc">
+    <header>
+      <h4 id="author-title">About the Author — Semitic Jew</h4>
+      <button class="close-btn" id="author-close" aria-label="Close author panel">×</button>
+    </header>
+    <div class="content">
+      <p id="author-desc">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
+      <div class="socials">
+        <a href="https://twitter.com/intent/follow?screen_name=SemiticJew" target="_blank" rel="noopener" class="share-btn" aria-label="Follow on X">X</a>
+      </div>
     </div>
   </div>
 
-  <div class="article-content" itemprop="articleBody">
-    <p>
-      The laws of logic are not man-made inventions. They are reflections of God’s own faithful nature.
-      To know God is to know consistency; to study His creation is to discover order. The three classic laws of logic—
-      identity, non-contradiction, and excluded middle—are everywhere present in Scripture and creation itself.
-    </p>
+  <script>
+    (function () {
+      // 1) Publish date
+      var now = new Date();
+      var pub = document.getElementById('pub-date');
+      if (pub) {
+        pub.dateTime = now.toISOString().slice(0,10);
+        pub.textContent = now.toLocaleDateString(undefined, {year:'numeric', month:'long', day:'numeric'});
+      }
 
-    <h2>1. The Law of Identity: A is A</h2>
-    <p>
-      Things are what they are. God revealed Himself to Moses as “I AM THAT I AM”
-      (<span class="verse" data-ref="Exodus 3:14">Exod 3:14</span>), a statement of identity and constancy.
-      Creation also testifies to this: light is light, earth is earth, man is man. To blur identities is to deny reality.
-      This law protects us from collapsing Israel into “just any people” or Christ into “just any man.”
-      Israel is Israel—descendants of Jacob. Jesus is Jesus—Messiah, Son of David, rooted in Judah’s line.
-    </p>
+      // 2) Social share (X, FB, Copy, plus Web Share API)
+      var url = location.href, title = document.title;
+      var x  = document.getElementById('share-x');
+      var fb = document.getElementById('share-fb');
+      var cp = document.getElementById('share-copy');
 
-    <h2>2. The Law of Non-Contradiction: A cannot be both A and not A</h2>
-    <p>
-      God is light, and in Him is no darkness at all (<span class="verse" data-ref="1 John 1:5">1 Jn 1:5</span>).
-      To affirm that something can both be and not be in the same way and at the same time is nonsense.
-      Likewise, it is illogical to claim that the Israelites were simultaneously an African-rooted Semitic people
-      and yet somehow a pale European stock. The biblical, linguistic, and geographic record speaks with one voice:
-      the Israelites were people of color, Black in modern terms<sup class="footnote-ref"><a href="#fn1">1</a></sup>.
-    </p>
-    <p>
-      The same logic applies to depictions of Jesus. He cannot be both a Judean man of Afro-Asiatic descent
-      and a blond-haired European figure. Scripture grounds Him in the line of David, born in Bethlehem,
-      raised in Galilee, ministering in a land linking Africa and Asia. His appearance must fit His people and His place.
-    </p>
+      if (x)  x.href  = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(title) + "&url=" + encodeURIComponent(url);
+      if (fb) fb.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
 
-    <h2>3. The Law of the Excluded Middle: Either A or not A</h2>
-    <p>
-      Either a proposition is true or its negation is true; there is no middle without collapsing meaning.
-      Jesus is either rooted in Israel’s history or He is not. Israel is either God’s chosen nation or it is not.
-      Applied to identity, the excluded middle guards against comfortable evasions. We cannot say,
-      “Israel could be anyone” or “Jesus could look like anyone.” Truth excludes falsehood.
-    </p>
+      if (cp) cp.addEventListener('click', function () {
+        if (navigator.share) {
+          navigator.share({title: title, url: url}).catch(function(){/* ignore */});
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function(){
+            cp.textContent = '✓';
+            setTimeout(function(){ cp.textContent = '⧉'; }, 900);
+          });
+        } else {
+          // Fallback
+          var tmp = document.createElement('input');
+          tmp.value = url;
+          document.body.appendChild(tmp);
+          tmp.select();
+          document.execCommand('copy');
+          document.body.removeChild(tmp);
+          cp.textContent = '✓';
+          setTimeout(function(){ cp.textContent = '⧉'; }, 900);
+        }
+      });
 
-    <h2>Logic Embodied in Creation</h2>
-    <p>
-      Genesis 1 is structured logically: domains formed and then filled. The heavens and earth are ordered,
-      and God declares them good in sequence. That same ordered logic applies to humanity’s origin:
-      Adam from the <em>adamah</em> (soil)—earthy, dark, fertile. To paint Adam and his descendants as pale northern figures
-      is to deny the harmony between word, world, and witness. Logic insists on congruence.
-    </p>
+      // 3) Author modal ("module") open/close & focus trap
+      var openBtn = document.getElementById('author-info');
+      var modal = document.getElementById('author-modal');
+      var overlay = document.getElementById('author-overlay');
+      var closeBtn = document.getElementById('author-close');
 
-    <h2>Conclusion</h2>
-    <p>
-      The three laws of logic are not abstract games but the fabric of creation and covenant. A is A:
-      Israel is Israel. Not-A is not A: Israel cannot be both Israel and not Israel, Black and not Black.
-      Excluded middle: either the testimony of Scripture is true, or it is false. To confess Scripture is to accept
-      that Israelites were a Black people and that Jesus, son of David, shared in that identity. Truth, reason, and revelation converge.
-    </p>
-  </div>
+      function openModal() {
+        overlay.style.display = 'block';
+        modal.style.display = 'block';
+        overlay.setAttribute('aria-hidden','false');
+        closeBtn.focus();
+        document.addEventListener('keydown', escClose);
+      }
+      function closeModal() {
+        overlay.style.display = 'none';
+        modal.style.display = 'none';
+        overlay.setAttribute('aria-hidden','true');
+        openBtn.focus();
+        document.removeEventListener('keydown', escClose);
+      }
+      function escClose(e){ if(e.key === 'Escape') closeModal(); }
 
-  <section class="footnotes">
-    <h3>Notes &amp; Bibliography</h3>
-    <ol>
-      <li id="fn1">On the Afro-Asiatic identity of Israel: Genesis 10 (Table of Nations); archaeological, linguistic, and geographic evidence situating Israel within the Afro-Levantine world. <a class="backref" href="#pub-date">↩</a></li>
-    </ol>
-  </section>
-</article>
-</main>
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (overlay) overlay.addEventListener('click', closeModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-<div id="site-footer"></div>
+      // 4) Footnote backrefs: ensure each backref points back to the exact citation
+      // Pattern: <sup class="footnote-ref" id="ref-fnN"><a href="#fnN">N</a></sup>
+      //          <li id="fnN"> ... <a class="backref" href="#ref-fnN">↩</a></li>
+      document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+        var liId = a.getAttribute('href').slice(1);        // "fn1"
+        var sup = a.closest('.footnote-ref');
+        if (!sup.id) {
+          var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+          sup.id = 'ref-fn' + n;
+        }
+        var li = document.getElementById(liId);
+        if (li) {
+          var back = li.querySelector('.backref');
+          if (back) back.setAttribute('href', '#' + sup.id);
+        }
+      });
+    })();
+  </script>
 
-<script>
-  (function(){
-    var now=new Date();
-    var pub=document.getElementById('pub-date');
-    if(pub){pub.dateTime=now.toISOString().slice(0,10); pub.textContent=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});}
-    var url=location.href, title=document.title;
-    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
-    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
-    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
-    if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
-  })();
-</script>
-<script src="/israelite-research/js/include.js"></script>
+  <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
