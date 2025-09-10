@@ -1,58 +1,304 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html data-theme="" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Who Are the “Gentiles”? — Semitic Jew</title>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Gentiles — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-    :root{ --accent:#F17300; --muted:#666; --ink:#0b2340; }
-    .article-shell{ max-width:760px; margin:0 auto; }
-    .article-head{ text-align:center; margin-top:.5rem; }
-    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
-    .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(1.9rem,3.4vw,2.6rem); color: var(--ink); line-height:1.15; margin:0 0 .8rem; }
+  :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
 
-    /* Article image (not a page hero): fixed 700×394, squared corners */
-    .hero-image{ margin:1rem auto; }
-    .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
+  .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+  .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+  .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin:0 0 .5rem; }
+  .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color: var(--ink); line-height:1.15; margin:0; }
 
-    /* Byline */
-    .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color: var(--ink); }
-    .article-byline .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover;
-      border:1px solid var(--border); background:#f0f3f8; }
-    .byline-name{ font-weight:700; }
-    .byline-meta{ color: var(--muted); font-size:.95rem; }
+  .hero-image{ margin:1.1rem auto .5rem; }
+  .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
-    /* Share */
-    .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
-    .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
-      border-radius:999px; border:1px solid var(--border); background: var(--surface); color: var(--brand); text-decoration:none; }
-    .share-btn:hover{ transform:translateY(-1px); }
+  .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
+  .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
+  .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
 
-    /* Body */
-    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
-    .article-content p{ margin:1rem 0; }
-    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
-    .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink);
-      background:#f9fbfe; border-radius:8px; }
+  .author-info-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface);
+    color:var(--muted); cursor:pointer; padding:0;
+    transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+  }
+  .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .author-info-btn svg{ width:18px; height:18px; display:block; }
 
-    /* Verse hover “plugin” (articles-only) */
-    .verse{ position:relative; text-decoration:underline dotted; color: var(--brand); }
-    .verse:hover::after{
-      content:"Open in Logos";
-      position:absolute; left:0; bottom:120%;
-      background: var(--surface); color: var(--brand); border:1px solid var(--border); padding:.25rem .45rem;
-      font-size:.8rem; border-radius:8px; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.08);
-    }
-  </style>
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
-<body class="article-doc article-doc" data-page="article">
-<!-- Header partial -->
+  .byline-name{ font-weight:800; color:var(--ink); }
+  .byline-meta{ color:var(--muted); font-size:.95rem; }
+  .share-min{ display:flex; align-items:center; gap:.4rem; }
+  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
+  .share-btn:hover{ transform:translateY(-1px); }
+
+  .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
+  .article-content p{ margin:1rem 0; }
+  .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+  .article-content h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.1rem; margin:1rem 0 .4rem; color: var(--ink); }
+  .article-content ul{ margin:.35rem 0 1rem 1.25rem; }
+  .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink); background:#f9fbfe; border-radius:8px; }
+
+  /* Inline Bible citation tooltip (your site JS can enhance via data-ref) */
+  .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+  .verse:hover::after{ opacity:1; transform:translateY(0); }
+
+  .footnote-ref{text-decoration:none;} .footnote-ref sup{font-size:.75em;vertical-align:super;}
+  .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+  .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
+
+  /* FULL-SCREEN AUTHOR MODAL */
+  .modal-overlay{ position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.62); display:none; }
+  .modal-overlay[aria-hidden="false"]{ display:block; }
+  .modal-panel{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .modal-card{
+    width:min(860px,92vw); max-height:88vh; background:var(--surface); color:var(--ink);
+    border:1px solid var(--border); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:auto;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+  .mh-left{ display:flex; align-items:center; gap:10px; }
+  .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+  .author-x-head{ width:32px; height:32px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); background:var(--surface); color:var(--muted); text-decoration:none; transition:transform .12s ease, box-shadow .12s ease, color .12s ease; }
+  .author-x-head:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .modal-close{ background:none; border:none; padding:8px; cursor:pointer; color:var(--muted); }
+  .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+  .modal-body .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+  .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+  .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
+  .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-chip{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
+
+  /* Dark mode overrides */
+  html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
+  html[data-theme="dark"] body.article-doc .byline-name{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
+  html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
+  html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
+  html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
+  html[data-theme="dark"] body.article-doc .modal-card{ background:#14233a; color:#fff; border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .modal-head{ border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .modal-title, html[data-theme="dark"] .ap-name{ color:#fff; }
+  html[data-theme="dark"] .modal-body .ap-text{ color:rgba(255,255,255,.92); }
+  html[data-theme="dark"] .modal-chip{ background:#0f1a2b; color:#fff; border-color:rgba(255,255,255,.15); }
+  html[data-theme="dark"] .author-x-head{ color:#fff; border-color:rgba(255,255,255,.15); background:#0f1a2b; }
+</style>
+</head>
+<body class="article-doc" data-page="article">
 <div id="site-header"></div>
-<main class="container article-page">
-<!-- Breadcrumbs -->
+<main class="article-page">
+<article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
+    <h1 class="article-title" itemprop="headline">Gentiles</h1>
+  </header>
+
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="Gentiles" height="394" src="/israelite-research/images/articles/gentiles-700x394.jpg" width="700"/>
+    <meta content="/israelite-research/images/articles/gentiles-700x394.jpg" itemprop="url"/>
+  </figure>
+
+  <div class="byline-row" id="byline-row">
+    <div class="article-byline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20"><g fill="currentColor"><path d="M10 2a8 8 0 110 16A8 8 0 0110 2zm0 3a1.25 1.25 0 100 2.5A1.25 1.25 0 0010 5zm-1 4h2v6H9V9z"/></g></svg>
+      </button>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+    </div>
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="article-content" itemprop="articleBody">
+    <p>
+      <strong>Language drifts over time.</strong> Words pick up new meanings and shed old ones. That’s why it’s dangerous to take an everyday word <em>today</em> and force it to mean what Jesus or David meant <em>then</em><sup class="footnote-ref"><a href="#fn1">1</a></sup>.  
+      The English term <em>Gentile</em> comes to us through Latin (<em>gentilis</em>) and often hides what the Hebrew and Greek actually say in Scripture.
+      To read faithfully, we must ask: what did the biblical authors mean in their own languages and settings?
+    </p>
+
+    <h2>What does “Gentile” mean in Scripture?</h2>
+    <p>Across the canon the underlying words point to four overlapping ideas:</p>
+
+    <h3>1) “Beget” — kin by descent (the <em>gen</em>-root)</h3>
+    <p>
+      In Greek, the family/offspring root <em>gen-</em> (to beget) appears in words like <em>genos</em> (“kind, stock, race, family”).
+      Peter calls believers a “chosen <span class="verse" data-note="genos: a kind/stock, family" data-ref="1 Peter 2:9">generation</span> (genos),” and Mark notes the Syrophoenician woman was “by <span class="verse" data-note="tō genei: by ethnicity" data-ref="Mark 7:26">nation/ethnicity</span> (tō genei) Syrophoenician”<sup class="footnote-ref"><a href="#fn2">2</a></sup>.
+      Here, “Gentile” maps to <em>begotten kind</em>—lineage/stock, not a religious label.
+    </p>
+
+    <h3>2) “Family / Ethnicity” — a people as a house or clan</h3>
+    <p>
+      Scripture often treats a people as an extended household. Jacob is promised “a nation and a company of <span class="verse" data-note="goyim: nations/peoples" data-ref="Genesis 35:11">nations</span> (goyim),” and Israel is called God’s “holy <span class="verse" data-note="goy qadosh: holy nation" data-ref="Exodus 19:6">nation</span>”<sup class="footnote-ref"><a href="#fn3">3</a></sup>.
+      In the NT the same semantic space appears with <em>ethnos</em> (“nation/people”) and <em>genos</em> (“stock, family”)—including when referring to Israel itself
+      (<span class="verse" data-note="our ethnos (the Jewish nation)" data-ref="Luke 7:5">Luke 7:5</span>; <span class="verse" data-note="gather in one the children of God scattered abroad—spoken of that nation" data-ref="John 11:51–52">John 11:51–52</span>).
+    </p>
+
+    <h3>3) “Nation / People” — political or cultural bodies (Heb. <em>goy/goyim</em>, Gk. <em>ethnos/ethnē</em>)</h3>
+    <p>
+      The Tanakh uses <em>goy/goyim</em> broadly—sometimes of other peoples, sometimes of Israel herself
+      (<span class="verse" data-note="Israel as a goy" data-ref="Deuteronomy 4:6–7">Deut 4:6–7</span>; <span class="verse" data-note="Israel as a rebellious goy" data-ref="Ezekiel 2:3">Ezek 2:3</span>).
+      Likewise, the NT’s <em>ethnos</em> can point to non-Israelite nations or to the Jewish nation
+      (<span class="verse" data-note="ethnos used for Israel" data-ref="John 11:51">John 11:51</span>)<sup class="footnote-ref"><a href="#fn4">4</a></sup>.
+    </p>
+
+    <h3>4) “Non-Judean” — outside Judea’s polity, even if Israelite by blood</h3>
+    <p>
+      In Second Temple usage, “Judean” (<em>Ioudaios</em>) can mean those tied to Judea’s polity/party. Regions like “Galilee of the <span class="verse" data-note="mixed region; Israelites lived there" data-ref="Isaiah 9:1–2; Matthew 4:15">Gentiles</span>” included Israelites living among other peoples.
+      John 7 pictures diaspora Israelites among the Greeks: “Will he go to the dispersed among the <span class="verse" data-note="Diaspora Jews among the Greeks" data-ref="John 7:35">Gentiles</span>, and teach the Gentiles?”<sup class="footnote-ref"><a href="#fn5">5</a></sup>.
+    </p>
+
+    <h2>Israelites called “Gentiles” in various contexts</h2>
+    <ul>
+      <li><strong>Israel as “nation(s)” (goy/goyim):</strong> Israel is a holy <span class="verse" data-note="goy qadosh" data-ref="Exodus 19:6">nation</span> and even a company of <span class="verse" data-note="goyim" data-ref="Genesis 35:11">nations</span>—same words often translated “Gentiles.”</li>
+      <li><strong>Ethnos for Israel:</strong> Caiaphas speaks of “that <span class="verse" data-note="ethnos: the Jewish nation" data-ref="John 11:51–52">nation</span>,” meaning Israel, using the same Greek term rendered “Gentiles” elsewhere.</li>
+      <li><strong>Diaspora Jews “among the Gentiles”:</strong> The “dispersed among the <span class="verse" data-note="Jews among ethne" data-ref="John 7:35">Gentiles</span>” are Israelites living in Greek lands (cf. <span class="verse" data-note="Jews out of every nation under heaven" data-ref="Acts 2:5–11">Acts 2:5–11</span>).</li>
+      <li><strong>Apocrypha situational labels:</strong> Jews under Hellenistic power are contrasted with “the Gentiles,” yet boundaries are political/cultural as much as ethnic (<span class="verse" data-note="alliances and pressures with the heathen/Gentiles" data-ref="1 Maccabees 1:11; 3:48">1 Macc 1:11; 3:48</span>)<sup class="footnote-ref"><a href="#fn6">6</a></sup>.</li>
+    </ul>
+
+    <h2>Beware the Anachronous Fallacy</h2>
+    <p>
+      An <em>anachronism</em> is reading a later meaning back into an earlier text. When we load “Gentile” with a modern sense (“non-Jew” as a fixed biological out-group), we risk overriding the authors’ categories<sup class="footnote-ref"><a href="#fn7">7</a></sup>.
+    </p>
+    <h3>Modern examples of anachronism</h3>
+    <ul>
+      <li><strong>Modern ethnicity boxes → ancient terms:</strong> Treating <em>goy/ethnos</em> as permanent biological classes rather than flexible political-cultural peoples.</li>
+      <li><strong>“Religion” vs. “nation” split:</strong> Imposing a modern sacred/secular divide on Israel, when covenant identity was national, familial, and cultic together.</li>
+      <li><strong>English gloss absolutism:</strong> Assuming “Gentile” in KJV/English always equals “non-Israelite,” ignoring places where the same terms name Israel.</li>
+    </ul>
+
+    <h2>Biblical harmony: Israel and the nations</h2>
+    <p>
+      The promise to Abraham was always multi-national: “in thee shall all <span class="verse" data-note="mishpachot: families" data-ref="Genesis 12:3; 18:18">families/nations</span> be blessed.”
+      The Servant is “a light to the <span class="verse" data-note="goyim: nations" data-ref="Isaiah 49:6">Gentiles</span>,” and the NT proclaims the ingathering of the nations without erasing Israel’s identity
+      (<span class="verse" data-note="Gentiles grafted in by faith" data-ref="Romans 11:17–24">Romans 11:17–24</span>;
+      <span class="verse" data-note="one new man in Messiah" data-ref="Ephesians 2:11–19">Ephesians 2:11–19</span>)<sup class="footnote-ref"><a href="#fn8">8</a></sup>.
+    </p>
+
+    <h2>Conclusion</h2>
+    <p>
+      “Gentile” in Scripture is not a one-size-fits-all label. Depending on context it can mean a begotten <em>kind</em> (genos), a family/ethnicity, a nation/people (goy/ethnos),
+      or those outside Judea’s polity. Israel herself is called a <em>goy</em> and an <em>ethnos</em> in multiple passages.
+      Reading with sensitivity to time, language, and setting guards us from anachronous fallacies and lets the biblical authors speak in their own terms<sup class="footnote-ref"><a href="#fn9">9</a></sup>.
+    </p>
+  </div>
+
+  <section aria-labelledby="fn-heading" class="footnotes">
+    <h3 id="fn-heading">Notes &amp; Bibliography</h3>
+    <ol>
+      <li id="fn1"><em>The Holy Bible</em>, KJV (public domain). On semantic drift and historical-grammatical reading, compare standard introductions to hermeneutics. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn2">Greek <em>genos</em> “stock/family/kind.” See <span class="verse" data-ref="1 Peter 2:9">1 Pet 2:9</span>; <span class="verse" data-ref="Mark 7:26">Mk 7:26</span>. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn3">Hebrew <em>goy/goyim</em> “nation(s).” See <span class="verse" data-ref="Genesis 35:11">Gen 35:11</span>; <span class="verse" data-ref="Exodus 19:6">Ex 19:6</span>. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn4">Greek <em>ethnos</em> can denote Israel (<span class="verse" data-ref="John 11:51">Jn 11:51</span>) or other nations. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn5">Diaspora Israelites among the nations: <span class="verse" data-ref="John 7:35">Jn 7:35</span>; regionally mixed “Galilee of the Gentiles”: <span class="verse" data-ref="Isaiah 9:1–2">Isa 9:1–2</span>; <span class="verse" data-ref="Matthew 4:15">Mt 4:15</span>. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn6">Apocrypha: shifting political/cultural boundaries in labels “Jews/Gentiles”—e.g., <span class="verse" data-ref="1 Maccabees 1:11">1 Macc 1:11</span>; <span class="verse" data-ref="1 Maccabees 3:48">1 Macc 3:48</span>. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn7">On anachronism in biblical interpretation: standard warnings in historical-grammatical method; compare uses of <em>goy/ethnos/genos</em> across contexts. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn8">Abrahamic promise to families/nations: <span class="verse" data-ref="Genesis 12:3; 18:18">Gen 12:3; 18:18</span>; mission to the nations: <span class="verse" data-ref="Isaiah 49:6">Isa 49:6</span>; ingrafting and one new man: <span class="verse" data-ref="Romans 11:17–24">Rom 11:17–24</span>; <span class="verse" data-ref="Ephesians 2:11–19">Eph 2:11–19</span>. <a class="backref" href="#pub-date">↩</a></li>
+      <li id="fn9">Summary synthesis of usage across Tanakh, Apocrypha, and NT; English “Gentile” is a gloss that must be checked against the underlying terms in context. <a class="backref" href="#pub-date">↩</a></li>
+    </ol>
+  </section>
+</article>
+</main>
+
+<!-- FULL-SCREEN AUTHOR MODAL -->
+<div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-panel" data-close="">
+    <div class="modal-card" role="document">
+      <div class="modal-head">
+        <div class="mh-left">
+          <h2 class="modal-title" id="author-modal-title">Semitic Jew</h2>
+          <a aria-label="Semitic Jew on X" class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank">
+            <svg aria-hidden="true" height="18" viewBox="0 0 24 24" width="18">
+              <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+            </svg>
+          </a>
+        </div>
+        <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
+          <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
+        <div>
+          <div class="ap-name">Semitic Jew</div>
+          <p class="ap-text">
+            Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+            Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
+            and study tools to recover the Bible’s own world and voices.
+          </p>
+          <div class="modal-links">
+            <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
+            <a class="modal-chip" href="/israelite-research/media.html">Media</a>
+            <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+            <a class="modal-chip" href="/israelite-research/semitic-jew.html">More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script>
+  (function(){
+    var now=new Date(), iso=now.toISOString().slice(0,10),
+        text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+
+    var url=location.href, title=document.title;
+    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
+
+    var icon  = document.getElementById('author-info');
+    var modal = document.getElementById('author-modal');
+    var close = document.getElementById('author-modal-close');
+    var lastFocus;
+
+    function openModal(e){
+      if(e){ e.preventDefault(); }
+      lastFocus = document.activeElement;
+      modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = 'hidden';
+      close && close.focus();
+    }
+    function closeModal(e){
+      if(e){ e.preventDefault(); }
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    if(icon) icon.addEventListener('click', openModal);
+    if(close) close.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e){
+      if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
+    });
+  })();
+</script>
+<script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
