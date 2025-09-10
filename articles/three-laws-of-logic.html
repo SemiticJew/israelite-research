@@ -83,7 +83,26 @@
   .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
   .ap-text{ color:var(--muted); line-height:1.65; }
   .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
-  .modal-chip{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
+  .modal-chip{
+  display:inline-flex; 
+  align-items:center; 
+  gap:8px; 
+  border:1px solid var(--border); 
+  padding:8px 10px; 
+  border-radius:999px; 
+  background:var(--surface); 
+  color:var(--ink); 
+  text-decoration:none; 
+  font-weight:700; 
+  font-size:.95rem; 
+  transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+}
+.modal-chip:hover{
+  transform:translateY(-1px); 
+  color:var(--brand); 
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+
 </style>
 </head>
 <body class="article-doc" data-page="article">
