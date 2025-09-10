@@ -71,24 +71,25 @@
   .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
   .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
   .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
-  .modal-chip{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
-
-  /* Dark mode overrides */
-  html[data-theme="dark"] body.article-doc{ background: var(--bg); color:#FFFFFF; }
-  html[data-theme="dark"] body.article-doc .article-title, html[data-theme="dark"] body.article-doc .article-content h2{ color:#FFFFFF; }
-  html[data-theme="dark"] body.article-doc .article-date, html[data-theme="dark"] body.article-doc .byline-meta{ color:rgba(255,255,255,.9); }
-  html[data-theme="dark"] body.article-doc .byline-name{ color:#FFFFFF; }
-  html[data-theme="dark"] body.article-doc .author-info-btn{ color:#FFFFFF; border-color:var(--border); background:var(--surface); }
-  html[data-theme="dark"] body.article-doc .share-btn{ background: var(--surface); color:#FFFFFF; border-color:var(--border); }
-  html[data-theme="dark"] body.article-doc .article-content{ color:#FFFFFF; }
-  html[data-theme="dark"] body.article-doc .article-content blockquote{ background: rgba(129,164,205,.14); color:#FFFFFF; border-left-color: var(--accent); }
-  html[data-theme="dark"] body.article-doc .verse{ color:#FFFFFF; }
-  html[data-theme="dark"] body.article-doc .modal-card{ background:#14233a; color:#fff; border-color:rgba(255,255,255,.15); }
-  html[data-theme="dark"] .modal-head{ border-color:rgba(255,255,255,.15); }
-  html[data-theme="dark"] .modal-title, html[data-theme="dark"] .ap-name{ color:#fff; }
-  html[data-theme="dark"] .modal-body .ap-text{ color:rgba(255,255,255,.92); }
-  html[data-theme="dark"] .modal-chip{ background:#0f1a2b; color:#fff; border-color:rgba(255,255,255,.15); }
-  html[data-theme="dark"] .author-x-head{ color:#fff; border-color:rgba(255,255,255,.15); background:#0f1a2b; }
+  .modal-chip{
+  display:inline-flex; 
+  align-items:center; 
+  gap:8px; 
+  border:1px solid var(--border); 
+  padding:8px 10px; 
+  border-radius:999px; 
+  background:var(--surface); 
+  color:var(--ink); 
+  text-decoration:none; 
+  font-weight:700; 
+  font-size:.95rem; 
+  transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+}
+.modal-chip:hover{
+  transform:translateY(-1px); 
+  color:var(--brand); 
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
 </style>
 </head>
 <body class="article-doc" data-page="article">
@@ -102,7 +103,7 @@
 
   <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
     <img alt="Is Creation Logical?" height="394" src="/israelite-research/images/articles/is-creation-logical-700x394.jpg" width="700"/>
-    <meta content="/israelite-research/images/articles/is-creation-logical-700x394.jpg" itemprop="url"/>
+    <meta content="/israelite-research/images/articles/creation-logical-700x394.jpg" itemprop="url"/>
   </figure>
 
   <div class="byline-row" id="byline-row">
