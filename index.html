@@ -23,10 +23,16 @@
 
     .feature-row{ margin:32px 0; }
     .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
-    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; }
-    @media (max-width: 960px){ .cards{ grid-template-columns: 1fr; } }
+    .cards{ 
+  display:grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap:24px; 
+}
+@media (max-width: 960px){ 
+  .cards{ grid-template-columns: 1fr; } 
+}
 
-    .card{
+.card{
   display:flex; flex-direction:column;
   background:#fff;
   border-radius:12px;
@@ -42,7 +48,6 @@
   width:100%; height:auto;
   aspect-ratio:700/394;
   object-fit:cover; object-position:center;
-  border-bottom:1px solid #e6ebf2;
 }
 
 .card-body{
@@ -60,6 +65,7 @@
   font-size:1.1rem; font-weight:800;
   color:var(--ink); line-height:1.3;
 }
+
   </style>
 <style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
 .verse:hover::after{opacity:1; transform:translateY(0);}</style>
