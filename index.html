@@ -11,158 +11,335 @@
     --accent:#F17300;
     --ink:#0b2340;
     --muted:#6b7280;
+    --brand:#054A91;
     --sky:#e7ecf4;
+    --card-border:#e9eef6;
   }
-
   .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+  .section{ padding:28px 0; }
+  .section-head{ display:flex; align-items:center; justify-content:space-between; margin:0 0 14px; gap:12px; }
+  .section-title{ margin:0; font-size:1.25rem; font-weight:800; color:var(--ink); }
+  .muted-link{ color:var(--brand); text-decoration:none; font-weight:700; }
+  .muted-link:hover{ text-decoration:underline; }
 
-  .site-header-block{ padding:32px 0 20px; text-align:left; }
-  .site-title{ font-size:2.25rem; font-weight:800; color:var(--ink); margin:0; }
-  .site-subtitle{ font-size:1.1rem; color:var(--muted); margin-top:6px; }
-
-  .feature-row{ margin:32px 0; }
-  .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
-
-  /* Grid: 3-up default, 1-up mobile, 4-up on very large screens */
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  @media (max-width:960px){.cards{grid-template-columns:1fr}}
-  @media (min-width:1440px){.cards{grid-template-columns:repeat(4,1fr)}}
-
-  /* Editorial Minimal card — no internal hover color, only shadow underneath */
-  .card{
-    display:flex;flex-direction:column;background:#fff;border:1px solid var(--sky);
-    border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;
-    transition:transform .15s ease,border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-    box-shadow:none;
+  /* --- Featured: horizontal slider with 3-up viewport --- */
+  .feature-strip{
+    position:relative; overflow:hidden; border-top:1px solid var(--sky); border-bottom:1px solid var(--sky);
+    border-radius:12px;
   }
-  .card img{
-    width:100%;height:auto;
-    aspect-ratio:700/394;object-fit:cover;object-position:center;
-    transition:none;               /* remove any hover zoom that can look like dimming */
+  .feature-track{
+    display:grid; grid-auto-flow:column; grid-auto-columns:calc((100% - 32px) / 3);
+    gap:16px; padding:16px; scroll-behavior:smooth; overflow-x:auto; scrollbar-width:none;
   }
-  .card-body{
-    padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;
-    background:transparent;
+  .feature-track::-webkit-scrollbar{ display:none; }
+  @media (max-width:960px){
+    .feature-track{ grid-auto-columns:100%; }
   }
 
-  /* Titles/kickers */
-  .card-kicker{
-    font:.78rem/1 var(--ff-sans,system-ui);
-    letter-spacing:.5px;text-transform:uppercase;
-    color:var(--muted);font-weight:700
+  .nav-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:38px; height:38px; border-radius:999px; border:1px solid var(--sky);
+    background:#fff; display:inline-flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.06);
   }
-  .card-title{
-    font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1.3
+  .nav-arrow:hover{ transform:translateY(-50%) translateX(0) scale(1.03); }
+  .nav-prev{ left:8px; }
+  .nav-next{ right:8px; }
+  .nav-arrow svg{ width:18px; height:18px; color:var(--ink); }
+
+  .min-card{
+    display:flex; flex-direction:column; background:#fff; border:1px solid var(--card-border);
+    border-radius:10px; overflow:hidden; text-decoration:none; color:inherit;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .min-card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+  .min-card img{ width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; }
+  .min-body{ padding:12px 14px 14px; display:flex; flex-direction:column; gap:6px; }
+  .min-kicker{ font-size:.78rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); }
+  .min-title{ font-size:1.02rem; font-weight:900; color:var(--ink); line-height:1.3; }
+
+  /* --- Generic grid helpers --- */
+  .grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+  .grid-2{ display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
+  @media (max-width:960px){
+    .grid-3, .grid-2{ grid-template-columns: 1fr; }
   }
 
-  /* Hover: shadow only, keep interior 100% identical */
-  .cards .card:hover{
-    transform:translateY(-2px);
-    border-color:#d8e0ed;
-    box-shadow:0 10px 24px rgba(0,0,0,.08);
-    background-color:#fff;
+  /* --- Podcast feature cards --- */
+  .pod-card{
+    display:flex; flex-direction:column; background:#fff; border:1px solid var(--card-border);
+    border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
   }
-  /* Hard overrides to prevent any site-wide rules from tinting the interior on hover */
-  .cards .card:hover .card-body{ background:transparent !important; }
-  .cards .card:hover img{ filter:none !important; opacity:1 !important; }
+  .pod-card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+  .pod-card img{ width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; }
+  .pod-body{ padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+  .pod-kicker{ font-size:.78rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); }
+  .pod-title{ font-size:1.08rem; font-weight:900; color:var(--ink); line-height:1.28; }
+
+  /* --- Two-up tiles --- */
+  .tile{
+    display:flex; flex-direction:column; background:#fff; border:1px solid var(--card-border);
+    border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .tile:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+  .tile img{ width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; }
+  .tile-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
+  .tile-title{ font-size:1.08rem; font-weight:900; color:var(--ink); line-height:1.28; }
+  .tile-desc{ color:var(--muted); font-size:.98rem; line-height:1.55; }
+
+  /* buttons/links */
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff; color:var(--brand); border:1px solid var(--sky);
+    padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:800;
+  }
+  .btn:hover{ border-color:#dbe4f2; }
+  .btn svg{ width:16px; height:16px; }
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 
 <main class="container">
-  <!-- Featured Podcast -->
-  <section class="feature-row">
-    <h2>Featured Podcast</h2>
-    <div class="cards">
-      <a class="card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank">
-        <img alt="Spotify Podcast" height="394" src="/israelite-research/images/index/spotify-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Podcast • Spotify</div>
-          <div class="card-title">Spotify Podcast</div>
+
+  <!-- 1) FEATURED -->
+  <section class="section" id="featured">
+    <div class="section-head">
+      <h2 class="section-title">Featured</h2>
+      <a class="muted-link" href="/israelite-research/articles.html">View All</a>
+    </div>
+
+    <div class="feature-strip" data-slider>
+      <button class="nav-arrow nav-prev" type="button" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="feature-track" data-track>
+        <!-- 6 minimal modern cards, only 3 visible at a time -->
+        <a class="min-card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank">
+          <img alt="Spotify Podcast" src="/israelite-research/images/index/spotify-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Podcast • Spotify</div>
+            <div class="min-title">Spotify Podcast</div>
+          </div>
+        </a>
+
+        <a class="min-card" href="https://www.youtube.com/@semiticjew" target="_blank">
+          <img alt="YouTube Podcast" src="/israelite-research/images/index/youtube-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Podcast • YouTube</div>
+            <div class="min-title">YouTube Podcast</div>
+          </div>
+        </a>
+
+        <a class="min-card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">
+          <img alt="Apple Podcast" src="/israelite-research/images/index/apple-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Podcast • Apple</div>
+            <div class="min-title">Apple Podcast</div>
+          </div>
+        </a>
+
+        <a class="min-card" href="/israelite-research/israelite-catechism.html">
+          <img alt="Israelite Catechism" src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Library</div>
+            <div class="min-title">Israelite Catechism</div>
+          </div>
+        </a>
+
+        <a class="min-card" href="/israelite-research/articles.html">
+          <img alt="Featured Articles" src="/israelite-research/images/index/featured-articles-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Library</div>
+            <div class="min-title">Featured Articles</div>
+          </div>
+        </a>
+
+        <a class="min-card" href="/israelite-research/media.html">
+          <img alt="Podcast Archive (Season 2)" src="/israelite-research/images/podcast/season-2-700x394.jpg"/>
+          <div class="min-body">
+            <div class="min-kicker">Library</div>
+            <div class="min-title">Podcast Archive (Season 2)</div>
+          </div>
+        </a>
+      </div>
+
+      <button class="nav-arrow nav-next" type="button" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- 2) MORNING TO MORNING -->
+  <section class="section" id="morning-to-morning">
+    <div class="section-head">
+      <h2 class="section-title">Morning to Morning</h2>
+      <a class="muted-link" href="/israelite-research/morning-to-morning.html">Open Devotionals</a>
+    </div>
+    <div class="grid-3">
+      <a class="tile" href="/israelite-research/morning-to-morning.html">
+        <img alt="Devotional Plan" src="/israelite-research/images/index/devotional-plan-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Go Through the Bible in One Year</div>
+          <div class="tile-desc">Daily readings and reflections—organized to sync with your <a class="muted-link" href="/israelite-research/events.html">Events</a> calendar.</div>
         </div>
       </a>
-
-      <a class="card" href="https://www.youtube.com/@semiticjew" target="_blank">
-        <img alt="YouTube Podcast" height="394" src="/israelite-research/images/index/youtube-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Podcast • YouTube</div>
-          <div class="card-title">YouTube Podcast</div>
+      <a class="tile" href="/israelite-research/morning-to-morning.html#life-of-christ">
+        <img alt="Life of Christ" src="/israelite-research/images/index/life-of-christ-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Life of Christ (Track)</div>
+          <div class="tile-desc">Follow the Gospel story arc with curated passages and short notes.</div>
         </div>
       </a>
-
-      <a class="card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">
-        <img alt="Apple Podcast" height="394" src="/israelite-research/images/index/apple-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Podcast • Apple</div>
-          <div class="card-title">Apple Podcast</div>
+      <a class="tile" href="/israelite-research/morning-to-morning.html#today">
+        <img alt="Today’s Reading" src="/israelite-research/images/index/todays-reading-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Today’s Reading</div>
+          <div class="tile-desc">Jump to today’s entries and add the session to your calendar.</div>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- Featured Library -->
-  <section class="feature-row">
-    <h2>Featured Library</h2>
-    <div class="cards">
-      <a class="card" href="/israelite-research/israelite-catechism.html">
-        <img alt="Israelite Catechism" height="394" src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Library</div>
-          <div class="card-title">Israelite Catechism</div>
+  <!-- 3) PODCAST (“From the Pulpit”) -->
+  <section class="section" id="podcast">
+    <div class="section-head">
+      <h2 class="section-title">From the Pulpit</h2>
+      <a class="muted-link" href="/israelite-research/media.html">All Episodes</a>
+    </div>
+    <div class="grid-3">
+      <a class="pod-card" href="https://www.youtube.com/@semiticjew" target="_blank">
+        <img alt="Episode 1" src="/israelite-research/images/podcast/ep1-700x394.jpg"/>
+        <div class="pod-body">
+          <div class="pod-kicker">Sermon • YouTube</div>
+          <div class="pod-title">Tracing Covenant Logic Through Genesis</div>
         </div>
       </a>
-
-      <a class="card" href="#">
-        <img alt="Articles" height="394" src="/israelite-research/images/index/featured-articles-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Library</div>
-          <div class="card-title">Featured Articles</div>
+      <a class="pod-card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank">
+        <img alt="Episode 2" src="/israelite-research/images/podcast/ep2-700x394.jpg"/>
+        <div class="pod-body">
+          <div class="pod-kicker">Podcast • Spotify</div>
+          <div class="pod-title">Order, Truth, and the People of God</div>
         </div>
       </a>
-
-      <a class="card" href="#">
-        <img alt="Podcast Archive Season 2" height="394" src="/israelite-research/images/podcast/season-2-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Library</div>
-          <div class="card-title">Podcast Archive (Season 2)</div>
+      <a class="pod-card" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">
+        <img alt="Episode 3" src="/israelite-research/images/podcast/ep3-700x394.jpg"/>
+        <div class="pod-body">
+          <div class="pod-kicker">Podcast • Apple</div>
+          <div class="pod-title">Reading Scripture with Consistency</div>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- Featured Communities -->
-  <section class="feature-row">
-    <h2>Featured Communities</h2>
-    <div class="cards">
-      <a class="card" href="#">
-        <img alt="Discord (Coming Soon)" height="394" src="/israelite-research/images/index/coming-discord-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Community</div>
-          <div class="card-title">Discord (Coming Soon)</div>
+  <!-- 4) ISRAELITE RESEARCHERS -->
+  <section class="section" id="researchers">
+    <div class="section-head">
+      <h2 class="section-title">Israelite Researchers</h2>
+      <a class="muted-link" href="/israelite-research/semitic-jew.html">About the Author</a>
+    </div>
+    <div class="grid-2">
+      <a class="tile" href="/israelite-research/researcher-welcome.html">
+        <img alt="Join Researchers" src="/israelite-research/images/index/join-researchers-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Become an Israelite Researcher</div>
+          <div class="tile-desc">Apply to join our researcher community—get the welcome guide, standards, and next steps.</div>
         </div>
       </a>
-
-      <a class="card" href="#">
-        <img alt="Community" height="394" src="/israelite-research/images/index/community-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Community</div>
-          <div class="card-title">Community</div>
-        </div>
-      </a>
-
-      <a class="card" href="#">
-        <img alt="X Spaces" height="394" src="/israelite-research/images/index/x-spaces-700x394.jpg" width="700"/>
-        <div class="card-body">
-          <div class="card-kicker">Community</div>
-          <div class="card-title">X Spaces</div>
+      <a class="tile" href="/israelite-research/israelite-catechism.html">
+        <img alt="Catechism" src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Israelite Catechism</div>
+          <div class="tile-desc">Core questions and answers—logic, Scripture, and identity in harmony.</div>
         </div>
       </a>
     </div>
   </section>
+
+  <!-- 5) SUBSCRIBE TO OUR CONTENT -->
+  <section class="section" id="subscribe">
+    <div class="section-head">
+      <h2 class="section-title">Subscribe to Our Content</h2>
+    </div>
+    <div class="grid-2">
+      <a class="tile" href="/israelite-research/subscribe-email.html">
+        <img alt="Email Content" src="/israelite-research/images/index/subscribe-email-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Email Content</div>
+          <div class="tile-desc">Get new articles, devotionals, and study helps in your inbox.</div>
+        </div>
+      </a>
+      <a class="tile" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank">
+        <img alt="Podcast Content" src="/israelite-research/images/index/subscribe-podcast-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Podcast Content</div>
+          <div class="tile-desc">Follow the show on your favorite platform to never miss an episode.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 6) GET APPS -->
+  <section class="section" id="apps">
+    <div class="section-head">
+      <h2 class="section-title">Get Apps</h2>
+    </div>
+    <div class="grid-2">
+      <a class="tile" href="/israelite-research/bible-app.html">
+        <img alt="Bible App" src="/israelite-research/images/index/bible-app-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Bible App</div>
+          <div class="tile-desc">Read plans, search passages, and keep notes across devices.</div>
+        </div>
+      </a>
+      <a class="tile" href="/israelite-research/website-app.html">
+        <img alt="Website App" src="/israelite-research/images/index/website-app-700x394.jpg"/>
+        <div class="tile-body">
+          <div class="tile-title">Website App</div>
+          <div class="tile-desc">Install the site as an app—fast access to articles, podcasts, and devotionals.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
 </main>
 
 <div id="site-footer"></div>
+
+<script>
+  // FEATURED STRIP: simple scroll by one card width
+  (function(){
+    var strip = document.querySelector('[data-slider]');
+    if(!strip) return;
+    var track = strip.querySelector('[data-track]');
+    var prev  = strip.querySelector('.nav-prev');
+    var next  = strip.querySelector('.nav-next');
+
+    function cardWidth(){
+      var first = track.children[0];
+      if(!first) return track.clientWidth;
+      var style = getComputedStyle(first);
+      return first.getBoundingClientRect().width + parseFloat(style.marginRight || 16);
+    }
+
+    function scrollByCards(dir){
+      track.scrollBy({ left: dir * cardWidth(), top:0, behavior:'smooth' });
+    }
+
+    prev && prev.addEventListener('click', function(){ scrollByCards(-1); });
+    next && next.addEventListener('click', function(){ scrollByCards(+1); });
+
+    // Keyboard support
+    strip.addEventListener('keydown', function(e){
+      if(e.key === 'ArrowLeft'){ scrollByCards(-1); }
+      if(e.key === 'ArrowRight'){ scrollByCards(+1); }
+    });
+  })();
+</script>
+
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>

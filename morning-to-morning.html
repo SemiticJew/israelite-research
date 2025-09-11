@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Morning to Morning — Devotionals</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  :root{
+    --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --sky:#e7ecf4; --brand:#054A91;
+  }
+  .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+
+  .hero{ padding:28px 0 14px; border-bottom:1px solid var(--sky); }
+  .hero-title{ margin:0; font-size:2rem; font-weight:900; color:var(--ink); }
+  .hero-sub{ margin:.35rem 0 0; color:var(--muted); }
+
+  .tabs{ display:flex; gap:10px; padding:14px 0; }
+  .tab{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
+    border-radius:999px; text-decoration:none; color:var(--ink); font-weight:800; background:#fff;
+  }
+  .tab[aria-current="page"]{ border-color:#dbe4f2; color:var(--brand); }
+
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; padding:8px 0 14px; }
+  .select{
+    border:1px solid var(--sky); border-radius:999px; padding:8px 12px; background:#fff; color:var(--ink);
+    font-weight:700;
+  }
+
+  .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+  @media (max-width:960px){ .grid{ grid-template-columns: 1fr; } }
+
+  .dev-card{
+    display:flex; flex-direction:column; border:1px solid var(--sky); border-radius:12px; overflow:hidden; background:#fff;
+    text-decoration:none; color:inherit; transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .dev-card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+  .dev-img{ width:100%; height:auto; aspect-ratio:700/394; object-fit:cover; background:#f5f7fa; }
+  .dev-body{ padding:12px 14px 14px; display:flex; flex-direction:column; gap:6px; }
+  .dev-kicker{ font-size:.78rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); }
+  .dev-title{ font-size:1.02rem; font-weight:900; color:var(--ink); line-height:1.28; }
+  .dev-meta{ color:var(--muted); font-size:.95rem; }
+  .dev-actions{ margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
+    border-radius:999px; color:var(--brand); text-decoration:none; font-weight:800; background:#fff;
+  }
+  .btn:hover{ border-color:#dbe4f2; }
+  .btn svg{ width:16px; height:16px; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <header class="hero">
+    <h1 class="hero-title">Morning to Morning</h1>
+    <p class="hero-sub">Walk through Scripture in one year with short readings and focused meditations.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Devotional tabs">
+    <a class="tab" href="/israelite-research/morning-to-morning.html" aria-current="page">All</a>
+    <a class="tab" href="/israelite-research/morning-to-morning.html#life-of-christ" id="life-of-christ">Life of Christ</a>
+  </nav>
+
+  <div class="filters" role="region" aria-label="Filters">
+    <select class="select" aria-label="Month">
+      <option value="">Month: All</option>
+      <option>January</option><option>February</option><option>March</option><option>April</option>
+      <option>May</option><option>June</option><option>July</option><option>August</option>
+      <option>September</option><option>October</option><option>November</option><option>December</option>
+    </select>
+    <select class="select" aria-label="Track">
+      <option value="">Track: All</option>
+      <option>Life of Christ</option>
+      <option>Pentateuch</option>
+      <option>Psalms & Wisdom</option>
+      <option>Prophets</option>
+      <option>Gospels & Acts</option>
+      <option>Epistles & Revelation</option>
+    </select>
+  </div>
+
+  <section class="grid" aria-label="Devotionals">
+    <!-- Example cards (clone/extend to build out the plan) -->
+    <a class="dev-card" href="#">
+      <img class="dev-img" alt="Day 1" src="/israelite-research/images/devotionals/day1-700x394.jpg"/>
+      <div class="dev-body">
+        <div class="dev-kicker">Day 1 • Genesis</div>
+        <div class="dev-title">In the Beginning: Order and Goodness</div>
+        <div class="dev-meta">Gen 1–2</div>
+        <div class="dev-actions">
+          <a class="btn" href="/israelite-research/events.html">Add to Events</a>
+          <a class="btn" href="#">Read</a>
+        </div>
+      </div>
+    </a>
+
+    <a class="dev-card" href="#">
+      <img class="dev-img" alt="Day 2" src="/israelite-research/images/devotionals/day2-700x394.jpg"/>
+      <div class="dev-body">
+        <div class="dev-kicker">Day 2 • Genesis</div>
+        <div class="dev-title">Work, Word, and Boundaries</div>
+        <div class="dev-meta">Gen 3–4</div>
+        <div class="dev-actions">
+          <a class="btn" href="/israelite-research/events.html">Add to Events</a>
+          <a class="btn" href="#">Read</a>
+        </div>
+      </div>
+    </a>
+
+    <a class="dev-card" href="#">
+      <img class="dev-img" alt="Day 3" src="/israelite-research/images/devotionals/day3-700x394.jpg"/>
+      <div class="dev-body">
+        <div class="dev-kicker">Day 3 • Gospels</div>
+        <div class="dev-title">The Word Made Flesh</div>
+        <div class="dev-meta">Jn 1</div>
+        <div class="dev-actions">
+          <a class="btn" href="/israelite-research/events.html">Add to Events</a>
+          <a class="btn" href="#">Read</a>
+        </div>
+      </div>
+    </a>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
