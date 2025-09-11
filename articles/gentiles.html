@@ -51,19 +51,26 @@
   .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
   .footnotes ol{ margin:.35rem 0 0 1.1rem; } .footnotes li{ margin:.5rem 0; } .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); }
 
-  /* Author modal */
-    .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; }
-    .modal{ position:fixed; inset:auto 50% auto 50%; transform:translate(-50%,-50%); width:min(680px,92vw); background:#fff; color:var(--ink); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.2); display:none; }
-    .modal header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
-    .modal h4{ margin:0; font-size:1.1rem; }
-    .modal .close-btn{ width:32px; height:32px; border-radius:999px; border:1px solid var(--border); background:var(--surface); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; }
-    .modal .close-btn:focus{ outline:2px solid var(--accent); outline-offset:2px; }
-    .modal .content{ padding:16px; }
-    .modal .socials{ display:flex; gap:8px; margin-top:8px; }
-    .hidden{ display:none !important; }
-    @media (prefers-color-scheme: dark){
-      .modal{ background:#0b1220; color:#f7f7f7; }
-  }
+  /* FULL-SCREEN AUTHOR MODAL */
+    .modal-overlay{ position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.62); display:none; }
+    .modal-overlay[aria-hidden="false"]{ display:block; }
+    .modal-panel{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .modal-card{
+      width:min(860px,92vw); max-height:88vh; background:var(--surface); color:var(--ink);
+      border:1px solid var(--border); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:auto;
+    }
+    .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+    .mh-left{ display:flex; align-items:center; gap:10px; }
+    .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+    .author-x-head{ width:32px; height:32px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); background:var(--surface); color:var(--muted); text-decoration:none; transition:transform .12s ease, box-shadow .12s ease, color .12s ease; }
+    .author-x-head:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .modal-close{ background:none; border:none; padding:8px; cursor:pointer; color:var(--muted); }
+    .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+    .modal-body .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+    .modal-body .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+    .modal-body .ap-text{ color:var(--muted); line-height:1.65; }
+    .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+    .modal-chip{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-weight:700; font-size:.95rem; }
 </style>
 </head>
 <body class="article-doc" data-page="article">
