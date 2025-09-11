@@ -35,21 +35,17 @@
     transition:transform .15s ease,border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
     box-shadow:none;
   }
-  .card:hover{
-    transform:translateY(-2px);
-    border-color:#d8e0ed;
-    box-shadow:0 10px 24px rgba(0,0,0,.08); /* shadow only underneath on hover */
-    background-color:#fff; /* ensure no grey overlay internally */
-  }
-
   .card img{
     width:100%;height:auto;
     aspect-ratio:700/394;object-fit:cover;object-position:center;
-    transition:transform .2s ease; /* optional micro polish */
+    transition:none;               /* remove any hover zoom that can look like dimming */
   }
-  .card:hover img{ transform:scale(1.005); } /* subtle, not an overlay */
+  .card-body{
+    padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;
+    background:transparent;
+  }
 
-  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;background:transparent;}
+  /* Titles/kickers */
   .card-kicker{
     font:.78rem/1 var(--ff-sans,system-ui);
     letter-spacing:.5px;text-transform:uppercase;
@@ -58,6 +54,17 @@
   .card-title{
     font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1.3
   }
+
+  /* Hover: shadow only, keep interior 100% identical */
+  .cards .card:hover{
+    transform:translateY(-2px);
+    border-color:#d8e0ed;
+    box-shadow:0 10px 24px rgba(0,0,0,.08);
+    background-color:#fff;
+  }
+  /* Hard overrides to prevent any site-wide rules from tinting the interior on hover */
+  .cards .card:hover .card-body{ background:transparent !important; }
+  .cards .card:hover img{ filter:none !important; opacity:1 !important; }
 </style>
 </head>
 <body>
