@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Tanakh — Book</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+    /* Page-local grid styling to guarantee visibility */
+    .chapters-section{ padding:1.5rem 0 2.5rem; }
+    .chapters-wrap{ display:flex; justify-content:center; }
+    .chapters-grid{
+      display:grid; grid-template-columns: repeat(11, 1fr);
+      gap:.5rem; max-width:720px; width:100%;
+    }
+    .chapter-tile{
+      display:flex; align-items:center; justify-content:center;
+      height:44px; border:1px solid #e2e6ef; background:#fff; color:#0b2340;
+      text-decoration:none; font-weight:600; border-radius:8px;
+    }
+    .chapter-tile:hover{ box-shadow:0 6px 16px rgba(0,0,0,.06); transform:translateY(-1px); }
+    @media (max-width:700px){ .chapters-grid{ grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width:460px){ .chapters-grid{ grid-template-columns: repeat(5, 1fr); } }
+  </style>
+<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
+<body>
+<!-- Header partial -->
+<div id="site-header"></div>
+<main>
+<!-- Universal hero -->
+<section class="page-hero hero-texts">
+<div class="container">
+<h1 class="page-title" id="book-title">Loading…</h1>
+<p class="page-subtitle" id="book-desc"></p>
+</div>
+<div class="hero-divider"></div>
+</section>
+<!-- Breadcrumbs (under hero) -->

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Bel and the Dragon — Chapters</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>:root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}.page-header{padding:24px 0 8px}
+.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:10px;margin:16px 0 36px}
+.ch{display:flex;align-items:center;justify-content:center;height:56px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
+.ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
+.breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
+<body><div id="site-header"></div>
+<main><section class="container"><div class="grid" id="chapGrid"></div></section></main>
+<script src="/israelite-research/js/include.js"></script>
+<script>
+const book='bel-and-the-dragon',total=1;
+const g=document.getElementById('chapGrid');
+for(let i=1;i<=total;i++){const a=document.createElement('a');a.href=`/israelite-research/apocrypha/chapter.html?book=${book}&ch=${i}`;a.className='ch';a.textContent=i;g.appendChild(a);}

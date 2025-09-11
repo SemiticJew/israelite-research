@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>All Articles — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  :root{
+    --ink:#0b2340; --muted:#6b7280; --accent:#F17300; --card:#fff; --card-border:#e6ebf2;
+    --shadow:0 2px 8px rgba(0,0,0,.06); --shadow-hover:0 10px 20px rgba(0,0,0,.12);
+  }
+  .container{max-width:1200px;margin:0 auto;padding:0 16px;}
+
+  /* Hero */
+  .page-hero{padding:18px 0 12px;border-bottom:1px solid #e6ebf2;background:#fff}
+  .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+  .page-subtitle{margin:4px 0 0;color:var(--muted)}
+
+  /* Filters */
+  .filters{position:sticky;top:0;background:#fff;border-bottom:1px solid #e6ebf2;z-index:5}
+  .filters .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 0}
+  .filters .row > *{height:40px;border:1px solid var(--card-border);border-radius:10px;background:#fff;color:var(--ink);padding:0 10px;box-shadow:var(--shadow)}
+  .filters select,.filters input{font:500 14px/1 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial}
+  .filters input[type="search"]{flex:1;min-width:180px}
+  .filters .clear{background:#fff;border:1px solid var(--card-border);cursor:pointer}
+  .filters .count{margin-left:auto;border:none;box-shadow:none;height:auto;padding:0;color:var(--muted)}
+
+  /* Group headers */
+  .group{margin:18px 0 6px;color:var(--muted);font-weight:700;letter-spacing:.02em}
+
+  /* Grid + cards (290x450, consistent with your site) */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,290px);gap:16px;justify-content:center}
+  .card{width:290px;height:450px;background:#fff;border:1px solid var(--card-border);border-radius:0;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:transform .15s ease, box-shadow .15s ease, border-color .2s ease}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:#cdd8e6}
+  .card a{color:inherit;text-decoration:none;display:flex;flex-direction:column;height:100%}
+
+  .card-media{position:relative;width:100%;height:163.13px;background:#f5f7fa;overflow:hidden}
+  .card-media img{width:100%;height:100%;object-fit:cover;display:block;transform:none;transition:none} /* no zoom */
+  .label-pill{position:absolute;left:8px;top:8px;padding:.25rem .4rem;font-size:.72rem;background:rgba(0,0,0,.55);color:#fff;border-radius:2px}
+
+  .card-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;border-bottom:0} /* no internal grey hover */
+  .card-body:hover{background:transparent;box-shadow:none}
+  .card-title{margin:.25rem 0 0;font-size:1.05rem;line-height:1.25;font-weight:800;color:var(--ink)}
+  .card-excerpt{margin:0;color:#223;opacity:.9;font-size:.95rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card-date{font-size:.85rem;color:var(--muted)}
+
+  .card-foot{display:flex;align-items:center;gap:10px;padding:12px 14px;margin-top:auto;border-top:0} /* remove divider */
+  .author-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover}
+  .author-name{font-size:.9rem;color:var(--ink);font-weight:600}
+
+  /* Breadcrumbs (optional) */
+  .breadcrumb{margin:8px 0 0;color:var(--muted);font-size:.9rem}
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .card{transition:none}
+  }
+</style>
+</head>
+<body class="articles-all">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="page-title">All articles</h1>
+        <p class="page-subtitle">Browse by year, month, date, Bible book, chapter, verse, and author.</p>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+      <div class="container">
+        <div class="row">
+          <select id="f-year" aria-label="Filter by year"><option value="">Year</option></select>
+          <select id="f-month" aria-label="Filter by month"><option value="">Month</option></select>
+          <input id="f-date" type="date" aria-label="Filter by exact date"/>
+          <select id="f-book" aria-label="Filter by Bible book"><option value="">Bible book</option></select>
+          <select id="f-chapter" aria-label="Filter by chapter"><option value="">Chapter</option></select>
+          <input id="f-verse" type="text" placeholder="Verse (e.g., 3:16)" aria-label="Filter by verse"/>
+          <select id="f-author" aria-label="Filter by author"><option value="">Author</option></select>
+
+          <input id="f-search" type="search" placeholder="Search title/excerpt…" aria-label="Search"/>
+          <button class="clear" id="f-clear" type="button">Clear</button>
+          <span class="count" id="f-count" aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="container" id="results">
+      <!-- Groups + cards will be injected here -->
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Data source: try JSON file, fallback to inline -->
+  <script>
+  (function(){
+    const RESULTS = document.getElementById('results');
+    const COUNT   = document.getElementById('f-count');
+    const selYear = document.getElementById('f-year');
+    const selMonth= document.getElementById('f-month');
+    const inDate  = document.getElementById('f-date');
+    const selBook = document.getElementById('f-book');
+    const selChap = document.getElementById('f-chapter');
+    const inVerse = document.getElementById('f-verse');
+    const selAuth = document.getElementById('f-author');
+    const inSearch= document.getElementById('f-search');
+    const btnClear= document.getElementById('f-clear');
+
+    const MONTHS = ["","January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    // Bible books (KJV order; trim to your corpus as needed)
+    const BOOKS = ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+
+    function by(arr, key){ return Array.from(new Set(arr.map(x => x[key]).filter(Boolean))).sort(); }
+
+    function renderGroups(items){
+      RESULTS.innerHTML = "";
+      // Group by Year then Month
+      const groups = {};
+      items.forEach(a=>{
+        const d = new Date(a.date);
+        const y = d.getFullYear();
+        const m = d.getMonth()+1;
+        const ym = `${y}-${String(m).padStart(2,'0')}`;
+        groups[ym] ??= {year:y, month:m, items:[]};
+        groups[ym].items.push(a);
+      });
+      const keys = Object.keys(groups).sort((a,b)=> b.localeCompare(a)); // newest first
+      keys.forEach(k=>{
+        const g = groups[k];
+        const header = document.createElement('div');
+        header.className = 'group';
+        header.textContent = `${MONTHS[g.month]} ${g.year}`;
+        RESULTS.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'cards';
+        RESULTS.appendChild(grid);
+
+        g.items.sort((a,b)=> new Date(b.date) - new Date(a.date)).forEach(a=>{
+          grid.appendChild(cardEl(a));
+        });
+      });
+
+      COUNT.textContent = `${items.length} article${items.length===1?'':'s'}`;
+    }
+
+    function cardEl(a){
+      const li = document.createElement('article');
+      li.className = 'card';
+      li.setAttribute('data-id', a.id);
+
+      li.innerHTML = `
+        <a href="${a.href}">
+          <div class="card-media">
+            <img src="${a.image}" alt="${a.title}"/>
+            <span class="label-pill">Article</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">${a.title}</h3>
+            <p class="card-excerpt">${a.excerpt || ""}</p>
+            <time class="card-date" datetime="${a.date}">${fmtDate(a.date)}</time>
+          </div>
+          <div class="card-foot">
+            <img class="author-avatar" src="${a.authorAvatar}" alt="${a.author} avatar"/>
+            <span class="author-name">${a.author}</span>
+          </div>
+        </a>
+      `;
+      return li;
+    }
+
+    function fmtDate(iso){
+      try{
+        const d = new Date(iso);
+        return d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+      }catch{ return iso; }
+    }
+
+    function verseMatches(hay, needle){
+      if(!needle) return true;
+      // Accept "3:16" or "3:16-18"
+      const n = needle.replace(/\s+/g,'').toLowerCase();
+      return (hay || "").toLowerCase().includes(n);
+    }
+
+    function applyFilters(){
+      const y = selYear.value;
+      const m = selMonth.value;
+      const d = inDate.value;
+      const b = selBook.value;
+      const c = selChap.value;
+      const v = inVerse.value.trim();
+      const s = inSearch.value.trim().toLowerCase();
+
+      const filtered = DATA.filter(a=>{
+        const dt = new Date(a.date);
+        const yOk = !y || String(dt.getFullYear()) === y;
+        const mOk = !m || (dt.getMonth()+1) === Number(m);
+        const dOk = !d || a.date.slice(0,10) === d;
+        const bOk = !b || a.book === b;
+        const cOk = !c || String(a.chapter) === String(c);
+        const vOk = verseMatches(a.verses, v);
+        const sOk = !s || (a.title + " " + (a.excerpt||"")).toLowerCase().includes(s);
+        return yOk && mOk && dOk && bOk && cOk && vOk && sOk;
+      });
+
+      renderGroups(filtered);
+    }
+
+    function resetFilters(){
+      [selYear, selMonth, inDate, selBook, selChap, inVerse, selAuth, inSearch].forEach(el => el.value = "");
+      applyFilters();
+    }
+
+    function populateFilters(items){
+      // Year
+      selYear.innerHTML = '<option value="">Year</option>' + by(items, 'year').map(y=>`<option>${y}</option>`).join('');
+      // Month (1-12)
+      selMonth.innerHTML = '<option value="">Month</option>' + MONTHS.slice(1).map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');
+      // Book
+      selBook.innerHTML = '<option value="">Bible book</option>' + BOOKS.map(b=>`<option>${b}</option>`).join('');
+      // Chapter (1..150 for coverage; you can tighten later)
+      selChap.innerHTML = '<option value="">Chapter</option>' + Array.from({length:150},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+      // Author
+      selAuth.innerHTML = '<option value="">Author</option>' + by(items, 'author').map(a=>`<option>${a}</option>`).join('');
+    }
+
+    // Wire events
+    [selYear, selMonth, inDate, selBook, selChap, selAuth].forEach(el=> el.addEventListener('change', applyFilters));
+    [inVerse, inSearch].forEach(el=> el.addEventListener('input', applyFilters));
+    btnClear.addEventListener('click', resetFilters);
+
+    // Data bootstrap
+    let DATA = [];
+    async function boot(){
+      // Try external index first, fallback to inline SAMPLE below
+      try{
+        const res = await fetch('/israelite-research/data/articles-index.json',{cache:'no-store'});
+        if(res.ok){
+          DATA = (await res.json()).map(n=> normalize(n));
+        }
+      }catch(_){}
+      if(!DATA.length){
+        DATA = SAMPLE.map(n=> normalize(n));
+      }
+      populateFilters(DATA);
+      applyFilters();
+    }
+
+    function normalize(n){
+      // Expect fields (fallbacks provided)
+      const date = n.date || '2025-01-01';
+      const d = new Date(date);
+      return {
+        id: n.id || crypto.randomUUID(),
+        title: n.title || 'Untitled',
+        href: n.href || '#',
+        image: n.image || '/israelite-research/images/index/featured-articles-700x394.jpg',
+        excerpt: n.excerpt || '',
+        date,
+        year: d.getFullYear(),
+        month: d.getMonth()+1,
+        book: n.book || '',
+        chapter: n.chapter || '',
+        verses: n.verses || '',
+        author: n.author || 'Semitic Jew',
+        authorAvatar: n.authorAvatar || '/israelite-research/images/authors/semitic-jew.jpg'
+      };
+    }
+
+    // SAMPLE: replace with /data/articles-index.json later
+    const SAMPLE = [
+      {
+        title:"Is Creation Logical?",
+        href:"/israelite-research/articles/is-creation-logical.html",
+        image:"/israelite-research/images/articles/creation-logical-700x394.jpg",
+        excerpt:"Exploring the rational coherence of creation within a biblical worldview.",
+        date:"2025-08-20",
+        book:"Genesis", chapter:1, verses:"1:1-1:5", author:"Semitic Jew"
+      },
+      {
+        title:"Is Scripture & Logic Compatible?",
+        href:"/israelite-research/articles/is-scripture-and-logic-compatible.html",
+        image:"/israelite-research/images/articles/logic-compatibility-700x394.jpg",
+        excerpt:"How sound reasoning complements rather than conflicts with Scripture.",
+        date:"2025-07-18",
+        book:"Proverbs", chapter:1, verses:"1:1-1:7", author:"Semitic Jew"
+      },
+      {
+        title:"The Historicity of the Hamites",
+        href:"/israelite-research/articles/hamites-historicity.html",
+        image:"/israelite-research/images/articles/hamites-historicity-700x394.jpg",
+        excerpt:"Surveying historical claims around the descendants of Ham.",
+        date:"2025-06-12",
+        book:"Genesis", chapter:10, verses:"10:6-10:20", author:"Semitic Jew"
+      },
+      {
+        title:"Who Are the “Gentiles”?",
+        href:"/israelite-research/articles/gentiles.html",
+        image:"/israelite-research/images/articles/gentiles-meaning-700x394.jpg",
+        excerpt:"A study on terminology, context, and people groups.",
+        date:"2025-05-28",
+        book:"Romans", chapter:11, verses:"11:11-11:25", author:"Semitic Jew"
+      },
+      {
+        title:"Three Laws of Logic",
+        href:"/israelite-research/articles/three-laws-of-logic.html",
+        image:"/israelite-research/images/articles/three-laws-700x394.jpg",
+        excerpt:"Identity, non-contradiction, and excluded middle explained.",
+        date:"2025-04-02",
+        book:"John", chapter:1, verses:"1:1", author:"Semitic Jew"
+      },
+      {
+        title:"Is Truth Reliable?",
+        href:"/israelite-research/articles/is-truth-reliable.html",
+        image:"/israelite-research/images/articles/truth-reliable-700x394.jpg",
+        excerpt:"Reliability, revelation, and reason.",
+        date:"2025-03-15",
+        book:"John", chapter:18, verses:"18:37-38", author:"Semitic Jew"
+      }
+    ];
+
+    boot();
+  })();
+  </script>
+
+  <script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
