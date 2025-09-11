@@ -1,70 +1,369 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Is Scripture &amp; Logic Compatible? — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Scripture & Logic: Friends, Not Foes — Semitic Jew</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-    /* Page-local guards to match your article standard */
-    :root{ --accent:#F17300; --muted:#666; --ink:#0b2340; }
-    .article-shell{ max-width:760px; margin:0 auto; }
-    .article-head{ text-align:center; margin-top:.5rem; }
-    .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin-bottom:.35rem; }
-    .article-title{
-      font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(1.9rem,3.4vw,2.6rem);
-      color: var(--ink); line-height:1.15; margin:0 0 .8rem;
-    }
+  :root{ --accent:#F17300; --muted:#6B7280; --ink:#0b2340; }
 
-    /* Article image is always 700x394, squared edges */
-    .hero-image{ margin:1rem auto; display:flex; justify-content:center; }
-    .hero-image img{
-      width:700px; height:auto; max-width:100%;
-      display:block; border-radius:0 !important;
-    }
+  .article-shell{ max-width:760px; margin:0 auto; padding:0 16px; }
+  .article-head{ text-align:center; margin:1.25rem 0 .75rem; }
+  .article-date{ color:var(--muted); font-size:.95rem; letter-spacing:.2px; margin:0 0 .5rem; }
+  .article-title{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:clamp(2rem,3.6vw,2.75rem); color:var(--ink); line-height:1.15; margin:0; }
 
-    /* Byline + share sit directly under the image */
-    .article-byline{ display:flex; align-items:center; gap:.65rem; margin:.35rem 0 1.2rem; color: var(--ink); }
-    .article-byline .author-avatar{
-      width:40px; height:40px; border-radius:50%; object-fit:cover;
-      border:1px solid var(--border); background:#f0f3f8;
-    }
-    .byline-name{ font-weight:700; }
-    .byline-meta{ color: var(--muted); font-size:.95rem; }
+  .hero-image{ margin:1.1rem auto .5rem; }
+  .hero-image img{ width:100%; height:auto; display:block; border-radius:0; }
 
-    .article-share{ display:flex; align-items:center; gap:.5rem; margin:.2rem 0 1.25rem; }
-    .share-btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      width:36px; height:36px; border-radius:999px;
-      border:1px solid var(--border); background: var(--surface); color: var(--brand); text-decoration:none;
-    }
-    .share-btn:hover{ transform:translateY(-1px); }
+  /* Byline + share (identical site-wide pattern) */
+  .byline-row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; margin:.35rem 0 1.25rem; }
+  .article-byline{ display:flex; align-items:center; gap:.55rem; color: var(--ink); }
+  .author-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#f0f3f8; }
+  .author-info-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface);
+    color:var(--muted); cursor:pointer; padding:0;
+    transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+  }
+  .author-info-btn:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .author-info-btn svg{ width:18px; height:18px; display:block; }
+  .byline-name{ font-weight:800; color:var(--ink); }
+  .byline-meta{ color:var(--muted); font-size:.95rem; }
 
-    .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.7; }
-    .article-content p{ margin:1rem 0; }
-    .article-content h2{ font-family:var(--ff-serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
-    .article-content blockquote{
-      border-left:4px solid var(--accent); padding:.25rem 1rem; color: var(--ink);
-      background:#f9fbfe; border-radius:8px;
-    }
+  .share-min{ display:flex; align-items:center; gap:.4rem; }
+  .share-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--brand); text-decoration:none; }
+  .share-btn:hover{ transform:translateY(-1px); }
 
-    /* Verse hover “plugin” (articles-only) */
-    .verse{ position:relative; text-decoration:underline dotted; color: var(--brand); }
-    .verse:hover::after{
-      content:"Open in Logos";
-      position:absolute; left:0; bottom:120%;
-      background: var(--surface); color: var(--brand); border:1px solid var(--border); padding:.25rem .45rem;
-      font-size:.8rem; border-radius:8px; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.08);
-    }
-  </style>
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style><style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style></head>
-<body class="article-doc article-doc" data-page="article">
-<!-- Header partial -->
+  /* Body */
+  .article-content{ color:#1d1d1d; font-size:1.06rem; line-height:1.75; }
+  .article-content p{ margin:1rem 0; }
+  .article-content h2{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.35rem; margin:1.6rem 0 .6rem; color: var(--ink); }
+  .article-content h3{ font-family:var(--ff-serif,"Adobe Garamond Pro",serif); font-size:1.1rem; margin:1rem 0 .4rem; color: var(--ink); }
+  .article-content ul{ margin:.35rem 0 1rem 1.25rem; }
+  .article-content blockquote{ border-left:4px solid var(--accent); padding:.25rem 1rem; color:var(--ink); background:#f9fbfe; border-radius:8px; }
+
+  /* Inline Bible citation hook (tooltip handled by site JS if desired) */
+  .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--brand); font-weight:600; }
+
+  /* Footnotes */
+  .footnote-ref{text-decoration:none;} .footnote-ref sup{font-size:.75em;vertical-align:super;}
+  .footnotes{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--border); }
+  .footnotes ol{ margin:.35rem 0 0 1.1rem; }
+  .footnotes li{ margin:.5rem 0; }
+  .footnotes a.backref{ font-size:.9rem; margin-left:.5rem; color:var(--blue); text-decoration:none; }
+
+  /* Author modal (light only) */
+  .modal-overlay{ position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.62); display:none; }
+  .modal-overlay[aria-hidden="false"]{ display:block; }
+  .modal-panel{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .modal-card{
+    width:min(860px,92vw); max-height:88vh; background:#fff; color:var(--ink);
+    border:1px solid var(--border); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:auto;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+  .mh-left{ display:flex; align-items:center; gap:10px; }
+  .modal-title{ margin:0; font-weight:900; font-size:1.25rem; color:var(--ink); }
+  .author-x-head{ width:32px; height:32px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); background:var(--surface); color:var(--muted); text-decoration:none; transition:transform .12s ease, box-shadow .12s ease, color .12s ease; }
+  .author-x-head:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+  .modal-close{ background:none; border:none; padding:8px; cursor:pointer; color:var(--muted); }
+  .modal-body{ padding:16px; display:grid; grid-template-columns:96px 1fr; gap:16px; }
+  .ap-avatar{ width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid var(--border); }
+  .ap-name{ margin:.1rem 0 .25rem; font-weight:800; color:var(--ink); font-size:1.1rem; }
+  .ap-text{ color:var(--muted); line-height:1.65; }
+  .modal-links{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-chip{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--border); padding:8px 10px; border-radius:999px;
+    background:var(--surface); color:var(--ink); text-decoration:none;
+    font-weight:700; font-size:.95rem;
+    transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+  }
+  .modal-chip:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.08); }
+</style>
+</head>
+<body class="article-doc" data-page="article">
 <div id="site-header"></div>
-<main class="container article-page">
-<!-- Breadcrumbs -->
+
+<main class="article-page">
+<article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
+    <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
+  </header>
+
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="Scripture & Logic: Friends, Not Foes" height="394" src="/israelite-research/images/articles/scripture-and-logic-700x394.jpg" width="700"/>
+    <meta content="/israelite-research/images/articles/scripture-and-logic-700x394.jpg" itemprop="url"/>
+  </figure>
+
+  <div class="byline-row" id="byline-row">
+    <div class="article-byline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <!-- Same modal icon as your site-wide pattern -->
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+    </div>
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="article-content" itemprop="articleBody">
+    <p>
+      Some imagine “logic” as a cold apparatus—good for mathematics, out of place in prayer, prophecy, and worship.
+      But Scripture presents the God of Israel as faithful, consistent, and truthful. If that is so, then the world He made and the word He speaks
+      will bear the marks of coherence. To ask whether Scripture and logic are compatible is to ask whether God is consistent with Himself.
+      The prophetic books, the teaching of Jesus, and the writings of the apostles answer with a resounding yes.<span class="footnote-ref" id="ref-fn1"><sup><a href="#fn1">1</a></sup></span>
+    </p>
+
+    <h2>What We Mean by “Logic”</h2>
+    <p>
+      By logic we mean the basic commitments that make meaningful speech possible: identity (things are what they are), non-contradiction
+      (a claim and its negation cannot both be true in the same sense at the same time), and the excluded middle (between a claim and its negation there is no third option that preserves truth).
+      These are not sterile rules imposed on the Bible; they are the ordinary grammar of truthful discourse. When Scripture says God is faithful,
+      it assumes a world where truth holds together rather than dissolving into contradiction.<span class="footnote-ref" id="ref-fn2"><sup><a href="#fn2">2</a></sup></span>
+    </p>
+
+    <h2>Reading Scripture with Coherence</h2>
+    <p>
+      The Bible is not a heap of slogans. It is a canon—a rule—whose parts interpret one another. Genealogies connect persons and promises.
+      Laws form a moral architecture. Prophetic oracles presuppose covenant history. Wisdom literature articulates patterns of cause and effect.
+      The Gospels arrange words and works to show identity and mission. The letters reason from claims to consequences. To read Scripture is to track
+      claims, contexts, and conclusions. That is a logical task before it is an academic one.<span class="footnote-ref" id="ref-fn3"><sup><a href="#fn3">3</a></sup></span>
+    </p>
+
+    <h2>Prophetic Reasoning: From Absurdity to Clarity</h2>
+    <p>
+      The prophets did more than announce judgment and hope—they reasoned. Consider how they exposed idolatry. A craftsman fells a tree,
+      burns part for heat, and carves the rest into a god. Then he bows down to the product of his own hands. The prophet’s point is not mere sarcasm—it is reductio ad absurdum:
+      reduce a practice to its logical steps and its contradiction with reality becomes plain. In the same tradition, a prophet will contrast
+      covenant commands with public behavior—weights and measures, courts and markets, harvest and sabbath—to show that a people cannot claim covenant fidelity
+      while practicing systematic injustice. The contradiction collapses the claim.<span class="footnote-ref" id="ref-fn4"><sup><a href="#fn4">4</a></sup></span>
+    </p>
+    <p>
+      Prophets also use analogical and a fortiori (“how much more”) reasoning. If a shepherd cares for a single lamb, how much more should leaders
+      care for the flock? If a house built on sand collapses in wind, how much more a society built on lies? Such arguments are not ad hoc.
+      They move from shared premises—what everyone can see—to piercing moral conclusions. This is logic in service of covenant truth.
+    </p>
+
+    <h2>Jesus’ Logic: Distinctions, Parables, and Consequences</h2>
+    <p>
+      Jesus’ teaching brims with logical clarity. When pressed on conflicting obligations, He draws distinctions that preserve categories:
+      what belongs to the civil authority is not identical with what belongs to God. That is a logical division guarding the integrity of worship.
+      When accused of breaking a rule by healing, He argues from lesser to greater: if an ordinary mercy is permitted, how much more an act that restores life and dignity?
+      He exposes faulty inferences (“You nullify the commandment of God by your tradition”) and reveals hidden premises (treasure and heart move together).
+      His parables are carefully structured analogies that invite hearers to carry a pattern from an everyday domain (farming, commerce, households) into the realm of the kingdom.
+      The parable does not replace logic; it <em>embeds</em> logic in a story so that truth is grasped not only by the head but by the heart.<span class="footnote-ref" id="ref-fn5"><sup><a href="#fn5">5</a></sup></span>
+    </p>
+
+    <h2>Apostolic Argument: Step-by-Step Reasoning</h2>
+    <p>
+      The apostles write like advocates. They pose questions, answer objections, distinguish law and promise, compare covenants, and reason from premise to conclusion.
+      One classic pattern proceeds in steps: all stand under sin; law reveals guilt rather than erasing it; God’s righteousness is revealed apart from law;
+      therefore, boasting is excluded and faith unites Jew and Gentile. Even where the prose is pastoral, the backbone is argumentative: <em>if… then… therefore</em>.
+      The aim is not to win a debate but to ground a people in what is sound, so that comfort, correction, and hope rest on reasons rather than sentiment alone.<span class="footnote-ref" id="ref-fn6"><sup><a href="#fn6">6</a></sup></span>
+    </p>
+
+    <h2>Why Logic Matters for Faithfulness</h2>
+    <p>
+      When logic is sidelined, piety becomes vulnerable to manipulation. Shallow slogans stand in for tested truth. Contradictory claims flourish because no one asks whether they can stand together.
+      The result is confusion—about God’s character, about human dignity, about justice and mercy. But when leaders and households practice coherent reading,
+      contradictions are exposed, and the center holds. This is not a call to dry rationalism; it is a call to love God with the mind as well as the heart,
+      and to honor neighbors by speaking truthfully and consistently.<span class="footnote-ref" id="ref-fn7"><sup><a href="#fn7">7</a></sup></span>
+    </p>
+
+    <h2>A Short Guide to Logical Reading</h2>
+    <p>
+      <strong>Track identity.</strong> Who is speaking? To whom? What covenant terms frame this passage? Identity keeps our categories honest.<br/>
+      <strong>Refuse contradictions.</strong> If an interpretation makes Scripture deny itself, revisit your premises. God’s truth does not need a loophole.<br/>
+      <strong>Honor context.</strong> Words live in sentences, paragraphs, and books. Bring near and far contexts into view before drawing conclusions.<br/>
+      <strong>Follow consequences.</strong> Ask, “If this claim is true, what follows?” Good doctrine bears good fruit—consistency in worship, justice, and compassion.<br/>
+      <strong>Compare Scripture with Scripture.</strong> Let the clear illuminate the difficult; let the whole canon discipline any single verse pressed into extreme service.<span class="footnote-ref" id="ref-fn8"><sup><a href="#fn8">8</a></sup></span>
+    </p>
+
+    <h2>Examples at Work: Prophets and Jesus</h2>
+    <h3>Exposing False Worship</h3>
+    <p>
+      A prophet surveys a marketplace where scales are tampered with and the poor are priced like grain. He does not only say “this is wrong;” he reveals the contradiction:
+      a people who recite covenant words but engineer exploitation deny the very God they claim. Identity (who God is; who His people are) and non-contradiction (you cannot love God and hate His image)
+      combine to produce a moral verdict and a call to repent.<span class="footnote-ref" id="ref-fn9"><sup><a href="#fn9">9</a></sup></span>
+    </p>
+
+    <h3>Healing and the Weightier Matters</h3>
+    <p>
+      Jesus encounters a man in need on a sacred day. His opponents elevate a boundary rule over mercy. Jesus answers with a structured argument:
+      if you would rescue an animal in a pit, how much more should a human being be restored? The premises appeal to shared practices (rescuing an animal), a recognized hierarchy (human life exceeds livestock),
+      and the goodness of mercy. The conclusion exposes their inconsistency and restores the man. Logic serves compassion rather than competing with it.<span class="footnote-ref" id="ref-fn10"><sup><a href="#fn10">10</a></sup></span>
+    </p>
+
+    <h3>Render to Whom It Is Due</h3>
+    <p>
+      When challenged about allegiance, Jesus refuses a false dilemma by dividing categories. A coin bears an earthly image; a person bears the image of God.
+      Tribute is one thing; worship is another. The argument is crisp: identify kinds, assign what belongs to each, and refuse the collapse of categories that would turn piety into politics or politics into piety.<span class="footnote-ref" id="ref-fn11"><sup><a href="#fn11">11</a></sup></span>
+    </p>
+
+    <h2>Answering Common Objections</h2>
+    <p>
+      <strong>“Logic is Western; the Bible is ancient Near Eastern.”</strong> Logic is not a regional invention but the ordinary grammar of truth and falsehood.
+      Ancient Hebrew poetry uses parallelism that relies on consistent meaning; law codes presume stable categories; wisdom literature compares cause and effect.
+      These are logical operations embedded in the Bible’s own forms.<span class="footnote-ref" id="ref-fn12"><sup><a href="#fn12">12</a></sup></span>
+    </p>
+    <p>
+      <strong>“Logic puts God in a box.”</strong> God transcends creatures; He does not contradict Himself. To say God cannot lie is not to shrink Him but to honor His holiness.
+      Mystery exceeds our grasp; contradiction destroys meaning. The church lives by mystery (things too great for us) and rejects nonsense (things that cannot be true).<span class="footnote-ref" id="ref-fn13"><sup><a href="#fn13">13</a></sup></span>
+    </p>
+    <p>
+      <strong>“Faith, not argument, changes hearts.”</strong> Granted—but faith comes by hearing, and hearing requires intelligible, coherent speech.
+      Prophets, Jesus, and apostles all argued because love seeks understanding. Sound reasons are not the whole of faith; they are the rails along which faith travels.<span class="footnote-ref" id="ref-fn14"><sup><a href="#fn14">14</a></sup></span>
+    </p>
+
+    <h2>Conclusion</h2>
+    <p>
+      Scripture and logic are not rivals. Logic names the simple commitments that make truth tellable: identity, non-contradiction, and consequence.
+      The prophets wielded these tools to expose idols and defend justice. Jesus used them to free the trapped, unmask hypocrisy, and teach with power.
+      The apostles reasoned carefully to anchor communities in hope. Because God is faithful, His word is coherent, and His people are called to think and live coherently.
+      To embrace logic is to respect the God who speaks truly—and to love neighbors with truthful, consistent words and works.<span class="footnote-ref" id="ref-fn15"><sup><a href="#fn15">15</a></sup></span>
+    </p>
+  </div>
+
+  <section aria-labelledby="fn-heading" class="footnotes">
+    <h3 id="fn-heading">Notes &amp; Bibliography</h3>
+    <ol>
+      <li id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logic in reading Scripture. <a class="backref" href="#ref-fn1">↩</a></li>
+      <li id="fn2">Identity, non-contradiction, and excluded middle as the “grammar” of truthful discourse, not foreign impositions. <a class="backref" href="#ref-fn2">↩</a></li>
+      <li id="fn3">Canon consciousness: letting narrative, law, prophets, wisdom, Gospels, and letters mutually interpret one another. <a class="backref" href="#ref-fn3">↩</a></li>
+      <li id="fn4">Prophetic reductio: exposing idolatry and social injustice by tracing practices to their contradictory implications. <a class="backref" href="#ref-fn4">↩</a></li>
+      <li id="fn5">Jesus’ category distinctions, a fortiori reasoning, and parables as structured analogies leading to moral and theological clarity. <a class="backref" href="#ref-fn5">↩</a></li>
+      <li id="fn6">Apostolic argument forms (questions, objections, conclusions) that bind communities to tested truth. <a class="backref" href="#ref-fn6">↩</a></li>
+      <li id="fn7">Logic as neighbor love: protecting communities from manipulation and contradiction while promoting integrity. <a class="backref" href="#ref-fn7">↩</a></li>
+      <li id="fn8">Practical hermeneutic counsel: identity, contradiction, context, consequence, and cross-referencing. <a class="backref" href="#ref-fn8">↩</a></li>
+      <li id="fn9">Marketplace and court examples: the collapse of covenant claims under unjust practice. <a class="backref" href="#ref-fn9">↩</a></li>
+      <li id="fn10">Mercy as a governed inference: lesser-to-greater reasoning in acts of restoration. <a class="backref" href="#ref-fn10">↩</a></li>
+      <li id="fn11">Rendering what is due through category distinction (image on coin vs. image of God in persons). <a class="backref" href="#ref-fn11">↩</a></li>
+      <li id="fn12">Form-critical observation: Hebrew parallelism, law codes, and wisdom patterns presuppose stable meanings. <a class="backref" href="#ref-fn12">↩</a></li>
+      <li id="fn13">The difference between mystery (beyond comprehension) and contradiction (beyond meaning). <a class="backref" href="#ref-fn13">↩</a></li>
+      <li id="fn14">Why argument serves faith: intelligible proclamation as the path by which faith hears and responds. <a class="backref" href="#ref-fn14">↩</a></li>
+      <li id="fn15">Summary: coherence as a mark of divine authorship and a calling for the covenant people. <a class="backref" href="#ref-fn15">↩</a></li>
+    </ol>
+  </section>
+</article>
+</main>
+
+<!-- FULL-SCREEN AUTHOR MODAL -->
+<div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-panel" data-close="">
+    <div class="modal-card" role="document">
+      <div class="modal-head">
+        <div class="mh-left">
+          <h2 class="modal-title" id="author-modal-title">Semitic Jew</h2>
+          <a aria-label="Semitic Jew on X" class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank">
+            <svg aria-hidden="true" height="18" viewBox="0 0 24 24" width="18"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+          </a>
+        </div>
+        <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
+          <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
+        <div>
+          <div class="ap-name">Semitic Jew</div>
+          <p class="ap-text">
+            Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+            Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
+            and study tools to recover the Bible’s own world and voices.
+          </p>
+          <div class="modal-links">
+            <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
+            <a class="modal-chip" href="/israelite-research/media.html">Media</a>
+            <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
+            <a class="modal-chip" href="/israelite-research/semitic-jew.html">More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script>
+  (function(){
+    // Publish date
+    var now=new Date(), iso=now.toISOString().slice(0,10),
+        text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+
+    // Share links
+    var url=location.href, title=document.title;
+    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    if(cp) cp.addEventListener('click', function(){
+      if(navigator.share){ navigator.share({title, url}).catch(function(){}); return; }
+      navigator.clipboard && navigator.clipboard.writeText(url);
+      cp.innerHTML='✓';
+      setTimeout(()=>{ cp.innerHTML='<svg aria-hidden=\"true\" height=\"16\" viewBox=\"0 0 24 24\" width=\"16\"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 900);
+    });
+
+    // Modal open/close
+    var icon  = document.getElementById('author-info');
+    var modal = document.getElementById('author-modal');
+    var close = document.getElementById('author-modal-close');
+    var lastFocus;
+
+    function openModal(e){
+      if(e){ e.preventDefault(); }
+      lastFocus = document.activeElement;
+      modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = 'hidden';
+      close && close.focus();
+    }
+    function closeModal(e){
+      if(e){ e.preventDefault(); }
+      modal.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    if(icon) icon.addEventListener('click', openModal);
+    if(close) close.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e){ if(e.target && e.target.hasAttribute('data-close')) closeModal(e); });
+    document.addEventListener('keydown', function(e){ if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e); });
+
+    // Footnote backrefs: link each footnote’s ↩ back to its inline ref
+    document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+      var liId = a.getAttribute('href').slice(1);
+      var sup = a.closest('.footnote-ref');
+      if (!sup.id) {
+        var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+        sup.id = 'ref-fn' + n;
+      }
+      var li = document.getElementById(liId);
+      if (li) {
+        var back = li.querySelector('.backref');
+        if (back) back.setAttribute('href', '#' + sup.id);
+      }
+    });
+  })();
+</script>
+<script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
