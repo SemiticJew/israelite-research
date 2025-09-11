@@ -11,11 +11,7 @@
     --accent:#F17300;
     --ink:#0b2340;
     --muted:#6b7280;
-    --brand:#054A91;
-    --sky:#E6EBF2;
-
-    --card-shadow: 0 2px 10px rgba(0,0,0,.06);
-    --card-shadow-hover: 0 14px 28px rgba(0,0,0,.14);
+    --sky:#e7ecf4;
   }
 
   .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
@@ -27,157 +23,42 @@
   .feature-row{ margin:32px 0; }
   .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
 
-  .cards{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap:24px;
-  }
-  @media (max-width: 960px){
-    .cards{ grid-template-columns: 1fr; }
-  }
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media (max-width:960px){.cards{grid-template-columns:1fr}}
 
-  /* Base card element */
   .card{
-    position:relative;
-    display:flex; flex-direction:column;
-    text-decoration:none; color:inherit;
-    border-radius:16px;
-    overflow:hidden;
-    background:#fff;
-    transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s cubic-bezier(.2,.8,.2,1), border-color .22s ease;
-    will-change: transform, box-shadow;
+    display:flex;flex-direction:column;background:#fff;border:1px solid var(--sky);
+    border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;
+    transition:transform .15s ease,border-color .15s ease;
   }
+  .card:hover{transform:translateY(-2px);border-color:#d8e0ed}
+
   .card img{
-    display:block; width:100%; height:auto;
-    aspect-ratio:700/394; object-fit:cover; object-position:center;
+    width:100%;height:auto;
+    aspect-ratio:700/394;object-fit:cover;object-position:center;
   }
-  .card-body{ display:flex; flex-direction:column; gap:6px; }
 
-  /* Shared text atoms */
+  .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+
   .card-kicker{
-    font-size:.78rem; font-weight:700;
-    letter-spacing:.6px; text-transform:uppercase;
-    color:var(--accent);
+    font:.78rem/1 var(--ff-sans,system-ui);
+    letter-spacing:.5px;text-transform:uppercase;
+    color:var(--muted);font-weight:700
   }
+
   .card-title{
-    font-size:1.12rem; font-weight:900; line-height:1.28; color:var(--ink);
-  }
-
-  /* -------------------------------------------
-     STYLE A — OVERLAY CARDS (Featured Podcast)
-     ------------------------------------------- */
-  .cards--overlay .card{
-    box-shadow:var(--card-shadow);
-  }
-  .cards--overlay .card:hover{
-    transform:translateY(-6px);
-    box-shadow:var(--card-shadow-hover);
-  }
-  .cards--overlay .card img{
-    transform:scale(1); transition:transform .35s cubic-bezier(.2,.8,.2,1);
-  }
-  .cards--overlay .card:hover img{ transform:scale(1.03); }
-
-  .cards--overlay .card-body{
-    position:absolute; left:0; right:0; bottom:0;
-    padding:14px 16px 16px;
-    color:#fff;
-    /* soft gradient for text legibility */
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,18,32,.55) 65%, rgba(10,18,32,.75) 100%);
-  }
-  .cards--overlay .card-kicker{ color:#FFD6B0; }
-  .cards--overlay .card-title{ color:#fff; }
-
-  /* animated underline on title */
-  .cards--overlay .card-title{
-    background-image: linear-gradient(currentColor,currentColor);
-    background-repeat: no-repeat;
-    background-size: 0% 2px; background-position: 0 100%;
-    transition: background-size .25s ease;
-  }
-  .cards--overlay .card:hover .card-title{ background-size:100% 2px; }
-
-  /* -------------------------------------------
-     STYLE B — HORIZONTAL OUTLINE CARDS (Library)
-     ------------------------------------------- */
-  .cards--horizontal .card{
-    border:1px solid var(--sky);
-    background:#fff;
-  }
-  .cards--horizontal .card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--card-shadow);
-    border-color:#d7deea;
-  }
-  /* Make each card a horizontal layout on larger screens */
-  @media (min-width: 961px){
-    .cards--horizontal .card{
-      display:grid;
-      grid-template-columns: 220px 1fr;
-      align-items:stretch;
-    }
-    .cards--horizontal .card img{
-      height:100%; aspect-ratio:auto; object-fit:cover;
-      border-right:1px solid var(--sky);
-    }
-    .cards--horizontal .card-body{
-      padding:14px 16px; gap:8px;
-      align-self:center;
-    }
-  }
-  /* Stack on small screens */
-  @media (max-width: 960px){
-    .cards--horizontal .card img{ aspect-ratio:700/394; border-right:0; }
-    .cards--horizontal .card-body{ padding:14px 16px 16px; }
-  }
-
-  /* -------------------------------------------
-     STYLE C — MINIMAL TILES (Communities)
-     ------------------------------------------- */
-  .cards--minimal .card{
-    border:1px solid var(--sky);
-    background:#fff;
-    box-shadow:none;
-    border-radius:14px;
-  }
-  .cards--minimal .card:hover{
-    transform:translateY(-2px);
-    border-color:#d0d9e7;
-    box-shadow:0 6px 18px rgba(0,0,0,.08);
-  }
-  .cards--minimal .card-body{
-    padding:12px 14px 16px;
-  }
-  .cards--minimal .card-kicker{ color:var(--brand); }
-  .cards--minimal .card-title{
-    font-size:1.06rem; font-weight:800;
+    font-size:1.05rem;font-weight:800;color:var(--ink);line-height:1.3
   }
 </style>
-
-<!-- keep site-wide verse styling (unchanged) -->
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style>
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style>
 </head>
 <body>
 <div id="site-header"></div>
 
-<!-- index.html -->
-<style>
-  .site-home-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0;
-    color: #0b2340;
-  }
-</style>
-
 <main class="container">
-  <!-- Featured Podcast (Overlay cards) -->
+  <!-- Featured Podcast -->
   <section class="feature-row">
     <h2>Featured Podcast</h2>
-    <div class="cards cards--overlay">
+    <div class="cards">
       <a class="card" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=aeb9611c714e411c" target="_blank">
         <img alt="Spotify Podcast" height="394" src="/israelite-research/images/index/spotify-700x394.jpg" width="700"/>
         <div class="card-body">
@@ -204,10 +85,10 @@
     </div>
   </section>
 
-  <!-- Featured Library (Horizontal outline cards) -->
+  <!-- Featured Library -->
   <section class="feature-row">
     <h2>Featured Library</h2>
-    <div class="cards cards--horizontal">
+    <div class="cards">
       <a class="card" href="/israelite-research/israelite-catechism.html">
         <img alt="Israelite Catechism" height="394" src="/israelite-research/images/index/featured-israelite-catechism-700x394.jpg" width="700"/>
         <div class="card-body">
@@ -234,10 +115,10 @@
     </div>
   </section>
 
-  <!-- Featured Communities (Minimal tiles) -->
+  <!-- Featured Communities -->
   <section class="feature-row">
     <h2>Featured Communities</h2>
-    <div class="cards cards--minimal">
+    <div class="cards">
       <a class="card" href="#">
         <img alt="Discord (Coming Soon)" height="394" src="/israelite-research/images/index/coming-discord-700x394.jpg" width="700"/>
         <div class="card-body">
