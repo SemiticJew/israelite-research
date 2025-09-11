@@ -248,6 +248,8 @@
     if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
     if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
 
+    <script>
+  (function(){
     var icon  = document.getElementById('author-info');
     var modal = document.getElementById('author-modal');
     var close = document.getElementById('author-modal-close');
@@ -258,8 +260,9 @@
       lastFocus = document.activeElement;
       modal.setAttribute('aria-hidden','false');
       document.documentElement.style.overflow = 'hidden';
-      close && close.focus();
+      if(close) close.focus();
     }
+
     function closeModal(e){
       if(e){ e.preventDefault(); }
       modal.setAttribute('aria-hidden','true');
@@ -275,10 +278,13 @@
     });
 
     document.addEventListener('keydown', function(e){
-      if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
+      if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape'){
+        closeModal(e);
+      }
     });
   })();
 </script>
+
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
