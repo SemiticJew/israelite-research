@@ -255,8 +255,10 @@
     if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
     if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
     if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
+  })();
+</script>
 
-    <script>
+<script>
   (function(){
     var icon  = document.getElementById('author-info');
     var modal = document.getElementById('author-modal');
@@ -296,7 +298,6 @@
     });
   })();
 </script>
-
 
 <script src="/israelite-research/js/include.js"></script>
 </body>
