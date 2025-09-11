@@ -37,25 +37,42 @@
   .sort-row{ display:flex; align-items:center; gap:10px; color:var(--muted); font-weight:700; }
   .sort-row select{ border:1px solid var(--sky); padding:6px 8px; border-radius:8px; background:#fff; color:var(--ink); }
 
-  /* Article grid */
-  .grid{ display:grid; grid-template-columns:repeat(12, 1fr); gap:14px; }
-  .card{
-    grid-column:span 6;
-    display:flex; gap:12px; text-decoration:none; color:inherit;
-    border:1px solid var(--sky); background:#fff; border-radius:10px; padding:10px;
-    transition:box-shadow .12s ease, transform .12s ease;
+  /* ----- DG-style list cards ----- */
+  .list{ display:block; }
+  .entry{
+    display:grid; grid-template-columns:220px 1fr; gap:16px;
+    padding:16px 0; border-bottom:1px solid var(--sky); text-decoration:none; color:inherit;
   }
-  .card:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.06); }
-  .thumb{ width:160px; height:90px; border-radius:6px; object-fit:cover; border:1px solid var(--sky); background:#f0f3f8; }
-  .card h3{ margin:2px 0 6px; font-size:1.05rem; font-weight:900; color:var(--ink); line-height:1.2; }
-  .meta{ color:var(--muted); font-size:.92rem; margin-bottom:6px; }
-  .excerpt{ color:#1d1d1d; font-size:.97rem; line-height:1.5; margin:0; }
+  .entry:first-child{ padding-top:0; }
+  .entry-thumb{
+    width:220px; height:124px; border-radius:6px; object-fit:cover; border:1px solid var(--sky); background:#f0f3f8;
+  }
+  .entry-title{
+    margin:0 0 6px; font-weight:900; font-size:1.25rem; line-height:1.2; color:var(--ink);
+  }
+  .entry:hover .entry-title{ text-decoration:underline; }
+  .entry-meta{
+    color:var(--muted); font-size:.92rem; margin-bottom:6px;
+  }
+  .entry-excerpt{
+    margin:0; color:#1d1d1d; font-size:1rem; line-height:1.55; max-width:75ch;
+  }
 
-  @media (max-width:860px){
+  /* “More” pager button */
+  .list-more{
+    display:inline-flex; align-items:center; gap:8px;
+    margin:16px 0 28px; padding:10px 14px; font-weight:800;
+    border:1px solid var(--sky); border-radius:999px; background:#fff; color:var(--ink); text-decoration:none;
+    transition:transform .12s ease, box-shadow .12s ease, color .12s ease;
+  }
+  .list-more:hover{ transform:translateY(-1px); color:var(--brand); box-shadow:0 4px 10px rgba(0,0,0,.06); }
+
+  @media (max-width:900px){
     .author-hero{ grid-template-columns:80px 1fr; }
     .author-avatar{ width:80px; height:80px; }
-    .grid .card{ grid-column:span 12; }
-    .thumb{ width:130px; height:78px; }
+    .entry{ grid-template-columns:140px 1fr; gap:12px; }
+    .entry-thumb{ width:140px; height:90px; }
+    .entry-title{ font-size:1.1rem; }
   }
 </style>
 </head>
@@ -105,66 +122,64 @@
     </div>
   </div>
 
-  <section class="grid" id="author-grid" aria-live="polite">
-    <!-- Three Laws of Logic -->
-    <a class="card" href="/israelite-research/articles/three-laws-of-logic.html">
-      <img class="thumb" src="/israelite-research/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic"/>
+  <!-- DG-style list -->
+  <section class="list" id="author-list" aria-live="polite">
+    <a class="entry" href="/israelite-research/articles/three-laws-of-logic.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic"/>
       <div>
-        <h3>Three Laws of Logic</h3>
-        <div class="meta"><time datetime="2025-09-01">September 1, 2025</time> • Article</div>
-        <p class="excerpt">Identity, non-contradiction, and the excluded middle—why biblical truth requires logical consistency and how that bears on Israel and Jesus.</p>
+        <h3 class="entry-title">Three Laws of Logic</h3>
+        <div class="entry-meta"><time datetime="2025-09-01">September 1, 2025</time> • Article</div>
+        <p class="entry-excerpt">Identity, non-contradiction, and the excluded middle—why biblical truth requires logical consistency and how that bears on Israel and Jesus.</p>
       </div>
     </a>
 
-    <!-- Is Scripture and Logic Compatible? -->
-    <a class="card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-      <img class="thumb" src="/israelite-research/images/articles/logic-compatible-700x394.jpg" alt="Is Scripture and Logic Compatible?"/>
+    <a class="entry" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/logic-compatible-700x394.jpg" alt="Is Scripture and Logic Compatible?"/>
       <div>
-        <h3>Is Scripture and Logic Compatible?</h3>
-        <div class="meta"><time datetime="2025-08-28">August 28, 2025</time> • Article</div>
-        <p class="excerpt">A longform defense that Scripture not only welcomes logic but models it—from prophets to Jesus—and how readers can follow suit.</p>
+        <h3 class="entry-title">Is Scripture and Logic Compatible?</h3>
+        <div class="entry-meta"><time datetime="2025-08-28">August 28, 2025</time> • Article</div>
+        <p class="entry-excerpt">A longform defense that Scripture not only welcomes logic but models it—from prophets to Jesus—and how readers can follow suit.</p>
       </div>
     </a>
 
-    <!-- Is Creation Logical? -->
-    <a class="card" href="/israelite-research/articles/is-creation-logical.html">
-      <img class="thumb" src="/israelite-research/images/articles/is-creation-logical-700x394.jpg" alt="Is Creation Logical?"/>
+    <a class="entry" href="/israelite-research/articles/is-creation-logical.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/is-creation-logical-700x394.jpg" alt="Is Creation Logical?"/>
       <div>
-        <h3>Is Creation Logical?</h3>
-        <div class="meta"><time datetime="2025-08-20">August 20, 2025</time> • Article</div>
-        <p class="excerpt">Genesis 1–2 shows form and fill, purpose and order. Creation’s architecture reveals the character of the Creator.</p>
+        <h3 class="entry-title">Is Creation Logical?</h3>
+        <div class="entry-meta"><time datetime="2025-08-20">August 20, 2025</time> • Article</div>
+        <p class="entry-excerpt">Genesis 1–2 shows form and fill, purpose and order. Creation’s architecture reveals the character of the Creator.</p>
       </div>
     </a>
 
-    <!-- Hamites — Historicity -->
-    <a class="card" href="/israelite-research/articles/hamites-historicity.html">
-      <img class="thumb" src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" alt="Hamites — Historicity"/>
+    <a class="entry" href="/israelite-research/articles/hamites-historicity.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" alt="Hamites — Historicity"/>
       <div>
-        <h3>Hamites — Historicity</h3>
-        <div class="meta"><time datetime="2025-08-12">August 12, 2025</time> • Article</div>
-        <p class="excerpt">Surveying Cush, Mizraim, Put, and Canaan across Scripture and history, with attention to method and evidence.</p>
+        <h3 class="entry-title">Hamites — Historicity</h3>
+        <div class="entry-meta"><time datetime="2025-08-12">August 12, 2025</time> • Article</div>
+        <p class="entry-excerpt">Surveying Cush, Mizraim, Put, and Canaan across Scripture and history, with attention to method and evidence.</p>
       </div>
     </a>
 
-    <!-- Gentiles -->
-    <a class="card" href="/israelite-research/articles/gentiles.html">
-      <img class="thumb" src="/israelite-research/images/articles/gentiles-meaning-700x394.jpg" alt="Gentiles"/>
+    <a class="entry" href="/israelite-research/articles/gentiles.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/gentiles-meaning-700x394.jpg" alt="Gentiles"/>
       <div>
-        <h3>Gentiles</h3>
-        <div class="meta"><time datetime="2025-08-05">August 5, 2025</time> • Article</div>
-        <p class="excerpt">What “Gentile” meant to biblical authors—genos, ethnos, goy—and why anachronism misreads the people in view.</p>
+        <h3 class="entry-title">Gentiles</h3>
+        <div class="entry-meta"><time datetime="2025-08-05">August 5, 2025</time> • Article</div>
+        <p class="entry-excerpt">What “Gentile” meant to biblical authors—genos, ethnos, goy—and why anachronism misreads the people in view.</p>
       </div>
     </a>
 
-    <!-- Is Truth Reliable? -->
-    <a class="card" href="/israelite-research/articles/is-truth-reliable.html">
-      <img class="thumb" src="/israelite-research/images/articles/is-truth-reliable-700x394.jpg" alt="Is Truth Reliable?"/>
+    <a class="entry" href="/israelite-research/articles/is-truth-reliable.html">
+      <img class="entry-thumb" src="/israelite-research/images/articles/is-truth-reliable-700x394.jpg" alt="Is Truth Reliable?"/>
       <div>
-        <h3>Is Truth Reliable?</h3>
-        <div class="meta"><time datetime="2025-07-30">July 30, 2025</time> • Article</div>
-        <p class="excerpt">A case for trusting God’s revelation in a world of spin—truth’s nature, logic’s guardrails, and Scripture’s claims.</p>
+        <h3 class="entry-title">Is Truth Reliable?</h3>
+        <div class="entry-meta"><time datetime="2025-07-30">July 30, 2025</time> • Article</div>
+        <p class="entry-excerpt">A case for trusting God’s revelation in a world of spin—truth’s nature, logic’s guardrails, and Scripture’s claims.</p>
       </div>
     </a>
+
+    <!-- Optional “More” pager (link to your articles index filtered by author) -->
+    <a class="list-more" href="/israelite-research/articles.html">More from Semitic Jew</a>
   </section>
 </main>
 
@@ -172,7 +187,6 @@
 
 <script>
   (function(){
-    // Updated date shown under the “6 articles” line
     var el = document.getElementById('author-updated');
     if(el){
       var now=new Date(), iso=now.toISOString().slice(0,10);
@@ -180,26 +194,26 @@
       el.textContent = now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
     }
 
-    // Simple client-side sort (optional nicety)
+    // Sort: works with the list too (recent vs title)
     var select = document.getElementById('sort');
-    var grid = document.getElementById('author-grid');
-    if(select && grid){
+    var list = document.getElementById('author-list');
+    if(select && list){
       select.addEventListener('change', function(){
-        var cards = Array.from(grid.querySelectorAll('.card'));
+        var items = Array.from(list.querySelectorAll('.entry'));
         if(this.value==='title'){
-          cards.sort(function(a,b){
-            var ta=a.querySelector('h3').textContent.trim().toLowerCase();
-            var tb=b.querySelector('h3').textContent.trim().toLowerCase();
+          items.sort(function(a,b){
+            var ta=a.querySelector('.entry-title').textContent.trim().toLowerCase();
+            var tb=b.querySelector('.entry-title').textContent.trim().toLowerCase();
             return ta.localeCompare(tb);
           });
         }else{
-          cards.sort(function(a,b){
+          items.sort(function(a,b){
             var da=a.querySelector('time').getAttribute('datetime');
             var db=b.querySelector('time').getAttribute('datetime');
-            return db.localeCompare(da); // most recent first
+            return db.localeCompare(da);
           });
         }
-        cards.forEach(function(c){ grid.appendChild(c); });
+        items.forEach(function(it){ list.insertBefore(it, list.querySelector('.list-more')); });
       });
     }
   })();
