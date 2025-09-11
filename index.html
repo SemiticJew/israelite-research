@@ -11,8 +11,8 @@
     --accent:#F17300;
     --ink:#0b2340;
     --muted:#6b7280;
-    --card-shadow: 0 2px 8px rgba(0,0,0,.06);
-    --card-shadow-hover: 0 10px 20px rgba(0,0,0,.12);
+    --card-shadow: 0 2px 10px rgba(0,0,0,.06);
+    --card-shadow-hover: 0 14px 28px rgba(0,0,0,.14);
   }
 
   .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
@@ -24,59 +24,75 @@
   .feature-row{ margin:32px 0; }
   .feature-row h2{ font-size:1.25rem; font-weight:700; margin:0 0 12px; color:var(--ink); }
 
+  /* NEW CARD DESIGN — Poster-style (image zoom + crisp type) */
   .cards{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
-    gap:24px;
+    gap:28px;
   }
   @media (max-width: 960px){
     .cards{ grid-template-columns: 1fr; }
   }
 
-  /* CARD: image-bleed, fully rounded, no inner “box” */
   .card{
+    position:relative;
     display:flex; flex-direction:column;
     background:#fff;
-    border-radius:16px;              /* softer overall corner */
+    border-radius:18px;
     box-shadow:var(--card-shadow);
     text-decoration:none; color:inherit;
-    overflow:hidden;                 /* ensures the image corners are rounded too */
-    transition: transform .15s ease, box-shadow .15s ease;
+    overflow:hidden;
+    transition: transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1);
+    will-change: transform, box-shadow;
   }
-  .card:hover{ transform:translateY(-3px); box-shadow:var(--card-shadow-hover); }
   .card:focus-visible{
     outline:2px solid var(--accent);
     outline-offset:2px;
   }
-
-  /* Full-bleed image, no divider, no square edge */
-  .card img{
-    display:block;
-    width:100%; height:auto;
-    aspect-ratio:700/394;
-    object-fit:cover; object-position:center;
-    border:0;                        /* remove any accidental borders */
+  .card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--card-shadow-hover);
   }
 
-  /* Clean body — no borders, no backgrounds, just type */
+  .card img{
+    display:block; width:100%; height:auto;
+    aspect-ratio:700/394;
+    object-fit:cover; object-position:center;
+    transform:scale(1);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .card:hover img{ transform:scale(1.03); }
+
   .card-body{
-    padding:14px 16px 18px;
-    display:flex; flex-direction:column; gap:6px;
-    background:transparent;          /* ensure no “inner box” fill */
+    padding:16px 18px 20px;
+    display:flex; flex-direction:column; gap:8px;
+    background:linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
   }
 
   .card-kicker{
-    font-size:.8rem; font-weight:600;
-    text-transform:uppercase; letter-spacing:.5px;
+    font-size:.78rem; font-weight:700;
+    letter-spacing:.6px; text-transform:uppercase;
     color:var(--accent);
   }
 
   .card-title{
-    font-size:1.1rem; font-weight:800;
-    color:var(--ink); line-height:1.3;
+    font-size:1.2rem; font-weight:900; line-height:1.25;
+    color:var(--ink);
   }
+
+  /* Subtle underline indicator on hover (title only) */
+  .card-title{
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    transition: background-size .25s ease;
+  }
+  .card:hover .card-title{ background-size: 100% 2px; }
+
 </style>
 
+<!-- keep site-wide verse styling (no change) -->
 <style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
 .verse:hover::after{opacity:1; transform:translateY(0);}</style>
 <style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
