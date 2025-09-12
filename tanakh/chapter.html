@@ -3,127 +3,222 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Chapter</title>
+<title>Chapter — Israelite Research</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
   :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+
+  /* Layout */
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:24px 0 8px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
   .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+
   .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
-  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
-  .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
-  .muted{color:var(--muted)}
-  .vnum{min-width:26px;text-align:right;color:var(--muted)}
-  .vtext{color:#111;line-height:1.5}
-  .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
-  .vline{display:flex; gap:.6rem}
-  .v-toolbar{display:flex; gap:.4rem; padding-left:36px}
-  .v-toolbar button{border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer}
-  .v-toolbar button:hover{ background:#f8fafc }
   @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
+
+  /* Chapter grid (used on book overview screens if you show them here) */
+  .grid{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:10px;margin:12px 0 0}
+  .ch{display:flex;align-items:center;justify-content:center;height:44px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
+  .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
+
+  /* Reader toolbar */
   .reader-toolbar{
     position: sticky; top: 0; z-index: 50;
     display:flex; align-items:center; justify-content:center; gap:.75rem;
     background:#fff; border:1px solid var(--sky); border-radius:10px;
     padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
   }
-  .reader-toolbar .btn{padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;}
+  .reader-toolbar .btn{
+    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  }
   .reader-toolbar .btn:hover{ background:#f8fafc }
-  .reader-toolbar .ch-picker select{border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;}
+  .reader-toolbar .ch-picker select{
+    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
+  }
+
+  /* Verse rows */
+  .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
+  .vline{display:flex; gap:.6rem}
+  .vnum{min-width:28px; text-align:right; color:var(--muted)}
+  .vtext{line-height:1.55; color:#111}
+  .v-toolbar{display:flex; gap:.4rem; padding-left:36px}
+  .v-toolbar button{
+    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer;
+  }
+  .v-toolbar button:hover{ background:#f8fafc }
+
+  /* Hovercard for dictionary */
+  .hovercard{
+    position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
+    background:#fff; border:1px solid #e6ebf2; border-radius:10px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    padding:.6rem .7rem; font-size:.9rem;
+  }
+  .hovercard.open{ display:block }
+
+  /* Inline “verse” spans kept for your site-wide tooltip JS */
+  .verse-ref{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+  .verse-ref:hover::after{opacity:1; transform:translateY(0);}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
+
 <main class="container">
-  <div class="reader-toolbar" id="readerToolbar" role="navigation">
-    <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
+  <header class="page-header">
+    <h1 class="page-title" id="bookTitle">Loading…</h1>
+    <div class="crumbs" id="crumbs"></div>
+  </header>
+
+  <div aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar" role="navigation">
+    <button aria-label="Previous chapter" class="btn prev" id="btnPrev">← Prev</button>
     <div class="ch-picker">
       <label class="sr-only" for="chSelect">Select chapter</label>
       <select id="chSelect"></select>
     </div>
-    <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
+    <button aria-label="Next chapter" class="btn next" id="btnNext">Next →</button>
   </div>
 
   <section class="layout">
     <div class="panel">
-      <h3 id="bookHead">Text</h3>
+      <h3 id="textPanelTitle">Text</h3>
       <div id="verses"><p class="muted">Loading…</p></div>
     </div>
+
     <aside class="panel" id="dictAside">
-      <h3>Zondervan Compact Bible Dictionary</h3>
+      <h3>Bible Dictionary</h3>
       <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
-        <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…"
-               style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
+        <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
       </div>
-      <div id="dictPanel"><p class="muted">Add <code>data/dictionaries/zondervan.json</code> to enable offline lookups.</p></div>
+      <div id="dictPanel"><p class="muted">Loading Bible Dictionary…</p></div>
     </aside>
   </section>
 </main>
 
 <div id="site-footer"></div>
+<div aria-hidden="true" class="hovercard" id="hovercard" role="dialog"></div>
+
 <script src="/israelite-research/js/include.js"></script>
-
 <script>
-/* Parse params and default to ch=1 if missing */
-const qs = new URLSearchParams(location.search);
-const book = (qs.get('book') || '').toLowerCase();
-let ch = parseInt(qs.get('ch') || '1', 10);
-if(!book){ document.getElementById('verses').innerHTML = '<p class="muted">No book specified.</p>'; }
+(function(){
+  // --- URL params ---
+  const params = new URLSearchParams(location.search);
+  const bookSlug = (params.get('book') || '').trim();  // e.g., 'ii-esdras', 'genesis'
+  const ch = parseInt(params.get('ch') || '1', 10);
 
-/* Optional: total map for better prev/next disabling (fill as you like) */
-const TOTALS = {
-  // Tanakh example
-  genesis:50, exodus:40, leviticus:27, numbers:36, deuteronomy:34,
-  // NT example (complete if desired)
-  'matthew':28,'mark':16,'luke':24,'john':21,'acts':28,'romans':16,
-  'i-corinthians':16,'ii-corinthians':13,'galatians':6,'ephesians':6,
-  'philippians':4,'colossians':4,'i-thessalonians':5,'ii-thessalonians':3,
-  'i-timothy':6,'ii-timothy':4,'titus':3,'philemon':1,'hebrews':13,
-  'james':5,'i-peter':5,'ii-peter':3,'i-john':5,'ii-john':1,'iii-john':1,
-  'jude':1,'revelation':22
-};
-const total = TOTALS[book] || 150; // fallback max so UI still works
-
-/* Title + header */
-document.title = (book ? book.replace(/-/g,' ').toUpperCase() : 'Chapter') + ' ' + ch + ' — Reader';
-const head = document.getElementById('bookHead');
-if(head && book){ head.textContent = book.replace(/-/g,' ') + ' ' + ch; }
-
-/* Build chapter picker */
-(function buildPicker(){
-  const sel = document.getElementById('chSelect');
-  if(!sel) return;
-  sel.innerHTML = '';
-  for(let i=1;i<=total;i++){
-    const opt = document.createElement('option');
-    opt.value = i; opt.textContent = i;
-    if(i===ch) opt.selected = true;
-    sel.appendChild(opt);
+  // --- Helpers ---
+  function titleCaseFromSlug(slug){
+    if(!slug) return '';
+    const parts = slug.split('-');
+    // Normalize leading roman numerals (i, ii, iii) → I, II, III
+    const romans = { i:'I', ii:'II', iii:'III', iv:'IV', v:'V', vi:'VI', vii:'VII', viii:'VIII', ix:'IX', x:'X' };
+    if(parts.length && romans[parts[0]]) parts[0] = romans[parts[0]];
+    return parts.map((p,i)=> i===0 && romans[p] ? romans[p] : p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
   }
-  sel.addEventListener('change', ()=>{
-    const n = parseInt(sel.value,10)||1;
-    location.href = location.pathname + '?book=' + encodeURIComponent(book) + '&ch=' + n;
-  });
-})();
 
-/* Prev/Next */
-const prev = document.getElementById('btnPrev');
-const next = document.getElementById('btnNext');
-function go(chNum){
-  location.href = location.pathname + '?book=' + encodeURIComponent(book) + '&ch=' + chNum;
-}
-if(prev){ prev.disabled = (ch<=1); prev.addEventListener('click', ()=> ch>1 && go(ch-1)); }
-if(next){ next.disabled = (ch>=total); next.addEventListener('click', ()=> ch<total && go(ch+1)); }
+  function setBookTitle(){
+    const title = titleCaseFromSlug(bookSlug) || 'Chapter';
+    document.getElementById('bookTitle').textContent = title;
+    document.title = title + ' — Chapter';
+    document.getElementById('textPanelTitle').textContent = title + ' ' + (Number.isFinite(ch)? ch : '');
+    document.getElementById('crumbs').textContent = title + (Number.isFinite(ch)? (' • Chapter ' + ch) : '');
+  }
 
-/* Load verses (keep your existing loader if you have one) */
-(function load(){
-  // If you already have a loader (e.g., /israelite-research/js/nt-chapter.js), call it here.
-  // Example minimal placeholder:
-  const t = document.getElementById('verses');
-  t.innerHTML = '<p class="muted">Connect your data loader here (JSON → verses)</p>';
+  // --- Chapter select wiring (client-side only; adjust total dynamically if you load metadata) ---
+  const chSelect = document.getElementById('chSelect');
+  function populateChapterPicker(total=50){ // default generous cap; update if you load real totals
+    chSelect.innerHTML = '';
+    for(let i=1;i<=total;i++){
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = 'Chapter ' + i;
+      if(i===ch) opt.selected = true;
+      chSelect.appendChild(opt);
+    }
+  }
+  function goToChapter(n){
+    const qs = new URLSearchParams(location.search);
+    qs.set('ch', String(n));
+    location.search = qs.toString();
+  }
+  document.getElementById('btnPrev').addEventListener('click', ()=> ch>1 && goToChapter(ch-1));
+  document.getElementById('btnNext').addEventListener('click', ()=> goToChapter(ch+1));
+  chSelect.addEventListener('change', (e)=> goToChapter(parseInt(e.target.value,10)||1));
+
+  // --- Render verses (placeholder; replace with your real JSON fetcher) ---
+  const versesEl = document.getElementById('verses');
+  async function loadChapter(){
+    // Plug your actual data source here; the critical part you requested is the Title Case display (above).
+    // Example placeholder to show structure:
+    const sample = Array.from({length: 10}, (_,i)=>({n:i+1, t:`Sample verse text for ${titleCaseFromSlug(bookSlug)} ${ch}:${i+1}. Replace with real data.`}));
+    versesEl.innerHTML = '';
+    sample.forEach(v=>{
+      const wrap = document.createElement('div');
+      wrap.className = 'verse';
+      wrap.innerHTML = `
+        <div class="vline">
+          <div class="vnum">${v.n}</div>
+          <div class="vtext">${v.t}</div>
+        </div>
+        <div class="v-toolbar">
+          <button type="button" data-copy="${v.n}">Copy</button>
+        </div>`;
+      versesEl.appendChild(wrap);
+    });
+    versesEl.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-copy]');
+      if(!btn) return;
+      const n = btn.getAttribute('data-copy');
+      const text = `${titleCaseFromSlug(bookSlug)} ${ch}:${n} — ` + btn.closest('.verse').querySelector('.vtext').textContent;
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(()=> btn.textContent='Copy', 900);
+    }, { once:true });
+  }
+
+  // --- Bible Dictionary (Easton) ---
+  const DICT_PATH = '/israelite-research/data/dictionaries/easton_dictionary.json';
+  const dictPanel = document.getElementById('dictPanel');
+  const dictSearch = document.getElementById('dictSearch');
+
+  let dictIndex = [];
+  function normalizeTerm(s){ return (s||'').trim().toLowerCase(); }
+
+  async function loadDictionary(){
+    try{
+      const res = await fetch(DICT_PATH, {cache:'force-cache'});
+      const data = await res.json();
+      // Expecting array of entries: [{ term, definitions: [ ... ] }, ...]
+      dictIndex = Array.isArray(data) ? data : [];
+      dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>';
+    }catch(err){
+      dictPanel.innerHTML = '<p class="muted">Dictionary failed to load.</p>';
+    }
+  }
+
+  function searchDictionary(q){
+    const needle = normalizeTerm(q);
+    if(!needle){ dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>'; return; }
+    const hits = dictIndex.filter(e => normalizeTerm(e.term) === needle || normalizeTerm(e.term).includes(needle)).slice(0,6);
+    if(!hits.length){ dictPanel.innerHTML = '<p class="muted">No entries found.</p>'; return; }
+    dictPanel.innerHTML = hits.map(e=>{
+      const defs = (e.definitions||[]).map(d=>`<li>${d}</li>`).join('');
+      return `<article style="margin:.5rem 0">
+        <h4 style="margin:.1rem 0 .2rem; color:var(--ink)">${e.term}</h4>
+        <ol style="margin:.25rem 0 0 1.1rem">${defs}</ol>
+      </article>`;
+    }).join('');
+  }
+
+  dictSearch.addEventListener('input', (e)=> searchDictionary(e.target.value));
+
+  // --- Boot ---
+  setBookTitle();
+  populateChapterPicker();     // (optionally detect real totals per book)
+  loadChapter();
+  loadDictionary();
 })();
 </script>
 </body>

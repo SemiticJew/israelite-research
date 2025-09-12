@@ -3,201 +3,223 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Apocrypha — Semitic Jew</title>
+<title>Chapter — Israelite Research</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-    :root{
-      --ink:#0b2340;     /* black-ish text */
-      --accent:#F17300;  /* orange */
-      --brand:#054A91;   /* deep blue */
-      --muted:#6b7280;   /* grey for dates */
-      --sky:#DBE4EE;     /* pale border */
-      --white:#ffffff;
-      --blue2:#3E7CB1;
-      --blue3:#81A4CD;
-    }
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
 
-    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-    .page-header{ padding:24px 0 8px; }
-    .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
+  /* Layout */
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .page-header{padding:24px 0 8px}
+  .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
 
-    /* Periodic grid (matches New Testament page) */
-    .tk-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap:12px;
-      margin:12px 0 40px;
-    }
-    .pt-card{
-      background:var(--white);
-      border:1px solid var(--sky);
-      border-radius:0;
-      box-shadow:0 1px 3px rgba(0,0,0,.03);
-      display:flex; flex-direction:column;
-      text-align:center; text-decoration:none; color:inherit;
-      min-height:140px; padding:8px;
-      transition: box-shadow .12s ease, transform .12s ease;
-    }
-    .pt-card:hover{ box-shadow:0 4px 10px rgba(0,0,0,.06); transform:translateY(-1px); }
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
-    /* Top: date only (centered) */
-    .pt-top{ display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.1; margin-top:2px; }
-    .pt-date{ font-size:.78rem; color:var(--muted); }
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
 
-    /* Middle: reserve space and center the abbr perfectly */
-    .pt-mid{
-      flex:1 1 auto;
-      display:flex; align-items:center; justify-content:center; min-height:0;
-    }
-    .pt-abbr{
-      font-size:1.6rem; font-weight:800; color:var(--accent);
-      line-height:1.1; margin:0; letter-spacing:.02em;
-    }
-    .pt-abbr sup{
-      color:var(--accent); font-size:.75em; top:-.3em; position:relative; margin-left:1px;
-    }
+  /* Chapter grid (used on book overview screens if you show them here) */
+  .grid{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:10px;margin:12px 0 0}
+  .ch{display:flex;align-items:center;justify-content:center;height:44px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
+  .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
 
-    /* Footer: full book name */
-    .pt-footer{
-      margin-top:auto; padding-top:4px;
-      font-size:.95rem; font-weight:700; color:var(--brand);
-      border-top:1px solid var(--sky); line-height:1.2;
-    }
+  /* Reader toolbar */
+  .reader-toolbar{
+    position: sticky; top: 0; z-index: 50;
+    display:flex; align-items:center; justify-content:center; gap:.75rem;
+    background:#fff; border:1px solid var(--sky); border-radius:10px;
+    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .reader-toolbar .btn{
+    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  }
+  .reader-toolbar .btn:hover{ background:#f8fafc }
+  .reader-toolbar .ch-picker select{
+    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
+  }
 
-    @media (max-width:480px){
-      .pt-abbr{ font-size:1.45rem; }
-      .pt-footer{ font-size:.9rem; }
-    }
-  </style>
-<style>.verse{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-.verse:hover::after{opacity:1; transform:translateY(0);}</style>
+  /* Verse rows */
+  .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
+  .vline{display:flex; gap:.6rem}
+  .vnum{min-width:28px; text-align:right; color:var(--muted)}
+  .vtext{line-height:1.55; color:#111}
+  .v-toolbar{display:flex; gap:.4rem; padding-left:36px}
+  .v-toolbar button{
+    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer;
+  }
+  .v-toolbar button:hover{ background:#f8fafc }
+
+  /* Hovercard for dictionary */
+  .hovercard{
+    position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
+    background:#fff; border:1px solid #e6ebf2; border-radius:10px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    padding:.6rem .7rem; font-size:.9rem;
+  }
+  .hovercard.open{ display:block }
+
+  /* Inline “verse” spans kept for your site-wide tooltip JS */
+  .verse-ref{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
+  .verse-ref:hover::after{opacity:1; transform:translateY(0);}
+</style>
 </head>
-<body class="apocrypha-page">
+<body>
 <div id="site-header"></div>
-<main>
-<section class="container">
+
+<main class="container">
   <header class="page-header">
-    <h1 class="page-title">Apocrypha</h1>
+    <h1 class="page-title" id="bookTitle">Loading…</h1>
+    <div class="crumbs" id="crumbs"></div>
   </header>
 
-  <div class="tk-grid">
-    <!-- Esdras (roman numeral slugs + labels) -->
-    <a aria-label="I Esdras" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=i-esdras&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Es</div></div>
-      <div class="pt-footer">I Esdras</div>
-    </a>
-    <a aria-label="II Esdras" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=ii-esdras&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 1st–3rd c. CE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Es</div></div>
-      <div class="pt-footer">II Esdras</div>
-    </a>
-
-    <!-- Singles -->
-    <a aria-label="Tobit" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=tobit&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Tob</div></div>
-      <div class="pt-footer">Tobit</div>
-    </a>
-
-    <a aria-label="Judith" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=judith&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Jdt</div></div>
-      <div class="pt-footer">Judith</div>
-    </a>
-
-    <a aria-label="Additions to Esther" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=additions-to-esther&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">AddEst</div></div>
-      <div class="pt-footer">Additions to Esther</div>
-    </a>
-
-    <a aria-label="Wisdom of Solomon" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=wisdom-of-solomon&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Wis</div></div>
-      <div class="pt-footer">Wisdom of Solomon</div>
-    </a>
-
-    <a aria-label="Sirach (Ecclesiasticus)" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=sirach&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Sir</div></div>
-      <div class="pt-footer">Sirach (Ecclesiasticus)</div>
-    </a>
-
-    <a aria-label="Baruch" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=baruch&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Bar</div></div>
-      <div class="pt-footer">Baruch</div>
-    </a>
-
-    <a aria-label="Letter of Jeremiah" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=letter-of-jeremiah&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 3rd–2nd c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">LetJer</div></div>
-      <div class="pt-footer">Letter of Jeremiah</div>
-    </a>
-
-    <a aria-label="Prayer of Azariah" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=prayer-of-azariah&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">PrAz</div></div>
-      <div class="pt-footer">Prayer of Azariah</div>
-    </a>
-
-    <a aria-label="Susanna" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=susanna&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Sus</div></div>
-      <div class="pt-footer">Susanna</div>
-    </a>
-
-    <a aria-label="Bel and the Dragon" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=bel-and-the-dragon&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Bel</div></div>
-      <div class="pt-footer">Bel and the Dragon</div>
-    </a>
-
-    <a aria-label="Prayer of Manasseh" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=prayer-of-manasseh&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">PrMan</div></div>
-      <div class="pt-footer">Prayer of Manasseh</div>
-    </a>
-
-    <!-- Maccabees (roman numeral slugs + labels) -->
-    <a aria-label="I Maccabees" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=i-maccabees&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>I</sup>Mac</div></div>
-      <div class="pt-footer">I Maccabees</div>
-    </a>
-    <a aria-label="II Maccabees" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=ii-maccabees&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 2nd–1st c. BCE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>II</sup>Mac</div></div>
-      <div class="pt-footer">II Maccabees</div>
-    </a>
-    <a aria-label="III Maccabees" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=iii-maccabees&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 1st c. BCE–1st c. CE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>III</sup>Mac</div></div>
-      <div class="pt-footer">III Maccabees</div>
-    </a>
-    <a aria-label="IV Maccabees" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=iv-maccabees&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 1st–2nd c. CE</div></div>
-      <div class="pt-mid"><div class="pt-abbr"><sup>IV</sup>Mac</div></div>
-      <div class="pt-footer">IV Maccabees</div>
-    </a>
-
-    <!-- Others -->
-    <a aria-label="Psalm 151" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=psalm-151&ch=1">
-      <div class="pt-top"><div class="pt-date">trad. Davidic</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Ps151</div></div>
-      <div class="pt-footer">Psalm 151</div>
-    </a>
-
-    <a aria-label="Epistle to the Laodiceans" class="pt-card" href="/israelite-research/apocrypha/chapter.html?book=laodiceans&ch=1">
-      <div class="pt-top"><div class="pt-date">c. 4th–6th c. CE</div></div>
-      <div class="pt-mid"><div class="pt-abbr">Lao</div></div>
-      <div class="pt-footer">Epistle to the Laodiceans</div>
-    </a>
+  <div aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar" role="navigation">
+    <button aria-label="Previous chapter" class="btn prev" id="btnPrev">← Prev</button>
+    <div class="ch-picker">
+      <label class="sr-only" for="chSelect">Select chapter</label>
+      <select id="chSelect"></select>
+    </div>
+    <button aria-label="Next chapter" class="btn next" id="btnNext">Next →</button>
   </div>
-</section>
+
+  <section class="layout">
+    <div class="panel">
+      <h3 id="textPanelTitle">Text</h3>
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
+
+    <aside class="panel" id="dictAside">
+      <h3>Bible Dictionary</h3>
+      <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
+        <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
+      </div>
+      <div id="dictPanel"><p class="muted">Loading Bible Dictionary…</p></div>
+    </aside>
+  </section>
 </main>
+
 <div id="site-footer"></div>
+<div aria-hidden="true" class="hovercard" id="hovercard" role="dialog"></div>
+
 <script src="/israelite-research/js/include.js"></script>
+<script>
+(function(){
+  // --- URL params ---
+  const params = new URLSearchParams(location.search);
+  const bookSlug = (params.get('book') || '').trim();  // e.g., 'ii-esdras', 'genesis'
+  const ch = parseInt(params.get('ch') || '1', 10);
+
+  // --- Helpers ---
+  function titleCaseFromSlug(slug){
+    if(!slug) return '';
+    const parts = slug.split('-');
+    // Normalize leading roman numerals (i, ii, iii) → I, II, III
+    const romans = { i:'I', ii:'II', iii:'III', iv:'IV', v:'V', vi:'VI', vii:'VII', viii:'VIII', ix:'IX', x:'X' };
+    if(parts.length && romans[parts[0]]) parts[0] = romans[parts[0]];
+    return parts.map((p,i)=> i===0 && romans[p] ? romans[p] : p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
+  }
+
+  function setBookTitle(){
+    const title = titleCaseFromSlug(bookSlug) || 'Chapter';
+    document.getElementById('bookTitle').textContent = title;
+    document.title = title + ' — Chapter';
+    document.getElementById('textPanelTitle').textContent = title + ' ' + (Number.isFinite(ch)? ch : '');
+    document.getElementById('crumbs').textContent = title + (Number.isFinite(ch)? (' • Chapter ' + ch) : '');
+  }
+
+  // --- Chapter select wiring (client-side only; adjust total dynamically if you load metadata) ---
+  const chSelect = document.getElementById('chSelect');
+  function populateChapterPicker(total=50){ // default generous cap; update if you load real totals
+    chSelect.innerHTML = '';
+    for(let i=1;i<=total;i++){
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = 'Chapter ' + i;
+      if(i===ch) opt.selected = true;
+      chSelect.appendChild(opt);
+    }
+  }
+  function goToChapter(n){
+    const qs = new URLSearchParams(location.search);
+    qs.set('ch', String(n));
+    location.search = qs.toString();
+  }
+  document.getElementById('btnPrev').addEventListener('click', ()=> ch>1 && goToChapter(ch-1));
+  document.getElementById('btnNext').addEventListener('click', ()=> goToChapter(ch+1));
+  chSelect.addEventListener('change', (e)=> goToChapter(parseInt(e.target.value,10)||1));
+
+  // --- Render verses (placeholder; replace with your real JSON fetcher) ---
+  const versesEl = document.getElementById('verses');
+  async function loadChapter(){
+    // Plug your actual data source here; the critical part you requested is the Title Case display (above).
+    // Example placeholder to show structure:
+    const sample = Array.from({length: 10}, (_,i)=>({n:i+1, t:`Sample verse text for ${titleCaseFromSlug(bookSlug)} ${ch}:${i+1}. Replace with real data.`}));
+    versesEl.innerHTML = '';
+    sample.forEach(v=>{
+      const wrap = document.createElement('div');
+      wrap.className = 'verse';
+      wrap.innerHTML = `
+        <div class="vline">
+          <div class="vnum">${v.n}</div>
+          <div class="vtext">${v.t}</div>
+        </div>
+        <div class="v-toolbar">
+          <button type="button" data-copy="${v.n}">Copy</button>
+        </div>`;
+      versesEl.appendChild(wrap);
+    });
+    versesEl.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-copy]');
+      if(!btn) return;
+      const n = btn.getAttribute('data-copy');
+      const text = `${titleCaseFromSlug(bookSlug)} ${ch}:${n} — ` + btn.closest('.verse').querySelector('.vtext').textContent;
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(()=> btn.textContent='Copy', 900);
+    }, { once:true });
+  }
+
+  // --- Bible Dictionary (Easton) ---
+  const DICT_PATH = '/israelite-research/data/dictionaries/easton_dictionary.json';
+  const dictPanel = document.getElementById('dictPanel');
+  const dictSearch = document.getElementById('dictSearch');
+
+  let dictIndex = [];
+  function normalizeTerm(s){ return (s||'').trim().toLowerCase(); }
+
+  async function loadDictionary(){
+    try{
+      const res = await fetch(DICT_PATH, {cache:'force-cache'});
+      const data = await res.json();
+      // Expecting array of entries: [{ term, definitions: [ ... ] }, ...]
+      dictIndex = Array.isArray(data) ? data : [];
+      dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>';
+    }catch(err){
+      dictPanel.innerHTML = '<p class="muted">Dictionary failed to load.</p>';
+    }
+  }
+
+  function searchDictionary(q){
+    const needle = normalizeTerm(q);
+    if(!needle){ dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>'; return; }
+    const hits = dictIndex.filter(e => normalizeTerm(e.term) === needle || normalizeTerm(e.term).includes(needle)).slice(0,6);
+    if(!hits.length){ dictPanel.innerHTML = '<p class="muted">No entries found.</p>'; return; }
+    dictPanel.innerHTML = hits.map(e=>{
+      const defs = (e.definitions||[]).map(d=>`<li>${d}</li>`).join('');
+      return `<article style="margin:.5rem 0">
+        <h4 style="margin:.1rem 0 .2rem; color:var(--ink)">${e.term}</h4>
+        <ol style="margin:.25rem 0 0 1.1rem">${defs}</ol>
+      </article>`;
+    }).join('');
+  }
+
+  dictSearch.addEventListener('input', (e)=> searchDictionary(e.target.value));
+
+  // --- Boot ---
+  setBookTitle();
+  populateChapterPicker();     // (optionally detect real totals per book)
+  loadChapter();
+  loadDictionary();
+})();
+</script>
 </body>
 </html>
