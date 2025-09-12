@@ -3,380 +3,379 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Israelite Apologetics — Semitic Jew</title>
+<title>-ologies — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 
 <style>
   :root{
-    --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --brand:#054A91;
-    --sky:#e7ecf4; --card:#ffffff; --card-border:#e9eef6;
+    --ink:#0b2340;
+    --muted:#6b7280;
+    --brand:#054A91;
+    --accent:#F17300;
+    --sky:#e7ecf4;
+    --surface:#ffffff;
+    --shadow-sm:0 2px 8px rgba(0,0,0,.06);
+    --shadow-lg:0 16px 36px rgba(0,0,0,.12);
   }
+
   .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
   /* Hero */
-  .hero{ padding:28px 0 18px; border-bottom:1px solid var(--sky); }
-  .hero-title{ margin:0; font-size:2.1rem; font-weight:900; color:var(--ink); }
-  .hero-sub{ margin:.5rem 0 0; color:var(--muted); max-width:68ch; }
+  .hero{ padding:28px 0 14px; border-bottom:1px solid var(--sky); }
+  .title{ margin:0; font-size:2.25rem; line-height:1.1; font-weight:900; color:var(--ink); }
+  .sub{ margin:.6rem 0 0; color:var(--muted); max-width:72ch; }
 
-  /* Section head */
-  .section{ padding:26px 0; }
-  .section-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 14px; }
-  .section-title{ margin:0; font-size:1.25rem; font-weight:900; color:var(--ink); }
-  .muted-link{ color:var(--brand); text-decoration:none; font-weight:800; }
-  .muted-link:hover{ text-decoration:underline; }
-
-  /* Search / filters row */
-  .row{ display:flex; gap:10px; flex-wrap:wrap; }
+  /* Tools row */
+  .tools{ display:flex; flex-wrap:wrap; gap:10px; padding:16px 0 0; }
   .input, .select{
-    border:1px solid var(--sky); border-radius:999px; padding:10px 12px; background:#fff; color:var(--ink);
-    font:inherit; font-weight:700;
+    border:1px solid var(--sky); background:var(--surface); color:var(--ink);
+    border-radius:999px; padding:10px 14px; font:inherit; font-weight:700;
   }
-  .input{ min-width:260px; flex:1 1 260px; }
+  .input{ flex:1 1 320px; min-width:260px; }
   .chip{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
-    border-radius:999px; background:#fff; color:var(--brand); text-decoration:none; font-weight:800;
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--sky); border-radius:999px; padding:8px 12px;
+    color:var(--brand); background:#fff; text-decoration:none; font-weight:800;
   }
   .chip:hover{ border-color:#dbe4f2; }
 
-  /* Grids */
-  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-  .grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
-  @media (max-width:960px){ .grid-3, .grid-2{ grid-template-columns:1fr; } }
+  /* Sections */
+  .section{ padding:24px 0; }
+  .sec-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 12px; }
+  .sec-title{ margin:0; font-size:1.25rem; font-weight:900; color:var(--ink); }
+  .link{ color:var(--brand); text-decoration:none; font-weight:800; }
+  .link:hover{ text-decoration:underline; }
 
-  /* Cards */
+  /* Card grid */
+  .grid-3{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+  .grid-2{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
+  @media (max-width:960px){ .grid-3,.grid-2{ grid-template-columns:1fr; } }
+
+  /* Ology Card */
   .card{
-    display:flex; flex-direction:column; background:var(--card); border:1px solid var(--card-border);
-    border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
-    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    display:flex; flex-direction:column; text-decoration:none; color:inherit;
+    background:#fff; border:1px solid var(--sky); border-radius:14px; overflow:hidden;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
-  .card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
-  .card-head{
-    display:flex; align-items:center; gap:10px; padding:14px 16px 0;
+  .card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:var(--shadow-lg); }
+
+  .card-top{
+    display:flex; align-items:center; gap:10px; padding:16px; border-bottom:1px solid var(--sky);
+    background:linear-gradient(180deg, #fff 0%, #fafcff 100%);
   }
   .icon{
-    width:34px; height:34px; border-radius:10px; border:1px solid var(--sky); display:inline-flex;
-    align-items:center; justify-content:center; color:var(--brand);
+    width:36px; height:36px; border-radius:12px; border:1px solid var(--sky); display:inline-flex; align-items:center; justify-content:center;
+    color:var(--brand);
   }
-  .card-title{ font-size:1.08rem; font-weight:900; color:var(--ink); margin:0; line-height:1.25; }
-  .card-body{ padding:10px 16px 14px; color:var(--ink); }
-  .card-meta{ color:var(--muted); font-size:.93rem; margin-top:6px; }
-  .card-cta{
-    margin:10px 16px 14px; display:flex; gap:8px; flex-wrap:wrap;
-  }
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
-    border-radius:999px; background:#fff; color:var(--brand); font-weight:800; text-decoration:none;
-  }
-  .btn:hover{ border-color:#dbe4f2; }
-  .btn svg{ width:16px; height:16px; }
+  .icon svg{ width:20px; height:20px; display:block; }
+  .card-title{ margin:0; font-size:1.08rem; font-weight:900; color:var(--ink); }
 
-  /* Small “argument” cards */
-  .arg-card{ padding:14px 16px; }
-  .arg-title{ margin:0 0 6px; font-weight:900; color:var(--ink); }
-  .arg-meta{ color:var(--muted); font-size:.93rem; }
+  .card-body{ padding:12px 16px 14px; color:var(--ink); line-height:1.6; }
+  .meta{ color:var(--muted); font-size:.93rem; margin-top:6px; }
+
+  .card-cta{ padding:0 16px 16px; display:flex; gap:8px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--sky); background:#fff; color:var(--brand);
+    border-radius:999px; padding:8px 12px; font-weight:800; text-decoration:none;
+  }
+  .btn:hover{ border-color:#d6e0ef; }
+
+  /* Slim argument cards */
+  .arg{ padding:14px 16px; }
+  .arg h3{ margin:0 0 6px; font-size:1rem; font-weight:900; color:var(--ink); }
+  .arg p{ margin:0; color:var(--muted); }
+
+  /* Quiet divider */
+  .rule{ height:1px; background:var(--sky); margin:8px 0 0; }
+
 </style>
 </head>
-<body class="apologetics-page">
+<body class="ologies-page">
 <div id="site-header"></div>
 
 <main class="container">
   <!-- HERO -->
   <header class="hero">
-    <h1 class="hero-title">Israelite Apologetics</h1>
-    <p class="hero-sub">
-      A systematic index of the major “-ologies” in Scripture—organized for clarity, evidence, and logic.
-      Explore bibliology, theology proper, Christology, Israelology, and more—each mapped to primary sources,
-      key arguments, and concise study paths.
+    <h1 class="title">-ologies</h1>
+    <p class="sub">
+      A systematic, text-first index of the Bible’s core doctrines—organized for clarity, logic, and primary sources.
+      Each section gives you a crisp overview, key passages, and argument paths you can verify.
     </p>
-  </header>
 
-  <!-- QUICK ACCESS -->
-  <section class="section">
-    <div class="section-head">
-      <h2 class="section-title">Quick Access</h2>
-      <a class="muted-link" href="#core-ologies">Jump to Core Doctrines</a>
-    </div>
-    <div class="row" role="region" aria-label="Search and filters">
-      <input class="input" type="search" placeholder="Search topics, arguments, passages…" aria-label="Search apologetics"/>
+    <div class="tools" role="region" aria-label="Search and filters">
+      <input class="input" type="search" placeholder="Search doctrines, arguments, passages…" aria-label="Search"/>
       <select class="select" aria-label="Sort">
         <option value="">Sort: Featured</option>
-        <option>Newest</option><option>A–Z</option>
+        <option>Newest</option>
+        <option>A–Z</option>
       </select>
-      <a class="chip" href="#featured-arguments">Featured Arguments</a>
-      <a class="chip" href="#israelology">Israelology</a>
-      <a class="chip" href="#christology">Christology</a>
       <a class="chip" href="#bibliology">Bibliology</a>
+      <a class="chip" href="#christology">Christology</a>
+      <a class="chip" href="#israelology">Israelology</a>
+      <a class="chip" href="#soteriology">Soteriology</a>
     </div>
-  </section>
+  </header>
 
   <!-- CORE OLOGIES -->
-  <section class="section" id="core-ologies">
-    <div class="section-head">
-      <h2 class="section-title">Core Doctrines</h2>
-      <a class="muted-link" href="#resources">Core Resources</a>
+  <section class="section" id="core">
+    <div class="sec-head">
+      <h2 class="sec-title">Core Doctrines</h2>
+      <a class="link" href="/israelite-research/israelite-catechism.html">Catechism</a>
     </div>
 
     <div class="grid-3">
       <!-- Bibliology -->
       <a class="card" id="bibliology" href="/israelite-research/apologetics/bibliology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">📜</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- book / scroll -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 4h10a3 3 0 010 6H7a2 2 0 00-2 2v8"/>
+              <path d="M7 20h10a2 2 0 002-2V6"/>
+            </svg>
+          </span>
           <h3 class="card-title">Bibliology</h3>
         </div>
         <div class="card-body">
-          Authority, inspiration, transmission, and reliability of Scripture; canon, text families, and use of logic in interpretation.
-          <div class="card-meta">Key: inspiration, canon, transmission, reliability</div>
+          Authority, inspiration, canon, and transmission. Why Scripture’s truthfulness grounds logical interpretation.
+          <div class="meta">Key: inspiration • canon • reliability</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Read Overview</span>
-          <span class="btn">Key Texts</span>
+          <span class="btn">Overview</span><span class="btn">Texts</span>
         </div>
       </a>
 
       <!-- Theology Proper -->
-      <a class="card" id="theology-proper" href="/israelite-research/apologetics/theology-proper.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🕊️</span>
+      <a class="card" href="/israelite-research/apologetics/theology-proper.html">
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- triangle/order -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l9 18H3L12 3z"/>
+            </svg>
+          </span>
           <h3 class="card-title">Theology Proper</h3>
         </div>
         <div class="card-body">
-          God’s being and attributes; truthfulness, immutability, and order as foundations for logic and creation.
-          <div class="card-meta">Key: attributes, truth, order</div>
+          God’s being and attributes—truthfulness, immutability, order—the source behind the laws of logic.
+          <div class="meta">Key: attributes • truth • order</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Attributes</span>
-          <span class="btn">Logic & God</span>
+          <span class="btn">Attributes</span><span class="btn">Logic & God</span>
         </div>
       </a>
 
       <!-- Christology -->
       <a class="card" id="christology" href="/israelite-research/apologetics/christology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">✚</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- chi-rho inspired monogram (abstract) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 4h6a4 4 0 010 8H6zM12 12l6 8M12 12v8"/>
+            </svg>
+          </span>
           <h3 class="card-title">Christology</h3>
         </div>
         <div class="card-body">
-          Person and work of Jesus the Messiah—lineage, identity, mission; coherence with Israel’s covenants.
-          <div class="card-meta">Key: incarnation, messiahship, lineage</div>
+          Person and work of Jesus the Messiah—lineage, identity, mission—and their coherence with Israel’s story.
+          <div class="meta">Key: messiahship • lineage • mission</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Messiah in Prophets</span>
-          <span class="btn">Gospel Witness</span>
+          <span class="btn">Messiah & Prophets</span><span class="btn">Gospels</span>
         </div>
       </a>
 
       <!-- Pneumatology -->
       <a class="card" href="/israelite-research/apologetics/pneumatology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🔥</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- wind/flame abstract -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3c4 4 4 7-1 10 2 0 5 2 5 5a5 5 0 11-10 0c0-3 2-5 6-6"/>
+            </svg>
+          </span>
           <h3 class="card-title">Pneumatology</h3>
         </div>
         <div class="card-body">
-          The Spirit’s role in revelation, regeneration, sanctification, gifting, and mission.
-          <div class="card-meta">Key: revelation, new heart, presence</div>
+          Revelation, regeneration, sanctification, presence. How Scripture presents the Spirit’s work.
+          <div class="meta">Key: revelation • new heart • presence</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Overview</span>
-          <span class="btn">Texts</span>
+          <span class="btn">Overview</span><span class="btn">Texts</span>
         </div>
       </a>
 
       <!-- Anthropology -->
       <a class="card" href="/israelite-research/apologetics/anthropology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🧍</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- human outline -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="7" r="3"/><path d="M5 21c1-4 5-5 7-5s6 1 7 5"/>
+            </svg>
+          </span>
           <h3 class="card-title">Anthropology</h3>
         </div>
         <div class="card-body">
-          Humanity created in God’s image; identity, vocation, and embodied life in the Afro-Levantine world.
-          <div class="card-meta">Key: image, vocation, embodiment</div>
+          Image of God, vocation, embodied life in the Afro-Levantine world; identity and purpose.
+          <div class="meta">Key: image • vocation • embodiment</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Image & Vocation</span>
-          <span class="btn">Origins</span>
+          <span class="btn">Image & Work</span><span class="btn">Origins</span>
         </div>
       </a>
 
       <!-- Hamartiology -->
       <a class="card" href="/israelite-research/apologetics/hamartiology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">⚖️</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- scales -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M4 7h16M6 7l-3 5h6l-3-5zm12 0l-3 5h6l-3-5z"/>
+            </svg>
+          </span>
           <h3 class="card-title">Hamartiology</h3>
         </div>
         <div class="card-body">
-          Sin, corruption, judgment; moral order and the necessity of atonement.
-          <div class="card-meta">Key: sin, law, judgment</div>
+          Sin, corruption, law, and judgment—why atonement is necessary.
+          <div class="meta">Key: law • guilt • justice</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Law & Conscience</span>
-          <span class="btn">Atonement Need</span>
+          <span class="btn">Law & Conscience</span><span class="btn">Need for Atonement</span>
         </div>
       </a>
 
       <!-- Soteriology -->
-      <a class="card" href="/israelite-research/apologetics/soteriology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🕎</span>
+      <a class="card" id="soteriology" href="/israelite-research/apologetics/soteriology.html">
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- olive branch / graft -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 17c6-2 9-6 10-12"/><path d="M8 15c0 3 2 5 5 5 3 0 5-2 5-5"/>
+            </svg>
+          </span>
           <h3 class="card-title">Soteriology</h3>
         </div>
         <div class="card-body">
-          Salvation, covenant, sacrifice; Messiah’s work and the ingathering of the nations.
-          <div class="card-meta">Key: covenant, sacrifice, faithfulness</div>
+          Salvation, covenant, sacrifice; ingathering of the nations without erasing Israel.
+          <div class="meta">Key: covenant • sacrifice • faithfulness</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Covenant Logic</span>
-          <span class="btn">Faith & Works</span>
+          <span class="btn">Covenant Logic</span><span class="btn">Faith & Works</span>
         </div>
       </a>
 
       <!-- Israelology -->
       <a class="card" id="israelology" href="/israelite-research/apologetics/israelology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🧭</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- compass / map pin -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s7-5 7-10a7 7 0 10-14 0c0 5 7 10 7 10z"/><circle cx="12" cy="11" r="2.5"/>
+            </svg>
+          </span>
           <h3 class="card-title">Israelology</h3>
         </div>
         <div class="card-body">
-          Israel’s identity, vocation, and promises; continuity through Scripture and history.
-          <div class="card-meta">Key: identity, lineage, promises</div>
+          Israel’s identity, vocation, promises, and continuity across Scripture and history.
+          <div class="meta">Key: identity • lineage • promises</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Identity</span>
-          <span class="btn">Promises</span>
+          <span class="btn">Identity</span><span class="btn">Promises</span>
         </div>
       </a>
 
       <!-- Ecclesiology -->
       <a class="card" href="/israelite-research/apologetics/ecclesiology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🏛️</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- assembly -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18M6 18v-6l6-4 6 4v6"/><path d="M9 21v-3a3 3 0 016 0v3"/>
+            </svg>
+          </span>
           <h3 class="card-title">Ecclesiology</h3>
         </div>
         <div class="card-body">
           Assembly, leadership, ordinances, and unity among Israel and the nations in Messiah.
-          <div class="card-meta">Key: assembly, fellowship, order</div>
+          <div class="meta">Key: assembly • order • unity</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Structure</span>
-          <span class="btn">Unity</span>
-        </div>
-      </a>
-
-      <!-- Angelology -->
-      <a class="card" href="/israelite-research/apologetics/angelology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">👼</span>
-          <h3 class="card-title">Angelology</h3>
-        </div>
-        <div class="card-body">
-          Heavenly messengers and their roles in revelation and protection.
-          <div class="card-meta">Key: messengers, hosts</div>
-        </div>
-        <div class="card-cta">
-          <span class="btn">Overview</span>
-          <span class="btn">Texts</span>
-        </div>
-      </a>
-
-      <!-- Demonology -->
-      <a class="card" href="/israelite-research/apologetics/demonology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🐍</span>
-          <h3 class="card-title">Demonology</h3>
-        </div>
-        <div class="card-body">
-          Unclean spirits, temptation, and deliverance; moral agency and resistance.
-          <div class="card-meta">Key: opposition, deliverance</div>
-        </div>
-        <div class="card-cta">
-          <span class="btn">Overview</span>
-          <span class="btn">Texts</span>
+          <span class="btn">Structure</span><span class="btn">Unity</span>
         </div>
       </a>
 
       <!-- Eschatology -->
       <a class="card" href="/israelite-research/apologetics/eschatology.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">⏳</span>
+        <div class="card-top">
+          <span class="icon" aria-hidden="true">
+            <!-- horizon / sunrise -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 18h18"/><path d="M6 15a6 6 0 0112 0"/><path d="M12 6v3M5 12l2 1M19 12l-2 1"/>
+            </svg>
+          </span>
           <h3 class="card-title">Eschatology</h3>
         </div>
         <div class="card-body">
           Hope, restoration, judgment, and new creation; promises concerning Israel and the nations.
-          <div class="card-meta">Key: hope, judgment, new creation</div>
+          <div class="meta">Key: hope • judgment • new creation</div>
         </div>
         <div class="card-cta">
-          <span class="btn">Promises</span>
-          <span class="btn">Consummation</span>
-        </div>
-      </a>
-
-      <!-- Ethics (bonus) -->
-      <a class="card" href="/israelite-research/apologetics/ethics.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">📏</span>
-          <h3 class="card-title">Ethics</h3>
-        </div>
-        <div class="card-body">
-          Moral reasoning grounded in Scripture—justice, truth, life, and neighbor-love.
-          <div class="card-meta">Key: justice, truth, wisdom</div>
-        </div>
-        <div class="card-cta">
-          <span class="btn">Moral Framework</span>
-          <span class="btn">Case Studies</span>
+          <span class="btn">Promises</span><span class="btn">Consummation</span>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- FEATURED ARGUMENTS -->
-  <section class="section" id="featured-arguments">
-    <div class="section-head">
-      <h2 class="section-title">Featured Arguments</h2>
-      <a class="muted-link" href="/israelite-research/articles.html">All Articles</a>
+  <div class="rule"></div>
+
+  <!-- FEATURED ARGUMENT PATHS -->
+  <section class="section" id="arguments">
+    <div class="sec-head">
+      <h2 class="sec-title">Argument Paths</h2>
+      <a class="link" href="/israelite-research/articles.html">All Articles</a>
     </div>
     <div class="grid-3">
       <a class="card" href="/israelite-research/articles/three-laws-of-logic.html">
-        <div class="arg-card">
-          <h3 class="arg-title">Three Laws of Logic in Scripture</h3>
-          <div class="arg-meta">Identity, non-contradiction, excluded middle—grounded in God’s character.</div>
+        <div class="arg">
+          <h3>Three Laws of Logic</h3>
+          <p>Identity, non-contradiction, excluded middle—traced within Scripture’s own reasoning.</p>
         </div>
       </a>
       <a class="card" href="/israelite-research/articles/is-creation-logical.html">
-        <div class="arg-card">
-          <h3 class="arg-title">Is Creation Logical?</h3>
-          <div class="arg-meta">Genesis as form-then-fill—order, purpose, coherence.</div>
+        <div class="arg">
+          <h3>Creation is Coherent</h3>
+          <p>Genesis as form-then-fill: domains, inhabitants, fit, and purpose.</p>
         </div>
       </a>
       <a class="card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
-        <div class="arg-card">
-          <h3 class="arg-title">Scripture & Logic</h3>
-          <div class="arg-meta">Prophets and Jesus reasoning from the text with precision.</div>
+        <div class="arg">
+          <h3>Scripture & Logic</h3>
+          <p>Prophets and Jesus reasoning text-first with precise claims and consequences.</p>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- RESOURCES -->
-  <section class="section" id="resources">
-    <div class="section-head">
-      <h2 class="section-title">Tools & Resources</h2>
-      <a class="muted-link" href="/israelite-research/media.html">Media</a>
+  <!-- UTILITIES -->
+  <section class="section" id="utilities">
+    <div class="sec-head">
+      <h2 class="sec-title">Utilities</h2>
+      <a class="link" href="/israelite-research/israelite-catechism.html">Open Catechism</a>
     </div>
     <div class="grid-2">
-      <a class="card" href="/israelite-research/israelite-catechism.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">📚</span>
-          <h3 class="card-title">Israelite Catechism</h3>
-        </div>
-        <div class="card-body">Concise Q&A across doctrines with references and study prompts.</div>
-        <div class="card-cta"><span class="btn">Open Catechism</span></div>
-      </a>
       <a class="card" href="/israelite-research/morning-to-morning.html">
-        <div class="card-head">
-          <span class="icon" aria-hidden="true">🌅</span>
-          <h3 class="card-title">Morning to Morning</h3>
+        <div class="arg">
+          <h3>Morning to Morning</h3>
+          <p>A one-year reading path linked to Events.</p>
         </div>
-        <div class="card-body">A one-year Scripture journey—daily readings linked to Events.</div>
-        <div class="card-cta"><span class="btn">Start Reading</span></div>
+      </a>
+      <a class="card" href="/israelite-research/media.html">
+        <div class="arg">
+          <h3>Media Library</h3>
+          <p>Podcast archives, lectures, and study series.</p>
+        </div>
       </a>
     </div>
   </section>
