@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Subscribe by Email — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  :root{ --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --sky:#e7ecf4; --brand:#054A91; }
+  .container{ max-width:760px; margin:0 auto; padding:0 16px; }
+  .hero{ padding:28px 0 14px; border-bottom:1px solid var(--sky); }
+  .title{ margin:0; font-size:2rem; font-weight:900; color:var(--ink); }
+  .sub{ color:var(--muted); margin:.35rem 0 0; }
+  .section{ padding:24px 0; }
+  .card{ border:1px solid var(--sky); border-radius:12px; background:#fff; padding:16px; }
+  .h2{ font-size:1.25rem; font-weight:900; color:var(--ink); margin:0 0 10px; }
+  .form{ display:grid; gap:10px; margin-top:8px; }
+  .input, .select{ width:100%; border:1px solid var(--sky); border-radius:10px; padding:10px 12px; font:inherit; }
+  .check{ display:flex; align-items:center; gap:8px; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--sky); border-radius:999px; color:var(--brand); background:#fff; font-weight:900; text-decoration:none; }
+  .btn:hover{ border-color:#dbe4f2; }
+  .muted{ color:var(--muted); font-size:.95rem; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <header class="hero">
+    <h1 class="title">Subscribe by Email</h1>
+    <p class="sub">Get new articles, devotionals, and podcast highlights in your inbox.</p>
+  </header>
+
+  <section class="section">
+    <div class="card">
+      <h2 class="h2">Choose your content</h2>
+      <form class="form" action="#" method="post">
+        <input class="input" type="email" name="email" placeholder="Email address" aria-label="Email address" required/>
+        <div class="check"><input type="checkbox" id="ch-articles"/><label for="ch-articles">Articles</label></div>
+        <div class="check"><input type="checkbox" id="ch-devos"/><label for="ch-devos">Morning to Morning (Devotionals)</label></div>
+        <div class="check"><input type="checkbox" id="ch-pod"/><label for="ch-pod">Podcast highlights</label></div>
+        <select class="select" name="frequency" aria-label="Email frequency">
+          <option value="">Frequency</option>
+          <option>Daily</option><option>Weekly</option><option>Monthly</option>
+        </select>
+        <button class="btn" type="submit">Subscribe</button>
+        <p class="muted">You can unsubscribe at any time via the link in our emails.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <a class="btn" href="/israelite-research/index.html">← Back to Home</a>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
