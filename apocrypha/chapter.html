@@ -8,7 +8,6 @@
 <style>
   :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
 
-  /* Layout */
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:24px 0 8px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
@@ -19,12 +18,6 @@
 
   .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
 
-  /* Chapter grid (used on book overview screens if you show them here) */
-  .grid{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:10px;margin:12px 0 0}
-  .ch{display:flex;align-items:center;justify-content:center;height:44px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
-  .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
-
-  /* Reader toolbar */
   .reader-toolbar{
     position: sticky; top: 0; z-index: 50;
     display:flex; align-items:center; justify-content:center; gap:.75rem;
@@ -39,7 +32,6 @@
     border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
   }
 
-  /* Verse rows */
   .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
   .vline{display:flex; gap:.6rem}
   .vnum{min-width:28px; text-align:right; color:var(--muted)}
@@ -50,7 +42,6 @@
   }
   .v-toolbar button:hover{ background:#f8fafc }
 
-  /* Hovercard for dictionary */
   .hovercard{
     position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
     background:#fff; border:1px solid #e6ebf2; border-radius:10px;
@@ -58,10 +49,6 @@
     padding:.6rem .7rem; font-size:.9rem;
   }
   .hovercard.open{ display:block }
-
-  /* Inline “verse” spans kept for your site-wide tooltip JS */
-  .verse-ref{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-  .verse-ref:hover::after{opacity:1; transform:translateY(0);}
 </style>
 </head>
 <body>
@@ -106,14 +93,13 @@
 (function(){
   // --- URL params ---
   const params = new URLSearchParams(location.search);
-  const bookSlug = (params.get('book') || '').trim();  // e.g., 'ii-esdras', 'genesis'
+  const bookSlug = (params.get('book') || '').trim();
   const ch = parseInt(params.get('ch') || '1', 10);
 
-  // --- Helpers ---
+  // --- Title Case helper ---
   function titleCaseFromSlug(slug){
     if(!slug) return '';
     const parts = slug.split('-');
-    // Normalize leading roman numerals (i, ii, iii) → I, II, III
     const romans = { i:'I', ii:'II', iii:'III', iv:'IV', v:'V', vi:'VI', vii:'VII', viii:'VIII', ix:'IX', x:'X' };
     if(parts.length && romans[parts[0]]) parts[0] = romans[parts[0]];
     return parts.map((p,i)=> i===0 && romans[p] ? romans[p] : p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
@@ -127,9 +113,9 @@
     document.getElementById('crumbs').textContent = title + (Number.isFinite(ch)? (' • Chapter ' + ch) : '');
   }
 
-  // --- Chapter select wiring (client-side only; adjust total dynamically if you load metadata) ---
+  // --- Chapter select wiring ---
   const chSelect = document.getElementById('chSelect');
-  function populateChapterPicker(total=50){ // default generous cap; update if you load real totals
+  function populateChapterPicker(total=50){
     chSelect.innerHTML = '';
     for(let i=1;i<=total;i++){
       const opt = document.createElement('option');
@@ -147,11 +133,7 @@
   document.getElementById('btnNext').addEventListener('click', ()=> goToChapter(ch+1));
   chSelect.addEventListener('change', (e)=> goToChapter(parseInt(e.target.value,10)||1));
 
-  <script>
-(function(){
-  // ... keep all earlier code above this line (title, picker, dictionary, etc.) ...
-
-  // --- Detect collection from URL path ---
+  // --- Detect collection ---
   function detectCollection(){
     const p = location.pathname;
     if (p.includes('/tanakh/')) return 'tanakh';
@@ -159,44 +141,81 @@
     if (p.includes('/apocrypha/')) return 'apocrypha';
     return 'scripture';
   }
-
-  // --- Verses target ---
-  const versesEl = document.getElementById('verses');
   const collection = detectCollection();
+  const versesEl = document.getElementById('verses');
 
-  // Build canonical paths (adjust to your repo if needed)
-  function jsonPath(bookSlug, ch){
+  // --- Loader paths ---
+  function jsonPerChapterPath(bookSlug, ch){
     return `/israelite-research/data/chapters/${collection}/${bookSlug}/${ch}.json`;
+  }
+  function jsonBundleCandidates(bookSlug){
+    return [
+      `/israelite-research/data/${collection}/${bookSlug}/1-50.json`,
+      `/israelite-research/data/${collection}/${bookSlug}/all.json`,
+      `/israelite-research/data/${collection}/${bookSlug}.json`,
+    ];
   }
   function textPath(bookSlug, ch){
     return `/israelite-research/data/chapters/${collection}/${bookSlug}/${ch}.txt`;
   }
 
-  // Split plain text into [{n,t}] using verse-number regex
+  // --- Normalize / Extract ---
+  function normalizeVersesArray(input){
+    const out = [];
+    for (const row of input){
+      if (!row) continue;
+      if (typeof row === 'object' && 'n' in row && 't' in row) {
+        out.push({ n: Number(row.n), t: String(row.t) });
+      } else if (Array.isArray(row) && row.length >= 2) {
+        out.push({ n: Number(row[0]), t: String(row[1]) });
+      } else if (typeof row === 'string') {
+        const m = row.match(/^\s*(\d{1,3})[.)]?\s+(.*)$/);
+        if (m) out.push({ n: Number(m[1]), t: m[2] });
+      }
+    }
+    return out;
+  }
+  function extractChapterFromBundle(data, ch){
+    if (!data) return null;
+    if (Array.isArray(data.verses)) return normalizeVersesArray(data.verses);
+    if (data.chapters && typeof data.chapters === 'object' && !Array.isArray(data.chapters)){
+      const bucket = data.chapters[String(ch)] || data.chapters[ch];
+      return bucket ? normalizeVersesArray(bucket) : null;
+    }
+    if (Array.isArray(data.chapters)){
+      let bucket = data.chapters[ch-1] || data.chapters[ch];
+      return bucket ? normalizeVersesArray(bucket) : null;
+    }
+    if (Array.isArray(data)){
+      const first = data[0];
+      const looksLikeVerseObj = first && typeof first === 'object' && ('n' in first || Array.isArray(first) || (typeof first === 'string' && /^\s*\d/.test(first)));
+      if (looksLikeVerseObj){ return normalizeVersesArray(data); }
+      let bucket = data[ch-1] || data[ch];
+      return bucket ? normalizeVersesArray(bucket) : null;
+    }
+    return null;
+  }
+
+  // --- Plain text split ---
   function splitPlainTextToVerses(txt){
-    // Matches: "\n1 " or line-start "1) " or "1. " etc.
     const pattern = /(^|\n)\s*(\d{1,3})[.)]?\s+/g;
     const verses = [];
-    let match, lastIdx = 0, lastNum = null;
-
-    // Collect verse number boundaries
     const indices = [];
+    let match;
     while ((match = pattern.exec(txt)) !== null) {
       indices.push({ idx: match.index + match[0].length - (match[2].length + 1), num: parseInt(match[2], 10) });
     }
-    // If no indices found, treat entire text as verse 1
     if (!indices.length) return [{ n: 1, t: txt.trim() }];
-
     for (let i = 0; i < indices.length; i++){
       const start = indices[i].idx + (indices[i].num.toString().length + 1);
       const end = (i+1 < indices.length) ? indices[i+1].idx : txt.length;
       const body = txt.slice(start, end).trim();
-      verses.push({ n: indices[i].num, t: body });
+      if (body) verses.push({ n: indices[i].num, t: body });
     }
-    return verses.filter(v => v.t);
+    return verses;
   }
 
-  // Render
+  // --- Render ---
   function renderVerses(verses){
     versesEl.innerHTML = '';
     verses.forEach(v=>{
@@ -212,101 +231,66 @@
         </div>`;
       versesEl.appendChild(wrap);
     });
-
-    // one-time wiring per load
     versesEl.addEventListener('click', (e)=>{
       const btn = e.target.closest('button[data-copy]');
       if(!btn) return;
       const n = btn.getAttribute('data-copy');
-      const text = `${document.getElementById('bookTitle').textContent.replace(' — Chapter','')} ${new URLSearchParams(location.search).get('ch')}:${n} — ` + btn.closest('.verse').querySelector('.vtext').textContent;
+      const bookTitle = document.getElementById('bookTitle').textContent.replace(' — Chapter','');
+      const text = `${bookTitle} ${ch}:${n} — ` + btn.closest('.verse').querySelector('.vtext').textContent;
       navigator.clipboard.writeText(text);
       btn.textContent = 'Copied!';
       setTimeout(()=> btn.textContent='Copy', 900);
     }, { once:true });
   }
 
-  async function loadChapter(){
-    versesEl.innerHTML = '<p class="muted">Loading…</p>';
-    const params = new URLSearchParams(location.search);
-    const bookSlug = (params.get('book') || '').trim();
-    const ch = parseInt(params.get('ch') || '1', 10);
-
-    // 1) Try JSON
+  // --- Loaders ---
+  async function fetchJson(url){
+    const res = await fetch(url, { cache: 'force-cache' });
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  }
+  async function tryPerChapter(){
     try{
-      const res = await fetch(jsonPath(bookSlug, ch), { cache: 'force-cache' });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && Array.isArray(data.verses) && data.verses.length){
-          renderVerses(data.verses);
-          return;
-        }
-      }
-    }catch(_) {}
-
-    // 2) Fallback to TXT
+      const data = await fetchJson(jsonPerChapterPath(bookSlug, ch));
+      if (data && Array.isArray(data.verses)) return data.verses;
+    }catch(_){}
+    return null;
+  }
+  async function tryBundle(){
+    const candidates = jsonBundleCandidates(bookSlug);
+    for (const url of candidates){
+      try{
+        const data = await fetchJson(url);
+        const verses = extractChapterFromBundle(data, ch);
+        if (verses && verses.length) return verses;
+      }catch(_){}
+    }
+    return null;
+  }
+  async function tryText(){
     try{
       const res = await fetch(textPath(bookSlug, ch), { cache: 'force-cache' });
-      if (res.ok) {
-        const txt = await res.text();
-        const verses = splitPlainTextToVerses(txt);
-        renderVerses(verses);
-        return;
-      }
-    }catch(_) {}
-
-    // 3) Fallback: graceful empty
+      if (!res.ok) throw new Error('HTTP '+res.status);
+      const txt = await res.text();
+      return splitPlainTextToVerses(txt);
+    }catch(_){}
+    return null;
+  }
+  async function loadChapter(){
+    versesEl.innerHTML = '<p class="muted">Loading…</p>';
+    const fromPerChapter = await tryPerChapter();
+    if (fromPerChapter && fromPerChapter.length){ renderVerses(fromPerChapter); return; }
+    const fromBundle = await tryBundle();
+    if (fromBundle && fromBundle.length){ renderVerses(fromBundle); return; }
+    const fromTxt = await tryText();
+    if (fromTxt && fromTxt.length){ renderVerses(fromTxt); return; }
     versesEl.innerHTML = '<p class="muted">Chapter data unavailable.</p>';
   }
 
-  // Boot (leave your other boot calls intact)
-  // setBookTitle(), populateChapterPicker(), loadDictionary() should already be present above.
-  loadChapter();
-
-  // ... keep the rest of your existing script (dictionary, picker wiring, etc.) below ...
-})();
-</script>
-
-  // --- Bible Dictionary (Easton) ---
-  const DICT_PATH = '/israelite-research/data/dictionaries/easton_dictionary.json';
-  const dictPanel = document.getElementById('dictPanel');
-  const dictSearch = document.getElementById('dictSearch');
-
-  let dictIndex = [];
-  function normalizeTerm(s){ return (s||'').trim().toLowerCase(); }
-
-  async function loadDictionary(){
-    try{
-      const res = await fetch(DICT_PATH, {cache:'force-cache'});
-      const data = await res.json();
-      // Expecting array of entries: [{ term, definitions: [ ... ] }, ...]
-      dictIndex = Array.isArray(data) ? data : [];
-      dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>';
-    }catch(err){
-      dictPanel.innerHTML = '<p class="muted">Dictionary failed to load.</p>';
-    }
-  }
-
-  function searchDictionary(q){
-    const needle = normalizeTerm(q);
-    if(!needle){ dictPanel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>'; return; }
-    const hits = dictIndex.filter(e => normalizeTerm(e.term) === needle || normalizeTerm(e.term).includes(needle)).slice(0,6);
-    if(!hits.length){ dictPanel.innerHTML = '<p class="muted">No entries found.</p>'; return; }
-    dictPanel.innerHTML = hits.map(e=>{
-      const defs = (e.definitions||[]).map(d=>`<li>${d}</li>`).join('');
-      return `<article style="margin:.5rem 0">
-        <h4 style="margin:.1rem 0 .2rem; color:var(--ink)">${e.term}</h4>
-        <ol style="margin:.25rem 0 0 1.1rem">${defs}</ol>
-      </article>`;
-    }).join('');
-  }
-
-  dictSearch.addEventListener('input', (e)=> searchDictionary(e.target.value));
-
   // --- Boot ---
   setBookTitle();
-  populateChapterPicker();     // (optionally detect real totals per book)
+  populateChapterPicker();
   loadChapter();
-  loadDictionary();
 })();
 </script>
 </body>
