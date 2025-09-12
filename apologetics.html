@@ -1,294 +1,388 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Apologetics — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    :root{
-      --accent:#F17300; --muted:#6B7280; --ink:#0b2340;
-      /* add safe fallbacks used by your site */
-      --border:#e6ebf2; --surface:#ffffff; --bg:#ffffff;
-      --shadow:0 2px 8px rgba(0,0,0,.06); --shadow-hover:0 10px 20px rgba(0,0,0,.12);
-    }
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Israelite Apologetics — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
 
-    /* Layout */
-    .page-wrap{
-      display:grid; grid-template-columns: 260px 1fr; gap:22px;
-      max-width:1200px; margin:0 auto; padding:0 16px;
-    }
-    .side-nav{
-      position:sticky; top:76px; align-self:start;
-      border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:14px;
-      box-shadow:var(--shadow);
-    }
-    .side-nav h2{ font-size:1rem; margin:.25rem 0 .5rem; color:var(--ink); letter-spacing:.3px; }
-    .side-nav a{
-      display:block; padding:.4rem .6rem; border-radius:10px; color:var(--ink); text-decoration:none;
-      border:1px solid transparent; transition:border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-    }
-    .side-nav a:hover, .side-nav a[aria-current="true"]{
-      background:rgba(129,164,205,.14); border-color:#cdd8e6; box-shadow:var(--shadow);
-    }
+<style>
+  :root{
+    --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --brand:#054A91;
+    --sky:#e7ecf4; --card:#ffffff; --card-border:#e9eef6;
+  }
+  .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-    .apg-main{ padding: 8px 0 60px; }
-    .apg-head{ text-align:center; margin:1.25rem 0 1rem; }
-    .apg-title{
-      font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      font-size:clamp(2rem,3.6vw,2.75rem); color:var(--ink); line-height:1.15; margin:0;
-    }
-    .apg-sub{ color:var(--muted); margin:.25rem 0 0; }
-    .mission{ text-align:center; margin:1rem 0 1.4rem; font-weight:700; color:var(--ink); }
+  /* Hero */
+  .hero{ padding:28px 0 18px; border-bottom:1px solid var(--sky); }
+  .hero-title{ margin:0; font-size:2.1rem; font-weight:900; color:var(--ink); }
+  .hero-sub{ margin:.5rem 0 0; color:var(--muted); max-width:68ch; }
 
-    .section{
-      border:1px solid var(--border); border-radius:16px; background:var(--surface);
-      padding:16px; margin:16px 0; box-shadow:var(--shadow);
-    }
-    .section h3{
-      font-family:var(--ff-serif,"Adobe Garamond Pro",serif);
-      color:var(--ink); margin:.25rem 0 .75rem; font-size:1.25rem;
-    }
-    .section p{ line-height:1.75; }
-    .section ul{ margin:.35rem 0 1rem 1.25rem; }
+  /* Section head */
+  .section{ padding:26px 0; }
+  .section-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 14px; }
+  .section-title{ margin:0; font-size:1.25rem; font-weight:900; color:var(--ink); }
+  .muted-link{ color:var(--brand); text-decoration:none; font-weight:800; }
+  .muted-link:hover{ text-decoration:underline; }
 
-    /* Search bar */
-    .search-box{
-      display:flex; gap:8px; align-items:center; border:1px solid var(--border);
-      padding:10px 12px; border-radius:12px; background:var(--surface); box-shadow:var(--shadow);
-    }
-    .search-box input{ flex:1; border:none; outline:none; background:transparent; color:var(--ink); }
+  /* Search / filters row */
+  .row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .input, .select{
+    border:1px solid var(--sky); border-radius:999px; padding:10px 12px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:700;
+  }
+  .input{ min-width:260px; flex:1 1 260px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
+    border-radius:999px; background:#fff; color:var(--brand); text-decoration:none; font-weight:800;
+  }
+  .chip:hover{ border-color:#dbe4f2; }
 
-    /* Accordions */
-    details.apg-acc{ border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:var(--bg); }
-    details.apg-acc + details.apg-acc{ margin-top:10px; }
-    details.apg-acc summary{ cursor:pointer; font-weight:800; color:var(--ink); }
-    details.apg-acc p{ margin:.6rem 0 0; }
+  /* Grids */
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  @media (max-width:960px){ .grid-3, .grid-2{ grid-template-columns:1fr; } }
 
-    /* Verse tooltip (uses data-note) */
-    .verse{ position:relative; text-decoration:underline dotted; cursor:help; color: var(--ink); font-weight:600; }
-    .verse::after{
-      content: attr(data-note);
-      position:absolute; left:0; top:100%; transform:translateY(8px);
-      background:#fff; border:1px solid var(--border); border-radius:10px; padding:8px 10px;
-      box-shadow:var(--shadow); opacity:0; pointer-events:none; white-space:normal; min-width:220px; max-width:320px; color:#223;
-      transition:opacity .15s ease, transform .15s ease;
-    }
-    .verse:hover::after{ opacity:1; transform:translateY(4px); }
+  /* Cards */
+  .card{
+    display:flex; flex-direction:column; background:var(--card); border:1px solid var(--card-border);
+    border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{ transform:translateY(-2px); border-color:#dbe4f2; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+  .card-head{
+    display:flex; align-items:center; gap:10px; padding:14px 16px 0;
+  }
+  .icon{
+    width:34px; height:34px; border-radius:10px; border:1px solid var(--sky); display:inline-flex;
+    align-items:center; justify-content:center; color:var(--brand);
+  }
+  .card-title{ font-size:1.08rem; font-weight:900; color:var(--ink); margin:0; line-height:1.25; }
+  .card-body{ padding:10px 16px 14px; color:var(--ink); }
+  .card-meta{ color:var(--muted); font-size:.93rem; margin-top:6px; }
+  .card-cta{
+    margin:10px 16px 14px; display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--sky);
+    border-radius:999px; background:#fff; color:var(--brand); font-weight:800; text-decoration:none;
+  }
+  .btn:hover{ border-color:#dbe4f2; }
+  .btn svg{ width:16px; height:16px; }
 
-    /* Chips / filters */
-    .apo-filters{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0 14px; }
-    .chip{
-      display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border);
-      padding:6px 10px; border-radius:999px; background:var(--surface); color:var(--ink);
-      text-decoration:none; font-weight:700; font-size:.95rem; box-shadow:var(--shadow);
-      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
-      cursor:pointer;
-    }
-    .chip:hover{ transform:translateY(-1px); box-shadow:var(--shadow-hover); border-color:#cdd8e6; }
-    .chip.is-on{ border-color:#cdd8e6; box-shadow:var(--shadow-hover); }
-
-    /* Reading progress */
-    #read-progress{ position:fixed; left:0; top:0; height:3px; width:0; background:#F17300; z-index:9999; transition:width .1s linear; }
-
-    /* Responsive */
-    @media (max-width: 980px){
-      .page-wrap{ grid-template-columns: 1fr; }
-      .side-nav{ position:static; }
-    }
-  </style>
+  /* Small “argument” cards */
+  .arg-card{ padding:14px 16px; }
+  .arg-title{ margin:0 0 6px; font-weight:900; color:var(--ink); }
+  .arg-meta{ color:var(--muted); font-size:.93rem; }
+</style>
 </head>
-<body data-page="apologetics" class="apg-doc">
-  <div id="read-progress" aria-hidden="true"></div>
-  <div id="site-header"></div>
+<body class="apologetics-page">
+<div id="site-header"></div>
 
-  <main class="page-wrap" aria-labelledby="page-title">
-    <nav class="side-nav" aria-label="Apologetics navigation">
-      <h2>Sections</h2>
-      <a href="#foundations">Foundations</a>
-      <a href="#defending-identity">Defending Identity</a>
-      <a href="#objections">Fallacies &amp; Objections</a>
-      <a href="#logic-tools">Tools of Logic</a>
-      <a href="#historical-sources">Historical Sources</a>
-      <a href="#catechism">Catechism &amp; Apologetics</a>
-      <a href="#resources">Resources</a>
-    </nav>
+<main class="container">
+  <!-- HERO -->
+  <header class="hero">
+    <h1 class="hero-title">Israelite Apologetics</h1>
+    <p class="hero-sub">
+      A systematic index of the major “-ologies” in Scripture—organized for clarity, evidence, and logic.
+      Explore bibliology, theology proper, Christology, Israelology, and more—each mapped to primary sources,
+      key arguments, and concise study paths.
+    </p>
+  </header>
 
-    <div class="apg-main">
-      <header class="apg-head">
-        <h1 id="page-title" class="apg-title">Apologetics</h1>
-        <p class="apg-sub">Apologetics (βἀπολογία): a reasoned defense. In our context, a disciplined case for Israel’s identity and the faith that formed Israel.</p>
-        <p class="mission">“Defending the Truth of Israel’s identity and their lost/hidden history through Scripture, Logic, and Context.”</p>
-      </header>
-
-      <!-- Quick filter chips -->
-      <div class="apo-filters" role="group" aria-label="Filter apologetics content">
-        <button class="chip is-on" data-filter="all">All</button>
-        <button class="chip" data-filter="scripture">Scripture</button>
-        <button class="chip" data-filter="logic">Logic</button>
-        <button class="chip" data-filter="history">History</button>
-        <button class="chip" data-filter="fallacies">Fallacies</button>
-        <button class="chip" data-filter="catechism">Catechism</button>
-      </div>
-
-      <!-- Foundations -->
-      <section id="foundations" class="section apo-block" data-tags="scripture logic history" itemscope itemtype="https://schema.org/CreativeWork">
-        <h3>1) Foundations of Israelite Apologetics</h3>
-        <p><strong>Definition.</strong> In Scripture, <em>apologia</em> is a reasoned defense (<span class="verse">1 Peter 3:15</span>). We defend by appealing to God’s truth, not to rhetoric alone.</p>
-        <p><strong>Why identity matters.</strong> Identity is covenantal: promises, curses, and restoration are given to a people (<span class="verse">Deuteronomy 7:6</span>).</p>
-        <p><strong>Method.</strong> Scripture → Logic → History. We read the text, reason consistently, and test claims against evidence and context.</p>
-      </section>
-
-      <!-- Defending Identity -->
-      <section id="defending-identity" class="section apo-block" data-tags="scripture history">
-        <h3>2) Defending Israelite Identity</h3>
-        <p><strong>Scripture:</strong> covenant markers and prophecies that identify Israel in history:
-          <span class="verse">Deuteronomy 28</span>,
-          <span class="verse">Amos 9:7</span>,
-          <span class="verse">Song of Songs 1:5–6</span>,
-          <span class="verse">Lamentations 5:10</span>.
-        </p>
-        <p><strong>History:</strong> Israelite historians, Arab writers, secular chroniclers, and slave trade records cross-reference the Scriptural picture.</p>
-        <p><strong>Genealogy &amp; Diaspora:</strong> Migration patterns from Africa to the Americas and beyond, read alongside biblical geography and language.</p>
-      </section>
-
-      <!-- Objections / Fallacies -->
-      <section id="objections" class="section apo-block" data-tags="fallacies scripture logic">
-        <h3>3) Answering Common Fallacies (Objections)</h3>
-        <div class="search-box" role="search">
-          <input id="objection-search" type="search" placeholder="Enter an objection… (e.g., 'Skin color doesn’t matter')" aria-label="Search objections">
-        </div>
-        <div id="objection-list" aria-live="polite" style="margin-top:10px;">
-          <details class="apg-acc" data-tags="skin color identity scripture">
-            <summary>“Skin color doesn’t matter.”</summary>
-            <p><strong>Logic:</strong> Distinguish moral worth (equal) from historical description (relevant). The objection confuses categories.</p>
-            <p><strong>Scripture:</strong> The text names complexion and peoples as part of history, not superiority (<span class="verse">Jeremiah 13:23</span>; <span class="verse">Song of Songs 1:5–6</span>).</p>
-            <p><strong>Context:</strong> Recognizing historic identity corrects later distortions and restores accurate reading.</p>
-          </details>
-
-          <details class="apg-acc" data-tags="proof identity black israelites evidence scripture history">
-            <summary>“You can’t prove Israelites were Black.”</summary>
-            <p><strong>Logic:</strong> Burden of proof is shared: weigh primary sources, not modern assumptions.</p>
-            <p><strong>Scripture:</strong> Geographic and descriptive markers locate Israel amid Afro-Semitic peoples (<span class="verse">Amos 9:7</span>).</p>
-            <p><strong>History:</strong> Iconography, travelers, and lexicons record dark-skinned populations across Israel’s sphere.</p>
-          </details>
-
-          <details class="apg-acc" data-tags="theology replacement covenant israel church supersessionism">
-            <summary>“Christianity replaces Israelites.”</summary>
-            <p><strong>Logic:</strong> Replacement claims invert covenant continuity.</p>
-            <p><strong>Scripture:</strong> The promises and covenants remain identified with Israel and the grafted-in (<span class="verse">Romans 11:1–2</span>).</p>
-          </details>
-
-          <details class="apg-acc" data-tags="jewish people israel today identity comparison evidence">
-            <summary>“The Jewish people in Israel today are the true Jews.”</summary>
-            <p><strong>Logic:</strong> Present possession ≠ original identity; investigate sources rather than assume.</p>
-            <p><strong>Scripture:</strong> Identity is tested by covenant signs and prophecy, not modern geopolitics (<span class="verse">Deuteronomy 28</span>).</p>
-            <p><strong>Context:</strong> This page assembles evidence rather than making ad hominem claims.</p>
-          </details>
-        </div>
-      </section>
-
-      <!-- Logic Tools -->
-      <section id="logic-tools" class="section apo-block" data-tags="logic">
-        <h3>4) Tools of Logic</h3>
-        <p>Mini-lessons and short videos on critical reasoning for Israelite apologetics.</p>
-        <ul>
-          <li><strong>Straw man:</strong> misrepresenting a position to refute an easier target (<span class="verse">Matthew 4:6–7</span>).</li>
-          <li><strong>Ad hominem:</strong> attacking the person rather than the claim (<span class="verse">Acts 24:5</span>).</li>
-          <li><strong>Appeal to popularity:</strong> assuming many voices = truth (<span class="verse">John 12:43</span>).</li>
-          <li><strong>Consistency &amp; non-contradiction:</strong> truth coheres because God is faithful (<span class="verse">2 Timothy 3:16–17</span>).</li>
-        </ul>
-        <a class="chip" href="/israelite-research/media.html">Watch: Logic Tutorials</a>
-      </section>
-
-      <!-- Historical Sources -->
-      <section id="historical-sources" class="section apo-block" data-tags="history">
-        <h3>5) Historical Sources</h3>
-        <ul>
-          <li>Zondervan Bible Dictionary (entry “Hamites”) — “progenitor of the dark races...”</li>
-          <li>Babylonian Talmud — self-descriptions and ethnographic notes</li>
-          <li>Early church fathers &amp; historians on Israelites and neighbors</li>
-          <li><em>Hebrewisms of West Africa</em></li>
-          <li>Timeline: Scripture → Africa → Diaspora (visual link here)</li>
-          <li>Hidden clues across secular records</li>
-        </ul>
-        <p><em>Note:</em> We will continue to expand citations and scans in a forthcoming library view.</p>
-      </section>
-
-      <!-- Catechism -->
-      <section id="catechism" class="section apo-block" data-tags="catechism">
-        <h3>6) Israelite Catechism &amp; Apologetics</h3>
-        <p>Catechism-style Q&amp;A for fast recall and teaching. Cross-linked to the full catechism.</p>
-        <a class="chip" href="/israelite-research/israelite-catechism.html">Open Catechism</a>
-      </section>
-
-      <!-- Resources / Share -->
-      <section id="resources" class="section apo-block" data-tags="resources">
-        <h3>Resources &amp; Share</h3>
-        <p>Find more in our articles and media libraries. Share this page to help others test claims and recover context.</p>
-        <div class="share-min" aria-label="Share" style="display:flex; gap:.4rem;">
-          <a id="share-x" class="chip" href="#" target="_blank" rel="noopener" aria-label="Share on X">Share on X</a>
-          <a id="share-fb" class="chip" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">Share on Facebook</a>
-        </div>
-      </section>
+  <!-- QUICK ACCESS -->
+  <section class="section">
+    <div class="section-head">
+      <h2 class="section-title">Quick Access</h2>
+      <a class="muted-link" href="#core-ologies">Jump to Core Doctrines</a>
     </div>
-  </main>
+    <div class="row" role="region" aria-label="Search and filters">
+      <input class="input" type="search" placeholder="Search topics, arguments, passages…" aria-label="Search apologetics"/>
+      <select class="select" aria-label="Sort">
+        <option value="">Sort: Featured</option>
+        <option>Newest</option><option>A–Z</option>
+      </select>
+      <a class="chip" href="#featured-arguments">Featured Arguments</a>
+      <a class="chip" href="#israelology">Israelology</a>
+      <a class="chip" href="#christology">Christology</a>
+      <a class="chip" href="#bibliology">Bibliology</a>
+    </div>
+  </section>
 
-  <div id="site-footer"></div>
+  <!-- CORE OLOGIES -->
+  <section class="section" id="core-ologies">
+    <div class="section-head">
+      <h2 class="section-title">Core Doctrines</h2>
+      <a class="muted-link" href="#resources">Core Resources</a>
+    </div>
 
-  <script>
-    (function(){
-      // Share links
-      var url=location.href, title=document.title;
-      var x=document.getElementById('share-x'), fb=document.getElementById('share-fb');
-      if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
-      if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    <div class="grid-3">
+      <!-- Bibliology -->
+      <a class="card" id="bibliology" href="/israelite-research/apologetics/bibliology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">📜</span>
+          <h3 class="card-title">Bibliology</h3>
+        </div>
+        <div class="card-body">
+          Authority, inspiration, transmission, and reliability of Scripture; canon, text families, and use of logic in interpretation.
+          <div class="card-meta">Key: inspiration, canon, transmission, reliability</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Read Overview</span>
+          <span class="btn">Key Texts</span>
+        </div>
+      </a>
 
-      // Active anchor on scroll (side-nav)
-      var links=[].slice.call(document.querySelectorAll('.side-nav a'));
-      var ids=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-      function onScroll(){
-        var y=window.scrollY+120, current=null;
-        for(var i=0;i<ids.length;i++){ var el=ids[i]; if(el.offsetTop<=y) current=el; }
-        links.forEach(function(a){ a.removeAttribute('aria-current'); });
-        if(current){ var link = links.find(a=>a.getAttribute('href')==='#'+current.id); if(link) link.setAttribute('aria-current','true'); }
-        // progress
-        var d=document.body.scrollHeight - innerHeight;
-        var pct = d>0 ? Math.max(0, Math.min(1, window.scrollY/d))*100 : 0;
-        document.getElementById('read-progress').style.width = pct + '%';
-      }
-      window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+      <!-- Theology Proper -->
+      <a class="card" id="theology-proper" href="/israelite-research/apologetics/theology-proper.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🕊️</span>
+          <h3 class="card-title">Theology Proper</h3>
+        </div>
+        <div class="card-body">
+          God’s being and attributes; truthfulness, immutability, and order as foundations for logic and creation.
+          <div class="card-meta">Key: attributes, truth, order</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Attributes</span>
+          <span class="btn">Logic & God</span>
+        </div>
+      </a>
 
-      // Objection search filter
-      var box=document.getElementById('objection-search');
-      var list=document.getElementById('objection-list');
-      function filterObjections(){
-        var q=(box.value||'').toLowerCase().trim();
-        list.querySelectorAll('details.apg-acc').forEach(function(d){
-          var hay=(d.innerText+' '+(d.getAttribute('data-tags')||'')).toLowerCase();
-          d.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
-        });
-      }
-      if(box){ box.addEventListener('input', filterObjections); }
+      <!-- Christology -->
+      <a class="card" id="christology" href="/israelite-research/apologetics/christology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">✚</span>
+          <h3 class="card-title">Christology</h3>
+        </div>
+        <div class="card-body">
+          Person and work of Jesus the Messiah—lineage, identity, mission; coherence with Israel’s covenants.
+          <div class="card-meta">Key: incarnation, messiahship, lineage</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Messiah in Prophets</span>
+          <span class="btn">Gospel Witness</span>
+        </div>
+      </a>
 
-      // Section filter chips
-      var chips=[].slice.call(document.querySelectorAll('.apo-filters .chip'));
-      var blocks=[].slice.call(document.querySelectorAll('.apo-block'));
-      function applyChip(tag){
-        blocks.forEach(function(b){
-          if(tag==='all'){ b.hidden=false; return; }
-          var tags=(b.getAttribute('data-tags')||'').split(/\s+/);
-          b.hidden = !tags.includes(tag);
-        });
-        chips.forEach(function(c){ c.classList.toggle('is-on', c.getAttribute('data-filter')===tag); });
-        // keep side-nav highlighting sane after filtering
-        onScroll();
-      }
-      chips.forEach(function(c){ c.addEventListener('click', function(){ applyChip(c.getAttribute('data-filter')); }); });
+      <!-- Pneumatology -->
+      <a class="card" href="/israelite-research/apologetics/pneumatology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🔥</span>
+          <h3 class="card-title">Pneumatology</h3>
+        </div>
+        <div class="card-body">
+          The Spirit’s role in revelation, regeneration, sanctification, gifting, and mission.
+          <div class="card-meta">Key: revelation, new heart, presence</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Overview</span>
+          <span class="btn">Texts</span>
+        </div>
+      </a>
 
-    })();
-  </script>
+      <!-- Anthropology -->
+      <a class="card" href="/israelite-research/apologetics/anthropology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🧍</span>
+          <h3 class="card-title">Anthropology</h3>
+        </div>
+        <div class="card-body">
+          Humanity created in God’s image; identity, vocation, and embodied life in the Afro-Levantine world.
+          <div class="card-meta">Key: image, vocation, embodiment</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Image & Vocation</span>
+          <span class="btn">Origins</span>
+        </div>
+      </a>
 
-  <script src="/israelite-research/js/include.js"></script>
+      <!-- Hamartiology -->
+      <a class="card" href="/israelite-research/apologetics/hamartiology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">⚖️</span>
+          <h3 class="card-title">Hamartiology</h3>
+        </div>
+        <div class="card-body">
+          Sin, corruption, judgment; moral order and the necessity of atonement.
+          <div class="card-meta">Key: sin, law, judgment</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Law & Conscience</span>
+          <span class="btn">Atonement Need</span>
+        </div>
+      </a>
+
+      <!-- Soteriology -->
+      <a class="card" href="/israelite-research/apologetics/soteriology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🕎</span>
+          <h3 class="card-title">Soteriology</h3>
+        </div>
+        <div class="card-body">
+          Salvation, covenant, sacrifice; Messiah’s work and the ingathering of the nations.
+          <div class="card-meta">Key: covenant, sacrifice, faithfulness</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Covenant Logic</span>
+          <span class="btn">Faith & Works</span>
+        </div>
+      </a>
+
+      <!-- Israelology -->
+      <a class="card" id="israelology" href="/israelite-research/apologetics/israelology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🧭</span>
+          <h3 class="card-title">Israelology</h3>
+        </div>
+        <div class="card-body">
+          Israel’s identity, vocation, and promises; continuity through Scripture and history.
+          <div class="card-meta">Key: identity, lineage, promises</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Identity</span>
+          <span class="btn">Promises</span>
+        </div>
+      </a>
+
+      <!-- Ecclesiology -->
+      <a class="card" href="/israelite-research/apologetics/ecclesiology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🏛️</span>
+          <h3 class="card-title">Ecclesiology</h3>
+        </div>
+        <div class="card-body">
+          Assembly, leadership, ordinances, and unity among Israel and the nations in Messiah.
+          <div class="card-meta">Key: assembly, fellowship, order</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Structure</span>
+          <span class="btn">Unity</span>
+        </div>
+      </a>
+
+      <!-- Angelology -->
+      <a class="card" href="/israelite-research/apologetics/angelology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">👼</span>
+          <h3 class="card-title">Angelology</h3>
+        </div>
+        <div class="card-body">
+          Heavenly messengers and their roles in revelation and protection.
+          <div class="card-meta">Key: messengers, hosts</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Overview</span>
+          <span class="btn">Texts</span>
+        </div>
+      </a>
+
+      <!-- Demonology -->
+      <a class="card" href="/israelite-research/apologetics/demonology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🐍</span>
+          <h3 class="card-title">Demonology</h3>
+        </div>
+        <div class="card-body">
+          Unclean spirits, temptation, and deliverance; moral agency and resistance.
+          <div class="card-meta">Key: opposition, deliverance</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Overview</span>
+          <span class="btn">Texts</span>
+        </div>
+      </a>
+
+      <!-- Eschatology -->
+      <a class="card" href="/israelite-research/apologetics/eschatology.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">⏳</span>
+          <h3 class="card-title">Eschatology</h3>
+        </div>
+        <div class="card-body">
+          Hope, restoration, judgment, and new creation; promises concerning Israel and the nations.
+          <div class="card-meta">Key: hope, judgment, new creation</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Promises</span>
+          <span class="btn">Consummation</span>
+        </div>
+      </a>
+
+      <!-- Ethics (bonus) -->
+      <a class="card" href="/israelite-research/apologetics/ethics.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">📏</span>
+          <h3 class="card-title">Ethics</h3>
+        </div>
+        <div class="card-body">
+          Moral reasoning grounded in Scripture—justice, truth, life, and neighbor-love.
+          <div class="card-meta">Key: justice, truth, wisdom</div>
+        </div>
+        <div class="card-cta">
+          <span class="btn">Moral Framework</span>
+          <span class="btn">Case Studies</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FEATURED ARGUMENTS -->
+  <section class="section" id="featured-arguments">
+    <div class="section-head">
+      <h2 class="section-title">Featured Arguments</h2>
+      <a class="muted-link" href="/israelite-research/articles.html">All Articles</a>
+    </div>
+    <div class="grid-3">
+      <a class="card" href="/israelite-research/articles/three-laws-of-logic.html">
+        <div class="arg-card">
+          <h3 class="arg-title">Three Laws of Logic in Scripture</h3>
+          <div class="arg-meta">Identity, non-contradiction, excluded middle—grounded in God’s character.</div>
+        </div>
+      </a>
+      <a class="card" href="/israelite-research/articles/is-creation-logical.html">
+        <div class="arg-card">
+          <h3 class="arg-title">Is Creation Logical?</h3>
+          <div class="arg-meta">Genesis as form-then-fill—order, purpose, coherence.</div>
+        </div>
+      </a>
+      <a class="card" href="/israelite-research/articles/is-scripture-and-logic-compatible.html">
+        <div class="arg-card">
+          <h3 class="arg-title">Scripture & Logic</h3>
+          <div class="arg-meta">Prophets and Jesus reasoning from the text with precision.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="section" id="resources">
+    <div class="section-head">
+      <h2 class="section-title">Tools & Resources</h2>
+      <a class="muted-link" href="/israelite-research/media.html">Media</a>
+    </div>
+    <div class="grid-2">
+      <a class="card" href="/israelite-research/israelite-catechism.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">📚</span>
+          <h3 class="card-title">Israelite Catechism</h3>
+        </div>
+        <div class="card-body">Concise Q&A across doctrines with references and study prompts.</div>
+        <div class="card-cta"><span class="btn">Open Catechism</span></div>
+      </a>
+      <a class="card" href="/israelite-research/morning-to-morning.html">
+        <div class="card-head">
+          <span class="icon" aria-hidden="true">🌅</span>
+          <h3 class="card-title">Morning to Morning</h3>
+        </div>
+        <div class="card-body">A one-year Scripture journey—daily readings linked to Events.</div>
+        <div class="card-cta"><span class="btn">Start Reading</span></div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
