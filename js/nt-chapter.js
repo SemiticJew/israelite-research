@@ -1,216 +1,312 @@
-// /israelite-research/js/nt-chapter.js
-(function(){
-  // --- Optional: real chapter counts (fill in as your JSON lands) ---
-  const CHAPTER_COUNTS = {
-    tanakh: {
-      "genesis":50,"exodus":40,"leviticus":27,"numbers":36,"deuteronomy":34,"joshua":24,"judges":21,"ruth":4,
-      "1-samuel":31,"2-samuel":24,"1-kings":22,"2-kings":25,"1-chronicles":29,"2-chronicles":36,"ezra":10,"nehemiah":13,
-      "esther":10,"job":42,"psalms":150,"proverbs":31,"ecclesiastes":12,"song-of-solomon":8,"isaiah":66,"jeremiah":52,
-      "lamentations":5,"ezekiel":48,"daniel":12,"hosea":14,"joel":3,"amos":9,"obadiah":1,"jonah":4,"micah":7,"nahum":3,
-      "habakkuk":3,"zephaniah":3,"haggai":2,"zechariah":14,"malachi":4
-    },
-    newtestament: {
-      "matthew":28,"mark":16,"luke":24,"john":21,"acts":28,"romans":16,"1-corinthians":16,"2-corinthians":13,
-      "galatians":6,"ephesians":6,"philippians":4,"colossians":4,"1-thessalonians":5,"2-thessalonians":3,
-      "1-timothy":6,"2-timothy":4,"titus":3,"philemon":1,"hebrews":13,"james":5,"1-peter":5,"2-peter":3,
-      "1-john":5,"2-john":1,"3-john":1,"jude":1,"revelation":22
-    },
-    apocrypha: {
-      "1-esdras":9,"2-esdras":16,"tobit":14,"judith":16,"rest-of-esther":10,"wisdom-of-solomon":19,"sirach":51,"baruch":6,
-      "letter-of-jeremiah":1,"prayer-of-manasseh":1,"1-maccabees":16,"2-maccabees":15,"susanna":1,"bel-and-the-dragon":1,
-      "prayer-of-azariah":1,"psalm-151":1,"additions-to-esther":10,"3-maccabees":7,"4-maccabees":18,"laodiceans":1
-    }
+/* js/nt-chapter.js
+ * New Testament chapter reader with:
+ * - Per-verse commentary (localStorage)
+ * - Lexicon lookups (Strong’s; primarily Greek but supports Hebrew too)
+ * - Cross references panel
+ * - Modern toolbar buttons (toggle panels)
+ * - Resilient fetch (absolute+relative fallbacks with diagnostics)
+ *
+ * Expects chapter JSON array like:
+ * [{ v:number, t:string, c?:string[]|string, s?:string[] }]
+ */
+
+(function () {
+  const app = {
+    els: { verses: null, headerTitle: null, debug: null },
+    params: new URLSearchParams(window.location.search),
+    bookPath: null,   // "newtestament/matthew" (normalized)
+    chapterNum: null, // e.g., "1"
+    lexicons: { hebrew: null, greek: null },
+    lastAttempts: [],
   };
 
-  // --- URL params ---
-  const qs = new URLSearchParams(location.search);
-  const bookSlug = (qs.get('book') || '').trim();
-  const ch = parseInt(qs.get('ch') || '1', 10);
-
-  // --- DOM handles ---
-  const versesEl = document.getElementById('verses');
-  const bookTitleEl = document.getElementById('bookTitle');
-  const textPanelTitleEl = document.getElementById('textPanelTitle');
-  const crumbsEl = document.getElementById('crumbs');
-  const chSelect = document.getElementById('chSelect');
-  const prevBtn  = document.getElementById('btnPrev');
-  const nextBtn  = document.getElementById('btnNext');
-
-  if(!bookSlug || !Number.isFinite(ch)){
-    if(versesEl) versesEl.innerHTML = '<p class="muted">Missing book/chapter in URL.</p>';
-    return;
-  }
-
-  // Detect canon by path
-  const path = location.pathname;
-  const canon =
-    path.includes('/tanakh/')       ? 'tanakh' :
-    path.includes('/newtestament/') ? 'newtestament' :
-    path.includes('/apocrypha/')    ? 'apocrypha' : 'tanakh';
-
-  // Title Case from slug (with roman numeral normalization)
-  function titleCaseFromSlug(slug){
-    if(!slug) return '';
-    const romans = { i:'I', ii:'II', iii:'III', iv:'IV', v:'V', vi:'VI', vii:'VII', viii:'VIII', ix:'IX', x:'X' };
-    const parts = slug.split('-');
-    if(parts.length && romans[parts[0]]) parts[0] = romans[parts[0]];
-    return parts.map((p,i)=> (i===0 && romans[p]) ? romans[p] : p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
-  }
-
-  // Page headings
-  function setHead(){
-    const title = titleCaseFromSlug(bookSlug) || 'Chapter';
-    if(bookTitleEl) bookTitleEl.textContent = title;
-    document.title = `${title} — Chapter`;
-    if(textPanelTitleEl) textPanelTitleEl.textContent = `${title} ${Number.isFinite(ch) ? ch : ''}`;
-    if(crumbsEl) crumbsEl.textContent = `${title}${Number.isFinite(ch) ? ' • Chapter ' + ch : ''}`;
-  }
-
-  // Data URL (expects: data/<canon>/<bookSlug>/<ch>.json)
-  const dataURL = `/israelite-research/data/${canon}/${bookSlug}/${ch}.json`;
-
-  // Chapter picker (+ prev/next) using real counts when available
-  function getMaxCh(){
-    const table = CHAPTER_COUNTS[canon] || {};
-    return table[bookSlug] || 200; // fallback generous cap
-  }
-  function populateChapterPicker(){
-    if(!chSelect) return;
-    const max = getMaxCh();
-    chSelect.innerHTML = '';
-    for(let i=1;i<=max;i++){
-      const opt = document.createElement('option');
-      opt.value = String(i);
-      opt.textContent = 'Chapter ' + i;
-      if(i===ch) opt.selected = true;
-      chSelect.appendChild(opt);
+  // ---------- Utilities ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  function h(tag, props = {}, ...children) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(props || {})) {
+      if (k === "class") el.className = v;
+      else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2).toLowerCase(), v, { passive: true });
+      else if (k === "html") el.innerHTML = v;
+      else el.setAttribute(k, v);
     }
+    for (const ch of children) el.appendChild(typeof ch === "string" ? document.createTextNode(ch) : ch);
+    return el;
   }
-  function goToChapter(n){
-    const max = getMaxCh();
-    const to = Math.max(1, Math.min(max, n));
-    const q = new URLSearchParams(location.search);
-    q.set('ch', String(to));
-    location.search = q.toString();
-  }
-  if(prevBtn) prevBtn.addEventListener('click', ()=> goToChapter(ch-1));
-  if(nextBtn) nextBtn.addEventListener('click', ()=> goToChapter(ch+1));
-  if(chSelect) chSelect.addEventListener('change', e => goToChapter(parseInt(e.target.value,10)||1));
+  const cls = (...n) => n.filter(Boolean).join(" ");
 
-  // Escape HTML
-  function esc(s){
-    return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-      .replace(/'/g,'&#39;');
+  function stripStrongs(text) {
+    if (!text) return text;
+    return text
+      .replace(/<w[^>]*>(.*?)<\/w>/gi, "$1")
+      .replace(/\[(H|G)\d{1,5}\]/g, "")
+      .replace(/\{(H|G)\d{1,5}\}/g, "")
+      .replace(/\u2060/g, "")
+      .trim();
   }
 
-  // Load & render verses
-  async function loadChapter(){
-    if(versesEl) versesEl.innerHTML = '<p class="muted">Loading…</p>';
-    try{
-      const res = await fetch(dataURL, { cache:'no-store' });
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json(); // Expect: [{ v, t, c?, s? }, ...]
+  const keyForComment = (bookPath, chapterNum, verseNum) => `ir:comment:${bookPath}:${chapterNum}:${verseNum}`;
+  const saveComment = (bp, ch, v, t) => localStorage.setItem(keyForComment(bp, ch, v), t || "");
+  const loadComment = (bp, ch, v) => localStorage.getItem(keyForComment(bp, ch, v)) || "";
 
-      if(!Array.isArray(data) || !data.length){
-        versesEl.innerHTML = '<p class="muted">No verses found for this chapter.</p>';
-        return;
-      }
+  function getLexEntry(id) {
+    if (!id) return null;
+    const up = id.toUpperCase();
+    const pool = up.startsWith("H") ? app.lexicons.hebrew : up.startsWith("G") ? app.lexicons.greek : null;
 
-      const html = data.map(row => {
-        const num = row.v ?? '';
-        const txt = row.t ?? '';
-        return `
-          <div class="verse" id="v${esc(num)}">
-            <div class="vline">
-              <div class="vnum">${esc(num)}</div>
-              <div class="vtext">${esc(txt)}</div>
-            </div>
-            <div class="v-toolbar">
-              <button type="button" class="btn-copy" data-copy="${esc(num)}">Copy</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-      versesEl.innerHTML = html;
+    if (pool && pool[up]) return pool[up];
 
-      // Persistent copy handler
-      versesEl.addEventListener('click', e => {
-        const btn = e.target.closest('button[data-copy]');
-        if(!btn) return;
-        const n = btn.getAttribute('data-copy');
-        const vRow = btn.closest('.verse');
-        const vText = vRow?.querySelector('.vtext')?.textContent || '';
-        const ref = `${titleCaseFromSlug(bookSlug)} ${ch}:${n}`;
-        navigator.clipboard.writeText(`${ref} — ${vText}`);
-        const old = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(()=> btn.textContent = old || 'Copy', 900);
-      });
-    }catch(err){
-      console.error(err);
-      versesEl.innerHTML = `<p class="muted">Failed to load chapter data.</p>`;
+    if (!pool) {
+      if (app.lexicons.hebrew && app.lexicons.hebrew[`H${up}`]) return app.lexicons.hebrew[`H${up}`];
+      if (app.lexicons.greek && app.lexicons.greek[`G${up}`]) return app.lexicons.greek[`G${up}`];
     }
+    return null;
   }
 
-  // Bible Dictionary (Easton) right panel
-  (function wireDict(){
-    const input = document.getElementById('dictSearch');
-    const panel = document.getElementById('dictPanel');
-    if(!input || !panel) return;
-
-    let idx = null;
-    async function ensureDict(){
-      if(idx) return idx;
-      const url = '/israelite-research/data/dictionaries/easton_dictionary.json';
-      try{
-        const res = await fetch(url, { cache:'force-cache' });
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        idx = json;
-      }catch(e){
-        idx = {};
+  // ---------- Fetch with fallbacks ----------
+  async function fetchWithFallbacks(paths) {
+    app.lastAttempts.length = 0;
+    for (const url of paths) {
+      try {
+        app.lastAttempts.push(`${url} — TRY`);
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) { app.lastAttempts.push(`${url} — HTTP ${res.status}`); continue; }
+        const data = await res.json();
+        app.lastAttempts.push(`${url} — OK`);
+        return { data, url };
+      } catch (e) {
+        app.lastAttempts.push(`${url} — ${e?.message || e}`);
       }
-      return idx;
     }
+    return { data: null, url: null };
+  }
 
-    input.addEventListener('input', async () => {
-      const q = (input.value || '').trim();
-      if(!q){ panel.innerHTML = '<p class="muted">Type a term above (e.g., “Abraham”, “Passover”, “Covenant”).</p>'; return; }
+  // ---------- Panels & Toolbar ----------
+  function makeToolbar(verseObj, onToggle) {
+    return h(
+      "div",
+      { class: "verse-toolbar", role: "toolbar", "aria-label": "Verse tools" },
+      h("button", { class: "tool btn-xref", type: "button", "aria-expanded": "false", onClick: () => onToggle("xref") }, "Cross Refs"),
+      h("button", { class: "tool btn-comment", type: "button", "aria-expanded": "false", onClick: () => onToggle("comment") }, "Comment"),
+      h("button", { class: "tool btn-lex", type: "button", "aria-expanded": "false", onClick: () => onToggle("lex") }, "Lexicon"),
+    );
+  }
 
-      const dict = await ensureDict();
-      // Support either array [{term,definitions[]}] or object {TERM: "body"}
-      let html = '';
-      if(Array.isArray(dict)){
-        const needle = q.toLowerCase();
-        const hits = dict.filter(e => (e.term||'').toLowerCase().includes(needle)).slice(0,6);
-        if(!hits.length){ panel.innerHTML = '<p class="muted">No entries found.</p>'; return; }
-        html = hits.map(e=>{
-          const defs = (e.definitions||[]).map(d=>`<li>${esc(d)}</li>`).join('');
-          return `<article style="margin:.5rem 0">
-            <h4 style="margin:.1rem 0 .2rem; color:var(--ink)">${esc(e.term||'')}</h4>
-            <ol style="margin:.25rem 0 0 1.1rem">${defs}</ol>
-          </article>`;
-        }).join('');
-      }else if(dict && typeof dict === 'object'){
-        const key = q.toUpperCase();
-        const body = dict[key];
-        html = body
-          ? `<article style="margin:.5rem 0">
-               <h4 style="margin:.1rem 0 .2rem; color:var(--ink)">${esc(q)}</h4>
-               <div>${esc(String(body))}</div>
-             </article>`
-          : '<p class="muted">No entries found.</p>';
-      }else{
-        html = '<p class="muted">Dictionary not available.</p>';
+  const makePanel = (kind, contentEl) => h("div", { class: cls("panel", `panel-${kind}`), hidden: true }, contentEl);
+
+  function fillXrefs(el, verseObj) {
+    el.innerHTML = "";
+    const refs = verseObj.c;
+    if (!refs || (Array.isArray(refs) && refs.length === 0)) {
+      el.appendChild(h("div", { class: "muted" }, "No cross references yet."));
+      return;
+    }
+    const list = Array.isArray(refs) ? refs : [refs];
+    const ul = h("ul", { class: "xref-list" });
+    list.forEach((r) => ul.appendChild(h("li", {}, r)));
+    el.appendChild(ul);
+  }
+
+  function fillLexicon(el, verseObj) {
+    el.innerHTML = "";
+    const ids = verseObj.s || [];
+    if (!ids.length) {
+      el.appendChild(h("div", { class: "muted" }, "No Strong’s data yet."));
+      return;
+    }
+    const wrap = h("div", { class: "lex-wrap" });
+    ids.forEach((sid) => {
+      const entry = getLexEntry(sid);
+      if (!entry) {
+        wrap.appendChild(h("div", { class: "lex-item missing" }, `${sid}: (not found)`));
+      } else {
+        const head = entry.headword || entry.translit || entry.lemma || sid;
+        const gloss = entry.gloss || entry.definition || entry.short || "";
+        const root = entry.root || entry.etym || "";
+        const strongId = entry.strong || sid;
+
+        wrap.appendChild(
+          h("div", { class: "lex-item" },
+            h("div", { class: "lex-head" }, `${strongId} — ${head}`),
+            gloss ? h("div", { class: "lex-gloss" }, gloss) : null,
+            root ? h("div", { class: "lex-root muted" }, root) : null
+          )
+        );
       }
-      panel.innerHTML = html;
     });
-  })();
+    el.appendChild(wrap);
+  }
 
-  // Boot
-  setHead();
-  populateChapterPicker();
-  loadChapter();
+  function makeCommentEl(bookPath, chapterNum, vnum) {
+    const wrap = h("div", { class: "comment-wrap" });
+    const ta = h("textarea", { class: "comment-box", rows: "4", placeholder: "Write your notes on this verse…" });
+    ta.value = loadComment(bookPath, chapterNum, vnum);
+    ta.addEventListener("input", () => saveComment(bookPath, chapterNum, vnum, ta.value));
+    wrap.appendChild(ta);
+    return wrap;
+  }
+
+  // ---------- Verse Row ----------
+  function buildVerseRow(verseObj) {
+    const verseNum = verseObj.v;
+    const displayText = stripStrongs(verseObj.t);
+
+    const row = h("section", {
+      class: "verse-row",
+      id: `v-${verseNum}`,
+      "data-v": verseNum,
+      role: "group",
+      "aria-labelledby": `vlabel-${verseNum}`,
+    });
+
+    const num = h("a", { id: `vlabel-${verseNum}`, class: "verse-num", href: `#v-${verseNum}`, "aria-label": `Verse ${verseNum}` }, String(verseNum));
+    const text = h("div", { class: "verse-text" }); text.innerHTML = displayText;
+
+    const xrefContent = h("div");
+    const commentContent = makeCommentEl(app.bookPath, app.chapterNum, verseNum);
+    const lexContent = h("div");
+
+    const xrefPanel = makePanel("xref", xrefContent);
+    const commentPanel = makePanel("comment", commentContent);
+    const lexPanel = makePanel("lex", lexContent);
+
+    const setExpanded = (btn, expanded) => btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+
+    const toolbar = makeToolbar(verseObj, (which) => {
+      const btns = {
+        xref: toolbar.querySelector(".btn-xref"),
+        comment: toolbar.querySelector(".btn-comment"),
+        lex: toolbar.querySelector(".btn-lex"),
+      };
+      const panels = { xref: xrefPanel, comment: commentPanel, lex: lexPanel };
+
+      if (which === "xref") fillXrefs(xrefContent, verseObj);
+      if (which === "lex") fillLexicon(lexContent, verseObj);
+
+      Object.entries(panels).forEach(([k, panel]) => {
+        if (k === which) {
+          panel.hidden = !panel.hidden;
+          setExpanded(btns[k], !panel.hidden);
+        } else {
+          panel.hidden = true;
+          setExpanded(btns[k], false);
+        }
+      });
+    });
+
+    const header = h("div", { class: "verse-header" }, num, text);
+    const tools = h("div", { class: "verse-tools" }, toolbar);
+    row.appendChild(header);
+    row.appendChild(tools);
+    row.appendChild(xrefPanel);
+    row.appendChild(commentPanel);
+    row.appendChild(lexPanel);
+    row.appendChild(h("hr", { class: "verse-divider", role: "separator" }));
+
+    return row;
+  }
+
+  // ---------- Render ----------
+  function renderChapter(data, sourceUrl) {
+    app.els.verses.innerHTML = "";
+    if (!Array.isArray(data) || data.length === 0) {
+      app.els.verses.textContent = "No verses found in this chapter.";
+      return;
+    }
+    data.forEach((vobj) => app.els.verses.appendChild(buildVerseRow(vobj)));
+
+    if (app.lastAttempts.some((s) => /HTTP|not found|TypeError|Failed/i.test(s))) {
+      const dbg = h("details", { class: "loader-debug" },
+        h("summary", {}, "Load details"),
+        h("pre", { class: "attempts" }, app.lastAttempts.join("\n"))
+      );
+      app.els.verses.appendChild(dbg);
+    }
+  }
+
+  // ---------- Bootstrap ----------
+  async function loadLexicons() {
+    const base = "/israelite-research/data/lexicon";
+    const tries = [
+      `${base}/strongs-greek.json`,
+      `${base}/strongs-hebrew.json`,
+      `data/lexicon/strongs-greek.json`,
+      `data/lexicon/strongs-hebrew.json`,
+    ];
+    const results = await Promise.allSettled(tries.map((t) => fetch(t, { cache: "no-store" })));
+    results.forEach((r, i) => {
+      const url = tries[i];
+      if (r.status === "fulfilled" && r.value.ok) {
+        r.value.json().then((json) => {
+          if (/greek/i.test(url)) app.lexicons.greek = json;
+          if (/hebrew/i.test(url)) app.lexicons.hebrew = json;
+        }).catch(() => {});
+      }
+    });
+  }
+
+  async function init() {
+    app.els.verses = $("#verses");
+    app.els.headerTitle = $(".page-title");
+    app.els.debug = $("#debug");
+
+    const rawBook = app.params.get("book");   // "matthew" or "newtestament/matthew"
+    app.chapterNum = app.params.get("chapter");
+
+    if (!rawBook || !app.chapterNum) {
+      app.els.verses.textContent = "Missing book or chapter.";
+      return;
+    }
+
+    // Normalize: ensure "newtestament/<book>"
+    app.bookPath = /newtestament\//i.test(rawBook) ? rawBook : `newtestament/${rawBook}`;
+
+    if (app.els.headerTitle) {
+      const bookSlug = app.bookPath.split("/").slice(-1)[0].replace(/-/g, " ");
+      app.els.headerTitle.textContent = `${bookSlug} — Chapter ${app.chapterNum}`;
+    }
+
+    // Preload lexicons
+    loadLexicons();
+
+    const abs = `/israelite-research/data/${app.bookPath}/${app.chapterNum}.json`;
+    const rel = `data/${app.bookPath}/${app.chapterNum}.json`;
+    const { data, url } = await fetchWithFallbacks([abs, rel]);
+
+    if (!data) {
+      app.els.verses.innerHTML = "";
+      app.els.verses.appendChild(
+        h("div", { class: "error" },
+          h("div", { class: "error-title" }, "Could not load chapter data."),
+          h("div", { class: "error-detail" }, `Last attempts:\n${app.lastAttempts.join("\n")}`)
+        )
+      );
+      return;
+    }
+
+    renderChapter(data, url);
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
 })();
+
+/* --- Minimal structural styles for modern buttons (optional if already in styles.css) ---
+:root{ --ink:#0b2340; --muted:#6b7280; --accent:#F17300; --border:#e6ebf2; --card:#ffffff; }
+.verse-row{padding:12px 0}
+.verse-header{display:flex; gap:10px; align-items:flex-start}
+.verse-num{font-variant-numeric:tabular-nums; text-decoration:none; font-weight:700; color:var(--accent)}
+.verse-text{color:var(--ink); line-height:1.55}
+.verse-toolbar{display:flex; gap:8px; margin:8px 0 6px}
+.verse-toolbar .tool{border:1px solid var(--border); background:var(--card); padding:6px 10px; border-radius:999px; cursor:pointer}
+.verse-toolbar .tool[aria-expanded="true"]{border-color:var(--accent)}
+.panel{border:1px dashed var(--border); border-radius:12px; padding:8px 10px; margin:8px 0}
+.panel .muted{color:var(--muted)}
+.lex-head{font-weight:700}
+.lex-gloss{margin:2px 0 0}
+.lex-root{font-size:.9em}
+.comment-box{width:100%; border:1px solid var(--border); border-radius:12px; padding:8px 10px; font:inherit}
+.verse-divider{border:none; border-top:1px solid var(--border); margin:12px 0 0}
+.loader-debug{margin-top:12px}
+.error-title{font-weight:800; color:var(--ink)}
+.error-detail{white-space:pre-wrap; color:var(--muted); margin-top:4px}
+*/

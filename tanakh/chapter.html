@@ -1,107 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Chapter — Israelite Research</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
-<style>
-  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
-
-  /* Layout */
-  .container{max-width:1200px;margin:0 auto;padding:0 16px}
-  .page-header{padding:24px 0 8px}
-  .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
-  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
-
-  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
-  @media (max-width:900px){.layout{grid-template-columns:1fr}}
-
-  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
-
-  /* Chapter grid (used on book overview screens if you show them here) */
-  .grid{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:10px;margin:12px 0 0}
-  .ch{display:flex;align-items:center;justify-content:center;height:44px;border:1px solid var(--sky);background:var(--white);text-decoration:none;color:var(--brand);font-weight:800}
-  .ch:hover{box-shadow:0 4px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
-
-  /* Reader toolbar */
-  .reader-toolbar{
-    position: sticky; top: 0; z-index: 50;
-    display:flex; align-items:center; justify-content:center; gap:.75rem;
-    background:#fff; border:1px solid var(--sky); border-radius:10px;
-    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
-  }
-  .reader-toolbar .btn{
-    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
-  }
-  .reader-toolbar .btn:hover{ background:#f8fafc }
-  .reader-toolbar .ch-picker select{
-    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
-  }
-
-  /* Verse rows */
-  .verse{display:flex; flex-direction:column; gap:.35rem; margin:.55rem 0; padding:.35rem .1rem; border-bottom:1px dashed var(--sky)}
-  .vline{display:flex; gap:.6rem}
-  .vnum{min-width:28px; text-align:right; color:var(--muted)}
-  .vtext{line-height:1.55; color:#111}
-  .v-toolbar{display:flex; gap:.4rem; padding-left:36px}
-  .v-toolbar button{
-    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer;
-  }
-  .v-toolbar button:hover{ background:#f8fafc }
-
-  /* Hovercard for dictionary */
-  .hovercard{
-    position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
-    background:#fff; border:1px solid #e6ebf2; border-radius:10px;
-    box-shadow:0 8px 30px rgba(0,0,0,.12);
-    padding:.6rem .7rem; font-size:.9rem;
-  }
-  .hovercard.open{ display:block }
-
-  /* Inline “verse” spans kept for your site-wide tooltip JS */
-  .verse-ref{position:relative;text-decoration:underline dotted;cursor:help;color:var(--brand);font-weight:600;}
-  .verse-ref:hover::after{opacity:1; transform:translateY(0);}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Tanakh — Chapter</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css"/>
+  <style>
+    :root{--ink:#0b2340;--muted:#6b7280;--accent:#F17300;--border:#e6ebf2;--card:#fff;--bg:#ffffff}
+    body{background:var(--bg)}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    header.sticky-bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border)}
+    .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{font-weight:800;color:var(--ink);margin:0}
+    .nav-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .nav-group select,.nav-group button{border:1px solid var(--border);background:var(--card);padding:6px 10px;border-radius:999px;cursor:pointer}
+    .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin:14px 0 24px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+    .panel{border:1px solid var(--border);border-radius:16px;background:var(--card)}
+    .panel header{padding:10px 14px;border-bottom:1px solid var(--border)}
+    .panel main{padding:12px 14px}
+    #verses .verse-row{padding:12px 14px;border-bottom:1px solid var(--border)}
+    #verses .verse-row:last-child{border-bottom:none}
+    .muted{color:var(--muted)}
+    .dict-search{display:flex;gap:8px}
+    .dict-search input{flex:1;border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+    .dict-search button{border:1px solid var(--border);background:var(--card);padding:8px 12px;border-radius:999px;cursor:pointer}
+    .dict-entry{padding:10px 0;border-bottom:1px dashed var(--border)}
+    .dict-entry:last-child{border-bottom:none}
+    .dict-term{font-weight:800}
+    .hint{font-size:.9em}
+  </style>
 </head>
 <body>
-<div id="site-header"></div>
-
-<main class="container">
-  <header class="page-header">
-    <h1 class="page-title" id="bookTitle">Loading…</h1>
-    <div class="crumbs" id="crumbs"></div>
+  <header class="sticky-bar">
+    <div class="container bar">
+      <h1 class="brand page-title">Tanakh — Chapter</h1>
+      <div class="nav-group">
+        <button id="prevBtn" title="Previous chapter">‹ Prev</button>
+        <label class="muted" for="chapterSel">Chapter</label>
+        <select id="chapterSel"></select>
+        <button id="nextBtn" title="Next chapter">Next ›</button>
+      </div>
+    </div>
   </header>
 
-  <div aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar" role="navigation">
-    <button aria-label="Previous chapter" class="btn prev" id="btnPrev">← Prev</button>
-    <div class="ch-picker">
-      <label class="sr-only" for="chSelect">Select chapter</label>
-      <select id="chSelect"></select>
-    </div>
-    <button aria-label="Next chapter" class="btn next" id="btnNext">Next →</button>
+  <div class="container grid">
+    <!-- LEFT: TEXT -->
+    <section class="panel" aria-label="Bible text">
+      <header><strong id="textHeader">Text</strong> <span id="sourceTag" class="muted"></span></header>
+      <main id="verses" aria-live="polite"></main>
+    </section>
+
+    <!-- RIGHT: DICTIONARY (Easton) -->
+    <aside class="panel" aria-label="Dictionary">
+      <header><strong>Dictionary</strong> <span class="muted">(Easton)</span></header>
+      <main>
+        <div class="dict-search">
+          <input id="dictQuery" type="search" placeholder="Search Easton (e.g., Abraham, Passover)"/>
+          <button id="dictGo">Search</button>
+        </div>
+        <p class="hint muted" style="margin:8px 0 0">Tip: select a word in the text and press “Search”.</p>
+        <div id="dictResults" style="margin-top:10px"></div>
+      </main>
+    </aside>
   </div>
 
-  <section class="layout">
-    <div class="panel">
-      <h3 id="textPanelTitle">Text</h3>
-      <div id="verses"><p class="muted">Loading…</p></div>
-    </div>
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const book = params.get("book") || "tanakh/genesis";
+      const chapter = parseInt(params.get("chapter")||"1",10);
+      const maxCh = parseInt(params.get("max")||"150",10); // optional guard; adjust per book if you pass ?max=
+      const canonPrefix = /^tanakh\//i.test(book) ? "" : "tanakh/";
+      const normalizedBook = /^tanakh\//i.test(book) ? book : canonPrefix + book;
 
-    <aside class="panel" id="dictAside">
-      <h3>Bible Dictionary</h3>
-      <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
-        <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
-      </div>
-      <div id="dictPanel"><p class="muted">Loading Bible Dictionary…</p></div>
-    </aside>
-  </section>
-</main>
-
-<div id="site-footer"></div>
-<div aria-hidden="true" class="hovercard" id="hovercard" role="dialog"></div>
-
-<script src="/israelite-research/js/include.js"></script>
-<script src="/israelite-research/js/nt-chapter.js" defer></script>
-</body>
-</html>
+      // Title nicety
+      const titleEl = document.querySelector(".page-title");
+      if (tit
