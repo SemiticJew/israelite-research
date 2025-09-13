@@ -1,7 +1,7 @@
-import csv, json, os, re, sys
+import csv, json, os, re, sys, io
 from collections import defaultdict, OrderedDict
 
-CSV_PATH = sys.argv[1] if len(sys.argv) > 1 else "kjv-apocrypha.csv"
+CSV_CANDIDATE = sys.argv[1] if len(sys.argv) > 1 else "kjv-apocrypha.csv"
 OUT_ROOT = "data"
 
 APOCRYPHA = {
@@ -54,27 +54,69 @@ def pick(row, header_map, want):
             return row.get(k_raw)
     return None
 
+def open_csv_safely(path):
+    encodings = ["utf-8-sig", "utf-16", "utf-16-le", "utf-16-be", "cp1252", "latin-1"]
+    last_err = None
+    for enc in encodings:
+        try:
+            with open(path, "rb") as fb:
+                raw = fb.read()
+            text = raw.decode(enc, errors="replace")
+            sample = text[:10000]
+            try:
+                dialect = csv.Sniffer().sniff(sample, delimiters=[",",";","\t","|"])
+            except Exception:
+                if "\t" in sample: sep = "\t"
+                elif ";" in sample: sep = ";"
+                elif "|" in sample: sep = "|"
+                else: sep = ","
+                class _D(csv.Dialect):
+                    delimiter = sep
+                    quotechar = '"'
+                    escapechar = None
+                    doublequote = True
+                    lineterminator = "\n"
+                    quoting = csv.QUOTE_MINIMAL
+                dialect = _D
+            return io.StringIO(text), dialect, enc
+        except Exception as e:
+            last_err = e
+    raise RuntimeError(f"Could not read CSV with common encodings. Last error: {last_err}")
+
+csv_stream, dialect, used_enc = open_csv_safely(CSV_CANDIDATE)
+reader = csv.DictReader(csv_stream, dialect=dialect)
+if not reader.fieldnames:
+    raise SystemExit("No headers found in CSV.")
+
+hmap = norm_headers(reader.fieldnames)
+
+print("Detected encoding:", used_enc)
+print("Detected delimiter:", repr(dialect.delimiter if hasattr(dialect,'delimiter') else ','))
+print("Normalized headers:", sorted(hmap.keys()))
+
 chapters = defaultdict(list)
 book_max_ch = defaultdict(int)
 
-with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
-    reader = csv.DictReader(f)
-    if not reader.fieldnames:
-        raise SystemExit("No headers found in CSV.")
-    hmap = norm_headers(reader.fieldnames)
-    for row in reader:
-        book = (pick(row, hmap, "book") or "").strip()
-        ch = to_int_safe(pick(row, hmap, "chapter"), 0)
-        v  = to_int_safe(pick(row, hmap, "verse"), 0)
-        t  = (pick(row, hmap, "text") or "").strip()
-        c  = to_int_safe(pick(row, hmap, "count"), 0)
-        if not book or ch <= 0 or v <= 0 or not t:
-            continue
-        canon = canon_for(book)
-        slug = slugify_book(book)
-        chapters[(canon, slug, ch)].append((v, t, c))
-        if ch > book_max_ch[(canon, slug)]:
-            book_max_ch[(canon, slug)] = ch
+row_count = 0
+kept_rows = 0
+books_seen = set()
+
+for row in reader:
+    row_count += 1
+    book = (pick(row, hmap, "book") or "").strip()
+    ch = to_int_safe(pick(row, hmap, "chapter"), 0)
+    v  = to_int_safe(pick(row, hmap, "verse"), 0)
+    t  = (pick(row, hmap, "text") or "").strip()
+    c  = to_int_safe(pick(row, hmap, "count"), 0)
+    if not book or ch <= 0 or v <= 0 or not t:
+        continue
+    canon = canon_for(book)
+    slug = slugify_book(book)
+    chapters[(canon, slug, ch)].append((v, t, c))
+    if ch > book_max_ch[(canon, slug)]:
+        book_max_ch[(canon, slug)] = ch
+    kept_rows += 1
+    books_seen.add((canon, slug))
 
 written_files = 0
 for (canon, slug, ch), items in chapters.items():
@@ -92,7 +134,7 @@ for (canon, slug), total in book_max_ch.items():
     by_canon[canon][slug] = total
 
 for canon, mapping in by_canon.items():
-    if not mapping: 
+    if not mapping:
         continue
     canon_dir = os.path.join(OUT_ROOT, canon)
     os.makedirs(canon_dir, exist_ok=True)
@@ -100,4 +142,7 @@ for canon, mapping in by_canon.items():
     with open(os.path.join(canon_dir, "books.json"), "w", encoding="utf-8") as w:
         json.dump(ordered, w, ensure_ascii=False, indent=2)
 
-print(f"Done. Wrote {written_files} chapter files across {len(book_max_ch)} books.")
+print("Rows read:", row_count)
+print("Rows kept:", kept_rows)
+print("Books detected:", len(books_seen))
+print("Chapters written:", written_files)
