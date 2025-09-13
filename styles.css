@@ -3216,3 +3216,11 @@ hr{border:0;border-top:1px solid var(--border)}
   color:var(--brand); 
   box-shadow:0 4px 10px rgba(0,0,0,.08);
 }
+/* Strong, consistent verse separation */
+#verses .verse {
+  padding: .4rem .1rem .6rem;
+  border-bottom: 2px solid #DBE4EE; /* or use var(--sky) */
+}
+#verses .verse:last-child {
+  border-bottom: 0; /* optional: remove border after last verse */
+}
