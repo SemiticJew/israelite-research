@@ -1,5 +1,5 @@
 import csv, json, os, re, sys
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 
 CSV_PATH = sys.argv[1] if len(sys.argv) > 1 else "kjv-apocrypha.csv"
 OUT_ROOT = "data"
@@ -42,8 +42,8 @@ def to_int_safe(x, default=0):
     try: return int(str(x).strip())
     except: return default
 
-chapters = defaultdict(list)
-book_max_ch = defaultdict(int)
+chapters = defaultdict(list)          # key: (canon, slug, ch) -> [(v, text), ...]
+book_max_ch = defaultdict(int)        # key: (canon, slug) -> total chapters
 
 with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
     reader = csv.DictReader(f)
@@ -52,20 +52,36 @@ with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
         ch = to_int_safe(row.get("Chapter"), 0)
         v  = to_int_safe(row.get("Verse"), 0)
         text = (row.get("Text") or "").strip()
-        if not book or ch <= 0 or v <= 0: continue
+        if not book or ch <= 0 or v <= 0: 
+            continue
         canon = canon_for(book)
         slug = slugify_book(book)
-        chapters[(canon,slug,ch)].append((v,text))
-        if ch > book_max_ch[(canon,slug)]: book_max_ch[(canon,slug)] = ch
+        chapters[(canon, slug, ch)].append((v, text))
+        if ch > book_max_ch[(canon, slug)]:
+            book_max_ch[(canon, slug)] = ch
 
+# write per-chapter files
 for (canon, slug, ch), items in chapters.items():
     items.sort(key=lambda x: x[0])
-    verses = [{"v": v, "t": t, "s": []} for v,t in items]  # s=[] placeholder
+    verses = [{"v": v, "t": t, "s": []} for v, t in items]
     total = book_max_ch[(canon, slug)]
     out_dir = os.path.join(OUT_ROOT, canon, slug)
     os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, f"{ch}.json")
-    with open(out_path,"w",encoding="utf-8") as w:
+    with open(os.path.join(out_dir, f"{ch}.json"), "w", encoding="utf-8") as w:
         json.dump({"total": total, "verses": verses}, w, ensure_ascii=False, indent=2)
 
-print("Done. Wrote", len(book_max_ch), "books.")
+# write books.json per canon: { "<book-slug>": <chapter-count>, ... }
+by_canon = {"tanakh": {}, "newtestament": {}, "apocrypha": {}}
+for (canon, slug), total in book_max_ch.items():
+    by_canon[canon][slug] = total
+
+for canon, mapping in by_canon.items():
+    if not mapping: 
+        continue
+    canon_dir = os.path.join(OUT_ROOT, canon)
+    os.makedirs(canon_dir, exist_ok=True)
+    ordered = OrderedDict(sorted(mapping.items(), key=lambda kv: kv[0]))
+    with open(os.path.join(canon_dir, "books.json"), "w", encoding="utf-8") as w:
+        json.dump(ordered, w, ensure_ascii=False, indent=2)
+
+print("Done.")
