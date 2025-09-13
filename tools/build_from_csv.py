@@ -19,7 +19,7 @@ NEW_TESTAMENT = {
 
 def slugify_book(name: str) -> str:
     s = name.strip()
-    s = re.sub(r'^(I{1,3}|IV|V|VI{0,3}|IX|X)(?=\s)', 
+    s = re.sub(r'^(I{1,3}|IV|V|VI{0,3}|IX|X)(?=\s)',
                lambda m: {"I":"1","II":"2","III":"3","IV":"4","V":"5","VI":"6","VII":"7","VIII":"8","IX":"9","X":"10"}.get(m.group(0).upper(), m.group(0)), s)
     s = re.sub(r"^Canticles$", "Song of Solomon", s, flags=re.I)
     s = re.sub(r"^Song of Songs$", "Song of Solomon", s, flags=re.I)
@@ -27,8 +27,7 @@ def slugify_book(name: str) -> str:
     s = re.sub(r"^Wis$", "Wisdom", s, flags=re.I)
     s = re.sub(r"^Sir$", "Sirach", s, flags=re.I)
     s = re.sub(r'^(\d+)\s+', r'\1-', s)
-    s = s.lower()
-    s = s.replace('&','and')
+    s = s.lower().replace('&','and')
     s = re.sub(r"[’'`]", "", s)
     s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
     return s
@@ -42,8 +41,8 @@ def to_int_safe(x, default=0):
     try: return int(str(x).strip())
     except: return default
 
-chapters = defaultdict(list)          # key: (canon, slug, ch) -> [(v, text), ...]
-book_max_ch = defaultdict(int)        # key: (canon, slug) -> total chapters
+chapters = defaultdict(list)
+book_max_ch = defaultdict(int)
 
 with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
     reader = csv.DictReader(f)
@@ -51,26 +50,25 @@ with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
         book = (row.get("Book") or "").strip()
         ch = to_int_safe(row.get("Chapter"), 0)
         v  = to_int_safe(row.get("Verse"), 0)
-        text = (row.get("Text") or "").strip()
-        if not book or ch <= 0 or v <= 0: 
+        t  = (row.get("Text") or "").strip()
+        c  = to_int_safe(row.get("Count"), 0)
+        if not book or ch <= 0 or v <= 0:
             continue
         canon = canon_for(book)
         slug = slugify_book(book)
-        chapters[(canon, slug, ch)].append((v, text))
+        chapters[(canon, slug, ch)].append((v, t, c))
         if ch > book_max_ch[(canon, slug)]:
             book_max_ch[(canon, slug)] = ch
 
-# write per-chapter files
 for (canon, slug, ch), items in chapters.items():
     items.sort(key=lambda x: x[0])
-    verses = [{"v": v, "t": t, "s": []} for v, t in items]
+    verses = [{"v": v, "t": t, "c": c, "s": []} for v, t, c in items]
     total = book_max_ch[(canon, slug)]
     out_dir = os.path.join(OUT_ROOT, canon, slug)
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, f"{ch}.json"), "w", encoding="utf-8") as w:
         json.dump({"total": total, "verses": verses}, w, ensure_ascii=False, indent=2)
 
-# write books.json per canon: { "<book-slug>": <chapter-count>, ... }
 by_canon = {"tanakh": {}, "newtestament": {}, "apocrypha": {}}
 for (canon, slug), total in book_max_ch.items():
     by_canon[canon][slug] = total
