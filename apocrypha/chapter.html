@@ -2,104 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Bible — Chapter</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Chapter — Reader</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
-
-  /* Layout */
+  :root{
+    --ink:#0b2340; --muted:#6b7280; --accent:#F17300; --border:#e6ebf2; --card:#fff; --sky:#DBE4EE;
+  }
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);margin:0}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
-  .page-header{padding:24px 0 8px}
-  .page-title{margin:0;font-size:2rem;font-weight:800}
-  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
-
-  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
-  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
-  .panel h3{margin:.2rem 0 .6rem;font-size:1.05rem;color:var(--brand)}
-
-  /* Sticky reader toolbar */
-  .reader-toolbar{
-    position:sticky; top:0; z-index:50;
-    display:flex; align-items:center; justify-content:center; gap:.75rem;
-    background:#fff; border:1px solid var(--sky); border-radius:10px;
-    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  header.reader-head{padding:16px 0 8px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  #textHead{font-size:1.25rem;font-weight:800;margin-right:auto}
+  .nav-controls{display:flex;gap:8px;align-items:center}
+  .nav-controls button,.toolbar button{
+    padding:8px 12px;border:1px solid var(--border);background:var(--card);border-radius:10px;cursor:pointer
   }
-  .reader-toolbar .btn{
-    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
-  }
-  .reader-toolbar .btn:hover{ background:#f8fafc }
-  .reader-toolbar .ch-picker select{
-    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
-  }
-
-  /* Verse rows */
+  main{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:16px 0}
+  @media (max-width: 980px){ main{grid-template-columns:1fr} }
+  /* Verse enclosure spacing */
+  #verses{display:flex;flex-direction:column;gap:10px}
   .verse{
-    display:flex; flex-direction:column;
-    gap:.35rem; margin:.55rem 0;
-    padding:.35rem .1rem;
-    border-bottom:1px dashed rgba(219,228,238,0.6); /* lighter dashed line */
+    border:1px solid var(--border);
+    background:var(--card);
+    border-radius:12px;
+    padding:10px 12px;
   }
-  .vline{display:flex; gap:.6rem}
-  .vnum{min-width:28px; text-align:right; color:var(--muted)}
-  .vtext{color:#111; line-height:1.5}
+  .vline{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+  .vnum{font-weight:700;color:var(--accent);min-width:2ch}
+  .vtext{line-height:1.55}
+  .v-toolbar{margin-top:6px;display:flex;gap:8px}
+  /* Panels (Cross-Refs / Commentary / Lexicon) */
+  .panels{display:flex;flex-direction:column;gap:12px}
+  .panel{border:1px solid var(--border);border-radius:12px;background:var(--card)}
+  .panel header{padding:10px 12px;border-bottom:1px solid var(--border);font-weight:700}
+  .panel .body{padding:12px}
+  /* Dictionary search (wired by nt-chapter.js) */
+  #dictSearch{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px}
   .muted{color:var(--muted)}
-
-  /* Inline toolbar beneath each verse */
-  .v-toolbar{display:flex; gap:.4rem; padding-left:36px}
-  .v-toolbar button{
-    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.22rem .5rem; font-size:.82rem; cursor:pointer;
-  }
-  .v-toolbar button:hover{ background:#f8fafc }
-
-  /* Small hover card (kept for future features) */
-  .hovercard{
-    position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
-    background:#fff; border:1px solid #e6ebf2; border-radius:10px;
-    box-shadow:0 8px 30px rgba(0,0,0,.12);
-    padding:.6rem .7rem; font-size:.9rem;
-  }
-  .hovercard.open{ display:block }
-
-  /* Dictionary side */
-  #dictAside h3 { text-align:center; }
-  #dictPanel{ font-size:.95rem; line-height:1.5 }
-  #dictPanel .muted{ color:var(--muted) }
 </style>
 </head>
 <body>
-<div id="site-header"></div>
+  <div class="container">
+    <header class="reader-head">
+      <div id="textHead">Loading…</div>
+      <div class="nav-controls">
+        <button id="btnPrev" type="button" aria-label="Previous Chapter">◀</button>
+        <!-- ✨ Added per your request: book selector next to the chapter picker -->
+        <select id="bookSelect" aria-label="Book Picker"></select>
+        <select id="chSelect" aria-label="Chapter Picker"></select>
+        <button id="btnNext" type="button" aria-label="Next Chapter">▶</button>
+      </div>
+      <div class="toolbar">
+        <button type="button" data-panel="xrefs">Cross References</button>
+        <button type="button" data-panel="comm">Commentary</button>
+        <button type="button" data-panel="lex">Lexicon</button>
+      </div>
+    </header>
 
-<main class="container">
-  <div aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar" role="navigation">
-    <button aria-label="Previous chapter" class="btn prev" id="btnPrev">← Prev</button>
-    <div class="ch-picker">
-      <label class="sr-only" for="chSelect">Select chapter</label>
-      <select id="chSelect"></select>
-    </div>
-    <button aria-label="Next chapter" class="btn next" id="btnNext">Next →</button>
+    <main>
+      <!-- LEFT: verses -->
+      <section id="textCol">
+        <div id="verses"><p class="muted">Preparing verses…</p></div>
+      </section>
+
+      <!-- RIGHT: panels -->
+      <aside class="panels">
+        <section id="panel-xrefs" class="panel" hidden>
+          <header>Cross References</header>
+          <div class="body"><p class="muted">Select a verse to view cross references.</p></div>
+        </section>
+
+        <section id="panel-comm" class="panel" hidden>
+          <header>Commentary</header>
+          <div class="body"><p class="muted">Click a verse to add personal commentary.</p></div>
+        </section>
+
+        <section id="panel-lex" class="panel" hidden>
+          <header>Lexicon</header>
+          <div class="body">
+            <input id="dictSearch" type="search" placeholder="Search dictionary (Easton)…"/>
+            <div id="dictPanel" style="margin-top:10px"><p class="muted">Type a term to search…</p></div>
+          </div>
+        </section>
+      </aside>
+    </main>
   </div>
 
-  <section class="layout">
-    <div class="panel">
-      <h3 id="textHead">Text</h3>
-      <div id="verses"><p class="muted">Loading…</p></div>
-    </div>
-
-    <aside class="panel" id="dictAside">
-      <h3>Bible Dictionary</h3>
-      <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.5rem">
-        <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" style="flex:1; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem" type="search"/>
-      </div>
-      <div id="dictPanel"><p class="muted">Add <code>data/dictionaries/easton_dictionary.json</code> to enable offline lookups.</p></div>
-    </aside>
-  </section>
-</main>
-
-<div id="site-footer"></div>
-<div aria-hidden="true" class="hovercard" id="hovercard" role="dialog"></div>
-
-<script src="/israelite-research/js/include.js"></script>
-<script src="/israelite-research/js/nt-chapter.js"></script>
+  <script>
+    // Simple panel toggles; keeps only one open for focus
+    (function(){
+      const map = {
+        xrefs: document.getElementById('panel-xrefs'),
+        comm : document.getElementById('panel-comm'),
+        lex  : document.getElementById('panel-lex')
+      };
+      document.addEventListener('click', (e)=>{
+        const btn = e.target.closest('button[data-panel]');
+        if(!btn) return;
+        const key = btn.getAttribute('data-panel');
+        Object.entries(map).forEach(([k,el])=>{
+          if(!el) return;
+          el.hidden = (k!==key) ? true : !el.hidden; // toggle selected, hide others
+        });
+      });
+    })();
+  </script>
+  <script src="/israelite-research/js/nt-chapter.js" defer></script>
 </body>
 </html>
