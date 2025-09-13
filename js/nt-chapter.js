@@ -1,4 +1,4 @@
-/* nt-chapter.js — canonical path support and robust chapter rendering */
+/* nt-chapter.js — stable URL form: /canon/chapter.html?book=slug&ch=N */
 
 (async function () {
   const ROOT   = '/israelite-research';
@@ -15,30 +15,14 @@
     const parts = location.pathname.split('/').filter(Boolean);
     const CANONS = ['tanakh','newtestament','apocrypha'];
     const canon = CANONS.find(c => parts.includes(c)) || 'newtestament';
-    const idx = parts.indexOf(canon);
 
     const q = new URLSearchParams(location.search);
-    const qBook = (q.get('book') || '').trim().toLowerCase();
-    const qCh   = parseInt(q.get('c') || q.get('ch') || '0', 10);
+    const book = (q.get('book') || 'matthew').trim().toLowerCase();
+    const chapter = parseInt(q.get('c') || q.get('ch') || '1', 10) || 1;
 
-    const pathBook = (idx !== -1 && parts[idx+1] && parts[idx+1] !== 'chapter.html') ? parts[idx+1] : '';
-
-    const last = parts[parts.length-1] || '';
-    const m = last.match(/chapter-(\d+)\.html/i);
-
-    const book    = pathBook || qBook || 'matthew';
-    const chapter = qCh > 0 ? qCh : (m ? parseInt(m[1],10) : 1);
-    const hasBookSegment = !!pathBook;
-
-    return { canon, book, chapter, hasBookSegment };
+    return { canon, book, chapter };
   }
   const ctx = getContext();
-
-  // Canonicalize to /canon/book/chapter.html?c=N so data paths always line up
-  if (!ctx.hasBookSegment) {
-    location.replace(`${ROOT}/${ctx.canon}/${ctx.book}/chapter.html?c=${ctx.chapter}`);
-    return;
-  }
 
   function bookLabel(slug){
     return String(slug || '')
@@ -48,16 +32,18 @@
   }
   const BOOK_LABEL = bookLabel(ctx.book);
 
+  // Data URLs (JSON exists under data/{canon}/{book}/{chapter}.json)
   const versePrimary  = `${ROOT}/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`;
   const verseFallback = `${ROOT}/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`;
   const strongURL     = `${ROOT}/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
 
+  // Always build links in non-book form to avoid 404s
   function chapterHref(n){
-    return `${ROOT}/${ctx.canon}/${ctx.book}/chapter.html?c=${n}`;
+    return `${ROOT}/${ctx.canon}/chapter.html?book=${ctx.book}&ch=${n}`;
   }
 
   async function fetchFirstOk(urls){
-    for(const u of urls){
+    for (const u of urls){
       try { const r = await fetch(u, {cache:'force-cache'}); if (r.ok) return r.json(); } catch {}
     }
     return null;
@@ -188,7 +174,8 @@
       art.appendChild(txt);
       art.appendChild(actions);
 
-      // Optional Strong’s badges later (v.s)
+      // Strong’s badges later (v.s)
+      $root?.appendChild
       frag.appendChild(art);
     });
 

@@ -278,7 +278,7 @@
     const c = canonPick.value;
     const b = bookPick.value;
     const n = Math.max(1, parseInt(curCh||'1',10));
-    location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`;
+    location.href = `/israelite-research/${c}/chapter.html?book=${b}location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`ch=${n}`;
   });
 })();
 </script>
@@ -295,7 +295,7 @@
     const q=new URLSearchParams(location.search);
     const cur = parseInt(q.get("c")||q.get("ch")||"1",10);
     const n = Math.max(1, cur);
-    location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`;
+    location.href = `/israelite-research/${c}/chapter.html?book=${b}location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`ch=${n}`;
   });
 })();
 </script>
