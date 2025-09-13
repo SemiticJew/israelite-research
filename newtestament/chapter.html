@@ -14,7 +14,6 @@
   .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
   .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
   .muted{color:var(--muted)}
-  /* Verse rows + subtle divider */
   .verse{display:flex;gap:8px;margin:.45rem 0;position:relative;padding-right:84px;cursor:pointer;border-bottom:1px solid var(--sky);padding-bottom:.45rem}
   .verse:last-child{border-bottom:0}
   .vnum{min-width:26px;text-align:right;color:var(--muted)}
@@ -47,7 +46,7 @@
   }
   .v-actions button:hover{ background:#f8fafc }
 
-  /* Hover card for Strong’s (left in case badges appear in your JSON) */
+  /* Hover card */
   .hovercard{
     position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
     background:#fff; border:1px solid #e6ebf2; border-radius:10px;
@@ -55,6 +54,29 @@
     padding:.6rem .7rem; font-size:.9rem;
   }
   .hovercard.open{ display:block }
+
+  /* --- Bible Dictionary search toggle --- */
+  .search-wrap{ display:flex; align-items:center; gap:.5rem; margin-bottom:.5rem }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border:1px solid #e6ebf2; border-radius:10px;
+    background:#fff; cursor:pointer;
+  }
+  .icon-btn:hover{ background:#f8fafc }
+  .icon-btn svg{ width:18px; height:18px; }
+
+  /* Collapsible input */
+  #dictQuery{
+    width:0; opacity:0; padding:.45rem .6rem;
+    border:1px solid #e6ebf2; border-radius:10px; font:inherit;
+    transition: width .18s ease, opacity .18s ease, padding .18s ease, border-color .18s ease;
+  }
+  .search-wrap.open #dictQuery{
+    width:220px; opacity:1; padding:.45rem .6rem;
+  }
+  @media (max-width: 520px){
+    .search-wrap.open #dictQuery{ width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -75,7 +97,7 @@
       <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
     </div>
 
-    <!-- Canon + Book picker (inline) -->
+    <!-- Canon + Book picker -->
     <div class="group" aria-label="Canon and Book">
       <label for="canonPick" class="sr-only">Canon</label>
       <select id="canonPick" aria-label="Canon">
@@ -94,33 +116,46 @@
   <section class="layout">
     <div class="panel">
       <h3>Text</h3>
-      <!-- nt-chapter.js will render verses here -->
       <div id="verses"><p class="muted">Loading…</p></div>
     </div>
 
-    <!-- Right panel: Bible Dictionary search -->
+    <!-- Right panel: Bible Dictionary -->
     <aside class="panel" id="dictPanel">
-      <h3>Bible Dictionary</h3>
-      <div class="group" style="margin-bottom:.5rem">
-        <label for="dictQuery" class="sr-only">Search dictionary</label>
-        <input id="dictQuery" type="search" placeholder="Search terms (e.g., Ham, Ethiopia, Passover)" autocomplete="off" />
-        <button class="btn" id="dictClear" title="Clear search">Clear</button>
+      <h3 style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+        <span>Bible Dictionary</span>
+        <button class="icon-btn" id="dictToggle" aria-expanded="false" aria-controls="dictQuery" title="Search dictionary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </h3>
+
+      <div class="search-wrap" id="dictSearchWrap">
+        <input id="dictQuery" type="search" placeholder="Search terms (Ham, Ethiopia, Passover)" autocomplete="off" />
+        <button class="icon-btn" id="dictClear" title="Clear search" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
-      <div id="dictResults"><p class="muted">Type to search the dictionary.</p></div>
+
+      <div id="dictResults"><p class="muted">Tap the magnifying glass to search.</p></div>
     </aside>
   </section>
 </main>
 
 <div id="site-footer"></div>
 
-<!-- Hovercard for Strong’s (kept for compatibility; badges may appear in JSON) -->
 <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
 
-<!-- Defer scripts for perf -->
 <script src="/israelite-research/js/include.js" defer></script>
 <script src="/israelite-research/js/nt-chapter.js" defer></script>
 
-<!-- Header + crumbs auto-labeling (canon/book/chapter) -->
+<!-- Canon-aware header/crumbs -->
 <script>
 (function(){
   const parts = location.pathname.split('/').filter(Boolean);
@@ -155,26 +190,11 @@
   canonPick.value = canon;
 
   const BOOKS = {
-    tanakh: [
-      'genesis','exodus','leviticus','numbers','deuteronomy',
-      'joshua','judges','ruth','i-samuel','ii-samuel','i-kings','ii-kings','i-chronicles','ii-chronicles',
-      'ezra','nehemiah','esther','job','psalms','proverbs','ecclesiastes','song-of-solomon',
-      'isaiah','jeremiah','lamentations','ezekiel','daniel',
-      'hosea','joel','amos','obadiah','jonah','micah','nahum','habakkuk','zephaniah','haggai','zechariah','malachi'
-    ],
-    newtestament: [
-      'matthew','mark','luke','john','acts','romans',
-      'i-corinthians','ii-corinthians','galatians','ephesians','philippians','colossians',
-      'i-thessalonians','ii-thessalonians','i-timothy','ii-timothy','titus','philemon',
-      'hebrews','james','i-peter','ii-peter','i-john','ii-john','iii-john','jude','revelation'
-    ],
-    apocrypha: [
-      'tobit','judith','wisdom','sirach','baruch','i-maccabees','ii-maccabees'
-    ]
+    tanakh: ['genesis','exodus','leviticus','numbers','deuteronomy'],
+    newtestament: ['matthew','mark','luke','john','acts'],
+    apocrypha: ['tobit','judith','wisdom','sirach','baruch']
   };
-  const LABEL = s => s.replace(/-/g,' ')
-                      .replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I')
-                      .replace(/\b\w/g,c=>c.toUpperCase());
+  const LABEL = s => s.replace(/-/g,' ').replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I').replace(/\b\w/g,c=>c.toUpperCase());
 
   function fillBooks(list, cur){
     bookPick.innerHTML = '';
@@ -185,137 +205,101 @@
       bookPick.appendChild(opt);
     });
   }
-
   fillBooks(BOOKS[canon], curBook);
 
   canonPick.addEventListener('change', ()=>{
     const c = canonPick.value;
     fillBooks(BOOKS[c], BOOKS[c][0]);
   });
-
   goBtn.addEventListener('click', ()=>{
     const c = canonPick.value;
     const b = bookPick.value;
-    const n = Math.max(1, parseInt(curCh || '1',10));
+    const n = Math.max(1, parseInt(curCh||'1',10));
     location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`;
   });
 })();
 </script>
 
-<!-- Bible Dictionary search (client-side) -->
+<!-- Bible Dictionary search (magnifying glass toggle) -->
 <script>
 (function(){
-  const q = document.getElementById('dictQuery');
-  const out = document.getElementById('dictResults');
+  const wrap     = document.getElementById('dictSearchWrap');
+  const toggle   = document.getElementById('dictToggle');
+  const input    = document.getElementById('dictQuery');
   const clearBtn = document.getElementById('dictClear');
+  const out      = document.getElementById('dictResults');
   const BASE = '/israelite-research';
 
-  // Try several likely locations
   const CANDIDATES = [
     `${BASE}/data/dictionary/easton_dictionary.json`,
     `${BASE}/data/dictionary/dictionary.json`,
     `${BASE}/data/dictionary/index.json`
   ];
+  let INDEX = [];
 
-  let INDEX = []; // {id?, term, summary?, refs?}
+  function openSearch(){
+    wrap.classList.add('open');
+    toggle.setAttribute('aria-expanded','true');
+    setTimeout(()=>input.focus(),160);
+  }
+  function closeSearch(){
+    if (!wrap.classList.contains('open')) return;
+    wrap.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    if (!input.value.trim()){
+      out.innerHTML = '<p class="muted">Tap the magnifying glass to search.</p>';
+    }
+  }
+
+  toggle.addEventListener('click', ()=>{ wrap.classList.contains('open') ? closeSearch() : openSearch(); });
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ input.blur(); closeSearch(); } });
+  document.addEventListener('click', (e)=>{
+    if (!wrap.contains(e.target) && !toggle.contains(e.target) && !input.value.trim()){ closeSearch(); }
+  });
 
   async function loadIndex(){
     for (const url of CANDIDATES){
-      try{
-        const r = await fetch(url, {cache:'force-cache'});
-        if (r.ok){
-          const data = await r.json();
-          INDEX = normalizeDictionary(data);
-          if (INDEX.length) return;
-        }
-      }catch(_){}
+      try{ const r=await fetch(url,{cache:'force-cache'}); if(r.ok){ INDEX=normalize(await r.json()); if(INDEX.length) return; } }catch(_){}
     }
   }
-
   function slugify(s){ return String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
-
-  // Accept a few shapes and coerce to a common array
-  function normalizeDictionary(data){
-    if (Array.isArray(data)){
-      return data.map(x => ({
-        id: x.id || slugify(x.term || x.title || ''),
-        term: x.term || x.title || '',
-        summary: x.summary || x.desc || x.definition || '',
-        refs: x.refs || x.biblical_refs || []
-      })).filter(x=>x.term);
-    }
-    if (data && typeof data === 'object'){
-      // Object map: { "Ham": {summary:"...", refs:[...]}, ...}
-      return Object.entries(data).map(([k,v])=>({
-        id: v.id || slugify(k),
-        term: k,
-        summary: v?.summary || v?.desc || v?.definition || '',
-        refs: v?.refs || v?.biblical_refs || []
-      }));
-    }
+  function normalize(data){
+    if(Array.isArray(data)) return data.map(x=>({id:x.id||slugify(x.term||x.title||''),term:x.term||x.title||'',summary:x.summary||x.desc||x.definition||'',refs:x.refs||x.biblical_refs||[]}))
+      .filter(x=>x.term);
+    if(data&&typeof data==='object') return Object.entries(data).map(([k,v])=>({id:v?.id||slugify(k),term:k,summary:v?.summary||v?.desc||v?.definition||'',refs:v?.refs||v?.biblical_refs||[]}));
     return [];
   }
-
   function render(results){
-    if (!results.length){
-      out.innerHTML = '<p class="muted">No results.</p>';
-      return;
-    }
-    const frag = document.createDocumentFragment();
-    results.slice(0, 50).forEach(rec=>{
-      const card = document.createElement('div');
-      card.style.borderTop = '1px solid var(--sky)';
-      card.style.padding = '.5rem 0';
-      const term = document.createElement('div');
-      term.style.fontWeight = '700';
-      term.style.color = 'var(--ink)';
-      term.textContent = rec.term;
-      const sum = document.createElement('div');
-      sum.style.marginTop = '2px';
-      sum.textContent = rec.summary || '(no summary yet)';
-      card.appendChild(term);
-      card.appendChild(sum);
-
-      // Optional refs list
-      if (Array.isArray(rec.refs) && rec.refs.length){
-        const ul = document.createElement('ul');
-        ul.style.margin = '.35rem 0 0'; ul.style.paddingLeft = '1.1rem';
-        rec.refs.slice(0,8).forEach(ref=>{
-          const li = document.createElement('li');
-          li.textContent = ref;
-          ul.appendChild(li);
-        });
+    if(!results.length){ out.innerHTML='<p class="muted">No results.</p>'; return; }
+    const frag=document.createDocumentFragment();
+    results.slice(0,50).forEach(rec=>{
+      const card=document.createElement('div');
+      card.style.borderTop='1px solid var(--sky)'; card.style.padding='.5rem 0';
+      const term=document.createElement('div'); term.style.fontWeight='700'; term.style.color='var(--ink)'; term.textContent=rec.term;
+      const sum=document.createElement('div'); sum.style.marginTop='2px'; sum.textContent=rec.summary||'(no summary yet)';
+      card.appendChild(term); card.appendChild(sum);
+      if(Array.isArray(rec.refs)&&rec.refs.length){
+        const ul=document.createElement('ul'); ul.style.margin='.35rem 0 0'; ul.style.paddingLeft='1.1rem';
+        rec.refs.slice(0,8).forEach(ref=>{const li=document.createElement('li'); li.textContent=ref; ul.appendChild(li);});
         card.appendChild(ul);
       }
       frag.appendChild(card);
     });
-    out.innerHTML = '';
-    out.appendChild(frag);
+    out.innerHTML=''; out.appendChild(frag);
   }
-
   function search(qs){
-    const term = String(qs||'').trim().toLowerCase();
-    if (!term){ out.innerHTML = '<p class="muted">Type to search the dictionary.</p>'; return; }
-    const res = INDEX.filter(r=>{
-      const t = (r.term||'').toLowerCase();
-      const s = (r.summary||'').toLowerCase();
-      return t.includes(term) || s.includes(term);
-    }).sort((a,b)=>a.term.localeCompare(b.term));
+    const term=String(qs||'').trim().toLowerCase();
+    if(!term){ out.innerHTML='<p class="muted">Tap the magnifying glass to search.</p>'; return; }
+    const res=INDEX.filter(r=> (r.term||'').toLowerCase().includes(term) || (r.summary||'').toLowerCase().includes(term) )
+                   .sort((a,b)=>a.term.localeCompare(b.term));
     render(res);
   }
 
-  // debounce input
   let timer=null;
-  q.addEventListener('input', ()=>{
-    clearTimeout(timer);
-    timer = setTimeout(()=>search(q.value), 180);
-  });
-  clearBtn.addEventListener('click', ()=>{
-    q.value=''; search('');
-  });
+  input.addEventListener('input',()=>{ clearTimeout(timer); timer=setTimeout(()=>search(input.value),180); });
+  clearBtn.addEventListener('click',()=>{ input.value=''; input.focus(); search(''); });
 
-  // bootstrap
-  loadIndex().then(()=>search(q.value));
+  loadIndex();
 })();
 </script>
 </body>
