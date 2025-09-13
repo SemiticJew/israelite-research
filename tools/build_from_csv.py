@@ -90,38 +90,29 @@ if not reader.fieldnames:
 
 hmap = norm_headers(reader.fieldnames)
 
-print("Detected encoding:", used_enc)
-print("Detected delimiter:", repr(dialect.delimiter if hasattr(dialect,'delimiter') else ','))
-print("Normalized headers:", sorted(hmap.keys()))
-
 chapters = defaultdict(list)
 book_max_ch = defaultdict(int)
 
-row_count = 0
-kept_rows = 0
-books_seen = set()
-
 for row in reader:
-    row_count += 1
     book = (pick(row, hmap, "book") or "").strip()
     ch = to_int_safe(pick(row, hmap, "chapter"), 0)
     v  = to_int_safe(pick(row, hmap, "verse"), 0)
     t  = (pick(row, hmap, "text") or "").strip()
-    c  = to_int_safe(pick(row, hmap, "count"), 0)
     if not book or ch <= 0 or v <= 0 or not t:
         continue
     canon = canon_for(book)
     slug = slugify_book(book)
-    chapters[(canon, slug, ch)].append((v, t, c))
-    if ch > book_max_ch[(canon, slug)]:
-        book_max_ch[(canon, slug)] = ch
-    kept_rows += 1
-    books_seen.add((canon, slug))
+    chapters[(canon, slug, ch)].append((v, t))
+
+book_max_ch = {}
+for (canon, slug, ch) in chapters.keys():
+    key = (canon, slug)
+    book_max_ch[key] = max(ch, book_max_ch.get(key, 0))
 
 written_files = 0
 for (canon, slug, ch), items in chapters.items():
     items.sort(key=lambda x: x[0])
-    verses = [{"v": v, "t": t, "c": c, "s": []} for v, t, c in items]
+    verses = [{"v": v, "t": t, "c": "", "s": []} for v, t in items]
     total = book_max_ch[(canon, slug)]
     out_dir = os.path.join(OUT_ROOT, canon, slug)
     os.makedirs(out_dir, exist_ok=True)
@@ -142,7 +133,4 @@ for canon, mapping in by_canon.items():
     with open(os.path.join(canon_dir, "books.json"), "w", encoding="utf-8") as w:
         json.dump(ordered, w, ensure_ascii=False, indent=2)
 
-print("Rows read:", row_count)
-print("Rows kept:", kept_rows)
-print("Books detected:", len(books_seen))
 print("Chapters written:", written_files)
