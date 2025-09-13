@@ -1,14 +1,15 @@
-/* nt-chapter.js updated to support both URL styles */
+/* nt-chapter.js — canonical path support and robust chapter rendering */
 
 (async function () {
-  const $verses = document.getElementById('verses');
-  const $lex = document.getElementById('lexicon');
+  const ROOT   = '/israelite-research';
+  const $root  = document.getElementById('verses');
+  const $lex   = document.getElementById('lexicon');
   const $hover = document.getElementById('hovercard');
-  const $sel = document.getElementById('chSelect');
-  const $prev = document.getElementById('btnPrev');
-  const $next = document.getElementById('btnNext');
+  const $sel   = document.getElementById('chSelect');
+  const $prev  = document.getElementById('btnPrev');
+  const $next  = document.getElementById('btnNext');
 
-  const status = (msg) => { if ($verses) $verses.innerHTML = `<p class="muted">${msg}</p>`; };
+  const status = (msg) => { if ($root) $root.innerHTML = `<p class="muted">${msg}</p>`; };
 
   function getContext() {
     const parts = location.pathname.split('/').filter(Boolean);
@@ -25,41 +26,50 @@
     const last = parts[parts.length-1] || '';
     const m = last.match(/chapter-(\d+)\.html/i);
 
-    const book = pathBook || qBook || 'matthew';
+    const book    = pathBook || qBook || 'matthew';
     const chapter = qCh > 0 ? qCh : (m ? parseInt(m[1],10) : 1);
-
     const hasBookSegment = !!pathBook;
+
     return { canon, book, chapter, hasBookSegment };
   }
   const ctx = getContext();
 
-  function chapterHref(n){
-    const base = '/israelite-research';
-    if (ctx.hasBookSegment) {
-      return `${base}/${ctx.canon}/${ctx.book}/chapter.html?c=${n}`;
-    } else {
-      return `${base}/${ctx.canon}/chapter.html?book=${ctx.book}&ch=${n}`;
-    }
+  // Canonicalize to /canon/book/chapter.html?c=N so data paths always line up
+  if (!ctx.hasBookSegment) {
+    location.replace(`${ROOT}/${ctx.canon}/${ctx.book}/chapter.html?c=${ctx.chapter}`);
+    return;
   }
 
-  const versePrimary = `/israelite-research/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`;
-  const verseFallback = `/israelite-research/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`;
-  const strongURL = `/israelite-research/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
+  function bookLabel(slug){
+    return String(slug || '')
+      .replace(/-/g,' ')
+      .replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I')
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+  const BOOK_LABEL = bookLabel(ctx.book);
+
+  const versePrimary  = `${ROOT}/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`;
+  const verseFallback = `${ROOT}/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`;
+  const strongURL     = `${ROOT}/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
+
+  function chapterHref(n){
+    return `${ROOT}/${ctx.canon}/${ctx.book}/chapter.html?c=${n}`;
+  }
 
   async function fetchFirstOk(urls){
     for(const u of urls){
-      try { const r = await fetch(u); if (r.ok) return r.json(); } catch {}
+      try { const r = await fetch(u, {cache:'force-cache'}); if (r.ok) return r.json(); } catch {}
     }
     return null;
   }
 
   let LEX = { entries: {} };
   let TOTAL = 150;
-
   function clampChapter(n){ return Math.max(1, Math.min(TOTAL, n)); }
 
   function buildToolbar(totalCh) {
     TOTAL = totalCh || TOTAL;
+
     if ($sel) {
       $sel.innerHTML = '';
       for (let i=1;i<=TOTAL;i++){
@@ -73,14 +83,8 @@
         location.href = chapterHref(n);
       });
     }
-    if ($prev) $prev.onclick = () => {
-      const n = clampChapter(ctx.chapter - 1);
-      location.href = chapterHref(n);
-    };
-    if ($next) $next.onclick = () => {
-      const n = clampChapter(ctx.chapter + 1);
-      location.href = chapterHref(n);
-    };
+    if ($prev) $prev.onclick = () => location.href = chapterHref(clampChapter(ctx.chapter - 1));
+    if ($next) $next.onclick = () => location.href = chapterHref(clampChapter(ctx.chapter + 1));
   }
 
   function copyText(txt){
@@ -105,7 +109,7 @@
     $hover.classList.remove('open');
     $hover.setAttribute('aria-hidden','true');
   }
-  document.addEventListener('scroll', () => closeHoverCard());
+  document.addEventListener('scroll', closeHoverCard);
   document.addEventListener('click', (e) => {
     if ($hover && !$hover.contains(e.target) && !e.target.classList?.contains('badge')) closeHoverCard();
   });
@@ -139,12 +143,17 @@
     const verses = Array.isArray(chData?.verses) ? chData.verses : [];
     if (!verses.length){ status('Verses coming soon.'); return; }
 
+    if ($root) $root.setAttribute('role','list');
+
     const frag = document.createDocumentFragment();
 
     verses.forEach(v => {
       const art = document.createElement('article');
       art.className = 'verse';
       art.id = `v${v.v}`;
+      art.setAttribute('data-verse', String(v.v));
+      art.setAttribute('role', 'listitem');
+      art.setAttribute('aria-label', `Verse ${v.v}`);
 
       const num = document.createElement('span');
       num.className = 'vnum';
@@ -162,31 +171,29 @@
       btnCopy.textContent = 'Copy';
       btnCopy.title = 'Copy verse text';
       btnCopy.onclick = () => {
-        const payload = `${ctx.book} ${ctx.chapter}:${v.v} ${v.t || ''}`.trim();
+        const payload = `${BOOK_LABEL} ${ctx.chapter}:${v.v} ${v.t || ''}`.trim();
         copyText(payload);
       };
 
-      const btnShare = document.createElement('button');
-      btnShare.type = 'button';
-      btnShare.textContent = 'Link';
-      btnShare.title = 'Share direct link';
-      btnShare.onclick = () => {
-        const url = `${chapterHref(ctx.chapter)}#v${v.v}`;
-        shareURL(url, `${ctx.book} ${ctx.chapter}:${v.v}`);
-      };
+      const link = document.createElement('a');
+      link.href = `${chapterHref(ctx.chapter)}#v${v.v}`;
+      link.textContent = 'Link';
+      link.className = 'link-btn';
+      link.title = 'Direct link to this verse';
 
       actions.appendChild(btnCopy);
-      actions.appendChild(btnShare);
+      actions.appendChild(link);
 
       art.appendChild(num);
       art.appendChild(txt);
       art.appendChild(actions);
 
+      // Optional Strong’s badges later (v.s)
       frag.appendChild(art);
     });
 
-    $verses.innerHTML = '';
-    $verses.appendChild(frag);
+    $root.innerHTML = '';
+    $root.appendChild(frag);
 
     if (location.hash && /^#v\d+$/.test(location.hash)){
       const anchor = document.getElementById(location.hash.slice(1));
@@ -194,9 +201,20 @@
     }
   }
 
+  async function getTotalFromBooksJson() {
+    try {
+      const r = await fetch(`${ROOT}/data/${ctx.canon}/books.json`, {cache:'force-cache'});
+      if (!r.ok) return null;
+      const map = await r.json();
+      const total = Number(map[ctx.book]);
+      return Number.isFinite(total) && total > 0 ? total : null;
+    } catch { return null; }
+  }
+
   try {
-    const [vJson, sRes] = await Promise.all([
+    const [vJson, totalFromBooks, sRes] = await Promise.all([
       fetchFirstOk([versePrimary, verseFallback]),
+      getTotalFromBooksJson(),
       fetch(strongURL).catch(() => null)
     ]);
 
@@ -205,41 +223,14 @@
 
     if (vJson){
       renderVerses(vJson);
-      buildToolbar(vJson.total || undefined);
+      buildToolbar(totalFromBooks || vJson.total || undefined);
     } else {
       status('Verses coming soon.');
-      buildToolbar();
+      buildToolbar(totalFromBooks || undefined);
     }
   } catch {
     status('Verses coming soon.');
     renderLexicon({ entries:{} });
     buildToolbar();
   }
-function renderVerses(chData) {
-  const verses = Array.isArray(chData?.verses) ? chData.verses : [];
-  if (!verses.length){ status('Verses coming soon.'); return; }
-
-  const frag = document.createDocumentFragment();
-
-  verses.forEach(v => {
-    const art = document.createElement('article');
-    art.className = 'verse';
-    art.id = `v${v.v}`;
-    art.setAttribute('data-verse', String(v.v));
-    art.setAttribute('role', 'listitem');               // ← add
-    // (optionally set an aria-label for screen readers)
-    art.setAttribute('aria-label', `Verse ${v.v}`);     // ← add
-
-    const num = document.createElement('span');
-    num.className = 'vnum';
-    num.textContent = v.v;
-
-    const txt = document.createElement('span');
-    txt.className = 'vtext';
-    txt.textContent = v.t || '';
-
-    const actions = document.createElement('div');
-    actions.className = 'v-actions';
-    // ... (existing Copy/Link buttons)
-
 })();

@@ -283,6 +283,23 @@
 })();
 </script>
 
+<script>
+(function(){
+  const canonPick=document.getElementById("canonPick");
+  const bookPick=document.getElementById("bookPick");
+  const goBtn=document.getElementById("goPick");
+  if(!goBtn||!canonPick||!bookPick) return;
+  goBtn.addEventListener("click", ()=>{
+    const c=canonPick.value||"newtestament";
+    const b=bookPick.value||"matthew";
+    const q=new URLSearchParams(location.search);
+    const cur = parseInt(q.get("c")||q.get("ch")||"1",10);
+    const n = Math.max(1, cur);
+    location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`;
+  });
+})();
+</script>
+
 <!-- Bible Dictionary search (magnifying glass toggle) -->
 <script>
 (function(){
