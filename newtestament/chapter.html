@@ -20,6 +20,60 @@
   .vtext{color:#111;line-height:1.5}
   .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
   @media (max-width:900px){.layout{grid-template-columns:1fr}}
+/* Verses list layout */
+#verses{ display:block; margin-top:.25rem }
+
+/* Verse “card” */
+.verse{
+  position:relative;
+  display:flex; align-items:flex-start; gap:.75rem;
+  padding:.75rem .9rem .75rem 3.25rem;
+  margin:.55rem 0;
+  border:1px solid var(--sky);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 1px 0 rgba(0,0,0,.02);
+  transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+.verse:hover{
+  border-color:#cfd9e6;
+  box-shadow:0 4px 18px rgba(0,0,0,.06);
+  background:#fbfdff;
+}
+.verse.active{
+  outline:2px solid rgba(5,74,145,.18);
+  background:rgba(5,74,145,.04);
+}
+
+/* Verse number badge */
+.vnum{
+  position:absolute; left:.9rem; top:.8rem;
+  min-width:34px; height:34px; line-height:34px;
+  display:inline-block; text-align:center;
+  font-weight:700; font-size:.9rem; color:var(--brand);
+  background:#f1f6fb; border:1px solid var(--sky);
+  border-radius:999px;
+}
+
+/* Verse text */
+.vtext{
+  display:block;
+  color:#0e1622; line-height:1.6; font-size:1.02rem;
+  word-break:break-word;
+}
+
+/* Verse actions appear on hover */
+.v-actions{
+  position:absolute; right:.55rem; top:.55rem;
+  display:flex; gap:.4rem; opacity:0; pointer-events:none;
+  transition:opacity .12s ease;
+}
+.verse:hover .v-actions{ opacity:1; pointer-events:auto }
+.v-actions button{
+  border:1px solid #e6ebf2; background:#fff; border-radius:8px;
+  padding:.2rem .45rem; font-size:.78rem; cursor:pointer;
+}
+.v-actions button:hover{ background:#f8fafc }
 
   /* Toolbar */
   .reader-toolbar{

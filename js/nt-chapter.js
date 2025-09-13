@@ -215,4 +215,31 @@
     renderLexicon({ entries:{} });
     buildToolbar();
   }
+function renderVerses(chData) {
+  const verses = Array.isArray(chData?.verses) ? chData.verses : [];
+  if (!verses.length){ status('Verses coming soon.'); return; }
+
+  const frag = document.createDocumentFragment();
+
+  verses.forEach(v => {
+    const art = document.createElement('article');
+    art.className = 'verse';
+    art.id = `v${v.v}`;
+    art.setAttribute('data-verse', String(v.v));
+    art.setAttribute('role', 'listitem');               // ← add
+    // (optionally set an aria-label for screen readers)
+    art.setAttribute('aria-label', `Verse ${v.v}`);     // ← add
+
+    const num = document.createElement('span');
+    num.className = 'vnum';
+    num.textContent = v.v;
+
+    const txt = document.createElement('span');
+    txt.className = 'vtext';
+    txt.textContent = v.t || '';
+
+    const actions = document.createElement('div');
+    actions.className = 'v-actions';
+    // ... (existing Copy/Link buttons)
+
 })();
