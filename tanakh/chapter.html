@@ -55,7 +55,7 @@
   }
   .hovercard.open{ display:block }
 
-  /* --- Bible Dictionary search toggle --- */
+  /* Bible Dictionary search toggle */
   .search-wrap{ display:flex; align-items:center; gap:.5rem; margin-bottom:.5rem }
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center;
@@ -97,7 +97,7 @@
       <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
     </div>
 
-    <!-- Canon + Book picker -->
+    <!-- Canon + Book picker (dynamic from books.json) -->
     <div class="group" aria-label="Canon and Book">
       <label for="canonPick" class="sr-only">Canon</label>
       <select id="canonPick" aria-label="Canon">
@@ -155,7 +155,7 @@
 <script src="/israelite-research/js/include.js" defer></script>
 <script src="/israelite-research/js/nt-chapter.js" defer></script>
 
-<!-- Canon-aware header/crumbs -->
+<!-- Canon-aware header/crumbs (matches loader’s book label logic) -->
 <script>
 (function(){
   const parts = location.pathname.split('/').filter(Boolean);
@@ -166,16 +166,19 @@
   const ch = new URLSearchParams(location.search).get('c') || (location.pathname.match(/chapter-(\d+)/i)?.[1] || '1');
 
   const canonLabel = canon === 'tanakh' ? 'Tanakh' : canon === 'apocrypha' ? 'Apocrypha' : 'New Testament';
-  const label = (book||'').replace(/-/g,' ').replace(/\b(i{1,3})\b/gi,m=>m.toUpperCase()).replace(/\b\w/g,c=>c.toUpperCase());
+  const label = (book||'')
+    .replace(/-/g,' ')
+    .replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I')
+    .replace(/\b\w/g,c=>c.toUpperCase());
 
   document.getElementById('pageTitle').textContent = `${canonLabel} (KJV)`;
   document.getElementById('crumbs').textContent = `${canonLabel} ${label ? `→ ${label}` : ''} → Chapter ${ch}`;
 })();
 </script>
 
-<!-- Canon + Book picker wiring -->
+<!-- Canon + Book picker wiring (dynamic from books.json) -->
 <script>
-(function(){
+(async function(){
   const canonPick = document.getElementById('canonPick');
   const bookPick  = document.getElementById('bookPick');
   const goBtn     = document.getElementById('goPick');
@@ -189,28 +192,34 @@
 
   canonPick.value = canon;
 
-  const BOOKS = {
-    tanakh: ['genesis','exodus','leviticus','numbers','deuteronomy'],
-    newtestament: ['matthew','mark','luke','john','acts'],
-    apocrypha: ['tobit','judith','wisdom','sirach','baruch']
-  };
-  const LABEL = s => s.replace(/-/g,' ').replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I').replace(/\b\w/g,c=>c.toUpperCase());
+  const LABEL = s => s.replace(/-/g,' ')
+                      .replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I')
+                      .replace(/\b\w/g,c=>c.toUpperCase());
 
-  function fillBooks(list, cur){
+  async function loadBooks(c) {
+    const url = `/israelite-research/data/${c}/books.json`;
+    try {
+      const r = await fetch(url, {cache:'force-cache'});
+      if (!r.ok) return [];
+      const obj = await r.json(); // {slug: total, ...}
+      return Object.keys(obj);
+    } catch { return []; }
+  }
+
+  async function fill(c, current) {
+    const list = await loadBooks(c);
     bookPick.innerHTML = '';
-    list.forEach(slug=>{
+    (list.length ? list : [current]).forEach(slug=>{
       const opt = document.createElement('option');
       opt.value = slug; opt.textContent = LABEL(slug);
-      if (slug === cur) opt.selected = true;
+      if (slug === current) opt.selected = true;
       bookPick.appendChild(opt);
     });
   }
-  fillBooks(BOOKS[canon], curBook);
 
-  canonPick.addEventListener('change', ()=>{
-    const c = canonPick.value;
-    fillBooks(BOOKS[c], BOOKS[c][0]);
-  });
+  await fill(canon, curBook);
+  canonPick.addEventListener('change', () => fill(canonPick.value, (bookPick.value || 'genesis')));
+
   goBtn.addEventListener('click', ()=>{
     const c = canonPick.value;
     const b = bookPick.value;
@@ -237,11 +246,7 @@
   ];
   let INDEX = [];
 
-  function openSearch(){
-    wrap.classList.add('open');
-    toggle.setAttribute('aria-expanded','true');
-    setTimeout(()=>input.focus(),160);
-  }
+  function openSearch(){ wrap.classList.add('open'); toggle.setAttribute('aria-expanded','true'); setTimeout(()=>input.focus(),160); }
   function closeSearch(){
     if (!wrap.classList.contains('open')) return;
     wrap.classList.remove('open');
@@ -250,7 +255,6 @@
       out.innerHTML = '<p class="muted">Tap the magnifying glass to search.</p>';
     }
   }
-
   toggle.addEventListener('click', ()=>{ wrap.classList.contains('open') ? closeSearch() : openSearch(); });
   input.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ input.blur(); closeSearch(); } });
   document.addEventListener('click', (e)=>{
@@ -259,14 +263,13 @@
 
   async function loadIndex(){
     for (const url of CANDIDATES){
-      try{ const r=await fetch(url,{cache:'force-cache'}); if(r.ok){ INDEX=normalize(await r.json()); if(INDEX.length) return; } }catch(_){}
-    }
+      try{ const r=await fetch(url,{cache:'force-cache'}); if(r.ok){ const data=await r.json(); INDEX=normalize(data); if(INDEX.length) return; } }catch(_){}
   }
   function slugify(s){ return String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
   function normalize(data){
-    if(Array.isArray(data)) return data.map(x=>({id:x.id||slugify(x.term||x.title||''),term:x.term||x.title||'',summary:x.summary||x.desc||x.definition||'',refs:x.refs||x.biblical_refs||[]}))
+    if (Array.isArray(data)) return data.map(x=>({id:x.id||slugify(x.term||x.title||''),term:x.term||x.title||'',summary:x.summary||x.desc||x.definition||'',refs:x.refs||x.biblical_refs||[]}))
       .filter(x=>x.term);
-    if(data&&typeof data==='object') return Object.entries(data).map(([k,v])=>({id:v?.id||slugify(k),term:k,summary:v?.summary||v?.desc||v?.definition||'',refs:v?.refs||v?.biblical_refs||[]}));
+    if (data && typeof data==='object') return Object.entries(data).map(([k,v])=>({id:v?.id||slugify(k),term:k,summary:v?.summary||v?.desc||v?.definition||'',refs:v?.refs||v?.biblical_refs||[]}));
     return [];
   }
   function render(results){

@@ -1,7 +1,6 @@
-<script>
 (async function () {
   const $verses = document.getElementById('verses');
-  const $lex    = document.getElementById('lexicon');     // may not exist (ok)
+  const $lex    = document.getElementById('lexicon');     // may not exist
   const $hover  = document.getElementById('hovercard');   // optional
   const $sel    = document.getElementById('chSelect');
   const $prev   = document.getElementById('btnPrev');
@@ -11,7 +10,7 @@
 
   const status = (msg) => { if ($verses) $verses.innerHTML = `<p class="muted">${msg}</p>`; };
 
-  // -------- Context (canon/book/chapter) from URL --------
+  // -------- Context (canon/book/chapter) --------
   function getContext() {
     const parts = location.pathname.split('/').filter(Boolean);
     const CANONS = ['tanakh','newtestament','apocrypha'];
@@ -29,7 +28,6 @@
   }
   const ctx = getContext();
 
-  // Pretty book label for Copy/Link payloads
   function bookLabel(slug){
     return String(slug || '')
       .replace(/-/g,' ')
@@ -38,11 +36,11 @@
   }
   const BOOK_LABEL = bookLabel(ctx.book);
 
-  // -------- Data URLs (canon-aware) --------
+  // -------- Data URLs --------
   const ROOT = '/israelite-research';
   const versePrimary = `${ROOT}/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`;
-  const verseFallback = `${ROOT}/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`; // optional safety
-  const strongURL = `${ROOT}/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`; // optional; works if present
+  const verseFallback = `${ROOT}/data/bible/kjv/${ctx.book}/${ctx.chapter}.json`;
+  const strongURL = `${ROOT}/data/lexicon/strongs/${ctx.book}/${ctx.chapter}.json`;
 
   async function fetchFirstOk(urls){
     for (const u of urls){
@@ -51,12 +49,12 @@
     return null;
   }
 
-  let LEX = { entries: {} };     // { G/H####: { headword, translit, gloss } }
-  let TOTAL = 150;               // default max; clamped with JSON.total if present
+  let LEX = { entries: {} };
+  let TOTAL = 150;
 
   function clampChapter(n){ return Math.max(1, Math.min(TOTAL, n)); }
 
-  // -------- Toolbar (Prev/Select/Next) --------
+  // -------- Toolbar --------
   function buildToolbar(totalCh) {
     TOTAL = totalCh || TOTAL;
 
@@ -83,7 +81,7 @@
     };
   }
 
-  // -------- Utils: copy/share & hovercard --------
+  // -------- Clipboard/share --------
   function copyText(txt){
     if (!navigator.clipboard) return Promise.reject(new Error('No clipboard'));
     return navigator.clipboard.writeText(txt);
@@ -93,6 +91,7 @@
     return copyText(url);
   }
 
+  // -------- Hovercard --------
   function openHoverCard(html, x, y){
     if (!$hover) return;
     $hover.innerHTML = html;
@@ -111,9 +110,9 @@
     if ($hover && !$hover.contains(e.target) && !e.target.classList?.contains('badge')) closeHoverCard();
   });
 
-  // -------- Lexicon (optional sidebar) --------
+  // -------- Lexicon --------
   function renderLexicon(data) {
-    if (!$lex) return; // page removed sidebar; nothing to do
+    if (!$lex) return;
     const entries = data?.entries || data?.lexicon || {};
     LEX = { entries };
     if (!entries || Object.keys(entries).length === 0) {
@@ -137,7 +136,7 @@
     return `<div style="font-weight:700;margin-bottom:.25rem">${num} — ${head}</div>${tr}${gl}`;
   }
 
-  // -------- Verses renderer --------
+  // -------- Verses --------
   function renderVerses(chData) {
     const verses = Array.isArray(chData?.verses) ? chData.verses : [];
     if (!verses.length){ status('Verses coming soon.'); return; }
@@ -186,7 +185,7 @@
       art.appendChild(txt);
       art.appendChild(actions);
 
-      // Strong’s badges (optional) from verse.s (e.g., ["G2424","H430"])
+      // Strong’s badges
       if (Array.isArray(v.s) && v.s.length){
         const seen = new Set();
         v.s.forEach(code => {
@@ -218,24 +217,32 @@
     }
   }
 
+  // -------- New: use books.json --------
+  async function getTotalFromBooksJson(ROOT, ctx) {
+    try {
+      const r = await fetch(`${ROOT}/data/${ctx.canon}/books.json`, {cache:'force-cache'});
+      if (!r.ok) return null;
+      const map = await r.json();
+      const total = Number(map[ctx.book]);
+      return Number.isFinite(total) && total > 0 ? total : null;
+    } catch { return null; }
+  }
+
   // -------- Load & init --------
   try {
-    const loaders = [ fetchFirstOk([versePrimary, verseFallback]) ];
+    const loaders = [ fetchFirstOk([versePrimary, verseFallback]), getTotalFromBooksJson(ROOT, ctx) ];
     if (wantLex) loaders.push(fetch(strongURL).catch(() => null));
-    const results = await Promise.all(loaders);
-
-    const vJson = results[0];
-    const sRes  = wantLex ? results[1] : null;
+    const [vJson, totalFromBooks, sRes] = await Promise.all(loaders);
 
     if (sRes && sRes.ok) renderLexicon(await sRes.json());
     else renderLexicon({ entries:{} });
 
-    if (vJson){
+    if (vJson) {
       renderVerses(vJson);
-      buildToolbar(vJson.total || undefined);
+      buildToolbar(totalFromBooks || vJson.total || undefined);
     } else {
       status('Verses coming soon.');
-      buildToolbar();
+      buildToolbar(totalFromBooks || undefined);
     }
   } catch {
     status('Verses coming soon.');
@@ -243,4 +250,3 @@
     buildToolbar();
   }
 })();
-</script>
