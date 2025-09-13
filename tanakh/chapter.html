@@ -1,1 +1,271 @@
-[PASTE THE HTML ABOVE HERE]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Bible — Chapter</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  :root{
+    --ink:#0b2340; --accent:#F17300; --brand:#054A91; --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
+    --chip-bg:#f7fafc; --chip-bd:#e6ebf2;
+  }
+  .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+
+  .page-header{ padding:20px 0 10px; }
+  .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
+  .crumbs{ color:var(--muted); font-size:.92rem; margin-top:4px; }
+
+  .reader-toolbar{
+    position: sticky; top: 0; z-index: 50;
+    display:flex; align-items:center; gap:.75rem; justify-content:center;
+    background:#fff; border:1px solid var(--sky); border-radius:10px;
+    padding:.5rem; margin:12px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .reader-toolbar .btn{
+    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  }
+  .reader-toolbar .btn:hover{ background:#f8fafc }
+  .reader-toolbar .ch-picker select{
+    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
+  }
+
+  .layout{ display:grid; grid-template-columns:2fr 1fr; gap:18px; margin:16px 0 40px; }
+  @media (max-width:900px){ .layout{ grid-template-columns:1fr; } }
+
+  .panel{ background:#fff; border:1px solid var(--sky); border-radius:10px; padding:14px; }
+  .panel h3{ margin:.2rem 0 .6rem; font-size:1.05rem; color:var(--brand); }
+
+  /* Verse block */
+  .verse{ display:flex; flex-direction:column; gap:.4rem; margin:.55rem 0; padding:.5rem .1rem; border-bottom:1px dashed var(--sky); position:relative; }
+  .vline{ display:flex; gap:.6rem; align-items:flex-start; }
+  .vnum{ min-width:28px; text-align:right; color:var(--muted); font-variant-numeric: tabular-nums; }
+  .vtext{ line-height:1.55; color:#111; }
+
+  /* Modern badges (Refs / Strong’s) */
+  .chips{ display:flex; gap:.4rem; flex-wrap:wrap; padding-left:36px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:var(--chip-bg); border:1px solid var(--chip-bd); color:#223; border-radius:999px;
+    padding:.25rem .55rem; font-size:.82rem; font-weight:600;
+  }
+  .chip:hover{ box-shadow:0 4px 10px rgba(0,0,0,.06); transform:translateY(-1px); }
+
+  .muted{ color:var(--muted); }
+
+  /* Dictionary panel */
+  #dictAside h3{ text-align:center; }
+  #dictSearch{ width:100%; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem; }
+  .lex{ margin:.6rem 0 0; padding-left:1.1rem; }
+  .lex li{ margin:.35rem 0; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container">
+  <header class="page-header">
+    <h1 class="page-title" id="pageTitle">Loading…</h1>
+    <div class="crumbs" id="crumbs"></div>
+  </header>
+
+  <nav aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar">
+    <button aria-label="Previous chapter" class="btn" id="btnPrev">← Prev</button>
+    <div class="ch-picker">
+      <label class="sr-only" for="chSelect">Select chapter</label>
+      <select id="chSelect"></select>
+    </div>
+    <button aria-label="Next chapter" class="btn" id="btnNext">Next →</button>
+  </nav>
+
+  <section class="layout">
+    <div class="panel">
+      <h3 id="textHeading">Text</h3>
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
+
+    <aside class="panel" id="dictAside">
+      <h3>Bible Dictionary</h3>
+      <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" type="search"/>
+      <div id="dictPanel" class="muted" style="margin-top:.5rem;">Loading dictionary…</div>
+      <ul id="dictList" class="lex"></ul>
+    </aside>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/israelite-research/js/include.js"></script>
+<script>
+  // -------- Helpers
+  function qs(s,root=document){ return root.querySelector(s); }
+  function qsa(s,root=document){ return Array.from(root.querySelectorAll(s)); }
+
+  function getQuery(){
+    const p = new URLSearchParams(location.search);
+    return {
+      book: (p.get('book')||'').trim(),        // slug, e.g., 'genesis', '1-john'
+      ch: Math.max(1, parseInt(p.get('ch')||'1', 10))
+    };
+  }
+
+  // Title Case from slug: '1-john' -> '1 John', 'song-of-songs' -> 'Song Of Songs'
+  function titleCaseFromSlug(slug){
+    if(!slug) return '';
+    // preserve leading numeric (1,2,3)
+    const m = slug.match(/^([0-3])-(.*)$/);
+    if(m){
+      const rest = m[2].split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+      return m[1] + ' ' + rest;
+    }
+    return slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+  }
+
+  // Sentence-style join for refs: ["Gen 1:1","Jn 1:1","Ps 23:1"] → "Gen 1:1; Jn 1:1; and Ps 23:1"
+  function sentenceJoin(arr){
+    if(!arr || !arr.length) return '';
+    if(arr.length === 1) return arr[0];
+    if(arr.length === 2) return arr[0] + ' and ' + arr[1];
+    return arr.slice(0,-1).join('; ') + '; and ' + arr[arr.length-1];
+  }
+
+  // -------- Boot
+  (function(){
+    const { book, ch } = getQuery();
+    const bookSlug = book || 'genesis';
+    const chNum = ch;
+
+    const title = titleCaseFromSlug(bookSlug) + ' ' + chNum;
+    qs('#pageTitle').textContent = title;
+    qs('#crumbs').textContent = title;
+
+    // Toolbar chapter picker (1..200 safety; you can refine if you have counts)
+    const chSelect = qs('#chSelect');
+    for(let i=1;i<=200;i++){
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = i;
+      if(i===chNum) opt.selected = true;
+      chSelect.appendChild(opt);
+    }
+    chSelect.addEventListener('change', ()=> {
+      const next = parseInt(chSelect.value,10);
+      location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + next;
+    });
+
+    qs('#btnPrev').addEventListener('click', ()=>{
+      const prev = Math.max(1, chNum-1);
+      if(prev !== chNum){
+        location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + prev;
+      }
+    });
+    qs('#btnNext').addEventListener('click', ()=>{
+      const next = chNum + 1;
+      location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + next;
+    });
+
+    // -------- Load verses from unified JSON
+    const versesEl = qs('#verses');
+    const url = `/israelite-research/data/flat/${bookSlug}/${chNum}.json`;
+
+    fetch(url).then(r=>{
+      if(!r.ok) throw new Error('Missing chapter JSON at ' + url);
+      return r.json();
+    }).then(renderVerses).catch(err=>{
+      versesEl.innerHTML = '<p class="muted">Chapter not available.</p>';
+      console.error(err);
+    });
+
+    function renderVerses(rows){
+      versesEl.innerHTML = '';
+      if(!Array.isArray(rows) || rows.length===0){
+        versesEl.innerHTML = '<p class="muted">No verses found.</p>';
+        return;
+      }
+      rows.forEach(v=>{
+        const cList = Array.isArray(v.c) ? v.c : [];
+        const sList = Array.isArray(v.s) ? v.s : [];
+
+        const wrap = document.createElement('div');
+        wrap.className = 'verse';
+
+        // Verse line
+        const vline = document.createElement('div');
+        vline.className = 'vline';
+
+        const vnum = document.createElement('div');
+        vnum.className = 'vnum';
+        vnum.textContent = v.v;
+
+        const vtext = document.createElement('div');
+        vtext.className = 'vtext';
+        vtext.textContent = v.t || '';
+
+        vline.appendChild(vnum);
+        vline.appendChild(vtext);
+        wrap.appendChild(vline);
+
+        // Chips row
+        const chips = document.createElement('div');
+        chips.className = 'chips';
+
+        if(cList.length){
+          const chipRefs = document.createElement('span');
+          chipRefs.className = 'chip';
+          chipRefs.textContent = 'Refs: ' + sentenceJoin(cList);
+          chips.appendChild(chipRefs);
+        }
+
+        if(sList.length){
+          const chipStr = document.createElement('span');
+          chipStr.className = 'chip';
+          chipStr.textContent = 'Strong’s: ' + sList.join(', ');
+          chips.appendChild(chipStr);
+        }
+
+        if(chips.children.length){
+          wrap.appendChild(chips);
+        }
+
+        versesEl.appendChild(wrap);
+      });
+    }
+
+    // -------- Bible Dictionary (Easton)
+    const dictPanel = qs('#dictPanel');
+    const dictList = qs('#dictList');
+    const dictSearch = qs('#dictSearch');
+
+    let dictIndex = [];
+    fetch('/israelite-research/data/dictionaries/easton_dictionary.json')
+      .then(r=> r.ok ? r.json() : [])
+      .then(json=>{
+        dictPanel.textContent = 'Type a term above to see entries.';
+        dictIndex = Array.isArray(json) ? json : [];
+      })
+      .catch(()=> dictPanel.textContent = 'Dictionary not available.');
+
+    dictSearch.addEventListener('input', ()=>{
+      const q = dictSearch.value.trim().toLowerCase();
+      dictList.innerHTML = '';
+      if(!q){
+        return;
+      }
+      const hits = dictIndex.filter(x => (x.term||'').toLowerCase().includes(q)).slice(0,25);
+      if(!hits.length){
+        dictList.innerHTML = '<li class="muted">No results.</li>';
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      hits.forEach(h=>{
+        const li = document.createElement('li');
+        const title = h.term || '';
+        const def = h.definition || '';
+        li.innerHTML = `<strong>${title}</strong> — <span class="muted">${def}</span>`;
+        frag.appendChild(li);
+      });
+      dictList.appendChild(frag);
+    });
+  })();
+</script>
+</body>
+</html>
