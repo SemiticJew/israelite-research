@@ -276,22 +276,72 @@
     }catch(_){}
     return null;
   }
-  async function loadChapter(){
-    versesEl.innerHTML = '<p class="muted">Loading…</p>';
-    const fromPerChapter = await tryPerChapter();
-    if (fromPerChapter && fromPerChapter.length){ renderVerses(fromPerChapter); return; }
-    const fromBundle = await tryBundle();
-    if (fromBundle && fromBundle.length){ renderVerses(fromBundle); return; }
-    const fromTxt = await tryText();
-    if (fromTxt && fromTxt.length){ renderVerses(fromTxt); return; }
-    versesEl.innerHTML = '<p class="muted">Chapter data unavailable.</p>';
-  }
+<script>
+// --- Helpers (keep your existing titleCaseFromSlug & params parsing if present) ---
+function detectLibraryFromPath(){
+  const m = location.pathname.match(/\/(tanakh|newtestament|apocrypha)\//i);
+  return (m && m[1].toLowerCase()) || 'tanakh';
+}
+function jsonPathForChapter(lib, bookSlug, ch){
+  return `/israelite-research/data/${lib}/${bookSlug}/${ch}.json`;
+}
+function titleCaseFromSlug(slug){
+  return slug
+    .split('-')
+    .map(w => w.length === 1 ? w.toUpperCase() : (w[0].toUpperCase() + w.slice(1)))
+    .join(' ');
+}
+async function loadChapter(){
+  const params = new URLSearchParams(location.search);
+  const bookSlug = (params.get('book') || '').toLowerCase();
+  const ch       = parseInt(params.get('ch') || '1', 10);
 
-  // --- Boot ---
-  setBookTitle();
-  populateChapterPicker();
-  loadChapter();
-})();
+  const lib = detectLibraryFromPath();
+  const src = jsonPathForChapter(lib, bookSlug, ch);
+
+  const versesEl = document.getElementById('verses');
+  versesEl.innerHTML = `<p class="muted">Loading ${titleCaseFromSlug(bookSlug)} ${ch}…</p>`;
+
+  try {
+    const res = await fetch(src, { cache:'no-store' });
+    if(!res.ok) throw new Error(`HTTP ${res.status} for ${src}`);
+    const data = await res.json();
+
+    versesEl.innerHTML = '';
+    data.forEach(entry => {
+      const vnum = entry.v;
+      const vtxt = entry.t || '';
+      const xrefs = Array.isArray(entry.c) ? entry.c : [];
+
+      const wrap = document.createElement('div');
+      wrap.className = 'verse';
+      wrap.innerHTML = `
+        <div class="vline">
+          <div class="vnum">${vnum}</div>
+          <div class="vtext">${vtxt}</div>
+        </div>
+        <div class="v-toolbar">
+          <button type="button" class="v-copy" data-copy="${vnum}">Copy</button>
+          ${xrefs.length ? `<div class="v-xrefs">${xrefs.map(r => `<span class="badge" data-ref="${r}">${r}</span>`).join(' ')}</div>` : ''}
+        </div>
+      `;
+      versesEl.appendChild(wrap);
+    });
+
+    versesEl.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button.v-copy[data-copy]');
+      if(!btn) return;
+      const n = btn.getAttribute('data-copy');
+      const text = `${titleCaseFromSlug(bookSlug)} ${ch}:${n} — ` + btn.closest('.verse').querySelector('.vtext').textContent;
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(()=> btn.textContent='Copy', 900);
+    }, { once:true });
+
+  } catch(err){
+    console.error(err);
+    versesEl.innerHTML = `<p class="muted">Could not load ${titleCaseFromSlug(bookSlug)} ${ch}. Check that the file exists at <code>${src}</code>.</p>`;
+  }
+}
+document.addEventListener('DOMContentLoaded', loadChapter);
 </script>
-</body>
-</html>
