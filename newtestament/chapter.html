@@ -3,66 +3,84 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Bible — Chapter</title>
+<title>Chapter — Reader</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
   :root{
     --ink:#0b2340; --accent:#F17300; --brand:#054A91; --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
-    --chip-bg:#f7fafc; --chip-bd:#e6ebf2;
+    --btn:#f8fafc; --btn-border:#e6ebf2; --ring:rgba(5,74,145,.15);
   }
-  .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 
-  .page-header{ padding:20px 0 10px; }
-  .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
-  .crumbs{ color:var(--muted); font-size:.92rem; margin-top:4px; }
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .page-header{padding:20px 0 8px}
+  .page-title{margin:0;font-size:1.6rem;font-weight:900;color:var(--ink)}
+  .crumbs{color:var(--muted);font-size:.92rem;margin-top:4px}
 
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:14px 0 40px}
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:12px;padding:14px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  /* Sticky reader toolbar */
   .reader-toolbar{
-    position: sticky; top: 0; z-index: 50;
+    position: sticky; top: 0; z-index: 40;
     display:flex; align-items:center; gap:.75rem; justify-content:center;
-    background:#fff; border:1px solid var(--sky); border-radius:10px;
-    padding:.5rem; margin:12px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+    background:#fff; border:1px solid var(--sky); border-radius:12px;
+    padding:.5rem; margin:10px 0 16px; box-shadow:0 2px 10px rgba(0,0,0,.06);
   }
-  .reader-toolbar .btn{
-    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  .btn{
+    padding:.46rem .7rem; border:1px solid var(--btn-border); background:var(--btn);
+    border-radius:999px; cursor:pointer; font:inherit; color:#0b2340;
+    transition:box-shadow .12s ease, transform .12s ease;
   }
-  .reader-toolbar .btn:hover{ background:#f8fafc }
-  .reader-toolbar .ch-picker select{
-    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
+  .btn:hover{ box-shadow:0 0 0 6px var(--ring) }
+  .btn:active{ transform:translateY(1px) }
+  .ch-picker select{
+    border:1px solid var(--btn-border); border-radius:999px; padding:.46rem .65rem; font:inherit; background:#fff;
   }
 
-  .layout{ display:grid; grid-template-columns:2fr 1fr; gap:18px; margin:16px 0 40px; }
-  @media (max-width:900px){ .layout{ grid-template-columns:1fr; } }
+  /* Verse enclosure */
+  .verse{
+    border:1px solid var(--sky);
+    border-radius:12px;
+    padding:10px 10px 8px;
+    margin:10px 0 14px;
+    background:#fff;
+  }
+  .vline{display:flex; gap:.6rem; align-items:flex-start}
+  .vnum{min-width:28px; text-align:right; color:var(--muted); font-weight:700}
+  .vtext{line-height:1.6; color:#111}
 
-  .panel{ background:#fff; border:1px solid var(--sky); border-radius:10px; padding:14px; }
-  .panel h3{ margin:.2rem 0 .6rem; font-size:1.05rem; color:var(--brand); }
-
-  /* Verse block */
-  .verse{ display:flex; flex-direction:column; gap:.4rem; margin:.55rem 0; padding:.5rem .1rem; border-bottom:1px dashed var(--sky); position:relative; }
-  .vline{ display:flex; gap:.6rem; align-items:flex-start; }
-  .vnum{ min-width:28px; text-align:right; color:var(--muted); font-variant-numeric: tabular-nums; }
-  .vtext{ line-height:1.55; color:#111; }
-
-  /* Modern badges (Refs / Strong’s) */
-  .chips{ display:flex; gap:.4rem; flex-wrap:wrap; padding-left:36px; }
-  .chip{
+  /* Per-verse toolbar (three modern toggles) */
+  .v-toolbar{
+    display:flex; flex-wrap:wrap; gap:.5rem; padding-left:34px; margin-top:.55rem;
+  }
+  .pill{
     display:inline-flex; align-items:center; gap:.4rem;
-    background:var(--chip-bg); border:1px solid var(--chip-bd); color:#223; border-radius:999px;
-    padding:.25rem .55rem; font-size:.82rem; font-weight:600;
+    border:1px solid var(--btn-border); background:#fff; color:#0b2340;
+    border-radius:999px; padding:.35rem .6rem; font-size:.88rem; cursor:pointer;
+    transition:box-shadow .12s ease, transform .12s ease, color .12s ease;
   }
-  .chip:hover{ box-shadow:0 4px 10px rgba(0,0,0,.06); transform:translateY(-1px); }
+  .pill svg{width:16px;height:16px}
+  .pill[aria-expanded="true"]{ color:var(--brand); box-shadow:0 0 0 6px var(--ring); }
 
-  .muted{ color:var(--muted); }
-
-  /* Dictionary panel */
-  #dictAside h3{ text-align:center; }
-  #dictSearch{ width:100%; border:1px solid #DBE4EE; border-radius:10px; padding:.5rem .6rem; }
-  .lex{ margin:.6rem 0 0; padding-left:1.1rem; }
-  .lex li{ margin:.35rem 0; }
+  /* Hidden panels under each verse */
+  .v-panels{ padding-left:34px; margin-top:.35rem; display:grid; gap:.35rem; }
+  .panel-box{
+    display:none; border:1px solid var(--sky); border-radius:10px; padding:.6rem .7rem; background:#fff;
+  }
+  .panel-box.open{ display:block; }
+  .p-title{font-weight:800; color:var(--ink); margin:0 0 .4rem; font-size:.95rem}
+  .p-text{color:#222; line-height:1.55}
+  .p-refs{color:#222}
+  .badge{
+    display:inline-block; margin:.2rem .35rem .2rem 0; padding:.15rem .5rem; border:1px solid var(--sky);
+    border-radius:999px; font-size:.85rem; background:#054A910D; color:#0b2340;
+  }
+  .muted{color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
-
 <main class="container">
   <header class="page-header">
     <h1 class="page-title" id="pageTitle">Loading…</h1>
@@ -70,202 +88,234 @@
   </header>
 
   <nav aria-label="Chapter navigation" class="reader-toolbar" id="readerToolbar">
-    <button aria-label="Previous chapter" class="btn" id="btnPrev">← Prev</button>
+    <button class="btn" id="btnPrev" type="button">← Prev</button>
     <div class="ch-picker">
       <label class="sr-only" for="chSelect">Select chapter</label>
       <select id="chSelect"></select>
     </div>
-    <button aria-label="Next chapter" class="btn" id="btnNext">Next →</button>
+    <button class="btn" id="btnNext" type="button">Next →</button>
   </nav>
 
   <section class="layout">
     <div class="panel">
-      <h3 id="textHeading">Text</h3>
+      <h3 style="margin:.2rem 0 .6rem; font-size:1.05rem; color:var(--brand)">Text</h3>
       <div id="verses"><p class="muted">Loading…</p></div>
     </div>
 
     <aside class="panel" id="dictAside">
-      <h3>Bible Dictionary</h3>
-      <input id="dictSearch" placeholder="Search term (e.g., Eden, Covenant)…" type="search"/>
-      <div id="dictPanel" class="muted" style="margin-top:.5rem;">Loading dictionary…</div>
-      <ul id="dictList" class="lex"></ul>
+      <h3 style="margin:.2rem 0 .6rem; font-size:1.05rem; color:var(--brand)">Bible Dictionary</h3>
+      <div style="display:flex; gap:.5rem; align-items:center; margin-bottom:.6rem">
+        <input id="dictSearch" placeholder="Search term (e.g., Covenant, Eden)…" style="flex:1; border:1px solid #DBE4EE; border-radius:999px; padding:.55rem .75rem" type="search"/>
+        <button class="btn" id="dictGo" type="button">Search</button>
+      </div>
+      <div id="dictPanel"><p class="muted">Type a term and press Search. Uses Easton’s dictionary.</p></div>
     </aside>
   </section>
 </main>
-
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/include.js"></script>
 <script>
-  // -------- Helpers
-  function qs(s,root=document){ return root.querySelector(s); }
-  function qsa(s,root=document){ return Array.from(root.querySelectorAll(s)); }
+(function(){
+  const params = new URLSearchParams(location.search);
+  const bookSlug = (params.get('book')||'').toLowerCase();
+  const ch = parseInt(params.get('ch')||'1', 10);
+  const path = location.pathname;
+  const coll = path.includes('/tanakh/') ? 'tanakh'
+              : path.includes('/newtestament/') ? 'newtestament'
+              : 'apocrypha';
 
-  function getQuery(){
-    const p = new URLSearchParams(location.search);
-    return {
-      book: (p.get('book')||'').trim(),        // slug, e.g., 'genesis', '1-john'
-      ch: Math.max(1, parseInt(p.get('ch')||'1', 10))
-    };
+  // Title Case with Arabic numerals for multi-part books (ii-samuel => 2 Samuel, iii-john => 3 John)
+  function toArabicLeading(slug){
+    if(/^iii-/.test(slug)) return '3 ' + slug.replace(/^iii-/, '').replace(/-/g,' ');
+    if(/^ii-/.test(slug))  return '2 ' + slug.replace(/^ii-/, '').replace(/-/g,' ');
+    if(/^i-/.test(slug))   return '1 ' + slug.replace(/^i-/, '').replace(/-/g,' ');
+    return slug.replace(/-/g,' ').replace(/\b\w/g, m => m.toUpperCase());
   }
 
-  // Title Case from slug: '1-john' -> '1 John', 'song-of-songs' -> 'Song Of Songs'
-  function titleCaseFromSlug(slug){
-    if(!slug) return '';
-    // preserve leading numeric (1,2,3)
-    const m = slug.match(/^([0-3])-(.*)$/);
-    if(m){
-      const rest = m[2].split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-      return m[1] + ' ' + rest;
+  const title = `${toArabicLeading(bookSlug)} ${ch}`;
+  document.getElementById('pageTitle').textContent = title;
+  document.getElementById('crumbs').textContent = coll.charAt(0).toUpperCase()+coll.slice(1) + ' · ' + toArabicLeading(bookSlug);
+
+  // Nav wiring
+  const sel = document.getElementById('chSelect');
+  for(let i=1;i<=150;i++){ // overprovision; you can fine-tune when you know max
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = i;
+    if(i===ch) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  function go(b, c){ location.href = `?book=${b}&ch=${c}`; }
+  document.getElementById('btnPrev').addEventListener('click', ()=> go(bookSlug, Math.max(1, ch-1)));
+  document.getElementById('btnNext').addEventListener('click', ()=> go(bookSlug, ch+1));
+  sel.addEventListener('change', e => go(bookSlug, parseInt(e.target.value,10)));
+
+  // Build JSON URL (per-chapter JSON expected)
+  const jsonUrl = `/israelite-research/data/${coll}/${bookSlug}/${ch}.json`;
+
+  const versesEl = document.getElementById('verses');
+
+  // Render a single verse with 3 toggles and 3 panels
+  function renderVerse(vobj){
+    const wrap = document.createElement('div');
+    wrap.className = 'verse';
+    wrap.dataset.v = vobj.v;
+
+    // verse line
+    const vline = document.createElement('div');
+    vline.className = 'vline';
+    vline.innerHTML = `<div class="vnum">${vobj.v}</div><div class="vtext">${vobj.t || ''}</div>`;
+    wrap.appendChild(vline);
+
+    // toolbar
+    const vt = document.createElement('div');
+    vt.className = 'v-toolbar';
+    vt.innerHTML = `
+      <button class="pill" data-target="xref"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12h16M4 6h16M4 18h16" stroke-width="2" stroke-linecap="round"/></svg> References</button>
+      <button class="pill" data-target="str"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 4v16M4 12h16" stroke-width="2" stroke-linecap="round"/></svg> Strong’s</button>
+      <button class="pill" data-target="com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16v10H7l-3 3V5z" stroke-width="2" stroke-linejoin="round"/></svg> Commentary</button>
+    `;
+    wrap.appendChild(vt);
+
+    // panels
+    const panels = document.createElement('div');
+    panels.className = 'v-panels';
+
+    // Cross refs (sentence style)
+    const refs = Array.isArray(vobj.c) ? vobj.c : [];
+    const xrefBox = document.createElement('div');
+    xrefBox.className = 'panel-box';
+    xrefBox.dataset.panel = 'xref';
+    xrefBox.innerHTML = `
+      <div class="p-title">Cross References</div>
+      <div class="p-refs">${refs.length ? refs.join('; ') + '.' : '<span class="muted">No cross references listed for this verse.</span>'}</div>
+    `;
+    panels.appendChild(xrefBox);
+
+    // Strong’s
+    const strongs = Array.isArray(vobj.s) ? vobj.s : [];
+    const strBox = document.createElement('div');
+    strBox.className = 'panel-box';
+    strBox.dataset.panel = 'str';
+    if(strongs.length){
+      const line = document.createElement('div');
+      strongs.forEach(entry=>{
+        if(typeof entry === 'string'){
+          const b = document.createElement('span');
+          b.className = 'badge';
+          b.textContent = entry;
+          line.appendChild(b);
+        }else if(entry && entry.num){
+          const b = document.createElement('span');
+          b.className = 'badge';
+          b.textContent = entry.num + (entry.gloss ? ` — ${entry.gloss}` : '');
+          line.appendChild(b);
+        }
+      });
+      strBox.innerHTML = `<div class="p-title">Strong’s</div>`;
+      strBox.appendChild(line);
+    }else{
+      strBox.innerHTML = `<div class="p-title">Strong’s</div><div class="p-text muted">No Strong’s entries for this verse.</div>`;
     }
-    return slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-  }
+    panels.appendChild(strBox);
 
-  // Sentence-style join for refs: ["Gen 1:1","Jn 1:1","Ps 23:1"] → "Gen 1:1; Jn 1:1; and Ps 23:1"
-  function sentenceJoin(arr){
-    if(!arr || !arr.length) return '';
-    if(arr.length === 1) return arr[0];
-    if(arr.length === 2) return arr[0] + ' and ' + arr[1];
-    return arr.slice(0,-1).join('; ') + '; and ' + arr[arr.length-1];
-  }
+    // Commentary (placeholder)
+    const comBox = document.createElement('div');
+    comBox.className = 'panel-box';
+    comBox.dataset.panel = 'com';
+    comBox.innerHTML = `
+      <div class="p-title">Commentary</div>
+      <div class="p-text muted">No notes yet.</div>
+    `;
+    panels.appendChild(comBox);
 
-  // -------- Boot
-  (function(){
-    const { book, ch } = getQuery();
-    const bookSlug = book || 'genesis';
-    const chNum = ch;
+    wrap.appendChild(panels);
 
-    const title = titleCaseFromSlug(bookSlug) + ' ' + chNum;
-    qs('#pageTitle').textContent = title;
-    qs('#crumbs').textContent = title;
-
-    // Toolbar chapter picker (1..200 safety; you can refine if you have counts)
-    const chSelect = qs('#chSelect');
-    for(let i=1;i<=200;i++){
-      const opt = document.createElement('option');
-      opt.value = i; opt.textContent = i;
-      if(i===chNum) opt.selected = true;
-      chSelect.appendChild(opt);
-    }
-    chSelect.addEventListener('change', ()=> {
-      const next = parseInt(chSelect.value,10);
-      location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + next;
-    });
-
-    qs('#btnPrev').addEventListener('click', ()=>{
-      const prev = Math.max(1, chNum-1);
-      if(prev !== chNum){
-        location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + prev;
+    // Toggle logic
+    vt.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.pill');
+      if(!btn) return;
+      const name = btn.dataset.target;
+      const box = panels.querySelector(\`.panel-box[data-panel="\${name}"]\`);
+      const open = box.classList.contains('open');
+      // toggle this panel only
+      panels.querySelectorAll('.panel-box').forEach(b=>b.classList.remove('open'));
+      vt.querySelectorAll('.pill').forEach(p=>p.setAttribute('aria-expanded','false'));
+      if(!open){
+        box.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
       }
     });
-    qs('#btnNext').addEventListener('click', ()=>{
-      const next = chNum + 1;
-      location.search = '?book=' + encodeURIComponent(bookSlug) + '&ch=' + next;
-    });
 
-    // -------- Load verses from unified JSON
-    const versesEl = qs('#verses');
-    const url = `/israelite-research/data/flat/${bookSlug}/${chNum}.json`;
+    return wrap;
+  }
 
-    fetch(url).then(r=>{
-      if(!r.ok) throw new Error('Missing chapter JSON at ' + url);
-      return r.json();
-    }).then(renderVerses).catch(err=>{
-      versesEl.innerHTML = '<p class="muted">Chapter not available.</p>';
-      console.error(err);
-    });
+  async function loadChapter(){
+    try{
+      let data;
+      let res = await fetch(jsonUrl, {cache:'no-store'});
+      if(!res.ok){
+        // Optional fallback: try book.json with { chapters: { "1":[...] } }
+        const alt = `/israelite-research/data/${coll}/${bookSlug}.json`;
+        const r2 = await fetch(alt, {cache:'no-store'});
+        if(!r2.ok) throw new Error('Not found');
+        const big = await r2.json();
+        data = (big && (big[ch] || (big.chapters && big.chapters[String(ch)]))) || [];
+      }else{
+        data = await res.json();
+      }
 
-    function renderVerses(rows){
       versesEl.innerHTML = '';
-      if(!Array.isArray(rows) || rows.length===0){
-        versesEl.innerHTML = '<p class="muted">No verses found.</p>';
+      if(!Array.isArray(data) || !data.length){
+        versesEl.innerHTML = '<p class="muted">No data for this chapter.</p>';
         return;
       }
-      rows.forEach(v=>{
-        const cList = Array.isArray(v.c) ? v.c : [];
-        const sList = Array.isArray(v.s) ? v.s : [];
 
-        const wrap = document.createElement('div');
-        wrap.className = 'verse';
-
-        // Verse line
-        const vline = document.createElement('div');
-        vline.className = 'vline';
-
-        const vnum = document.createElement('div');
-        vnum.className = 'vnum';
-        vnum.textContent = v.v;
-
-        const vtext = document.createElement('div');
-        vtext.className = 'vtext';
-        vtext.textContent = v.t || '';
-
-        vline.appendChild(vnum);
-        vline.appendChild(vtext);
-        wrap.appendChild(vline);
-
-        // Chips row
-        const chips = document.createElement('div');
-        chips.className = 'chips';
-
-        if(cList.length){
-          const chipRefs = document.createElement('span');
-          chipRefs.className = 'chip';
-          chipRefs.textContent = 'Refs: ' + sentenceJoin(cList);
-          chips.appendChild(chipRefs);
-        }
-
-        if(sList.length){
-          const chipStr = document.createElement('span');
-          chipStr.className = 'chip';
-          chipStr.textContent = 'Strong’s: ' + sList.join(', ');
-          chips.appendChild(chipStr);
-        }
-
-        if(chips.children.length){
-          wrap.appendChild(chips);
-        }
-
-        versesEl.appendChild(wrap);
+      data.forEach(v => {
+        // Expecting shape { v:number, t:string, c:[], s:[] }
+        const node = renderVerse(v);
+        versesEl.appendChild(node);
       });
+
+    }catch(err){
+      console.error(err);
+      versesEl.innerHTML = '<p class="muted">Unable to load chapter.</p>';
     }
+  }
 
-    // -------- Bible Dictionary (Easton)
-    const dictPanel = qs('#dictPanel');
-    const dictList = qs('#dictList');
-    const dictSearch = qs('#dictSearch');
+  // Bible Dictionary (Easton)
+  let easton = null;
+  async function ensureEaston(){
+    if(easton) return easton;
+    try{
+      const r = await fetch('/israelite-research/data/dictionaries/easton_dictionary.json', {cache:'force-cache'});
+      if(r.ok){ easton = await r.json(); }
+    }catch(e){}
+    return easton || {};
+  }
+  document.getElementById('dictGo').addEventListener('click', async ()=>{
+    const term = (document.getElementById('dictSearch').value||'').trim();
+    const panel = document.getElementById('dictPanel');
+    if(!term){ panel.innerHTML = '<p class="muted">Enter a term to search.</p>'; return; }
+    const dict = await ensureEaston();
+    // Easton commonly keyed by Title Case words; try flexible lookups
+    const keys = Object.keys(dict||{});
+    const direct = dict[term] || dict[term.toUpperCase()] || dict[term.toLowerCase()];
+    if(direct){
+      panel.innerHTML = `<div><strong>${term}</strong></div><div style="margin-top:.4rem; line-height:1.55">${direct}</div>`;
+      return;
+    }
+    const hit = keys.find(k => k.toLowerCase() === term.toLowerCase()) ||
+                keys.find(k => k.toLowerCase().includes(term.toLowerCase()));
+    if(hit){
+      panel.innerHTML = `<div><strong>${hit}</strong></div><div style="margin-top:.4rem; line-height:1.55">${dict[hit]}</div>`;
+    }else{
+      panel.innerHTML = `<p class="muted">No entry found for “${term}”.</p>`;
+    }
+  });
 
-    let dictIndex = [];
-    fetch('/israelite-research/data/dictionaries/easton_dictionary.json')
-      .then(r=> r.ok ? r.json() : [])
-      .then(json=>{
-        dictPanel.textContent = 'Type a term above to see entries.';
-        dictIndex = Array.isArray(json) ? json : [];
-      })
-      .catch(()=> dictPanel.textContent = 'Dictionary not available.');
-
-    dictSearch.addEventListener('input', ()=>{
-      const q = dictSearch.value.trim().toLowerCase();
-      dictList.innerHTML = '';
-      if(!q){
-        return;
-      }
-      const hits = dictIndex.filter(x => (x.term||'').toLowerCase().includes(q)).slice(0,25);
-      if(!hits.length){
-        dictList.innerHTML = '<li class="muted">No results.</li>';
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      hits.forEach(h=>{
-        const li = document.createElement('li');
-        const title = h.term || '';
-        const def = h.definition || '';
-        li.innerHTML = `<strong>${title}</strong> — <span class="muted">${def}</span>`;
-        frag.appendChild(li);
-      });
-      dictList.appendChild(frag);
-    });
-  })();
+  loadChapter();
+})();
 </script>
 </body>
 </html>
