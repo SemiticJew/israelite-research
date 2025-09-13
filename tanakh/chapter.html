@@ -1,376 +1,281 @@
-<!-- tanakh/chapter.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chapter — Semitic Jew</title>
-  <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <style>
-    /* Page scaffold */
-    .chapter-wrap{max-width:900px;margin:0 auto;padding:1rem}
-    .chapter-head{margin:0 0 1rem}
-    .muted{color:#666;font-size:.95rem}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>New Testament — Chapter</title>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+<style>
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .page-header{padding:24px 0 8px}
+  .page-title{margin:0;font-size:2rem;font-weight:800}
+  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
+  .muted{color:var(--muted)}
+  .verse{display:flex;gap:8px;margin:.45rem 0;position:relative;padding-right:84px;cursor:pointer}
+  .vnum{min-width:26px;text-align:right;color:var(--muted)}
+  .vtext{color:#111;line-height:1.5}
+  .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
+  .lex{margin:0;padding-left:1.1rem}
+  .lex li{margin:.35rem 0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
-    /* SINGLE container around all verses */
-    .verses{
-      display:flex; flex-direction:column; gap:0;
-      border:1px solid #e6ebf2; background:#fff; border-radius:12px;
-      padding:.5rem;
-    }
-    /* Each verse row (no individual borders) */
-    .verse-row{
-      display:grid; gap:.6rem; align-items:start;
-      /* JS can set columns; default is single-column on small screens */
-      padding:.6rem .8rem;
-    }
-    /* Divider between verses */
-    .verse-row + .verse-row{ border-top:1px solid #f1f4f9; }
+  /* Toolbar */
+  .reader-toolbar{
+    position: sticky; top: 0; z-index: 50;
+    display:flex; align-items:center; justify-content:center; gap:.75rem;
+    background:#fff; border:1px solid var(--sky); border-radius:10px;
+    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .reader-toolbar .btn{
+    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  }
+  .reader-toolbar .btn:hover{ background:#f8fafc }
+  .reader-toolbar .ch-picker select{
+    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
+  }
 
-    .vnum{font-weight:700;color:#666;text-align:center}
-    .vtext{line-height:1.6}
+  /* Verse actions */
+  .v-actions{position:absolute; right:6px; top:2px; display:flex; gap:6px}
+  .v-actions button{
+    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.15rem .35rem;
+    font-size:.78rem; cursor:pointer;
+  }
+  .v-actions button:hover{ background:#f8fafc }
 
-    .tools-btn{
-      border:1px solid #e6ebf2; background:#f8fafc; border-radius:8px;
-      padding:.25rem .5rem; cursor:pointer
-    }
-    .copy-btn{
-      border:1px solid #e6ebf2; background:#fff; border-radius:8px;
-      padding:.25rem .5rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
-      width:36px; height:28px;
-    }
+  /* Strong’s badges */
+  .badge{
+    display:inline-block; margin-left:.35rem; padding:.05rem .35rem; border:1px solid var(--sky);
+    border-radius:8px; font-size:.78rem; color:#333; background:#054A910D; cursor:pointer;
+  }
 
-    .tools{grid-column:1 / -1;margin-top:.5rem;border-top:1px dashed #e0e6ef;padding-top:.5rem}
-    .tools[hidden]{display:none}
-    .tools h4{margin:.25rem 0 .25rem;font-size:.95rem}
-    .xref{font-size:.95rem;color:#054A91}
-  </style>
+  /* Hover card */
+  .hovercard{
+    position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
+    background:#fff; border:1px solid #e6ebf2; border-radius:10px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    padding:.6rem .7rem; font-size:.9rem;
+  }
+  .hovercard.open{ display:block }
+
+  .sr-only{ position:absolute!important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px) }
+
+  /* Verse Commentary UI */
+  .vc-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin-bottom:.4rem}
+  .vc-ref{font-weight:700; color:var(--ink)}
+  .vc-buttons{display:flex; gap:.4rem}
+  .vc-btn{border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.3rem .55rem; font:inherit; cursor:pointer}
+  .vc-btn:hover{background:#f8fafc}
+  .vc-text{width:100%; min-height:160px; border:1px solid var(--sky); border-radius:10px; padding:.6rem; font:inherit; line-height:1.5}
+  .vc-foot{display:flex; align-items:center; justify-content:space-between; margin-top:.4rem}
+  .vc-saved{font-size:.85rem; color:var(--muted)}
+  .vc-list{margin:.4rem 0 0; padding-left:1.1rem}
+  .vc-list li{margin:.25rem 0}
+  .vc-empty{color:var(--muted)}
+  .verse.active{background:rgba(5,74,145,.06); border-radius:8px}
+</style>
 </head>
 <body>
-  <!-- Header (inline, using your current header.html) -->
-  <div id="site-header">
-    <!-- Universal Header Partial -->
-    <header class="site-header-bar">
-      <style>
-        #site-header .site-header-bar{
-          background: var(--surface, #ffffff);
-          color: var(--ink, #0b2340);
-          border-bottom: 1px solid var(--border, #e6ebf2);
-        }
-        #site-header .header-inner{
-          max-width:1200px; margin:0 auto; padding:10px 16px;
-          display:flex; align-items:center; justify-content:space-between; gap:12px;
-        }
-        #site-header .brand{
-          display:inline-flex; align-items:center; gap:10px;
-          text-decoration:none; color:var(--ink, #0b2340);
-          font-weight:900; font-size:1.05rem;
-        }
-        #site-header .brand .mark{
-          width:26px; height:26px; border-radius:7px;
-          border:1px solid var(--border, #e6ebf2);
-          display:inline-flex; align-items:center; justify-content:center;
-          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-header nav.primary{
-          display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-        }
-        #site-header nav.primary a{
-          text-decoration:none; color:var(--ink, #0b2340); opacity:.95;
-          padding:8px 10px; border-radius:8px; border:1px solid transparent;
-          transition:border-color .15s ease, box-shadow .15s ease;
-        }
-        #site-header nav.primary a:hover{
-          border-color:var(--border, #e6ebf2);
-          box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-header .tools{
-          display:flex; align-items:center; gap:10px;
-        }
-        #site-header .icon-btn{
-          width:40px; height:40px; border-radius:999px;
-          border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
-          display:inline-flex; align-items:center; justify-content:center;
-          cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
-        }
-        #site-header .icon-btn:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
-      </style>
+<div id="site-header"></div>
 
-      <div class="header-inner">
-        <a class="brand" href="/israelite-research/">
-          <span class="mark" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-              <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-              <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span>Semitic&nbsp;Jew</span>
-        </a>
+<main class="container">
+  <header class="page-header">
+    <h1 class="page-title" id="pageTitle">New Testament (KJV)</h1>
+    <div class="crumbs" id="crumbs">New Testament → Book → Chapter</div>
+  </header>
 
-        <nav class="primary" aria-label="Primary">
-          <a href="/israelite-research/apologetics.html">Apologetics</a>
-          <a href="/israelite-research/articles.html">Articles</a>
-          <a href="/israelite-research/biblia.html">Biblia</a>
-          <a href="/israelite-research/donations.html">Donations</a>
-          <a href="/israelite-research/events.html">Events</a>
-          <a href="/israelite-research/media.html">Media</a>
-        </nav>
-
-        <div class="tools">
-          <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </header>
+  <!-- Sticky reader toolbar -->
+  <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
+    <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
+    <div class="ch-picker">
+      <label for="chSelect" class="sr-only">Select chapter</label>
+      <select id="chSelect"></select>
+    </div>
+    <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
   </div>
 
-  <!-- Breadcrumbs -->
-  <nav id="breadcrumbs" class="breadcrumb" aria-label="Breadcrumb"></nav>
+  <section class="layout">
+    <div class="panel">
+      <h3>Text</h3>
+      <!-- Tip: nt-chapter.js should render each verse as .verse with a .vnum -->
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
 
-  <main class="chapter-wrap">
-    <header class="chapter-head">
-      <h1 id="chapterTitle" class="page-title">Loading…</h1>
-      <p id="chapterDesc" class="page-subtitle"></p>
-    </header>
+    <aside class="panel">
+      <h3>Strong’s (Lexicon)</h3>
+      <div id="lexicon"><p class="muted">Loading…</p></div>
 
-    <!-- Single rounded container holds every verse -->
-    <section id="verses" class="verses" aria-live="polite">
-      <div class="muted">Loading…</div>
-    </section>
-  </main>
+      <hr style="border:none;border-top:1px solid var(--sky);margin:12px 0">
 
-  <!-- Footer (inline, using your current footer.html) -->
-  <div id="site-footer">
-    <!-- Universal Footer Partial -->
-    <footer class="site-footer">
-      <style>
-        #site-footer .site-footer{
-          background: var(--surface, #ffffff);
-          color: var(--ink, #0b2340);
-          border-top: 1px solid var(--border, #e6ebf2);
-        }
-        #site-footer .footer-inner{
-          max-width:1200px; margin:0 auto; padding:28px 16px 18px;
-          display:grid; gap:28px;
-          grid-template-columns: 1.2fr .8fr .8fr;
-        }
-        @media (max-width: 960px){
-          #site-footer .footer-inner{ grid-template-columns: 1fr; }
-        }
-
-        /* Brand / tagline / socials / newsletter */
-        #site-footer .footer-brand h3{
-          margin:0 0 6px; font-size:1.15rem; font-weight:800; color:var(--ink, #0b2340);
-          display:flex; align-items:center; gap:8px;
-        }
-        #site-footer .footer-brand .mark{
-          width:26px; height:26px; border-radius:7px; border:1px solid var(--border, #e6ebf2);
-          display:inline-flex; align-items:center; justify-content:center;
-          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-footer .footer-tagline{
-          margin:0 0 12px; color:var(--muted, #6b7280);
-          max-width:46ch; text-align:left;
-        }
-        #site-footer .footer-social{ display:flex; gap:10px; margin:10px 0 14px; }
-        #site-footer .footer-social .icon{
-          width:40px; height:40px; border-radius:10px;
-          border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
-          display:inline-flex; align-items:center; justify-content:center;
-          text-decoration:none; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
-        }
-        #site-footer .footer-social .icon:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
-
-        /* Newsletter */
-        #site-footer .footer-newsletter .newsletter-row{
-          display:flex; gap:8px; align-items:center;
-        }
-        #site-footer .footer-newsletter input[type="email"]{
-          flex:1; padding:10px 12px; border:1px solid var(--border, #e6ebf2); border-radius:10px;
-          background:var(--bg, #ffffff); color:var(--ink, #0b2340);
-        }
-        #site-footer .footer-newsletter input::placeholder{ color:var(--muted, #6b7280); }
-        #site-footer .footer-newsletter button{
-          padding:10px 12px; border-radius:10px; border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340); cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s;
-        }
-        #site-footer .footer-newsletter button:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
-        #site-footer .newsletter-note{ display:block; margin-top:6px; color:var(--muted, #6b7280); }
-
-        /* Column headings + nav */
-        #site-footer .footer-heading{
-          margin:0 0 8px; font-size:.95rem; font-weight:800; letter-spacing:.06em;
-          text-transform:uppercase; color:var(--ink, #0b2340);
-        }
-        #site-footer .footer-col--explore .footer-heading,
-        #site-footer .footer-col--texts .footer-heading{
-          font-style: normal; font-weight: 800; letter-spacing: .06em;
-        }
-        #site-footer .footer-nav{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
-        #site-footer .footer-nav a{
-          color:var(--ink, #0b2340); text-decoration:none; padding:6px 8px; border-radius:8px;
-          border:1px solid transparent;
-          transition:border-color .15s ease, background-color .15s ease;
-        }
-        #site-footer .footer-nav a:hover{
-          border-color:var(--border, #e6ebf2);
-          background:rgba(0,0,0,.02);
-        }
-        /* Footer color tweaks */
-        #site-footer .footer-tagline { color: #F17300; }
-        #site-footer .newsletter-note {
-          color: #F17300;
-          text-align: left;
-        }
-        #site-footer .footer-bottom p { color: #F17300; }
-
-        /* Bottom bar */
-        #site-footer .footer-bottom{
-          max-width:1200px; margin:0 auto; padding:10px 16px 24px;
-          display:flex; align-items:center; justify-content:space-between; gap:12px;
-          color:var(--muted, #6b7280);
-          border-top:1px solid var(--border, #e6ebf2);
-        }
-        @media (max-width: 720px){
-          #site-footer .footer-bottom{ flex-direction:column; align-items:flex-start; gap:6px; }
-        }
-        #site-footer .legal-links{ display:flex; gap:12px; flex-wrap:wrap; }
-        #site-footer .legal-links a{ color:var(--ink, #0b2340); text-decoration:none; opacity:.85; }
-        #site-footer .legal-links a:hover{ opacity:1; }
-      </style>
-
-      <div class="footer-inner container">
-        <!-- Left: Brand + description + socials + newsletter -->
-        <div class="footer-col footer-brand">
-          <h3 class="footer-heading footer-brandname">
-            <span class="mark" aria-hidden="true">
-              <!-- Crown icon -->
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-                <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
-                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-            <strong>Semitic Jew</strong>
-          </h3>
-
-          <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
-
-          <div class="footer-social" aria-label="Social media">
-            <!-- Instagram -->
-            <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-              </svg>
-            </a>
-            <!-- X (Twitter) -->
-            <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-            <!-- Threads -->
-            <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-            <!-- YouTube -->
-            <a class="icon" href="https://www.youtube.com/@semiticjew" target="_blank" rel="noopener" aria-label="YouTube">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M22 12s0-3-0.4-4.4c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 0.5c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 0.4 4.4c.2.8.8 1.4 1.6 1.6 1.4.5 8 .5 8 .5s6.6 0 8-0.5c.8-.2 1.4-.8 1.6-1.6C22 15 22 12 22 12z" fill="none" stroke="currentColor" stroke-width="2"/>
-                <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
-              </svg>
-            </a>
-            <!-- Facebook -->
-            <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/>
-              </svg>
-            </a>
+      <h3>Verse Commentary</h3>
+      <div id="vcPanel" aria-live="polite">
+        <div class="vc-head">
+          <div class="vc-ref" id="vcRef">Click a verse to add a note</div>
+          <div class="vc-buttons">
+            <button class="vc-btn" id="vcClear" title="Clear note for this verse" disabled>Clear</button>
           </div>
-
-          <form class="footer-newsletter" action="https://formspree.io/f/your-id" method="POST" novalidate>
-            <label for="nl-email" class="sr-only">Email address</label>
-            <div class="newsletter-row">
-              <input id="nl-email" name="email" type="email" placeholder="Your email" required>
-              <button type="submit">Subscribe</button>
-            </div>
-            <small class="newsletter-note">Occasional updates. No spam. Unsubscribe any time.</small>
-          </form>
+        </div>
+        <textarea class="vc-text" id="vcText" placeholder="Start typing your personal commentary for the selected verse…" disabled></textarea>
+        <div class="vc-foot">
+          <button class="vc-btn" id="vcSave" disabled>Save</button>
+          <div class="vc-saved" id="vcSaved"></div>
         </div>
 
-        <!-- Middle column: Resources -->
-        <div class="footer-col footer-col--explore">
-          <h4 class="footer-heading">Resources</h4>
-          <ul class="footer-nav">
-            <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
-            <li><a href="/israelite-research/articles.html">Articles</a></li>
-            <li><a href="/israelite-research/biblia.html">Biblia</a></li>
-            <li><a href="/israelite-research/donations.html">Donations</a></li>
-            <li><a href="/israelite-research/events.html">Events</a></li>
-            <li><a href="/israelite-research/media.html">Media</a></li>
-          </ul>
-        </div>
-
-        <!-- Right column: The Writings -->
-        <div class="footer-col footer-col--texts">
-          <h4 class="footer-heading">The Writings</h4>
-          <ul class="footer-nav">
-            <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
-            <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
-            <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
-            <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-            <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
-          </ul>
-        </div>
+        <details style="margin-top:.6rem">
+          <summary>All notes in this chapter</summary>
+          <ul class="vc-list" id="vcList"><li class="vc-empty">No verse notes yet.</li></ul>
+        </details>
       </div>
+    </aside>
+  </section>
+</main>
 
-      <div class="footer-bottom container">
-        <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
-        <div class="legal-links">
-          <a href="/israelite-research/terms.html">Terms</a>
-          <a href="/israelite-research/privacy.html">Privacy</a>
-          <a href="/israelite-research/contact.html">Contact</a>
-        </div>
-      </div>
-    </footer>
-  </div>
+<div id="site-footer"></div>
 
-  <!-- Partials + Breadcrumbs + Chapter logic (absolute paths for GitHub Pages) -->
-  <script src="/israelite-research/js/include.js"></script>
-  <script src="/israelite-research/js/breadcrumbs.js" defer></script>
-  <script src="/israelite-research/js/chapter.js" defer></script>
+<!-- Hovercard for Strong’s -->
+<div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
+
+<script src="/israelite-research/js/include.js"></script>
+<script src="/israelite-research/js/nt-chapter.js"></script>
+
+<!-- Minimal inline logic for verse-by-verse notes (non-invasive to nt-chapter.js) -->
+<script>
+(function(){
+  const $ = sel => document.querySelector(sel);
+  const versesEl = $('#verses');
+  const vcRef = $('#vcRef');
+  const vcText = $('#vcText');
+  const vcSave = $('#vcSave');
+  const vcClear = $('#vcClear');
+  const vcSaved = $('#vcSaved');
+  const vcList = $('#vcList');
+
+  // chapterKey: unique per chapter page (e.g., /newtestament/matthew/1)
+  const chapterKey = (location.pathname.replace(/\.html?$/,'') || 'nt-chapter');
+  const storeKey = 'vc:' + chapterKey;
+
+  let notes = {};
+  try { notes = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(_) { notes = {}; }
+  let currentVerse = null;
+  let saveTimer = null;
+
+  function verseNumberFrom(el){
+    const verse = el.closest('.verse');
+    if(!verse) return null;
+    // Prefer explicit data attribute if nt-chapter.js sets it
+    const d = verse.getAttribute('data-verse');
+    if(d) return String(d).trim();
+    // Fallback: read from .vnum text
+    const num = verse.querySelector('.vnum')?.textContent?.trim();
+    return num || null;
+  }
+
+  function selectVerseByElement(el){
+    const vnum = verseNumberFrom(el);
+    if(!vnum) return;
+
+    if(currentVerse){
+      // remove previous highlight
+      const prev = versesEl.querySelector(`.verse[data-verse="${currentVerse}"], .verse:has(.vnum)`);
+      versesEl.querySelectorAll('.verse').forEach(v=>v.classList.remove('active'));
+    }
+    // highlight current
+    const verseEl = el.closest('.verse');
+    if(verseEl) verseEl.classList.add('active');
+
+    currentVerse = vnum;
+    const existing = notes[vnum] || '';
+    vcRef.textContent = `Commentary on verse ${vnum}`;
+    vcText.disabled = false;
+    vcSave.disabled = false;
+    vcClear.disabled = false;
+    vcText.value = existing;
+    vcText.focus();
+    vcText.setSelectionRange(vcText.value.length, vcText.value.length);
+    vcSaved.textContent = existing ? 'Loaded saved note.' : '';
+  }
+
+  function persist(){
+    localStorage.setItem(storeKey, JSON.stringify(notes));
+    renderList();
+  }
+
+  function renderList(){
+    const entries = Object.entries(notes).filter(([_,v])=>v && v.trim().length);
+    entries.sort((a,b)=>Number(a[0]) - Number(b[0]));
+    vcList.innerHTML = '';
+    if(!entries.length){
+      vcList.innerHTML = '<li class="vc-empty">No verse notes yet.</li>';
+      return;
+    }
+    for(const [v,txt] of entries){
+      const li = document.createElement('li');
+      const safe = txt.length > 140 ? txt.slice(0,140) + '…' : txt;
+      li.innerHTML = `<a href="#" data-jump="${v}">v${v}</a> — ${escapeHtml(safe)}`;
+      vcList.appendChild(li);
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // Click a verse anywhere in #verses to select it
+  versesEl.addEventListener('click', (e) => {
+    const verseEl = e.target.closest('.verse');
+    if(!verseEl) return;
+    selectVerseByElement(verseEl);
+  });
+
+  // Jump from the list
+  vcList.addEventListener('click', (e)=>{
+    const a = e.target.closest('a[data-jump]');
+    if(!a) return;
+    e.preventDefault();
+    const vnum = a.getAttribute('data-jump');
+    const target = Array.from(versesEl.querySelectorAll('.verse'))
+      .find(v => v.getAttribute('data-verse') === vnum || v.querySelector('.vnum')?.textContent?.trim() === vnum);
+    if(target){ target.scrollIntoView({behavior:'smooth', block:'center'}); selectVerseByElement(target); }
+  });
+
+  // Save (manual)
+  vcSave.addEventListener('click', ()=>{
+    if(!currentVerse) return;
+    notes[currentVerse] = vcText.value.trim();
+    persist();
+    vcSaved.textContent = 'Saved.';
+    setTimeout(()=>vcSaved.textContent = '', 1200);
+  });
+
+  // Auto-save while typing (debounced)
+  vcText.addEventListener('input', ()=>{
+    if(!currentVerse) return;
+    vcSaved.textContent = 'Saving…';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      notes[currentVerse] = vcText.value.trim();
+      persist();
+      vcSaved.textContent = 'Saved.';
+      setTimeout(()=>vcSaved.textContent = '', 900);
+    }, 400);
+  });
+
+  // Clear current verse note
+  vcClear.addEventListener('click', ()=>{
+    if(!currentVerse) return;
+    delete notes[currentVerse];
+    persist();
+    vcText.value = '';
+    vcSaved.textContent = 'Cleared.';
+    setTimeout(()=>vcSaved.textContent = '', 900);
+    renderList();
+  });
+
+  // Initial list render
+  renderList();
+})();
+</script>
 </body>
 </html>
