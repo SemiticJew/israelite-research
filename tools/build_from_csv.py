@@ -1,116 +1,71 @@
-# tools/build_from_csv.py
-import csv, json, os, re
+import csv, json, os, re, sys
 from collections import defaultdict
 
-CSV_PATH = os.path.join('tools', 'kjv-apocrypha.csv')
+CSV_PATH = sys.argv[1] if len(sys.argv) > 1 else "kjv-apocrypha.csv"
+OUT_ROOT = "data"
 
-# ---------------- Canon Partitions (exact display names expected from CSV) ----------------
-TANAKH = [
-    "Genesis","Exodus","Leviticus","Numbers","Deuteronomy",
-    "Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings",
-    "1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms",
-    "Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations",
-    "Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah",
-    "Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"
-]
-
-NEW_TESTAMENT = [
+APOCRYPHA = {
+    "Tobit","Judith","Wisdom","Sirach","Ecclesiasticus","Baruch",
+    "1 Maccabees","2 Maccabees","I Maccabees","II Maccabees",
+    "Additions to Esther","Prayer of Azariah","Susanna","Bel and the Dragon",
+    "1 Esdras","2 Esdras","Prayer of Manasseh","Letter of Jeremiah"
+}
+NEW_TESTAMENT = {
     "Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians",
     "Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians",
     "1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter",
     "1 John","2 John","3 John","Jude","Revelation"
-]
+}
 
-APOCRYPHA = [
-    "1 Esdras","2 Esdras","Tobit","Judith","Additions to Esther","Wisdom of Solomon","Sirach",
-    "Baruch","Letter of Jeremiah","Prayer of Azariah","Susanna","Bel and the Dragon",
-    "Prayer of Manasseh","1 Maccabees","2 Maccabees","3 Maccabees","4 Maccabees","Psalm 151",
-    "Epistle to the Laodiceans","Laodiceans"
-]
-
-# Roman numeral → Arabic prefix normalization for CSV “Book” names
-ROMAN_PREFIXES = [
-    (r'^\s*III\s+', '3 '),
-    (r'^\s*II\s+',  '2 '),
-    (r'^\s*I\s+',   '1 '),
-]
-
-def normalize_book_name(name: str) -> str:
+def slugify_book(name: str) -> str:
     s = name.strip()
-    # Roman numerals at start → Arabic
-    for pat, rep in ROMAN_PREFIXES:
-        s = re.sub(pat, rep, s, flags=re.IGNORECASE)
-    # Common alternates
-    if s == "Song of Songs":
-        s = "Song of Solomon"
-    if s == "Laodiceans":
-        s = "Epistle to the Laodiceans"
+    s = re.sub(r'^(I{1,3}|IV|V|VI{0,3}|IX|X)(?=\s)', 
+               lambda m: {"I":"1","II":"2","III":"3","IV":"4","V":"5","VI":"6","VII":"7","VIII":"8","IX":"9","X":"10"}.get(m.group(0).upper(), m.group(0)), s)
+    s = re.sub(r"^Canticles$", "Song of Solomon", s, flags=re.I)
+    s = re.sub(r"^Song of Songs$", "Song of Solomon", s, flags=re.I)
+    s = re.sub(r"^Ecclesiasticus$", "Sirach", s, flags=re.I)
+    s = re.sub(r"^Wis$", "Wisdom", s, flags=re.I)
+    s = re.sub(r"^Sir$", "Sirach", s, flags=re.I)
+    s = re.sub(r'^(\d+)\s+', r'\1-', s)
+    s = s.lower()
+    s = s.replace('&','and')
+    s = re.sub(r"[’'`]", "", s)
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
     return s
 
-def slugify(book: str) -> str:
-    s = book.lower().strip()
-    s = s.replace('&', 'and')
-    s = re.sub(r'[^a-z0-9\s-]+', '', s)
-    s = re.sub(r'\s+', '-', s)
-    return s
+def canon_for(book_name: str) -> str:
+    if book_name in APOCRYPHA: return "apocrypha"
+    if book_name in NEW_TESTAMENT: return "newtestament"
+    return "tanakh"
 
-def bucket_root(book_norm: str) -> str:
-    if book_norm in TANAKH:
-        return os.path.join('data','tanakh')
-    if book_norm in NEW_TESTAMENT:
-        return os.path.join('data','newtestament')
-    if book_norm in APOCRYPHA:
-        return os.path.join('data','apocrypha')
-    # Fallback: apocrypha bucket
-    return os.path.join('data','apocrypha')
+def to_int_safe(x, default=0):
+    try: return int(str(x).strip())
+    except: return default
 
-# ---------------- Read CSV (Book ID,Book,Chapter,Text,Count,Verse) ----------------
-rows = []
-with open(CSV_PATH, newline='', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    # Sanity check for required headers
-    required = {'Book ID','Book','Chapter','Text','Count','Verse'}
-    missing = required - set(reader.fieldnames or [])
-    if missing:
-        raise SystemExit(f"CSV missing columns: {', '.join(sorted(missing))}")
-    for r in reader:
-        rows.append(r)
-
-# ---------------- Group into per-(Book, Chapter) lists ----------------
 chapters = defaultdict(list)
-for r in rows:
-    book_raw = (r.get('Book') or '').strip()
-    if not book_raw:
-        continue
-    book_norm = normalize_book_name(book_raw)
+book_max_ch = defaultdict(int)
 
-    try:
-        ch = int(r.get('Chapter') or 0)
-        v  = int(r.get('Verse') or 0)
-    except ValueError:
-        continue
+with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        book = (row.get("Book") or "").strip()
+        ch = to_int_safe(row.get("Chapter"), 0)
+        v  = to_int_safe(row.get("Verse"), 0)
+        text = (row.get("Text") or "").strip()
+        if not book or ch <= 0 or v <= 0: continue
+        canon = canon_for(book)
+        slug = slugify_book(book)
+        chapters[(canon,slug,ch)].append((v,text))
+        if ch > book_max_ch[(canon,slug)]: book_max_ch[(canon,slug)] = ch
 
-    text = (r.get('Text') or '').strip()
+for (canon, slug, ch), items in chapters.items():
+    items.sort(key=lambda x: x[0])
+    verses = [{"v": v, "t": t, "s": []} for v,t in items]  # s=[] placeholder
+    total = book_max_ch[(canon, slug)]
+    out_dir = os.path.join(OUT_ROOT, canon, slug)
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, f"{ch}.json")
+    with open(out_path,"w",encoding="utf-8") as w:
+        json.dump({"total": total, "verses": verses}, w, ensure_ascii=False, indent=2)
 
-    # Build the verse shape the site expects (no inline Strong’s; placeholders for cross-refs/strongs)
-    chapters[(book_norm, ch)].append({
-        "v": v,
-        "t": text,
-        "c": [],   # cross-references placeholder
-        "s": []    # strongs placeholder
-    })
-
-# ---------------- Write JSON per chapter ----------------
-written = 0
-for (book_norm, ch), verse_list in chapters.items():
-    verse_list.sort(key=lambda x: x["v"])
-    root   = bucket_root(book_norm)
-    bslug  = slugify(book_norm)
-    outdir = os.path.join(root, bslug)
-    os.makedirs(outdir, exist_ok=True)
-    outpath = os.path.join(outdir, f"{ch}.json")
-    with open(outpath, 'w', encoding='utf-8') as f:
-        json.dump(verse_list, f, ensure_ascii=False, indent=2)
-    written += 1
-
-print(f"Wrote {written} chapter JSON files from {CSV_PATH}")
+print("Done. Wrote", len(book_max_ch), "books.")
