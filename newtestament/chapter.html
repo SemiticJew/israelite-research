@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>New Testament — Chapter</title>
+<title>Bible — Chapter</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
   :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
@@ -14,28 +14,30 @@
   .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
   .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
   .muted{color:var(--muted)}
-  .verse{display:flex;gap:8px;margin:.45rem 0;position:relative;padding-right:84px;cursor:pointer}
+  /* Verse rows + subtle divider */
+  .verse{display:flex;gap:8px;margin:.45rem 0;position:relative;padding-right:84px;cursor:pointer;border-bottom:1px solid var(--sky);padding-bottom:.45rem}
+  .verse:last-child{border-bottom:0}
   .vnum{min-width:26px;text-align:right;color:var(--muted)}
   .vtext{color:#111;line-height:1.5}
   .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
-  .lex{margin:0;padding-left:1.1rem}
-  .lex li{margin:.35rem 0}
   @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
   /* Toolbar */
   .reader-toolbar{
     position: sticky; top: 0; z-index: 50;
-    display:flex; align-items:center; justify-content:center; gap:.75rem;
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.6rem .75rem;
     background:#fff; border:1px solid var(--sky); border-radius:10px;
     padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
   }
-  .reader-toolbar .btn{
-    padding:.45rem .7rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; cursor:pointer; font:inherit;
+  .reader-toolbar .btn,
+  .reader-toolbar select,
+  .reader-toolbar input[type="search"]{
+    padding:.45rem .6rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; font:inherit;
   }
+  .reader-toolbar .btn{ cursor:pointer }
   .reader-toolbar .btn:hover{ background:#f8fafc }
-  .reader-toolbar .ch-picker select{
-    border:1px solid #e6ebf2; border-radius:10px; padding:.45rem .6rem; font:inherit;
-  }
+  .reader-toolbar .group{display:flex; align-items:center; gap:.45rem}
+  .reader-toolbar label.sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
 
   /* Verse actions */
   .v-actions{position:absolute; right:6px; top:2px; display:flex; gap:6px}
@@ -45,13 +47,7 @@
   }
   .v-actions button:hover{ background:#f8fafc }
 
-  /* Strong’s badges */
-  .badge{
-    display:inline-block; margin-left:.35rem; padding:.05rem .35rem; border:1px solid var(--sky);
-    border-radius:8px; font-size:.78rem; color:#333; background:#054A910D; cursor:pointer;
-  }
-
-  /* Hover card */
+  /* Hover card for Strong’s (left in case badges appear in your JSON) */
   .hovercard{
     position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
     background:#fff; border:1px solid #e6ebf2; border-radius:10px;
@@ -59,22 +55,6 @@
     padding:.6rem .7rem; font-size:.9rem;
   }
   .hovercard.open{ display:block }
-
-  .sr-only{ position:absolute!important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px) }
-
-  /* Verse Commentary UI */
-  .vc-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin-bottom:.4rem}
-  .vc-ref{font-weight:700; color:var(--ink)}
-  .vc-buttons{display:flex; gap:.4rem}
-  .vc-btn{border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.3rem .55rem; font:inherit; cursor:pointer}
-  .vc-btn:hover{background:#f8fafc}
-  .vc-text{width:100%; min-height:160px; border:1px solid var(--sky); border-radius:10px; padding:.6rem; font:inherit; line-height:1.5}
-  .vc-foot{display:flex; align-items:center; justify-content:space-between; margin-top:.4rem}
-  .vc-saved{font-size:.85rem; color:var(--muted)}
-  .vc-list{margin:.4rem 0 0; padding-left:1.1rem}
-  .vc-list li{margin:.25rem 0}
-  .vc-empty{color:var(--muted)}
-  .verse.active{background:rgba(5,74,145,.06); border-radius:8px}
 </style>
 </head>
 <body>
@@ -82,199 +62,260 @@
 
 <main class="container">
   <header class="page-header">
-    <h1 class="page-title" id="pageTitle">New Testament (KJV)</h1>
-    <div class="crumbs" id="crumbs">New Testament → Book → Chapter</div>
+    <h1 class="page-title" id="pageTitle">Bible (KJV)</h1>
+    <div class="crumbs" id="crumbs">Loading…</div>
   </header>
 
   <!-- Sticky reader toolbar -->
-  <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
-    <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
-    <div class="ch-picker">
+  <nav class="reader-toolbar" id="readerToolbar" aria-label="Chapter navigation">
+    <div class="group">
+      <button class="btn prev" id="btnPrev" aria-label="Previous chapter">← Prev</button>
       <label for="chSelect" class="sr-only">Select chapter</label>
-      <select id="chSelect"></select>
+      <select id="chSelect" aria-label="Chapter"></select>
+      <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
     </div>
-    <button class="btn next" id="btnNext" aria-label="Next chapter">Next →</button>
-  </div>
+
+    <!-- Canon + Book picker (inline) -->
+    <div class="group" aria-label="Canon and Book">
+      <label for="canonPick" class="sr-only">Canon</label>
+      <select id="canonPick" aria-label="Canon">
+        <option value="tanakh">Tanakh</option>
+        <option value="newtestament">New Testament</option>
+        <option value="apocrypha">Apocrypha</option>
+      </select>
+
+      <label for="bookPick" class="sr-only">Book</label>
+      <select id="bookPick" aria-label="Book"></select>
+
+      <button class="btn" id="goPick" aria-label="Go to selection">Go</button>
+    </div>
+  </nav>
 
   <section class="layout">
     <div class="panel">
       <h3>Text</h3>
-      <!-- Tip: nt-chapter.js should render each verse as .verse with a .vnum -->
+      <!-- nt-chapter.js will render verses here -->
       <div id="verses"><p class="muted">Loading…</p></div>
     </div>
 
-    <aside class="panel">
-      <h3>Strong’s (Lexicon)</h3>
-      <div id="lexicon"><p class="muted">Loading…</p></div>
-
-      <hr style="border:none;border-top:1px solid var(--sky);margin:12px 0">
-
-      <h3>Verse Commentary</h3>
-      <div id="vcPanel" aria-live="polite">
-        <div class="vc-head">
-          <div class="vc-ref" id="vcRef">Click a verse to add a note</div>
-          <div class="vc-buttons">
-            <button class="vc-btn" id="vcClear" title="Clear note for this verse" disabled>Clear</button>
-          </div>
-        </div>
-        <textarea class="vc-text" id="vcText" placeholder="Start typing your personal commentary for the selected verse…" disabled></textarea>
-        <div class="vc-foot">
-          <button class="vc-btn" id="vcSave" disabled>Save</button>
-          <div class="vc-saved" id="vcSaved"></div>
-        </div>
-
-        <details style="margin-top:.6rem">
-          <summary>All notes in this chapter</summary>
-          <ul class="vc-list" id="vcList"><li class="vc-empty">No verse notes yet.</li></ul>
-        </details>
+    <!-- Right panel: Bible Dictionary search -->
+    <aside class="panel" id="dictPanel">
+      <h3>Bible Dictionary</h3>
+      <div class="group" style="margin-bottom:.5rem">
+        <label for="dictQuery" class="sr-only">Search dictionary</label>
+        <input id="dictQuery" type="search" placeholder="Search terms (e.g., Ham, Ethiopia, Passover)" autocomplete="off" />
+        <button class="btn" id="dictClear" title="Clear search">Clear</button>
       </div>
+      <div id="dictResults"><p class="muted">Type to search the dictionary.</p></div>
     </aside>
   </section>
 </main>
 
 <div id="site-footer"></div>
 
-<!-- Hovercard for Strong’s -->
+<!-- Hovercard for Strong’s (kept for compatibility; badges may appear in JSON) -->
 <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
 
-<script src="/israelite-research/js/include.js"></script>
-<script src="/israelite-research/js/nt-chapter.js"></script>
+<!-- Defer scripts for perf -->
+<script src="/israelite-research/js/include.js" defer></script>
+<script src="/israelite-research/js/nt-chapter.js" defer></script>
 
-<!-- Minimal inline logic for verse-by-verse notes (non-invasive to nt-chapter.js) -->
+<!-- Header + crumbs auto-labeling (canon/book/chapter) -->
 <script>
 (function(){
-  const $ = sel => document.querySelector(sel);
-  const versesEl = $('#verses');
-  const vcRef = $('#vcRef');
-  const vcText = $('#vcText');
-  const vcSave = $('#vcSave');
-  const vcClear = $('#vcClear');
-  const vcSaved = $('#vcSaved');
-  const vcList = $('#vcList');
+  const parts = location.pathname.split('/').filter(Boolean);
+  const C = ['tanakh','newtestament','apocrypha'];
+  const canon = C.find(c => parts.includes(c)) || 'newtestament';
+  const idx = parts.indexOf(canon);
+  const book = (idx !== -1 && parts[idx+1]) ? parts[idx+1] : '';
+  const ch = new URLSearchParams(location.search).get('c') || (location.pathname.match(/chapter-(\d+)/i)?.[1] || '1');
 
-  // chapterKey: unique per chapter page (e.g., /newtestament/matthew/1)
-  const chapterKey = (location.pathname.replace(/\.html?$/,'') || 'nt-chapter');
-  const storeKey = 'vc:' + chapterKey;
+  const canonLabel = canon === 'tanakh' ? 'Tanakh' : canon === 'apocrypha' ? 'Apocrypha' : 'New Testament';
+  const label = (book||'').replace(/-/g,' ').replace(/\b(i{1,3})\b/gi,m=>m.toUpperCase()).replace(/\b\w/g,c=>c.toUpperCase());
 
-  let notes = {};
-  try { notes = JSON.parse(localStorage.getItem(storeKey) || '{}'); } catch(_) { notes = {}; }
-  let currentVerse = null;
-  let saveTimer = null;
+  document.getElementById('pageTitle').textContent = `${canonLabel} (KJV)`;
+  document.getElementById('crumbs').textContent = `${canonLabel} ${label ? `→ ${label}` : ''} → Chapter ${ch}`;
+})();
+</script>
 
-  function verseNumberFrom(el){
-    const verse = el.closest('.verse');
-    if(!verse) return null;
-    // Prefer explicit data attribute if nt-chapter.js sets it
-    const d = verse.getAttribute('data-verse');
-    if(d) return String(d).trim();
-    // Fallback: read from .vnum text
-    const num = verse.querySelector('.vnum')?.textContent?.trim();
-    return num || null;
+<!-- Canon + Book picker wiring -->
+<script>
+(function(){
+  const canonPick = document.getElementById('canonPick');
+  const bookPick  = document.getElementById('bookPick');
+  const goBtn     = document.getElementById('goPick');
+
+  const parts = location.pathname.split('/').filter(Boolean);
+  const CANONS = ['tanakh','newtestament','apocrypha'];
+  const canon = CANONS.find(c => parts.includes(c)) || 'newtestament';
+  const idx = parts.indexOf(canon);
+  const curBook = (idx !== -1 && parts[idx+1]) ? parts[idx+1] : 'matthew';
+  const curCh = parseInt(new URLSearchParams(location.search).get('c') || (location.pathname.match(/chapter-(\d+)/i)?.[1] || '1'), 10);
+
+  canonPick.value = canon;
+
+  const BOOKS = {
+    tanakh: [
+      'genesis','exodus','leviticus','numbers','deuteronomy',
+      'joshua','judges','ruth','i-samuel','ii-samuel','i-kings','ii-kings','i-chronicles','ii-chronicles',
+      'ezra','nehemiah','esther','job','psalms','proverbs','ecclesiastes','song-of-solomon',
+      'isaiah','jeremiah','lamentations','ezekiel','daniel',
+      'hosea','joel','amos','obadiah','jonah','micah','nahum','habakkuk','zephaniah','haggai','zechariah','malachi'
+    ],
+    newtestament: [
+      'matthew','mark','luke','john','acts','romans',
+      'i-corinthians','ii-corinthians','galatians','ephesians','philippians','colossians',
+      'i-thessalonians','ii-thessalonians','i-timothy','ii-timothy','titus','philemon',
+      'hebrews','james','i-peter','ii-peter','i-john','ii-john','iii-john','jude','revelation'
+    ],
+    apocrypha: [
+      'tobit','judith','wisdom','sirach','baruch','i-maccabees','ii-maccabees'
+    ]
+  };
+  const LABEL = s => s.replace(/-/g,' ')
+                      .replace(/\biii\b/g,'III').replace(/\bii\b/g,'II').replace(/\bi\b/g,'I')
+                      .replace(/\b\w/g,c=>c.toUpperCase());
+
+  function fillBooks(list, cur){
+    bookPick.innerHTML = '';
+    list.forEach(slug=>{
+      const opt = document.createElement('option');
+      opt.value = slug; opt.textContent = LABEL(slug);
+      if (slug === cur) opt.selected = true;
+      bookPick.appendChild(opt);
+    });
   }
 
-  function selectVerseByElement(el){
-    const vnum = verseNumberFrom(el);
-    if(!vnum) return;
+  fillBooks(BOOKS[canon], curBook);
 
-    if(currentVerse){
-      // remove previous highlight
-      const prev = versesEl.querySelector(`.verse[data-verse="${currentVerse}"], .verse:has(.vnum)`);
-      versesEl.querySelectorAll('.verse').forEach(v=>v.classList.remove('active'));
+  canonPick.addEventListener('change', ()=>{
+    const c = canonPick.value;
+    fillBooks(BOOKS[c], BOOKS[c][0]);
+  });
+
+  goBtn.addEventListener('click', ()=>{
+    const c = canonPick.value;
+    const b = bookPick.value;
+    const n = Math.max(1, parseInt(curCh || '1',10));
+    location.href = `/israelite-research/${c}/${b}/chapter.html?c=${n}`;
+  });
+})();
+</script>
+
+<!-- Bible Dictionary search (client-side) -->
+<script>
+(function(){
+  const q = document.getElementById('dictQuery');
+  const out = document.getElementById('dictResults');
+  const clearBtn = document.getElementById('dictClear');
+  const BASE = '/israelite-research';
+
+  // Try several likely locations
+  const CANDIDATES = [
+    `${BASE}/data/dictionary/easton_dictionary.json`,
+    `${BASE}/data/dictionary/dictionary.json`,
+    `${BASE}/data/dictionary/index.json`
+  ];
+
+  let INDEX = []; // {id?, term, summary?, refs?}
+
+  async function loadIndex(){
+    for (const url of CANDIDATES){
+      try{
+        const r = await fetch(url, {cache:'force-cache'});
+        if (r.ok){
+          const data = await r.json();
+          INDEX = normalizeDictionary(data);
+          if (INDEX.length) return;
+        }
+      }catch(_){}
     }
-    // highlight current
-    const verseEl = el.closest('.verse');
-    if(verseEl) verseEl.classList.add('active');
-
-    currentVerse = vnum;
-    const existing = notes[vnum] || '';
-    vcRef.textContent = `Commentary on verse ${vnum}`;
-    vcText.disabled = false;
-    vcSave.disabled = false;
-    vcClear.disabled = false;
-    vcText.value = existing;
-    vcText.focus();
-    vcText.setSelectionRange(vcText.value.length, vcText.value.length);
-    vcSaved.textContent = existing ? 'Loaded saved note.' : '';
   }
 
-  function persist(){
-    localStorage.setItem(storeKey, JSON.stringify(notes));
-    renderList();
+  function slugify(s){ return String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+
+  // Accept a few shapes and coerce to a common array
+  function normalizeDictionary(data){
+    if (Array.isArray(data)){
+      return data.map(x => ({
+        id: x.id || slugify(x.term || x.title || ''),
+        term: x.term || x.title || '',
+        summary: x.summary || x.desc || x.definition || '',
+        refs: x.refs || x.biblical_refs || []
+      })).filter(x=>x.term);
+    }
+    if (data && typeof data === 'object'){
+      // Object map: { "Ham": {summary:"...", refs:[...]}, ...}
+      return Object.entries(data).map(([k,v])=>({
+        id: v.id || slugify(k),
+        term: k,
+        summary: v?.summary || v?.desc || v?.definition || '',
+        refs: v?.refs || v?.biblical_refs || []
+      }));
+    }
+    return [];
   }
 
-  function renderList(){
-    const entries = Object.entries(notes).filter(([_,v])=>v && v.trim().length);
-    entries.sort((a,b)=>Number(a[0]) - Number(b[0]));
-    vcList.innerHTML = '';
-    if(!entries.length){
-      vcList.innerHTML = '<li class="vc-empty">No verse notes yet.</li>';
+  function render(results){
+    if (!results.length){
+      out.innerHTML = '<p class="muted">No results.</p>';
       return;
     }
-    for(const [v,txt] of entries){
-      const li = document.createElement('li');
-      const safe = txt.length > 140 ? txt.slice(0,140) + '…' : txt;
-      li.innerHTML = `<a href="#" data-jump="${v}">v${v}</a> — ${escapeHtml(safe)}`;
-      vcList.appendChild(li);
-    }
+    const frag = document.createDocumentFragment();
+    results.slice(0, 50).forEach(rec=>{
+      const card = document.createElement('div');
+      card.style.borderTop = '1px solid var(--sky)';
+      card.style.padding = '.5rem 0';
+      const term = document.createElement('div');
+      term.style.fontWeight = '700';
+      term.style.color = 'var(--ink)';
+      term.textContent = rec.term;
+      const sum = document.createElement('div');
+      sum.style.marginTop = '2px';
+      sum.textContent = rec.summary || '(no summary yet)';
+      card.appendChild(term);
+      card.appendChild(sum);
+
+      // Optional refs list
+      if (Array.isArray(rec.refs) && rec.refs.length){
+        const ul = document.createElement('ul');
+        ul.style.margin = '.35rem 0 0'; ul.style.paddingLeft = '1.1rem';
+        rec.refs.slice(0,8).forEach(ref=>{
+          const li = document.createElement('li');
+          li.textContent = ref;
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
+      }
+      frag.appendChild(card);
+    });
+    out.innerHTML = '';
+    out.appendChild(frag);
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function search(qs){
+    const term = String(qs||'').trim().toLowerCase();
+    if (!term){ out.innerHTML = '<p class="muted">Type to search the dictionary.</p>'; return; }
+    const res = INDEX.filter(r=>{
+      const t = (r.term||'').toLowerCase();
+      const s = (r.summary||'').toLowerCase();
+      return t.includes(term) || s.includes(term);
+    }).sort((a,b)=>a.term.localeCompare(b.term));
+    render(res);
   }
 
-  // Click a verse anywhere in #verses to select it
-  versesEl.addEventListener('click', (e) => {
-    const verseEl = e.target.closest('.verse');
-    if(!verseEl) return;
-    selectVerseByElement(verseEl);
+  // debounce input
+  let timer=null;
+  q.addEventListener('input', ()=>{
+    clearTimeout(timer);
+    timer = setTimeout(()=>search(q.value), 180);
+  });
+  clearBtn.addEventListener('click', ()=>{
+    q.value=''; search('');
   });
 
-  // Jump from the list
-  vcList.addEventListener('click', (e)=>{
-    const a = e.target.closest('a[data-jump]');
-    if(!a) return;
-    e.preventDefault();
-    const vnum = a.getAttribute('data-jump');
-    const target = Array.from(versesEl.querySelectorAll('.verse'))
-      .find(v => v.getAttribute('data-verse') === vnum || v.querySelector('.vnum')?.textContent?.trim() === vnum);
-    if(target){ target.scrollIntoView({behavior:'smooth', block:'center'}); selectVerseByElement(target); }
-  });
-
-  // Save (manual)
-  vcSave.addEventListener('click', ()=>{
-    if(!currentVerse) return;
-    notes[currentVerse] = vcText.value.trim();
-    persist();
-    vcSaved.textContent = 'Saved.';
-    setTimeout(()=>vcSaved.textContent = '', 1200);
-  });
-
-  // Auto-save while typing (debounced)
-  vcText.addEventListener('input', ()=>{
-    if(!currentVerse) return;
-    vcSaved.textContent = 'Saving…';
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(()=>{
-      notes[currentVerse] = vcText.value.trim();
-      persist();
-      vcSaved.textContent = 'Saved.';
-      setTimeout(()=>vcSaved.textContent = '', 900);
-    }, 400);
-  });
-
-  // Clear current verse note
-  vcClear.addEventListener('click', ()=>{
-    if(!currentVerse) return;
-    delete notes[currentVerse];
-    persist();
-    vcText.value = '';
-    vcSaved.textContent = 'Cleared.';
-    setTimeout(()=>vcSaved.textContent = '', 900);
-    renderList();
-  });
-
-  // Initial list render
-  renderList();
+  // bootstrap
+  loadIndex().then(()=>search(q.value));
 })();
 </script>
 </body>
