@@ -41,18 +41,34 @@ def to_int_safe(x, default=0):
     try: return int(str(x).strip())
     except: return default
 
+def norm_headers(fieldnames):
+    m = {}
+    for raw in fieldnames:
+        key = (raw or "").strip().lower().replace(" ", "").replace("_","")
+        m[key] = raw
+    return m
+
+def pick(row, header_map, want):
+    for k_norm, k_raw in header_map.items():
+        if k_norm == want:
+            return row.get(k_raw)
+    return None
+
 chapters = defaultdict(list)
 book_max_ch = defaultdict(int)
 
 with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
     reader = csv.DictReader(f)
+    if not reader.fieldnames:
+        raise SystemExit("No headers found in CSV.")
+    hmap = norm_headers(reader.fieldnames)
     for row in reader:
-        book = (row.get("Book") or "").strip()
-        ch = to_int_safe(row.get("Chapter"), 0)
-        v  = to_int_safe(row.get("Verse"), 0)
-        t  = (row.get("Text") or "").strip()
-        c  = to_int_safe(row.get("Count"), 0)
-        if not book or ch <= 0 or v <= 0:
+        book = (pick(row, hmap, "book") or "").strip()
+        ch = to_int_safe(pick(row, hmap, "chapter"), 0)
+        v  = to_int_safe(pick(row, hmap, "verse"), 0)
+        t  = (pick(row, hmap, "text") or "").strip()
+        c  = to_int_safe(pick(row, hmap, "count"), 0)
+        if not book or ch <= 0 or v <= 0 or not t:
             continue
         canon = canon_for(book)
         slug = slugify_book(book)
@@ -60,6 +76,7 @@ with open(CSV_PATH, "r", encoding="utf-8-sig", newline="") as f:
         if ch > book_max_ch[(canon, slug)]:
             book_max_ch[(canon, slug)] = ch
 
+written_files = 0
 for (canon, slug, ch), items in chapters.items():
     items.sort(key=lambda x: x[0])
     verses = [{"v": v, "t": t, "c": c, "s": []} for v, t, c in items]
@@ -68,6 +85,7 @@ for (canon, slug, ch), items in chapters.items():
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, f"{ch}.json"), "w", encoding="utf-8") as w:
         json.dump({"total": total, "verses": verses}, w, ensure_ascii=False, indent=2)
+        written_files += 1
 
 by_canon = {"tanakh": {}, "newtestament": {}, "apocrypha": {}}
 for (canon, slug), total in book_max_ch.items():
@@ -82,4 +100,4 @@ for canon, mapping in by_canon.items():
     with open(os.path.join(canon_dir, "books.json"), "w", encoding="utf-8") as w:
         json.dump(ordered, w, ensure_ascii=False, indent=2)
 
-print("Done.")
+print(f"Done. Wrote {written_files} chapter files across {len(book_max_ch)} books.")
