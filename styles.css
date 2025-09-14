@@ -3237,3 +3237,25 @@ hr{border:0;border-top:1px solid var(--border)}
 .vtext {
   font-weight: 400 !important;
 }
+
+.v-tools .tool-btn{
+  background: transparent;
+  border: 1px solid #e6ebf2;
+  color: var(--brand, #054A91);
+  border-radius: 10px;
+  padding: .26rem .6rem;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.v-tools .tool-btn:hover{
+  background: rgba(5,74,145,.05);
+  border-color: #d8e2ee;
+}
+.v-tools .tool-btn:active{
+  background: rgba(5,74,145,.09);
+}
+.v-tools .tool-btn:focus{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(5,74,145,.18);
+}
