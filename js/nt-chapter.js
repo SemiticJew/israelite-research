@@ -66,9 +66,9 @@
         if(!refs.length) return '<div class="muted">No cross references.</div>';
         const items = refs.map(r=>{
           const href = `/israelite-research/${r.canon}/chapter.html?book=${r.slug}&ch=${r.c}#v${r.v}`;
-          return `<li><a href="${href}">${esc(r.label||'ref')}</a></li>`;
-        }).join('');
-        return `<ul style="margin:.25rem 0 .1rem .9rem; line-height:1.5">${items}</ul>`;
+          return `<a href="${href}">${esc(r.label||'ref')}</a>`;
+        });
+        return `<div style="margin:.25rem 0 .1rem 0;">${items.join('; ')};</div>`;
       })();
       const pC =document.createElement('div');pC.className='v-panel vp-cmt';
       const ta =document.createElement('textarea');ta.className='v-cmt';ta.placeholder='Add your personal commentary for this verse…';ta.value=notes[v.v]||'';
