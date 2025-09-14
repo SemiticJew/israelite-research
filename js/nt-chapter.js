@@ -112,7 +112,7 @@
   }
 
   let EASTON=null;
-  async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionary/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch(e){console.warn('easton load failed',e)}}return{entries:[]};}
+  async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionaries/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch(e){console.warn('easton load failed',e)}}return{entries:[]};}
   function* eastonIter(db){
     if(Array.isArray(db)){
       for(const e of db) yield {h:e.headword||e.h||'', t:e.text||e.g||''};
