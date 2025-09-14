@@ -21,7 +21,7 @@
                       newtestament:['matthew','mark','luke','john','acts','romans','1-corinthians','2-corinthians','galatians','ephesians','philippians','colossians','1-thessalonians','2-thessalonians','1-timothy','2-timothy','titus','philemon','hebrews','james','1-peter','2-peter','1-john','2-john','3-john','jude','revelation'],
                       apocrypha:['tobit','judith','additions-to-esther','wisdom','sirach','baruch','letter-of-jeremiah','prayer-of-azariah','susanna','bel-and-the-dragon','1-maccabees','2-maccabees','1-esdras','2-esdras','prayer-of-manasseh']};
 
-  async function loadBooksJson(c){try{const r=await fetch(`/israelite-research/data/${c}/books.json`);if(r.ok)return await r.json();}catch{}const m={};(CANON_ORDER[c]||[]).forEach(s=>m[s]=150);return m;}
+  async function loadBooksJson(c){try{const r=await fetch(`/israelite-research/data/${c}/books.json`);if(r.ok)return await r.json();}catch(e){console.warn('books.json load failed',e)}const m={};(CANON_ORDER[c]||[]).forEach(s=>m[s]=150);return m;}
   function updateHeader(ctx){if($title)$title.textContent=`${cap(ctx.book||'')} (Chapter ${ctx.chapter})`;if($crumbs)$crumbs.textContent=`${cap(ctx.canon)} → ${cap(ctx.book||'')} → ${ctx.chapter}`;}
   function updateChSel(t,c){if(!$chSel)return;$chSel.innerHTML='';for(let i=1;i<=t;i++){const o=document.createElement('option');o.value=String(i);o.textContent=`Chapter ${i}`;if(i===c)o.selected=true;$chSel.appendChild(o);}}
 
@@ -101,18 +101,27 @@
     }
   }
 
-  async function fetchFirstOk(urls){for(const u of urls){try{const r=await fetch(u);if(r.ok)return await r.json();}catch{}}return null;}
+  async function fetchFirstOk(urls){for(const u of urls){try{const r=await fetch(u);if(r.ok)return await r.json();}catch(e){console.warn('fetch error',u,e)}}return null;}
 
   async function loadChapter(ctx){
     if(!ctx.book){ctx.book=(CANON_ORDER[ctx.canon]||[])[0]||'matthew';history.replaceState(null,'',chapterHref(ctx.canon,ctx.book,ctx.chapter));}
     const totals=await loadBooksJson(ctx.canon);wireNav(ctx,totals);
+    status('Loading…');
     const j=await fetchFirstOk([`/israelite-research/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`]);
     j?renderVerses(j,ctx):status('Verses coming soon.');
   }
 
   let EASTON=null;
-  async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionary/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch{}}return{entries:[]};}
-  function* eastonIter(db){if(Array.isArray(db)){for(const e of db)yield{h:e.headword||e.h||'',t:e.text||e.g||''};}else if(Array.isArray(db?.entries)){for(const e of db.entries)yield{h:e.headword||e.h||'',t:e.text||e.g||''};}else if(db&&typeof db==='object'){for(const k in db)yield{h:k,t:db[k]};}
+  async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionary/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch(e){console.warn('easton load failed',e)}}return{entries:[]};}
+  function* eastonIter(db){
+    if(Array.isArray(db)){
+      for(const e of db) yield {h:e.headword||e.h||'', t:e.text||e.g||''};
+    } else if(Array.isArray(db?.entries)){
+      for(const e of db.entries) yield {h:e.headword||e.h||'', t:e.text||e.g||''};
+    } else if(db && typeof db==='object'){
+      for(const k in db) yield {h:k, t:db[k]};
+    }
+  }
   function wireDictionary(){
     if(!$dictToggle||!$dictReveal||!$dictQuery||!$dictBody) return;
     $dictToggle.onclick=()=>{const open=$dictReveal.getAttribute('data-open')==='1';$dictReveal.style.maxHeight=open?'0':'100px';$dictReveal.setAttribute('data-open',open?'0':'1');if(!open)$dictQuery.focus();};
