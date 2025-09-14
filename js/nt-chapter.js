@@ -114,12 +114,34 @@
   let EASTON=null;
   async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionaries/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch(e){console.warn('easton load failed',e)}}return{entries:[]};}
   function* eastonIter(db){
-    if(Array.isArray(db)){
-      for(const e of db) yield {h:e.headword||e.h||'', t:e.text||e.g||''};
-    } else if(Array.isArray(db?.entries)){
-      for(const e of db.entries) yield {h:e.headword||e.h||'', t:e.text||e.g||''};
-    } else if(db && typeof db==='object'){
-      for(const k in db) yield {h:k, t:db[k]};
+    // Normalize multiple possible schemas:
+    // 1) Array of {headword,text} or {h,g}
+    // 2) Array of {term, definitions:[...]}
+    // 3) Object map { "Headword": "definition ..." }
+    // 4) Object entries: { entries:[...] }
+    if (Array.isArray(db)) {
+      for (const e of db) {
+        const h = e.headword || e.h || e.term || '';
+        let t = e.text || e.g || '';
+        if (!t && Array.isArray(e.definitions)) t = e.definitions.join(' ');
+        yield { h, t };
+      }
+    } else if (Array.isArray(db?.entries)) {
+      for (const e of db.entries) {
+        const h = e.headword || e.h || e.term || '';
+        let t = e.text || e.g || '';
+        if (!t && Array.isArray(e.definitions)) t = e.definitions.join(' ');
+        yield { h, t };
+      }
+    } else if (db && typeof db === 'object') {
+      for (const k in db) {
+        const v = db[k];
+        let t = '';
+        if (typeof v === 'string') t = v;
+        else if (Array.isArray(v?.definitions)) t = v.definitions.join(' ');
+        else if (typeof v?.text === 'string') t = v.text;
+        yield { h: k, t };
+      }
     }
   }
   function wireDictionary(){
