@@ -11,6 +11,12 @@
   const $ = (s, r=document) => r.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  function prettyBook(slug){
+    return String(slug||'')
+      .split('-')
+      .map(w=> w ? w.charAt(0).toUpperCase() + w.slice(1) : w)
+      .join(' ');
+  }
   function status(msg){ if (versesEl) versesEl.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
   function togglePanel(el){ if (el) el.classList.toggle('open'); }
 
@@ -76,7 +82,7 @@
       selBook.innerHTML = '';
       Object.keys(BOOKS).sort().forEach(slug=>{
         const opt = document.createElement('option');
-        opt.value = slug; opt.textContent = slug.replace(/-/g,' ');
+        opt.value = slug; opt.textContent = prettyBook(slug);
         if (slug === ctx.book) opt.selected = true;
         selBook.appendChild(opt);
       });
