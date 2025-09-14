@@ -1,172 +1,346 @@
-(function () {
-  const $ = (s) => document.querySelector(s);
+/* nt-chapter.js — unified chapter loader for all canons */
 
-  const $verses=$('#verses'),$hover=$('#hovercard'),
-        $prev=$('#btnPrev'),$next=$('#btnNext'),
-        $chSel=$('#chSelect'),$canon=$('#canonSelect'),
-        $book=$('#bookSelect'),$title=$('#pageTitle'),$crumbs=$('#crumbs');
+(function(){
+  // ---------- DOM ----------
+  const $ = (s, r=document) => r.querySelector(s);
+  const versesEl = $('#verses');
+  const hover = $('#hovercard');
 
-  const $dictToggle=$('#dictToggle'),$dictReveal=$('#dictReveal'),
-        $dictQuery=$('#dictQuery'),$dictBody=$('#dictBody');
+  const selCanon = $('#canonSelect');
+  const selBook  = $('#bookSelect');
+  const selCh    = $('#chSelect');
+  const btnPrev  = $('#btnPrev');
+  const btnNext  = $('#btnNext');
 
-  const status=(m)=>{if($verses)$verses.innerHTML=`<p class="muted">${m}</p>`;}
-  const esc=(s)=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const cap=(slug)=>slug.split('-').map((t,i)=>i===0&&/^\d+$/.test(t)?t:t.charAt(0).toUpperCase()+t.slice(1)).join(' ');
+  const dictToggle = $('#dictToggle');
+  const dictReveal = $('#dictReveal');
+  const dictInput  = $('#dictQuery');
+  const dictBody   = $('#dictBody');
 
-  function canonFromPath(){const p=location.pathname.split('/').filter(Boolean);const i=p.indexOf('israelite-research');const c=(i>=0&&p[i+1])?p[i+1]:'newtestament';return/^(tanakh|newtestament|apocrypha)$/i.test(c)?c.toLowerCase():'newtestament';}
-  function ctxFromUrl(){const q=new URLSearchParams(location.search);return{canon:canonFromPath(),book:(q.get('book')||'').toLowerCase().trim(),chapter:parseInt(q.get('ch')||q.get('c')||'1',10)||1};}
-  function chapterHref(c,b,ch){return`/israelite-research/${c}/chapter.html?book=${b}&ch=${ch}`;}
+  // ---------- Context / URLs ----------
+  const CANON_DEFAULTS = {
+    tanakh: 'genesis',
+    newtestament: 'matthew',
+    apocrypha: 'tobit'
+  };
 
-  const CANON_ORDER={tanakh:['genesis','exodus','leviticus','numbers','deuteronomy','joshua','judges','ruth','1-samuel','2-samuel','1-kings','2-kings','1-chronicles','2-chronicles','ezra','nehemiah','esther','job','psalms','proverbs','ecclesiastes','song-of-solomon','isaiah','jeremiah','lamentations','ezekiel','daniel','hosea','joel','amos','obadiah','jonah','micah','nahum','habakkuk','zephaniah','haggai','zechariah','malachi'],
-                      newtestament:['matthew','mark','luke','john','acts','romans','1-corinthians','2-corinthians','galatians','ephesians','philippians','colossians','1-thessalonians','2-thessalonians','1-timothy','2-timothy','titus','philemon','hebrews','james','1-peter','2-peter','1-john','2-john','3-john','jude','revelation'],
-                      apocrypha:['tobit','judith','additions-to-esther','wisdom','sirach','baruch','letter-of-jeremiah','prayer-of-azariah','susanna','bel-and-the-dragon','1-maccabees','2-maccabees','1-esdras','2-esdras','prayer-of-manasseh']};
-
-  async function loadBooksJson(c){try{const r=await fetch(`/israelite-research/data/${c}/books.json`);if(r.ok)return await r.json();}catch(e){console.warn('books.json load failed',e)}const m={};(CANON_ORDER[c]||[]).forEach(s=>m[s]=150);return m;}
-  function updateHeader(ctx){if($title)$title.textContent=`${cap(ctx.book||'')} (Chapter ${ctx.chapter})`;if($crumbs)$crumbs.textContent=`${cap(ctx.canon)} → ${cap(ctx.book||'')} → ${ctx.chapter}`;}
-  function updateChSel(t,c){if(!$chSel)return;$chSel.innerHTML='';for(let i=1;i<=t;i++){const o=document.createElement('option');o.value=String(i);o.textContent=`Chapter ${i}`;if(i===c)o.selected=true;$chSel.appendChild(o);}}
-
-  function wireNav(ctx,t){const total=t[ctx.book]||t[Object.keys(t)[0]]||150;
-    updateHeader(ctx);updateChSel(total,ctx.chapter);
-    if($prev)$prev.onclick=()=>location.href=chapterHref(ctx.canon,ctx.book,Math.max(1,ctx.chapter-1));
-    if($next)$next.onclick=()=>location.href=chapterHref(ctx.canon,ctx.book,Math.min(total,ctx.chapter+1));
-    if($chSel)$chSel.onchange=e=>location.href=chapterHref(ctx.canon,ctx.book,parseInt(e.target.value,10));
-    if($canon){$canon.value=ctx.canon;$canon.onchange=()=>{const tgt=$canon.value;const order=CANON_ORDER[tgt]||[];const next=order.includes(ctx.book)?ctx.book:order[0]||'matthew';location.href=chapterHref(tgt,next,1);};}
-    if($book){const slugs=Object.keys(t);const order=slugs.length?slugs:(CANON_ORDER[ctx.canon]||[]);$book.innerHTML='';order.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=cap(s);if(s===ctx.book)o.selected=true;$book.appendChild(o);});$book.onchange=e=>location.href=chapterHref(ctx.canon,e.target.value,1);}
+  function getCanonFromPath(){
+    const p = location.pathname.toLowerCase();
+    if (p.includes('/tanakh/')) return 'tanakh';
+    if (p.includes('/newtestament/')) return 'newtestament';
+    if (p.includes('/apocrypha/')) return 'apocrypha';
+    // fallback (rare)
+    return 'newtestament';
   }
 
-  function cmtStoreKey(ctx){return `vc:${ctx.canon}/${ctx.book}/${ctx.chapter}`;}
-  function loadNotes(ctx){try{return JSON.parse(localStorage.getItem(cmtStoreKey(ctx))||'{}');}catch{return{}}}
-  function saveNotes(ctx,notes){localStorage.setItem(cmtStoreKey(ctx), JSON.stringify(notes||{}));}
+  function getCtx(){
+    const canon = getCanonFromPath();
+    const q = new URLSearchParams(location.search);
+    const book = (q.get('book') || CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
+    let ch = parseInt(q.get('ch') || q.get('c') || '1', 10); if (!Number.isFinite(ch) || ch < 1) ch = 1;
+    return { canon, book, chapter: ch };
+  }
+  const ctx = getCtx();
 
-  function svgXR(){return '<svg viewBox="0 0 24 24"><path d="M4 7h8M12 7l8 10M4 17h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'}
-  function svgC(){return '<svg viewBox="0 0 24 24"><path d="M4 5h16v12a2 2 0 0 1-2 2H8l-4 3V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
-  function svgS(){return '<svg viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'}
-  function toolButton(label,svg){const b=document.createElement('button');b.type='button';b.className='tool-btn';b.setAttribute('aria-expanded','false');b.innerHTML=svg+'<span>'+label+'</span>';return b;}
+  const DATA_ROOT = '/israelite-research/data';
+  const BOOKS_JSON = (canon) => `${DATA_ROOT}/${canon}/books.json`;
+  const CHAPTER_JSON = (canon, book, ch) => `${DATA_ROOT}/${canon}/${book}/${ch}.json`;
+  const XREF_JSON = (canon, book, ch) => `${DATA_ROOT}/crossrefs/${canon}/${book}/${ch}.json`;
+  const EASTON_JSON = `${DATA_ROOT}/dictionaries/easton_dictionary.json`;
 
-  function renderVerses(j,ctx,XREFS){
-    const vs=Array.isArray(j?.verses)?j.verses:[];if(!vs.length){status('Verses coming soon.');return;}
-    const notes=loadNotes(ctx);
-    const frag=document.createDocumentFragment();
+  function chapterHref(canon, book, ch){
+    return `/israelite-research/${canon}/chapter.html?book=${book}&ch=${ch}`;
+  }
 
-    vs.forEach(v=>{
-      const wrap=document.createElement('div');wrap.className='verse';wrap.id=`v${v.v}`;wrap.setAttribute('data-verse',v.v);
+  // ---------- State ----------
+  let BOOKS = {};   // {slug: totalChapters}
+  let TOTAL = 150;  // fallback until books.json loads
+  let XREFS = null; // { "1": [{canon,slug,c,v,label}, ...], ... }
+  let EASTON = null;// array of {term, definitions[]}
 
-      const vline=document.createElement('div');vline.className='vline';
-      const num=document.createElement('span');num.className='vnum';num.textContent=v.v;
-      const txt=document.createElement('span');txt.className='vtext';txt.textContent=v.t||'';
-      vline.appendChild(num);vline.appendChild(txt);
+  // ---------- Utils ----------
+  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  function status(msg){ if (versesEl) versesEl.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
 
-      const tools=document.createElement('div');tools.className='v-tools';
-      const btnXR=toolButton('x-ref',svgXR());
-      const btnC =toolButton('comment',svgC());
-      const btnS =toolButton('strongs',svgS());
+  // ---------- Toolbar / Navigation ----------
+  async function loadBooks(){
+    try {
+      const r = await fetch(BOOKS_JSON(ctx.canon));
+      if (!r.ok) throw new Error('books.json not found');
+      BOOKS = await r.json();
+      // build book select
+      selBook.innerHTML = '';
+      Object.keys(BOOKS).sort().forEach(slug=>{
+        const opt = document.createElement('option');
+        opt.value = slug; opt.textContent = slug.replace(/-/g,' ');
+        if (slug === ctx.book) opt.selected = true;
+        selBook.appendChild(opt);
+      });
+      TOTAL = BOOKS[ctx.book] || TOTAL;
 
-      const pXR=document.createElement('div');pXR.className='v-panel vp-xr';pXR.innerHTML=(()=>{
-        const refs = (XREFS && XREFS[String(v.v)]) || [];
-        if(!refs.length) return '<div class="muted">No cross references.</div>';
-        const items = refs.map(r=>{
-          const href = `/israelite-research/${r.canon}/chapter.html?book=${r.slug}&ch=${r.c}#v${r.v}`;
-          return `<li><a href="${href}">${esc(r.label||'ref')}</a></li>`;
-        }).join('');
-        return `<ul style="margin:.25rem 0 .1rem .9rem; line-height:1.5">${items}</ul>`;
-      })();
-      const pC =document.createElement('div');pC.className='v-panel vp-cmt';
-      const ta =document.createElement('textarea');ta.className='v-cmt';ta.placeholder='Add your personal commentary for this verse…';ta.value=notes[v.v]||'';
-      ta.addEventListener('input',()=>{notes[v.v]=ta.value.trim();saveNotes(ctx,notes);});
-      pC.appendChild(ta);
-      const pS =document.createElement('div');pS.className='v-panel vp-str';
-      if(Array.isArray(v.s)&&v.s.length){
-        pS.innerHTML=v.s.map(code=>`<code style="display:inline-block;margin:.15rem .25rem .15rem 0;padding:.15rem .35rem;border:1px solid var(--sky);border-radius:8px;background:#054A910D">${esc(code)}</code>`).join('');
-      }else{
-        pS.innerHTML='<div class="muted">No Strong’s numbers for this verse.</div>';
+      // build chapter select
+      buildChapterSelect(TOTAL, ctx.chapter);
+
+    } catch (e){
+      // minimal fallback
+      BOOKS = {[ctx.book]: TOTAL};
+      buildChapterSelect(TOTAL, ctx.chapter);
+    }
+  }
+
+  function buildChapterSelect(total, current){
+    selCh.innerHTML = '';
+    const t = Math.max(1, total|0);
+    for (let i=1;i<=t;i++){
+      const o = document.createElement('option');
+      o.value = i; o.textContent = `Chapter ${i}`;
+      if (i === current) o.selected = true;
+      selCh.appendChild(o);
+    }
+  }
+
+  function wireToolbar(){
+    // canon select
+    if (selCanon){
+      selCanon.value = ctx.canon;
+      selCanon.addEventListener('change', ()=>{
+        const canon = selCanon.value;
+        const firstBook = Object.keys(BOOKS).sort()[0] || CANON_DEFAULTS[canon] || 'matthew';
+        location.href = chapterHref(canon, firstBook, 1);
+      });
+    }
+    if (selBook){
+      selBook.addEventListener('change', ()=>{
+        const book = selBook.value;
+        const total = BOOKS[book] || 1;
+        location.href = chapterHref(ctx.canon, book, 1);
+      });
+    }
+    if (selCh){
+      selCh.addEventListener('change', ()=>{
+        const n = parseInt(selCh.value,10) || 1;
+        location.href = chapterHref(ctx.canon, ctx.book, n);
+      });
+    }
+    if (btnPrev){
+      btnPrev.onclick = ()=>{
+        const total = BOOKS[ctx.book] || TOTAL;
+        const n = clamp(ctx.chapter - 1, 1, total);
+        location.href = chapterHref(ctx.canon, ctx.book, n);
+      };
+    }
+    if (btnNext){
+      btnNext.onclick = ()=>{
+        const total = BOOKS[ctx.book] || TOTAL;
+        const n = clamp(ctx.chapter + 1, 1, total);
+        location.href = chapterHref(ctx.canon, ctx.book, n);
+      };
+    }
+  }
+
+  // ---------- Dictionary ----------
+  function wireDictionary(){
+    if (!dictToggle || !dictReveal || !dictBody) return;
+    dictToggle.addEventListener('click', ()=>{
+      const open = dictReveal.getAttribute('data-open') === '1';
+      dictReveal.style.maxHeight = open ? '0px' : '100px';
+      dictReveal.setAttribute('data-open', open ? '0':'1');
+      dictReveal.setAttribute('aria-hidden', open ? 'true':'false');
+      if (!open) dictInput?.focus();
+    });
+    dictInput?.addEventListener('keydown', async (e)=>{
+      if (e.key !== 'Enter') return;
+      const term = (dictInput.value||'').trim();
+      if (!term){ dictBody.innerHTML = '<p class="muted">Type a word, then press Enter.</p>'; return; }
+      try {
+        if (!EASTON){
+          const r = await fetch(EASTON_JSON);
+          EASTON = r.ok ? await r.json() : [];
+        }
+        const tnorm = term.toLowerCase();
+        const hit = EASTON.find(x => (x.term||'').toLowerCase() === tnorm)
+                || EASTON.find(x => (x.term||'').toLowerCase().startsWith(tnorm));
+        if (!hit){ dictBody.innerHTML = `<p class="muted">No match for “${esc(term)}”.</p>`; return; }
+        const defs = Array.isArray(hit.definitions) ? hit.definitions : [];
+        dictBody.innerHTML = defs.length
+          ? `<h4 style="margin:.2rem 0 .4rem">${esc(hit.term)}</h4>` +
+            `<ol style="margin:.3rem 0 .2rem .95rem">${defs.map(d=>`<li>${esc(d)}</li>`).join('')}</ol>`
+          : `<h4>${esc(hit.term)}</h4><p class="muted">No definition text.</p>`;
+      } catch {
+        dictBody.innerHTML = '<p class="muted">Dictionary unavailable.</p>';
+      }
+    });
+  }
+
+  // ---------- Rendering ----------
+  function togglePanel(el){ if (el) el.classList.toggle('open'); }
+
+  function renderVerses(chJson){
+    const arr = Array.isArray(chJson?.verses) ? chJson.verses : [];
+    if (!arr.length){ status('Verses coming soon.'); return; }
+
+    const storeKey = `notes:${ctx.canon}/${ctx.book}/${ctx.chapter}`;
+    let notes = {};
+    try { notes = JSON.parse(localStorage.getItem(storeKey)||'{}'); } catch { notes = {}; }
+    let saveTimer;
+
+    const frag = document.createDocumentFragment();
+
+    arr.forEach(v => {
+      // container
+      const row = document.createElement('article');
+      row.className = 'verse';
+      row.id = `v${v.v}`;
+      row.setAttribute('data-verse', v.v);
+
+      // number + text
+      const num = document.createElement('span');
+      num.className = 'vnum';
+      num.textContent = v.v;
+
+      const txt = document.createElement('span');
+      txt.className = 'vtext';
+      txt.textContent = v.t || '';
+
+      // tools
+      const tools = document.createElement('div');
+      tools.className = 'v-tools';
+
+      const bXR = document.createElement('button');
+      bXR.type = 'button'; bXR.className = 'tool-btn'; bXR.textContent = 'e.g.'; bXR.title = 'e.g. — cross references';
+
+      const bCM = document.createElement('button');
+      bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'exposition'; bCM.title = 'Exposition — your notes';
+
+      const bST = document.createElement('button');
+      bST.type = 'button'; bST.className = 'tool-btn'; bST.textContent = 'strongs'; bST.title = 'Strongs — lexical codes';
+
+      tools.appendChild(bXR);
+      tools.appendChild(bCM);
+      tools.appendChild(bST);
+
+      // panels
+      const pXR = document.createElement('div');
+      pXR.className = 'v-panel xr';
+      // cross refs inline, semicolon-separated
+      const refs = (XREFS && XREFS[String(v.v)]) || [];
+      if (!refs.length){
+        pXR.innerHTML = '<div class="muted">No cross references.</div>';
+      } else {
+        const line = refs.map(r=>{
+          const href = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
+          return `<a href="${href}">${esc(r.label||'ref')}</a>`;
+        }).join('; ');
+        pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${line};</div>`;
       }
 
-      function toggle(panel,btn){
-        const open=panel.classList.toggle('open');
-        btn.setAttribute('aria-expanded',open?'true':'false');
+      const pCM = document.createElement('div');
+      pCM.className = 'v-panel cm';
+      const ta = document.createElement('textarea');
+      ta.style.width = '100%'; ta.style.minHeight = '100px';
+      ta.placeholder = 'Personal exposition for this verse…';
+      ta.value = notes[v.v] || '';
+      ta.addEventListener('input', ()=>{
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(()=>{
+          notes[v.v] = ta.value.trim();
+          localStorage.setItem(storeKey, JSON.stringify(notes));
+        }, 250);
+      });
+      pCM.appendChild(ta);
+
+      const pST = document.createElement('div');
+      pST.className = 'v-panel st';
+      if (Array.isArray(v.s) && v.s.length){
+        const seen = new Set();
+        const parts = [];
+        v.s.forEach(code=>{
+          if (!code || seen.has(code)) return; seen.add(code);
+          parts.push(`<span class="badge" data-strong="${esc(code)}">${esc(code)}</span>`);
+        });
+        pST.innerHTML = parts.length ? `<div>${parts.join(' ')}</div>` : '<div class="muted">No Strong’s for this verse.</div>';
+      } else {
+        pST.innerHTML = '<div class="muted">No Strong’s for this verse.</div>';
       }
-      btnXR.onclick=()=>toggle(pXR,btnXR);
-      btnC.onclick =()=>toggle(pC ,btnC );
-      btnS.onclick =()=>toggle(pS ,btnS );
 
-      wrap.appendChild(vline);
-      tools.appendChild(btnXR);
-      tools.appendChild(btnC);
-      tools.appendChild(btnS);
-      wrap.appendChild(tools);
-      wrap.appendChild(pXR);
-      wrap.appendChild(pC);
-      wrap.appendChild(pS);
+      // wire toggles
+      bXR.addEventListener('click', ()=> togglePanel(pXR));
+      bCM.addEventListener('click', ()=> togglePanel(pCM));
+      bST.addEventListener('click', ()=> togglePanel(pST));
 
-      frag.appendChild(wrap);
+      // assemble
+      row.appendChild(num);
+      row.appendChild(txt);
+      row.appendChild(tools);
+      row.appendChild(pXR);
+      row.appendChild(pCM);
+      row.appendChild(pST);
+
+      frag.appendChild(row);
     });
 
-    $verses.innerHTML='';
-    $verses.appendChild(frag);
+    versesEl.innerHTML = '';
+    versesEl.appendChild(frag);
 
-    if(location.hash&&/^#v\d+$/.test(location.hash)){
-      const a=document.getElementById(location.hash.slice(1));if(a)a.scrollIntoView({behavior:'instant',block:'start'});
+    // anchor scroll
+    if (location.hash && /^#v\d+$/.test(location.hash)){
+      const anchor = document.getElementById(location.hash.slice(1));
+      if (anchor) anchor.scrollIntoView({behavior:'instant', block:'start'});
     }
   }
 
-  async function fetchFirstOk(urls){for(const u of urls){try{const r=await fetch(u);if(r.ok)return await r.json();}catch(e){console.warn('fetch error',u,e)}}return null;}
-
-  async function loadChapter(ctx){
-    if(!ctx.book){ctx.book=(CANON_ORDER[ctx.canon]||[])[0]||'matthew';history.replaceState(null,'',chapterHref(ctx.canon,ctx.book,ctx.chapter));}
-    const totals=await loadBooksJson(ctx.canon);wireNav(ctx,totals);
+  // ---------- Loaders ----------
+  async function loadChapter(){
     status('Loading…');
-    const [j, x] = await Promise.all([
-      fetchFirstOk([`/israelite-research/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`]),
-      fetchFirstOk([`/israelite-research/data/crossrefs/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`])
-    ]);
-    const XREFS = x && typeof x === 'object' ? x : {};
-    j?renderVerses(j,ctx,XREFS):status('Verses coming soon.');
-  }
-
-  let EASTON=null;
-  async function loadEaston(){if(EASTON)return EASTON;for(const u of['/israelite-research/data/dictionaries/easton_dictionary.json','/israelite-research/data/easton_dictionary.json']){try{const r=await fetch(u);if(r.ok){EASTON=await r.json();return EASTON;}}catch(e){console.warn('easton load failed',e)}}return{entries:[]};}
-  function* eastonIter(db){
-    // Normalize multiple possible schemas:
-    // 1) Array of {headword,text} or {h,g}
-    // 2) Array of {term, definitions:[...]}
-    // 3) Object map { "Headword": "definition ..." }
-    // 4) Object entries: { entries:[...] }
-    if (Array.isArray(db)) {
-      for (const e of db) {
-        const h = e.headword || e.h || e.term || '';
-        let t = e.text || e.g || '';
-        if (!t && Array.isArray(e.definitions)) t = e.definitions.join(' ');
-        yield { h, t };
-      }
-    } else if (Array.isArray(db?.entries)) {
-      for (const e of db.entries) {
-        const h = e.headword || e.h || e.term || '';
-        let t = e.text || e.g || '';
-        if (!t && Array.isArray(e.definitions)) t = e.definitions.join(' ');
-        yield { h, t };
-      }
-    } else if (db && typeof db === 'object') {
-      for (const k in db) {
-        const v = db[k];
-        let t = '';
-        if (typeof v === 'string') t = v;
-        else if (Array.isArray(v?.definitions)) t = v.definitions.join(' ');
-        else if (typeof v?.text === 'string') t = v.text;
-        yield { h: k, t };
-      }
+    try {
+      const r = await fetch(CHAPTER_JSON(ctx.canon, ctx.book, ctx.chapter));
+      if (!r.ok) throw new Error('chapter not found');
+      const json = await r.json();
+      renderVerses(json);
+    } catch {
+      status('Verses coming soon.');
     }
   }
-  function wireDictionary(){
-    if(!$dictToggle||!$dictReveal||!$dictQuery||!$dictBody) return;
-    $dictToggle.onclick=()=>{const open=$dictReveal.getAttribute('data-open')==='1';$dictReveal.style.maxHeight=open?'0':'100px';$dictReveal.setAttribute('data-open',open?'0':'1');if(!open)$dictQuery.focus();};
-    $dictQuery.onkeydown=async e=>{if(e.key!=='Enter')return;const q=$dictQuery.value.trim().toLowerCase();if(!q)return;$dictBody.innerHTML='<p class="muted">Searching…</p>';const db=await loadEaston();const hits=[];for(const e of eastonIter(db)){if((e.h||'').toLowerCase().includes(q)||(e.t||'').toLowerCase().includes(q)){hits.push(e);if(hits.length>=50)break;}}$dictBody.innerHTML=hits.length?hits.map(e=>`<div style="margin:.45rem 0"><div style="font-weight:700;color:#0b2340">${esc(e.h||'(entry)')}</div><div>${esc(e.t||'')}</div></div>`).join(''):'<p class="muted">No results.</p>';};
+
+  async function loadXrefs(){
+    try {
+      const r = await fetch(XREF_JSON(ctx.canon, ctx.book, ctx.chapter));
+      XREFS = r.ok ? await r.json() : null;
+    } catch { XREFS = null; }
   }
 
-  const ctx=ctxFromUrl();
-  loadChapter(ctx);
-  wireDictionary();
+  // ---------- Hover card for future Strong’s (kept dormant, safe) ----------
+  function openHover(html, x, y){
+    if (!hover) return;
+    hover.innerHTML = html;
+    hover.style.left = (x+12)+'px';
+    hover.style.top  = (y+12)+'px';
+    hover.classList.add('open');
+    hover.setAttribute('aria-hidden','false');
+  }
+  function closeHover(){
+    if (!hover) return;
+    hover.classList.remove('open');
+    hover.setAttribute('aria-hidden','true');
+  }
+  document.addEventListener('scroll', closeHover);
+  document.addEventListener('click', (e)=>{
+    if (hover && !hover.contains(e.target)) closeHover();
+  });
 
-  function closeHoverCard(){ if(!$hover) return; $hover.classList.remove('open'); $hover.setAttribute('aria-hidden','true'); }
-  document.addEventListener('scroll', closeHoverCard);
-  document.addEventListener('click', (e) => { if ($hover && !$hover.contains(e.target)) closeHoverCard(); });
+  // ---------- Init ----------
+  (async function init(){
+    // Page title / crumbs (optional polish)
+    const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
+    const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${ctx.book.replace(/-/g,' ')} → ${ctx.chapter}`;
+
+    await loadBooks();
+    wireToolbar();
+    wireDictionary();
+
+    await loadXrefs();
+    await loadChapter();
+  })();
+
 })();
