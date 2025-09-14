@@ -13,28 +13,22 @@
   .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
   .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
   .panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
-  .muted{color:var(--muted)}
-
-  /* Verse stack with inline divider and "1 — text" style */
   .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
-  .verse{
-    position:relative;
-    padding:12px 84px 12px 0; /* room for actions on right */
-  }
-  .verse + .verse{
-    border-top:1px solid var(--sky);
-  }
-  .vnum{
-    font-weight:800; color:var(--brand);
-  }
-  .vnum::after{
-    content:" \2014 "; /* em dash with spaces */
-    color:var(--muted);
-    margin:0 .25rem;
-  }
-  .vtext{color:#111;line-height:1.6; display:inline}
+  .muted{color:var(--muted)}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
-  /* Actions */
+  /* Verses: each on its own row, "n — text", with divider between rows */
+  #verses{display:flex;flex-direction:column}
+  .verse{
+    display:flex; align-items:flex-start; gap:.5rem;
+    position:relative; padding:12px 84px 12px 0; /* space for actions on right */
+  }
+  .verse + .verse{ border-top:1px solid var(--sky) }
+  .vnum{ font-weight:800; color:var(--brand); white-space:nowrap }
+  .vnum::after{ content:" \2014"; color:var(--muted); margin-left:.25rem } /* em dash */
+  .vtext{ flex:1; color:#111; line-height:1.6; display:inline }
+
+  /* Verse actions */
   .v-actions{position:absolute; right:6px; top:10px; display:flex; gap:6px}
   .v-actions button{
     border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.15rem .35rem;
@@ -42,20 +36,7 @@
   }
   .v-actions button:hover{ background:#f8fafc }
 
-  /* Toolbar */
-  .reader-toolbar{
-    position: sticky; top: 0; z-index: 50;
-    display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap;
-    background:#fff; border:1px solid var(--sky); border-radius:10px;
-    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
-  }
-  .reader-toolbar .btn,
-  .reader-toolbar select{
-    padding:.45rem .6rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; font:inherit; cursor:pointer;
-  }
-  .reader-toolbar .btn:hover{ background:#f8fafc }
-
-  /* Badges (placeholder) */
+  /* Placeholder Strong’s badge style (future) */
   .badge{
     display:inline-block; margin-left:.35rem; padding:.05rem .35rem; border:1px solid var(--sky);
     border-radius:8px; font-size:.78rem; color:#333; background:#054A910D; cursor:pointer;
@@ -70,6 +51,19 @@
   }
   .hovercard.open{ display:block }
 
+  /* Reader toolbar */
+  .reader-toolbar{
+    position: sticky; top: 0; z-index: 50;
+    display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap;
+    background:#fff; border:1px solid var(--sky); border-radius:10px;
+    padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .reader-toolbar .btn,
+  .reader-toolbar select{
+    padding:.45rem .6rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; font:inherit; cursor:pointer;
+  }
+  .reader-toolbar .btn:hover{ background:#f8fafc }
+
   /* Right panel: Dictionary */
   .dict-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin-bottom:.4rem}
   .dict-title{font-weight:700; color:var(--ink)}
@@ -78,8 +72,6 @@
   .dict-reveal{overflow:hidden; max-height:0; transition:max-height .2s ease}
   .dict-input{width:100%; border:1px solid var(--sky); border-radius:10px; padding:.5rem .6rem; font:inherit}
   .dict-body{margin-top:.5rem; font-size:.95rem; line-height:1.5}
-
-  @media (max-width:900px){.layout{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
