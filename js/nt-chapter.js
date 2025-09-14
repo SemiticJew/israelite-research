@@ -210,7 +210,11 @@
       const tools = document.createElement('div');
       tools.className = 'v-tools';
 
-      const bXR = document.createElement('button');
+      const bCP = document.createElement('button');
+      bCP.type = 'button'; bCP.className = 'tool-btn copy-btn';
+      bCP.title = 'Copy verse text'; bCP.setAttribute('aria-label','Copy verse text');
+      bCP.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="4" width="11" height="11" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+const bXR = document.createElement('button');
       bXR.type = 'button'; bXR.className = 'tool-btn'; bXR.textContent = 'e.g.'; bXR.title = 'e.g. — cross references';
 
       const bCM = document.createElement('button');
@@ -219,6 +223,7 @@
       const bST = document.createElement('button');
       bST.type = 'button'; bST.className = 'tool-btn'; bST.textContent = 'strongs'; bST.title = 'Strongs — lexical codes';
 
+      tools.appendChild(bCP);
       tools.appendChild(bXR);
       tools.appendChild(bCM);
       tools.appendChild(bST);
@@ -272,7 +277,18 @@
       bCM.addEventListener('click', ()=> togglePanel(pCM));
       bST.addEventListener('click', ()=> togglePanel(pST));
 
-      // assemble
+            {
+        const refLabel = `${prettyBook(ctx.book)} ${ctx.chapter}:${v.v}`;
+        bCP.addEventListener('click', async ()=>{
+          const payload = `${refLabel} ${v.t || ''}`.trim();
+          try {
+            await navigator.clipboard.writeText(payload);
+            bCP.classList.add('copied');
+            setTimeout(()=>bCP.classList.remove('copied'), 900);
+          } catch {}
+        });
+      }
+// assemble
       row.appendChild(num);
       row.appendChild(txt);
       row.appendChild(tools);

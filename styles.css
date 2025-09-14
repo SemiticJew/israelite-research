@@ -3374,3 +3374,10 @@ hr{border:0;border-top:1px solid var(--border)}
 .dict-reveal{overflow:hidden; max-height:0; transition:max-height .2s ease}
 .dict-input{width:100%; border:1px solid var(--sky); border-radius:10px; padding:.5rem .6rem; font:inherit}
 .dict-body{margin-top:.5rem; font-size:.95rem; line-height:1.5}
+
+
+/* Copy button (icon) inside verse tools */
+.v-tools .copy-btn { display:inline-flex; align-items:center; justify-content:center; padding:.36rem .56rem; }
+.v-tools .copy-btn svg { width:16px; height:16px; display:block; }
+.v-tools .copy-btn.copied { background: rgba(5,74,145,.10); border-color: #cfd9e6; }
+
