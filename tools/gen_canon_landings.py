@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-# Canon landing pages with centered titles, centered cards, grouped periodic sections,
-# and Hebrew Bible (Tanakh) cards show composition dates.
+# Canon landing pages generator with per-book composition dates.
+# Usage:
+#   python3 tools/gen_canon_landings.py                # writes all three
+#   python3 tools/gen_canon_landings.py newtestament   # writes only NT
+#   python3 tools/gen_canon_landings.py apocrypha      # writes only Apocrypha
 
-import os, re
+import os, re, sys
 
 ROOT = "/israelite-research"
 
@@ -12,6 +15,7 @@ def slug(s):
     s = re.sub(r"\s+", "-", s.strip().lower())
     return s
 
+# ---- Groupings ----
 TANAKH_GROUPS = [
   ("A", [("Genesis","Ge","c. 15th–5th c. BCE"),("Exodus","Ex","c. 15th–5th c. BCE"),("Leviticus","Lv","c. 15th–5th c. BCE"),("Numbers","Nu","c. 15th–5th c. BCE"),("Deuteronomy","Dt","c. 15th–5th c. BCE")]),
   ("B", [("Joshua","Jos","c. 7th–5th c. BCE"),("Judges","Jdg","c. 7th–5th c. BCE"),("Ruth","Ru","c. 6th–4th c. BCE"),
@@ -31,24 +35,26 @@ TANAKH_GROUPS = [
          ("Malachi","Mal","c. 5th c. BCE")]),
 ]
 
+# New Testament with approximate composition dates
 NEWTEST_GROUPS = [
-  ("A", [("Matthew","Mt"),("Mark","Mk"),("Luke","Lk"),("John","Jn")]),
-  ("B", [("Acts","Ac")]),
-  ("C", [("Romans","Rom"),("1 Corinthians","1Co"),("2 Corinthians","2Co"),
-         ("Galatians","Gal"),("Ephesians","Eph"),("Philippians","Php"),("Colossians","Col"),
-         ("1 Thessalonians","1Th"),("2 Thessalonians","2Th"),("1 Timothy","1Ti"),("2 Timothy","2Ti"),
-         ("Titus","Tit"),("Philemon","Phm")]),
-  ("D", [("Hebrews","Heb"),("James","Jas"),("1 Peter","1Pe"),("2 Peter","2Pe"),
-         ("1 John","1Jn"),("2 John","2Jn"),("3 John","3Jn"),("Jude","Jud")]),
-  ("E", [("Revelation","Rev")]),
+  ("A", [("Matthew","Mt","c. 60–80 CE"),("Mark","Mk","c. 55–70 CE"),("Luke","Lk","c. 60–90 CE"),("John","Jn","c. 90–110 CE")]),
+  ("B", [("Acts","Ac","c. 62–90 CE")]),
+  ("C", [("Romans","Rom","c. 57 CE"),("1 Corinthians","1Co","c. 53–55 CE"),("2 Corinthians","2Co","c. 55–57 CE"),
+         ("Galatians","Gal","c. 48–55 CE"),("Ephesians","Eph","c. 60–62 CE"),("Philippians","Php","c. 60–62 CE"),
+         ("Colossians","Col","c. 60–62 CE"),("1 Thessalonians","1Th","c. 50–51 CE"),("2 Thessalonians","2Th","c. 50–52 CE"),
+         ("1 Timothy","1Ti","c. 62–64 CE"),("2 Timothy","2Ti","c. 64–67 CE"),("Titus","Tit","c. 62–64 CE"),("Philemon","Phm","c. 60–62 CE")]),
+  ("D", [("Hebrews","Heb","c. 60–90 CE"),("James","Jas","c. 45–62 CE"),("1 Peter","1Pe","c. 60–65 CE"),("2 Peter","2Pe","c. 60–68 CE"),
+         ("1 John","1Jn","c. 90–110 CE"),("2 John","2Jn","c. 90–110 CE"),("3 John","3Jn","c. 90–110 CE"),("Jude","Jud","c. 60–90 CE")]),
+  ("E", [("Revelation","Rev","c. 95–96 CE")]),
 ]
 
+# Apocrypha with broad scholarly ranges
 APOCR_GROUPS = [
-  ("A", [("Tobit","Tb"),("Judith","Jdt"),("Additions to Esther","Add Est")]),
-  ("B", [("Wisdom","Wis"),("Sirach","Sir"),("Baruch","Bar"),("Letter of Jeremiah","Let Jer")]),
-  ("C", [("Prayer of Azariah","Pr Az"),("Susanna","Sus"),("Bel and the Dragon","Bel")]),
-  ("D", [("1 Maccabees","1Mac"),("2 Maccabees","2Mac"),("1 Esdras","1Esd"),("2 Esdras","2Esd")]),
-  ("E", [("Prayer of Manasseh","Pr Man")]),
+  ("A", [("Tobit","Tb","3rd–2nd c. BCE"),("Judith","Jdt","late 2nd c. BCE"),("Additions to Esther","Add Est","2nd–1st c. BCE")]),
+  ("B", [("Wisdom","Wis","late 1st c. BCE–early 1st c. CE"),("Sirach","Sir","early 2nd c. BCE"),("Baruch","Bar","2nd–1st c. BCE"),("Letter of Jeremiah","Let Jer","4th–2nd c. BCE")]),
+  ("C", [("Prayer of Azariah","Pr Az","2nd–1st c. BCE"),("Susanna","Sus","2nd–1st c. BCE"),("Bel and the Dragon","Bel","2nd–1st c. BCE")]),
+  ("D", [("1 Maccabees","1Mac","late 2nd c. BCE"),("2 Maccabees","2Mac","late 2nd c. BCE"),("1 Esdras","1Esd","2nd–1st c. BCE"),("2 Esdras","2Esd","late 1st–early 2nd c. CE")]),
+  ("E", [("Prayer of Manasseh","Pr Man","2nd–1st c. BCE")]),
 ]
 
 CANONS = {
@@ -58,10 +64,7 @@ CANONS = {
 }
 
 CSS = r"""
-  :root{
-    --ink:#0b2340; --accent:#F17300; --brand:#054A91;
-    --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
-  }
+  :root{ --ink:#0b2340; --accent:#F17300; --brand:#054A91; --muted:#6b7280; --sky:#DBE4EE; --white:#fff; }
   body{background:#fbfdff;}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:28px 0 8px; text-align:center}
@@ -96,10 +99,10 @@ def build_page(canon_key):
     for label, books in groups:
         cards=[]
         for b in books:
-            if canon_key=="tanakh":
+            if len(b) == 3:
                 cards.append(card(canon_key, b[0], b[1], b[2]))
             else:
-                cards.append(card(canon_key, b[0], b[1]))
+                cards.append(card(canon_key, b[0], b[1], None))
         sects.append(f'''<section class="sect">
   <div class="sect-label">{label}</div>
   <div class="pt-grid">
@@ -128,7 +131,16 @@ def build_page(canon_key):
 </body>
 </html>"""
 
-with open("tanakh.html","w",encoding="utf-8") as f: f.write(build_page("tanakh"))
-with open("newtestament.html","w",encoding="utf-8") as f: f.write(build_page("newtestament"))
-with open("apocrypha.html","w",encoding="utf-8") as f: f.write(build_page("apocrypha"))
-print("Wrote canon landing pages with dates for Tanakh.")
+def write_page(name, html):
+    with open(name, "w", encoding="utf-8") as f:
+        f.write(html)
+
+targets = sys.argv[1:] or ["tanakh","newtestament","apocrypha"]
+if "tanakh" in targets:
+    write_page("tanakh.html", build_page("tanakh"))
+if "newtestament" in targets:
+    write_page("newtestament.html", build_page("newtestament"))
+if "apocrypha" in targets:
+    write_page("apocrypha.html", build_page("apocrypha"))
+
+print("Wrote:", ", ".join(t + ".html" for t in targets))
