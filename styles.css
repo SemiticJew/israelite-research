@@ -3259,3 +3259,105 @@ hr{border:0;border-top:1px solid var(--border)}
   outline: none;
   box-shadow: 0 0 0 3px rgba(5,74,145,.18);
 }
+/* ===== Base Theme Vars ===== */
+:root{
+  --ink:#0b2340;
+  --accent:#F17300;
+  --brand:#054A91;
+  --muted:#6b7280;
+  --sky:#DBE4EE;
+  --white:#fff;
+}
+
+/* ===== Layout ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.page-header{padding:24px 0 8px}
+.page-title{margin:0;font-size:2rem;font-weight:800}
+.crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+.layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+.panel{background:var(--white);border:1px solid var(--sky);border-radius:10px;padding:14px}
+.panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
+.muted{color:var(--muted)}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+/* ===== Reader Toolbar ===== */
+.reader-toolbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap;
+  background:#fff; border:1px solid var(--sky); border-radius:10px;
+  padding:.5rem; margin:10px 0 16px; box-shadow:0 1px 6px rgba(0,0,0,.05);
+}
+.reader-toolbar .btn,
+.reader-toolbar select{
+  padding:.45rem .6rem; border:1px solid #e6ebf2; background:#fff; border-radius:10px; font:inherit; cursor:pointer;
+}
+.reader-toolbar .btn:hover{ background:#f8fafc }
+
+/* ===== Bible Verses ===== */
+#verses{display:flex; flex-direction:column}
+.verse{display:flex; flex-direction:column; padding:12px 0}
+.verse + .verse{border-top:1px solid var(--sky); margin-top:4px; padding-top:12px}
+.vnum{font-weight:800; color:var(--brand); white-space:nowrap}
+.vnum::after{content:" —"; color:var(--muted); margin-left:.25rem}
+.vtext{
+  font-family:"Adobe Garamond Pro","Garamond","Georgia",serif;
+  font-size:1.05rem; line-height:1.7; font-weight:400; color:#111;
+}
+
+/* Verse tools: rectangular rounded buttons (ghost/outlined) */
+.v-tools{margin-top:6px; display:flex; gap:6px; flex-wrap:wrap}
+.v-tools .tool-btn{
+  appearance:none;
+  background:#fff;
+  border:1px solid var(--sky);
+  color:var(--brand);
+  border-radius:10px;
+  padding:.36rem .72rem;
+  font-size:.9rem; line-height:1;
+  cursor:pointer;
+  transition:background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+}
+.v-tools .tool-btn:hover{ background:rgba(5,74,145,.06); border-color:#cfd9e6 }
+.v-tools .tool-btn:active{ transform:translateY(1px) }
+.v-tools .tool-btn:focus{ outline:none; box-shadow:0 0 0 3px rgba(5,74,145,.18) }
+
+/* Panels under each verse */
+.v-panel{display:none; margin-top:6px; padding:8px; border:1px solid var(--sky); border-radius:8px; background:#f9fafb}
+.v-panel.open{display:block}
+.v-panel.xr{font-size:.88rem}
+.xr-line a{color:var(--brand); margin-right:4px}
+
+/* Exposition textarea (fixed, comfortable writing area) */
+.v-panel.cm .exposition-text{
+  width:100%; min-height:180px; resize:vertical;
+  padding:.65rem .75rem; border:1px solid var(--sky); border-radius:10px;
+  font:inherit; line-height:1.6; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.03) inset;
+}
+.v-panel.cm .exposition-text:focus{
+  outline:none; border-color:#cfd9e6; box-shadow:0 0 0 3px rgba(5,74,145,.12);
+}
+
+/* Strong’s badge (placeholder style) */
+.badge{
+  display:inline-block; margin:.1rem .25rem 0 0; padding:.05rem .35rem;
+  border:1px solid var(--sky); border-radius:8px; font-size:.78rem;
+  color:#333; background:#054A910D; cursor:pointer;
+}
+
+/* Hover card (reserved for future) */
+.hovercard{
+  position:fixed; z-index:9999; display:none; max-width:min(380px, 92vw);
+  background:#fff; border:1px solid #e6ebf2; border-radius:10px;
+  box-shadow:0 8px 30px rgba(0,0,0,.12);
+  padding:.6rem .7rem; font-size:.9rem;
+}
+.hovercard.open{ display:block }
+
+/* ===== Dictionary (right panel) ===== */
+.dict-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin-bottom:.4rem}
+.dict-title{font-weight:700; color:var(--ink)}
+.icon-btn{border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.35rem; cursor:pointer}
+.icon-btn:hover{background:#f8fafc}
+.dict-reveal{overflow:hidden; max-height:0; transition:max-height .2s ease}
+.dict-input{width:100%; border:1px solid var(--sky); border-radius:10px; padding:.5rem .6rem; font:inherit}
+.dict-body{margin-top:.5rem; font-size:.95rem; line-height:1.5}

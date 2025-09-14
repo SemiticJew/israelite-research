@@ -1,8 +1,20 @@
-/* nt-chapter.js — unified chapter loader for all canons */
-
+/* nt-chapter.js — unified chapter loader for all canons
+   - Canon/book/chapter selectors from /data/<canon>/books.json
+   - Verse rows with tools: e.g. (cross refs), exposition (notes), strongs
+   - Panels open/close properly
+   - Cross-references inline, semicolon-separated, small font
+   - Easton dictionary: /data/dictionaries/easton_dictionary.json
+   - Works with: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
+*/
 (function(){
-  // ---------- DOM ----------
+  // ---------- Helpers ----------
   const $ = (s, r=document) => r.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  function status(msg){ if (versesEl) versesEl.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
+  function togglePanel(el){ if (el) el.classList.toggle('open'); }
+
+  // ---------- DOM ----------
   const versesEl = $('#verses');
   const hover = $('#hovercard');
 
@@ -18,18 +30,13 @@
   const dictBody   = $('#dictBody');
 
   // ---------- Context / URLs ----------
-  const CANON_DEFAULTS = {
-    tanakh: 'genesis',
-    newtestament: 'matthew',
-    apocrypha: 'tobit'
-  };
+  const CANON_DEFAULTS = { tanakh: 'genesis', newtestament: 'matthew', apocrypha: 'tobit' };
 
   function getCanonFromPath(){
     const p = location.pathname.toLowerCase();
     if (p.includes('/tanakh/')) return 'tanakh';
     if (p.includes('/newtestament/')) return 'newtestament';
     if (p.includes('/apocrypha/')) return 'apocrypha';
-    // fallback (rare)
     return 'newtestament';
   }
 
@@ -43,25 +50,20 @@
   const ctx = getCtx();
 
   const DATA_ROOT = '/israelite-research/data';
-  const BOOKS_JSON = (canon) => `${DATA_ROOT}/${canon}/books.json`;
-  const CHAPTER_JSON = (canon, book, ch) => `${DATA_ROOT}/${canon}/${book}/${ch}.json`;
-  const XREF_JSON = (canon, book, ch) => `${DATA_ROOT}/crossrefs/${canon}/${book}/${ch}.json`;
-  const EASTON_JSON = `${DATA_ROOT}/dictionaries/easton_dictionary.json`;
+  const BOOKS_JSON    = (canon)        => `${DATA_ROOT}/${canon}/books.json`;
+  const CHAPTER_JSON  = (canon,b,c)    => `${DATA_ROOT}/${canon}/${b}/${c}.json`;
+  const XREF_JSON     = (canon,b,c)    => `${DATA_ROOT}/crossrefs/${canon}/${b}/${c}.json`;
+  const EASTON_JSON   = `${DATA_ROOT}/dictionaries/easton_dictionary.json`;
 
   function chapterHref(canon, book, ch){
     return `/israelite-research/${canon}/chapter.html?book=${book}&ch=${ch}`;
   }
 
   // ---------- State ----------
-  let BOOKS = {};   // {slug: totalChapters}
-  let TOTAL = 150;  // fallback until books.json loads
-  let XREFS = null; // { "1": [{canon,slug,c,v,label}, ...], ... }
-  let EASTON = null;// array of {term, definitions[]}
-
-  // ---------- Utils ----------
-  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-  function status(msg){ if (versesEl) versesEl.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
+  let BOOKS = {};     // {slug: totalChapters}
+  let TOTAL = 150;    // fallback until books.json loads
+  let XREFS = null;   // {"1": [{canon,slug,c,v,label}, ...]}
+  let EASTON = null;  // [{term, definitions[]}]
 
   // ---------- Toolbar / Navigation ----------
   async function loadBooks(){
@@ -69,7 +71,8 @@
       const r = await fetch(BOOKS_JSON(ctx.canon));
       if (!r.ok) throw new Error('books.json not found');
       BOOKS = await r.json();
-      // build book select
+
+      // book select
       selBook.innerHTML = '';
       Object.keys(BOOKS).sort().forEach(slug=>{
         const opt = document.createElement('option');
@@ -79,11 +82,9 @@
       });
       TOTAL = BOOKS[ctx.book] || TOTAL;
 
-      // build chapter select
+      // chapter select
       buildChapterSelect(TOTAL, ctx.chapter);
-
-    } catch (e){
-      // minimal fallback
+    } catch {
       BOOKS = {[ctx.book]: TOTAL};
       buildChapterSelect(TOTAL, ctx.chapter);
     }
@@ -101,7 +102,6 @@
   }
 
   function wireToolbar(){
-    // canon select
     if (selCanon){
       selCanon.value = ctx.canon;
       selCanon.addEventListener('change', ()=>{
@@ -113,7 +113,6 @@
     if (selBook){
       selBook.addEventListener('change', ()=>{
         const book = selBook.value;
-        const total = BOOKS[book] || 1;
         location.href = chapterHref(ctx.canon, book, 1);
       });
     }
@@ -174,8 +173,6 @@
   }
 
   // ---------- Rendering ----------
-  function togglePanel(el){ if (el) el.classList.toggle('open'); }
-
   function renderVerses(chJson){
     const arr = Array.isArray(chJson?.verses) ? chJson.verses : [];
     if (!arr.length){ status('Verses coming soon.'); return; }
@@ -223,7 +220,6 @@
       // panels
       const pXR = document.createElement('div');
       pXR.className = 'v-panel xr';
-      // cross refs inline, semicolon-separated
       const refs = (XREFS && XREFS[String(v.v)]) || [];
       if (!refs.length){
         pXR.innerHTML = '<div class="muted">No cross references.</div>';
@@ -232,13 +228,14 @@
           const href = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
           return `<a href="${href}">${esc(r.label||'ref')}</a>`;
         }).join('; ');
-        pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${line};</div>`;
+        pXR.innerHTML = `<div class="xr-line">${line};</div>`;
       }
 
       const pCM = document.createElement('div');
       pCM.className = 'v-panel cm';
       const ta = document.createElement('textarea');
-      ta.style.width = '100%'; ta.style.minHeight = '100px';
+      ta.className = 'exposition-text';
+      ta.setAttribute('rows','8');
       ta.placeholder = 'Personal exposition for this verse…';
       ta.value = notes[v.v] || '';
       ta.addEventListener('input', ()=>{
@@ -310,7 +307,7 @@
     } catch { XREFS = null; }
   }
 
-  // ---------- Hover card for future Strong’s (kept dormant, safe) ----------
+  // ---------- Hover card (reserved for future Strong’s details) ----------
   function openHover(html, x, y){
     if (!hover) return;
     hover.innerHTML = html;
@@ -331,7 +328,6 @@
 
   // ---------- Init ----------
   (async function init(){
-    // Page title / crumbs (optional polish)
     const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
     const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${ctx.book.replace(/-/g,' ')} → ${ctx.chapter}`;
 
