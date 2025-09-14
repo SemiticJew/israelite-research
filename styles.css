@@ -3238,7 +3238,7 @@ hr{border:0;border-top:1px solid var(--border)}
 </style>
 
 /* ===== Chapter Reader (namespaced) ===== */
-.chapter-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
+.chapter-page .container{max-width:1200px;margin:0 auto;padding:0 24px}
 .chapter-page .page-header{padding:24px 0 8px}
 .chapter-page .page-title{margin:0;font-size:2rem;font-weight:800}
 .chapter-page .crumbs{color:#6b7280;font-size:.9rem;margin-top:4px}
@@ -3246,11 +3246,11 @@ hr{border:0;border-top:1px solid var(--border)}
 .chapter-page .reader-toolbar .btn{padding:.45rem .7rem;border:1px solid #e6ebf2;background:#fff;border-radius:10px;cursor:pointer;font:inherit}
 .chapter-page .reader-toolbar .btn:hover{background:#f8fafc}
 .chapter-page .reader-toolbar select{border:1px solid #e6ebf2;border-radius:10px;padding:.45rem .6rem;font:inherit}
-.chapter-page .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+.chapter-page .layout{display:grid;grid-template-columns:3fr 1.2fr;gap:22px;margin:16px 0 40px}
 .chapter-page .panel{background:#fff;border:1px solid #DBE4EE;border-radius:10px;padding:14px}
 .chapter-page .panel h3{margin:.2rem 0 .6rem;font-size:1.05rem;color:#054A91}
 .chapter-page .muted{color:#6b7280}
-@media (max-width:900px){.chapter-page .layout{grid-template-columns:1fr}}
+@media (max-width:900px){.chapter-page .layout{display:grid;grid-template-columns:3fr 1.2fr;gap:22px;margin:16px 0 40px}}
 .chapter-page .verse{display:flex;gap:8px;margin:.45rem 0;position:relative;padding-right:84px}
 .chapter-page .vnum{min-width:26px;text-align:right;color:#6b7280}
 .chapter-page .vtext{color:#111;line-height:1.55}
@@ -3269,3 +3269,11 @@ hr{border:0;border-top:1px solid var(--border)}
 .chapter-page .dict-reveal[data-open="1"]{display:block}
 .chapter-page .dict-input{width:100%;padding:.5rem .6rem;border:1px solid #DBE4EE;border-radius:10px}
 .chapter-page .dict-body{min-height:120px}
+
+.chapter-page .v-tools{display:flex;align-items:center;gap:8px;margin-top:.5rem;flex-wrap:wrap}
+.chapter-page .tool-btn{border:1px solid #e6ebf2;background:#fff;border-radius:8px;padding:.25rem .5rem;font-size:.8rem;cursor:pointer}
+.chapter-page .tool-btn:hover{background:#f8fafc}
+.chapter-page .v-panel{display:none;margin:.4rem 0 .2rem 34px;padding:.45rem .6rem;border-left:3px solid rgba(5,74,145,.18);background:#fafcff;border-radius:6px}
+.chapter-page .v-panel.open{display:block}
+.chapter-page .v-panel .muted{color:#6b7280}
+@media (max-width:900px){.chapter-page .layout{grid-template-columns:1fr}}
