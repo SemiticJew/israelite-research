@@ -43,7 +43,7 @@
   function svgS(){return '<svg viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'}
   function toolButton(label,svg){const b=document.createElement('button');b.type='button';b.className='tool-btn';b.setAttribute('aria-expanded','false');b.innerHTML=svg+'<span>'+label+'</span>';return b;}
 
-  function renderVerses(j,ctx){
+  function renderVerses(j,ctx,XREFS){
     const vs=Array.isArray(j?.verses)?j.verses:[];if(!vs.length){status('Verses coming soon.');return;}
     const notes=loadNotes(ctx);
     const frag=document.createDocumentFragment();
@@ -61,7 +61,15 @@
       const btnC =toolButton('comment',svgC());
       const btnS =toolButton('strongs',svgS());
 
-      const pXR=document.createElement('div');pXR.className='v-panel vp-xr';pXR.innerHTML='<div class="muted">Cross references coming soon.</div>';
+      const pXR=document.createElement('div');pXR.className='v-panel vp-xr';pXR.innerHTML=(()=>{
+        const refs = (XREFS && XREFS[String(v.v)]) || [];
+        if(!refs.length) return '<div class="muted">No cross references.</div>';
+        const items = refs.map(r=>{
+          const href = `/israelite-research/${r.canon}/chapter.html?book=${r.slug}&ch=${r.c}#v${r.v}`;
+          return `<li><a href="${href}">${esc(r.label||'ref')}</a></li>`;
+        }).join('');
+        return `<ul style="margin:.25rem 0 .1rem .9rem; line-height:1.5">${items}</ul>`;
+      })();
       const pC =document.createElement('div');pC.className='v-panel vp-cmt';
       const ta =document.createElement('textarea');ta.className='v-cmt';ta.placeholder='Add your personal commentary for this verse…';ta.value=notes[v.v]||'';
       ta.addEventListener('input',()=>{notes[v.v]=ta.value.trim();saveNotes(ctx,notes);});
@@ -107,8 +115,12 @@
     if(!ctx.book){ctx.book=(CANON_ORDER[ctx.canon]||[])[0]||'matthew';history.replaceState(null,'',chapterHref(ctx.canon,ctx.book,ctx.chapter));}
     const totals=await loadBooksJson(ctx.canon);wireNav(ctx,totals);
     status('Loading…');
-    const j=await fetchFirstOk([`/israelite-research/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`]);
-    j?renderVerses(j,ctx):status('Verses coming soon.');
+    const [j, x] = await Promise.all([
+      fetchFirstOk([`/israelite-research/data/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`]),
+      fetchFirstOk([`/israelite-research/data/crossrefs/${ctx.canon}/${ctx.book}/${ctx.chapter}.json`])
+    ]);
+    const XREFS = x && typeof x === 'object' ? x : {};
+    j?renderVerses(j,ctx,XREFS):status('Verses coming soon.');
   }
 
   let EASTON=null;
