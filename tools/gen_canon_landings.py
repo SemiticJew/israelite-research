@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
-# Canon landing pages generator with per-book composition dates.
-# Usage:
-#   python3 tools/gen_canon_landings.py                # writes all three
-#   python3 tools/gen_canon_landings.py newtestament   # writes only NT
-#   python3 tools/gen_canon_landings.py apocrypha      # writes only Apocrypha
+# Canon landing pages with centered titles & card content, clear spacing, and grouped sections.
 
-import os, re, sys
+import re, sys
 
 ROOT = "/israelite-research"
 
@@ -15,7 +11,7 @@ def slug(s):
     s = re.sub(r"\s+", "-", s.strip().lower())
     return s
 
-# ---- Groupings ----
+# ---- Groupings (with dates where available) ----
 TANAKH_GROUPS = [
   ("A", [("Genesis","Ge","c. 15th–5th c. BCE"),("Exodus","Ex","c. 15th–5th c. BCE"),("Leviticus","Lv","c. 15th–5th c. BCE"),("Numbers","Nu","c. 15th–5th c. BCE"),("Deuteronomy","Dt","c. 15th–5th c. BCE")]),
   ("B", [("Joshua","Jos","c. 7th–5th c. BCE"),("Judges","Jdg","c. 7th–5th c. BCE"),("Ruth","Ru","c. 6th–4th c. BCE"),
@@ -35,7 +31,6 @@ TANAKH_GROUPS = [
          ("Malachi","Mal","c. 5th c. BCE")]),
 ]
 
-# New Testament with approximate composition dates
 NEWTEST_GROUPS = [
   ("A", [("Matthew","Mt","c. 60–80 CE"),("Mark","Mk","c. 55–70 CE"),("Luke","Lk","c. 60–90 CE"),("John","Jn","c. 90–110 CE")]),
   ("B", [("Acts","Ac","c. 62–90 CE")]),
@@ -48,7 +43,6 @@ NEWTEST_GROUPS = [
   ("E", [("Revelation","Rev","c. 95–96 CE")]),
 ]
 
-# Apocrypha with broad scholarly ranges
 APOCR_GROUPS = [
   ("A", [("Tobit","Tb","3rd–2nd c. BCE"),("Judith","Jdt","late 2nd c. BCE"),("Additions to Esther","Add Est","2nd–1st c. BCE")]),
   ("B", [("Wisdom","Wis","late 1st c. BCE–early 1st c. CE"),("Sirach","Sir","early 2nd c. BCE"),("Baruch","Bar","2nd–1st c. BCE"),("Letter of Jeremiah","Let Jer","4th–2nd c. BCE")]),
@@ -69,24 +63,32 @@ CSS = r"""
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:28px 0 8px; text-align:center}
   .page-title{margin:0;font-size:2.2rem;font-weight:800;color:var(--ink)}
-  .sections{display:grid; gap:18px; margin:18px 0 48px}
-  .sect-label{font-weight:800;color:var(--brand);letter-spacing:.06em;margin:2px 0 8px;font-size:.85rem}
-  .pt-grid{display:grid; gap:12px;grid-template-columns:repeat(auto-fill, minmax(140px,1fr))}
-  .pt-card{display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:6px;min-height:142px;background:var(--white);border:1px solid var(--sky);border-radius:14px;
-    text-decoration:none;color:inherit;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.03);
-    transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;text-align:center}
-  .pt-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.09);border-color:#cfd9e6;background:#fff}
-  .pt-era{font-size:.78rem;color:var(--muted)}
-  .pt-abbr{font-size:1.9rem;font-weight:900;color:var(--accent);letter-spacing:.02em;line-height:1}
-  .pt-abbr sup{font-size:.6em;position:relative;top:-.4em;color:var(--accent)}
-  .pt-name{border-top:1px solid var(--sky);padding-top:6px;font-weight:700;color:var(--brand)}
+  .sections{display:grid; gap:22px; margin:20px 0 54px}
+  .sect-label{font-weight:800;color:var(--brand);letter-spacing:.06em;margin:0 0 8px;font-size:.85rem}
+  .pt-grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fill, minmax(140px,1fr))}
+  .pt-card{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; min-height:160px; padding:16px 14px;
+    background:var(--white); border:1px solid var(--sky); border-radius:14px;
+    text-decoration:none; color:inherit; text-align:center;
+    box-shadow:0 1px 3px rgba(0,0,0,.03);
+    transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .pt-card:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.09); border-color:#cfd9e6; background:#fff}
+  .pt-era{font-size:.82rem; color:var(--muted); margin-top:2px; margin-bottom:4px}
+  .pt-abbr{font-size:2rem; font-weight:900; color:var(--accent); letter-spacing:.02em; line-height:1; margin:4px 0}
+  .pt-abbr sup{font-size:.6em; position:relative; top:-.4em; color:var(--accent)}
+  .pt-name{border-top:1px solid var(--sky); width:100%; padding-top:8px; margin-top:6px; font-weight:700; color:var(--brand)}
+  @media (max-width:520px){
+    .pt-abbr{font-size:1.7rem}
+    .pt-grid{grid-template-columns:repeat(auto-fill, minmax(120px,1fr))}
+  }
 """
 
 def card(canon, title, abbr, date=None):
     href = f"{ROOT}/{canon}/{slug(title)}.html"
     abbr_out = re.sub(r'^(3|2|1)', r'<sup>\1</sup>', abbr)
-    era = f'<div class="pt-era">{date}</div>' if date else ""
+    era = f'<div class="pt-era">{date}</div>' if date else '<div class="pt-era" style="visibility:hidden">.</div>'
     return f'''<a class="pt-card" href="{href}" aria-label="{title}">
   {era}
   <div class="pt-abbr">{abbr_out}</div>
@@ -135,12 +137,7 @@ def write_page(name, html):
     with open(name, "w", encoding="utf-8") as f:
         f.write(html)
 
-targets = sys.argv[1:] or ["tanakh","newtestament","apocrypha"]
-if "tanakh" in targets:
-    write_page("tanakh.html", build_page("tanakh"))
-if "newtestament" in targets:
-    write_page("newtestament.html", build_page("newtestament"))
-if "apocrypha" in targets:
-    write_page("apocrypha.html", build_page("apocrypha"))
-
-print("Wrote:", ", ".join(t + ".html" for t in targets))
+write_page("tanakh.html",      build_page("tanakh"))
+write_page("newtestament.html",build_page("newtestament"))
+write_page("apocrypha.html",   build_page("apocrypha"))
+print("Updated spacing and centering across all canon landing pages.")
