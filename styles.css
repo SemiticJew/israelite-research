@@ -3224,3 +3224,15 @@ hr{border:0;border-top:1px solid var(--border)}
 #verses .verse:last-child {
   border-bottom: 0; /* optional: remove border after last verse */
 }
+<style>
+  .vcVerseLink{ text-decoration:none; border-bottom:none; color:inherit; cursor:help }
+  .vcTooltip{
+    position:fixed; z-index:9999; max-width:min(420px,92vw);
+    background:#fff; color:#0b2340; border:1px solid #e6ebf2; border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12); padding:.6rem .75rem; font-size:.95rem; line-height:1.45;
+    pointer-events:none; display:none;
+  }
+  .vcTooltip.open{ display:block }
+  .vcTooltip .vcH{ font-weight:800; margin-bottom:.25rem }
+  .vcTooltip .vcT{ }
+</style>
