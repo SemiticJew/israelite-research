@@ -14,61 +14,40 @@
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:28px 0 8px; text-align:center}
   .page-title{margin:0;font-size:2.2rem;font-weight:800;color:var(--ink)}
-  .crumbs{color:var(--muted);font-size:.95rem;margin-top:6px}
-
   .sections{display:grid; gap:18px; margin:18px 0 48px}
-  .sect{display:block}
-  .sect-label{
-    font-weight:800; color:var(--brand); letter-spacing:.06em;
-    margin:2px 0 8px; text-align:left; font-size:.85rem;
-  }
-  .pt-grid{
-    display:grid; gap:12px;
-    grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
-  }
-
-  .pt-card{
-    position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:8px; min-height:142px; background:var(--white);
-    border:1px solid var(--sky); border-radius:14px; text-decoration:none; color:inherit;
-    padding:12px; box-shadow:0 1px 3px rgba(0,0,0,.03);
-    transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
-    text-align:center;
-  }
-  .pt-card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.09); border-color:#cfd9e6; background:#fff; }
-
-  .pt-era{font-size:.78rem; color:var(--muted)}
-  .pt-abbr{font-size:1.9rem; font-weight:900; color:var(--accent); letter-spacing:.02em; line-height:1}
-  .pt-abbr sup{font-size:.6em; position:relative; top:-.4em; color:var(--accent)}
-  .pt-name{border-top:1px solid var(--sky); padding-top:6px; font-weight:700; color:var(--brand)}
-  @media (max-width:520px){
-    .pt-abbr{font-size:1.6rem}
-    .pt-grid{grid-template-columns:repeat(auto-fill, minmax(120px,1fr))}
-  }
+  .sect-label{font-weight:800;color:var(--brand);letter-spacing:.06em;margin:2px 0 8px;font-size:.85rem}
+  .pt-grid{display:grid; gap:12px;grid-template-columns:repeat(auto-fill, minmax(140px,1fr))}
+  .pt-card{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:6px;min-height:142px;background:var(--white);border:1px solid var(--sky);border-radius:14px;
+    text-decoration:none;color:inherit;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.03);
+    transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;text-align:center}
+  .pt-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.09);border-color:#cfd9e6;background:#fff}
+  .pt-era{font-size:.78rem;color:var(--muted)}
+  .pt-abbr{font-size:1.9rem;font-weight:900;color:var(--accent);letter-spacing:.02em;line-height:1}
+  .pt-abbr sup{font-size:.6em;position:relative;top:-.4em;color:var(--accent)}
+  .pt-name{border-top:1px solid var(--sky);padding-top:6px;font-weight:700;color:var(--brand)}
 </style>
 </head>
 <body class="apocrypha-page">
 <div id="site-header"></div>
 <main class="container">
-  <header class="page-header">
-    <h1 class="page-title">Apocrypha</h1>
-  </header>
+  <header class="page-header"><h1 class="page-title">Apocrypha</h1></header>
   <div class="sections">
 <section class="sect">
   <div class="sect-label">A</div>
   <div class="pt-grid">
 <a class="pt-card" href="/israelite-research/apocrypha/tobit.html" aria-label="Tobit">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Tb</div>
   <div class="pt-name">Tobit</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/judith.html" aria-label="Judith">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Jdt</div>
   <div class="pt-name">Judith</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/additions-to-esther.html" aria-label="Additions to Esther">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Add Est</div>
   <div class="pt-name">Additions to Esther</div>
 </a>
@@ -78,22 +57,22 @@
   <div class="sect-label">B</div>
   <div class="pt-grid">
 <a class="pt-card" href="/israelite-research/apocrypha/wisdom.html" aria-label="Wisdom">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Wis</div>
   <div class="pt-name">Wisdom</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/sirach.html" aria-label="Sirach">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Sir</div>
   <div class="pt-name">Sirach</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/baruch.html" aria-label="Baruch">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Bar</div>
   <div class="pt-name">Baruch</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/letter-of-jeremiah.html" aria-label="Letter of Jeremiah">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Let Jer</div>
   <div class="pt-name">Letter of Jeremiah</div>
 </a>
@@ -103,17 +82,17 @@
   <div class="sect-label">C</div>
   <div class="pt-grid">
 <a class="pt-card" href="/israelite-research/apocrypha/prayer-of-azariah.html" aria-label="Prayer of Azariah">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Pr Az</div>
   <div class="pt-name">Prayer of Azariah</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/susanna.html" aria-label="Susanna">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Sus</div>
   <div class="pt-name">Susanna</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/bel-and-the-dragon.html" aria-label="Bel and the Dragon">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Bel</div>
   <div class="pt-name">Bel and the Dragon</div>
 </a>
@@ -123,22 +102,22 @@
   <div class="sect-label">D</div>
   <div class="pt-grid">
 <a class="pt-card" href="/israelite-research/apocrypha/1-maccabees.html" aria-label="1 Maccabees">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr"><sup>1</sup>Mac</div>
   <div class="pt-name">1 Maccabees</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/2-maccabees.html" aria-label="2 Maccabees">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr"><sup>2</sup>Mac</div>
   <div class="pt-name">2 Maccabees</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/1-esdras.html" aria-label="1 Esdras">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr"><sup>1</sup>Esd</div>
   <div class="pt-name">1 Esdras</div>
 </a>
 <a class="pt-card" href="/israelite-research/apocrypha/2-esdras.html" aria-label="2 Esdras">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr"><sup>2</sup>Esd</div>
   <div class="pt-name">2 Esdras</div>
 </a>
@@ -148,7 +127,7 @@
   <div class="sect-label">E</div>
   <div class="pt-grid">
 <a class="pt-card" href="/israelite-research/apocrypha/prayer-of-manasseh.html" aria-label="Prayer of Manasseh">
-  <div class="pt-era">Intertestamental</div>
+  
   <div class="pt-abbr">Pr Man</div>
   <div class="pt-name">Prayer of Manasseh</div>
 </a>
@@ -158,6 +137,5 @@
 </main>
 <div id="site-footer"></div>
 <script src="/israelite-research/js/include.js" defer></script>
-<script></script>
 </body>
 </html>
