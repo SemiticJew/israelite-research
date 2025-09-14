@@ -1,9 +1,10 @@
 /* nt-chapter.js — unified chapter loader for all canons
    - Canon/book/chapter selectors from /data/<canon>/books.json
-   - Verse rows with tools: e.g. (cross refs), exposition (notes), strongs
+   - Verse rows with tools: e.g. (cross refs), exposition (notes), strongs, copy icon
    - Panels open/close properly
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
+   - Inserts <hr class="scripture-divider"> after each verse block
    - Works with: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
@@ -17,7 +18,7 @@
       .map(w=> w ? w.charAt(0).toUpperCase() + w.slice(1) : w)
       .join(' ');
   }
-  function status(msg){ if (versesEl) versesEl.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
+  function status(msg){ const el = $('#verses'); if (el) el.innerHTML = `<p class="muted">${esc(msg)}</p>`; }
   function togglePanel(el){ if (el) el.classList.toggle('open'); }
 
   // ---------- DOM ----------
@@ -82,7 +83,8 @@
       selBook.innerHTML = '';
       Object.keys(BOOKS).sort().forEach(slug=>{
         const opt = document.createElement('option');
-        opt.value = slug; opt.textContent = prettyBook(slug);
+        opt.value = slug;
+        opt.textContent = prettyBook(slug);
         if (slug === ctx.book) opt.selected = true;
         selBook.appendChild(opt);
       });
@@ -197,7 +199,12 @@
       row.id = `v${v.v}`;
       row.setAttribute('data-verse', v.v);
 
-      // number + text
+      // number + text line
+      const line = document.createElement('div');
+      line.style.display = 'flex';
+      line.style.alignItems = 'flex-start';
+      line.style.gap = '.5rem';
+
       const num = document.createElement('span');
       num.className = 'vnum';
       num.textContent = v.v;
@@ -206,15 +213,20 @@
       txt.className = 'vtext';
       txt.textContent = v.t || '';
 
+      line.appendChild(num);
+      line.appendChild(txt);
+
       // tools
       const tools = document.createElement('div');
       tools.className = 'v-tools';
 
+      // copy button (icon)
       const bCP = document.createElement('button');
       bCP.type = 'button'; bCP.className = 'tool-btn copy-btn';
       bCP.title = 'Copy verse text'; bCP.setAttribute('aria-label','Copy verse text');
       bCP.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="4" width="11" height="11" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
-const bXR = document.createElement('button');
+
+      const bXR = document.createElement('button');
       bXR.type = 'button'; bXR.className = 'tool-btn'; bXR.textContent = 'e.g.'; bXR.title = 'e.g. — cross references';
 
       const bCM = document.createElement('button');
@@ -235,18 +247,18 @@ const bXR = document.createElement('button');
       if (!refs.length){
         pXR.innerHTML = '<div class="muted">No cross references.</div>';
       } else {
-        const line = refs.map(r=>{
+        const lineRefs = refs.map(r=>{
           const href = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
           return `<a href="${href}">${esc(r.label||'ref')}</a>`;
         }).join('; ');
-        pXR.innerHTML = `<div class="xr-line">${line};</div>`;
+        pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${lineRefs};</div>`;
       }
 
       const pCM = document.createElement('div');
       pCM.className = 'v-panel cm';
       const ta = document.createElement('textarea');
       ta.className = 'exposition-text';
-      ta.setAttribute('rows','8');
+      ta.setAttribute('rows','8'); // fixed height via CSS; rows is just a hint
       ta.placeholder = 'Personal exposition for this verse…';
       ta.value = notes[v.v] || '';
       ta.addEventListener('input', ()=>{
@@ -277,7 +289,8 @@ const bXR = document.createElement('button');
       bCM.addEventListener('click', ()=> togglePanel(pCM));
       bST.addEventListener('click', ()=> togglePanel(pST));
 
-            {
+      // copy handler
+      {
         const refLabel = `${prettyBook(ctx.book)} ${ctx.chapter}:${v.v}`;
         bCP.addEventListener('click', async ()=>{
           const payload = `${refLabel} ${v.t || ''}`.trim();
@@ -288,17 +301,24 @@ const bXR = document.createElement('button');
           } catch {}
         });
       }
-// assemble
-      row.appendChild(num);
-      row.appendChild(txt);
+
+      // assemble verse block
+      row.appendChild(line);
       row.appendChild(tools);
       row.appendChild(pXR);
       row.appendChild(pCM);
       row.appendChild(pST);
 
+      // append verse
       frag.appendChild(row);
+
+      // divider after each verse block
+      const hr = document.createElement('hr');
+      hr.className = 'scripture-divider';
+      frag.appendChild(hr);
     });
 
+    // clear + append
     versesEl.innerHTML = '';
     versesEl.appendChild(frag);
 
@@ -351,7 +371,7 @@ const bXR = document.createElement('button');
   // ---------- Init ----------
   (async function init(){
     const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
-    const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${ctx.book.replace(/-/g,' ')} → ${ctx.chapter}`;
+    const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${prettyBook(ctx.book)} → ${ctx.chapter}`;
 
     await loadBooks();
     wireToolbar();
