@@ -1216,6 +1216,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   display:inline-block; padding:.5rem .75rem; border:1px solid #e6ebf2; border-radius:8px; text-decoration:none; color:#054A91;
 }
 .author-modal__cta:hover{ background:#f5f8ff; }
+.chapter-page { max-width: 900px; margin: 0 auto; }
 .verses { display: grid; gap: 12px; }
 .verse { border:1px solid #e6ebf2; padding:12px; border-radius:8px; background:#fff; }
 .verse-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
@@ -1266,6 +1267,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 }
 
 /* If you previously had this, REMOVE it:
+   .chapter-page .container { max-width: 760px; }
    It squeezes hero & footer too. */
 
 /* --- Global Nav Thickness & Consistency (override) --- */
@@ -3222,13 +3224,3 @@ hr{border:0;border-top:1px solid var(--border)}
 #verses .verse:last-child {
   border-bottom: 0; /* optional: remove border after last verse */
 }
-<style>
-  </style>
-
-@media (max-width:900px){}
-
-@media (max-width:900px){}
-
-/* Verse row as grid: [vnum] [text]; tools/panels span both columns */
-
-/* Verse row as grid: [vnum] [text]; tools/panels span both columns */
