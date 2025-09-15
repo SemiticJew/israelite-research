@@ -3381,3 +3381,10 @@ hr{border:0;border-top:1px solid var(--border)}
 .v-tools .copy-btn svg { width:16px; height:16px; display:block; }
 .v-tools .copy-btn.copied { background: rgba(5,74,145,.10); border-color: #cfd9e6; }
 
+
+
+/* Cross-ref cursor fix */
+.v-panel.xr{ cursor: auto; }
+.v-panel.xr a{ cursor: pointer; text-decoration: none; border-bottom: 1px dotted rgba(5,74,145,.35); }
+.v-panel.xr a:hover{ border-bottom-color: rgba(5,74,145,.7); }
+
