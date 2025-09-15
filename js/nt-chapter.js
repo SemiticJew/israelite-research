@@ -317,8 +317,13 @@
       const wrap = document.createDocumentFragment();
       wrap.appendChild(row);
       wrap.appendChild(hr);
-      versesEl.appendChild(wrap);
+      frag.appendChild(wrap);
+    
     });
+
+    // clear placeholder and append all verses at once
+    versesEl.innerHTML = '';
+    versesEl.appendChild(frag);
 
     // anchor scroll
     if (location.hash && /^#v\d+$/.test(location.hash)){
