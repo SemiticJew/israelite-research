@@ -5,6 +5,7 @@
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
    - Inserts <hr class="scripture-divider"> after each verse block
+   - On-hover/focus cross-ref previews using existing #hovercard
    - Works with: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
@@ -71,6 +72,7 @@
   let TOTAL = 150;    // fallback until books.json loads
   let XREFS = null;   // {"1": [{canon,slug,c,v,label}, ...]}
   let EASTON = null;  // [{term, definitions[]}]
+  const _CHAPTER_CACHE = Object.create(null);
 
   // ---------- Toolbar / Navigation ----------
   async function loadBooks(){
@@ -249,7 +251,7 @@
       } else {
         const lineRefs = refs.map(r=>{
           const href = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
-          return `<a href="${href}">${esc(prettyBook(r.slug) + " " + r.c + ":" + r.v)}</a>`;
+          return `<a href="${href}">${esc(prettyBook(r.slug) + ' ' + r.c + ':' + r.v)}</a>`;
         }).join('; ');
         pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${lineRefs};</div>`;
       }
@@ -258,7 +260,7 @@
       pCM.className = 'v-panel cm';
       const ta = document.createElement('textarea');
       ta.className = 'exposition-text';
-      ta.setAttribute('rows','8'); // fixed height via CSS; rows is just a hint
+      ta.setAttribute('rows','8'); // fixed height via CSS
       ta.placeholder = 'Personal exposition for this verse…';
       ta.value = notes[v.v] || '';
       ta.addEventListener('input', ()=>{
@@ -310,12 +312,13 @@
       row.appendChild(pST);
 
       // append verse
-      frag.appendChild(row);
-
-      // divider after each verse block
       const hr = document.createElement('hr');
       hr.className = 'scripture-divider';
-      frag.appendChild(hr);
+
+      const wrap = document.createDocumentFragment();
+      wrap.appendChild(row);
+      wrap.appendChild(hr);
+      frag.appendChild(wrap);
     });
 
     // clear + append
@@ -349,11 +352,26 @@
     } catch { XREFS = null; }
   }
 
-  // ---------- Hover card (reserved for future Strong’s details) ----------
+  // ---------- Hover card (used for cross-ref previews too) ----------
+  function openHover(html, x, y){
+    if (!hover) return;
+    hover.innerHTML = html;
+    hover.style.left = (x+12)+'px';
+    hover.style.top  = (y+12)+'px';
+    hover.classList.add('open');
+    hover.setAttribute('aria-hidden','false');
+  }
+  function closeHover(){
+    if (!hover) return;
+    hover.classList.remove('open');
+    hover.setAttribute('aria-hidden','true');
+  }
+  document.addEventListener('scroll', closeHover);
+  document.addEventListener('click', (e)=>{
+    if (hover && !hover.contains(e.target)) closeHover();
+  });
 
   // ---------- Cross-ref hover previews ----------
-  const _CHAPTER_CACHE = Object.create(null);
-
   async function getChapterJson(canon, slug, cnum){
     const key = `${canon}/${slug}/${cnum}`;
     if (_CHAPTER_CACHE[key]) return _CHAPTER_CACHE[key];
@@ -388,13 +406,13 @@
     const vv = data.verses.find(x => Number(x.v) === Number(ref.v));
     const title = `${prettyBook(ref.slug)} ${ref.ch}:${ref.v}`;
     const txt = vv ? esc(vv.t||'') : 'Verse not available.';
-    const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:42ch; line-height:1.5">${txt}</div>`;
-    const x = (evt.pageX || (a.getBoundingClientRect().left + window.scrollX));
-    const y = (evt.pageY || (a.getBoundingClientRect().top  + window.scrollY));
+    const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:46ch; line-height:1.55">${txt}</div>`;
+    const rect = a.getBoundingClientRect();
+    const x = (evt && evt.pageX) ? evt.pageX : (rect.left + window.scrollX);
+    const y = (evt && evt.pageY) ? evt.pageY : (rect.top  + window.scrollY);
     openHover(html, x, y);
   }
 
-  // Delegate hover/focus events from verses container
   if (versesEl){
     let hoverTimer;
     versesEl.addEventListener('mouseover', (e)=>{
@@ -419,24 +437,6 @@
       closeHover();
     });
   }
-
-  function openHover(html, x, y){
-    if (!hover) return;
-    hover.innerHTML = html;
-    hover.style.left = (x+12)+'px';
-    hover.style.top  = (y+12)+'px';
-    hover.classList.add('open');
-    hover.setAttribute('aria-hidden','false');
-  }
-  function closeHover(){
-    if (!hover) return;
-    hover.classList.remove('open');
-    hover.setAttribute('aria-hidden','true');
-  }
-  document.addEventListener('scroll', closeHover);
-  document.addEventListener('click', (e)=>{
-    if (hover && !hover.contains(e.target)) closeHover();
-  });
 
   // ---------- Init ----------
   (async function init(){
