@@ -249,7 +249,7 @@
       } else {
         const lineRefs = refs.map(r=>{
           const href = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
-          return `<a href="${href}">${esc(r.label||'ref')}</a>`;
+          return `<a href="${href}">${esc(prettyBook(r.slug) + " " + r.c + ":" + r.v)}</a>`;
         }).join('; ');
         pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${lineRefs};</div>`;
       }
