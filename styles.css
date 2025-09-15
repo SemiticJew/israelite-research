@@ -3407,3 +3407,35 @@ hr{border:0;border-top:1px solid var(--border)}
 .hovercard.open {
   display: block;
 }
+/* Hovercard baseline for cross-ref previews and strongs */
+.hovercard {
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  max-width: min(420px, 92vw);
+  background: #ffffff;
+  border: 1px solid #e6ebf2;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+  padding: .6rem .7rem;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--ink, #0b2340);
+}
+.hovercard.open { display: block; }
+
+/* Cross-ref link visuals & cursor */
+.v-panel.xr { cursor: auto; }
+.v-panel.xr .xr-line a {
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(5,74,145,.35);
+}
+.v-panel.xr .xr-line a:hover { border-bottom-color: rgba(5,74,145,.7); }
+
+/* Ensure verse blocks have comfortable spacing even with divider hr */
+.scripture-divider {
+  border: 1px solid #c9a96e;
+  width: 50%;
+  margin: 2em auto;
+}

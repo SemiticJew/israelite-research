@@ -5,8 +5,8 @@
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
    - Inserts <hr class="scripture-divider"> after each verse block
-   - On-hover/focus cross-ref previews using existing #hovercard
-   - Works with: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
+   - Robust on-hover/focus cross-ref previews via #hovercard
+   - URL: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
   // ---------- Helpers ----------
@@ -311,19 +311,14 @@
       row.appendChild(pCM);
       row.appendChild(pST);
 
-      // append verse
+      // append verse + divider
       const hr = document.createElement('hr');
       hr.className = 'scripture-divider';
-
       const wrap = document.createDocumentFragment();
       wrap.appendChild(row);
       wrap.appendChild(hr);
-      frag.appendChild(wrap);
+      versesEl.appendChild(wrap);
     });
-
-    // clear + append
-    versesEl.innerHTML = '';
-    versesEl.appendChild(frag);
 
     // anchor scroll
     if (location.hash && /^#v\d+$/.test(location.hash)){
@@ -352,24 +347,31 @@
     } catch { XREFS = null; }
   }
 
-  // ---------- Hover card (used for cross-ref previews too) ----------
+  // ---------- Hover card core ----------
   function openHover(html, x, y){
     if (!hover) return;
     hover.innerHTML = html;
-    hover.style.left = (x+12)+'px';
-    hover.style.top  = (y+12)+'px';
+    // keep within viewport
+    const pad = 16;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    let left = x + 12, top = y + 12;
+    hover.style.display = 'block';
+    hover.style.visibility = 'hidden';
     hover.classList.add('open');
+    const r = hover.getBoundingClientRect();
+    hover.style.visibility = '';
+    if (left + r.width + pad > window.scrollX + vw) left = window.scrollX + vw - r.width - pad;
+    if (top + r.height + pad > window.scrollY + vh) top = window.scrollY + vh - r.height - pad;
+    hover.style.left = `${left}px`;
+    hover.style.top  = `${top}px`;
     hover.setAttribute('aria-hidden','false');
   }
   function closeHover(){
     if (!hover) return;
     hover.classList.remove('open');
     hover.setAttribute('aria-hidden','true');
+    hover.style.display = 'none';
   }
-  document.addEventListener('scroll', closeHover);
-  document.addEventListener('click', (e)=>{
-    if (hover && !hover.contains(e.target)) closeHover();
-  });
 
   // ---------- Cross-ref hover previews ----------
   async function getChapterJson(canon, slug, cnum){
@@ -387,7 +389,6 @@
   function parseRefFromHref(href){
     try{
       const u = new URL(href, location.origin);
-      // /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>#v<m>
       const parts = u.pathname.split('/').filter(Boolean);
       const canon = parts[1] || '';
       const qs = new URLSearchParams(u.search);
@@ -407,36 +408,53 @@
     const title = `${prettyBook(ref.slug)} ${ref.ch}:${ref.v}`;
     const txt = vv ? esc(vv.t||'') : 'Verse not available.';
     const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:46ch; line-height:1.55">${txt}</div>`;
+
     const rect = a.getBoundingClientRect();
-    const x = (evt && evt.pageX) ? evt.pageX : (rect.left + window.scrollX);
-    const y = (evt && evt.pageY) ? evt.pageY : (rect.top  + window.scrollY);
+    const x = evt?.pageX ?? (rect.left + window.scrollX);
+    const y = evt?.pageY ?? (rect.top + window.scrollY);
     openHover(html, x, y);
   }
 
-  if (versesEl){
-    let hoverTimer;
+  if (versesEl && hover){
+    let hideTimer = null;
+
+    // Keep card open while mouse is over it
+    hover.addEventListener('mouseenter', ()=> { if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }});
+    hover.addEventListener('mouseleave', ()=> { hideTimer = setTimeout(closeHover, 120); });
+
     versesEl.addEventListener('mouseover', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
-      clearTimeout(hoverTimer);
+      if (e.relatedTarget && a.contains(e.relatedTarget)) return; // internal move
+      if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
       showXrefPreview(a, e);
     });
     versesEl.addEventListener('mouseout', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
-      hoverTimer = setTimeout(closeHover, 60);
+      if (e.relatedTarget && a.contains(e.relatedTarget)) return; // internal move
+      hideTimer = setTimeout(closeHover, 120);
     });
+
+    // Keyboard accessibility
     versesEl.addEventListener('focusin', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
+      if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
       showXrefPreview(a, {pageX:0,pageY:0});
     });
     versesEl.addEventListener('focusout', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
-      closeHover();
+      hideTimer = setTimeout(closeHover, 120);
     });
   }
+
+  // Close on scroll or click outside
+  document.addEventListener('scroll', closeHover);
+  document.addEventListener('click', (e)=>{
+    if (hover && !hover.contains(e.target) && !e.target.closest('.v-panel.xr')) closeHover();
+  });
 
   // ---------- Init ----------
   (async function init(){
