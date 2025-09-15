@@ -351,21 +351,33 @@
   function openHover(html, x, y){
     if (!hover) return;
     hover.innerHTML = html;
-    // keep within viewport
+
+    // Treat x,y as viewport (client) coordinates for position:fixed
     const pad = 16;
     const vw = window.innerWidth, vh = window.innerHeight;
-    let left = x + 12, top = y + 12;
+
+    // Show to measure
     hover.style.display = 'block';
     hover.style.visibility = 'hidden';
     hover.classList.add('open');
+
     const r = hover.getBoundingClientRect();
+
+    // Initial placement with small offset
+    let left = (x ?? 0) + 12;
+    let top  = (y ?? 0) + 12;
+
+    // Clamp within viewport
+    if (left + r.width + pad > vw) left = vw - r.width - pad;
+    if (top + r.height + pad > vh) top = vh - r.height - pad;
+    if (left < pad) left = pad;
+    if (top  < pad) top  = pad;
+
+    hover.style.left = left + 'px';
+    hover.style.top  = top  + 'px';
     hover.style.visibility = '';
-    if (left + r.width + pad > window.scrollX + vw) left = window.scrollX + vw - r.width - pad;
-    if (top + r.height + pad > window.scrollY + vh) top = window.scrollY + vh - r.height - pad;
-    hover.style.left = `${left}px`;
-    hover.style.top  = `${top}px`;
     hover.setAttribute('aria-hidden','false');
-  }
+}
   function closeHover(){
     if (!hover) return;
     hover.classList.remove('open');
@@ -410,10 +422,12 @@
     const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:46ch; line-height:1.55">${txt}</div>`;
 
     const rect = a.getBoundingClientRect();
-    const x = evt?.pageX ?? (rect.left + window.scrollX);
-    const y = evt?.pageY ?? (rect.top + window.scrollY);
+    // Prefer client (viewport) coordinates for fixed positioning
+    const x = (evt && 'clientX' in evt) ? evt.clientX : rect.left + 4;
+    const y = (evt && 'clientY' in evt) ? evt.clientY : rect.bottom + 4;
+
     openHover(html, x, y);
-  }
+}
 
   if (versesEl && hover){
     let hideTimer = null;
