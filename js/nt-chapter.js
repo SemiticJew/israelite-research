@@ -113,13 +113,13 @@
 
   function wireToolbar(){
     if (selCanon){
-      selCanon.value = ctx.canon;
-      selCanon.addEventListener('change', ()=>{
-        const canon = selCanon.value;
-        const firstBook = Object.keys(BOOKS).sort()[0] || CANON_DEFAULTS[canon] || 'matthew';
-        location.href = chapterHref(canon, firstBook, 1);
-      });
-    }
+  selCanon.value = ctx.canon;
+  selCanon.addEventListener('change', ()=>{
+    const canon = selCanon.value;
+    const nextBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
+    location.href = chapterHref(canon, nextBook, 1);
+  });
+}
     if (selBook){
       selBook.addEventListener('change', ()=>{
         const book = selBook.value;
