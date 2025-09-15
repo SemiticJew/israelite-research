@@ -350,6 +350,76 @@
   }
 
   // ---------- Hover card (reserved for future Strong’s details) ----------
+
+  // ---------- Cross-ref hover previews ----------
+  const _CHAPTER_CACHE = Object.create(null);
+
+  async function getChapterJson(canon, slug, cnum){
+    const key = `${canon}/${slug}/${cnum}`;
+    if (_CHAPTER_CACHE[key]) return _CHAPTER_CACHE[key];
+    try{
+      const r = await fetch(CHAPTER_JSON(canon, slug, cnum));
+      if (!r.ok) throw 0;
+      const j = await r.json();
+      _CHAPTER_CACHE[key] = j;
+      return j;
+    }catch{ return null; }
+  }
+
+  function parseRefFromHref(href){
+    try{
+      const u = new URL(href, location.origin);
+      // /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>#v<m>
+      const parts = u.pathname.split('/').filter(Boolean);
+      const canon = parts[1] || '';
+      const qs = new URLSearchParams(u.search);
+      const slug = (qs.get('book')||'').toLowerCase();
+      const ch = parseInt(qs.get('ch')||'1',10) || 1;
+      const v = parseInt((u.hash||'').replace(/^#v/,''),10) || 1;
+      return {canon, slug, ch, v};
+    }catch{ return null; }
+  }
+
+  async function showXrefPreview(a, evt){
+    const ref = parseRefFromHref(a.getAttribute('href'));
+    if (!ref) return;
+    const data = await getChapterJson(ref.canon, ref.slug, ref.ch);
+    if (!data || !Array.isArray(data.verses)) return;
+    const vv = data.verses.find(x => Number(x.v) === Number(ref.v));
+    const title = `${prettyBook(ref.slug)} ${ref.ch}:${ref.v}`;
+    const txt = vv ? esc(vv.t||'') : 'Verse not available.';
+    const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:42ch; line-height:1.5">${txt}</div>`;
+    const x = (evt.pageX || (a.getBoundingClientRect().left + window.scrollX));
+    const y = (evt.pageY || (a.getBoundingClientRect().top  + window.scrollY));
+    openHover(html, x, y);
+  }
+
+  // Delegate hover/focus events from verses container
+  if (versesEl){
+    let hoverTimer;
+    versesEl.addEventListener('mouseover', (e)=>{
+      const a = e.target.closest('.v-panel.xr a');
+      if (!a) return;
+      clearTimeout(hoverTimer);
+      showXrefPreview(a, e);
+    });
+    versesEl.addEventListener('mouseout', (e)=>{
+      const a = e.target.closest('.v-panel.xr a');
+      if (!a) return;
+      hoverTimer = setTimeout(closeHover, 60);
+    });
+    versesEl.addEventListener('focusin', (e)=>{
+      const a = e.target.closest('.v-panel.xr a');
+      if (!a) return;
+      showXrefPreview(a, {pageX:0,pageY:0});
+    });
+    versesEl.addEventListener('focusout', (e)=>{
+      const a = e.target.closest('.v-panel.xr a');
+      if (!a) return;
+      closeHover();
+    });
+  }
+
   function openHover(html, x, y){
     if (!hover) return;
     hover.innerHTML = html;
