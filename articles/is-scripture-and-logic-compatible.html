@@ -250,75 +250,11 @@
 
 <div id="site-footer"></div>
 
-<script>
-(function(){
-  // Date
-  var now=new Date(), iso=now.toISOString().slice(0,10),
-      text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
-  var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
-
-  // Share links
-  var url=location.href, title=document.title;
-  var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
-  if(x) x.href="https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
-  if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
-
-  // Copy link button behavior + icon restore
-  function copyIconMarkup(){
-    return '<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">'
-         + '<path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>'
-         + '<rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>'
-         + '</svg>';
-  }
-  if(cp){
-    cp.addEventListener('click', function(){
-      if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
-      if(navigator.clipboard){
-        navigator.clipboard.writeText(url).then(function(){
-          cp.textContent='Link copied ✓';
-          setTimeout(function(){ cp.innerHTML = copyIconMarkup(); }, 1200);
-        });
-      }
-    });
-  }
-
-  // Modal open/close + focus trap
-  var trigger=document.getElementById('author-info'), overlay=document.getElementById('author-modal'),
-      card=overlay && overlay.querySelector('.modal-card'), closeBtn=document.getElementById('author-modal-close');
-  var lastFocus;
-  function getFocusable(){ return card?card.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])') : []; }
-  function onKey(e){
-    if(e.key==='Escape') return closeM(e);
-    if(e.key==='Tab'){
-      var f=[...getFocusable()];
-      if(!f.length){ e.preventDefault(); return; }
-      var first=f[0], last=f[f.length-1];
-      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
-    }
-  }
-  function openM(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; overlay.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; if(card) card.focus(); document.addEventListener('keydown',onKey); }
-  function closeM(e){ if(e) e.preventDefault(); overlay.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; document.removeEventListener('keydown',onKey); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
-  if(trigger) trigger.addEventListener('click',openM);
-  if(closeBtn) closeBtn.addEventListener('click',closeM);
-  overlay.addEventListener('click',function(e){ if(e.target===overlay) closeM(e); });
-
-  // Backref wiring (if inline citation refs exist)
-  document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
-    var liId = a.getAttribute('href').slice(1);
-    var sup = a.closest('.footnote-ref');
-    if (!sup.id) {
-      var n = a.textContent.trim() || liId.replace(/\D+/g,'');
-      sup.id = 'ref-fn' + n;
-    }
-    var entry = document.getElementById(liId);
-    if (entry) {
-      var back = entry.querySelector('.backref');
-      if (back) back.setAttribute('href', '#' + sup.id);
-    }
-  });
-})();
-</script>
+<!-- External scripts -->
+<script src="/israelite-research/js/metadata.js" defer></script>
+<script src="/israelite-research/js/modal.js" defer></script>
+<script src="/israelite-research/js/biblio.js" defer></script>
+<script src="/israelite-research/js/articles.js" defer></script>
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
