@@ -3511,3 +3511,50 @@ hr{border:0;border-top:1px solid var(--border)}
   .footnotes{font-size:.92rem}
   .footnotes .backref, .footnote-ref a { text-decoration:none; border-bottom:0 }
 </style>
+/* Standout blockquote styling */
+.standout-quote {
+  border-left: 4px solid var(--accent, #F17300);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  background: #fdfaf7; /* soft warm off-white background */
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink, #0b2340);
+  border-radius: 6px;
+}
+
+.standout-quote cite {
+  display: block;
+  margin-top: .5rem;
+  font-size: .95rem;
+  color: var(--muted, #6b7280);
+  text-align: right;
+}
+.standout-quote {
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-align: center;
+  color: #0b2340; /* ink */
+  margin: 2rem auto;
+  padding: 1rem 0;
+  max-width: 70%;
+  position: relative;
+}
+
+.standout-quote::before,
+.standout-quote::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #e6ebf2;
+  margin: 1rem auto;
+  max-width: 80%;
+}
+
+.standout-quote footer {
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+}
