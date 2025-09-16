@@ -1,121 +1,93 @@
-(function(){
-  const BASE = '/israelite-research';
-  const JSON_URL = `${BASE}/data/articles.json?v=${Date.now()}`;
-  const AVATAR_FALLBACK = `${BASE}/images/authors/default.jpg`;
-  const CARD_FALLBACK   = `${BASE}/images/articles/placeholder-700x394.jpg`;
-  const PAGE_SIZE = 12;
+// /israelite-research/js/article.js
+(function () {
+  function qs(id){ return document.getElementById(id); }
 
-  const $grid = document.getElementById('articlesGrid');
-  const $loadMore = document.getElementById('loadMore');
-  const $tagNotice = document.getElementById('tagNotice');
-  const params = new URLSearchParams(location.search);
-  const filterTag = (params.get('tag') || '').toLowerCase();
+  document.addEventListener('DOMContentLoaded', function () {
+    // Publish date fill
+    var pub = qs('pub-date');
+    if (pub && !pub.textContent.trim()) {
+      var now = new Date();
+      pub.dateTime = now.toISOString().slice(0,10);
+      pub.textContent = now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    }
 
-  let all = [];
-  let visible = 0;
-
-  fetch(JSON_URL)
-    .then(r => r.json())
-    .then(items => {
-      // normalize + sort newest first
-      all = (items || [])
-        .map(x => ({
-          ...x,
-          dateObj: new Date(x.date),
-          tags: (x.tags || []).map(t => String(t).toLowerCase())
-        }))
-        .filter(x => !filterTag || x.tags.includes(filterTag))
-        .sort((a,b) => b.dateObj - a.dateObj);
-
-      if (filterTag && $tagNotice) {
-        $tagNotice.style.display = 'block';
-        $tagNotice.innerHTML = `Filtering by tag: <strong>${escapeHtml(params.get('tag'))}</strong>`;
+    // Share links
+    var url = location.href, title = document.title;
+    var x = qs('share-x'), fb = qs('share-fb'), cp = qs('share-copy');
+    if (x)  x.href  = 'https://x.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+    if (fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    if (cp) {
+      function copyIcon(){
+        return '<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">'
+             + '<path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>'
+             + '<rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>'
+             + '</svg>';
       }
+      cp.addEventListener('click', function(){
+        if (navigator.share) { navigator.share({title, url}).catch(function(){}); return; }
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(function(){
+            cp.textContent = 'Link copied ✓';
+            setTimeout(function(){ cp.innerHTML = copyIcon(); }, 1100);
+          });
+        }
+      });
+    }
 
-      renderMore();
-      setupLoadMore();
-    })
-    .catch(err => {
-      console.error('Failed to load articles.json', err);
-      if ($grid) $grid.innerHTML = `<p style="color:#666">Unable to load articles.</p>`;
-      if ($loadMore) $loadMore.style.display = 'none';
+    // Modal (author)
+    var trigger = qs('author-info');
+    var overlay = qs('author-modal');
+    var card    = overlay ? overlay.querySelector('.modal-card') : null;
+    var closeBtn= qs('author-modal-close');
+    var lastFocus;
+
+    function getFocusable(){
+      return card ? card.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])') : [];
+    }
+    function onKey(e){
+      if (e.key === 'Escape') return closeM(e);
+      if (e.key === 'Tab'){
+        var f = Array.prototype.slice.call(getFocusable());
+        if (!f.length) { e.preventDefault(); return; }
+        var first = f[0], last = f[f.length-1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    function openM(e){
+      if (e) e.preventDefault();
+      if (!overlay) return;
+      lastFocus = document.activeElement;
+      overlay.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = 'hidden';
+      if (card) card.focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function closeM(e){
+      if (e) e.preventDefault();
+      if (!overlay) return;
+      overlay.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    if (trigger) trigger.addEventListener('click', openM);
+    if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) closeM(e); });
+    if (closeBtn) closeBtn.addEventListener('click', closeM);
+
+    // Footnote backrefs wiring (maps inline refs -> bibliography back buttons)
+    document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+      var liId = a.getAttribute('href').slice(1);
+      var sup = a.closest('.footnote-ref');
+      if (!sup.id) {
+        var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+        sup.id = 'ref-fn' + n;
+      }
+      var entry = document.getElementById(liId);
+      if (entry) {
+        var back = entry.querySelector('.backref');
+        if (back) back.setAttribute('href', '#' + sup.id);
+      }
     });
-
-  function setupLoadMore(){
-    if (!$loadMore) return;
-    $loadMore.addEventListener('click', renderMore);
-    toggleLoadMore();
-  }
-
-  function toggleLoadMore(){
-    if (!$loadMore) return;
-    $loadMore.style.display = visible < all.length ? 'inline-block' : 'none';
-  }
-
-  function renderMore(){
-    if (!$grid) return;
-    const next = all.slice(visible, visible + PAGE_SIZE);
-    const frag = document.createDocumentFragment();
-    next.forEach(item => {
-      const div = document.createElement('div');
-      div.innerHTML = card(item);
-      frag.appendChild(div.firstElementChild);
-    });
-    $grid.appendChild(frag);
-    visible += next.length;
-    toggleLoadMore();
-  }
-
-  function urlFor(slug){
-    return `${BASE}/articles/${slug}.html`;
-  }
-
-  function imgTag(item, cls=''){
-    const src = `${BASE}/images/articles/${item.image || 'placeholder-700x394.jpg'}`;
-    const src2x = item.image2x ? `${BASE}/images/articles/${item.image2x}` : src;
-    return `<img class="${cls}" src="${src}"
-              srcset="${src} 700w, ${src2x} 1000w"
-              sizes="(min-width: 1024px) 420px, 100vw"
-              alt="${escapeHtml(item.title)}"
-              onerror="this.onerror=null;this.src='${CARD_FALLBACK}'">`;
-  }
-
-  function avatarTag(item){
-    const src = `${BASE}/images/authors/${item.authorSlug || 'semitic-jew'}.jpg`;
-    return `<img class="author-avatar" src="${src}" alt="Author: ${escapeHtml(item.author || 'Semitic Jew')}"
-            onerror="this.src='${AVATAR_FALLBACK}'">`;
-  }
-
-  // Card markup matching your site’s existing card style
-  function card(item){
-    return `
-      <article class="card">
-        <a class="card-image" href="${urlFor(item.slug)}">
-          ${imgTag(item)}
-        </a>
-        <div class="card-body">
-          <span class="resource-label">${escapeHtml(item.label || 'Article')}</span>
-          <h3 class="card-title">
-            <a href="${urlFor(item.slug)}">${escapeHtml(item.title)}</a>
-          </h3>
-          <p class="excerpt">${escapeHtml(item.excerpt || '')}</p>
-        </div>
-        <div class="article-footer">
-          <span class="author-mini">
-            ${avatarTag(item)}
-            <span class="author-name">${escapeHtml(item.author || 'Semitic Jew')}</span>
-          </span>
-          <span class="meta">${formatDate(item.dateObj)}</span>
-        </div>
-      </article>`;
-  }
-
-  function formatDate(d){
-    if(!(d instanceof Date) || isNaN(d)) return '';
-    return d.toLocaleDateString('en-US',{month:'short', day:'numeric', year:'numeric'});
-  }
-
-  function escapeHtml(s=''){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+  });
 })();
