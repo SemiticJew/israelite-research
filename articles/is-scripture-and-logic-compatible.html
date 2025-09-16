@@ -22,52 +22,6 @@
 <meta name="twitter:creator" content="@semitic_jew"/>
 
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
-
-<style>
-  /* A) Top-centered date + title */
-  .article-head{text-align:center;margin:0 0 .75rem}
-  .article-date{color:#6b7280;margin:.25rem 0 0;font-size:.95rem}
-  .article-title{margin:.25rem 0 0}
-
-  /* B–D) Author row beneath image */
-  .meta-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.75rem 0 1.25rem}
-  .author-inline{display:flex;align-items:center;gap:.6rem}
-  .author-avatar{border-radius:999px;flex:0 0 auto}
-  .byline-name{font-weight:600}
-  .byline-meta{color:#6b7280}
-
-  /* modal trigger button stripped down — only svg shows */
-  .author-info-btn {
-    background:none;
-    border:none;
-    padding:0;
-    margin:0;
-    display:inline-flex;
-    align-items:center;
-    cursor:pointer;
-    color:inherit;
-  }
-
-  .share-min{display:flex;gap:.5rem;margin-left:auto}
-  .share-btn{display:inline-flex;align-items:center;justify-content:center;padding:.4rem .5rem;border-radius:10px;border:1px solid #e6ebf2;background:#fff}
-  .share-btn:hover{background:#f8fafc}
-
-  /* E) Notes & Bibliography smaller, tidy */
-  .footnotes{font-size:.92rem;color:#0b2340}
-  .footnotes ol{margin:.5rem 0 0;padding-left:1.25rem}
-  .footnotes li{margin:.35rem 0;line-height:1.5}
-  .footnotes .backref{text-decoration:none;border-bottom:0}
-  .footnote-ref a{text-decoration:none;border-bottom:0}
-
-  /* Modal */
-  .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
-  .modal-overlay[aria-hidden="false"]{display:flex}
-  .modal-card{background:#fff;border-radius:12px;max-width:720px;width:min(92vw,720px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e6ebf2}
-  .mh-left{display:flex;align-items:center;gap:.5rem}
-  .modal-body{display:flex;gap:1rem;padding:16px}
-  .modal-close{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;cursor:pointer}
-</style>
 </head>
 
 <body class="article-doc" data-page="article">
@@ -75,7 +29,7 @@
 
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
-  <!-- A) date + title top-centered -->
+  <!-- date + title top-centered -->
   <header class="article-head">
     <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
     <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
@@ -87,7 +41,7 @@
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <!-- B–D) author left, share right -->
+  <!-- Author + share row -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
@@ -120,12 +74,12 @@
     </div>
   </div>
 
-  <!-- article body -->
+  <!-- Article body -->
   <div class="article-content" itemprop="articleBody">
-    <!-- keep your article text here -->
+    <!-- (your article text remains here) -->
   </div>
 
-  <!-- E) Notes & Bibliography -->
+  <!-- Notes & Bibliography -->
   <section aria-labelledby="fn-heading" class="footnotes">
     <h3 id="fn-heading">Notes &amp; Bibliography</h3>
     <ol>
@@ -138,7 +92,7 @@
 
 <!-- Author Modal -->
 <div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
-  <div class="modal-card" role="document">
+  <div class="modal-card" role="document" tabindex="-1">
     <div class="modal-head">
       <div class="mh-left">
         <h2 class="modal-title" id="author-modal-title">Semitic Jew</h2>
@@ -170,10 +124,12 @@
 
 <script>
 (function(){
+  // Date
   var now=new Date(), iso=now.toISOString().slice(0,10),
       text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
   var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
 
+  // Share links
   var url=location.href, title=document.title;
   var x=document.getElementById('share-x'),
       fb=document.getElementById('share-fb'),
@@ -188,16 +144,49 @@
     });
   });
 
-  var trigger=document.getElementById('author-info'),
-      overlay=document.getElementById('author-modal'),
-      closeBtn=document.getElementById('author-modal-close'),
-      lastFocus;
-  function openM(e){if(e)e.preventDefault();lastFocus=document.activeElement;overlay.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';closeBtn&&closeBtn.focus();}
-  function closeM(e){if(e)e.preventDefault();overlay.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';lastFocus&&lastFocus.focus&&lastFocus.focus();}
+  // Modal open/close + focus trap
+  var trigger = document.getElementById('author-info');
+  var overlay = document.getElementById('author-modal');
+  var card    = overlay && overlay.querySelector('.modal-card');
+  var closeBtn= document.getElementById('author-modal-close');
+  var lastFocus;
+
+  function getFocusable(){
+    if(!card) return [];
+    return card.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
+  }
+
+  function openM(e){
+    if(e) e.preventDefault();
+    lastFocus = document.activeElement;
+    overlay.setAttribute('aria-hidden','false');
+    document.documentElement.style.overflow='hidden';
+    if(card){ card.focus(); }
+    document.addEventListener('keydown', onKey);
+  }
+
+  function closeM(e){
+    if(e) e.preventDefault();
+    overlay.setAttribute('aria-hidden','true');
+    document.documentElement.style.overflow='';
+    document.removeEventListener('keydown', onKey);
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function onKey(e){
+    if(e.key === 'Escape'){ return closeM(e); }
+    if(e.key === 'Tab'){
+      var focusables = Array.prototype.slice.call(getFocusable());
+      if(!focusables.length){ e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length-1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
   if(trigger) trigger.addEventListener('click', openM);
   if(closeBtn) closeBtn.addEventListener('click', closeM);
   overlay.addEventListener('click', function(e){ if(e.target===overlay) closeM(e); });
-  document.addEventListener('keydown', function(e){ if(overlay.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeM(e); });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>
