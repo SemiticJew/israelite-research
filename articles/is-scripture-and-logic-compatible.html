@@ -28,7 +28,7 @@
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
   <header class="article-head">
-    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
+    <p class="article-date"><time datetime="" id="pub-date" itemprop="datePublished"></time></p>
     <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
   </header>
 
@@ -184,6 +184,15 @@
   if(trigger) trigger.addEventListener('click', openM);
   if(closeBtn) closeBtn.addEventListener('click', closeM);
   overlay.addEventListener('click', function(e){ if(e.target === overlay) closeM(e); });
+
+  // Footnote backrefs: keep ↩ pointing to the correct inline ref
+  document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+    var liId=a.getAttribute('href').slice(1), sup=a.closest('.footnote-ref');
+    if(!sup) return;
+    if(!sup.id){ var n=a.textContent.trim()||liId.replace(/\D+/g,''); sup.id='ref-fn'+n; }
+    var li=document.getElementById(liId), back=li && li.querySelector('.backref');
+    if(back) back.setAttribute('href','#'+sup.id);
+  });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>
