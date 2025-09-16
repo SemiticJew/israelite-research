@@ -58,28 +58,37 @@
   }
   .modal-close:hover{ background:#f3f4f6 }
 
-  /* Body: left author block (centered) + right articles list */
+  /* Body: left author block + right articles list */
   .modal-body{
-    padding:20px; overflow:auto;
-    display:grid; grid-template-columns:320px 1fr; gap:24px; align-items:start;
+    padding:22px;                 /* tiny internal pad */
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;                     /* increased breathing room */
+    align-items:start;
   }
   @media (max-width: 720px){
     .modal-body{ grid-template-columns:1fr; }
   }
 
   /* Left column */
-  .author-pane { text-align:center }
+  .author-pane { text-align:center; padding-right:12px } /* light pad inside left */
   .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
   .ap-name-row{
     display:inline-flex; align-items:center; gap:.5rem;
     justify-content:center; margin:0 auto .25rem;
   }
   .ap-name{ font-weight:700; font-size:1.1rem }
-  .author-x-head{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none }
+  /* Social icon color: uses your palette variables if present, with fallback */
+  .author-x-head{
+    display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
+    color: var(--brand-accent, var(--brand-primary, #054A91));
+  }
   .author-x-head svg{ width:18px; height:18px }
   .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
 
   /* Right column */
+  .author-list { padding-left:12px } /* light pad inside right */
   .author-list h4 { margin:.25rem 0 .5rem; font-size:1rem }
   .author-list ul{ list-style:none; padding:0; margin:0 }
   .author-list li{ margin:.45rem 0 }
@@ -158,7 +167,7 @@
 </article>
 </main>
 
-<!-- Fullscreen author modal (no header). Left: centered avatar/name/X + bio. Right: list + button -->
+<!-- Fullscreen author modal (no header). Left: centered avatar/name + social icon + bio. Right: list + button -->
 <div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
   <div class="modal-card" role="document" tabindex="-1">
     <button aria-label="Close" class="modal-close" id="author-modal-close" type="button" title="Close">
@@ -175,7 +184,7 @@
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
           </a>
         </div>
-        <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.</p>
+        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
       </div>
 
       <!-- Right column -->
@@ -186,7 +195,7 @@
           <li><a href="/israelite-research/articles/example-2.html">Fruitful No Matter What — Oct 19, 2024</a></li>
           <li><a href="/israelite-research/articles/example-3.html">The Loveliness of Reverence — Mar 10, 2024</a></li>
         </ul>
-        <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More by this author</a>
+        <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
       </div>
     </div>
   </div>
