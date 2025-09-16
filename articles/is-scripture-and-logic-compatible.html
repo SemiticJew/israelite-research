@@ -23,34 +23,43 @@
 
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 
-<!-- Article Template v1: small, reusable styling hooks -->
 <style>
   /* A) Top-centered date + title */
-  .article-head{ text-align:center; margin:0 0 .75rem }
-  .article-date{ color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
-  .article-title{ margin:.25rem 0 0; }
+  .article-head{text-align:center;margin:0 0 .75rem}
+  .article-date{color:#6b7280;margin:.25rem 0 0;font-size:.95rem}
+  .article-title{margin:.25rem 0 0}
 
-  /* B–D) Author row beneath image: left author, right share */
+  /* B–D) Author row beneath image */
   .meta-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.75rem 0 1.25rem}
   .author-inline{display:flex;align-items:center;gap:.6rem}
   .author-avatar{border-radius:999px;flex:0 0 auto}
   .byline-name{font-weight:600}
   .byline-meta{color:#6b7280}
 
+  /* modal trigger button stripped down — only svg shows */
+  .author-info-btn {
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+    display:inline-flex;
+    align-items:center;
+    cursor:pointer;
+    color:inherit;
+  }
+
   .share-min{display:flex;gap:.5rem;margin-left:auto}
   .share-btn{display:inline-flex;align-items:center;justify-content:center;padding:.4rem .5rem;border-radius:10px;border:1px solid #e6ebf2;background:#fff}
   .share-btn:hover{background:#f8fafc}
 
-  /* E) Notes & Bibliography smaller, tidy spacing */
-  .footnotes{font-size:.92rem; color:#0b2340}
-  .footnotes ol{margin:.5rem 0 0; padding-left:1.25rem}
-  .footnotes li{margin:.35rem 0; line-height:1.5}
+  /* E) Notes & Bibliography smaller, tidy */
+  .footnotes{font-size:.92rem;color:#0b2340}
+  .footnotes ol{margin:.5rem 0 0;padding-left:1.25rem}
+  .footnotes li{margin:.35rem 0;line-height:1.5}
   .footnotes .backref{text-decoration:none;border-bottom:0}
-
-  /* Footnote numbers non-underlined */
   .footnote-ref a{text-decoration:none;border-bottom:0}
 
-  /* Modal essentials (kept minimal; site CSS may already cover) */
+  /* Modal */
   .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
   .modal-overlay[aria-hidden="false"]{display:flex}
   .modal-card{background:#fff;border-radius:12px;max-width:720px;width:min(92vw,720px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
@@ -66,7 +75,7 @@
 
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
-  <!-- A) Date & Title are top-centered -->
+  <!-- A) date + title top-centered -->
   <header class="article-head">
     <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
     <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
@@ -78,41 +87,50 @@
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <!-- B–D) Author left, Share right (under image) -->
+  <!-- B–D) author left, share right -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
-      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button" title="About the author">
-        <svg aria-hidden="true" height="18" viewBox="0 0 20 20" width="18"><g fill="currentColor"><path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path></g></svg>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <!-- double squares icon -->
+        <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z 
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z 
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z 
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
       </button>
     </div>
     <div aria-label="Share" class="share-min">
-      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank" title="Share on X">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
       </a>
-      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank" title="Share on Facebook">
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
       </a>
-      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
       </button>
     </div>
   </div>
 
-  <!-- Body -->
+  <!-- article body -->
   <div class="article-content" itemprop="articleBody">
-    <!-- (keep your existing content here) -->
+    <!-- keep your article text here -->
   </div>
 
-  <!-- E) Notes & Bibliography smaller font, sentence style -->
+  <!-- E) Notes & Bibliography -->
   <section aria-labelledby="fn-heading" class="footnotes">
     <h3 id="fn-heading">Notes &amp; Bibliography</h3>
     <ol>
       <li id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logical reading. <a class="backref" href="#ref-fn1">↩</a></li>
       <li id="fn2">Identity, non-contradiction, and excluded middle as ordinary grammar for truthful discourse. <a class="backref" href="#ref-fn2">↩</a></li>
-      <!-- etc. -->
     </ol>
   </section>
 </article>
@@ -136,9 +154,7 @@
       <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
       <div>
         <div class="ap-name">Semitic Jew</div>
-        <p class="ap-text">
-          Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
-        </p>
+        <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.</p>
         <div class="modal-links">
           <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
           <a class="modal-chip" href="/israelite-research/media.html">Media</a>
@@ -154,12 +170,10 @@
 
 <script>
 (function(){
-  // Date stamp
   var now=new Date(), iso=now.toISOString().slice(0,10),
       text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
   var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
 
-  // Share links
   var url=location.href, title=document.title;
   var x=document.getElementById('share-x'),
       fb=document.getElementById('share-fb'),
@@ -169,32 +183,21 @@
   if(cp) cp.addEventListener('click', function(){
     if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
     if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){
-      cp.setAttribute('aria-live','polite'); cp.textContent='Link copied ✓';
-      setTimeout(function(){
-        cp.innerHTML='<svg aria-hidden=\"true\" height=\"16\" viewBox=\"0 0 24 24\" width=\"16\"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>';
-      }, 1200);
+      cp.textContent='Link copied ✓';
+      setTimeout(function(){ cp.innerHTML='<svg aria-hidden=\"true\" height=\"16\" viewBox=\"0 0 24 24\" width=\"16\"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
     });
   });
 
-  // Modal
   var trigger=document.getElementById('author-info'),
       overlay=document.getElementById('author-modal'),
       closeBtn=document.getElementById('author-modal-close'),
       lastFocus;
-  function openM(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; overlay.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; closeBtn&&closeBtn.focus(); }
-  function closeM(e){ if(e) e.preventDefault(); overlay.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; lastFocus&&lastFocus.focus&&lastFocus.focus(); }
+  function openM(e){if(e)e.preventDefault();lastFocus=document.activeElement;overlay.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';closeBtn&&closeBtn.focus();}
+  function closeM(e){if(e)e.preventDefault();overlay.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';lastFocus&&lastFocus.focus&&lastFocus.focus();}
   if(trigger) trigger.addEventListener('click', openM);
   if(closeBtn) closeBtn.addEventListener('click', closeM);
   overlay.addEventListener('click', function(e){ if(e.target===overlay) closeM(e); });
   document.addEventListener('keydown', function(e){ if(overlay.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeM(e); });
-
-  // Footnote backrefs
-  document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
-    var liId=a.getAttribute('href').slice(1), sup=a.closest('.footnote-ref');
-    if(!sup.id){ var n=a.textContent.trim()||liId.replace(/\D+/g,''); sup.id='ref-fn'+n; }
-    var li=document.getElementById(liId), back=li && li.querySelector('.backref');
-    if(back) back.setAttribute('href','#'+sup.id);
-  });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>
