@@ -87,9 +87,19 @@
   }
   .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
   .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
-  .author-list li{ margin:.45rem 0 }
-  .author-list a{ text-decoration:none }
-  .author-list a:hover{ text-decoration:underline }
+  .author-list li{
+    margin:0; padding:.6rem 0;
+    border-top:1px solid #e6ebf2;
+  }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{
+    font-weight:700; text-decoration:none; display:inline-block;
+  }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{
+    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
+  }
+
   .more-by-btn{
     margin-top:auto; display:inline-block; padding:.55rem .9rem; border-radius:10px;
     border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600;
@@ -117,6 +127,7 @@
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
+  <!-- Row under image -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
@@ -163,6 +174,7 @@
 </article>
 </main>
 
+<!-- Modal -->
 <div aria-hidden="true" class="modal-overlay" id="author-modal" role="dialog">
   <div class="modal-card" role="document" tabindex="-1">
     <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
@@ -170,6 +182,7 @@
     </button>
 
     <div class="modal-body">
+      <!-- Left column -->
       <div class="author-pane">
         <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
         <div class="ap-name-row">
@@ -183,14 +196,30 @@
         <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
       </div>
 
+      <!-- Right column -->
       <div class="author-list">
         <h4>Recent Articles</h4>
         <ul>
-          <li><a href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a></li>
-          <li><a href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity</a></li>
-          <li><a href="/israelite-research/articles/gentiles.html">Gentiles</a></li>
-          <li><a href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a></li>
-          <li><a href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a></li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+            <span class="ra-meta">Semitic Jew | —</span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity</a>
+            <span class="ra-meta">Semitic Jew | —</span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/gentiles.html">Gentiles</a>
+            <span class="ra-meta">Semitic Jew | —</span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a>
+            <span class="ra-meta">Semitic Jew | —</span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+            <span class="ra-meta">Semitic Jew | —</span>
+          </li>
         </ul>
         <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
       </div>
@@ -202,22 +231,25 @@
 
 <script>
 (function(){
+  // Date
   var now=new Date(), iso=now.toISOString().slice(0,10),
       text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
   var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
 
+  // Share links
   var url=location.href, title=document.title;
   var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
   if(x) x.href="https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
   if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
   if(cp) cp.addEventListener('click', function(){
     if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
-    navigator.clipboard.writeText(url).then(function(){
+    navigator.clipboard && navigator.clipboard.writeText(url).then(function(){
       cp.textContent='Link copied ✓';
-      setTimeout(function(){ cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
+      setTimeout(function(){ cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 0 0-7 0l-1 1a5 5 0 0 0 0 7 5 5 0 0 0 7 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
     });
   });
 
+  // Modal open/close + focus trap
   var trigger=document.getElementById('author-info'), overlay=document.getElementById('author-modal'),
       card=overlay && overlay.querySelector('.modal-card'), closeBtn=document.getElementById('author-modal-close');
   var lastFocus;
