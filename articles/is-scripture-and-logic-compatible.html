@@ -40,7 +40,7 @@
   .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
   .share-btn:hover { background:#f8fafc }
 
-  /* Fullscreen modal */
+  /* Modal */
   .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
   .modal-overlay[aria-hidden="false"]{ display:block }
   .modal-card{
@@ -69,7 +69,6 @@
     .modal-body{ grid-template-columns:1fr; min-height:unset; }
   }
 
-  /* Left column (centered vertically) */
   .author-pane {
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding-right:12px; text-align:center;
@@ -77,56 +76,30 @@
   .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
   .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
   .ap-name{ font-weight:700; font-size:1.1rem }
-  .author-x-head{
-    display:inline-flex; align-items:center; justify-content:center;
-    text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
-  }
+  .author-x-head{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; color:var(--brand-accent,#054A91); }
   .author-x-head svg{ width:18px; height:18px }
   .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
 
-  /* Right column */
-  .author-list{
-    display:flex; flex-direction:column; min-height:0; padding-left:12px;
-  }
+  .author-list{ display:flex; flex-direction:column; min-height:0; padding-left:12px; }
   .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
   .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
-  .author-list li{
-    margin:0; padding:.6rem 0;
-    border-top:1px solid #e6ebf2;
-  }
+  .author-list li{ margin:0; padding:.6rem 0; border-top:1px solid #e6ebf2; }
   .author-list li:first-child{ border-top:0; }
-  .ra-title{
-    font-weight:700; text-decoration:none; display:inline-block;
-  }
+  .ra-title{ font-weight:700; text-decoration:none; display:inline-block; }
   .ra-title:hover{ text-decoration:underline; }
-  .ra-meta{
-    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
-  }
+  .ra-meta{ display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280; }
 
-  /* Button centered at base of right column */
-  .more-by-btn{
-    margin-top:auto; display:inline-block;
-    padding:.55rem .9rem; border-radius:10px;
-    border:1px solid #e6ebf2; background:#fff;
-    text-decoration:none; font-weight:600;
-    align-self:center;
-  }
+  .more-by-btn{ margin-top:auto; display:inline-block; padding:.55rem .9rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600; align-self:center; }
   .more-by-btn:hover{ text-decoration:none; }
 
-  /* Bibliography styles */
-  .footnotes{ font-size:.92rem }
-  .footnotes h3{ margin:1.5rem 0 .5rem }
+  /* Bibliography */
+  .footnotes h3{ margin:1.5rem 0 .5rem; }
+  .biblio-list p{ font-size:0.85rem; line-height:1.4; margin:.5rem 0; }
   .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
   .footnotes .backref:hover{ text-decoration:none; }
-  .footnotes .backref .badge{
-    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
-    border:1px solid #e6ebf2; border-radius:6px;
-  }
-
-  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnotes .backref .badge{ display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem; border:1px solid #e6ebf2; border-radius:6px; }
   .footnote-ref a{ text-decoration:none; border-bottom:0 }
   .footnote-ref a:hover{ text-decoration:none }
-  .biblio-list p { font-size:0.85rem; line-height:1.4; }
 </style>
 </head>
 
@@ -140,9 +113,8 @@
     <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
   </header>
 
-  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+  <figure class="hero-image">
     <img alt="Scripture & Logic: Friends, Not Foes" height="394" src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" width="700"/>
-    <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
   <div class="meta-row">
@@ -150,175 +122,30 @@
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
-      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
-        <svg aria-hidden="true" viewBox="0 0 20 20">
-          <g fill="currentColor" fill-rule="evenodd" stroke="none">
-            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
-                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
-                     M3,16 L14,16 L14,17 L3,17 L3,16 Z 
-                     M3,7 L4,7 L4,16 L3,16 L3,7 Z 
-                     M6,3 L16,3 L16,4 L6,4 L6,3 Z 
-                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
-          </g>
-        </svg>
-      </button>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">…</button>
     </div>
 
     <div aria-label="Share" class="share-min">
-      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
-        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
-      </a>
-      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
-        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
-      </a>
-      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
-        <!-- Repaired Copy icon: overlapping rectangles -->
-        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
-          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
-          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
-        </svg>
-      </button>
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">…</a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">…</a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">…</button>
     </div>
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <!-- Your main article content (with any inline citations like <span class="footnote-ref"><a href="#fn1">1</a></span>) -->
+    <!-- Article text here -->
   </div>
 
   <!-- Bibliography -->
   <section aria-labelledby="fn-heading" class="footnotes">
     <h3 id="fn-heading">Bibliography</h3>
     <div class="biblio-list">
-      <p id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logical reading. <a class="backref" href="#ref-fn1" aria-label="Back to citation 1"><span class="badge">1</span></a></p>
-      <p id="fn2">Identity, non-contradiction, and excluded middle as ordinary grammar for truthful discourse. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2"><span class="badge">2</span></a></p>
-      <!-- Add more entries as needed, following the same pattern -->
+      <p id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logical reading <a class="backref" href="#ref-fn1"><span class="badge">1</span></a></p>
+      <p id="fn2">Identity, non-contradiction, and excluded middle as ordinary grammar for truthful discourse <a class="backref" href="#ref-fn2"><span class="badge">2</span></a></p>
     </div>
   </section>
 </article>
 </main>
-
-<!-- Modal -->
-<div aria-hidden="true" class="modal-overlay" id="author-modal" role="dialog">
-  <div class="modal-card" role="document" tabindex="-1">
-    <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
-      <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
-    </button>
-
-    <div class="modal-body">
-      <div class="author-pane">
-        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
-        <div class="ap-name-row">
-          <div class="ap-name">Semitic Jew</div>
-          <a class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Semitic Jew on X" title="Semitic Jew on X">
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
-            </svg>
-          </a>
-        </div>
-        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
-      </div>
-
-      <div class="author-list">
-        <h4>Recent Articles</h4>
-        <ul>
-          <li>
-            <a class="ra-title" href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
-            <span class="ra-meta">Semitic Jew | <time datetime="2025-08-12">Aug 12, 2025</time></span>
-          </li>
-          <li>
-            <a class="ra-title" href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity</a>
-            <span class="ra-meta">Semitic Jew | <time datetime="2025-06-03">Jun 3, 2025</time></span>
-          </li>
-          <li>
-            <a class="ra-title" href="/israelite-research/articles/gentiles.html">Gentiles</a>
-            <span class="ra-meta">Semitic Jew | <time datetime="2025-04-21">Apr 21, 2025</time></span>
-          </li>
-          <li>
-            <a class="ra-title" href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a>
-            <span class="ra-meta">Semitic Jew | <time datetime="2025-02-07">Feb 7, 2025</time></span>
-          </li>
-          <li>
-            <a class="ra-title" href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
-            <span class="ra-meta">Semitic Jew | <time datetime="2024-12-15">Dec 15, 2024</time></span>
-          </li>
-        </ul>
-        <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="site-footer"></div>
-
-<script>
-(function(){
-  // Date
-  var now=new Date(), iso=now.toISOString().slice(0,10),
-      text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
-  var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
-
-  // Share links
-  var url=location.href, title=document.title;
-  var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
-  if(x) x.href="https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
-  if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
-
-  // Copy link button behavior + icon restore
-  function copyIconMarkup(){
-    return '<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">'
-         + '<path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>'
-         + '<rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>'
-         + '</svg>';
-  }
-  if(cp){
-    cp.addEventListener('click', function(){
-      if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
-      if(navigator.clipboard){
-        navigator.clipboard.writeText(url).then(function(){
-          cp.textContent='Link copied ✓';
-          setTimeout(function(){ cp.innerHTML = copyIconMarkup(); }, 1200);
-        });
-      }
-    });
-  }
-
-  // Modal open/close + focus trap
-  var trigger=document.getElementById('author-info'), overlay=document.getElementById('author-modal'),
-      card=overlay && overlay.querySelector('.modal-card'), closeBtn=document.getElementById('author-modal-close');
-  var lastFocus;
-  function getFocusable(){ return card?card.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])') : []; }
-  function onKey(e){
-    if(e.key==='Escape') return closeM(e);
-    if(e.key==='Tab'){
-      var f=[...getFocusable()];
-      if(!f.length){ e.preventDefault(); return; }
-      var first=f[0], last=f[f.length-1];
-      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
-    }
-  }
-  function openM(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; overlay.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; if(card) card.focus(); document.addEventListener('keydown',onKey); }
-  function closeM(e){ if(e) e.preventDefault(); overlay.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; document.removeEventListener('keydown',onKey); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
-  if(trigger) trigger.addEventListener('click',openM);
-  if(closeBtn) closeBtn.addEventListener('click',closeM);
-  overlay.addEventListener('click',function(e){ if(e.target===overlay) closeM(e); });
-
-  // Backref wiring (if inline citation refs exist)
-  document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
-    var liId = a.getAttribute('href').slice(1);
-    var sup = a.closest('.footnote-ref');
-    if (!sup.id) {
-      var n = a.textContent.trim() || liId.replace(/\D+/g,'');
-      sup.id = 'ref-fn' + n;
-    }
-    var entry = document.getElementById(liId);
-    if (entry) {
-      var back = entry.querySelector('.backref');
-      if (back) back.setAttribute('href', '#' + sup.id);
-    }
-  });
-})();
-</script>
-<script src="/israelite-research/js/include.js"></script>
+…
 </body>
 </html>
