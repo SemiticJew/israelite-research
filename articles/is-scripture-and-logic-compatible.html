@@ -103,19 +103,30 @@
     display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
   }
 
-  /* Button centered at the base of right column */
+  /* Button centered at base of right column */
   .more-by-btn{
     margin-top:auto; display:inline-block;
     padding:.55rem .9rem; border-radius:10px;
     border:1px solid #e6ebf2; background:#fff;
     text-decoration:none; font-weight:600;
-    align-self:center;   /* horizontally center within right column */
+    align-self:center;
   }
   .more-by-btn:hover{ text-decoration:none; }
 
-  /* Footnotes */
+  /* Bibliography styles */
   .footnotes{ font-size:.92rem }
-  .footnotes .backref, .footnote-ref a { text-decoration:none; border-bottom:0 }
+  .footnotes h3{ margin:1.5rem 0 .5rem }
+  .biblio-list p{ margin:.5rem 0; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref:hover{ text-decoration:none; }
+  .footnotes .backref .badge{
+    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
+    border:1px solid #e6ebf2; border-radius:6px;
+  }
+
+  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+  .footnote-ref a:hover{ text-decoration:none }
 </style>
 </head>
 
@@ -160,22 +171,28 @@
       <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
       </a>
-      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
-        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <!-- Repaired Copy icon: overlapping rectangles -->
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
       </button>
     </div>
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <!-- Article body goes here -->
+    <!-- Your main article content (with any inline citations like <span class="footnote-ref"><a href="#fn1">1</a></span>) -->
   </div>
 
+  <!-- Bibliography -->
   <section aria-labelledby="fn-heading" class="footnotes">
-    <h3 id="fn-heading">Notes &amp; Bibliography</h3>
-    <ol>
-      <li id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logical reading. <a class="backref" href="#ref-fn1">↩</a></li>
-      <li id="fn2">Identity, non-contradiction, and excluded middle as ordinary grammar for truthful discourse. <a class="backref" href="#ref-fn2">↩</a></li>
-    </ol>
+    <h3 id="fn-heading">Bibliography</h3>
+    <div class="biblio-list">
+      <p id="fn1">On God’s faithfulness and the coherence of His revelation as the ground for logical reading. <a class="backref" href="#ref-fn1" aria-label="Back to citation 1"><span class="badge">1</span></a></p>
+      <p id="fn2">Identity, non-contradiction, and excluded middle as ordinary grammar for truthful discourse. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2"><span class="badge">2</span></a></p>
+      <!-- Add more entries as needed, following the same pattern -->
+    </div>
   </section>
 </article>
 </main>
@@ -245,13 +262,25 @@
   var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
   if(x) x.href="https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
   if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
-  if(cp) cp.addEventListener('click', function(){
-    if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
-    navigator.clipboard && navigator.clipboard.writeText(url).then(function(){
-      cp.textContent='Link copied ✓';
-      setTimeout(function(){ cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 0 0-7 0l-1 1a5 5 0 0 0 0 7 5 5 0 0 0 7 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
+
+  // Copy link button behavior + icon restore
+  function copyIconMarkup(){
+    return '<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">'
+         + '<path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>'
+         + '<rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>'
+         + '</svg>';
+  }
+  if(cp){
+    cp.addEventListener('click', function(){
+      if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(url).then(function(){
+          cp.textContent='Link copied ✓';
+          setTimeout(function(){ cp.innerHTML = copyIconMarkup(); }, 1200);
+        });
+      }
     });
-  });
+  }
 
   // Modal open/close + focus trap
   var trigger=document.getElementById('author-info'), overlay=document.getElementById('author-modal'),
@@ -273,6 +302,21 @@
   if(trigger) trigger.addEventListener('click',openM);
   if(closeBtn) closeBtn.addEventListener('click',closeM);
   overlay.addEventListener('click',function(e){ if(e.target===overlay) closeM(e); });
+
+  // Backref wiring (if inline citation refs exist)
+  document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+    var liId = a.getAttribute('href').slice(1);
+    var sup = a.closest('.footnote-ref');
+    if (!sup.id) {
+      var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+      sup.id = 'ref-fn' + n;
+    }
+    var entry = document.getElementById(liId);
+    if (entry) {
+      var back = entry.querySelector('.backref');
+      if (back) back.setAttribute('href', '#' + sup.id);
+    }
+  });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>
