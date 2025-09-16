@@ -3558,3 +3558,29 @@ hr{border:0;border-top:1px solid var(--border)}
   color: #6b7280;
   text-align: center;
 }
+/* ── Standout blockquote (DG style) ───────────────── */
+.standout-quote {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: left;
+  color: #0b2340; /* ink */
+  margin: 2rem auto;
+  padding: 0 1rem;
+  max-width: 700px;
+}
+
+.standout-quote::before,
+.standout-quote::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #e6ebf2;
+  margin: 1.5rem 0;
+}
+
+.standout-quote footer {
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  color: #6b7280;
+}
