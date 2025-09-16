@@ -49,7 +49,7 @@
     overflow:hidden; display:flex; flex-direction:column;
   }
 
-  /* Floating close button (since header is removed) */
+  /* Floating close button */
   .modal-close{
     position:absolute; top:10px; right:10px;
     border:0; background:transparent; cursor:pointer;
@@ -58,13 +58,13 @@
   }
   .modal-close:hover{ background:#f3f4f6 }
 
-  /* Body: left author block + right articles list */
+  /* Body */
   .modal-body{
-    padding:22px;                 /* tiny internal pad */
+    padding:22px;
     overflow:auto;
     display:grid;
     grid-template-columns:320px 1fr;
-    gap:32px;                     /* increased breathing room */
+    gap:32px;
     align-items:start;
   }
   @media (max-width: 720px){
@@ -72,23 +72,26 @@
   }
 
   /* Left column */
-  .author-pane { text-align:center; padding-right:12px } /* light pad inside left */
+  .author-pane { text-align:center; padding-right:12px }
   .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
   .ap-name-row{
     display:inline-flex; align-items:center; gap:.5rem;
     justify-content:center; margin:0 auto .25rem;
   }
   .ap-name{ font-weight:700; font-size:1.1rem }
-  /* Social icon color: uses your palette variables if present, with fallback */
+
+  /* Social media button styled */
   .author-x-head{
-    display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
-    color: var(--brand-accent, var(--brand-primary, #054A91));
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:6px;
+    background:#F17300; color:#fff; text-decoration:none;
   }
-  .author-x-head svg{ width:18px; height:18px }
+  .author-x-head svg{ width:16px; height:16px; stroke:#fff; }
+
   .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
 
   /* Right column */
-  .author-list { padding-left:12px } /* light pad inside right */
+  .author-list { padding-left:12px }
   .author-list h4 { margin:.25rem 0 .5rem; font-size:1rem }
   .author-list ul{ list-style:none; padding:0; margin:0 }
   .author-list li{ margin:.45rem 0 }
@@ -99,7 +102,7 @@
     border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600;
   }
 
-  /* Footnotes (smaller + no underline on refs) */
+  /* Footnotes */
   .footnotes{ font-size:.92rem }
   .footnotes .backref, .footnote-ref a { text-decoration:none; border-bottom:0 }
 </style>
@@ -120,13 +123,12 @@
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <!-- Row under image -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
-      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button" title="About the author">
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
         <svg aria-hidden="true" viewBox="0 0 20 20">
           <g fill="currentColor" fill-rule="evenodd" stroke="none">
             <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
@@ -141,13 +143,13 @@
     </div>
 
     <div aria-label="Share" class="share-min">
-      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank" title="Share on X">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
       </a>
-      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank" title="Share on Facebook">
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
       </a>
-      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy article link">
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
       </button>
     </div>
@@ -167,27 +169,24 @@
 </article>
 </main>
 
-<!-- Fullscreen author modal (no header). Left: centered avatar/name + social icon + bio. Right: list + button -->
-<div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
+<div aria-hidden="true" class="modal-overlay" id="author-modal" role="dialog">
   <div class="modal-card" role="document" tabindex="-1">
-    <button aria-label="Close" class="modal-close" id="author-modal-close" type="button" title="Close">
+    <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
       <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
     </button>
 
     <div class="modal-body">
-      <!-- Left column -->
       <div class="author-pane">
         <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
         <div class="ap-name-row">
           <div class="ap-name">Semitic Jew</div>
-          <a class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Semitic Jew on X" title="Semitic Jew on X">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+          <a class="author-x-head" href="https://x.com/semitic_jew" target="_blank" rel="noopener" aria-label="Semitic Jew on X">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l16 16M20 4L4 20" stroke="white" stroke-linecap="round" stroke-width="2"/></svg>
           </a>
         </div>
         <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
       </div>
 
-      <!-- Right column -->
       <div class="author-list">
         <h4>Recent articles</h4>
         <ul>
@@ -205,69 +204,31 @@
 
 <script>
 (function(){
-  // Date
   var now=new Date(), iso=now.toISOString().slice(0,10),
       text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
   var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
 
-  // Share links
   var url=location.href, title=document.title;
-  var x=document.getElementById('share-x'),
-      fb=document.getElementById('share-fb'),
-      cp=document.getElementById('share-copy');
+  var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
   if(x) x.href="https://x.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
   if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
   if(cp) cp.addEventListener('click', function(){
     if(navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
-    if(navigator.clipboard) navigator.clipboard.writeText(url).then(function(){
+    navigator.clipboard.writeText(url).then(function(){
       cp.textContent='Link copied ✓';
-      setTimeout(function(){ cp.innerHTML='<svg aria-hidden=\"true\" height=\"16\" viewBox=\"0 0 24 24\" width=\"16\"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
+      setTimeout(function(){ cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d=\"M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\"></path></svg>'; }, 1200);
     });
   });
 
-  // Modal open/close + focus trap
-  var trigger = document.getElementById('author-info');
-  var overlay = document.getElementById('author-modal');
-  var card    = overlay && overlay.querySelector('.modal-card');
-  var closeBtn= document.getElementById('author-modal-close');
+  var trigger=document.getElementById('author-info'), overlay=document.getElementById('author-modal'),
+      card=overlay && overlay.querySelector('.modal-card'), closeBtn=document.getElementById('author-modal-close');
   var lastFocus;
-
-  function getFocusable(){
-    if(!card) return [];
-    return card.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
-  }
-
-  function onKey(e){
-    if(e.key === 'Escape'){ return closeM(e); }
-    if(e.key === 'Tab'){
-      var f = Array.prototype.slice.call(getFocusable());
-      if(!f.length){ e.preventDefault(); return; }
-      var first = f[0], last = f[f.length-1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    }
-  }
-
-  function openM(e){
-    if(e) e.preventDefault();
-    lastFocus = document.activeElement;
-    overlay.setAttribute('aria-hidden','false');
-    document.documentElement.style.overflow='hidden';
-    if(card){ card.focus(); }
-    document.addEventListener('keydown', onKey);
-  }
-
-  function closeM(e){
-    if(e) e.preventDefault();
-    overlay.setAttribute('aria-hidden','true');
-    document.documentElement.style.overflow='';
-    document.removeEventListener('keydown', onKey);
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  if(trigger) trigger.addEventListener('click', openM);
-  if(closeBtn) closeBtn.addEventListener('click', closeM);
-  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeM(e); });
+  function getFocusable(){ return card?card.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])') : []; }
+  function onKey(e){ if(e.key==='Escape') return closeM(e); if(e.key==='Tab'){ var f=[...getFocusable()]; if(!f.length){e.preventDefault();return;} var first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();} else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();} } }
+  function openM(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; overlay.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; if(card) card.focus(); document.addEventListener('keydown',onKey); }
+  function closeM(e){ if(e) e.preventDefault(); overlay.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; document.removeEventListener('keydown',onKey); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+  if(trigger) trigger.addEventListener('click',openM); if(closeBtn) closeBtn.addEventListener('click',closeM);
+  overlay.addEventListener('click',function(e){ if(e.target===overlay) closeM(e); });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>
