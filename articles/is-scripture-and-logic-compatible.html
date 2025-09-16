@@ -56,21 +56,20 @@
   }
   .modal-close:hover{ background:#f3f4f6 }
 
-  /* Modal body: give some vertical space so left pane can center nicely */
   .modal-body{
     padding:22px;
     overflow:auto;
     display:grid;
     grid-template-columns:320px 1fr;
     gap:32px;
-    align-items:stretch;      /* stretch columns to same height */
-    min-height:60vh;          /* ensures enough height to center left content */
+    align-items:stretch;
+    min-height:60vh;
   }
   @media (max-width: 720px){
     .modal-body{ grid-template-columns:1fr; min-height:unset; }
   }
 
-  /* Left column — centered vertically */
+  /* Left column (centered vertically) */
   .author-pane {
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding-right:12px; text-align:center;
@@ -104,9 +103,13 @@
     display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
   }
 
+  /* Button centered at the base of right column */
   .more-by-btn{
-    margin-top:auto; display:inline-block; padding:.55rem .9rem; border-radius:10px;
-    border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600;
+    margin-top:auto; display:inline-block;
+    padding:.55rem .9rem; border-radius:10px;
+    border:1px solid #e6ebf2; background:#fff;
+    text-decoration:none; font-weight:600;
+    align-self:center;   /* horizontally center within right column */
   }
   .more-by-btn:hover{ text-decoration:none; }
 
@@ -131,7 +134,6 @@
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <!-- Row under image -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
@@ -165,7 +167,7 @@
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <!-- (Your main article content goes here) -->
+    <!-- Article body goes here -->
   </div>
 
   <section aria-labelledby="fn-heading" class="footnotes">
@@ -186,7 +188,6 @@
     </button>
 
     <div class="modal-body">
-      <!-- Left column (centered vertically) -->
       <div class="author-pane">
         <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
         <div class="ap-name-row">
@@ -200,7 +201,6 @@
         <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
       </div>
 
-      <!-- Right column -->
       <div class="author-list">
         <h4>Recent Articles</h4>
         <ul>
@@ -258,10 +258,20 @@
       card=overlay && overlay.querySelector('.modal-card'), closeBtn=document.getElementById('author-modal-close');
   var lastFocus;
   function getFocusable(){ return card?card.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])') : []; }
-  function onKey(e){ if(e.key==='Escape') return closeM(e); if(e.key==='Tab'){ var f=[...getFocusable()]; if(!f.length){e.preventDefault();return;} var first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();} else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();} } }
+  function onKey(e){
+    if(e.key==='Escape') return closeM(e);
+    if(e.key==='Tab'){
+      var f=[...getFocusable()];
+      if(!f.length){ e.preventDefault(); return; }
+      var first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  }
   function openM(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; overlay.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; if(card) card.focus(); document.addEventListener('keydown',onKey); }
   function closeM(e){ if(e) e.preventDefault(); overlay.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; document.removeEventListener('keydown',onKey); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
-  if(trigger) trigger.addEventListener('click',openM); if(closeBtn) closeBtn.addEventListener('click',closeM);
+  if(trigger) trigger.addEventListener('click',openM);
+  if(closeBtn) closeBtn.addEventListener('click',closeM);
   overlay.addEventListener('click',function(e){ if(e.target===overlay) closeM(e); });
 })();
 </script>
