@@ -55,30 +55,34 @@
     width:36px; height:36px; border-radius:50%;
   }
   .modal-close:hover{ background:#f3f4f6 }
+
+  /* Modal body: give some vertical space so left pane can center nicely */
   .modal-body{
     padding:22px;
     overflow:auto;
     display:grid;
     grid-template-columns:320px 1fr;
     gap:32px;
-    align-items:start;
+    align-items:stretch;      /* stretch columns to same height */
+    min-height:60vh;          /* ensures enough height to center left content */
   }
   @media (max-width: 720px){
-    .modal-body{ grid-template-columns:1fr; }
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
   }
 
-  /* Left column */
-  .author-pane { text-align:center; padding-right:12px }
+  /* Left column — centered vertically */
+  .author-pane {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-right:12px; text-align:center;
+  }
   .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
   .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
   .ap-name{ font-weight:700; font-size:1.1rem }
-
   .author-x-head{
     display:inline-flex; align-items:center; justify-content:center;
     text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
   }
   .author-x-head svg{ width:18px; height:18px }
-
   .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
 
   /* Right column */
@@ -182,7 +186,7 @@
     </button>
 
     <div class="modal-body">
-      <!-- Left column -->
+      <!-- Left column (centered vertically) -->
       <div class="author-pane">
         <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
         <div class="ap-name-row">
@@ -202,23 +206,23 @@
         <ul>
           <li>
             <a class="ra-title" href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
-            <span class="ra-meta">Semitic Jew | —</span>
+            <span class="ra-meta">Semitic Jew | <time datetime="">—</time></span>
           </li>
           <li>
             <a class="ra-title" href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity</a>
-            <span class="ra-meta">Semitic Jew | —</span>
+            <span class="ra-meta">Semitic Jew | <time datetime="">—</time></span>
           </li>
           <li>
             <a class="ra-title" href="/israelite-research/articles/gentiles.html">Gentiles</a>
-            <span class="ra-meta">Semitic Jew | —</span>
+            <span class="ra-meta">Semitic Jew | <time datetime="">—</time></span>
           </li>
           <li>
             <a class="ra-title" href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a>
-            <span class="ra-meta">Semitic Jew | —</span>
+            <span class="ra-meta">Semitic Jew | <time datetime="">—</time></span>
           </li>
           <li>
             <a class="ra-title" href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
-            <span class="ra-meta">Semitic Jew | —</span>
+            <span class="ra-meta">Semitic Jew | <time datetime="">—</time></span>
           </li>
         </ul>
         <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
