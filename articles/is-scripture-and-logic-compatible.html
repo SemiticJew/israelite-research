@@ -5,7 +5,6 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Scripture & Logic: Friends, Not Foes — Semitic Jew</title>
 
-<!-- Open Graph -->
 <meta property="og:title" content="Scripture & Logic: Friends, Not Foes — Semitic Jew"/>
 <meta property="og:description" content="Exploring how Scripture and logic complement one another—prophets, Jesus, and apostles reasoning coherently in covenant truth."/>
 <meta property="og:image" content="https://semiticjew.github.io/israelite-research/images/articles/logic-compatibility-700x394.jpg"/>
@@ -13,7 +12,6 @@
 <meta property="og:url" content="https://semiticjew.github.io/israelite-research/articles/is-scripture-and-logic-compatible.html"/>
 <meta property="og:site_name" content="Semitic Jew"/>
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Scripture & Logic: Friends, Not Foes — Semitic Jew"/>
 <meta name="twitter:description" content="Exploring how Scripture and logic complement one another—prophets, Jesus, and apostles reasoning coherently in covenant truth."/>
@@ -29,26 +27,22 @@
 
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
-  <!-- date + title top-centered -->
   <header class="article-head">
     <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
     <h1 class="article-title" itemprop="headline">Scripture & Logic: Friends, Not Foes</h1>
   </header>
 
-  <!-- Hero -->
   <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
     <img alt="Scripture & Logic: Friends, Not Foes" height="394" src="/israelite-research/images/articles/logic-compatibility-700x394.jpg" width="700"/>
     <meta content="/israelite-research/images/articles/logic-compatibility-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <!-- Author + share row -->
   <div class="meta-row">
     <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
       <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
-        <!-- double squares icon -->
         <svg aria-hidden="true" viewBox="0 0 20 20" width="18" height="18">
           <g fill="currentColor" fill-rule="evenodd" stroke="none">
             <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
@@ -74,12 +68,9 @@
     </div>
   </div>
 
-  <!-- Article body -->
   <div class="article-content" itemprop="articleBody">
-    <!-- (your article text remains here) -->
   </div>
 
-  <!-- Notes & Bibliography -->
   <section aria-labelledby="fn-heading" class="footnotes">
     <h3 id="fn-heading">Notes &amp; Bibliography</h3>
     <ol>
@@ -90,7 +81,6 @@
 </article>
 </main>
 
-<!-- Author Modal -->
 <div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
   <div class="modal-card" role="document" tabindex="-1">
     <div class="modal-head">
@@ -108,12 +98,22 @@
       <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
       <div>
         <div class="ap-name">Semitic Jew</div>
-        <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.</p>
+        <p class="ap-text">
+          Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
+        </p>
         <div class="modal-links">
           <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
           <a class="modal-chip" href="/israelite-research/media.html">Media</a>
           <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
           <a class="modal-chip" href="/israelite-research/authors/semitic-jew.html">More</a>
+        </div>
+        <div class="author-more">
+          <h4>More by this author</h4>
+          <ul>
+            <li><a href="/israelite-research/articles/example-1.html">Blessed Inconvenience — Feb 28, 2025</a></li>
+            <li><a href="/israelite-research/articles/example-2.html">Fruitful No Matter What — Oct 19, 2024</a></li>
+            <li><a href="/israelite-research/articles/example-3.html">The Loveliness of Reverence — Mar 10, 2024</a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -124,12 +124,10 @@
 
 <script>
 (function(){
-  // Date
   var now=new Date(), iso=now.toISOString().slice(0,10),
       text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
   var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
 
-  // Share links
   var url=location.href, title=document.title;
   var x=document.getElementById('share-x'),
       fb=document.getElementById('share-fb'),
@@ -144,7 +142,6 @@
     });
   });
 
-  // Modal open/close + focus trap
   var trigger = document.getElementById('author-info');
   var overlay = document.getElementById('author-modal');
   var card    = overlay && overlay.querySelector('.modal-card');
@@ -154,6 +151,17 @@
   function getFocusable(){
     if(!card) return [];
     return card.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
+  }
+
+  function onKey(e){
+    if(e.key === 'Escape'){ return closeM(e); }
+    if(e.key === 'Tab'){
+      var focusables = Array.prototype.slice.call(getFocusable());
+      if(!focusables.length){ e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length-1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
   }
 
   function openM(e){
@@ -173,20 +181,9 @@
     if(lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  function onKey(e){
-    if(e.key === 'Escape'){ return closeM(e); }
-    if(e.key === 'Tab'){
-      var focusables = Array.prototype.slice.call(getFocusable());
-      if(!focusables.length){ e.preventDefault(); return; }
-      var first = focusables[0], last = focusables[focusables.length-1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    }
-  }
-
   if(trigger) trigger.addEventListener('click', openM);
   if(closeBtn) closeBtn.addEventListener('click', closeM);
-  overlay.addEventListener('click', function(e){ if(e.target===overlay) closeM(e); });
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeM(e); });
 })();
 </script>
 <script src="/israelite-research/js/include.js"></script>

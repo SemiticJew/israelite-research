@@ -3450,3 +3450,64 @@ hr{border:0;border-top:1px solid var(--border)}
   cursor: pointer;
   color: inherit;        /* inherit text/icon color */
 }
+<style>
+  /* Modal overlay + card — DG-style */
+  .modal-overlay{
+    position:fixed; inset:0; display:none;
+    background:rgba(17,24,39,.6); /* darker scrim */
+    z-index: 1000;
+  }
+  .modal-overlay[aria-hidden="false"]{ display:block; }
+
+  .modal-card{
+    position:relative;
+    margin: 6vh auto;
+    width:min(92vw, 720px);
+    max-height:88vh;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden;                 /* header fixed, body scrolls */
+    display:flex; flex-direction:column;
+  }
+  .modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 18px; border-bottom:1px solid #e6ebf2;
+    background:#fff; position:sticky; top:0; z-index:1;
+  }
+  .mh-left{display:flex; align-items:center; gap:.6rem}
+  .modal-title{margin:0; font-size:1.1rem; font-weight:700; color:#0b2340}
+  .author-x-head{display:inline-flex; align-items:center; justify-content:center; color:#054A91}
+  .modal-close{
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:34px; height:34px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:18px; overflow:auto; /* scroll body only */
+    gap:16px; display:grid; grid-template-columns:72px 1fr; align-items:start;
+  }
+  .ap-avatar{width:64px; height:64px; border-radius:999px; object-fit:cover}
+  .ap-name{font-weight:700; margin-bottom:.25rem}
+  .ap-text{color:#0b2340; line-height:1.5; margin:.25rem 0 1rem}
+
+  .modal-links{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem}
+  .modal-chip{
+    display:inline-block; padding:.4rem .6rem; border-radius:999px;
+    border:1px solid #e6ebf2; background:#fff; text-decoration:none;
+  }
+
+  /* “More by this author” list like DG’s */
+  .author-more{margin-top:1rem; padding-top:1rem; border-top:1px solid #e6ebf2}
+  .author-more h4{margin:.25rem 0 .5rem; font-size:1rem}
+  .author-more ul{list-style:none; padding:0; margin:0}
+  .author-more li{margin:.35rem 0}
+  .author-more a{text-decoration:none}
+  .author-more a:hover{ text-decoration:underline }
+
+  /* Keep footnotes tidy + no underline on refs */
+  .footnotes{font-size:.92rem}
+  .footnotes .backref, .footnote-ref a { text-decoration:none; border-bottom:0 }
+</style>
