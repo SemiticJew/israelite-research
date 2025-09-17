@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
       return BOOK_SLUG[s] || null;
     }
     var ems = document.querySelectorAll('.article-content em');
+  console.log('citations: found ' + ems.length + ' candidate refs');
     var refRe = /^([1-3]?\s?[A-Za-z. ]+)\s+(\d+):(\d+(?:[–-]\d+)?)$/;
 
     ems.forEach(function(em){
