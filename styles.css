@@ -3660,3 +3660,42 @@ hr{border:0;border-top:1px solid var(--border)}
   padding: 0;
   margin: 0;
 }
+/* ——— Global: inline bibliography entries with pipe separators ——— */
+.footnotes .biblio-list{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  column-gap:.25rem;
+  row-gap:.25rem;
+}
+.footnotes .biblio-list > *{
+  display:inline;
+  margin:0;
+}
+.footnotes .biblio-list > *::after{
+  content:" |";
+  opacity:.6;
+  margin-left:.35rem;
+}
+.footnotes .biblio-list > *:last-child::after{
+  content:"";
+}
+
+/* Fallback for older pages that still use <ol><li> */
+.footnotes ol{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.footnotes ol > li{
+  display:inline;
+  margin:0;
+}
+.footnotes ol > li::after{
+  content:" |";
+  opacity:.6;
+  margin-left:.35rem;
+}
+.footnotes ol > li:last-child::after{
+  content:"";
+}
