@@ -3699,3 +3699,24 @@ hr{border:0;border-top:1px solid var(--border)}
 .footnotes ol > li:last-child::after{
   content:"";
 }
+/* Bibliography: inline sentence style, separated by pipes */
+.footnotes .biblio-list{ display:block; }
+.footnotes .biblio-list p{ display:inline; margin:0; }
+
+/* remove any older :after pipes from earlier rules */
+.footnotes .biblio-list > *::after{ content:none !important; }
+
+/* add the separator only before subsequent items */
+.footnotes .biblio-list p + p::before{
+  content:" | ";
+  opacity:.6;
+}
+
+/* Fallback for pages using <ol><li> */
+.footnotes ol{ list-style:none; padding:0; margin:0; display:block; }
+.footnotes ol > li{ display:inline; margin:0; }
+.footnotes ol > li::after{ content:none !important; }
+.footnotes ol > li + li::before{
+  content:" | ";
+  opacity:.6;
+}
