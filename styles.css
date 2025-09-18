@@ -3720,3 +3720,35 @@ hr{border:0;border-top:1px solid var(--border)}
   content:" | ";
   opacity:.6;
 }
+/* Inline bibliography pipe-wrap */
+.biblio-list p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.biblio-list p a.backref {
+  margin-left: .25rem;
+}
+.biblio-list p::before,
+.biblio-list p::after {
+  content: "";
+}
+.biblio-list p span.badge {
+  margin-right: .25rem;
+}
+/* Inline bibliography pipe-wrap */
+.biblio-list p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.biblio-list p .pipe {
+  color: #9ca3af; /* lighter gray */
+  margin: 0 .4rem;
+}
+.biblio-list p a.backref {
+  margin-left: .25rem;
+}
+.biblio-list p span.badge {
+  margin-right: .25rem;
+}
