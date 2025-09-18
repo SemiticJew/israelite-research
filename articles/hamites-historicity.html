@@ -1,39 +1,130 @@
 <!DOCTYPE html>
-<html data-theme="" lang="en">
+<html lang="en" data-theme="">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Hamites — Historicity — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<title>Hamites: Historicity — Semitic Jew</title>
 
+<!-- Open Graph -->
+<meta property="og:title" content="Hamites: Historicity — Semitic Jew"/>
+<meta property="og:description" content="A structured look at historical claims and scriptural references concerning Hamites and Israel."/>
+<meta property="og:image" content="https://semiticjew.github.io/israelite-research/images/articles/hamites-historicity-700x394.jpg"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://semiticjew.github.io/israelite-research/articles/hamites-historicity.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Hamites: Historicity — Semitic Jew"/>
+<meta name="twitter:description" content="A structured look at historical claims and scriptural references concerning Hamites and Israel."/>
+<meta name="twitter:image" content="https://semiticjew.github.io/israelite-research/images/articles/hamites-historicity-700x394.jpg"/>
+<meta name="twitter:site" content="@semitic_jew"/>
+<meta name="twitter:creator" content="@semitic_jew"/>
+
+<link rel="stylesheet" href="/israelite-research/styles.css?v=20250917204823"/>
+
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Modal (same as other articles) */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+  .modal-body{
+    padding:22px; overflow:auto; display:grid; grid-template-columns:320px 1fr;
+    gap:32px; align-items:stretch; min-height:60vh;
+  }
+  @media (max-width: 720px){ .modal-body{ grid-template-columns:1fr; min-height:unset; } }
+  .author-pane { display:flex; flex-direction:column; align-items:center; justify-content:center; padding-right:12px; text-align:center; }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91)); }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+  .author-list{ display:flex; flex-direction:column; min-height:0; padding-left:12px; }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{ margin:0; padding:.6rem 0; border-top:1px solid #e6ebf2; }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{ font-weight:700; text-decoration:none; display:inline-block; }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{ display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280; }
+  .more-by-btn{ margin-top:auto; display:inline-block; padding:.55rem .9rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600; align-self:center; }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; display:inline; }
+  .biblio-list p + p::before{ content:" | "; color:#9aa3af; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{ display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem; border:1px solid #e6ebf2; border-radius:6px; }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Inline footnote refs */
+  .footnote-ref a{ text-decoration:none; border-bottom:0; vertical-align:super; font-size:.75em; }
+</style>
 </head>
+
 <body class="article-doc" data-page="article">
 <div id="site-header"></div>
+
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
   <header class="article-head">
-    <p class="article-date" itemprop="datePublished"><time datetime="" id="pub-date"></time></p>
-    <h1 class="article-title" itemprop="headline">Hamites — Historicity</h1>
+    <p class="article-date"><time datetime="" id="pub-date" itemprop="datePublished"></time></p>
+    <h1 class="article-title" itemprop="headline">Israelite and Hamites: Recovering a Dark-Skinned Legacy</h1>
   </header>
 
   <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-    <img alt="Hamites — Historicity" height="394" src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" width="700"/>
+    <img alt="Hamites: Historicity" height="394" src="/israelite-research/images/articles/hamites-historicity-700x394.jpg" width="700"/>
     <meta content="/israelite-research/images/articles/hamites-historicity-700x394.jpg" itemprop="url"/>
   </figure>
 
-  <div class="byline-row" id="byline-row">
-    <div class="article-byline">
+  <div class="meta-row">
+    <div class="author-inline">
       <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
       <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
         <svg aria-hidden="true" viewBox="0 0 20 20">
           <g fill="currentColor" fill-rule="evenodd" stroke="none">
-            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z M3,16 L14,16 L14,17 L3,17 L3,16 Z M3,7 L4,7 L4,16 L3,16 L3,7 Z M6,3 L16,3 L16,4 L6,4 L6,3 Z M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z 
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z 
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z 
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
           </g>
         </svg>
       </button>
-      <span class="byline-name">Semitic Jew</span>
-      <span class="byline-meta">• Article</span>
     </div>
+
     <div aria-label="Share" class="share-min">
       <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
@@ -41,103 +132,166 @@
       <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
         <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
       </a>
-      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button">
-        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M10 13a5 5 0 017 0l1 1a5 5 0 010 7 5 5 0 01-7 0l-1-1M14 11a5 5 0 00-7 0l-1 1a5 5 0 000 7 5 5 0 007 0l1-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
       </button>
     </div>
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <p>
-      This article surveys the <em>historicity</em> of the Hamitic peoples—Cush, Mizraim, Put, and Canaan—as presented in Scripture and echoed in ancient records.
-      Our aim is logical clarity: define the claims, note the sources, and separate inference from assertion.
-    </p>
+    <p><strong>Intro.</strong> Add your opening paragraph here. Include any inline citations like <em>Gen 10:6–20</em><span class="footnote-ref"><a href="#fn1">1</a></span>.</p>
 
-    <h2>Biblical Foundations</h2>
-    <p>
-      Gen 10 (“Table of Nations”) identifies Ham and his descendants as distinct lineages integrated across Africa and the Levant
-      (Gen 10).
-      These genealogies supply the framework for later narratives and for mapping peoples and polities across time.
-    </p>
+    <h2>Israelite and Hamite Encounters</h2>
+<p>The biblical record consistently situates the Israelites in proximity to Hamitic-African people groups like the Egyptians (Mizraim), Cushiness (Ethiopians), and Canaanites. The Biblical records are replete with evidence of these encounters. Abraham dwelled in Egypt during famine <em>Gen 12:10</em> <span class="footnote-ref"><a href="#fn1">1</a></span>).</p>
 
-    <h2>Historical Signals</h2>
-    <p>
-      Material culture, inscriptions, and iconography from Egypt and surrounding regions attest to dark-skinned populations interacting with Israel and its neighbors.
-      Such evidence does not “prove” every detail of later traditions; it does, however, corroborate broad population identities and movements.
-    </p>
+</p> Moses, a Hebrew, married a Cushite woman (<em>Num. 12:1</em>). In an effort to argue Moses European or Euro-Arab ancestry, some argue subjectively, Miriam's response was due to the Cushite woman's dark complexion. However, this hermeneutic is racial-bias and colorism rooted in anachronistic fallacies. Miriam's reaction shows her identity as (Hebrews) culturally distinct but not foreign. <span class="footnote-ref"><a href="#fn2">2</a></span> </p>
 
-    <h3>Method: sound inference, not speculation</h3>
-    <ul>
-      <li><strong>Coherence:</strong> align textual claims with archaeological horizons, not cherry-picked curios.</li>
-      <li><strong>Context:</strong> read names and ethnonyms in their period usage before retrofitting later meanings.</li>
-      <li><strong>Constraint:</strong> prefer explanations that require fewer ad-hoc assumptions.</li>
-    </ul>
+</p> The secular Greek Historian Herodotus (Histories, Book II) described Egyptains and Colchians as "black-skinned" with woolly hair. <span class="footnote-ref"><a href="#fn3">3</a></span>. Moreover, Martin Bernal (Black Athena) and Cheikh Anta Diop (The African Origin of Civilization) emphasize that Israel's earliest cultural contacts - Egypt and Cush - were undeniably African and dark skinned. <span class="footnote-ref"><a href="#fn4">4</a></span></p>
 
-    <h2>Integration with Israel</h2>
-    <p>
-      The biblical storyline frequently places Israel in contact with Hamitic kin—alliances, servitudes, marriages, trade, and conflict
-      (Gen 12; Exod 1–12).
-      Recognizing these connections helps correct later narratives that artificially segregate peoples who were historically intertwined.
-    </p>
+<p>So, what can we conclude from the biblical text and historical texts which essentially are saying the same thing? Israel (tribes descended from Shem) emerged in direct contact withe Hamitic tribes whose African identity is replete with evidence of their beautify dark complexions, embedding this same reality in Israel's history as well.</p>
+
+    <blockquote class="standout-quote" aria-label="Illustrative quotation">
+      “Israel sojourned in Africa for centuries -- one could say they are African.”
+      <footer>— Semitic Jew</footer>
+    </blockquote>
+
+    <h2>Israelites & Hamitic Phenotype</h2>
+    <p>The historical data does not stop there. Where is the biblical and logical evidence to go along with this hidden discovery. Essentially, we can approach this using two methods of logical reasoning - deductive and inductive</p>
+
+<p> From a deductive standpoint, In <em>Gen 42:7-8</em> Joseph's (Yōsef) brothers stand before him in Egypt (Hamites) and did not recognize him. Now, mind you, if one argues from the basis of cultural dress alone, they're committing a limited choice fallacy. The limited choice fallacy assumes there is only one possible answer to this question. <span class="footnote-ref"><a href="#fn5">5</a></span> It could also fall under a Hasty Generalization. Joseph must've appeared as they did too from a physiological standpoint.
+
+<p> In <em>Ex. 2:19</em> Moses, a Hebrew and an Israelite, was described by a Midianite woman as "an Egyptian delivered us out of the hand of the shepherds." Deduction demands his (skin tones, hair, and features) were Egyptian in order for him to be identified as such.</p>
+
+<p> More secular references are corroborating this evidence. For example, Archaeological portraits from Lachish and Samaria (8th Century BCE) depicts Israelites with features consistent with brown complexions and woolly hair. <span class="footnote-ref"><a href="#fn6">6</a></span> Most people would in outrage if their ancestors were portrayed as some other ethnicity other than their own. It's normal human behavior. The late Michael Jackson was outraged, when they asked someone European to depict him on the big screen. Frank M. Snowden (Blacks in Antiquity) documents Greco-Roman writers describing Jews as resembling Egyptians (Hamites) and Ethiopians (burnt faces, Strongs. "their blackness") juxtaposed to European nations.<span class="footnote-ref"><a href="#fn7">7</a></span></p> 
+
+<p> The Roman historian Tacitus (Histories, 5.2) suggested Jews were originally from Ethiopian, not that they were Ethiopians, but rather they resembled their physiological disposition.<span class="footnote-ref"><a href="#fn8">8</a></span> So, both textual and archeological evidence portray Israelites and Hamites within the spectrum of dark-skinned, Asiatic-Afro affinity.
+
+    <h2>Anachronous Fallacy & Hamites/h2>
+    <p> Modern racial categories (e.g. Black, White, etc.) are anachronistic when read back into the ancient world. The "curse of Ham", used specifically by European nations, was historically twisted to justify chattle slavery of Hebrew people groups. Yet, the Bible itself, never associated Ham's descendants with whiteness or inferiority, which must be true, if their curse was "darkness" or "dark complexion" according to European hermeneutics.<span class="footnote-ref"><a href="#fn9">9</a></span></p></p> Ham brought forth - Cush (Ethiopia), Mizraim (Egypt), Put (Libya), and Canaan <em>Gen. 10:6</em>. Furthermore, the curse was not on Hamites, but rather specifically on Canaan <em>Gen. 9:25</em> </p>
+
+<p> What are other historians saying? David Goldenberg (The Curse of Ham: Race and Slavery in Early Judaism, Christianity, and Islam) show the linking of Ham to Blackness and servitude around late medieval era. These little breadcrumbs demonstrate this problematic thinking is new and was amplified during colonial times when European nations began to conquer the Earth. Benjamin Isaac (The Invention of Racism in Classic Antiquity) argues that ancient ethnography described skin color descriptively, not hierarchically. <span class="footnote-ref"><a href="#fn10">10</a></span>. What should we conclude from this? If you hear a Christian pastor or European Jewish historian using this as a talking point for their beliefs, be ready to defend the truth about this deceptive argument and how it gives non-colored nations a false sense of security when telling their children the characters in the Bible were non-dark skinned. </p> 
+
+    <h2>How to Restore Hamitic | Israelite Dignity</h2>
+    <p> In order to restore dignity to the Bible and the Bible's people groups, we need to recognize conquering nations destroy evidence, and manipulate the facts. If we can understand this when we engage in discussions about these truths, we can restore the heritage of many people groups who have been marginalized and written out of the history books. Ancient Egypt, pioneered mathematics, writing, and monumental architecture some of which influenced Israelite culture. It's unfortunately, through the diabolical nature of the classification of race many are deceived by modern day falsehoods.</p>
 
     <h2>Conclusion</h2>
-    <p>
-      The Hamites are not merely a theological category; they are historically attested lineages.
-      Reading Scripture with consistency and checking claims against primary evidence allows the record to stand without polemic:
-      Israel’s story is inseparable from Africa and its peoples.
-    </p>
+    <p> There are countless examples that can be made from biblical testimony and secular scholarship which converge to argue coherently that Shem and Ham's descendants were indeed dark-skinned Asiatic-Afro people groups. We need to teach our children these truths, and also teach them to think logically about the dangers of anachronism which strips the dignity of conquered people by giving glory to those who continue to oppress through power, sex, and money. </p>
   </div>
 
-  <section aria-labelledby="fn-heading" class="footnotes">
-    <h3 id="fn-heading">Notes &amp; Bibliography</h3>
-    <ol>
-      <li id="fn1"><em>The Holy Bible</em> (King Jas Version), public domain text.</li>
-      <li id="fn2">Primary sources: Egyptian inscriptions, iconography, and ANE records referenced in ongoing updates.</li>
-      <li id="fn3">Method references for historical inference and population studies to be appended as entries are published.</li>
-    </ol>
-  </section>
+  <!-- Bibliography -->
+  <hr class="biblio-divider"/>
+<section class="footnotes">
+  <div class="biblio-list">
+    <p id="fn1">
+      Abraham in Egypt during famine (<em>Genesis&nbsp;12:10</em>).
+      <a class="backref" href="#fn1"><span class="badge">1</span></a>
+    </p>
+    <p id="fn2">
+      Moses’ Cushite wife and the nature of Miriam’s complaint (<em>Numbers&nbsp;12:1</em>); caution against importing modern race categories.
+      <a class="backref" href="#fn2"><span class="badge">2</span></a>
+    </p>
+    <p id="fn3">
+      Herodotus, <em>Histories</em> II (Egyptians/Colchians described as dark-skinned with woolly hair).
+      <a class="backref" href="#fn3"><span class="badge">3</span></a>
+    </p>
+    <p id="fn4">
+      Martin Bernal, <em>Black Athena</em>; Cheikh Anta Diop, <em>The African Origin of Civilization</em>.
+      <a class="backref" href="#fn4"><span class="badge">4</span></a>
+    </p>
+    <p id="fn5">
+      Recognition logic in Joseph narrative (<em>Genesis&nbsp;42:7–8</em>); note on limited-choice/hasty generalization fallacies.
+      <a class="backref" href="#fn5"><span class="badge">5</span></a>
+    </p>
+    <p id="fn6">
+      Levantine iconography (e.g., Lachish, Samaria reliefs) indicating brown complexions/tightly curled hair.
+      <a class="backref" href="#fn6"><span class="badge">6</span></a>
+    </p>
+    <p id="fn7">
+      Frank M. Snowden Jr., <em>Blacks in Antiquity</em> (Greco-Roman depictions/comparisons).
+      <a class="backref" href="#fn7"><span class="badge">7</span></a>
+    </p>
+    <p id="fn8">
+      Tacitus, <em>Histories</em> 5.2 (theories of Ethiopian affinity/origin reflecting perceived similarity).
+      <a class="backref" href="#fn8"><span class="badge">8</span></a>
+    </p>
+    <p id="fn9">
+      “Curse of Ham” clarified: the curse is on Canaan, not all Hamites (<em>Genesis&nbsp;9:25</em>; cf. <em>Genesis&nbsp;10:6</em>).
+      <a class="backref" href="#fn9"><span class="badge">9</span></a>
+    </p>
+    <p id="fn10">
+      David Goldenberg, <em>The Curse of Ham</em>; Benjamin Isaac, <em>The Invention of Racism in Classical Antiquity</em>.
+      <a class="backref" href="#fn10"><span class="badge">10</span></a>
+    </p>
+  </div>
+</section>
+
 </article>
 </main>
 
-<!-- FULL-SCREEN AUTHOR MODAL -->
-<div aria-hidden="true" aria-labelledby="author-modal-title" aria-modal="true" class="modal-overlay" id="author-modal" role="dialog">
-  <div class="modal-panel" data-close="">
-    <div class="modal-card" role="document">
-      <div class="modal-head">
-        <div class="mh-left">
-          <h2 class="modal-title" id="author-modal-title">Semitic Jew</h2>
-          <a aria-label="Semitic Jew on X" class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank">
-            <svg aria-hidden="true" height="18" viewBox="0 0 24 24" width="18">
+<!-- Modal -->
+<div aria-hidden="true" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-card" role="document" tabindex="-1">
+    <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
+      <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+    </button>
+
+    <div class="modal-body">
+      <div class="author-pane">
+        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
+        <div class="ap-name-row">
+          <div class="ap-name">Semitic Jew</div>
+          <a class="author-x-head" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Semitic Jew on X" title="Semitic Jew on X">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
               <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
             </svg>
           </a>
         </div>
-        <button aria-label="Close" class="modal-close" id="author-modal-close" type="button">
-          <svg aria-hidden="true" height="22" viewBox="0 0 24 24" width="22"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
-        </button>
+        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
       </div>
-      <div class="modal-body">
-        <img alt="Semitic Jew" class="ap-avatar" src="/israelite-research/images/authors/semitic-jew.jpg"/>
-        <div>
-          <div class="ap-name">Semitic Jew</div>
-          <p class="ap-text">
-            Researcher and teacher focused on reading Scripture with logic, consistency, and historical context.
-            Curates resources on Israel and the nations of the ancient Near East. Produces podcasts, articles,
-            and study tools to recover the Bible’s own world and voices.
-          </p>
-          <div class="modal-links">
-            <a class="modal-chip" href="/israelite-research/articles.html">More Articles</a>
-            <a class="modal-chip" href="/israelite-research/media.html">Media</a>
-            <a class="modal-chip" href="/israelite-research/israelite-catechism.html">Catechism</a>
-            <a class="modal-chip" href="/israelite-research/authors/semitic-jew.html">More</a>
-          </div>
-        </div>
+
+      <div class="author-list">
+        <h4>Recent Articles</h4>
+        <ul>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/is-creation-logical.html">Is Creation Logical?</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2025-08-12">Aug 12, 2025</time></span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/hamites-historicity.html">Hamites: Historicity</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2025-06-03">Jun 3, 2025</time></span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/gentiles.html">Gentiles</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2025-04-21">Apr 21, 2025</time></span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2025-02-07">Feb 7, 2025</time></span>
+          </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2024-12-15">Dec 15, 2024</time></span>
+          </li>
+        </ul>
+        <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
       </div>
     </div>
   </div>
 </div>
 
 <div id="site-footer"></div>
+
+<!-- External scripts -->
+<script src="/israelite-research/js/metadata.js" defer></script>
+<script src="/israelite-research/js/modal.js" defer></script>
+<script src="/israelite-research/js/biblio.js" defer></script>
+<script src="/israelite-research/js/articles.js" defer></script>
+<script src="/israelite-research/js/citations.js?v=20250917204823" defer></script>
+<script src="/israelite-research/js/xref-hover.js?v=20250917204823" defer></script>
+<script src="/israelite-research/js/include.js"></script>
 
 <script>
   (function(){
@@ -150,38 +304,7 @@
     if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
     if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
     if(cp) cp.addEventListener('click', function(){ navigator.clipboard.writeText(url); });
-
-    var icon  = document.getElementById('author-info');
-    var modal = document.getElementById('author-modal');
-    var close = document.getElementById('author-modal-close');
-    var lastFocus;
-
-    function openModal(e){
-      if(e){ e.preventDefault(); }
-      lastFocus = document.activeElement;
-      modal.setAttribute('aria-hidden','false');
-      document.documentElement.style.overflow = 'hidden';
-      close && close.focus();
-    }
-    function closeModal(e){
-      if(e){ e.preventDefault(); }
-      modal.setAttribute('aria-hidden','true');
-      document.documentElement.style.overflow = '';
-      if(lastFocus && lastFocus.focus) lastFocus.focus();
-    }
-
-    if(icon) icon.addEventListener('click', openModal);
-    if(close) close.addEventListener('click', closeModal);
-
-    modal.addEventListener('click', function(e){
-      if(e.target && e.target.hasAttribute('data-close')) closeModal(e);
-    });
-
-    document.addEventListener('keydown', function(e){
-      if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e);
-    });
   })();
 </script>
-<script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
