@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function(){
       "wisdom of solomon":"wisdom-of-solomon","wisdom":"wisdom-of-solomon",
       sirach:"sirach","ecclesiasticus":"sirach","ecclus":"sirach",
       baruch:"baruch","letter of jeremiah":"letter-of-jeremiah",
-      "1 maccabees":"1-maccabees","2 maccabees":"2-maccabees",
+      "1 maccabees":"1-maccabees","1 macc":"1-maccabees","1 macc.":"1-maccabees","1macc":"1-maccabees","i macc":"1-maccabees","2 maccabees":"2-maccabees","2 macc":"2-maccabees","2 macc.":"2-maccabees","2macc":"2-maccabees","ii macc":"2-maccabees",
       "1 esdras":"1-esdras","2 esdras":"2-esdras",
       "prayer of manasseh":"prayer-of-manasseh",
       "song of three":"song-of-three","song of the three":"song-of-three",
