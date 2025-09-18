@@ -36,3 +36,18 @@
   s.defer = true;
   document.head.appendChild(s);
 })();
+
+(function(){
+  if (document.getElementById("author-modal")) return;
+  fetch("/israelite-research/partials/author-modal.html", {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .then(function(html){
+      if (!html) return;
+      if (document.getElementById("author-modal")) return;
+      var temp = document.createElement("div");
+      temp.innerHTML = html.trim();
+      var modal = temp.firstElementChild;
+      if (modal) document.body.appendChild(modal);
+    })
+    .catch(function(){});
+})();
