@@ -139,9 +139,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function chipHTML(e){
-    const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
-    return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text)}">${text}</div>`;
-  }
+  const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+  const dateParts = e.date.split("-");
+  const meta = `${(e.type ? e.type.charAt(0).toUpperCase() : "?")} | ${dateParts[1]}.${dateParts[2]}.${dateParts[0]}`;
+  return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text + " " + meta)}">
+            <div>${text}<br>${meta}</div>
+          </div>`;
+}
 
   // Drawer
   function openDrawer(date){
