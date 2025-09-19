@@ -14,14 +14,15 @@
       --card:#ffffff; --border:#e6ebf2;
 
       /* Event type colors */
-      --evt-xspace:#000000;
-      --evt-youtube:#808080;  /* gray for YouTube */
-      --evt-discord:#5865f2;
-      --evt-sabbath:#8B0000;
-      --evt-newmoon:#054A91;
-      --evt-feast:#F17300;
+      --evt-xspace:#000000;   /* X Spaces */
+      --evt-youtube:#808080;  /* YouTube (gray) */
+      --evt-discord:#5865f2;  /* Discord */
+      --evt-sabbath:#8B0000;  /* Sabbath (dark red) */
+      --evt-newmoon:#054A91;  /* New Moon (brand blue) */
+      --evt-feast:#F17300;    /* Feast Days (gold) */
     }
 
+    /* Page scaffold */
     .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
     .events-page main{padding:24px 0 48px}
     .events-title{margin:0 0 12px;font-size:2rem;font-weight:800;color:var(--ink)}
@@ -35,7 +36,7 @@
     .calendar-bar .btn,
     .calendar-bar select{
       appearance:none;border:1px solid var(--border);background:#fff;color:var(--ink);
-      padding:.56rem .8rem;border-radius:8px;font-weight:600;cursor:pointer;line-height:1;
+      padding:.56rem .8rem;border-radius:10px;font-weight:600;cursor:pointer;line-height:1;
       box-shadow:0 1px 0 rgba(0,0,0,.02);
     }
     .calendar-bar .btn:hover{background:#f8fafc}
@@ -69,65 +70,92 @@
     .date-badge{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:var(--ink)}
     .date-badge .today{padding:.2rem .5rem;border-radius:999px;font-size:.75rem;background:var(--brand2);color:#fff}
 
-    /* Cell preview: show up to 2 items + “+N more” link */
+    /* Cell previews: show up to 2 chips + “+N more” */
     .events{display:flex;flex-direction:column;gap:6px;margin-top:2px}
-    .evt-preview{
-      display:flex;align-items:center;gap:8px;padding:.35rem .5rem;border:1px solid var(--border);
-      border-radius:10px;background:#fcfdff;font-size:.88rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+
+    /* Base chip */
+    .chip{
+      display:flex;align-items:center;gap:8px;
+      padding:.4rem .6rem;border:1px solid var(--border);
+      background:#fcfdff; color:#111;
+      font-size:.88rem; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      /* rounded by default; can be adjusted per type */
+      border-radius:12px;
     }
-    .evt-preview .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(0,0,0,.08)}
-    .evt-preview .time{font-weight:700;opacity:.9}
+    .chip .time{font-weight:700;opacity:.95}
+
+    /* Chip colors + optional shapes */
+    .chip[data-type="xspace"]  { background:var(--evt-xspace);  color:#fff; border-color:rgba(255,255,255,.18); border-radius:8px; }
+    .chip[data-type="youtube"] { background:var(--evt-youtube); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
+    .chip[data-type="discord"] { background:var(--evt-discord); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
+    .chip[data-type="sabbath"] { background:var(--evt-sabbath); color:#fff; border-color:rgba(255,255,255,.18); border-radius:6px;  }
+    .chip[data-type="newmoon"] { background:var(--evt-newmoon); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
+    .chip[data-type="feast"]   { background:var(--evt-feast);   color:#111; border-color:rgba(0,0,0,.08);    border-radius:14px; }
+
     .more-link{font-size:.85rem;color:var(--blue);text-decoration:underline;width:max-content}
 
-    /* Color mapping for preview dots */
-    .evt-preview.xspace  .dot{background:var(--evt-xspace)}
-    .evt-preview.youtube .dot{background:var(--evt-youtube)}
-    .evt-preview.discord .dot{background:var(--evt-discord)}
-    .evt-preview.sabbath .dot{background:var(--evt-sabbath)}
-    .evt-preview.newmoon .dot{background:var(--evt-newmoon)}
-    .evt-preview.feast   .dot{background:var(--evt-feast)}
-
-    /* Legend */
-    .legend{
-      display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px;font-family:'Spectral',serif
-    }
-    .legend .item{display:flex;align-items:center;gap:8px;color:#111}
-    .legend .swatch{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
-    .legend .xspace  .swatch{background:var(--evt-xspace)}
-    .legend .youtube .swatch{background:var(--evt-youtube)}
-    .legend .discord .swatch{background:var(--evt-discord)}
-    .legend .sabbath .swatch{background:var(--evt-sabbath)}
-    .legend .newmoon .swatch{background:var(--evt-newmoon)}
-    .legend .feast   .swatch{background:var(--evt-feast)}
-
     /* Drawer (full event details — not squeezed) */
-    .event-drawer{
-      margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden
-    }
-    .drawer-head{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:12px 14px;border-bottom:1px solid var(--border)
-    }
-    .drawer-title{margin:0;font-weight:800;color:var(--ink)}
-    .drawer-close{
-      border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer
-    }
-    .drawer-body{padding:12px 14px;display:grid;gap:10px}
+    .event-drawer{ margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden }
+    .drawer-head{ display:flex;align-items:center;justify-content:space-between;gap:12px; padding:12px 14px;border-bottom:1px solid var(--border) }
+    .drawer-title{ margin:0;font-weight:800;color:var(--ink) }
+    .drawer-close{ border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer }
+    .drawer-body{ padding:12px 14px;display:grid;gap:10px }
+
     .evt-full{
-      display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px;background:#fcfdff
+      display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px;
+      /* mirror chip background and color via inline style from JS */
     }
-    .evt-full .dot{width:12px;height:12px;border-radius:50%;margin-top:.35rem;border:1px solid rgba(0,0,0,.08)}
-    .evt-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:.95rem}
-    .evt-meta strong{font-weight:800}
-    .evt-title{font-weight:700}
+    .evt-title{font-weight:800}
+    .evt-meta{display:flex;gap:12px;flex-wrap:wrap}
     .evt-actions{margin-left:auto}
-    .evt-actions a{color:var(--blue);text-decoration:underline}
+    .evt-actions a{color:#fff;text-decoration:underline}
   </style>
 </head>
 <body class="events-page" data-page="events">
-  <!-- Universal header -->
+
+  <!-- ===== Universal Header (inline) ===== -->
   <div id="site-header">
-    <!-- (Your header partial already inlined here previously) -->
+    <header class="site-header-bar">
+      <style>
+        #site-header .site-header-bar{background:#fff;color:var(--ink);border-bottom:1px solid var(--border)}
+        #site-header .header-inner{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        #site-header .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:900;font-size:1.05rem}
+        #site-header .brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+        #site-header nav.primary{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+        #site-header nav.primary a{ text-decoration:none; color:var(--ink); opacity:.95; padding:8px 10px; border-radius:8px; border:1px solid transparent; transition:border-color .15s, box-shadow .15s}
+        #site-header nav.primary a:hover{ border-color:var(--border); box-shadow:0 1px 2px rgba(0,0,0,.05)}
+        #site-header .tools{display:flex;align-items:center;gap:10px}
+        #site-header .icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+      </style>
+      <div class="header-inner">
+        <a class="brand" href="/israelite-research/">
+          <span class="mark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="6" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="18" cy="7" r="1.5" fill="currentColor"/>
+              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Semitic&nbsp;Jew</span>
+        </a>
+        <nav class="primary" aria-label="Primary">
+          <a href="/israelite-research/apologetics.html">Apologetics</a>
+          <a href="/israelite-research/articles.html">Articles</a>
+          <a href="/israelite-research/biblia.html">Biblia</a>
+          <a href="/israelite-research/donations.html">Donations</a>
+          <a href="/israelite-research/events.html">Events</a>
+          <a href="/israelite-research/media.html">Media</a>
+        </nav>
+        <div class="tools">
+          <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
   </div>
 
   <main class="container">
@@ -150,15 +178,15 @@
       <div id="calendarGrid" class="calendar-grid" aria-live="polite"></div>
 
       <div class="legend" aria-label="Event Types Legend">
-        <div class="item xspace"><span class="swatch"></span><span>X Space (#000000)</span></div>
-        <div class="item youtube"><span class="swatch"></span><span>YouTube Live (Gray)</span></div>
-        <div class="item discord"><span class="swatch"></span><span>Discord Live (#5865f2)</span></div>
-        <div class="item sabbath"><span class="swatch"></span><span>Sabbath (#8B0000)</span></div>
-        <div class="item newmoon"><span class="swatch"></span><span>New Moon (#054A91)</span></div>
-        <div class="item feast"><span class="swatch"></span><span>Feast Days (#F17300)</span></div>
+        <div class="item xspace"><span class="swatch" style="background:var(--evt-xspace)"></span><span>X Space (#000000)</span></div>
+        <div class="item youtube"><span class="swatch" style="background:var(--evt-youtube)"></span><span>YouTube Live (Gray)</span></div>
+        <div class="item discord"><span class="swatch" style="background:var(--evt-discord)"></span><span>Discord Live (#5865f2)</span></div>
+        <div class="item sabbath"><span class="swatch" style="background:var(--evt-sabbath)"></span><span>Sabbath (#8B0000)</span></div>
+        <div class="item newmoon"><span class="swatch" style="background:var(--evt-newmoon)"></span><span>New Moon (#054A91)</span></div>
+        <div class="item feast"><span class="swatch" style="background:var(--evt-feast)"></span><span>Feast Days (#F17300)</span></div>
       </div>
 
-      <!-- Not-squeezed event details appear here -->
+      <!-- Spacious drawer for full event details -->
       <aside id="eventDrawer" class="event-drawer" hidden>
         <div class="drawer-head">
           <h2 class="drawer-title" id="drawerTitle">Events</h2>
@@ -169,9 +197,101 @@
     </section>
   </main>
 
-  <!-- Universal footer -->
+  <!-- ===== Universal Footer (inline) ===== -->
   <div id="site-footer">
-    <!-- (Your footer partial already inlined here previously) -->
+    <footer class="site-footer">
+      <style>
+        #site-footer .site-footer{background:#fff;color:var(--ink);border-top:1px solid var(--border)}
+        #site-footer .footer-inner{max-width:1200px;margin:0 auto;padding:28px 16px 18px;display:grid;gap:28px;grid-template-columns:1.2fr .8fr .8fr}
+        @media (max-width:960px){#site-footer .footer-inner{grid-template-columns:1fr}}
+        #site-footer .footer-brand h3{margin:0 0 6px;font-size:1.15rem;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+        #site-footer .footer-brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+        #site-footer .footer-tagline{margin:0 0 12px;color:#F17300;max-width:46ch;text-align:left}
+        #site-footer .footer-social{display:flex;gap:10px;margin:10px 0 14px}
+        #site-footer .footer-social .icon{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+        #site-footer .footer-newsletter .newsletter-row{display:flex;gap:8px;align-items:center}
+        #site-footer .footer-newsletter input[type="email"]{flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink)}
+        #site-footer .footer-newsletter button{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);cursor:pointer}
+        #site-footer .newsletter-note{display:block;margin-top:6px;color:#F17300;text-align:left}
+        #site-footer .footer-heading{margin:0 0 8px;font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+        #site-footer .footer-nav{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+        #site-footer .footer-nav a{color:var(--ink);text-decoration:none;padding:6px 8px;border-radius:8px;border:1px solid transparent}
+        #site-footer .footer-bottom{max-width:1200px;margin:0 auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);border-top:1px solid var(--border)}
+        @media (max-width:720px){#site-footer .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}}
+        #site-footer .footer-bottom p{color:#F17300}
+        #site-footer .legal-links{display:flex;gap:12px;flex-wrap:wrap}
+        #site-footer .legal-links a{color:var(--ink);text-decoration:none;opacity:.85}
+      </style>
+      <div class="footer-inner container">
+        <div class="footer-col footer-brand">
+          <h3 class="footer-heading footer-brandname">
+            <span class="mark" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="6" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="18" cy="7" r="1.5" fill="currentColor"/>
+                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <strong>Semitic Jew</strong>
+          </h3>
+          <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
+          <div class="footer-social" aria-label="Social media">
+            <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </a>
+            <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+            <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+            <a class="icon" href="https://www.youtube.com/@semiticjew" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M22 12s0-3-0.4-4.4c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 0.5c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 0.4 4.4c.2.8.8 1.4 1.6 1.6 1.4.5 8 .5 8 .5s6.6 0 8-0.5c.8-.2 1.4-.8 1.6-1.6C22 15 22 12 22 12z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg>
+            </a>
+            <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/></svg>
+            </a>
+          </div>
+          <form class="footer-newsletter" action="https://formspree.io/f/your-id" method="POST" novalidate>
+            <label for="nl-email" class="sr-only">Email address</label>
+            <div class="newsletter-row">
+              <input id="nl-email" name="email" type="email" placeholder="Your email" required>
+              <button type="submit">Subscribe</button>
+            </div>
+            <small class="newsletter-note">Occasional updates. No spam. Unsubscribe any time.</small>
+          </form>
+        </div>
+        <div class="footer-col footer-col--explore">
+          <h4 class="footer-heading">Resources</h4>
+          <ul class="footer-nav">
+            <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
+            <li><a href="/israelite-research/articles.html">Articles</a></li>
+            <li><a href="/israelite-research/biblia.html">Biblia</a></li>
+            <li><a href="/israelite-research/donations.html">Donations</a></li>
+            <li><a href="/israelite-research/events.html">Events</a></li>
+            <li><a href="/israelite-research/media.html">Media</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-col--texts">
+          <h4 class="footer-heading">The Writings</h4>
+          <ul class="footer-nav">
+            <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
+            <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
+            <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
+            <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+            <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom container">
+        <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
+        <div class="legal-links">
+          <a href="/israelite-research/terms.html">Terms</a>
+          <a href="/israelite-research/privacy.html">Privacy</a>
+          <a href="/israelite-research/contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <script src="/israelite-research/js/calendar.js"></script>
