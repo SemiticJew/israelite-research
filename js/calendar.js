@@ -1,9 +1,17 @@
-/* calendar.js
- * Simple calendar builder with month/day/year selectors
+/* js/calendar.js
+ * Responsive calendar with month/day/year selectors and in-cell events.
+ * Event types + colors (scoped in CSS):
+ *  - xspace  => #000000
+ *  - youtube => #808080
+ *  - discord => #5865f2
+ *  - sabbath => #8B0000
+ *  - newmoon => #054A91
+ *  - feast   => #F17300
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const calendarEl = document.getElementById("calendar");
+  const grid = document.getElementById("calendarGrid");
+  const dow = document.getElementById("calendarDow");
   const monthSelect = document.getElementById("monthSelect");
   const daySelect = document.getElementById("daySelect");
   const yearSelect = document.getElementById("yearSelect");
@@ -11,11 +19,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const todayBtn = document.getElementById("todayBtn");
   const nextBtn = document.getElementById("nextBtn");
 
-  let currentDate = new Date();
+  // Build DOW header once
+  const dowLabels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  dow.innerHTML = dowLabels.map(l => `<div class="dow">${l}</div>`).join("");
 
-  // ===== Populate Selectors =====
-  function populateSelectors(date) {
-    // Months
+  // State
+  let current = new Date();
+
+  // Example events (replace/extend as needed; can later load from JSON)
+  // type: xspace | youtube | discord | sabbath | newmoon | feast
+  const events = [
+    // Platform lives
+    { date: "2025-09-21", time: "7:00 PM", label: "X Space: Prophetic Q&A", type: "xspace" },
+    { date: "2025-09-22", time: "8:30 PM", label: "YouTube Live: Semitic Jew Podcast", type: "youtube" },
+    { date: "2025-09-24", time: "6:00 PM", label: "Discord Live: Bible Study", type: "discord" },
+    // Fixed types
+    { date: "2025-09-27", time: "", label: "Sabbath", type: "sabbath" },
+    { date: "2025-10-02", time: "", label: "New Moon", type: "newmoon" },
+    { date: "2025-10-13", time: "All Day", label: "Feast of Tabernacles", type: "feast" },
+  ];
+
+  // Utils
+  const ymd = (d) => d.toISOString().slice(0,10);
+  const pad = (n) => n.toString().padStart(2, "0");
+
+  // Populate selectors
+  function populateSelectors(date){
+    // months
     const monthNames = [
       "January","February","March","April","May","June",
       "July","August","September","October","November","December"
@@ -24,86 +54,121 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((m,i)=>`<option value="${i}" ${i===date.getMonth()?"selected":""}>${m}</option>`)
       .join("");
 
-    // Days
-    const daysInMonth = new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
-    daySelect.innerHTML = "";
-    for (let d=1; d<=daysInMonth; d++) {
-      const opt = document.createElement("option");
-      opt.value = d;
-      opt.textContent = d;
-      if (d === date.getDate()) opt.selected = true;
-      daySelect.appendChild(opt);
-    }
+    // days (of current month)
+    const dim = new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
+    daySelect.innerHTML = Array.from({length: dim}, (_,i)=>{
+      const d = i+1;
+      return `<option value="${d}" ${d===date.getDate()?"selected":""}>${d}</option>`;
+    }).join("");
 
-    // Years (from currentYear-50 to currentYear+10)
-    const currentYear = new Date().getFullYear();
-    yearSelect.innerHTML = "";
-    for (let y=currentYear-50; y<=currentYear+10; y++) {
-      const opt = document.createElement("option");
-      opt.value = y;
-      opt.textContent = y;
-      if (y === date.getFullYear()) opt.selected = true;
-      yearSelect.appendChild(opt);
+    // years (currentYear-50 to +10)
+    const cy = new Date().getFullYear();
+    let yHtml = "";
+    for(let y=cy-50; y<=cy+10; y++){
+      yHtml += `<option value="${y}" ${y===date.getFullYear()?"selected":""}>${y}</option>`;
     }
+    yearSelect.innerHTML = yHtml;
   }
 
-  // ===== Render Calendar =====
-  function renderCalendar(date) {
+  // Render grid for given month
+  function render(date){
     populateSelectors(date);
+
     const year = date.getFullYear();
     const month = date.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month+1, 0).getDate();
+    const firstOfMonth = new Date(year, month, 1);
+    const firstDow = firstOfMonth.getDay(); // 0..6
+    const dim = new Date(year, month+1, 0).getDate();
 
-    let html = `<table class="calendar-table">
-      <thead><tr>
-        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-        <th>Thu</th><th>Fri</th><th>Sat</th>
-      </tr></thead><tbody><tr>`;
+    // Previous month's trailing days
+    const prevDim = new Date(year, month, 0).getDate();
+    const leading = firstDow; // count to show before day 1
 
-    // Empty cells before first day
-    for (let i=0; i<firstDay; i++) html += "<td></td>";
+    // Build cells: 7 columns each row; we’ll just output in order
+    let html = "";
 
-    // Days
-    for (let d=1; d<=daysInMonth; d++) {
-      const dayOfWeek = (firstDay + d - 1) % 7;
-      const isToday = (d===new Date().getDate() &&
-                       month===new Date().getMonth() &&
-                       year===new Date().getFullYear());
-      html += `<td class="${isToday?"today":""}">${d}</td>`;
-      if (dayOfWeek===6 && d!==daysInMonth) html += "</tr><tr>";
+    // Leading (previous month)
+    for (let i=leading; i>0; i--){
+      const dNum = prevDim - i + 1;
+      html += dayCell(year, month-1, dNum, true);
+    }
+    // Current month
+    for (let d=1; d<=dim; d++){
+      html += dayCell(year, month, d, false);
+    }
+    // Trailing (next month) to complete the grid to full weeks
+    const totalCells = leading + dim;
+    const trailing = (7 - (totalCells % 7)) % 7;
+    for (let t=1; t<=trailing; t++){
+      html += dayCell(year, month+1, t, true);
     }
 
-    html += "</tr></tbody></table>";
-    calendarEl.innerHTML = html;
+    grid.innerHTML = html;
   }
 
-  // ===== Event Listeners =====
+  // Create one day cell
+  function dayCell(y, m, d, isMuted){
+    const viewDate = new Date(y, m, d);
+    const isToday = y===today.getFullYear() && m===today.getMonth() && d===today.getDate();
+
+    // events for this exact day
+    const key = `${viewDate.getFullYear()}-${pad(viewDate.getMonth()+1)}-${pad(viewDate.getDate())}`;
+    const todays = events.filter(e => e.date === key);
+
+    const evtsHtml = todays.map(e => `
+      <div class="evt ${e.type}">
+        <span class="dot" aria-hidden="true"></span>
+        ${e.time ? `<span class="time">${e.time}</span>` : ""}
+        <span class="label">${e.label}</span>
+      </div>
+    `).join("");
+
+    return `
+      <div class="day ${isMuted?"muted":""}" data-date="${key}">
+        <div class="date-badge">
+          <span>${d}</span>
+          ${isToday ? `<span class="today">Today</span>` : ``}
+        </div>
+        <div class="events">${evtsHtml}</div>
+      </div>
+    `;
+  }
+
+  const today = new Date();
+
+  // Listeners
   monthSelect.addEventListener("change", () => {
-    currentDate.setMonth(parseInt(monthSelect.value));
-    renderCalendar(currentDate);
+    current.setMonth(parseInt(monthSelect.value, 10));
+    // clamp day within month range
+    const dim = new Date(current.getFullYear(), current.getMonth()+1, 0).getDate();
+    if (current.getDate() > dim) current.setDate(dim);
+    render(current);
   });
   daySelect.addEventListener("change", () => {
-    currentDate.setDate(parseInt(daySelect.value));
-    renderCalendar(currentDate);
+    current.setDate(parseInt(daySelect.value, 10));
+    render(current);
   });
   yearSelect.addEventListener("change", () => {
-    currentDate.setFullYear(parseInt(yearSelect.value));
-    renderCalendar(currentDate);
-  });
-  prevBtn.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth()-1);
-    renderCalendar(currentDate);
-  });
-  nextBtn.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth()+1);
-    renderCalendar(currentDate);
-  });
-  todayBtn.addEventListener("click", () => {
-    currentDate = new Date();
-    renderCalendar(currentDate);
+    current.setFullYear(parseInt(yearSelect.value, 10));
+    // clamp day within month range
+    const dim = new Date(current.getFullYear(), current.getMonth()+1, 0).getDate();
+    if (current.getDate() > dim) current.setDate(dim);
+    render(current);
   });
 
-  // ===== Init =====
-  renderCalendar(currentDate);
+  prevBtn.addEventListener("click", () => {
+    current.setMonth(current.getMonth()-1);
+    render(current);
+  });
+  nextBtn.addEventListener("click", () => {
+    current.setMonth(current.getMonth()+1);
+    render(current);
+  });
+  todayBtn.addEventListener("click", () => {
+    current = new Date();
+    render(current);
+  });
+
+  // Init
+  render(current);
 });
