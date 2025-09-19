@@ -16,12 +16,88 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Is Truth Reliable? — Semitic Jew"/>
-<meta name="twitter:description" content="Exploring why truth is reliable — grounded in God’s character, enduring across time, and vital for Israel’s covenant identity."/>
+<meta name="twitter:description" content="Exploring why truth is reliable — grounded in God’s character, enduring across time, and vital for Israel’s covenant identity.""/>
 <meta name="twitter:image" content="https://semiticjew.github.io/israelite-research/images/articles/truth-reliable-700x394.jpg"/>
 <meta name="twitter:site" content="@semitic_jew"/>
 <meta name="twitter:creator" content="@semitic_jew"/>
 
-<link rel="stylesheet" href="/israelite-research/styles.css?v=20250917204823"/>
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
+
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Modal (matches working pattern) */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:22px;
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;
+    align-items:stretch;
+    min-height:60vh;
+  }
+  @media (max-width: 720px){
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
+  }
+  .author-pane { display:flex; flex-direction:column; align-items:center; justify-content:center; padding-right:12px; text-align:center; }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91)); }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+
+  .author-list{ display:flex; flex-direction:column; min-height:0; padding-left:12px; }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{ margin:0; padding:.6rem 0; border-top:1px solid #e6ebf2; }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{ font-weight:700; text-decoration:none; display:inline-block; }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{ display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280; }
+  .more-by-btn{ margin-top:auto; display:inline-block; padding:.55rem .9rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff; text-decoration:none; font-weight:600; align-self:center; }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography / footnotes */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; display:inline; }
+  .biblio-list p + p::before{ content:" | "; color:#9aa4b2 }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{ display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem; border:1px solid #e6ebf2; border-radius:6px; }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Inline footnote refs un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+</style>
 </head>
 
 <body class="article-doc" data-page="article">
@@ -45,12 +121,16 @@
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
       <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
-        <svg aria-hidden="true" viewBox="0 0 20 20"><g fill="currentColor"><path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
-        M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
-        M3,16 L14,16 L14,17 L3,17 L3,16 Z 
-        M3,7 L4,7 L4,16 L3,16 L3,7 Z 
-        M6,3 L16,3 L16,4 L6,4 L6,3 Z 
-        M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path></g></svg>
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z 
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z 
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z 
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
       </button>
     </div>
 
@@ -71,38 +151,38 @@
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <p><strong>Truth is not fragile.</strong> It is woven into creation, sustained by God’s character, and confirmed in the covenant testimony of Israel. When the Bible declares “God cannot lie” (<em>Tit 1:2</em>), it grounds trust in God’s reliability across time and cultures.</p>
+    <p><strong>Truth is not fragile.</strong> It is woven into creation, sustained by God’s character, and confirmed in the covenant testimony of Israel. When the Bible declares “God cannot lie” (<em>Tit 1:2</em>)<span class="footnote-ref"><a href="#fn1">1</a></span>, it grounds trust in God’s reliability across time and cultures.</p>
 
     <h2>Truth Rooted in God’s Character</h2>
     <p>Truth is reliable because God is reliable. His promises are not fickle, but firm (<em>Num 23:19</em>). For Israelites, this meant confidence in the covenant: when God said He would deliver from Egypt, He did. When He promised land and rest, He provided. If God were untruthful, covenant faith itself would collapse.</p>
 
     <h2>Truth Endures Across Time</h2>
-    <p>Unlike shifting human opinion, truth remains constant. “Thy word is true from the beginning” (<em>Ps 119:160</em>). Prophets could appeal to promises spoken centuries before, because God’s word did not expire (<em>Jer 29:10</em>). In an age of relativism, Scripture’s reliability is countercultural, reminding us that truth is not invented but discovered.</p>
+    <p>Unlike shifting human opinion, truth remains constant. “Thy word is true from the beginning” (<em>Ps 119:160</em>)<span class="footnote-ref"><a href="#fn2">2</a></span>. Prophets could appeal to promises spoken centuries before, because God’s word did not expire (<em>Jer 29:10</em>)<span class="footnote-ref"><a href="#fn3">3</a></span>. In an age of relativism, Scripture’s reliability is countercultural, reminding us that truth is not invented but discovered.</p>
 
     <blockquote class="standout-quote" aria-label="Illustrative quotation">
-      “Truth does not wear out. It outlasts empires, cultures, and ideologies.” 
+      “Truth does not wear out. It outlasts empires, cultures, and ideologies.”
       <footer>— Semitic Jew</footer>
     </blockquote>
 
     <h2>Truth Shapes Covenant Community</h2>
-    <p>Israel was commanded to live by truth in daily dealings: “lying lips are abomination to the LORD” (<em>Prov 12:22</em>). This wasn’t abstract — truthfulness protected justice, commerce, and worship. Paul echoes this when urging believers to “speak truth every man with his neighbor” (<em>Eph 4:25</em>).</p>
+    <p>Israel was commanded to live by truth in daily dealings: “lying lips are abomination to the LORD” (<em>Prov 12:22</em>)<span class="footnote-ref"><a href="#fn4">4</a></span>. This wasn’t abstract — truthfulness protected justice, commerce, and worship. Paul echoes this when urging believers to “speak truth every man with his neighbor” (<em>Eph 4:25</em>)<span class="footnote-ref"><a href="#fn4">4</a></span>.</p>
 
     <h2>Truth Versus Relativism</h2>
-    <p>Modern culture often suggests that “truth” is personal or situational. But a world without objective truth is a world where contradictions reign. The Bible insists otherwise: “Sanctify them through thy truth: thy word is truth” (<em>John 17:17</em>). Philosophers like Mortimer Adler have noted that relativism collapses under its own weight — if “all truth is relative,” that statement itself claims to be an absolute truth, a contradiction.</p>
+    <p>Modern culture often suggests that “truth” is personal or situational. But a world without objective truth is a world where contradictions reign. The Bible insists otherwise: “Sanctify them through thy truth: thy word is truth” (<em>John 17:17</em>)<span class="footnote-ref"><a href="#fn2">2</a></span>. Philosophers like Mortimer Adler have noted that relativism collapses under its own weight — if “all truth is relative,” that statement itself claims to be an absolute truth, a contradiction<span class="footnote-ref"><a href="#fn5">5</a></span>.</p>
 
     <h2>Conclusion</h2>
-    <p>Truth is reliable because it is anchored in God’s nature, confirmed through Israel’s history, and necessary for human flourishing. To abandon truth is to abandon coherence itself. To cling to truth is to cling to God, whose word endures forever (<em>Isa 40:8</em>).</p>
+    <p>Truth is reliable because it is anchored in God’s nature, confirmed through Israel’s history, and necessary for human flourishing. To abandon truth is to abandon coherence itself. To cling to truth is to cling to God, whose word endures forever (<em>Isa 40:8</em>)<span class="footnote-ref"><a href="#fn3">3</a></span>.</p>
   </div>
 
-  <!-- Bibliography -->
+  <!-- Bibliography (inline, pipe-separated) -->
   <hr class="biblio-divider"/>
   <section class="footnotes">
     <div class="biblio-list">
-      <p id="fn1"><em>The Holy Bible</em>, KJV (public domain). God’s truthfulness as the ground for trust (Tit 1:2). <a class="backref" href="#pub-date"><span class="badge">1</span></a></p> |
-      <p id="fn2">Scripture as truth: Ps 119:160; John 17:17. <a class="backref" href="#pub-date"><span class="badge">2</span></a></p> |
-      <p id="fn3">God’s word endures: Jer 29:10; Isa 40:8. <a class="backref" href="#pub-date"><span class="badge">3</span></a></p> |
-      <p id="fn4">Truth in practice: Prov 12:22; Eph 4:25. <a class="backref" href="#pub-date"><span class="badge">4</span></a></p> |
-      <p id="fn5">On relativism and contradiction: Mortimer J. Adler, <em>Ten Philosophical Mistakes</em> (Macmillan, 1985). Dallas Willard, <a href="https://www.dwillard.org/articles/the-abolition-of-truth-and-relativism" target="_blank" rel="noopener"><em>The Abolition of Truth and Relativism</em></a>. <a class="backref" href="#pub-date"><span class="badge">5</span></a></p>
+      <p id="fn1"><em>The Holy Bible</em> (KJV), public domain — God’s truthfulness as the ground for trust (Tit 1:2). <a class="backref" href="#ref-fn1" aria-label="Back to citation 1"><span class="badge">1</span></a></p>
+      <p id="fn2">Scripture as truth: Ps 119:160; John 17:17. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2"><span class="badge">2</span></a></p>
+      <p id="fn3">God’s word endures: Jer 29:10; Isa 40:8. <a class="backref" href="#ref-fn3" aria-label="Back to citation 3"><span class="badge">3</span></a></p>
+      <p id="fn4">Truth in practice: Prov 12:22; Eph 4:25. <a class="backref" href="#ref-fn4" aria-label="Back to citation 4"><span class="badge">4</span></a></p>
+      <p id="fn5">On relativism and contradiction: Mortimer J. Adler, <em>Ten Philosophical Mistakes</em> (Macmillan, 1985). Dallas Willard, <a href="https://www.dwillard.org/articles/the-abolition-of-truth-and-relativism" target="_blank" rel="noopener"><em>The Abolition of Truth and Relativism</em></a>. <a class="backref" href="#ref-fn5" aria-label="Back to citation 5"><span class="badge">5</span></a></p>
     </div>
   </section>
 </article>
@@ -124,7 +204,7 @@
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
           </a>
         </div>
-        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the Bible logically and proving Ancient Israelites resembled dark-skinned Hamites.</p>
+        <p class="ap-text">Researcher and teacher focused on reading Scripture with logic, consistency, and historical context. Curates resources on Israel and the nations of the ancient Near East.</p>
       </div>
 
       <div class="author-list">
@@ -146,6 +226,10 @@
             <a class="ra-title" href="/israelite-research/articles/three-laws-of-logic.html">Three Laws of Logic</a>
             <span class="ra-meta">Semitic Jew | <time datetime="2025-02-07">Feb 7, 2025</time></span>
           </li>
+          <li>
+            <a class="ra-title" href="/israelite-research/articles/is-truth-reliable.html">Is Truth Reliable?</a>
+            <span class="ra-meta">Semitic Jew | <time datetime="2024-12-15">Dec 15, 2024</time></span>
+          </li>
         </ul>
         <a class="more-by-btn" href="/israelite-research/authors/semitic-jew.html">More articles</a>
       </div>
@@ -155,13 +239,59 @@
 
 <div id="site-footer"></div>
 
-<!-- External scripts -->
+<!-- Scripts -->
+<script>
+  (function(){
+    // Date stamp
+    var now=new Date(), iso=now.toISOString().slice(0,10),
+        text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+
+    // Share links
+    var url=location.href, title=document.title;
+    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    if(cp) cp.addEventListener('click', function(){
+      if(navigator.share){ navigator.share({title, url}).catch(function(){}); return; }
+      navigator.clipboard && navigator.clipboard.writeText(url);
+      cp.innerHTML='✓'; setTimeout(()=>cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path><rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect></svg>',900);
+    });
+
+    // Author modal wiring
+    var icon  = document.getElementById('author-info');
+    var modal = document.getElementById('author-modal');
+    var close = document.getElementById('author-modal-close');
+    var lastFocus;
+    function openModal(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; modal.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; close && close.focus(); }
+    function closeModal(e){ if(e) e.preventDefault(); modal.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+    if(icon) icon.addEventListener('click', openModal);
+    if(close) close.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e){ if(e.target && e.target.classList.contains('modal-overlay')) closeModal(e); });
+    document.addEventListener('keydown', function(e){ if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e); });
+
+    // Backrefs: ensure each footnote ↩ points to matching inline ref
+    document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+      var liId = a.getAttribute('href').slice(1);
+      var sup = a.closest('.footnote-ref');
+      if (!sup.id) {
+        var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+        sup.id = 'ref-fn' + n;
+      }
+      var li = document.getElementById(liId);
+      if (li) {
+        var back = li.querySelector('.backref');
+        if (back) back.setAttribute('href', '#' + sup.id);
+      }
+    });
+  })();
+</script>
 <script src="/israelite-research/js/metadata.js" defer></script>
 <script src="/israelite-research/js/modal.js" defer></script>
 <script src="/israelite-research/js/biblio.js" defer></script>
 <script src="/israelite-research/js/articles.js" defer></script>
-<script src="/israelite-research/js/citations.js?v=20250917204823" defer></script>
-<script src="/israelite-research/js/xref-hover.js?v=20250917204823" defer></script>
+<script src="/israelite-research/js/citations.js" defer></script>
+<script src="/israelite-research/js/xref-hover.js" defer></script>
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
