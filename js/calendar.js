@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const evtDate = document.getElementById("evtDate");
   const evtTime = document.getElementById("evtTime");
 
-  // Build DOW header
+  // DOW
   const dowLabels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   dow.innerHTML = dowLabels.map(l => `<div class="dow">${l}</div>`).join("");
 
-  // Color map from CSS variables
+  // Color map from CSS vars (now Core UI)
   const COLOR = () => {
     const s = getComputedStyle(document.documentElement);
     return {
@@ -67,19 +67,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let EVENTS = loadEvents();
 
-  // Dates & helpers
+  // Dates
   let current = new Date();
   const today = new Date();
   const pad = (n) => n.toString().padStart(2,"0");
   const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   const hhmm = (time) => {
-    // Accepts "HH:MM" (24h) or empty. Returns "HHmm" or "—".
     if (!time) return "—";
     const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(time.trim());
     return m ? `${m[1]}${m[2]}` : "—";
   };
 
-  // Selectors
   function populateSelectors(date){
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     monthSelect.innerHTML = monthNames.map((m,i)=>`<option value="${i}" ${i===date.getMonth()?"selected":""}>${m}</option>`).join("");
@@ -90,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(y=>`<option value="${y}" ${y===date.getFullYear()?"selected":""}>${y}</option>`).join("");
   }
 
-  // Render calendar
   function render(date){
     populateSelectors(date);
 
@@ -183,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // Delete
   drawerBody.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".btn-del");
     if (!btn) return;
@@ -198,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function openModal(){
     modal.style.display = "flex";
     modal.setAttribute("aria-hidden","false");
-    // default date/time to current selection
     evtDate.value = ymd(current);
     evtTime.value = "18:00";
     evtDate.focus();
@@ -212,20 +209,18 @@ document.addEventListener("DOMContentLoaded", () => {
   addEventBtn.addEventListener("click", openModal);
   modalClose.addEventListener("click", closeModal);
   modalCancel.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener("keydown", (e) => {
-    if (!modal || modal.getAttribute("aria-hidden")==="true") return;
+    if (modal.getAttribute("aria-hidden")==="true") return;
     if (e.key === "Escape") closeModal();
   });
 
-  // Modal submit (24h time -> HH:MM stored)
+  // Modal submit
   addForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(addForm);
     const date = String(fd.get("date")||"").trim();
-    const time = String(fd.get("time")||"").trim();       // already 24h "HH:MM"
+    const time = String(fd.get("time")||"").trim(); // 24h HH:MM
     const label = String(fd.get("label")||"").trim();
     const type = String(fd.get("type")||"").trim();
     const url = String(fd.get("url")||"").trim();
