@@ -147,19 +147,27 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>`;
 }
 
-  // Drawer
-  function openDrawer(date){
-    const key = ymd(date);
-    const items = EVENTS.filter(e => e.date === key);
-
-    drawerTitle.textContent = `Events — ${key}`;
-    drawerBody.innerHTML = items.length
-      ? items.map(e => fullEventHTML(e)).join("")
-      : `<p class="muted">No events for this date.</p>`;
-
-    drawer.hidden = false;
-    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
+  // Replace your existing fullEventHTML(e) with this:
+function fullEventHTML(e){
+  const color = COLOR()[e.type] || '#444';
+  const fg = prefersLightText(color) ? '#fff' : '#111';
+  const first = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+  const [Y, M, D] = e.date.split("-");
+  const second = `${(e.type ? e.type.charAt(0).toUpperCase() : "?")} | ${M}.${D}.${Y}`;
+  return `
+    <div class="evt-full" style="background:${color}; color:${fg}; border-color:${fg==='#fff'?'rgba(255,255,255,.18)':'rgba(0,0,0,.12)'}">
+      <div>
+        <div class="evt-title">${first}</div>
+        <div class="evt-meta">${second}</div>
+        ${e.notes ? `<p class="evt-notes">${escapeHtml(e.notes)}</p>` : ``}
+        ${e.url ? `<p><a href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open link</a></p>` : ``}
+      </div>
+      <div class="evt-actions">
+        <button class="btn-del" data-id="${e.id}">Delete</button>
+      </div>
+    </div>
+  `;
+}
 
   function fullEventHTML(e){
     const color = COLOR()[e.type] || '#444';
