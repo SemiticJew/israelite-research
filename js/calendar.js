@@ -9,15 +9,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("nextBtn");
   const addEventBtn = document.getElementById("addEventBtn");
 
+  // Drawer
   const drawer = document.getElementById("eventDrawer");
   const drawerTitle = document.getElementById("drawerTitle");
   const drawerBody = document.getElementById("drawerBody");
   const drawerClose = document.getElementById("drawerClose");
 
+  // Modal
+  const modal = document.getElementById("addEventModal");
+  const modalClose = document.getElementById("modalClose");
+  const modalCancel = document.getElementById("modalCancel");
+  const addForm = document.getElementById("addEventForm");
+  const evtDate = document.getElementById("evtDate");
+  const evtTime = document.getElementById("evtTime");
+
+  // Build DOW header
   const dowLabels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   dow.innerHTML = dowLabels.map(l => `<div class="dow">${l}</div>`).join("");
 
-  // Event map (type -> hex) read from CSS variables
+  // Color map from CSS variables
   const COLOR = () => {
     const s = getComputedStyle(document.documentElement);
     return {
@@ -30,52 +40,46 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   };
 
-  // Single-letter code for the format “18:00 PM - X | Title”
-  const TYPE_LETTER = {
-    xspace: 'X',
-    youtube: 'Y',
-    discord: 'D',
-    sabbath: 'S',
-    newmoon: 'N',
-    feast: 'F'
-  };
-
-  // Persist events per browser (no file edits needed)
+  // Storage
   const LS_KEY = "ir.events";
+  function uid(){ return Math.random().toString(36).slice(2, 10); }
   function loadEvents(){
     try{
       const raw = localStorage.getItem(LS_KEY);
-      if (!raw) return seed();  // first time seed
+      if (!raw) return seed();
       const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return seed();
-      return parsed;
+      return Array.isArray(parsed) ? parsed : seed();
     }catch{ return seed(); }
   }
   function saveEvents(){ localStorage.setItem(LS_KEY, JSON.stringify(EVENTS)); }
   function seed(){
     const demo = [
-      { id: uid(), date:"2025-09-21", time:"7:00 PM",  label:"Prophetic Q & A",     type:"xspace"  },
-      { id: uid(), date:"2025-09-22", time:"8:30 PM",  label:"Semitic Jew Podcast", type:"youtube" },
-      { id: uid(), date:"2025-09-24", time:"6:00 PM",  label:"Bible Study",         type:"discord" },
-      { id: uid(), date:"2025-09-27", time:"",         label:"Sabbath",             type:"sabbath" },
-      { id: uid(), date:"2025-10-02", time:"",         label:"New Moon",            type:"newmoon" },
-      { id: uid(), date:"2025-10-13", time:"All Day",  label:"Feast of Tabernacles",type:"feast"   },
-      { id: uid(), date:"2025-09-24", time:"7:30 PM",  label:"Discord Q & A",       type:"discord" },
-      { id: uid(), date:"2025-09-24", time:"9:00 PM",  label:"After Hours",         type:"xspace"  },
-      { id: uid(), date:"2025-09-24", time:"",         label:"Sabbath Prep",        type:"sabbath" }
+      { id: uid(), date:"2025-09-21", time:"19:00",  label:"Prophetic Q & Answers", type:"xspace"  },
+      { id: uid(), date:"2025-09-22", time:"20:30",  label:"Semitic Jew Podcast",   type:"youtube" },
+      { id: uid(), date:"2025-09-24", time:"18:00",  label:"Bible Study",           type:"discord" },
+      { id: uid(), date:"2025-09-27", time:"",       label:"Sabbath",               type:"sabbath" },
+      { id: uid(), date:"2025-10-02", time:"",       label:"New Moon",              type:"newmoon" },
+      { id: uid(), date:"2025-10-13", time:"",       label:"Feast of Tabernacles",  type:"feast"   }
     ];
     localStorage.setItem(LS_KEY, JSON.stringify(demo));
     return demo;
   }
-  function uid(){ return Math.random().toString(36).slice(2, 10); }
 
   let EVENTS = loadEvents();
 
+  // Dates & helpers
   let current = new Date();
   const today = new Date();
   const pad = (n) => n.toString().padStart(2,"0");
   const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const hhmm = (time) => {
+    // Accepts "HH:MM" (24h) or empty. Returns "HHmm" or "—".
+    if (!time) return "—";
+    const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(time.trim());
+    return m ? `${m[1]}${m[2]}` : "—";
+  };
 
+  // Selectors
   function populateSelectors(date){
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     monthSelect.innerHTML = monthNames.map((m,i)=>`<option value="${i}" ${i===date.getMonth()?"selected":""}>${m}</option>`).join("");
@@ -86,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(y=>`<option value="${y}" ${y===date.getFullYear()?"selected":""}>${y}</option>`).join("");
   }
 
+  // Render calendar
   function render(date){
     populateSelectors(date);
 
@@ -137,18 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function chipHTML(e){
-    const letter = TYPE_LETTER[e.type] || "?";
-    const text = formatListing(e.time, letter, e.label);
-    return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text)}">${escapeHtml(text)}</div>`;
+    const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+    return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text)}">${text}</div>`;
   }
 
-  function formatListing(time, letter, label){
-    // Keep your explicit pattern: "18:00 PM - X | Q & A"
-    // If time missing, show "— - X | Title"
-    const t = time && time.trim() ? time.trim() : "—";
-    return `${t} - ${letter} | ${label}`;
-  }
-
+  // Drawer
   function openDrawer(date){
     const key = ymd(date);
     const items = EVENTS.filter(e => e.date === key);
@@ -164,29 +162,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function fullEventHTML(e){
     const color = COLOR()[e.type] || '#444';
-    const letter = TYPE_LETTER[e.type] || "?";
-    const text = formatListing(e.time, letter, e.label);
     const fg = prefersLightText(color) ? '#fff' : '#111';
+    const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
     return `
       <div class="evt-full" style="background:${color}; color:${fg}; border-color:${fg==='#fff'?'rgba(255,255,255,.18)':'rgba(0,0,0,.12)'}">
         <div>
-          <div class="evt-title">${escapeHtml(text)}</div>
+          <div class="evt-title">${text}</div>
           <div class="evt-meta">
             <span><strong>Date:</strong> ${e.date}</span>
             <span><strong>Type:</strong> ${e.type}</span>
             ${e.location ? `<span><strong>Location:</strong> ${escapeHtml(e.location)}</span>` : ``}
           </div>
           ${e.notes ? `<p class="evt-notes">${escapeHtml(e.notes)}</p>` : ``}
+          ${e.url ? `<p><a href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open link</a></p>` : ``}
         </div>
         <div class="evt-actions">
-          ${e.url ? `<a class="btn-link" href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open</a>` : ``}
           <button class="btn-del" data-id="${e.id}">Delete</button>
         </div>
       </div>
     `;
   }
 
-  // Delete handler (event delegation)
   drawerBody.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".btn-del");
     if (!btn) return;
@@ -194,31 +190,66 @@ document.addEventListener("DOMContentLoaded", () => {
     EVENTS = EVENTS.filter(e => e.id !== id);
     saveEvents();
     render(current);
-    // refresh drawer to reflect deletion
     const openDate = drawerTitle.textContent.split(" — ")[1];
     if (openDate) openDrawer(new Date(openDate));
   });
 
-  // Add Event (prompt-based minimal UI to avoid extra HTML)
-  addEventBtn.addEventListener("click", () => {
-    const date = prompt("Date (YYYY-MM-DD):", ymd(new Date()));
-    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-    const time = prompt("Time (e.g., 6:00 PM):", "");
-    const label = prompt("Title (e.g., Q & A):", "");
-    const type = prompt("Type [xspace|youtube|discord|sabbath|newmoon|feast]:", "xspace");
-    if (!label || !type) return;
-    EVENTS.push({ id: uid(), date, time, label, type });
-    saveEvents();
-    render(current);
+  // Modal open/close
+  function openModal(){
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden","false");
+    // default date/time to current selection
+    evtDate.value = ymd(current);
+    evtTime.value = "18:00";
+    evtDate.focus();
+  }
+  function closeModal(){
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden","true");
+    addForm.reset();
+  }
+
+  addEventBtn.addEventListener("click", openModal);
+  modalClose.addEventListener("click", closeModal);
+  modalCancel.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!modal || modal.getAttribute("aria-hidden")==="true") return;
+    if (e.key === "Escape") closeModal();
   });
 
-  // Utility
+  // Modal submit (24h time -> HH:MM stored)
+  addForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(addForm);
+    const date = String(fd.get("date")||"").trim();
+    const time = String(fd.get("time")||"").trim();       // already 24h "HH:MM"
+    const label = String(fd.get("label")||"").trim();
+    const type = String(fd.get("type")||"").trim();
+    const url = String(fd.get("url")||"").trim();
+    const location = String(fd.get("location")||"").trim();
+    const notes = String(fd.get("notes")||"").trim();
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return alert("Please enter a valid date (YYYY-MM-DD).");
+    if (!label) return alert("Please enter an event name.");
+    if (!type) return alert("Please choose a type.");
+    if (time && !/^([01]\d|2[0-3]):([0-5]\d)$/.test(time)) return alert("Use 24-hour time, e.g., 18:00.");
+
+    EVENTS.push({ id: uid(), date, time, label, type, url, location, notes });
+    saveEvents();
+    render(current);
+    closeModal();
+  });
+
+  // Utils
   function prefersLightText(hex){
     const c = hex.replace('#','');
     const r = parseInt(c.substring(0,2),16);
     const g = parseInt(c.substring(2,4),16);
     const b = parseInt(c.substring(4,6),16);
-    const L = (0.299*r + 0.587*g + 0.114*b)/255; // perceived luminance
+    const L = (0.299*r + 0.587*g + 0.114*b)/255;
     return L < 0.6;
   }
   function escapeHtml(str){
@@ -240,8 +271,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Init
   render(current);
-
-  // Close drawer
-  drawerClose.addEventListener("click", () => drawer.hidden = true);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") drawer.hidden = true; });
 });

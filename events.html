@@ -6,7 +6,7 @@
   <title>Events — Semitic Jew</title>
   <link href="/israelite-research/styles.css" rel="stylesheet"/>
 
-  <!-- Fonts: match site (Roboto body), serif headings -->
+  <!-- Fonts: site defaults (Roboto body), serif headings -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Spectral:wght@600;700&display=swap" rel="stylesheet"/>
 
   <style>
@@ -24,7 +24,6 @@
       --evt-feast:#F17300;     /* Feast Day */
     }
 
-    /* Page scaffold */
     body{ font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
     .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
     .events-page main{padding:24px 0 48px}
@@ -46,7 +45,7 @@
     .calendar-bar .btn.primary:hover{background:var(--brand3)}
     .calendar-bar select{padding-right:2rem}
 
-    /* Calendar region */
+    /* Calendar */
     .calendar-wrap{
       border:1px solid var(--border);border-radius:14px;background:var(--card);padding:14px;
     }
@@ -76,34 +75,33 @@
     .events{display:flex;flex-direction:column;gap:6px;margin-top:2px}
     .chip{
       display:flex;align-items:center;gap:8px;
-      padding:.45rem .6rem;border-radius:12px;border:1px solid transparent;
+      padding:.35rem .55rem;border-radius:12px;border:1px solid transparent;
       color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      font-size:.82rem; /* smaller per request */
     }
     .chip[data-type="xspace"]  { background:var(--evt-xspace) }
     .chip[data-type="youtube"] { background:var(--evt-youtube) }
     .chip[data-type="discord"] { background:var(--evt-discord) }
     .chip[data-type="sabbath"] { background:var(--evt-sabbath) }
     .chip[data-type="newmoon"] { background:var(--evt-newmoon) }
-    .chip[data-type="feast"]   { background:var(--evt-feast); color:#111; font-weight:700 } /* good contrast on gold */
+    .chip[data-type="feast"]   { background:var(--evt-feast); color:#111; font-weight:700 }
 
     .more-link{font-size:.85rem;color:var(--blue);text-decoration:underline;width:max-content}
 
-    /* Drawer (full event list + delete actions) */
+    /* Drawer (full event list + delete) */
     .event-drawer{margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden}
     .drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border)}
     .drawer-title{margin:0;font:700 1.2rem/1.1 "Spectral", serif;color:var(--ink)}
     .drawer-close{border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer}
     .drawer-body{padding:12px 14px;display:grid;gap:10px}
-    .evt-full{
-      display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px;
-    }
+    .evt-full{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px}
     .evt-title{font:700 1rem/1.2 "Spectral", serif}
     .evt-meta{display:flex;gap:12px;flex-wrap:wrap;font-weight:500}
     .evt-actions{margin-left:auto;display:flex;gap:8px}
     .btn-del{border:1px solid #e11d48;background:#fff;color:#e11d48;border-radius:10px;padding:.35rem .6rem;cursor:pointer}
     .btn-del:hover{background:#fff0f3}
 
-    /* Key underneath calendar (improved) */
+    /* Key (under calendar) */
     .legend{
       margin-top:14px;border:1px dashed var(--border);border-radius:12px;padding:10px 12px;background:#fff;
       display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
@@ -111,6 +109,25 @@
     .legend h3{margin:0 8px 0 0;font:700 1rem/1.1 "Spectral", serif;color:var(--ink)}
     .legend .item{display:flex;align-items:center;gap:8px}
     .legend .sw{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.12)}
+
+    /* Modal (Add Event) */
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,.35);
+      display:none;align-items:center;justify-content:center;z-index:50;
+    }
+    .modal{background:#fff;border:1px solid var(--border);border-radius:14px;max-width:520px;width:92%;box-shadow:0 20px 50px rgba(0,0,0,.15);overflow:hidden}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+    .modal-title{margin:0;font:700 1.1rem/1.1 "Spectral", serif;color:var(--ink)}
+    .modal-body{padding:14px;display:grid;gap:10px}
+    .modal-row{display:grid;gap:10px}
+    .modal-row.grid-2{grid-template-columns:1fr 1fr}
+    .modal-row label{font-weight:600}
+    .modal-row input,.modal-row select,.modal-row textarea{
+      width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:#111
+    }
+    .modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:12px 14px;border-top:1px solid var(--border)}
+    .btn-ghost{border:1px solid var(--border);background:#fff;border-radius:10px;padding:.5rem .8rem;cursor:pointer}
+    .btn-fill{border:1px solid var(--brand2);background:var(--brand2);color:#fff;border-radius:10px;padding:.5rem .8rem;cursor:pointer}
   </style>
 </head>
 <body class="events-page" data-page="events">
@@ -181,7 +198,7 @@
       <div id="calendarDow" class="calendar-grid" aria-hidden="true"></div>
       <div id="calendarGrid" class="calendar-grid" aria-live="polite"></div>
 
-      <!-- Drawer for full event list + delete buttons -->
+      <!-- Drawer -->
       <aside id="eventDrawer" class="event-drawer" hidden>
         <div class="drawer-head">
           <h2 class="drawer-title" id="drawerTitle">Events</h2>
@@ -191,7 +208,7 @@
       </aside>
     </section>
 
-    <!-- Improved key BELOW the calendar region -->
+    <!-- Key BELOW the calendar -->
     <div class="legend" id="legend">
       <h3>Key</h3>
       <div class="item"><span class="sw" style="background:var(--evt-xspace)"></span> X Space</div>
@@ -296,6 +313,65 @@
         </div>
       </div>
     </footer>
+  </div>
+
+  <!-- ===== Add Event Modal ===== -->
+  <div id="addEventModal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-labelledby="addEventTitle">
+    <div class="modal" role="document">
+      <div class="modal-head">
+        <h3 id="addEventTitle" class="modal-title">Add Event</h3>
+        <button type="button" class="btn-ghost" id="modalClose">Close</button>
+      </div>
+      <form id="addEventForm">
+        <div class="modal-body">
+          <div class="modal-row grid-2">
+            <div>
+              <label for="evtDate">Date</label>
+              <input id="evtDate" name="date" type="date" required>
+            </div>
+            <div>
+              <label for="evtTime">Time (24-hour)</label>
+              <input id="evtTime" name="time" type="time" required>
+            </div>
+          </div>
+          <div class="modal-row">
+            <div>
+              <label for="evtLabel">Event Name</label>
+              <input id="evtLabel" name="label" type="text" placeholder="Question & Answers" required>
+            </div>
+          </div>
+          <div class="modal-row grid-2">
+            <div>
+              <label for="evtType">Type</label>
+              <select id="evtType" name="type" required>
+                <option value="xspace">X Space</option>
+                <option value="youtube">YouTube Live</option>
+                <option value="discord">Discord Live</option>
+                <option value="sabbath">Sabbath</option>
+                <option value="newmoon">New Moon</option>
+                <option value="feast">Feast Day</option>
+              </select>
+            </div>
+            <div>
+              <label for="evtUrl">Link (optional)</label>
+              <input id="evtUrl" name="url" type="url" placeholder="https://">
+            </div>
+          </div>
+          <div class="modal-row">
+            <label for="evtLocation">Location (optional)</label>
+            <input id="evtLocation" name="location" type="text" placeholder="Online / In-person">
+          </div>
+          <div class="modal-row">
+            <label for="evtNotes">Notes (optional)</label>
+            <textarea id="evtNotes" name="notes" rows="3" placeholder="Any extra details"></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-ghost" id="modalCancel">Cancel</button>
+          <button type="submit" class="btn-fill">Save Event</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="/israelite-research/js/calendar.js"></script>
