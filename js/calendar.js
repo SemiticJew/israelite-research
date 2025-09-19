@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dowLabels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   dow.innerHTML = dowLabels.map(l => `<div class="dow">${l}</div>`).join("");
 
-  // Color map from CSS vars (now Core UI)
+  // Color map from CSS vars
   const COLOR = () => {
     const s = getComputedStyle(document.documentElement);
     return {
@@ -138,50 +138,24 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // Calendar pills (restored to one line: HHmm | Title)
   function chipHTML(e){
-  const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
-  const dateParts = e.date.split("-");
-  const meta = `${(e.type ? e.type.charAt(0).toUpperCase() : "?")} | ${dateParts[1]}.${dateParts[2]}.${dateParts[0]}`;
-  return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text + " " + meta)}">
-            <div>${text}<br>${meta}</div>
-          </div>`;
-}
+    const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+    return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text)}">${text}</div>`;
+  }
 
-  // Replace your existing fullEventHTML(e) with this:
-function fullEventHTML(e){
-  const color = COLOR()[e.type] || '#444';
-  const fg = prefersLightText(color) ? '#fff' : '#111';
-  const first = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
-  const [Y, M, D] = e.date.split("-");
-  const second = `${(e.type ? e.type.charAt(0).toUpperCase() : "?")} | ${M}.${D}.${Y}`;
-  return `
-    <div class="evt-full" style="background:${color}; color:${fg}; border-color:${fg==='#fff'?'rgba(255,255,255,.18)':'rgba(0,0,0,.12)'}">
-      <div>
-        <div class="evt-title">${first}</div>
-        <div class="evt-meta">${second}</div>
-        ${e.notes ? `<p class="evt-notes">${escapeHtml(e.notes)}</p>` : ``}
-        ${e.url ? `<p><a href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open link</a></p>` : ``}
-      </div>
-      <div class="evt-actions">
-        <button class="btn-del" data-id="${e.id}">Delete</button>
-      </div>
-    </div>
-  `;
-}
-
+  // Drawer (two-line format)
   function fullEventHTML(e){
     const color = COLOR()[e.type] || '#444';
     const fg = prefersLightText(color) ? '#fff' : '#111';
-    const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+    const first = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
+    const [Y, M, D] = e.date.split("-");
+    const second = `${(e.type ? e.type.charAt(0).toUpperCase() : "?")} | ${M}.${D}.${Y}`;
     return `
       <div class="evt-full" style="background:${color}; color:${fg}; border-color:${fg==='#fff'?'rgba(255,255,255,.18)':'rgba(0,0,0,.12)'}">
         <div>
-          <div class="evt-title">${text}</div>
-          <div class="evt-meta">
-            <span><strong>Date:</strong> ${e.date}</span>
-            <span><strong>Type:</strong> ${e.type}</span>
-            ${e.location ? `<span><strong>Location:</strong> ${escapeHtml(e.location)}</span>` : ``}
-          </div>
+          <div class="evt-title">${first}</div>
+          <div class="evt-meta">${second}</div>
           ${e.notes ? `<p class="evt-notes">${escapeHtml(e.notes)}</p>` : ``}
           ${e.url ? `<p><a href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open link</a></p>` : ``}
         </div>
@@ -192,7 +166,6 @@ function fullEventHTML(e){
     `;
   }
 
-  // Delete
   drawerBody.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".btn-del");
     if (!btn) return;
