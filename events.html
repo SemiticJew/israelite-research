@@ -5,32 +5,34 @@
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <title>Events — Semitic Jew</title>
   <link href="/israelite-research/styles.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Fonts: match site (Roboto body), serif headings -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Spectral:wght@600;700&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
-      --ink:#0b2340; --muted:#6b7280; --blue:#054A91;
-      --brand2:#3E7CB1; --brand3:#81A4CD; --accent:#F17300;
-      --card:#ffffff; --border:#e6ebf2;
+      --ink:#0b2340; --muted:#6b7280;
+      --blue:#054A91; --brand2:#3E7CB1; --brand3:#81A4CD;
+      --accent:#F17300; --card:#ffffff; --border:#e6ebf2;
 
-      /* Event type colors */
-      --evt-xspace:#000000;   /* X Spaces */
-      --evt-youtube:#808080;  /* YouTube (gray) */
-      --evt-discord:#5865f2;  /* Discord */
-      --evt-sabbath:#8B0000;  /* Sabbath (dark red) */
-      --evt-newmoon:#054A91;  /* New Moon (brand blue) */
-      --evt-feast:#F17300;    /* Feast Days (gold) */
+      /* Event type colors (HEX) */
+      --evt-xspace:#000000;    /* X Space */
+      --evt-youtube:#808080;   /* YouTube (gray) */
+      --evt-discord:#5865f2;   /* Discord */
+      --evt-sabbath:#8B0000;   /* Sabbath */
+      --evt-newmoon:#054A91;   /* New Moon */
+      --evt-feast:#F17300;     /* Feast Day */
     }
 
     /* Page scaffold */
+    body{ font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
     .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
     .events-page main{padding:24px 0 48px}
-    .events-title{margin:0 0 12px;font-size:2rem;font-weight:800;color:var(--ink)}
+    .events-title{margin:0 0 12px;font:700 2rem/1.2 "Spectral", serif;color:var(--ink)}
 
     /* Controls */
     .calendar-bar{
-      display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
-      margin:10px 0 18px;font-family:'Spectral',serif;
+      display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:10px 0 18px;
     }
     .calendar-bar .spacer{flex:1}
     .calendar-bar .btn,
@@ -44,10 +46,9 @@
     .calendar-bar .btn.primary:hover{background:var(--brand3)}
     .calendar-bar select{padding-right:2rem}
 
-    /* Calendar */
+    /* Calendar region */
     .calendar-wrap{
       border:1px solid var(--border);border-radius:14px;background:var(--card);padding:14px;
-      font-family:'Spectral',serif;
     }
     .calendar-grid{
       display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:10px;
@@ -57,9 +58,10 @@
     @media (max-width:720px){ .calendar-grid{grid-template-columns:repeat(7,1fr)} }
 
     .dow{
-      text-align:center;font-weight:700;color:var(--ink);padding:8px 0 4px;
-      border-bottom:1px solid var(--border);user-select:none;
+      text-align:center;font:700 1rem/1 "Spectral", serif;color:var(--ink);
+      padding:8px 0 4px;border-bottom:1px solid var(--border);user-select:none;
     }
+
     .day{
       border:1px solid var(--border);border-radius:12px;padding:10px;min-height:140px;
       display:flex;flex-direction:column;gap:8px;background:#fff;cursor:pointer;
@@ -67,48 +69,48 @@
     }
     .day:focus,.day:hover{border-color:#d7dfeb;box-shadow:0 2px 10px rgba(0,0,0,.04)}
     .day.muted{opacity:.55}
-    .date-badge{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:var(--ink)}
+    .date-badge{display:flex;align-items:center;justify-content:space-between;color:var(--ink);font-weight:700}
     .date-badge .today{padding:.2rem .5rem;border-radius:999px;font-size:.75rem;background:var(--brand2);color:#fff}
 
-    /* Cell previews: show up to 2 chips + “+N more” */
+    /* In-cell event chips (full color, white text) */
     .events{display:flex;flex-direction:column;gap:6px;margin-top:2px}
-
-    /* Base chip */
     .chip{
       display:flex;align-items:center;gap:8px;
-      padding:.4rem .6rem;border:1px solid var(--border);
-      background:#fcfdff; color:#111;
-      font-size:.88rem; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      /* rounded by default; can be adjusted per type */
-      border-radius:12px;
+      padding:.45rem .6rem;border-radius:12px;border:1px solid transparent;
+      color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
     }
-    .chip .time{font-weight:700;opacity:.95}
-
-    /* Chip colors + optional shapes */
-    .chip[data-type="xspace"]  { background:var(--evt-xspace);  color:#fff; border-color:rgba(255,255,255,.18); border-radius:8px; }
-    .chip[data-type="youtube"] { background:var(--evt-youtube); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
-    .chip[data-type="discord"] { background:var(--evt-discord); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
-    .chip[data-type="sabbath"] { background:var(--evt-sabbath); color:#fff; border-color:rgba(255,255,255,.18); border-radius:6px;  }
-    .chip[data-type="newmoon"] { background:var(--evt-newmoon); color:#fff; border-color:rgba(255,255,255,.18); border-radius:12px; }
-    .chip[data-type="feast"]   { background:var(--evt-feast);   color:#111; border-color:rgba(0,0,0,.08);    border-radius:14px; }
+    .chip[data-type="xspace"]  { background:var(--evt-xspace) }
+    .chip[data-type="youtube"] { background:var(--evt-youtube) }
+    .chip[data-type="discord"] { background:var(--evt-discord) }
+    .chip[data-type="sabbath"] { background:var(--evt-sabbath) }
+    .chip[data-type="newmoon"] { background:var(--evt-newmoon) }
+    .chip[data-type="feast"]   { background:var(--evt-feast); color:#111; font-weight:700 } /* good contrast on gold */
 
     .more-link{font-size:.85rem;color:var(--blue);text-decoration:underline;width:max-content}
 
-    /* Drawer (full event details — not squeezed) */
-    .event-drawer{ margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden }
-    .drawer-head{ display:flex;align-items:center;justify-content:space-between;gap:12px; padding:12px 14px;border-bottom:1px solid var(--border) }
-    .drawer-title{ margin:0;font-weight:800;color:var(--ink) }
-    .drawer-close{ border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer }
-    .drawer-body{ padding:12px 14px;display:grid;gap:10px }
-
+    /* Drawer (full event list + delete actions) */
+    .event-drawer{margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff;overflow:hidden}
+    .drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border)}
+    .drawer-title{margin:0;font:700 1.2rem/1.1 "Spectral", serif;color:var(--ink)}
+    .drawer-close{border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer}
+    .drawer-body{padding:12px 14px;display:grid;gap:10px}
     .evt-full{
       display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px;
-      /* mirror chip background and color via inline style from JS */
     }
-    .evt-title{font-weight:800}
-    .evt-meta{display:flex;gap:12px;flex-wrap:wrap}
-    .evt-actions{margin-left:auto}
-    .evt-actions a{color:#fff;text-decoration:underline}
+    .evt-title{font:700 1rem/1.2 "Spectral", serif}
+    .evt-meta{display:flex;gap:12px;flex-wrap:wrap;font-weight:500}
+    .evt-actions{margin-left:auto;display:flex;gap:8px}
+    .btn-del{border:1px solid #e11d48;background:#fff;color:#e11d48;border-radius:10px;padding:.35rem .6rem;cursor:pointer}
+    .btn-del:hover{background:#fff0f3}
+
+    /* Key underneath calendar (improved) */
+    .legend{
+      margin-top:14px;border:1px dashed var(--border);border-radius:12px;padding:10px 12px;background:#fff;
+      display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+    }
+    .legend h3{margin:0 8px 0 0;font:700 1rem/1.1 "Spectral", serif;color:var(--ink)}
+    .legend .item{display:flex;align-items:center;gap:8px}
+    .legend .sw{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.12)}
   </style>
 </head>
 <body class="events-page" data-page="events">
@@ -171,22 +173,15 @@
       <select id="monthSelect" aria-label="Select Month"></select>
       <select id="daySelect" aria-label="Select Day"></select>
       <select id="yearSelect" aria-label="Select Year"></select>
+
+      <button id="addEventBtn" class="btn" aria-label="Add Event">+ Add Event</button>
     </div>
 
     <section class="calendar-wrap">
       <div id="calendarDow" class="calendar-grid" aria-hidden="true"></div>
       <div id="calendarGrid" class="calendar-grid" aria-live="polite"></div>
 
-      <div class="legend" aria-label="Event Types Legend">
-        <div class="item xspace"><span class="swatch" style="background:var(--evt-xspace)"></span><span>X Space (#000000)</span></div>
-        <div class="item youtube"><span class="swatch" style="background:var(--evt-youtube)"></span><span>YouTube Live (Gray)</span></div>
-        <div class="item discord"><span class="swatch" style="background:var(--evt-discord)"></span><span>Discord Live (#5865f2)</span></div>
-        <div class="item sabbath"><span class="swatch" style="background:var(--evt-sabbath)"></span><span>Sabbath (#8B0000)</span></div>
-        <div class="item newmoon"><span class="swatch" style="background:var(--evt-newmoon)"></span><span>New Moon (#054A91)</span></div>
-        <div class="item feast"><span class="swatch" style="background:var(--evt-feast)"></span><span>Feast Days (#F17300)</span></div>
-      </div>
-
-      <!-- Spacious drawer for full event details -->
+      <!-- Drawer for full event list + delete buttons -->
       <aside id="eventDrawer" class="event-drawer" hidden>
         <div class="drawer-head">
           <h2 class="drawer-title" id="drawerTitle">Events</h2>
@@ -195,6 +190,17 @@
         <div class="drawer-body" id="drawerBody"></div>
       </aside>
     </section>
+
+    <!-- Improved key BELOW the calendar region -->
+    <div class="legend" id="legend">
+      <h3>Key</h3>
+      <div class="item"><span class="sw" style="background:var(--evt-xspace)"></span> X Space</div>
+      <div class="item"><span class="sw" style="background:var(--evt-youtube)"></span> YouTube Live</div>
+      <div class="item"><span class="sw" style="background:var(--evt-discord)"></span> Discord Live</div>
+      <div class="item"><span class="sw" style="background:var(--evt-sabbath)"></span> Sabbath</div>
+      <div class="item"><span class="sw" style="background:var(--evt-newmoon)"></span> New Moon</div>
+      <div class="item"><span class="sw" style="background:var(--evt-feast)"></span> Feast Days</div>
+    </div>
   </main>
 
   <!-- ===== Universal Footer (inline) ===== -->
@@ -204,18 +210,16 @@
         #site-footer .site-footer{background:#fff;color:var(--ink);border-top:1px solid var(--border)}
         #site-footer .footer-inner{max-width:1200px;margin:0 auto;padding:28px 16px 18px;display:grid;gap:28px;grid-template-columns:1.2fr .8fr .8fr}
         @media (max-width:960px){#site-footer .footer-inner{grid-template-columns:1fr}}
-        #site-footer .footer-brand h3{margin:0 0 6px;font-size:1.15rem;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+        #site-footer .footer-brand h3{margin:0 0 6px;font:800 1.15rem/1.2 "Spectral", serif;color:var(--ink);display:flex;align-items:center;gap:8px}
         #site-footer .footer-brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.05)}
         #site-footer .footer-tagline{margin:0 0 12px;color:#F17300;max-width:46ch;text-align:left}
         #site-footer .footer-social{display:flex;gap:10px;margin:10px 0 14px}
-        #site-footer .footer-social .icon{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.05)}
         #site-footer .footer-newsletter .newsletter-row{display:flex;gap:8px;align-items:center}
         #site-footer .footer-newsletter input[type="email"]{flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink)}
         #site-footer .footer-newsletter button{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);cursor:pointer}
         #site-footer .newsletter-note{display:block;margin-top:6px;color:#F17300;text-align:left}
         #site-footer .footer-heading{margin:0 0 8px;font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
         #site-footer .footer-nav{list-style:none;padding:0;margin:0;display:grid;gap:6px}
-        #site-footer .footer-nav a{color:var(--ink);text-decoration:none;padding:6px 8px;border-radius:8px;border:1px solid transparent}
         #site-footer .footer-bottom{max-width:1200px;margin:0 auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);border-top:1px solid var(--border)}
         @media (max-width:720px){#site-footer .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}}
         #site-footer .footer-bottom p{color:#F17300}
