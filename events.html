@@ -21,13 +21,13 @@
 
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
   .cal-dow{background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px;padding:.4rem 0;text-align:center;font-weight:600;color:#555}
-  .cal-cell{min-height:110px;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
+  .cal-cell{height:110px;overflow:hidden;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
   .cal-cell.is-today{outline:2px solid var(--accent,#F17300)}
   .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
   .cal-empty{opacity:.35}
 
   /* Event chips (now dot + TIME — Title) */
-  .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  .evt-chip{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     display:flex;align-items:center;gap:.45rem;}
   .pill-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;display:inline-block}
 
