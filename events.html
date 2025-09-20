@@ -205,9 +205,6 @@
   // ===== DOM Refs =====
   const grid = document.getElementById('calGrid');
   const titleEl = document.getElementById('calTitle');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const todayBtn = document.getElementById('todayBtn');
   const addEventBtn = document.getElementById('addEventBtn');
 
   const selMonth = document.getElementById('selMonth');
@@ -436,9 +433,6 @@
   }
 
   // ===== Events =====
-  prevBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()-1); render(); });
-  nextBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()+1); render(); });
-  todayBtn.addEventListener('click', ()=>{ current = new Date(); render(); });
   addEventBtn.addEventListener('click', ()=> openAdd(fmtDate(new Date())));
 
   selMonth.addEventListener('change', jumpToSelected);
