@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const drawerBody = document.getElementById("drawerBody");
   const drawerClose = document.getElementById("drawerClose");
 
-  // Modal
+  // Modal (Date + Time + Label; Intel = Notes only)
   const modal = document.getElementById("addEventModal");
   const modalClose = document.getElementById("modalClose");
   const modalCancel = document.getElementById("modalCancel");
@@ -138,13 +138,13 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Calendar pills (restored to one line: HHmm | Title)
+  // Calendar pills: NOT bold, one line: HHmm | Title
   function chipHTML(e){
     const text = `${hhmm(e.time)} | ${escapeHtml(e.label)}`;
     return `<div class="chip" data-type="${e.type}" title="${escapeHtml(text)}">${text}</div>`;
   }
 
-  // Drawer (two-line format)
+  // Drawer: two-line format (HHmm | Title) + (TypeInitial | MM.DD.YYYY)
   function fullEventHTML(e){
     const color = COLOR()[e.type] || '#444';
     const fg = prefersLightText(color) ? '#fff' : '#111';
@@ -200,22 +200,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
-  // Modal submit
+  // Modal submit (type defaults to xspace; url/location omitted)
   addForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(addForm);
     const date = String(fd.get("date")||"").trim();
     const time = String(fd.get("time")||"").trim(); // 24h HH:MM
     const label = String(fd.get("label")||"").trim();
-    const type = String(fd.get("type")||"").trim();
-    const url = String(fd.get("url")||"").trim();
-    const location = String(fd.get("location")||"").trim();
     const notes = String(fd.get("notes")||"").trim();
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return alert("Please enter a valid date (YYYY-MM-DD).");
     if (!label) return alert("Please enter an event name.");
-    if (!type) return alert("Please choose a type.");
     if (time && !/^([01]\d|2[0-3]):([0-5]\d)$/.test(time)) return alert("Use 24-hour time, e.g., 18:00.");
+
+    const type = "xspace"; // default type since modal omits picker
+    const url = "";        // optional fields omitted in modal
+    const location = "";
 
     EVENTS.push({ id: uid(), date, time, label, type, url, location, notes });
     saveEvents();
