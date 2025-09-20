@@ -98,6 +98,10 @@
   .dd-time{font-weight:700}
   .dd-title-txt{font-weight:700}
   .dd-notes{color:#555;font-size:.9rem;white-space:pre-wrap}
+  .cal-dow{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .cal-dow .dow-main{font-weight:700;font-size:.95rem;color:#333}
+  .cal-dow .dow-he{font-weight:500;font-size:.8rem;color:#555;margin-top:.15rem}
+  .cal-dow .dow-tr{font-weight:400;font-size:.72rem;color:#777}
 </style>
 </head>
 <body class="events-page">
@@ -119,8 +123,8 @@
     </div>
 
     <div class="cal-grid" id="dowRow">
-      <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
-      <div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
+      <div class="cal-dow"><div class="dow-main">Sun</div><div class="dow-he">Yom Rishon</div><div class="dow-tr">"first day"</div></div><div class="cal-dow"><div class="dow-main">Mon</div><div class="dow-he">Yom Sheni</div><div class="dow-tr">"second day"</div></div><div class="cal-dow"><div class="dow-main">Tue</div><div class="dow-he">Yom Shlishi</div><div class="dow-tr">"third day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Wed</div><div class="dow-he">Yom Revi’i</div><div class="dow-tr">"fourth day"</div></div><div class="cal-dow"><div class="dow-main">Thu</div><div class="dow-he">Yom Chamishi</div><div class="dow-tr">"fifth day"</div></div><div class="cal-dow"><div class="dow-main">Fri</div><div class="dow-he">Yom Shishi</div><div class="dow-tr">"sixth day"</div></div><div class="cal-dow"><div class="dow-main">Sat</div><div class="dow-he">Yom Shabbat</div><div class="dow-tr">"Sabbath"</div></div>
     </div>
 
     <div aria-live="polite" class="cal-grid" id="calGrid"></div>
