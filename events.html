@@ -94,14 +94,28 @@
       <div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
     </div>
     <div aria-live="polite" class="cal-grid" id="calGrid"></div>
-    <div class="cal-legend">
-  <span class="dot"></span> Event
-  <span class="dot xspace"></span> X Space
-  <span class="dot youtube"></span> YouTube Live
-  <span class="dot discord"></span> Discord Live
-  <span class="dot sabbath"></span> Sabbath
-  <span class="dot newmoon"></span> New Moon
-  <span class="dot feast"></span> Feast Days
+    <div class="cal-legend" id="calLegend">
+  <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events">
+    <span class="dot" style="background:#054A91"></span> Event
+  </button>
+  <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space">
+    <span class="dot xspace"></span> X Space
+  </button>
+  <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live">
+    <span class="dot youtube"></span> YouTube Live
+  </button>
+  <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live">
+    <span class="dot discord"></span> Discord Live
+  </button>
+  <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath">
+    <span class="dot sabbath"></span> Sabbath
+  </button>
+  <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon">
+    <span class="dot newmoon"></span> New Moon
+  </button>
+  <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days">
+    <span class="dot feast"></span> Feast Days
+  </button>
 </div>
 </main>
 
@@ -132,6 +146,18 @@
         <label for="evtTitle">Title</label>
         <input id="evtTitle" placeholder="e.g., Bible Study" type="text"/>
       </div>
+<div>
+  <label for="evtType">Type <span class="muted">(optional)</span></label>
+  <select id="evtType">
+    <option value="generic" selected>Generic</option>
+    <option value="xspace">X Space</option>
+    <option value="youtube">YouTube Live</option>
+    <option value="discord">Discord Live</option>
+    <option value="sabbath">Sabbath</option>
+    <option value="newmoon">New Moon</option>
+    <option value="feast">Feast Days</option>
+  </select>
+</div>
 
       <div>
         <label for="evtDesc">Description <span class="muted">(optional)</span></label>
@@ -155,6 +181,7 @@
 <!-- Minimal calendar logic (localStorage-based) -->
 <script>
 (function(){
+  // ===== DOM Refs =====
   const grid = document.getElementById('calGrid');
   const titleEl = document.getElementById('calTitle');
   const prevBtn = document.getElementById('prevBtn');
@@ -174,6 +201,12 @@
   const evtDesc = document.getElementById('evtDesc');
   const modalTitle = document.getElementById('modalTitle');
 
+  // === 4A. Legend/type refs + enabled set ===
+  const legend = document.getElementById('calLegend');
+  const evtType = document.getElementById('evtType'); // <select> you added
+  const enabledTypes = new Set(['generic','xspace','youtube','discord','sabbath','newmoon','feast']);
+
+  // ===== State / Storage =====
   const STORAGE_KEY = 'ir_events_v1';
   let events = loadEvents();
   let current = new Date();
@@ -187,6 +220,7 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
   }
 
+  // ===== Utils =====
   function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
   function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
   function pad(n){ return String(n).padStart(2,'0'); }
@@ -194,6 +228,7 @@
     ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
     : d; }
 
+  // ===== Render =====
   function render(){
     const first = startOfMonth(current);
     const last  = endOfMonth(current);
@@ -203,15 +238,20 @@
     titleEl.textContent = first.toLocaleString(undefined, {month:'long', year:'numeric'});
 
     grid.innerHTML = '';
+
+    // leading blanks
     for(let i=0;i<startDow;i++){
       const cell = document.createElement('div');
       cell.className = 'cal-cell cal-empty';
       grid.appendChild(cell);
     }
+
     const todayStr = fmtDate(new Date());
+
     for(let day=1; day<=totalDays; day++){
       const cell = document.createElement('div');
       cell.className = 'cal-cell';
+
       const dateObj = new Date(current.getFullYear(), current.getMonth(), day);
       const dateStr = fmtDate(dateObj);
       if(dateStr === todayStr) cell.classList.add('is-today');
@@ -221,7 +261,9 @@
       dateEl.textContent = day;
       cell.appendChild(dateEl);
 
-      const dayEvents = events.filter(e => e.date === dateStr);
+      // === 4B. Respect enabledTypes filter ===
+      const dayEvents = events.filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'));
+
       dayEvents.slice(0,3).forEach(e => {
         const chip = document.createElement('div');
         chip.className = 'evt-chip';
@@ -230,6 +272,7 @@
         chip.addEventListener('click', (ev) => { ev.preventDefault(); openEdit(e); });
         cell.appendChild(chip);
       });
+
       if(dayEvents.length > 3){
         const more = document.createElement('div');
         more.className = 'evt-chip';
@@ -237,6 +280,7 @@
         more.addEventListener('click', (ev)=>{ ev.preventDefault(); openAdd(dateStr); });
         cell.appendChild(more);
       }
+
       cell.addEventListener('click', (ev)=>{
         if(ev.target.classList.contains('evt-chip')) return;
         openAdd(dateStr);
@@ -246,6 +290,7 @@
     }
   }
 
+  // ===== Modal logic =====
   function openAdd(dateStr){
     editingId = null;
     modalTitle.textContent = 'Add Event';
@@ -253,6 +298,7 @@
     evtTime.value = '';
     evtTitle.value = '';
     evtDesc.value = '';
+    evtType.value = 'generic'; // 4D default type
     deleteEventBtn.style.display = 'none';
     modal.classList.add('open');
     setTimeout(()=>evtTitle.focus(), 0);
@@ -265,6 +311,7 @@
     evtTime.value = e.time || '';
     evtTitle.value = e.title || '';
     evtDesc.value = e.desc || '';
+    evtType.value = e.type || 'generic'; // 4D load type
     deleteEventBtn.style.display = 'inline-block';
     modal.classList.add('open');
     setTimeout(()=>evtTitle.focus(), 0);
@@ -277,14 +324,16 @@
     const title = evtTitle.value.trim();
     const time = evtTime.value.trim();
     const desc = evtDesc.value.trim();
+    const type = evtType.value || 'generic'; // 4D include type
+
     if(!date || !title){ alert('Please provide a date and title.'); return; }
 
     if(editingId){
       const idx = events.findIndex(x => x.id === editingId);
-      if(idx >= 0){ events[idx] = { ...events[idx], date, title, time, desc }; }
+      if(idx >= 0){ events[idx] = { ...events[idx], date, title, time, desc, type }; }
     }else{
       const id = 'evt_' + Math.random().toString(36).slice(2,9);
-      events.push({ id, date, title, time, desc });
+      events.push({ id, date, title, time, desc, type });
     }
     saveEvents(); close(); render();
   }
@@ -295,6 +344,7 @@
     saveEvents(); close(); render();
   }
 
+  // ===== Events =====
   prevBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()-1); render(); });
   nextBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()+1); render(); });
   todayBtn.addEventListener('click', ()=>{ current = new Date(); render(); });
@@ -306,6 +356,23 @@
   saveEvent.addEventListener('click', onSave);
   modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
 
+  // === 4C. Legend toggles ===
+  legend.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-type]');
+    if(!btn) return;
+    const t = btn.getAttribute('data-type');
+    const pressed = btn.getAttribute('aria-pressed') === 'true';
+    if(pressed){
+      btn.setAttribute('aria-pressed','false');
+      enabledTypes.delete(t);
+    } else {
+      btn.setAttribute('aria-pressed','true');
+      enabledTypes.add(t);
+    }
+    render();
+  });
+
+  // Initial paint
   render();
 })();
 </script>
