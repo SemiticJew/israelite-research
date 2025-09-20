@@ -106,12 +106,12 @@
 
     /* Modal (Add Event) */
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
-    .modal{background:#fff;border:1px solid var(--border);border-radius:14px;max-width:520px;width:92%;box-shadow:0 20px 50px rgba(0,0,0,.15);overflow:hidden}
+    .modal{background:#fff;border:1px solid var(--border);border-radius:14px;max-width:680px;width:92%;box-shadow:0 20px 50px rgba(0,0,0,.15);overflow:hidden}
     .modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
     .modal-title{margin:0;font:700 1.1rem/1.1 "Spectral", serif;color:var(--ink)}
     .modal-body{padding:14px;display:grid;gap:10px}
     .modal-row{display:grid;gap:10px}
-    .modal-row.grid-3{grid-template-columns:1fr 1fr 1.5fr}
+    .modal-row.grid-3{grid-template-columns:repeat(3,minmax(180px,1fr))}
 
     .modal-row label{font-weight:600}
     .modal-row input,.modal-row textarea{
@@ -287,5 +287,6 @@
   </div>
 
   <script src="/israelite-research/js/calendar.js"></script>
+<style>@media (max-width: 640px){.modal-row.grid-3{grid-template-columns:1fr}}</style>
 </body>
 </html>
