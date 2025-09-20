@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!label) return alert("Please enter an event name.");
     if (time && !/^([01]\d|2[0-3]):([0-5]\d)$/.test(time)) return alert("Use 24-hour time, e.g., 18:00.");
 
-    const type = "xspace"; // default type since modal omits picker
+    const type = String(fd.get("type")||"xspace").trim(); // default type since modal omits picker
     const url = "";        // optional fields omitted in modal
     const location = "";
 
