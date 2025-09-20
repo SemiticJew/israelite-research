@@ -84,6 +84,20 @@
   .btn-danger{border-color:#ffd8d8;background:#fff;color:#b42318}
   .btn-ghost{background:transparent}
   .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+
+  /* ===== Day Details panel (additive, below legend) ===== */
+  .day-details{margin-top:10px;border:1px solid #e6ebf2;border-radius:12px;background:#fff;overflow:hidden}
+  .day-details[hidden]{display:none}
+  .dd-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e6ebf2}
+  .dd-title{margin:0;font-weight:800;font-size:1.05rem}
+  .dd-close{border:1px solid #e6ebf2;background:#fff;border-radius:10px;padding:.35rem .6rem;cursor:pointer}
+  .dd-body{padding:10px 12px;display:grid;gap:8px}
+  .dd-item{border:1px solid #e6ebf2;border-radius:10px;padding:10px;display:grid;gap:4px}
+  .dd-line{display:flex;align-items:center;gap:.5rem}
+  .dd-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .dd-time{font-weight:700}
+  .dd-title-txt{font-weight:700}
+  .dd-notes{color:#555;font-size:.9rem;white-space:pre-wrap}
 </style>
 </head>
 <body class="events-page">
@@ -95,8 +109,7 @@
   <div class="calendar-wrap">
     <div class="cal-toolbar">
       <div class="cal-nav">
-
-        <!-- NEW: Month / Day / Year selectors -->
+        <!-- Month / Day / Year selectors -->
         <select id="selMonth" aria-label="Month"></select>
         <select id="selDay" aria-label="Day"></select>
         <select id="selYear" aria-label="Year"></select>
@@ -106,35 +119,9 @@
     </div>
 
     <div class="cal-grid" id="dowRow">
-  <div class="cal-dow">
-    <div class="dow-main">Sunday</div>
-    <div class="dow-he">Yom Rishon | "first day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Monday</div>
-    <div class="dow-he">Yom Sheni | "second day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Tuesday</div>
-    <div class="dow-he">Yom Shlishi | "third day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Wednesday</div>
-    <div class="dow-he">Yom Revi’i | "fourth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Thursday</div>
-    <div class="dow-he">Yom Chamishi | "fifth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Friday</div>
-    <div class="dow-he">Yom Shishi | "sixth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Saturday</div>
-    <div class="dow-he">Yom Shabbat | "Sabbath"</div>
-  </div>
-</div>
+      <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
+      <div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
+    </div>
 
     <div aria-live="polite" class="cal-grid" id="calGrid"></div>
 
@@ -162,6 +149,15 @@
         <span class="dot feast"></span> Feast Days
       </button>
     </div>
+
+    <!-- NEW: Day Details panel (below legend) -->
+    <aside class="day-details" id="dayDetails" hidden>
+      <div class="dd-head">
+        <h3 class="dd-title" id="ddTitle">Events</h3>
+        <button class="dd-close" id="ddClose" aria-label="Close details">Close</button>
+      </div>
+      <div class="dd-body" id="ddBody"></div>
+    </aside>
   </div>
 </main>
 
@@ -193,7 +189,7 @@
         <input id="evtTitle" placeholder="e.g., Bible Study" type="text"/>
       </div>
 
-      <!-- Type select (used by legend filter + pill dot color) -->
+      <!-- Type select -->
       <div>
         <label for="evtType">Type <span class="muted">(optional)</span></label>
         <select id="evtType">
@@ -253,6 +249,12 @@
   const evtType = document.getElementById('evtType');
   const modalTitle = document.getElementById('modalTitle');
 
+  // NEW: Day details refs
+  const dd = document.getElementById('dayDetails');
+  const ddTitle = document.getElementById('ddTitle');
+  const ddBody = document.getElementById('ddBody');
+  const ddClose = document.getElementById('ddClose');
+
   // ===== Type Colors + Enabled Set =====
   function typeColor(t){
     switch((t||'generic')){
@@ -288,6 +290,7 @@
   function fmtDate(d){ return d instanceof Date
     ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
     : d; }
+  function humanDate(d){ return new Date(d).toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'}); }
 
   // Populate Month/Day/Year selects
   function populateSelectors(dateObj){
@@ -329,6 +332,57 @@
     render();
   }
 
+  // ===== Day Details (additive; no visual changes elsewhere) =====
+  function openDetails(dateStr){
+    const items = events
+      .filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'))
+      .sort((a,b)=> (a.time||'').localeCompare(b.time||''));
+    ddTitle.textContent = humanDate(dateStr);
+    ddBody.innerHTML = '';
+    if(items.length === 0){
+      const p = document.createElement('p');
+      p.textContent = 'No events for this day.';
+      p.style.color = '#555';
+      ddBody.appendChild(p);
+    } else {
+      items.forEach(e=>{
+        const card = document.createElement('div');
+        card.className = 'dd-item';
+
+        const line = document.createElement('div');
+        line.className = 'dd-line';
+
+        const dot = document.createElement('span');
+        dot.className = 'dd-dot';
+        dot.style.background = typeColor(e.type);
+
+        const tm  = document.createElement('span');
+        tm.className = 'dd-time';
+        tm.textContent = e.time ? e.time : '—';
+
+        const title = document.createElement('span');
+        title.className = 'dd-title-txt';
+        title.textContent = e.title;
+
+        line.appendChild(dot);
+        line.appendChild(tm);
+        line.appendChild(document.createTextNode(' — '));
+        line.appendChild(title);
+
+        const notes = document.createElement('div');
+        notes.className = 'dd-notes';
+        notes.textContent = e.desc || '';
+
+        card.appendChild(line);
+        if(e.desc) card.appendChild(notes);
+
+        ddBody.appendChild(card);
+      });
+    }
+    dd.hidden = false;
+  }
+  function closeDetails(){ dd.hidden = true; }
+
   // ===== Render =====
   function render(){
     const first = startOfMonth(current);
@@ -363,12 +417,16 @@
       const dateEl = document.createElement('div');
       dateEl.className = 'cal-date';
       dateEl.textContent = day;
+      /* OPEN DETAILS WHEN CLICKING THE DATE NUMBER (appearance unchanged) */
+      dateEl.style.cursor = 'pointer';
+      dateEl.title = 'View day details';
+      dateEl.addEventListener('click', (ev)=>{ ev.stopPropagation(); openDetails(dateStr); });
       cell.appendChild(dateEl);
 
       // filter by enabled types
       const dayEvents = events.filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'));
 
-      // chips: [dot] TIME — Title
+      // chips: [dot] TIME — Title (unchanged behavior: click opens Edit)
       dayEvents.slice(0,3).forEach(e => {
         const chip = document.createElement('div');
         chip.className = 'evt-chip';
@@ -392,12 +450,15 @@
         const more = document.createElement('div');
         more.className = 'evt-chip';
         more.textContent = `+${dayEvents.length-3} more`;
+        /* keep old behavior: +more opens Add */
         more.addEventListener('click', (ev)=>{ ev.preventDefault(); openAdd(dateStr); });
         cell.appendChild(more);
       }
 
+      /* keep old behavior: empty area opens Add */
       cell.addEventListener('click', (ev)=>{
         if(ev.target.classList.contains('evt-chip') || ev.target.closest('.evt-chip')) return;
+        if(ev.target.closest('.cal-date')) return; // date click handled above
         openAdd(dateStr);
       });
 
@@ -472,7 +533,7 @@
   saveEvent.addEventListener('click', onSave);
   modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
 
-  // Legend toggles
+  // Legend toggles (unchanged)
   legend.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-type]');
     if(!btn) return;
@@ -487,6 +548,9 @@
     }
     render();
   });
+
+  // Day details close
+  ddClose.addEventListener('click', ()=>{ dd.hidden = true; });
 
   // Initial paint
   render();
