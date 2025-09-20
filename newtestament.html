@@ -3,98 +3,95 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>New Testament — Periodic Table</title>
+<title>New Testament</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
   :root{
-    --ink:#0b2340; --accent:#F17300; --brand:#054A91; --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
-    --testimonies:#F17300; --acts:#3E7CB1; --paul:#054A91; --israel:#81A4CD; --vision:#000000;
+    --ink:#0b2340; --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
+    --test:#F17300; --acts:#3E7CB1; --paul:#054A91; --israel:#81A4CD; --vision:#000000;
   }
   body{background:#fbfdff;}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
-
   .page-header{padding:28px 0 8px; text-align:center}
   .page-title{margin:0;font-size:2.2rem;font-weight:800;color:var(--ink)}
   .page-sub{margin:8px auto 0; color:var(--muted); max-width:70ch}
 
-  /* Legend */
-  .legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0 22px}
-  .legend .chip{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:8px 10px;border:1px solid var(--sky);border-radius:999px;background:#fff;color:var(--ink);font-weight:700;font-size:.9rem;
+  /* Periodic-table columns scaffold */
+  .pt-wrap{margin:20px 0 18px; overflow:visible}
+  .pt-columns{
+    display:flex; gap:12px; align-items:flex-start; justify-content:center; flex-wrap:nowrap;
   }
-  .legend .dot{width:12px;height:12px;border-radius:50%}
-  .dot.test{background:var(--testimonies)}
-  .dot.acts{background:var(--acts)}
-  .dot.paul{background:var(--paul)}
-  .dot.israel{background:var(--israel)}
-  .dot.vision{background:var(--vision)}
+  .pt-col{display:grid; gap:12px}
+  /* Column widths keep tiles visually columnar on desktop, yet responsive */
+  .pt-col--narrow { width: 150px; }
+  .pt-col--wide   { width: 150px; } /* same width, just semantic */
 
-  /* Periodic table scaffold */
-  .ptable{display:grid;gap:14px;margin:20px 0 50px}
-  /* Each “period” row = grid with tiles; left label column is narrow */
-  .period{display:grid;grid-template-columns:80px 1fr;gap:10px;align-items:start}
-  .period-label{
-    align-self:stretch;
-    display:flex;align-items:center;justify-content:center;text-align:center;
-    font-weight:900;color:#fff;border-radius:12px;
-    background:linear-gradient(135deg,#0b2340,#2b4768);
-    border:1px solid #0e2744; box-shadow:0 1px 3px rgba(0,0,0,.08);
-    padding:10px;
-  }
-  .period-label small{display:block;color:#b9c6d8;font-weight:700;letter-spacing:.04em;margin-top:4px}
-  .row-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-    gap:12px;
-  }
-
-  /* Element (tile) */
-  .el{
+  /* Tile */
+  .pt-card{
     position:relative;
-    border-radius:14px;
-    border:1px solid var(--sky);
-    background:#fff;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    min-height:160px; padding:12px 10px 10px;
+    border-radius:12px; background:var(--white); border:1px solid var(--sky);
+    text-decoration:none; color:inherit;
     box-shadow:0 1px 3px rgba(0,0,0,.04);
-    padding:14px 12px;
-    text-decoration:none;color:inherit;
-    display:flex;flex-direction:column;gap:6px;min-height:140px;
     transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
   }
-  .el:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.09); border-color:#cfd9e6; background:#fff}
-  .el .badge{
-    position:absolute; top:8px; right:8px;
-    font-weight:900; font-size:.7rem; letter-spacing:.08em;
-    padding:4px 8px; border-radius:999px; color:#fff;
-    text-transform:uppercase;
-  }
-  .el .abbr{font-size:2rem; font-weight:900; line-height:1; letter-spacing:.02em; margin-top:8px; color:#fff}
-  .el .name{font-weight:800; color:#fff}
-  .el .era{font-size:.82rem;color:#f1f5f9;opacity:.9}
+  .pt-card:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.09); border-color:#cfd9e6}
 
-  /* Category color skins */
-  .el.test{ background:linear-gradient(180deg, rgba(241,115,0,.95), rgba(241,115,0,.85));
-            border-color:#ffdfc2; }
-  .el.test .badge{ background:#a64c00 }
-  .el.acts{ background:linear-gradient(180deg, rgba(62,124,177,.95), rgba(62,124,177,.85));
-            border-color:#cfe2f3; }
-  .el.acts .badge{ background:#275b84 }
-  .el.paul{ background:linear-gradient(180deg, rgba(5,74,145,.95), rgba(5,74,145,.85));
-            border-color:#c7d7eb; }
-  .el.paul .badge{ background:#063a70 }
-  .el.israel{ background:linear-gradient(180deg, rgba(129,164,205,.95), rgba(129,164,205,.85));
-              border-color:#dbe6f3; }
-  .el.israel .badge{ background:#6887a9 }
-  .el.vision{ background:linear-gradient(180deg, rgba(0,0,0,.95), rgba(0,0,0,.88));
-              border-color:#cfd3da; }
-  .el.vision .badge{ background:#111827 }
-
-  /* Tighter on small screens */
-  @media (max-width:520px){
-    .row-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
-    .el{min-height:130px}
-    .el .abbr{font-size:1.7rem}
+  /* Tile content */
+  .pt-era{
+    position:absolute; top:8px; right:10px;
+    font-size:.78rem; color:#324861; opacity:.85; font-weight:700;
   }
+  .pt-abbr{
+    margin-top:30px;
+    font-size:2.2rem; font-weight:900; letter-spacing:.02em; line-height:1; text-align:center; color:#0b2340;
+  }
+  .pt-abbr sup{font-size:.55em; position:relative; top:-.45em}
+  .pt-name{
+    margin-top:auto;
+    width:100%;
+    text-align:center;
+    font-size:.92rem; font-weight:800;
+    color:#163254;
+    border-top:1px solid var(--sky);
+    padding-top:8px;
+  }
+
+  /* Category skins (subtle tinted background + border accent) */
+  .pt-card.test   { background:linear-gradient(180deg, rgba(241,115,0,.06), rgba(241,115,0,.03)); border-color:#ffd9b9; }
+  .pt-card.acts   { background:linear-gradient(180deg, rgba(62,124,177,.07), rgba(62,124,177,.035)); border-color:#cfe1f2; }
+  .pt-card.paul   { background:linear-gradient(180deg, rgba(5,74,145,.07), rgba(5,74,145,.035)); border-color:#c6d7ea; }
+  .pt-card.israel { background:linear-gradient(180deg, rgba(129,164,205,.09), rgba(129,164,205,.04)); border-color:#dbe6f3; }
+  .pt-card.vision { background:linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.04));  border-color:#cfd3da; }
+
+  /* Mobile responsiveness: stack columns but keep vertical order within each group */
+  @media (max-width: 1020px){
+    .pt-columns{flex-wrap:wrap; justify-content:flex-start}
+    .pt-col{width:calc(50% - 8px)}
+  }
+  @media (max-width: 560px){
+    .pt-col{width:100%}
+    .pt-card{min-height:150px}
+    .pt-abbr{font-size:1.9rem}
+  }
+
+  /* Legend below the grid */
+  .legend{
+    margin:16px 0 48px;
+    display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+  }
+  .legend .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:8px 10px; border:1px solid var(--sky); border-radius:999px;
+    background:#fff; color:#0b2340; font-weight:800; font-size:.9rem;
+  }
+  .legend .dot{width:12px; height:12px; border-radius:50%}
+  .legend .dot.test{background:var(--test)}
+  .legend .dot.acts{background:var(--acts)}
+  .legend .dot.paul{background:var(--paul)}
+  .legend .dot.israel{background:var(--israel)}
+  .legend .dot.vision{background:var(--vision)}
 </style>
 </head>
 <body class="newtestament-page">
@@ -103,250 +100,180 @@
 <main class="container">
   <header class="page-header">
     <h1 class="page-title">New Testament</h1>
-    <p class="page-sub">A “periodic table” of the Apostolic Writings — grouped by Testimonies, History, Letters, and Vision.</p>
-    <div class="legend" aria-label="Categories">
-      <span class="chip"><span class="dot test"></span> Testimonies</span>
-      <span class="chip"><span class="dot acts"></span> Acts</span>
-      <span class="chip"><span class="dot paul"></span> Letters of Paul</span>
-      <span class="chip"><span class="dot israel"></span> Letters to Israel</span>
-      <span class="chip"><span class="dot vision"></span> Vision</span>
-    </div>
+    <p class="page-sub">A compact, periodic-style layout of the Apostolic Writings.</p>
   </header>
 
-  <div class="ptable">
-
-    <!-- A. Testimonies -->
-    <section class="period">
-      <div class="period-label">A<small>Testimonies</small></div>
-      <div class="row-grid">
-        <a class="el test" href="/israelite-research/newtestament/matthew.html" aria-label="Matthew">
-          <span class="badge">Israelite Testimonies of the Messiah</span>
-          <div class="abbr">Mt</div>
-          <div class="name">Matthew</div>
-          <div class="era">c. 60–80 CE</div>
+  <!-- Periodic-style columns -->
+  <section class="pt-wrap" aria-label="New Testament Books (periodic layout)">
+    <div class="pt-columns">
+      <!-- Column 1: 4 vertical (Testimonies) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card test" href="/israelite-research/newtestament/matthew.html" aria-label="Matthew">
+          <div class="pt-era">c. 60–80 CE</div>
+          <div class="pt-abbr">Mt</div>
+          <div class="pt-name">Matthew</div>
         </a>
-        <a class="el test" href="/israelite-research/newtestament/mark.html" aria-label="Mark">
-          <span class="badge">Israelite Testimonies of the Messiah</span>
-          <div class="abbr">Mk</div>
-          <div class="name">Mark</div>
-          <div class="era">c. 55–70 CE</div>
+        <a class="pt-card test" href="/israelite-research/newtestament/mark.html" aria-label="Mark">
+          <div class="pt-era">c. 55–70 CE</div>
+          <div class="pt-abbr">Mk</div>
+          <div class="pt-name">Mark</div>
         </a>
-        <a class="el test" href="/israelite-research/newtestament/luke.html" aria-label="Luke">
-          <span class="badge">Israelite Testimonies of the Messiah</span>
-          <div class="abbr">Lk</div>
-          <div class="name">Luke</div>
-          <div class="era">c. 60–90 CE</div>
+        <a class="pt-card test" href="/israelite-research/newtestament/luke.html" aria-label="Luke">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Lk</div>
+          <div class="pt-name">Luke</div>
         </a>
-        <a class="el test" href="/israelite-research/newtestament/john.html" aria-label="John">
-          <span class="badge">Israelite Testimonies of the Messiah</span>
-          <div class="abbr">Jn</div>
-          <div class="name">John</div>
-          <div class="era">c. 90–110 CE</div>
+        <a class="pt-card test" href="/israelite-research/newtestament/john.html" aria-label="John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr">Jn</div>
+          <div class="pt-name">John</div>
         </a>
       </div>
-    </section>
 
-    <!-- B. Acts -->
-    <section class="period">
-      <div class="period-label">B<small>Acts</small></div>
-      <div class="row-grid">
-        <a class="el acts" href="/israelite-research/newtestament/acts.html" aria-label="Acts">
-          <span class="badge">Israelite Congressional History</span>
-          <div class="abbr">Ac</div>
-          <div class="name">Acts</div>
-          <div class="era">c. 62–90 CE</div>
+      <!-- Column 2: 1 vertical (Acts) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card acts" href="/israelite-research/newtestament/acts.html" aria-label="Acts">
+          <div class="pt-era">c. 62–90 CE</div>
+          <div class="pt-abbr">Ac</div>
+          <div class="pt-name">Acts</div>
         </a>
       </div>
-    </section>
 
-    <!-- C. Romans – Galatians (Paul) -->
-    <section class="period">
-      <div class="period-label">C<small>Letters of Paul</small></div>
-      <div class="row-grid">
-        <a class="el paul" href="/israelite-research/newtestament/romans.html" aria-label="Romans">
-          <span class="badge">Letters to Scattered Israel</span>
-          <div class="abbr">Rom</div>
-          <div class="name">Romans</div>
-          <div class="era">c. 57 CE</div>
+      <!-- Column 3: 6 vertical (Paul: Rom → Col) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card paul" href="/israelite-research/newtestament/romans.html" aria-label="Romans">
+          <div class="pt-era">c. 57 CE</div>
+          <div class="pt-abbr">Rom</div>
+          <div class="pt-name">Romans</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/1-corinthians.html" aria-label="1 Corinthians">
-          <span class="badge">Letters to Scattered Israel</span>
-          <div class="abbr"><sup>1</sup>Co</div>
-          <div class="name">1 Corinthians</div>
-          <div class="era">c. 53–55 CE</div>
+        <a class="pt-card paul" href="/israelite-research/newtestament/1-corinthians.html" aria-label="1 Corinthians">
+          <div class="pt-era">c. 53–55 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Co</div>
+          <div class="pt-name">1 Corinthians</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/2-corinthians.html" aria-label="2 Corinthians">
-          <span class="badge">Letters to Scattered Israel</span>
-          <div class="abbr"><sup>2</sup>Co</div>
-          <div class="name">2 Corinthians</div>
-          <div class="era">c. 55–57 CE</div>
+        <a class="pt-card paul" href="/israelite-research/newtestament/2-corinthians.html" aria-label="2 Corinthians">
+          <div class="pt-era">c. 55–57 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Co</div>
+          <div class="pt-name">2 Corinthians</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/galatians.html" aria-label="Galatians">
-          <span class="badge">Letters to Scattered Israel</span>
-          <div class="abbr">Gal</div>
-          <div class="name">Galatians</div>
-          <div class="era">c. 48–55 CE</div>
+        <a class="pt-card paul" href="/israelite-research/newtestament/galatians.html" aria-label="Galatians">
+          <div class="pt-era">c. 48–55 CE</div>
+          <div class="pt-abbr">Gal</div>
+          <div class="pt-name">Galatians</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/ephesians.html" aria-label="Ephesians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Eph</div>
+          <div class="pt-name">Ephesians</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/philippians.html" aria-label="Philippians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Php</div>
+          <div class="pt-name">Philippians</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/colossians.html" aria-label="Colossians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Col</div>
+          <div class="pt-name">Colossians</div>
         </a>
       </div>
-    </section>
 
-    <!-- D. Ephesians – Colossians (Paul) -->
-    <section class="period">
-      <div class="period-label">D<small>Letters of Paul</small></div>
-      <div class="row-grid">
-        <a class="el paul" href="/israelite-research/newtestament/ephesians.html" aria-label="Ephesians">
-          <span class="badge">Letters to Covenant Assemblies</span>
-          <div class="abbr">Eph</div>
-          <div class="name">Ephesians</div>
-          <div class="era">c. 60–62 CE</div>
+      <!-- Column 4: 7 vertical (Paul: 1Th → Phm incl. 2Th, 1/2Ti, Tit) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card paul" href="/israelite-research/newtestament/1-thessalonians.html" aria-label="1 Thessalonians">
+          <div class="pt-era">c. 50–51 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Th</div>
+          <div class="pt-name">1 Thessalonians</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/philippians.html" aria-label="Philippians">
-          <span class="badge">Letters to Covenant Assemblies</span>
-          <div class="abbr">Php</div>
-          <div class="name">Philippians</div>
-          <div class="era">c. 60–62 CE</div>
+        <a class="pt-card paul" href="/israelite-research/newtestament/2-thessalonians.html" aria-label="2 Thessalonians">
+          <div class="pt-era">c. 50–52 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Th</div>
+          <div class="pt-name">2 Thessalonians</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/colossians.html" aria-label="Colossians">
-          <span class="badge">Letters to Covenant Assemblies</span>
-          <div class="abbr">Col</div>
-          <div class="name">Colossians</div>
-          <div class="era">c. 60–62 CE</div>
+        <a class="pt-card paul" href="/israelite-research/newtestament/1-timothy.html" aria-label="1 Timothy">
+          <div class="pt-era">c. 62–64 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Ti</div>
+          <div class="pt-name">1 Timothy</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/2-timothy.html" aria-label="2 Timothy">
+          <div class="pt-era">c. 64–67 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Ti</div>
+          <div class="pt-name">2 Timothy</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/titus.html" aria-label="Titus">
+          <div class="pt-era">c. 62–64 CE</div>
+          <div class="pt-abbr">Tit</div>
+          <div class="pt-name">Titus</div>
+        </a>
+        <a class="pt-card paul" href="/israelite-research/newtestament/philemon.html" aria-label="Philemon">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Phm</div>
+          <div class="pt-name">Philemon</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/hebrews.html" aria-label="Hebrews">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Heb</div>
+          <div class="pt-name">Hebrews</div>
         </a>
       </div>
-    </section>
 
-    <!-- E. 1–2 Thessalonians (Paul) -->
-    <section class="period">
-      <div class="period-label">E<small>Letters of Paul</small></div>
-      <div class="row-grid">
-        <a class="el paul" href="/israelite-research/newtestament/1-thessalonians.html" aria-label="1 Thessalonians">
-          <span class="badge">Letters to the Faithful Remnant</span>
-          <div class="abbr"><sup>1</sup>Th</div>
-          <div class="name">1 Thessalonians</div>
-          <div class="era">c. 50–51 CE</div>
+      <!-- Column 5: 7 vertical (General: Jas → Jude) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card israel" href="/israelite-research/newtestament/james.html" aria-label="James">
+          <div class="pt-era">c. 45–62 CE</div>
+          <div class="pt-abbr">Jas</div>
+          <div class="pt-name">James</div>
         </a>
-        <a class="el paul" href="/israelite-research/newtestament/2-thessalonians.html" aria-label="2 Thessalonians">
-          <span class="badge">Letters to the Faithful Remnant</span>
-          <div class="abbr"><sup>2</sup>Th</div>
-          <div class="name">2 Thessalonians</div>
-          <div class="era">c. 50–52 CE</div>
+        <a class="pt-card israel" href="/israelite-research/newtestament/1-peter.html" aria-label="1 Peter">
+          <div class="pt-era">c. 60–65 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Pe</div>
+          <div class="pt-name">1 Peter</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/2-peter.html" aria-label="2 Peter">
+          <div class="pt-era">c. 60–68 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Pe</div>
+          <div class="pt-name">2 Peter</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/1-john.html" aria-label="1 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Jn</div>
+          <div class="pt-name">1 John</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/2-john.html" aria-label="2 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Jn</div>
+          <div class="pt-name">2 John</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/3-john.html" aria-label="3 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>3</sup>Jn</div>
+          <div class="pt-name">3 John</div>
+        </a>
+        <a class="pt-card israel" href="/israelite-research/newtestament/jude.html" aria-label="Jude">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Jud</div>
+          <div class="pt-name">Jude</div>
         </a>
       </div>
-    </section>
 
-    <!-- F. 1/2 Timothy – Titus (Paul) -->
-    <section class="period">
-      <div class="period-label">F<small>Letters of Paul</small></div>
-      <div class="row-grid">
-        <a class="el paul" href="/israelite-research/newtestament/1-timothy.html" aria-label="1 Timothy">
-          <span class="badge">Letters for Israelite Servants</span>
-          <div class="abbr"><sup>1</sup>Ti</div>
-          <div class="name">1 Timothy</div>
-          <div class="era">c. 62–64 CE</div>
-        </a>
-        <a class="el paul" href="/israelite-research/newtestament/2-timothy.html" aria-label="2 Timothy">
-          <span class="badge">Letters for Israelite Servants</span>
-          <div class="abbr"><sup>2</sup>Ti</div>
-          <div class="name">2 Timothy</div>
-          <div class="era">c. 64–67 CE</div>
-        </a>
-        <a class="el paul" href="/israelite-research/newtestament/titus.html" aria-label="Titus">
-          <span class="badge">Letters for Israelite Servants</span>
-          <div class="abbr">Tit</div>
-          <div class="name">Titus</div>
-          <div class="era">c. 62–64 CE</div>
+      <!-- Column 6: 1 vertical (Vision: Revelation) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card vision" href="/israelite-research/newtestament/revelation.html" aria-label="Revelation">
+          <div class="pt-era">c. 95–96 CE</div>
+          <div class="pt-abbr">Rev</div>
+          <div class="pt-name">Revelation</div>
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- G. Philemon (Paul) -->
-    <section class="period">
-      <div class="period-label">G<small>Letters of Paul</small></div>
-      <div class="row-grid">
-        <a class="el paul" href="/israelite-research/newtestament/philemon.html" aria-label="Philemon">
-          <span class="badge">Brotherhood in Messiah</span>
-          <div class="abbr">Phm</div>
-          <div class="name">Philemon</div>
-          <div class="era">c. 60–62 CE</div>
-        </a>
-      </div>
-    </section>
-
-    <!-- H. Hebrews -->
-    <section class="period">
-      <div class="period-label">H<small>Letters to Israel</small></div>
-      <div class="row-grid">
-        <a class="el israel" href="/israelite-research/newtestament/hebrews.html" aria-label="Hebrews">
-          <span class="badge">Letter to the House of Israel</span>
-          <div class="abbr">Heb</div>
-          <div class="name">Hebrews</div>
-          <div class="era">c. 60–90 CE</div>
-        </a>
-      </div>
-    </section>
-
-    <!-- I. James – Jude -->
-    <section class="period">
-      <div class="period-label">I<small>Letters to Israel</small></div>
-      <div class="row-grid">
-        <a class="el israel" href="/israelite-research/newtestament/james.html" aria-label="James">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr">Jas</div>
-          <div class="name">James</div>
-          <div class="era">c. 45–62 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/1-peter.html" aria-label="1 Peter">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr"><sup>1</sup>Pe</div>
-          <div class="name">1 Peter</div>
-          <div class="era">c. 60–65 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/2-peter.html" aria-label="2 Peter">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr"><sup>2</sup>Pe</div>
-          <div class="name">2 Peter</div>
-          <div class="era">c. 60–68 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/1-john.html" aria-label="1 John">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr"><sup>1</sup>Jn</div>
-          <div class="name">1 John</div>
-          <div class="era">c. 90–110 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/2-john.html" aria-label="2 John">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr"><sup>2</sup>Jn</div>
-          <div class="name">2 John</div>
-          <div class="era">c. 90–110 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/3-john.html" aria-label="3 John">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr"><sup>3</sup>Jn</div>
-          <div class="name">3 John</div>
-          <div class="era">c. 90–110 CE</div>
-        </a>
-        <a class="el israel" href="/israelite-research/newtestament/jude.html" aria-label="Jude">
-          <span class="badge">Letters of Israelite Elders</span>
-          <div class="abbr">Jud</div>
-          <div class="name">Jude</div>
-          <div class="era">c. 60–90 CE</div>
-        </a>
-      </div>
-    </section>
-
-    <!-- J. Revelation -->
-    <section class="period">
-      <div class="period-label">J<small>Vision</small></div>
-      <div class="row-grid">
-        <a class="el vision" href="/israelite-research/newtestament/revelation.html" aria-label="Revelation">
-          <span class="badge">Vision to the 12 Tribes</span>
-          <div class="abbr">Rev</div>
-          <div class="name">Revelation</div>
-          <div class="era">c. 95–96 CE</div>
-        </a>
-      </div>
-    </section>
-
+  <!-- Legend BELOW the grid -->
+  <div class="legend" aria-label="Color legend">
+    <span class="chip"><span class="dot test"></span> Testimonies</span>
+    <span class="chip"><span class="dot acts"></span> Acts</span>
+    <span class="chip"><span class="dot paul"></span> Letters of Paul</span>
+    <span class="chip"><span class="dot israel"></span> Letters to Israel</span>
+    <span class="chip"><span class="dot vision"></span> Vision</span>
   </div>
 </main>
 
