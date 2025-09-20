@@ -6,12 +6,9 @@
 <title>Events — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-  /* ===== Scoped calendar styles (stay on this page only) ===== */
+  /* ===== Scoped calendar styles ===== */
   .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
   .events-page .calendar-wrap{max-width:1000px;margin:0 auto 40px;}
-
-  .events-page .page-header{padding:24px 0 8px;}
-  .events-page .page-title{margin:0;font-size:2rem;font-weight:800;}
 
   .cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1rem 0 1.25rem;}
   .cal-title{font-size:1.25rem;margin:0;font-weight:700;}
@@ -20,15 +17,26 @@
   .btn:hover{background:#f8fafc}
 
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-  .cal-dow{background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px;padding:.4rem 0;text-align:center;font-weight:600;color:#555}
+  /* Header row */
+  .cal-dow{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px;padding:.35rem .25rem;min-height:60px}
+  .dow-main{font-weight:700;font-size:.95rem;color:#333}
+  .dow-he{font-weight:400;font-size:.75rem;color:#555;margin-top:.2rem;text-align:center}
+
+  /* Spacer between header and grid */
+  #dowRow{margin-bottom:8px}
+
+  /* Cells */
   .cal-cell{min-height:110px;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
   .cal-cell.is-today{outline:2px solid var(--accent,#F17300)}
   .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
   .cal-empty{opacity:.35}
 
-  /* Event chips (now dot + TIME — Title) */
-  .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    display:flex;align-items:center;gap:.45rem;}
+  /* Event chips (dot + TIME — Title), single-line with ellipsis */
+  .evt-chip{
+    font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;
+    padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    display:flex;align-items:center;gap:.45rem;
+  }
   .pill-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;display:inline-block}
 
   /* Legend (interactive) */
@@ -36,54 +44,21 @@
   .cal-legend button{display:inline-flex;align-items:center;gap:.5rem;font:inherit;font-size:.9rem;color:#444;background:#fff;border:1px solid #e6ebf2;border-radius:999px;padding:.3rem .6rem;cursor:pointer}
   .cal-legend button .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
   .cal-legend button[aria-pressed="false"]{opacity:.45}
+  .dot.xspace{background:#000000}.dot.youtube{background:#8B0000}.dot.discord{background:#5865f2}.dot.sabbath{background:#054A91}.dot.newmoon{background:#81A4CD}.dot.feast{background:#F17300}
 
-  /* Dot colors */
-  .dot.xspace  { background:#000000; }
-  .dot.youtube { background:#8B0000; }
-  .dot.discord { background:#5865f2; }
-  .dot.sabbath { background:#054A91; }
-  .dot.newmoon { background:#81A4CD; }
-  .dot.feast   { background:#F17300; }
-
-  /* ===== Modal (fixed layout/spacing) ===== */
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:1rem;z-index:9999}
-  .modal.open{display:flex}
-  .modal-card{
-    width:min(560px,92vw);
-    max-height:90vh;
-    background:#fff;border-radius:14px;border:1px solid #e6ebf2;box-shadow:0 8px 30px rgba(0,0,0,.12);
-    display:flex;flex-direction:column;overflow:hidden
-  }
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #eef2f7}
-  .modal-title{font-size:1.1rem;margin:0}
-  .modal-body{
-    padding:1rem;
-    overflow:auto;
-    display:grid;
-    gap:.9rem;
-    grid-template-columns:1fr;
-  }
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-  @media (max-width:640px){ .form-row{grid-template-columns:1fr;} }
-
-  label{display:block;font-size:.9rem;color:#333;margin:0 0 .35rem}
-  input[type="text"],input[type="date"],input[type="time"],textarea,select{
-    width:100%;
-    box-sizing:border-box;
-    border:1px solid #e6ebf2;border-radius:10px;
-    padding:.6rem .7rem;font:inherit;line-height:1.3;
-    background:#fff;
-  }
-  textarea{min-height:130px;resize:vertical}
-
-  .modal-foot{
-    margin-top:auto;
-    display:flex;justify-content:space-between;gap:.5rem;padding:.75rem 1rem 1rem;border-top:1px solid #eef2f7
-  }
-  .btn-primary{background:var(--accent,#F17300);color:#fff;border-color:transparent}
-  .btn-danger{border-color:#ffd8d8;background:#fff;color:#b42318}
-  .btn-ghost{background:transparent}
-  .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+  /* ===== Day Details (below calendar & legend) ===== */
+  .day-details{margin-top:12px;border:1px solid #e6ebf2;border-radius:12px;background:#fff;overflow:hidden}
+  .day-details[hidden]{display:none}
+  .dd-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e6ebf2}
+  .dd-title{margin:0;font-weight:800;font-size:1.05rem}
+  .dd-close{border:1px solid #e6ebf2;background:#fff;border-radius:10px;padding:.4rem .6rem;cursor:pointer}
+  .dd-body{padding:10px 12px;display:grid;gap:8px}
+  .dd-item{border:1px solid #e6ebf2;border-radius:10px;padding:10px;display:grid;gap:4px}
+  .dd-line{display:flex;align-items:center;gap:.5rem}
+  .dd-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .dd-time{font-weight:700}
+  .dd-title-txt{font-weight:700}
+  .dd-notes{color:#555;font-size:.9rem;white-space:pre-wrap}
 </style>
 </head>
 <body class="events-page">
@@ -95,8 +70,7 @@
   <div class="calendar-wrap">
     <div class="cal-toolbar">
       <div class="cal-nav">
-
-        <!-- NEW: Month / Day / Year selectors -->
+        <!-- You removed Prev/Today/Next; keeping only selectors -->
         <select id="selMonth" aria-label="Month"></select>
         <select id="selDay" aria-label="Day"></select>
         <select id="selYear" aria-label="Year"></select>
@@ -105,70 +79,46 @@
       <button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
     </div>
 
+    <!-- Header row -->
     <div class="cal-grid" id="dowRow">
-  <div class="cal-dow">
-    <div class="dow-main">Sunday</div>
-    <div class="dow-he">Yom Rishon | "first day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Monday</div>
-    <div class="dow-he">Yom Sheni | "second day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Tuesday</div>
-    <div class="dow-he">Yom Shlishi | "third day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Wednesday</div>
-    <div class="dow-he">Yom Revi’i | "fourth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Thursday</div>
-    <div class="dow-he">Yom Chamishi | "fifth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Friday</div>
-    <div class="dow-he">Yom Shishi | "sixth day"</div>
-  </div>
-  <div class="cal-dow">
-    <div class="dow-main">Saturday</div>
-    <div class="dow-he">Yom Shabbat | "Sabbath"</div>
-  </div>
-</div>
+      <div class="cal-dow"><div class="dow-main">Sunday</div><div class="dow-he">Yom Rishon | "first day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Monday</div><div class="dow-he">Yom Sheni | "second day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Tuesday</div><div class="dow-he">Yom Shlishi | "third day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Wednesday</div><div class="dow-he">Yom Revi’i | "fourth day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Thursday</div><div class="dow-he">Yom Chamishi | "fifth day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Friday</div><div class="dow-he">Yom Shishi | "sixth day"</div></div>
+      <div class="cal-dow"><div class="dow-main">Saturday</div><div class="dow-he">Yom Shabbat | "Sabbath"</div></div>
+    </div>
 
+    <!-- Calendar grid -->
     <div aria-live="polite" class="cal-grid" id="calGrid"></div>
 
     <!-- Interactive Legend -->
     <div class="cal-legend" id="calLegend">
-      <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events">
-        <span class="dot" style="background:#054A91"></span> Event
-      </button>
-      <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space">
-        <span class="dot xspace"></span> X Space
-      </button>
-      <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live">
-        <span class="dot youtube"></span> YouTube Live
-      </button>
-      <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live">
-        <span class="dot discord"></span> Discord Live
-      </button>
-      <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath">
-        <span class="dot sabbath"></span> Sabbath
-      </button>
-      <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon">
-        <span class="dot newmoon"></span> New Moon
-      </button>
-      <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days">
-        <span class="dot feast"></span> Feast Days
-      </button>
+      <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events"><span class="dot" style="background:#054A91"></span> Event</button>
+      <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space"><span class="dot xspace"></span> X Space</button>
+      <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live"><span class="dot youtube"></span> YouTube Live</button>
+      <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live"><span class="dot discord"></span> Discord Live</button>
+      <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath"><span class="dot sabbath"></span> Sabbath</button>
+      <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon"><span class="dot newmoon"></span> New Moon</button>
+      <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days"><span class="dot feast"></span> Feast Days</button>
     </div>
+
+    <!-- NEW: Day Details panel (below calendar & legend) -->
+    <aside class="day-details" id="dayDetails" hidden>
+      <div class="dd-head">
+        <h3 class="dd-title" id="ddTitle">Events</h3>
+        <button class="dd-close" id="ddClose" aria-label="Close details">Close</button>
+      </div>
+      <div class="dd-body" id="ddBody"></div>
+    </aside>
   </div>
 </main>
 
 <!-- Footer partial -->
 <div id="site-footer"></div>
 
-<!-- Add/Edit Event Modal -->
+<!-- Add/Edit Event Modal (unchanged from your foundation) -->
 <div aria-labelledby="modalTitle" aria-modal="true" class="modal" id="eventModal" role="dialog">
   <div class="modal-card">
     <div class="modal-head">
@@ -253,6 +203,12 @@
   const evtType = document.getElementById('evtType');
   const modalTitle = document.getElementById('modalTitle');
 
+  // NEW: Day details refs
+  const dd = document.getElementById('dayDetails');
+  const ddTitle = document.getElementById('ddTitle');
+  const ddBody = document.getElementById('ddBody');
+  const ddClose = document.getElementById('ddClose');
+
   // ===== Type Colors + Enabled Set =====
   function typeColor(t){
     switch((t||'generic')){
@@ -288,6 +244,7 @@
   function fmtDate(d){ return d instanceof Date
     ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
     : d; }
+  function humanDate(d){ return new Date(d).toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'}); }
 
   // Populate Month/Day/Year selects
   function populateSelectors(dateObj){
@@ -329,6 +286,57 @@
     render();
   }
 
+  // ===== Day Details logic =====
+  function openDetails(dateStr){
+    const items = events
+      .filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'))
+      .sort((a,b)=> (a.time||'').localeCompare(b.time||''));
+    ddTitle.textContent = humanDate(dateStr);
+    ddBody.innerHTML = '';
+    if(items.length === 0){
+      const p = document.createElement('p');
+      p.textContent = 'No events for this day.';
+      p.style.color = '#555';
+      ddBody.appendChild(p);
+    } else {
+      items.forEach(e=>{
+        const card = document.createElement('div');
+        card.className = 'dd-item';
+
+        const line = document.createElement('div');
+        line.className = 'dd-line';
+
+        const dot = document.createElement('span');
+        dot.className = 'dd-dot';
+        dot.style.background = typeColor(e.type);
+
+        const tm  = document.createElement('span');
+        tm.className = 'dd-time';
+        tm.textContent = e.time ? e.time : '—';
+
+        const title = document.createElement('span');
+        title.className = 'dd-title-txt';
+        title.textContent = e.title;
+
+        line.appendChild(dot);
+        line.appendChild(tm);
+        line.appendChild(document.createTextNode(' — '));
+        line.appendChild(title);
+
+        const notes = document.createElement('div');
+        notes.className = 'dd-notes';
+        notes.textContent = e.desc || '';
+
+        card.appendChild(line);
+        if(e.desc) card.appendChild(notes);
+
+        ddBody.appendChild(card);
+      });
+    }
+    dd.hidden = false;
+  }
+  function closeDetails(){ dd.hidden = true; }
+
   // ===== Render =====
   function render(){
     const first = startOfMonth(current);
@@ -336,15 +344,16 @@
     const startDow = first.getDay();
     const totalDays = last.getDate();
 
-    // keep selectors in sync
+    // selectors sync
     populateSelectors(current);
 
     titleEl.textContent = first.toLocaleString(undefined, {month:'long', year:'numeric'});
 
     grid.innerHTML = '';
 
-    // leading blanks
-    for(let i=0;i<startDow;i++){
+    // leading blanks (Sunday-first)
+    let offset = startDow; if(offset < 0 || offset > 6) offset = 0;
+    for(let i=0;i<offset;i++){
       const cell = document.createElement('div');
       cell.className = 'cal-cell cal-empty';
       grid.appendChild(cell);
@@ -384,7 +393,7 @@
         chip.appendChild(text);
 
         chip.title = e.desc || '';
-        chip.addEventListener('click', (ev) => { ev.preventDefault(); openEdit(e); });
+        chip.addEventListener('click', (ev) => { ev.preventDefault(); openDetails(dateStr); });
         cell.appendChild(chip);
       });
 
@@ -392,20 +401,20 @@
         const more = document.createElement('div');
         more.className = 'evt-chip';
         more.textContent = `+${dayEvents.length-3} more`;
-        more.addEventListener('click', (ev)=>{ ev.preventDefault(); openAdd(dateStr); });
+        more.addEventListener('click', (ev)=>{ ev.preventDefault(); openDetails(dateStr); });
         cell.appendChild(more);
       }
 
       cell.addEventListener('click', (ev)=>{
         if(ev.target.classList.contains('evt-chip') || ev.target.closest('.evt-chip')) return;
-        openAdd(dateStr);
+        openDetails(dateStr);
       });
 
       grid.appendChild(cell);
     }
   }
 
-  // ===== Modal logic =====
+  // ===== Modal logic (unchanged save for type persistence) =====
   function openAdd(dateStr){
     editingId = null;
     modalTitle.textContent = 'Add Event';
@@ -432,7 +441,7 @@
     setTimeout(()=>evtTitle.focus(), 0);
   }
 
-  function close(){ modal.classList.remove('open'); }
+  function closeModalFn(){ modal.classList.remove('open'); }
 
   function onSave(){
     const date = evtDate.value;
@@ -450,43 +459,46 @@
       const id = 'evt_' + Math.random().toString(36).slice(2,9);
       events.push({ id, date, title, time, desc, type });
     }
-    saveEvents(); close(); render();
+    saveEvents(); closeModalFn(); render();
   }
 
   function onDelete(){
     if(!editingId) return;
     events = events.filter(x => x.id !== editingId);
-    saveEvents(); close(); render();
+    saveEvents(); closeModalFn(); render();
   }
 
-  // ===== Events =====
+  // ===== Listeners =====
   addEventBtn.addEventListener('click', ()=> openAdd(fmtDate(new Date())));
 
-  selMonth.addEventListener('change', jumpToSelected);
-  selDay.addEventListener('change', jumpToSelected);
-  selYear.addEventListener('change', jumpToSelected);
+  selMonth.addEventListener('change', ()=>{ closeDetails(); jumpToSelected(); });
+  selDay.addEventListener('change',   ()=>{ closeDetails(); jumpToSelected(); });
+  selYear.addEventListener('change',  ()=>{ closeDetails(); jumpToSelected(); });
 
-  closeModal.addEventListener('click', close);
-  cancelEvent.addEventListener('click', close);
+  closeModal.addEventListener('click', closeModalFn);
+  cancelEvent.addEventListener('click', closeModalFn);
   deleteEventBtn.addEventListener('click', onDelete);
   saveEvent.addEventListener('click', onSave);
-  modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModalFn(); });
 
-  // Legend toggles
+  // Legend toggles re-render and also refresh details view if open
   legend.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-type]');
     if(!btn) return;
     const t = btn.getAttribute('data-type');
     const pressed = btn.getAttribute('aria-pressed') === 'true';
-    if(pressed){
-      btn.setAttribute('aria-pressed','false');
-      enabledTypes.delete(t);
-    } else {
-      btn.setAttribute('aria-pressed','true');
-      enabledTypes.add(t);
+    if(pressed){ btn.setAttribute('aria-pressed','false'); enabledTypes.delete(t); }
+    else       { btn.setAttribute('aria-pressed','true');  enabledTypes.add(t);    }
+    // If details is open, keep showing the same date with new filters
+    if(!dd.hidden){
+      const dateReadable = ddTitle.textContent;
+      const dt = new Date(dateReadable); // attempt to parse back; if invalid, just close
+      if(!isNaN(dt)) openDetails(fmtDate(dt)); else closeDetails();
     }
     render();
   });
+
+  ddClose.addEventListener('click', closeDetails);
 
   // Initial paint
   render();
