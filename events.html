@@ -21,14 +21,13 @@
 
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
   .cal-dow{background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px;padding:.4rem 0;text-align:center;font-weight:600;color:#555}
-  .cal-cell{height:110px;overflow:hidden;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
+  .cal-cell{height:110px;max-height:110px;overflow:hidden;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
   .cal-cell.is-today{outline:2px solid var(--accent,#F17300)}
-  .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
+  .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem;cursor:pointer}
   .cal-empty{opacity:.35}
 
-  /* Event chips (now dot + TIME — Title) */
-  .evt-chip{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    display:flex;align-items:center;gap:.45rem;}
+  /* Event chips (dot + TIME — Title), single-line with ellipsis */
+  .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:.45rem}
   .pill-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;display:inline-block}
 
   /* Legend (interactive) */
@@ -36,56 +35,9 @@
   .cal-legend button{display:inline-flex;align-items:center;gap:.5rem;font:inherit;font-size:.9rem;color:#444;background:#fff;border:1px solid #e6ebf2;border-radius:999px;padding:.3rem .6rem;cursor:pointer}
   .cal-legend button .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
   .cal-legend button[aria-pressed="false"]{opacity:.45}
+  .dot.xspace{background:#000000}.dot.youtube{background:#8B0000}.dot.discord{background:#5865f2}.dot.sabbath{background:#054A91}.dot.newmoon{background:#81A4CD}.dot.feast{background:#F17300}
 
-  /* Dot colors */
-  .dot.xspace  { background:#000000; }
-  .dot.youtube { background:#8B0000; }
-  .dot.discord { background:#5865f2; }
-  .dot.sabbath { background:#054A91; }
-  .dot.newmoon { background:#81A4CD; }
-  .dot.feast   { background:#F17300; }
-
-  /* ===== Modal (fixed layout/spacing) ===== */
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:1rem;z-index:9999}
-  .modal.open{display:flex}
-  .modal-card{
-    width:min(560px,92vw);
-    max-height:90vh;
-    background:#fff;border-radius:14px;border:1px solid #e6ebf2;box-shadow:0 8px 30px rgba(0,0,0,.12);
-    display:flex;flex-direction:column;overflow:hidden
-  }
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #eef2f7}
-  .modal-title{font-size:1.1rem;margin:0}
-  .modal-body{
-    padding:1rem;
-    overflow:auto;
-    display:grid;
-    gap:.9rem;
-    grid-template-columns:1fr;
-  }
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-  @media (max-width:640px){ .form-row{grid-template-columns:1fr;} }
-
-  label{display:block;font-size:.9rem;color:#333;margin:0 0 .35rem}
-  input[type="text"],input[type="date"],input[type="time"],textarea,select{
-    width:100%;
-    box-sizing:border-box;
-    border:1px solid #e6ebf2;border-radius:10px;
-    padding:.6rem .7rem;font:inherit;line-height:1.3;
-    background:#fff;
-  }
-  textarea{min-height:130px;resize:vertical}
-
-  .modal-foot{
-    margin-top:auto;
-    display:flex;justify-content:space-between;gap:.5rem;padding:.75rem 1rem 1rem;border-top:1px solid #eef2f7
-  }
-  .btn-primary{background:var(--accent,#F17300);color:#fff;border-color:transparent}
-  .btn-danger{border-color:#ffd8d8;background:#fff;color:#b42318}
-  .btn-ghost{background:transparent}
-  .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
-
-  /* ===== Day Details panel (additive, below legend) ===== */
+  /* ===== Day Details panel (below legend) ===== */
   .day-details{margin-top:10px;border:1px solid #e6ebf2;border-radius:12px;background:#fff;overflow:hidden}
   .day-details[hidden]{display:none}
   .dd-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e6ebf2}
@@ -95,13 +47,9 @@
   .dd-item{border:1px solid #e6ebf2;border-radius:10px;padding:10px;display:grid;gap:4px}
   .dd-line{display:flex;align-items:center;gap:.5rem}
   .dd-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-  .dd-time{font-weight:700}
   .dd-title-txt{font-weight:700}
+  .dd-range{color:#555;font-size:.9rem}
   .dd-notes{color:#555;font-size:.9rem;white-space:pre-wrap}
-  .cal-dow{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  .cal-dow .dow-main{font-weight:700;font-size:.95rem;color:#333}
-  .cal-dow .dow-he{font-weight:500;font-size:.8rem;color:#555;margin-top:.15rem}
-  .cal-dow .dow-tr{font-weight:400;font-size:.72rem;color:#777}
 </style>
 </head>
 <body class="events-page">
@@ -123,38 +71,24 @@
     </div>
 
     <div class="cal-grid" id="dowRow">
-      <div class="cal-dow"><div class="dow-main">Sun</div><div class="dow-he">Yom Rishon</div><div class="dow-tr">"first day"</div></div><div class="cal-dow"><div class="dow-main">Mon</div><div class="dow-he">Yom Sheni</div><div class="dow-tr">"second day"</div></div><div class="cal-dow"><div class="dow-main">Tue</div><div class="dow-he">Yom Shlishi</div><div class="dow-tr">"third day"</div></div>
-      <div class="cal-dow"><div class="dow-main">Wed</div><div class="dow-he">Yom Revi’i</div><div class="dow-tr">"fourth day"</div></div><div class="cal-dow"><div class="dow-main">Thu</div><div class="dow-he">Yom Chamishi</div><div class="dow-tr">"fifth day"</div></div><div class="cal-dow"><div class="dow-main">Fri</div><div class="dow-he">Yom Shishi</div><div class="dow-tr">"sixth day"</div></div><div class="cal-dow"><div class="dow-main">Sat</div><div class="dow-he">Yom Shabbat</div><div class="dow-tr">"Sabbath"</div></div>
+      <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
+      <div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
     </div>
 
     <div aria-live="polite" class="cal-grid" id="calGrid"></div>
 
     <!-- Interactive Legend -->
     <div class="cal-legend" id="calLegend">
-      <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events">
-        <span class="dot" style="background:#054A91"></span> Event
-      </button>
-      <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space">
-        <span class="dot xspace"></span> X Space
-      </button>
-      <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live">
-        <span class="dot youtube"></span> YouTube Live
-      </button>
-      <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live">
-        <span class="dot discord"></span> Discord Live
-      </button>
-      <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath">
-        <span class="dot sabbath"></span> Sabbath
-      </button>
-      <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon">
-        <span class="dot newmoon"></span> New Moon
-      </button>
-      <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days">
-        <span class="dot feast"></span> Feast Days
-      </button>
+      <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events"><span class="dot" style="background:#054A91"></span> Event</button>
+      <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space"><span class="dot xspace"></span> X Space</button>
+      <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live"><span class="dot youtube"></span> YouTube Live</button>
+      <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live"><span class="dot discord"></span> Discord Live</button>
+      <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath"><span class="dot sabbath"></span> Sabbath</button>
+      <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon"><span class="dot newmoon"></span> New Moon</button>
+      <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days"><span class="dot feast"></span> Feast Days</button>
     </div>
 
-    <!-- NEW: Day Details panel (below legend) -->
+    <!-- Day Details panel (below legend) -->
     <aside class="day-details" id="dayDetails" hidden>
       <div class="dd-head">
         <h3 class="dd-title" id="ddTitle">Events</h3>
@@ -183,28 +117,33 @@
           <input id="evtDate" type="date"/>
         </div>
         <div>
+          <label for="evtEnd">End date <span class="muted">(optional)</span></label>
+          <input id="evtEnd" type="date"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
           <label for="evtTime">Time <span class="muted">(optional)</span></label>
           <input id="evtTime" type="time"/>
+        </div>
+        <div>
+          <label for="evtType">Type <span class="muted">(optional)</span></label>
+          <select id="evtType">
+            <option value="generic" selected>Generic</option>
+            <option value="xspace">X Space</option>
+            <option value="youtube">YouTube Live</option>
+            <option value="discord">Discord Live</option>
+            <option value="sabbath">Sabbath</option>
+            <option value="newmoon">New Moon</option>
+            <option value="feast">Feast Days</option>
+          </select>
         </div>
       </div>
 
       <div>
         <label for="evtTitle">Title</label>
         <input id="evtTitle" placeholder="e.g., Bible Study" type="text"/>
-      </div>
-
-      <!-- Type select -->
-      <div>
-        <label for="evtType">Type <span class="muted">(optional)</span></label>
-        <select id="evtType">
-          <option value="generic" selected>Generic</option>
-          <option value="xspace">X Space</option>
-          <option value="youtube">YouTube Live</option>
-          <option value="discord">Discord Live</option>
-          <option value="sabbath">Sabbath</option>
-          <option value="newmoon">New Moon</option>
-          <option value="feast">Feast Days</option>
-        </select>
       </div>
 
       <div>
@@ -247,13 +186,14 @@
   const deleteEventBtn = document.getElementById('deleteEvent');
 
   const evtDate = document.getElementById('evtDate');
+  const evtEnd  = document.getElementById('evtEnd');
   const evtTime = document.getElementById('evtTime');
   const evtTitle = document.getElementById('evtTitle');
   const evtDesc = document.getElementById('evtDesc');
   const evtType = document.getElementById('evtType');
   const modalTitle = document.getElementById('modalTitle');
 
-  // NEW: Day details refs
+  // Day details
   const dd = document.getElementById('dayDetails');
   const ddTitle = document.getElementById('ddTitle');
   const ddBody = document.getElementById('ddBody');
@@ -280,11 +220,24 @@
   let editingId = null;
 
   function loadEvents(){
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    try { return normalize(JSON.parse(localStorage.getItem(STORAGE_KEY)) || []); }
     catch(e){ return []; }
   }
   function saveEvents(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+  }
+
+  // Normalize legacy single-day events to have startDate/endDate
+  function normalize(list){
+    return list.map(e => {
+      if(!e.startDate && !e.endDate){
+        const d = e.date || e.start || e.end || null;
+        if(d) return {...e, startDate: d, endDate: d};
+      }
+      if(!e.endDate && e.startDate) return {...e, endDate: e.startDate};
+      if(!e.startDate && e.endDate) return {...e, startDate: e.endDate};
+      return e;
+    });
   }
 
   // ===== Utils =====
@@ -295,6 +248,13 @@
     ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
     : d; }
   function humanDate(d){ return new Date(d).toLocaleDateString(undefined,{weekday:'long', year:'numeric', month:'long', day:'numeric'}); }
+  function shortMD(d){ const dt=new Date(d); return dt.toLocaleDateString(undefined,{month:'short', day:'numeric'}); }
+  function inRange(dateStr, startStr, endStr){
+    const t = new Date(dateStr).setHours(0,0,0,0);
+    const a = new Date(startStr||dateStr).setHours(0,0,0,0);
+    const b = new Date(endStr||startStr||dateStr).setHours(0,0,0,0);
+    return t >= Math.min(a,b) && t <= Math.max(a,b);
+  }
 
   // Populate Month/Day/Year selects
   function populateSelectors(dateObj){
@@ -336,10 +296,10 @@
     render();
   }
 
-  // ===== Day Details (additive; no visual changes elsewhere) =====
+  // ===== Day Details =====
   function openDetails(dateStr){
     const items = events
-      .filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'))
+      .filter(e => enabledTypes.has(e.type || 'generic') && inRange(dateStr, e.startDate, e.endDate))
       .sort((a,b)=> (a.time||'').localeCompare(b.time||''));
     ddTitle.textContent = humanDate(dateStr);
     ddBody.innerHTML = '';
@@ -360,24 +320,29 @@
         dot.className = 'dd-dot';
         dot.style.background = typeColor(e.type);
 
-        const tm  = document.createElement('span');
-        tm.className = 'dd-time';
-        tm.textContent = e.time ? e.time : '—';
-
         const title = document.createElement('span');
         title.className = 'dd-title-txt';
         title.textContent = e.title;
 
         line.appendChild(dot);
-        line.appendChild(document.createTextNode(" | "));
+        line.appendChild(document.createTextNode(' | '));
         line.appendChild(title);
 
-        const notes = document.createElement('div');
-        notes.className = 'dd-notes';
-        notes.textContent = e.desc || '';
-
         card.appendChild(line);
-        if(e.desc) card.appendChild(notes);
+
+        if(e.startDate && e.endDate && e.startDate !== e.endDate){
+          const range = document.createElement('div');
+          range.className = 'dd-range';
+          range.textContent = `${shortMD(e.startDate)} – ${shortMD(e.endDate)}`;
+          card.appendChild(range);
+        }
+
+        if(e.desc){
+          const notes = document.createElement('div');
+          notes.className = 'dd-notes';
+          notes.textContent = e.desc;
+          card.appendChild(notes);
+        }
 
         ddBody.appendChild(card);
       });
@@ -400,7 +365,7 @@
 
     grid.innerHTML = '';
 
-    // leading blanks
+    // leading blanks (Sunday-first)
     for(let i=0;i<startDow;i++){
       const cell = document.createElement('div');
       cell.className = 'cal-cell cal-empty';
@@ -420,16 +385,16 @@
       const dateEl = document.createElement('div');
       dateEl.className = 'cal-date';
       dateEl.textContent = day;
-      /* OPEN DETAILS WHEN CLICKING THE DATE NUMBER (appearance unchanged) */
-      dateEl.style.cursor = 'pointer';
       dateEl.title = 'View day details';
       dateEl.addEventListener('click', (ev)=>{ ev.stopPropagation(); openDetails(dateStr); });
       cell.appendChild(dateEl);
 
-      // filter by enabled types
-      const dayEvents = events.filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'));
+      // filter by enabled types AND date range inclusion
+      const dayEvents = events.filter(e =>
+        enabledTypes.has(e.type || 'generic') && inRange(dateStr, e.startDate, e.endDate)
+      );
 
-      // chips: [dot] TIME — Title (unchanged behavior: click opens Edit)
+      // chips: [dot] TIME — Title
       dayEvents.slice(0,3).forEach(e => {
         const chip = document.createElement('div');
         chip.className = 'evt-chip';
@@ -453,15 +418,13 @@
         const more = document.createElement('div');
         more.className = 'evt-chip';
         more.textContent = `+${dayEvents.length-3} more`;
-        /* keep old behavior: +more opens Add */
         more.addEventListener('click', (ev)=>{ ev.preventDefault(); openAdd(dateStr); });
         cell.appendChild(more);
       }
 
-      /* keep old behavior: empty area opens Add */
       cell.addEventListener('click', (ev)=>{
         if(ev.target.classList.contains('evt-chip') || ev.target.closest('.evt-chip')) return;
-        if(ev.target.closest('.cal-date')) return; // date click handled above
+        if(ev.target.closest('.cal-date')) return;
         openAdd(dateStr);
       });
 
@@ -473,7 +436,9 @@
   function openAdd(dateStr){
     editingId = null;
     modalTitle.textContent = 'Add Event';
-    evtDate.value = dateStr || fmtDate(new Date());
+    const d = dateStr || fmtDate(new Date());
+    evtDate.value = d;
+    evtEnd.value  = d;
     evtTime.value = '';
     evtTitle.value = '';
     evtDesc.value = '';
@@ -486,7 +451,8 @@
   function openEdit(e){
     editingId = e.id;
     modalTitle.textContent = 'Edit Event';
-    evtDate.value = e.date;
+    evtDate.value = e.startDate || e.date;
+    evtEnd.value  = e.endDate   || e.startDate || e.date;
     evtTime.value = e.time || '';
     evtTitle.value = e.title || '';
     evtDesc.value = e.desc || '';
@@ -499,20 +465,21 @@
   function close(){ modal.classList.remove('open'); }
 
   function onSave(){
-    const date = evtDate.value;
+    const startDate = evtDate.value;
+    const endDate   = evtEnd.value || startDate;
     const title = evtTitle.value.trim();
-    const time = evtTime.value.trim();
-    const desc = evtDesc.value.trim();
-    const type = evtType.value || 'generic';
+    const time  = evtTime.value.trim();
+    const desc  = evtDesc.value.trim();
+    const type  = evtType.value || 'generic';
 
-    if(!date || !title){ alert('Please provide a date and title.'); return; }
+    if(!startDate || !title){ alert('Please provide a start date and title.'); return; }
 
     if(editingId){
       const idx = events.findIndex(x => x.id === editingId);
-      if(idx >= 0){ events[idx] = { ...events[idx], date, title, time, desc, type }; }
+      if(idx >= 0){ events[idx] = { ...events[idx], startDate, endDate, title, time, desc, type }; }
     }else{
       const id = 'evt_' + Math.random().toString(36).slice(2,9);
-      events.push({ id, date, title, time, desc, type });
+      events.push({ id, startDate, endDate, title, time, desc, type });
     }
     saveEvents(); close(); render();
   }
@@ -536,23 +503,17 @@
   saveEvent.addEventListener('click', onSave);
   modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
 
-  // Legend toggles (unchanged)
+  // Legend toggles
   legend.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-type]');
     if(!btn) return;
     const t = btn.getAttribute('data-type');
     const pressed = btn.getAttribute('aria-pressed') === 'true';
-    if(pressed){
-      btn.setAttribute('aria-pressed','false');
-      enabledTypes.delete(t);
-    } else {
-      btn.setAttribute('aria-pressed','true');
-      enabledTypes.add(t);
-    }
+    if(pressed){ btn.setAttribute('aria-pressed','false'); enabledTypes.delete(t); }
+    else       { btn.setAttribute('aria-pressed','true');  enabledTypes.add(t);    }
     render();
   });
 
-  // Day details close
   ddClose.addEventListener('click', ()=>{ dd.hidden = true; });
 
   // Initial paint
