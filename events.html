@@ -1,57 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width,initial-scale=1" name="viewport"/>
-  <title>Events — Semitic Jew</title>
-  <link href="/israelite-research/styles.css" rel="stylesheet"/>
-  <style>
-    /* ===== Scoped calendar styles (stay on this page only) ===== */
-    .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
-    .events-page main{padding:24px 0 48px}
-    .events-title{margin:0 0 12px;font:700 2rem/1.2 "Spectral", serif;color:#0b2340}
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Events — Semitic Jew</title>
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  /* ===== Scoped calendar styles (stay on this page only) ===== */
+  .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
+  .events-page .calendar-wrap{max-width:1000px;margin:0 auto 40px;}
 
-    .calendar-bar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:10px 0 18px}
-    .calendar-bar .spacer{flex:1}
-    .calendar-bar .btn{
-      appearance:none;border:1px solid #e6ebf2;background:#fff;color:#0b2340;
-      padding:.56rem .8rem;border-radius:10px;font-weight:600;cursor:pointer;line-height:1;
-      box-shadow:0 1px 0 rgba(0,0,0,.02);
-    }
-    .calendar-bar .btn:hover{background:#f8fafc}
-    .calendar-bar .btn.primary{background:#3E7CB1;color:#fff;border-color:#3E7CB1}
-    .calendar-bar .btn.primary:hover{background:#81A4CD}
+  .events-page .page-header{padding:24px 0 8px;}
+  .events-page .page-title{margin:0;font-size:2rem;font-weight:800;}
 
-    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-    .dow{padding:8px 0;text-align:center;font-weight:700;color:#0b2340;border-bottom:1px solid #e6ebf2}
-    .day{
-      border:1px solid #e6ebf2;border-radius:8px;padding:8px;min-height:100px;
-      background:#fff;cursor:pointer;transition:box-shadow .15s,border-color .15s;
-    }
-    .day:hover{border-color:#cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-    .day.muted{opacity:.55}
-    .date-num{font-weight:700;margin-bottom:6px}
-    .today{color:#3E7CB1}
-  </style>
+  .cal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1rem 0 1.25rem;}
+  .cal-title{font-size:1.25rem;margin:0;font-weight:700;}
+  .cal-nav{display:flex;gap:.5rem;}
+  .btn{padding:.45rem .7rem;border:1px solid #e6ebf2;background:#fff;border-radius:10px;cursor:pointer}
+  .btn:hover{background:#f8fafc}
+
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-dow{background:#f8fafc;border:1px solid #e6ebf2;border-radius:10px;padding:.4rem 0;text-align:center;font-weight:600;color:#555}
+  .cal-cell{min-height:110px;border:1px solid #e6ebf2;border-radius:10px;background:#fff;padding:.5rem;display:flex;flex-direction:column}
+  .cal-cell.is-today{outline:2px solid var(--accent,#F17300)}
+  .cal-date{font-size:.9rem;color:#333;margin-bottom:.35rem}
+  .cal-empty{opacity:.35}
+
+  .evt-chip{font-size:.82rem;line-height:1.2;background:#054A910D;border:1px solid #e6ebf2;border-radius:8px;padding:.25rem .35rem;margin:.15rem 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .cal-legend{display:flex;gap:.5rem;align-items:center;margin:.75rem 0 0;color:#666;font-size:.9rem}
+  .dot{width:10px;height:10px;border-radius:50%;background:#054A91;display:inline-block}
+
+  /* ===== Modal (fixed layout/spacing) ===== */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:1rem;z-index:9999}
+  .modal.open{display:flex}
+  .modal-card{
+    width:min(560px,92vw);
+    max-height:90vh;
+    background:#fff;border-radius:14px;border:1px solid #e6ebf2;box-shadow:0 8px 30px rgba(0,0,0,.12);
+    display:flex;flex-direction:column;overflow:hidden
+  }
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #eef2f7}
+  .modal-title{font-size:1.1rem;margin:0}
+  .modal-body{
+    padding:1rem;
+    overflow:auto;
+    display:grid;
+    gap:.9rem;
+    grid-template-columns:1fr;
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+  @media (max-width:640px){ .form-row{grid-template-columns:1fr;} }
+
+  label{display:block;font-size:.9rem;color:#333;margin:0 0 .35rem}
+  input[type="text"],input[type="date"],input[type="time"],textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #e6ebf2;border-radius:10px;
+    padding:.6rem .7rem;font:inherit;line-height:1.3;
+    background:#fff;
+  }
+  textarea{min-height:130px;resize:vertical}
+
+  .modal-foot{
+    margin-top:auto;
+    display:flex;justify-content:space-between;gap:.5rem;padding:.75rem 1rem 1rem;border-top:1px solid #eef2f7
+  }
+  .btn-primary{background:var(--accent,#F17300);color:#fff;border-color:transparent}
+  .btn-danger{border-color:#ffd8d8;background:#fff;color:#b42318}
+  .btn-ghost{background:transparent}
+  .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+</style>
 </head>
-<body class="events-page" data-page="events">
+<body class="events-page">
+<!-- Header partial -->
+<div id="site-header"></div>
 
-  <main class="container">
-    <h1 class="events-title">Events</h1>
-
-    <div class="calendar-bar">
-      <button id="prevBtn" class="btn">Previous</button>
-      <button id="todayBtn" class="btn primary">Today</button>
-      <button id="nextBtn" class="btn">Next</button>
-      <div class="spacer"></div>
+<main>
+  <!-- Calendar -->
+  <div class="calendar-wrap">
+    <div class="cal-toolbar">
+      <div class="cal-nav">
+        <button aria-label="Previous month" class="btn" id="prevBtn">‹ Prev</button>
+        <button aria-label="Jump to today" class="btn" id="todayBtn">Today</button>
+        <button aria-label="Next month" class="btn" id="nextBtn">Next ›</button>
+      </div>
+      <h2 class="cal-title" id="calTitle">Month YYYY</h2>
+      <button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
     </div>
 
-    <section class="calendar-wrap">
-      <div id="calendarDow" class="calendar-grid"></div>
-      <div id="calendarGrid" class="calendar-grid"></div>
-    </section>
-  </main>
+    <div class="cal-grid" id="dowRow">
+      <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
+      <div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
+    </div>
+    <div aria-live="polite" class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend"><span class="dot"></span> Event</div>
+  </div>
+</main>
 
-  <script src="/israelite-research/js/calendar.js"></script>
+<!-- Footer partial -->
+<div id="site-footer"></div>
+
+<!-- Add/Edit Event Modal -->
+<div aria-labelledby="modalTitle" aria-modal="true" class="modal" id="eventModal" role="dialog">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 class="modal-title" id="modalTitle">Add Event</h3>
+      <button aria-label="Close" class="btn btn-ghost" id="closeModal">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-row">
+        <div>
+          <label for="evtDate">Date</label>
+          <input id="evtDate" type="date"/>
+        </div>
+        <div>
+          <label for="evtTime">Time <span class="muted">(optional)</span></label>
+          <input id="evtTime" type="time"/>
+        </div>
+      </div>
+
+      <div>
+        <label for="evtTitle">Title</label>
+        <input id="evtTitle" placeholder="e.g., Bible Study" type="text"/>
+      </div>
+
+      <div>
+        <label for="evtDesc">Description <span class="muted">(optional)</span></label>
+        <textarea id="evtDesc" placeholder="Notes, location, link…"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-danger" id="deleteEvent" style="display:none">Delete</button>
+      <div style="margin-left:auto;display:flex;gap:.5rem">
+        <button class="btn" id="cancelEvent">Cancel</button>
+        <button class="btn btn-primary" id="saveEvent">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Partials include -->
+<script src="/israelite-research/js/include.js"></script>
+
+<!-- Minimal calendar logic (localStorage-based) -->
+<script>
+(function(){
+  const grid = document.getElementById('calGrid');
+  const titleEl = document.getElementById('calTitle');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const todayBtn = document.getElementById('todayBtn');
+  const addEventBtn = document.getElementById('addEventBtn');
+
+  const modal = document.getElementById('eventModal');
+  const closeModal = document.getElementById('closeModal');
+  const cancelEvent = document.getElementById('cancelEvent');
+  const saveEvent = document.getElementById('saveEvent');
+  const deleteEventBtn = document.getElementById('deleteEvent');
+
+  const evtDate = document.getElementById('evtDate');
+  const evtTime = document.getElementById('evtTime');
+  const evtTitle = document.getElementById('evtTitle');
+  const evtDesc = document.getElementById('evtDesc');
+  const modalTitle = document.getElementById('modalTitle');
+
+  const STORAGE_KEY = 'ir_events_v1';
+  let events = loadEvents();
+  let current = new Date();
+  let editingId = null;
+
+  function loadEvents(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function saveEvents(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+  }
+
+  function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function fmtDate(d){ return d instanceof Date
+    ? `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
+    : d; }
+
+  function render(){
+    const first = startOfMonth(current);
+    const last  = endOfMonth(current);
+    const startDow = first.getDay();
+    const totalDays = last.getDate();
+
+    titleEl.textContent = first.toLocaleString(undefined, {month:'long', year:'numeric'});
+
+    grid.innerHTML = '';
+    for(let i=0;i<startDow;i++){
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell cal-empty';
+      grid.appendChild(cell);
+    }
+    const todayStr = fmtDate(new Date());
+    for(let day=1; day<=totalDays; day++){
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+      const dateObj = new Date(current.getFullYear(), current.getMonth(), day);
+      const dateStr = fmtDate(dateObj);
+      if(dateStr === todayStr) cell.classList.add('is-today');
+
+      const dateEl = document.createElement('div');
+      dateEl.className = 'cal-date';
+      dateEl.textContent = day;
+      cell.appendChild(dateEl);
+
+      const dayEvents = events.filter(e => e.date === dateStr);
+      dayEvents.slice(0,3).forEach(e => {
+        const chip = document.createElement('div');
+        chip.className = 'evt-chip';
+        chip.textContent = e.time ? `${e.time} — ${e.title}` : e.title;
+        chip.title = e.desc || '';
+        chip.addEventListener('click', (ev) => { ev.preventDefault(); openEdit(e); });
+        cell.appendChild(chip);
+      });
+      if(dayEvents.length > 3){
+        const more = document.createElement('div');
+        more.className = 'evt-chip';
+        more.textContent = `+${dayEvents.length-3} more`;
+        more.addEventListener('click', (ev)=>{ ev.preventDefault(); openAdd(dateStr); });
+        cell.appendChild(more);
+      }
+      cell.addEventListener('click', (ev)=>{
+        if(ev.target.classList.contains('evt-chip')) return;
+        openAdd(dateStr);
+      });
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function openAdd(dateStr){
+    editingId = null;
+    modalTitle.textContent = 'Add Event';
+    evtDate.value = dateStr || fmtDate(new Date());
+    evtTime.value = '';
+    evtTitle.value = '';
+    evtDesc.value = '';
+    deleteEventBtn.style.display = 'none';
+    modal.classList.add('open');
+    setTimeout(()=>evtTitle.focus(), 0);
+  }
+
+  function openEdit(e){
+    editingId = e.id;
+    modalTitle.textContent = 'Edit Event';
+    evtDate.value = e.date;
+    evtTime.value = e.time || '';
+    evtTitle.value = e.title || '';
+    evtDesc.value = e.desc || '';
+    deleteEventBtn.style.display = 'inline-block';
+    modal.classList.add('open');
+    setTimeout(()=>evtTitle.focus(), 0);
+  }
+
+  function close(){ modal.classList.remove('open'); }
+
+  function onSave(){
+    const date = evtDate.value;
+    const title = evtTitle.value.trim();
+    const time = evtTime.value.trim();
+    const desc = evtDesc.value.trim();
+    if(!date || !title){ alert('Please provide a date and title.'); return; }
+
+    if(editingId){
+      const idx = events.findIndex(x => x.id === editingId);
+      if(idx >= 0){ events[idx] = { ...events[idx], date, title, time, desc }; }
+    }else{
+      const id = 'evt_' + Math.random().toString(36).slice(2,9);
+      events.push({ id, date, title, time, desc });
+    }
+    saveEvents(); close(); render();
+  }
+
+  function onDelete(){
+    if(!editingId) return;
+    events = events.filter(x => x.id !== editingId);
+    saveEvents(); close(); render();
+  }
+
+  prevBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()-1); render(); });
+  nextBtn.addEventListener('click', ()=>{ current.setMonth(current.getMonth()+1); render(); });
+  todayBtn.addEventListener('click', ()=>{ current = new Date(); render(); });
+  addEventBtn.addEventListener('click', ()=> openAdd(fmtDate(new Date())));
+
+  closeModal.addEventListener('click', close);
+  cancelEvent.addEventListener('click', close);
+  deleteEventBtn.addEventListener('click', onDelete);
+  saveEvent.addEventListener('click', onSave);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) close(); });
+
+  render();
+})();
+</script>
 </body>
 </html>
