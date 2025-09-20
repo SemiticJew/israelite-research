@@ -1,188 +1,213 @@
-// js/chapter.js
-(function () {
-  function param(name) {
-    const p = new URLSearchParams(location.search);
-    return p.get(name) ? decodeURIComponent(p.get(name)) : null;
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("calendarGrid");
+  const dow = document.getElementById("calendarDow");
+  const monthSelect = document.getElementById("monthSelect");
+  const daySelect = document.getElementById("daySelect");
+  const yearSelect = document.getElementById("yearSelect");
+  const prevBtn = document.getElementById("prevBtn");
+  const todayBtn = document.getElementById("todayBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  const drawer = document.getElementById("eventDrawer");
+  const drawerTitle = document.getElementById("drawerTitle");
+  const drawerBody = document.getElementById("drawerBody");
+  const drawerClose = document.getElementById("drawerClose");
+
+  // DOW header
+  const dowLabels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  dow.innerHTML = dowLabels.map(l => `<div class="dow">${l}</div>`).join("");
+
+  // ===== EVENTS LIVE HERE (no JSON) =====
+  // type: xspace | youtube | discord | sabbath | newmoon | feast
+  const EVENTS = [
+    { date:"2025-09-21", time:"7:00 PM",  label:"X Space: Prophetic Q&A",    type:"xspace",  url:"" },
+    { date:"2025-09-22", time:"8:30 PM",  label:"YouTube Live: Semitic Jew", type:"youtube", url:"" },
+    { date:"2025-09-24", time:"6:00 PM",  label:"Discord Live: Bible Study", type:"discord", url:"" },
+    { date:"2025-09-27", time:"",         label:"Sabbath",                   type:"sabbath" },
+    { date:"2025-10-02", time:"",         label:"New Moon",                  type:"newmoon" },
+    { date:"2025-10-13", time:"All Day",  label:"Feast of Tabernacles",      type:"feast" },
+    // extras to show overflow behavior
+    { date:"2025-09-24", time:"7:30 PM",  label:"Discord Live: Q&A",         type:"discord" },
+    { date:"2025-09-24", time:"9:00 PM",  label:"X Space: After Hours",      type:"xspace"  },
+    { date:"2025-09-24", time:"",         label:"Sabbath Prep",              type:"sabbath" }
+  ];
+  // ======================================
+
+  let current = new Date();
+  const today = new Date();
+  const pad = (n) => n.toString().padStart(2,"0");
+  const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+
+  function populateSelectors(date){
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    monthSelect.innerHTML = monthNames.map((m,i)=>`<option value="${i}" ${i===date.getMonth()?"selected":""}>${m}</option>`).join("");
+
+    const dim = new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
+    daySelect.innerHTML = Array.from({length: dim}, (_,i)=>{
+      const d = i+1;
+      return `<option value="${d}" ${d===date.getDate()?"selected":""}>${d}</option>`;
+    }).join("");
+
+    const cy = new Date().getFullYear();
+    let yHtml = "";
+    for(let y=cy-50; y<=cy+10; y++){
+      yHtml += `<option value="${y}" ${y===date.getFullYear()?"selected":""}>${y}</option>`;
+    }
+    yearSelect.innerHTML = yHtml;
   }
 
-  function pathForChapter(book, chapter) {
-    // data/tanakh/Genesis/1.json
-    return `../data/tanakh/${encodeURIComponent(book)}/${chapter}.json`;
-  }
+  function render(date){
+    populateSelectors(date);
 
-  function setNavLinks(book, chapter, maxCh) {
-    const bkHref = `book.html?book=${encodeURIComponent(book)}`;
-    const prev = Math.max(1, chapter - 1);
-    const next = Math.min(maxCh, chapter + 1);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstOfMonth = new Date(year, month, 1);
+    const firstDow = firstOfMonth.getDay();
+    const dim = new Date(year, month+1, 0).getDate();
+    const prevDim = new Date(year, month, 0).getDate();
+    const leading = firstDow;
 
-    // Top
-    document.getElementById('bookLink').href = bkHref;
-    document.getElementById('prevLink').href = `chapter.html?book=${encodeURIComponent(book)}&chapter=${prev}`;
-    document.getElementById('nextLink').href = `chapter.html?book=${encodeURIComponent(book)}&chapter=${next}`;
-    // Bottom
-    document.getElementById('bookLinkBottom').href = bkHref;
-    document.getElementById('prevLinkBottom').href = `chapter.html?book=${encodeURIComponent(book)}&chapter=${prev}`;
-    document.getElementById('nextLinkBottom').href = `chapter.html?book=${encodeURIComponent(book)}&chapter=${next}`;
-  }
+    let html = "";
 
-  async function loadJSON(url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to load ${url}`);
-    return res.json();
-  }
-
-  function renderVerse(container, v) {
-    const wrap = document.createElement('article');
-    wrap.className = 'verse-block';
-    wrap.id = `v${v.num}`;
-
-    const num = document.createElement('a');
-    num.className = 'verse-num';
-    num.href = `#v${v.num}`;
-    num.textContent = v.num;
-
-    const text = document.createElement('div');
-    text.className = 'verse-text';
-    text.textContent = v.text;
-
-    // Panels first so we can wire aria-controls accurately
-    const xrefs = document.createElement('div');
-    xrefs.className = 'panel xrefs';
-    xrefs.id = `xrefs-v${v.num}`;
-    if (Array.isArray(v.crossRefs) && v.crossRefs.length) {
-      xrefs.innerHTML = `
-        <div><strong>Cross References</strong></div>
-        <ul style="margin:.5rem 0 0; padding-left:1rem;">
-          ${v.crossRefs.map(cr => `<li><a href="${cr.url || '#'}" target="_blank" rel="noopener">${cr.ref}</a>${cr.note ? ` — ${cr.note}` : ''}</li>`).join('')}
-        </ul>
-      `;
-    } else {
-      xrefs.innerHTML = `<em>No cross references yet.</em>`;
+    // previous month tail
+    for (let i=leading; i>0; i--){
+      html += dayCell(year, month-1, prevDim - i + 1, true);
+    }
+    // current month
+    for (let d=1; d<=dim; d++){
+      html += dayCell(year, month, d, false);
+    }
+    // next month head
+    const total = leading + dim;
+    const trailing = (7 - (total % 7)) % 7;
+    for (let t=1; t<=trailing; t++){
+      html += dayCell(year, month+1, t, true);
     }
 
-    const comm = document.createElement('div');
-    comm.className = 'panel commentary';
-    comm.id = `comm-v${v.num}`;
-    comm.innerHTML = `
-      <div><strong>Your Commentary</strong></div>
-      <textarea placeholder="Add notes for ${v.num}…">${v.commentary || ''}</textarea>
-      <div style="margin-top:.5rem; font-size: var(--fs-small-text); color:#666;">
-        Notes are local to this file (static site). Persisting edits requires updating the JSON.
+    grid.innerHTML = html;
+
+    // open drawer on day click
+    grid.querySelectorAll(".day").forEach(cell => {
+      cell.addEventListener("click", () => {
+        const ds = cell.getAttribute("data-date");
+        const [Y, M, D] = ds.split("-").map(Number);
+        openDrawer(new Date(Y, M-1, D));
+      });
+    });
+  }
+
+  function dayCell(y, m, d, muted){
+    const view = new Date(y, m, d);
+    const key = ymd(view);
+    const isToday = (view.getFullYear()===today.getFullYear()
+                  && view.getMonth()===today.getMonth()
+                  && view.getDate()===today.getDate());
+
+    const list = EVENTS.filter(e => e.date === key);
+    const previews = list.slice(0,2).map(e => chipHTML(e)).join("");
+    const more = list.length > 2 ? `<a class="more-link">+${list.length-2} more</a>` : "";
+
+    return `
+      <div class="day ${muted?"muted":""}" data-date="${key}" tabindex="0" role="button" aria-label="View events for ${key}">
+        <div class="date-badge">
+          <span>${d}</span>
+          ${isToday ? `<span class="today">Today</span>` : ``}
+        </div>
+        <div class="events">${previews}${more}</div>
       </div>
     `;
-
-    const study = document.createElement('div');
-    study.className = 'panel study';
-    study.id = `study-v${v.num}`;
-    study.innerHTML = `
-      <div><strong>Study Tools</strong></div>
-      <ul style="margin:.5rem 0 0; padding-left:1rem;">
-        <li>Compare translations (future)</li>
-        <li>Original language / morphology (future)</li>
-        <li>Audio (future)</li>
-      </ul>
-    `;
-
-    // Tools toolbar with ARIA wiring
-    const tools = document.createElement('div');
-    tools.className = 'verse-tools';
-
-    const btnX = document.createElement('button');
-    btnX.className = 'tool-btn';
-    btnX.dataset.action = 'xrefs';
-    btnX.setAttribute('aria-controls', xrefs.id);
-    btnX.setAttribute('aria-expanded', 'false');
-    btnX.textContent = 'Cross Refs';
-
-    const btnC = document.createElement('button');
-    btnC.className = 'tool-btn';
-    btnC.dataset.action = 'comm';
-    btnC.setAttribute('aria-controls', comm.id);
-    btnC.setAttribute('aria-expanded', 'false');
-    btnC.textContent = 'Commentary';
-
-    const btnS = document.createElement('button');
-    btnS.className = 'tool-btn';
-    btnS.dataset.action = 'study';
-    btnS.setAttribute('aria-controls', study.id);
-    btnS.setAttribute('aria-expanded', 'false');
-    btnS.textContent = 'Study';
-
-    tools.append(btnX, btnC, btnS);
-
-    function setExpanded(btn, expanded) {
-      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-    }
-    function closeAll() {
-      [xrefs, comm, study].forEach(p => p.classList.remove('open'));
-      tools.querySelectorAll('.tool-btn[aria-expanded="true"]').forEach(b => setExpanded(b, false));
-    }
-
-    // Click-to-toggle behavior (open/close same button; switch between panels)
-    tools.addEventListener('click', (e) => {
-      const btn = e.target.closest('.tool-btn');
-      if (!btn) return;
-
-      const action = btn.dataset.action;
-      const panel = action === 'xrefs' ? xrefs : action === 'comm' ? comm : study;
-      const isOpen = panel.classList.contains('open');
-
-      closeAll();
-      if (!isOpen) {
-        panel.classList.add('open');
-        setExpanded(btn, true);
-      }
-    });
-
-    // Optional: Escape closes any open panel in this verse
-    wrap.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAll();
-      }
-    });
-
-    // Assemble verse block
-    wrap.appendChild(num);
-    wrap.appendChild(text);
-    wrap.appendChild(tools);
-    wrap.appendChild(xrefs);
-    wrap.appendChild(comm);
-    wrap.appendChild(study);
-    container.appendChild(wrap);
   }
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const book = param('book');
-    const chapter = parseInt(param('chapter') || '1', 10);
+  function chipHTML(e){
+    // chips use background color from CSS by [data-type]
+    return `
+      <div class="chip" data-type="${e.type}" title="${escapeHtml(e.label)}">
+        ${e.time ? `<span class="time">${e.time}</span>` : ``}
+        <span class="label">${escapeHtml(e.label)}</span>
+      </div>
+    `;
+  }
 
-    const title = document.getElementById('title');
-    const crumbBook = document.getElementById('crumbBook');
-    const crumbChapter = document.getElementById('crumbChapter');
-    const versesWrap = document.getElementById('verses');
+  function openDrawer(date){
+    const key = ymd(date);
+    const items = EVENTS.filter(e => e.date === key);
 
-    if (!book) {
-      title.textContent = 'Select a Book';
-      versesWrap.innerHTML = '<p>Please open this page with ?book=BookName&chapter=1</p>';
-      return;
-    }
+    drawerTitle.textContent = `Events — ${key}`;
+    drawerBody.innerHTML = items.length
+      ? items.map(e => fullEventHTML(e)).join("")
+      : `<p class="muted">No events for this date.</p>`;
 
-    try {
-      const data = await loadJSON(pathForChapter(book, chapter));
-      const books = await loadJSON('../data/tanakh/books.json');
-      const maxCh = books[book] || (data.maxChapter || chapter);
+    drawer.hidden = false;
+    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 
-      title.textContent = `${book} ${chapter}`;
-      crumbBook.textContent = book;
-      crumbBook.href = `book.html?book=${encodeURIComponent(book)}`;
-      crumbChapter.textContent = `Chapter ${chapter}`;
+  function fullEventHTML(e){
+    const { bg, fg } = colorForType(e.type);
+    return `
+      <div class="evt-full" style="background:${bg}; color:${fg}; border-color:${fg === '#fff' ? 'rgba(255,255,255,.18)' : 'rgba(0,0,0,.12)'}">
+        <div>
+          <div class="evt-title">${escapeHtml(e.label)}</div>
+          <div class="evt-meta">
+            ${e.time ? `<span><strong>Time:</strong> ${escapeHtml(e.time)}</span>` : ``}
+            ${e.type ? `<span><strong>Type:</strong> ${escapeHtml(e.type)}</span>` : ``}
+            ${e.location ? `<span><strong>Location:</strong> ${escapeHtml(e.location)}</span>` : ``}
+          </div>
+          ${e.notes ? `<p class="evt-notes">${escapeHtml(e.notes)}</p>` : ``}
+        </div>
+        ${e.url ? `<div class="evt-actions"><a href="${e.url}" target="_blank" rel="noopener" style="color:${fg};text-decoration:underline">Open link</a></div>` : ``}
+      </div>
+    `;
+  }
 
-      versesWrap.innerHTML = '';
-      (data.verses || []).forEach(v => renderVerse(versesWrap, v));
+  function colorForType(type){
+    const s = getComputedStyle(document.documentElement);
+    const hex = {
+      xspace:  s.getPropertyValue('--evt-xspace').trim(),
+      youtube: s.getPropertyValue('--evt-youtube').trim(),
+      discord: s.getPropertyValue('--evt-discord').trim(),
+      sabbath: s.getPropertyValue('--evt-sabbath').trim(),
+      newmoon: s.getPropertyValue('--evt-newmoon').trim(),
+      feast:   s.getPropertyValue('--evt-feast').trim(),
+    }[type] || '#999';
 
-      setNavLinks(book, chapter, maxCh);
-    } catch (err) {
-      title.textContent = `${book} ${chapter}`;
-      versesWrap.innerHTML = `<p>Could not load data for ${book} ${chapter}. Make sure the file exists at <code>${pathForChapter(book, chapter)}</code>.</p>`;
-    }
-  });
-})();
+    // Pick contrasting foreground automatically
+    const fg = prefersLightText(hex) ? '#fff' : '#111';
+    return { bg: hex, fg };
+  }
+
+  function prefersLightText(hex){
+    // luminance check to decide white/black text
+    const c = hex.replace('#','');
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    // perceived luminance
+    const L = (0.299*r + 0.587*g + 0.114*b)/255;
+    return L < 0.6;
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+
+  // Controls
+  monthSelect.addEventListener("change", () => { current.setMonth(parseInt(monthSelect.value,10)); clampDay(); render(current); });
+  daySelect  .addEventListener("change", () => { current.setDate(parseInt(daySelect.value,10)); render(current); });
+  yearSelect .addEventListener("change", () => { current.setFullYear(parseInt(yearSelect.value,10)); clampDay(); render(current); });
+  prevBtn    .addEventListener("click", () => { current.setMonth(current.getMonth()-1); clampDay(); render(current); });
+  nextBtn    .addEventListener("click", () => { current.setMonth(current.getMonth()+1); clampDay(); render(current); });
+  todayBtn   .addEventListener("click", () => { current = new Date(); render(current); });
+
+  function clampDay(){
+    const dim = new Date(current.getFullYear(), current.getMonth()+1, 0).getDate();
+    if (current.getDate() > dim) current.setDate(dim);
+  }
+
+  // Init
+  render(current);
+
+  // Close drawer
+  function closeDrawer(){ drawer.hidden = true; }
+  drawerClose.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+});
