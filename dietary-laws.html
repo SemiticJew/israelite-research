@@ -29,7 +29,7 @@
   /* Tree */
   .tree{margin:14px 0 36px}
   .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
-    .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
+  .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
   .tree .group{margin:8px 0 0 0; padding:0}
   .tree .group details{margin:6px 0}
   .tree .leaf{list-style:none; margin:4px 0; display:flex; align-items:center; gap:.5rem}
@@ -47,38 +47,49 @@
 
   /* Hidden during filter */
   .hide{ display:none !important; }
-/* Remove default arrows */
-.tree summary::-webkit-details-marker { display: none; }
-.tree summary { list-style: none; }
 
-/* Chevron + highlight */
-.tree summary {
-  padding: .4rem .6rem .4rem 1.5rem;
-  border-radius: 8px;
-  position: relative;
-  cursor: pointer;
-  font-weight: 800;
-  color: var(--brand);
-  transition: background .2s;
-}
-.tree summary:hover {
-  background: #f8fafc;
-}
-.tree summary::before {
-  content: "";
-  border: solid var(--accent);
-  border-width: 0 .15em .15em 0;
-  display: inline-block;
-  padding: .25em;
-  position: absolute;
-  left: .5rem;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  transition: transform .2s;
-}
-.tree details[open] > summary::before {
-  transform: translateY(-50%) rotate(135deg);
-}</style>
+  /* Chevron style (your chosen version) */
+  .tree summary::-webkit-details-marker { display: none; }
+  .tree summary { list-style: none; }
+  .tree summary {
+    padding: .4rem .6rem .4rem 1.5rem;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    font-weight: 800;
+    color: var(--brand);
+    transition: background .2s;
+  }
+  .tree summary:hover { background: #f8fafc; }
+  .tree summary::before {
+    content: "";
+    border: solid var(--accent);
+    border-width: 0 .15em .15em 0;
+    display: inline-block;
+    padding: .25em;
+    position: absolute;
+    left: .5rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    transition: transform .2s;
+  }
+  .tree details[open] > summary::before {
+    transform: translateY(-50%) rotate(135deg);
+  }
+
+  /* Brand SVG icons */
+  .ico{
+    width: 18px; height: 18px; vertical-align: -3px;
+    margin-right: .45rem; color: var(--brand);
+    flex: 0 0 18px;
+  }
+  .ico path, .ico circle, .ico rect, .ico polygon, .ico line { fill: currentColor; stroke: currentColor; }
+
+  /* Make the summary line icon + text align nicely */
+  .tree summary .sumline{
+    display:inline-flex; align-items:center; gap:.45rem;
+  }
+</style>
 </head>
 <body>
 <div id="site-header"></div>
@@ -99,54 +110,34 @@
 
 <div id="site-footer"></div>
 
-<!-- Include universal header/footer loader -->
-<script src="/israelite-research/js/include.js" defer></script>
-
-<!-- Use the same Scripture hover as articles -->
-<script src="/israelite-research/js/citations.js" defer></script>
-<script src="/israelite-research/js/xref-hover.js" defer></script>
+<script src="/israelite-research/js/include.js"></script>
 
 <script>
   // --- Book slug map for links (extend anytime) ---
   const BOOK_SLUG = {
     "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
-    "Joshua":"joshua","Judges":"judges","Ruth":"ruth","1 Samuel":"1-samuel","2 Samuel":"2-samuel",
-    "1 Kings":"1-kings","2 Kings":"2-kings","1 Chronicles":"1-chronicles","2 Chronicles":"2-chronicles",
-    "Ezra":"ezra","Nehemiah":"nehemiah","Esther":"esther","Job":"job","Psalms":"psalms","Proverbs":"proverbs",
-    "Ecclesiastes":"ecclesiastes","Song of Solomon":"song-of-songs","Isaiah":"isaiah","Jeremiah":"jeremiah",
-    "Lamentations":"lamentations","Ezekiel":"ezekiel","Daniel":"daniel","Hosea":"hosea","Joel":"joel","Amos":"amos",
-    "Obadiah":"obadiah","Jonah":"jonah","Micah":"micah","Nahum":"nahum","Habakkuk":"habakkuk","Zephaniah":"zephaniah",
-    "Haggai":"haggai","Zechariah":"zechariah","Malachi":"malachi",
-    "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans",
-    "1 Corinthians":"1-corinthians","2 Corinthians":"2-corinthians","Galatians":"galatians","Ephesians":"ephesians",
-    "Philippians":"philippians","Colossians":"colossians","1 Thessalonians":"1-thessalonians","2 Thessalonians":"2-thessalonians",
-    "1 Timothy":"1-timothy","2 Timothy":"2-timothy","Titus":"titus","Philemon":"philemon","Hebrews":"hebrews",
-    "James":"james","1 Peter":"1-peter","2 Peter":"2-peter","1 John":"1-john","2 John":"2-john","3 John":"3-john",
-    "Jude":"jude","Revelation":"revelation"
+    "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans"
   };
 
   function parseRef(ref){
-    const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z][A-Za-z\s\-]+?)\s+(\d+):(\d+)$/);
+    const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
     if(!m) return null;
     const bookName = m[1].replace(/\s+/g," ").trim();
     const ch = parseInt(m[2],10), v = parseInt(m[3],10);
-    const slug = BOOK_SLUG[bookName] || bookName.toLowerCase().replace(/\s+/g,'-');
+    const base = bookName.replace(/^1\s|^2\s|^3\s/,'');
+    const slug = BOOK_SLUG[base] || BOOK_SLUG[bookName] || base.toLowerCase();
     return { book:bookName, ch, v, slug };
-  }
-  function canonFor(book){
-    const OT = new Set(["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"]);
-    return OT.has(book) ? "tanakh" : "newtestament";
   }
   function refHref(ref){
     const p = parseRef(ref); if(!p) return '#';
-    const canon = canonFor(p.book);
+    const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
     return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
   }
 
-  // ---------- DATA with modern examples & hidden-ingredient watchlist ----------
+  /* ======================= DATA (labels without emojis) ======================= */
   const DATA = {
     "Clean": {
-      "🐄 Mammals": {
+      "Mammals": {
         refs: ["Leviticus 11:3", "Deuteronomy 14:4", "Deuteronomy 14:6"],
         examples: [
           {name:"Cattle (beef)", why:"cloven hoof, chews cud"},
@@ -155,7 +146,7 @@
           {name:"Deer/Antelope", why:"clean wild species (Deut 14:5)"}
         ]
       },
-      "🐟 Fish (fins & scales)": {
+      "Fish (fins & scales)": {
         refs: ["Leviticus 11:9", "Deuteronomy 14:9"],
         examples: [
           {name:"Salmon, Trout, Char"},
@@ -165,7 +156,7 @@
           {name:"Tuna*", why:"scales debate by species—verify"}
         ]
       },
-      "🐦 Birds (general allowance)": {
+      "Birds (general allowance)": {
         refs: ["Deuteronomy 14:11"],
         examples: [
           {name:"Chicken"},
@@ -178,7 +169,7 @@
     },
 
     "Unclean": {
-      "🐪 Mammals (do not meet both signs)": {
+      "Mammals (do not meet both signs)": {
         refs: ["Leviticus 11:4", "Leviticus 11:7", "Leviticus 11:8", "Deuteronomy 14:7", "Deuteronomy 14:8"],
         examples: [
           {name:"Pig (pork)", why:"split hoof but does not chew cud"},
@@ -187,7 +178,7 @@
           {name:"Rock badger (hyrax)", why:"chews cud (appearance) but no split hoof"}
         ]
       },
-      "🦐 Aquatic (no fins & scales)": {
+      "Aquatic (no fins & scales)": {
         refs: ["Leviticus 11:10"],
         examples: [
           {name:"Shrimp, Prawn"},
@@ -197,7 +188,7 @@
           {name:"Eel, Catfish*", why:"scales absent/non-removable"}
         ]
       },
-      "🦅 Birds (forbidden list patterns)": {
+      "Birds (forbidden list patterns)": {
         refs: ["Leviticus 11:13", "Leviticus 11:19", "Deuteronomy 14:12", "Deuteronomy 14:18"],
         examples: [
           {name:"Birds of prey", why:"eagle, hawk, falcon, kite, osprey"},
@@ -207,7 +198,7 @@
           {name:"Bat", why:"explicitly forbidden"}
         ]
       },
-      "🐜 Insects": {
+      "Insects": {
         refs: ["Leviticus 11:20", "Leviticus 11:23"],
         examples: [
           {name:"Most winged creeping things", why:"unclean"},
@@ -295,7 +286,54 @@
     }
   };
 
-  // ---------- Render & Search ----------
+  /* ======================= Icon helpers ======================= */
+  function iconCow(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h2l2-2h8l2 2h2v3h-2v5a2 2 0 0 1-2 2h-1v-3h-2v3H8a2 2 0 0 1-2-2v-5H4V8z"/></svg>';
+  }
+  function iconFish(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3-5 9-5c5 0 9 5 9 5s-4 5-9 5c-6 0-9-5-9-5zm13 0a2 2 0 1 0 0-0.01z"/></svg>';
+  }
+  function iconBird(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l6-2 3-6 3 6 6 2-6 2-3 6-3-6-6-2z"/></svg>';
+  }
+  function iconBug(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v2H3v-2a4 4 0 0 1 4-4zm5-5l3 3H9l3-3zM4 14v3h3v-3H4zm13 0v3h3v-3h-3z"/></svg>';
+  }
+  function iconDrop(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>';
+  }
+  function iconWarn(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2L12 3zm0 5l-1 7h2l-1-7zm0 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
+  }
+  function iconCheese(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-5 9 5v8H3v-8zm5 4a2 2 0 1 0 0-.01zM15 14a1 1 0 1 0 0-.01z"/></svg>';
+  }
+  function iconPot(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9zm-2-2h20v2H2V7z"/></svg>';
+  }
+  function iconCandy(){
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h6v6H9zM5 7l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2zm-14 8l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2z"/></svg>';
+  }
+
+  function iconFor(label){
+    const L = label.toLowerCase();
+    if (L.startsWith('mammals')) return iconCow();
+    if (L.startsWith('fish') || L.startsWith('aquatic')) return iconFish();
+    if (L.startsWith('birds')) return iconBird();
+    if (L.startsWith('insects')) return iconBug();
+    if (L === 'blood') return iconDrop();
+    if (L.startsWith('carcasses')) return iconWarn();
+    if (L.startsWith('certain fats')) return iconDrop();
+    if (L.startsWith('cheese')) return iconCheese();
+    if (L.startsWith('stocks') || L.startsWith('broths') || L.startsWith('flavorings')) return iconPot();
+    if (L.startsWith('confectionery') || L.includes('capsules')) return iconCandy();
+    if (L.startsWith('pork-derived')) return iconWarn();
+    if (L.startsWith('shellfish')) return iconFish();
+    if (L.startsWith('insect-derived')) return iconBug();
+    return iconWarn(); // default fallback
+  }
+
+  /* ======================= Render & Search ======================= */
   const tree = document.getElementById('dietTree');
 
   function renderTree(){
@@ -306,7 +344,8 @@
       sec.open = true;
       sec.className = 'sec';
       const sum = document.createElement('summary');
-      sum.textContent = section;
+      // Section title (no icon at section level)
+      sum.innerHTML = `<span class="sumline">${section}</span>`;
       sec.appendChild(sum);
 
       const wrap = document.createElement('div');
@@ -323,10 +362,11 @@
           refs = Array.isArray(payload.refs) ? payload.refs : [];
           examples = Array.isArray(payload.examples) ? payload.examples : [];
         }
-        gsum.innerHTML = `${label} <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
+        const icon = iconFor(label);
+        gsum.innerHTML = `<span class="sumline">${icon}${label}</span> <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
         grp.appendChild(gsum);
 
-        // Refs list (create xref-trigger links compatible with xref-hover.js)
+        // Refs list
         if (refs.length) {
           const ul = document.createElement('ul');
           ul.style.margin = '6px 0 0 18px'; ul.style.padding = '0';
@@ -334,9 +374,10 @@
             const li = document.createElement('li'); li.className = 'leaf';
             const a = document.createElement('a');
             a.className = 'law-link xref-trigger';
-            a.setAttribute('data-xref', r);
+            a.dataset.ref = r;
             a.href = refHref(r);
             a.textContent = r;
+            a.setAttribute('data-xref', r); // for hover script
             a.dataset.search = `ref ${r.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
             li.appendChild(a);
             ul.appendChild(li);
@@ -344,7 +385,7 @@
           grp.appendChild(ul);
         }
 
-        // Examples chips (with tooltips)
+        // Examples chips
         if (examples.length) {
           const chipWrap = document.createElement('div');
           chipWrap.className = 'chips';
@@ -358,12 +399,12 @@
             chip.title = tip;
             chip.setAttribute('aria-label', tip);
 
-            const main = document.createElement('span');
+            const main = document.createElement('span'); 
             main.textContent = name;
             chip.appendChild(main);
 
             if (why) {
-              const sm = document.createElement('small');
+              const sm = document.createElement('small'); 
               sm.textContent = '— ' + why;
               chip.appendChild(sm);
             }
@@ -384,13 +425,6 @@
 
     tree.innerHTML = '';
     tree.appendChild(frag);
-
-    // Re-init article-style hover for dynamically-added refs
-    if (window.XRef && typeof window.XRef.scan === "function") {
-      window.XRef.scan(document);
-    } else {
-      document.dispatchEvent(new CustomEvent("xref:refresh"));
-    }
   }
 
   function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
@@ -443,15 +477,27 @@
     });
   }
 
-  // Bootstrap render + search wiring
+  // Bootstrap render + search
+  renderTree();
+  // Re-init article-style hover for dynamically-added refs
   document.addEventListener('DOMContentLoaded', () => {
-    renderTree();
-    const search = document.getElementById('dietSearch');
-    const clearBtn = document.getElementById('dietClear');
-    const doFilter = debounce(applyFilter, 120);
-    search.addEventListener('input', e => doFilter(e.target.value));
-    clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+    if (window.XRef && typeof window.XRef.scan === "function") {
+      window.XRef.scan(document);
+    } else {
+      document.dispatchEvent(new CustomEvent("xref:refresh"));
+    }
   });
+
+  const search = document.getElementById('dietSearch');
+  const clearBtn = document.getElementById('dietClear');
+  const doFilter = debounce(applyFilter, 120);
+  search.addEventListener('input', e => doFilter(e.target.value));
+  clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
 </script>
+
+<!-- Use the same Scripture hover as articles -->
+<script src="/israelite-research/js/citations.js" defer></script>
+<script src="/israelite-research/js/xref-hover.js" defer></script>
+
 </body>
 </html>
