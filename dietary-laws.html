@@ -89,39 +89,43 @@
   .tree summary .sumline{
     display:inline-flex; align-items:center; gap:.45rem;
   }
-/* --- Example cards (#8) --- */
-.example-cards {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-}
-.example-card {
-  background: #fff;
-  border: 1px solid var(--sky);
-  border-radius: 12px;
-  padding: 10px 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.05);
-}
-.example-card .ex-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
-  color: var(--ink);
-}
-.example-card .why {
-  font-size: .85rem;
-  color: var(--muted);
-  margin-top: 6px;
-}
-.badge {
-  font-size: .75rem;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-weight: 700;
-}
-.example-card.forbidden .badge { background: #F17300; color: #fff; }
-.example-card.allowed .badge   { background: #054A91; color: #fff; }
+
+  /* --- Example cards (#8 expanded to all groups) --- */
+  .example-cards {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .example-card {
+    background: #fff;
+    border: 1px solid var(--sky);
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  .example-card .ex-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .example-card .why {
+    font-size: .85rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .badge {
+    font-size: .75rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+  .example-card.forbidden .badge { background: #F17300; color: #fff; }
+  .example-card.allowed   .badge { background: #054A91; color: #fff; }
+  .example-card.avoid     .badge { background: #3E7CB1; color: #fff; }
+  .example-card.verify    .badge { background: #81A4CD; color: #0b2340; }
+  .example-card.prohibited .badge { background: #F17300; color:#fff; }
 </style>
 </head>
 <body>
@@ -186,7 +190,7 @@
           {name:"Cod, Haddock, Pollock"},
           {name:"Sardine, Anchovy, Mackerel"},
           {name:"Carp, Tilapia"},
-          {name:"Tuna*", why:"scales debate by species—verify"}
+          {name:"Tuna*", why:"scales debate by species—verify", status:"verify"}
         ]
       },
       "Birds (general allowance)": {
@@ -194,7 +198,7 @@
         examples: [
           {name:"Chicken"},
           {name:"Turkey"},
-          {name:"Goose* / Duck*", why:"accepted by many; verify local tradition"},
+          {name:"Goose* / Duck*", why:"accepted by many; verify local tradition", status:"verify"},
           {name:"Dove / Pigeon", why:"used for offerings"},
           {name:"Quail"}
         ]
@@ -214,10 +218,10 @@
       "Aquatic (no fins & scales)": {
         refs: ["Leviticus 11:10"],
         examples: [
-          {name:"Shrimp, Prawn"},
-          {name:"Crab, Lobster"},
-          {name:"Oyster, Clam, Mussel, Scallop"},
-          {name:"Squid, Octopus"},
+          {name:"Shrimp, Prawn", why:"No fins & scales"},
+          {name:"Crab, Lobster", why:"No fins & scales"},
+          {name:"Oyster, Clam, Mussel, Scallop", why:"No fins & scales"},
+          {name:"Squid, Octopus", why:"No fins & scales"},
           {name:"Eel, Catfish*", why:"scales absent/non-removable"}
         ]
       },
@@ -235,7 +239,7 @@
         refs: ["Leviticus 11:20", "Leviticus 11:23"],
         examples: [
           {name:"Most winged creeping things", why:"unclean"},
-          {name:"Locust/Grasshopper families", why:"specific kinds permitted (Lev 11:22) if identified correctly"}
+          {name:"Locust/Grasshopper families", why:"specific kinds permitted (Lev 11:22) if identified correctly", status:"verify"}
         ]
       }
     },
@@ -267,53 +271,53 @@
       "Pork-derived (avoid)": {
         refs: ["Leviticus 11:7", "Deuteronomy 14:8"],
         examples: [
-          {name:"Gelatin (porcine)", why:"used in gummies, marshmallows, capsules"},
-          {name:"Lard / Pork fat", why:"baked goods, refried beans, pie crusts"},
-          {name:"Mono-/Diglycerides (animal)", why:"E471/E472—origin may be pork; verify plant vs animal"},
-          {name:"Pepsin/Lipase (animal)", why:"enzymes in some cheeses; verify microbial/vegetable"},
-          {name:"‘Natural flavors’ (meat-derived)", why:"can include pork stock/essence—ask vendor"}
+          {name:"Gelatin (porcine)", why:"used in gummies, marshmallows, capsules", status:"avoid"},
+          {name:"Lard / Pork fat", why:"baked goods, refried beans, pie crusts", status:"avoid"},
+          {name:"Mono-/Diglycerides (animal)", why:"E471/E472—origin may be pork; verify plant vs animal", status:"verify"},
+          {name:"Pepsin/Lipase (animal)", why:"enzymes in some cheeses; verify microbial/vegetable", status:"verify"},
+          {name:"‘Natural flavors’ (meat-derived)", why:"can include pork stock/essence—ask vendor", status:"verify"}
         ]
       },
       "Shellfish-derived (avoid)": {
         refs: ["Leviticus 11:10"],
         examples: [
-          {name:"Oyster sauce", why:"common in stir-fry sauces"},
-          {name:"Shrimp paste", why:"used in SE Asian condiments/curries"},
-          {name:"Imitation crab (surimi)", why:"often contains shellfish"},
-          {name:"Fish/seafood stock blends", why:"may include shellfish extracts"},
-          {name:"Krill oil supplements", why:"crustacean-derived"}
+          {name:"Oyster sauce", why:"common in stir-fry sauces", status:"avoid"},
+          {name:"Shrimp paste", why:"used in SE Asian condiments/curries", status:"avoid"},
+          {name:"Imitation crab (surimi)", why:"often contains shellfish", status:"avoid"},
+          {name:"Fish/seafood stock blends", why:"may include shellfish extracts", status:"avoid"},
+          {name:"Krill oil supplements", why:"crustacean-derived", status:"avoid"}
         ]
       },
       "Insect-derived (avoid except permitted locust kinds)": {
         refs: ["Leviticus 11:20", "Leviticus 11:23"],
         examples: [
-          {name:"Carmine/Cochineal (E120)", why:"red color in drinks/candies/yogurts"},
-          {name:"Shellac/Confectioner’s glaze (E904)", why:"candy/produce coating"},
-          {name:"Insect protein flours", why:"marketed as sustainable protein"}
+          {name:"Carmine/Cochineal (E120)", why:"red color in drinks/candies/yogurts", status:"avoid"},
+          {name:"Shellac/Confectioner’s glaze (E904)", why:"candy/produce coating", status:"avoid"},
+          {name:"Insect protein flours", why:"marketed as sustainable protein", status:"avoid"}
         ]
       },
       "Cheese & Enzymes (verify source)": {
         refs: ["Leviticus 11 (category context)"],
         examples: [
-          {name:"Animal rennet cheeses", why:"use microbial/vegetable rennet instead"},
-          {name:"Lipase (animal)", why:"used for flavor development—seek microbial"},
-          {name:"‘Parmesan’ style", why:"often animal rennet; check label or brand policy"}
+          {name:"Animal rennet cheeses", why:"use microbial/vegetable rennet instead", status:"verify"},
+          {name:"Lipase (animal)", why:"used for flavor development—seek microbial", status:"verify"},
+          {name:"‘Parmesan’ style", why:"often animal rennet; check label or brand policy", status:"verify"}
         ]
       },
       "Stocks, Broths, Flavorings (avoid if unclean)": {
         refs: ["Leviticus 11 (category context)"],
         examples: [
-          {name:"Pork broth / ham flavor", why:"soups, legumes, greens"},
-          {name:"Mixed ‘meat flavor’ packets", why:"can blend multiple animal bases"},
-          {name:"Ramen flavor bases", why:"may include pork or shellfish"}
+          {name:"Pork broth / ham flavor", why:"soups, legumes, greens", status:"avoid"},
+          {name:"Mixed ‘meat flavor’ packets", why:"can blend multiple animal bases", status:"avoid"},
+          {name:"Ramen flavor bases", why:"may include pork or shellfish", status:"avoid"}
         ]
       },
       "Confectionery & Capsules (verify gelatin source)": {
         refs: ["Leviticus 11:7-8 (category context)"],
         examples: [
-          {name:"Marshmallows/Gummies", why:"often porcine gelatin—look for fish/plant gelatin"},
-          {name:"Vitamin/med capsules", why:"ask for fish/plant-based or HPMC capsules"},
-          {name:"Desserts with ‘stabilizers’", why:"may include gelatin—confirm origin"}
+          {name:"Marshmallows/Gummies", why:"often porcine gelatin—look for fish/plant gelatin", status:"verify"},
+          {name:"Vitamin/med capsules", why:"ask for fish/plant-based or HPMC capsules", status:"verify"},
+          {name:"Desserts with ‘stabilizers’", why:"may include gelatin—confirm origin", status:"verify"}
         ]
       }
     }
@@ -377,7 +381,6 @@
       sec.open = true;
       sec.className = 'sec';
       const sum = document.createElement('summary');
-      // Section title (no icon at section level)
       sum.innerHTML = `<span class="sumline">${section}</span>`;
       sec.appendChild(sum);
 
@@ -418,74 +421,62 @@
           grp.appendChild(ul);
         }
 
-        // Examples renderer: Cards for Aquatics, chips elsewhere
-if (examples.length) {
-  const isAquatic = label.toLowerCase().startsWith('aquatic');
+        // === Examples renderer: Cards for ALL sections (with smart status) ===
+        if (examples.length) {
+          const grid = document.createElement('div');
+          grid.className = 'example-cards';
 
-  // Helper: split combined names like "Shrimp, Prawn" into individual cards
-  const splitNames = (s) =>
-    String(s || '')
-      .split(/[,/]/)
-      .map(t => t.trim())
-      .filter(Boolean);
+          // split "Shrimp, Prawn" or "Goose* / Duck*" into individuals
+          const splitNames = (s) =>
+            String(s || '')
+              .split(/[,/]/)
+              .map(t => t.trim())
+              .filter(Boolean);
 
-  if (isAquatic) {
-    const grid = document.createElement('div');
-    grid.className = 'example-cards';
+          // Decide badge class/text from section/label/example
+          function computeStatus(sectionLabel, groupLabel, ex) {
+            const explicit = (ex.status || '').toLowerCase().trim();
+            if (explicit) {
+              const textMap = { allowed:'Allowed', forbidden:'Forbidden', avoid:'Avoid', verify:'Verify Source', prohibited:'Prohibited' };
+              return { cls: explicit, text: textMap[explicit] || explicit.charAt(0).toUpperCase()+explicit.slice(1) };
+            }
+            const sec = (sectionLabel || '').toLowerCase();
+            if (sec === 'clean') return { cls: 'allowed', text: 'Allowed' };
+            if (sec === 'unclean') return { cls: 'forbidden', text: 'Forbidden' };
+            if (sec.startsWith('prohibited')) return { cls: 'prohibited', text: 'Prohibited' };
 
-    examples.forEach(ex => {
-      const names = splitNames(ex.name);
-      const why   = ex.why || 'No fins & scales';
+            const lbl = (groupLabel || '').toLowerCase();
+            if (lbl.includes('verify')) return { cls: 'verify', text: 'Verify Source' };
+            if (lbl.includes('avoid'))  return { cls: 'avoid',  text: 'Avoid' };
 
-      names.forEach(n => {
-        const card = document.createElement('div');
-        card.className = 'example-card forbidden'; // Aquatic (no fins & scales) = Forbidden
-        card.innerHTML = `
-          <div class="ex-head">
-            <span>${n}</span>
-            <span class="badge">Forbidden</span>
-          </div>
-          <p class="why">${why}</p>
-        `;
-        card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
-        grid.appendChild(card);
-      });
-    });
+            const why = (ex.why || '').toLowerCase();
+            if (/\b(verify|check|confirm|ask)\b/.test(why)) return { cls: 'verify', text: 'Verify Source' };
+            return { cls: 'avoid', text: 'Avoid' };
+          }
 
-    grp.appendChild(grid);
-  } else {
-    // Default = chips (unchanged behavior)
-    const chipWrap = document.createElement('div');
-    chipWrap.className = 'chips';
+          examples.forEach(ex => {
+            const names = splitNames(ex.name);
+            const why   = ex.why || '';
 
-    examples.forEach(ex => {
-      const chip = document.createElement('span');
-      chip.className = 'chip';
+            const { cls, text } = computeStatus(section, label, ex);
 
-      const name = ex.name || '';
-      const why  = ex.why  || '';
-      const tip  = why ? `${name}: ${why}` : name;
-      chip.title = tip;
-      chip.setAttribute('aria-label', tip);
+            names.forEach(n => {
+              const card = document.createElement('div');
+              card.className = `example-card ${cls}`;
+              card.innerHTML = `
+                <div class="ex-head">
+                  <span>${n}</span>
+                  <span class="badge">${text}</span>
+                </div>
+                ${why ? `<p class="why">${why}</p>` : ``}
+              `;
+              card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+              grid.appendChild(card);
+            });
+          });
 
-      const main = document.createElement('span');
-      main.textContent = name;
-      chip.appendChild(main);
-
-      if (why) {
-        const sm = document.createElement('small');
-        sm.textContent = '— ' + why;
-        chip.appendChild(sm);
-      }
-
-      chip.dataset.search = `${name.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
-      chipWrap.appendChild(chip);
-    });
-
-    grp.appendChild(chipWrap);
-  }
-}
-
+          grp.appendChild(grid);
+        }
 
         grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
         wrap.appendChild(grp);
@@ -516,6 +507,7 @@ if (examples.length) {
     groups.forEach(grp => {
       const chips = Array.from(grp.querySelectorAll('.chip'));
       const links = Array.from(grp.querySelectorAll('.law-link'));
+      const cards = Array.from(grp.querySelectorAll('.example-card'));
 
       let anyMatch = false;
 
@@ -523,6 +515,13 @@ if (examples.length) {
         const hay = (ch.dataset.search || ch.textContent || '').toLowerCase();
         const match = hay.includes(query);
         ch.classList.toggle('hl', match);
+        if (match) anyMatch = true;
+      });
+
+      cards.forEach(cd => {
+        const hay = (cd.dataset.search || cd.textContent || '').toLowerCase();
+        const match = hay.includes(query);
+        cd.classList.toggle('hl', match);
         if (match) anyMatch = true;
       });
 
@@ -551,7 +550,6 @@ if (examples.length) {
 
   // Bootstrap render + search
   renderTree();
-  // Re-init article-style hover for dynamically-added refs
   document.addEventListener('DOMContentLoaded', () => {
     if (window.XRef && typeof window.XRef.scan === "function") {
       window.XRef.scan(document);
