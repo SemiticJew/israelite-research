@@ -3803,3 +3803,12 @@ hr{border:0;border-top:1px solid var(--border)}
 
 /* Spacer between header row and calendar grid */
 #dowRow { margin-bottom:8px; } 
+/* Global visible text selection */
+::selection {
+  background: #054A91; /* brand blue background */
+  color: #fff;         /* white text */
+}
+::-moz-selection {
+  background: #054A91;
+  color: #fff;
+}
