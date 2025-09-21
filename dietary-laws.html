@@ -411,5 +411,6 @@ const search = document.getElementById('dietSearch');
 </script>
 
 <div id="site-footer"></div>
+<script>(function(){function rescan(){if(window.XRef&&typeof window.XRef.scan==='function'){window.XRef.scan(document);}else{document.dispatchEvent(new CustomEvent('xref:refresh'));}}document.addEventListener('DOMContentLoaded',rescan);window.addEventListener('load',rescan);var dietTree=document.getElementById('dietTree');if(dietTree&&'MutationObserver'in window){new MutationObserver(function(){rescan();}).observe(dietTree,{childList:true,subtree:true});}(function waitForXRef(){if(window.XRef&&typeof window.XRef.scan==='function'){rescan();var search=document.getElementById('dietSearch');if(search){var t;search.addEventListener('input',function(){clearTimeout(t);t=setTimeout(rescan,150);});}return;}setTimeout(waitForXRef,100);} )();})();</script>
 </body>
 </html>
