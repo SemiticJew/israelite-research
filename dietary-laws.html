@@ -6,7 +6,7 @@
 <title>Dietary Laws — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff;--brand2:#3E7CB1;--brand3:#81A4CD}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:24px 0 8px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
@@ -37,9 +37,6 @@
   .law-link:hover{border-bottom-color:var(--brand)}
 
   .tag{display:inline-block; font-size:.78rem; color:#333; background:#054A910D; border:1px solid var(--sky); border-radius:8px; padding:.05rem .35rem}
-  .chips{display:flex; flex-wrap:wrap; gap:.35rem; margin:.4rem 0 0 0}
-  .chip{display:inline-flex; align-items:center; gap:.35rem; border:1px solid var(--sky); background:#f9fafb; border-radius:999px; padding:.18rem .55rem; font-size:.82rem}
-  .chip small{color:var(--muted)}
   .note{color:var(--muted); font-size:.85rem; margin-top:.35rem}
 
   /* Highlight */
@@ -48,7 +45,7 @@
   /* Hidden during filter */
   .hide{ display:none !important; }
 
-  /* Chevron style (your chosen version) */
+  /* Chevron style */
   .tree summary::-webkit-details-marker { display: none; }
   .tree summary { list-style: none; }
   .tree summary {
@@ -84,48 +81,43 @@
     flex: 0 0 18px;
   }
   .ico path, .ico circle, .ico rect, .ico polygon, .ico line { fill: currentColor; stroke: currentColor; }
+  .tree summary .sumline{ display:inline-flex; align-items:center; gap:.45rem; }
 
-  /* Make the summary line icon + text align nicely */
-  .tree summary .sumline{
-    display:inline-flex; align-items:center; gap:.45rem;
-  }
-
-  /* --- Example cards (#8 expanded to all groups) --- */
+  /* --- Example cards: Header / Middle / Footer --- */
   .example-cards {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
   .example-card {
     background: #fff;
     border: 1px solid var(--sky);
     border-radius: 12px;
-    padding: 10px 12px;
+    overflow: hidden; /* so header radius clips */
     box-shadow: 0 1px 3px rgba(0,0,0,.05);
   }
-  .example-card .ex-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 700;
+  .example-card .card-head{
+    font-weight: 800;
+    padding: 6px 10px;
+    letter-spacing: .2px;
+  }
+  .example-card .card-title{
+    padding: 10px 12px 2px 12px;
+    font-weight: 800;
     color: var(--ink);
   }
-  .example-card .why {
-    font-size: .85rem;
+  .example-card .card-foot{
+    padding: 0 12px 10px 12px;
+    font-size: .9rem;
     color: var(--muted);
-    margin-top: 6px;
   }
-  .badge {
-    font-size: .75rem;
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-weight: 700;
-  }
-  .example-card.forbidden .badge { background: #F17300; color: #fff; }
-  .example-card.allowed   .badge { background: #054A91; color: #fff; }
-  .example-card.avoid     .badge { background: #3E7CB1; color: #fff; }
-  .example-card.verify    .badge { background: #81A4CD; color: #0b2340; }
-  .example-card.prohibited .badge { background: #F17300; color:#fff; }
+
+  /* Status colors (header) */
+  .example-card.allowed   .card-head{ background:#054A91; color:#fff; }
+  .example-card.forbidden .card-head{ background:#F17300; color:#fff; }
+  .example-card.prohibited .card-head{ background:#F17300; color:#fff; }
+  .example-card.avoid     .card-head{ background:#3E7CB1; color:#fff; }
+  .example-card.verify    .card-head{ background:#81A4CD; color:#0b2340; }
 </style>
 </head>
 <body>
@@ -324,33 +316,15 @@
   };
 
   /* ======================= Icon helpers ======================= */
-  function iconCow(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h2l2-2h8l2 2h2v3h-2v5a2 2 0 0 1-2 2h-1v-3h-2v3H8a2 2 0 0 1-2-2v-5H4V8z"/></svg>';
-  }
-  function iconFish(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3-5 9-5c5 0 9 5 9 5s-4 5-9 5c-6 0-9-5-9-5zm13 0a2 2 0 1 0 0-0.01z"/></svg>';
-  }
-  function iconBird(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l6-2 3-6 3 6 6 2-6 2-3 6-3-6-6-2z"/></svg>';
-  }
-  function iconBug(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v2H3v-2a4 4 0 0 1 4-4zm5-5l3 3H9l3-3zM4 14v3h3v-3H4zm13 0v3h3v-3h-3z"/></svg>';
-  }
-  function iconDrop(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>';
-  }
-  function iconWarn(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2L12 3zm0 5l-1 7h2l-1-7zm0 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
-  }
-  function iconCheese(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-5 9 5v8H3v-8zm5 4a2 2 0 1 0 0-.01zM15 14a1 1 0 1 0 0-.01z"/></svg>';
-  }
-  function iconPot(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9zm-2-2h20v2H2V7z"/></svg>';
-  }
-  function iconCandy(){
-    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h6v6H9zM5 7l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2zm-14 8l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2z"/></svg>';
-  }
+  function iconCow(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h2l2-2h8l2 2h2v3h-2v5a2 2 0 0 1-2 2h-1v-3h-2v3H8a2 2 0 0 1-2-2v-5H4V8z"/></svg>'; }
+  function iconFish(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3-5 9-5c5 0 9 5 9 5s-4 5-9 5c-6 0-9-5-9-5zm13 0a2 2 0 1 0 0-0.01z"/></svg>'; }
+  function iconBird(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l6-2 3-6 3 6 6 2-6 2-3 6-3-6-6-2z"/></svg>'; }
+  function iconBug(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v2H3v-2a4 4 0 0 1 4-4zm5-5l3 3H9l3-3zM4 14v3h3v-3H4zm13 0v3h3v-3h-3z"/></svg>'; }
+  function iconDrop(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>'; }
+  function iconWarn(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2L12 3zm0 5l-1 7h2l-1-7zm0 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>'; }
+  function iconCheese(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-5 9 5v8H3v-8zm5 4a2 2 0 1 0 0-.01zM15 14a1 1 0 1 0 0-.01z"/></svg>'; }
+  function iconPot(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9zm-2-2h20v2H2V7z"/></svg>'; }
+  function iconCandy(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h6v6H9zM5 7l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2zm-14 8l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2z"/></svg>'; }
 
   function iconFor(label){
     const L = label.toLowerCase();
@@ -421,19 +395,19 @@
           grp.appendChild(ul);
         }
 
-        // === Examples renderer: Cards for ALL sections (with smart status) ===
+        // === Examples renderer: Cards with Header/Middle/Footer ===
         if (examples.length) {
           const grid = document.createElement('div');
           grid.className = 'example-cards';
 
-          // split "Shrimp, Prawn" or "Goose* / Duck*" into individuals
+          // Split "Shrimp, Prawn" or "Goose* / Duck*"
           const splitNames = (s) =>
             String(s || '')
               .split(/[,/]/)
               .map(t => t.trim())
               .filter(Boolean);
 
-          // Decide badge class/text from section/label/example
+          // Decide status class/text
           function computeStatus(sectionLabel, groupLabel, ex) {
             const explicit = (ex.status || '').toLowerCase().trim();
             if (explicit) {
@@ -464,13 +438,11 @@
               const card = document.createElement('div');
               card.className = `example-card ${cls}`;
               card.innerHTML = `
-                <div class="ex-head">
-                  <span>${n}</span>
-                  <span class="badge">${text}</span>
-                </div>
-                ${why ? `<p class="why">${why}</p>` : ``}
+                <div class="card-head" aria-label="Status: ${text}">${text}</div>
+                <div class="card-title">${n}</div>
+                ${why ? `<div class="card-foot">${why}</div>` : ``}
               `;
-              card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+              card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()} ${text.toLowerCase()}`;
               grid.appendChild(card);
             });
           });
@@ -505,18 +477,10 @@
     if (!query) return;
 
     groups.forEach(grp => {
-      const chips = Array.from(grp.querySelectorAll('.chip'));
       const links = Array.from(grp.querySelectorAll('.law-link'));
       const cards = Array.from(grp.querySelectorAll('.example-card'));
 
       let anyMatch = false;
-
-      chips.forEach(ch => {
-        const hay = (ch.dataset.search || ch.textContent || '').toLowerCase();
-        const match = hay.includes(query);
-        ch.classList.toggle('hl', match);
-        if (match) anyMatch = true;
-      });
 
       cards.forEach(cd => {
         const hay = (cd.dataset.search || cd.textContent || '').toLowerCase();
