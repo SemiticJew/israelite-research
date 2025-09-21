@@ -118,6 +118,39 @@
   .example-card.prohibited .card-head{ background:#F17300; color:#fff; }
   .example-card.avoid     .card-head{ background:#3E7CB1; color:#fff; }
   .example-card.verify    .card-head{ background:#81A4CD; color:#0b2340; }
+/* Search My Food (tool shell) */
+.foodcheck-wrap textarea{
+  width:100%; border:1px solid var(--sky); border-radius:10px; padding:.8rem; font:inherit; resize:vertical;
+}
+.fc-actions{ display:flex; align-items:center; gap:.6rem; margin-top:.5rem; }
+#foodCheckBtn{
+  border:1px solid var(--sky); background:#fff; border-radius:10px; padding:.5rem .9rem; cursor:pointer; font:inherit;
+}
+#foodCheckBtn:hover{ background:#f8fafc; }
+.fc-hint{ color:var(--muted); }
+
+/* Verdict banner */
+.fc-banner{ margin:12px 0; padding:.6rem .8rem; border-radius:10px; font-weight:800; }
+.fc-banner.allowed   { background:#054A9111; color:#054A91; border:1px solid var(--sky); }
+.fc-banner.verify    { background:#81A4CD22; color:#0b2340; border:1px solid var(--sky); }
+.fc-banner.avoid     { background:#3E7CB122; color:#0b2340; border:1px solid var(--sky); }
+.fc-banner.forbidden,
+.fc-banner.prohibited{ background:#F1730015; color:#F17300; border:1px solid var(--sky); }
+
+/* Suggestions */
+.fc-suggest{ margin:10px 0; border:1px solid var(--sky); border-radius:10px; overflow:hidden; }
+.fc-suggest button{
+  display:block; width:100%; text-align:left; padding:.5rem .8rem; background:#fff; border:0; border-bottom:1px solid var(--sky); cursor:pointer;
+}
+.fc-suggest button:last-child{ border-bottom:0; }
+.fc-suggest button:hover{ background:#f8fafc; }
+
+/* Nutrition mini card */
+.nutri-card.example-card .card-head{ background:#054A91; color:#fff; }
+.nutri-lines{ padding:6px 12px 10px 12px; font-size:.9rem; color:var(--ink); }
+.nutri-lines div{ display:flex; justify-content:space-between; }
+.nutri-lines small{ color:var(--muted); }
+
 </style>
 </head>
 <body>
@@ -129,6 +162,20 @@
     <input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
     <button class="btn" id="dietClear" type="button">Clear</button>
   </div>
+<section id="foodCheck" aria-label="Search My Food" style="margin:18px 0 28px">
+  <div class="foodcheck-wrap">
+    <label for="foodText" class="sr-only">Paste ingredients or type a product</label>
+    <textarea id="foodText" rows="3" placeholder="Paste ingredients (e.g., sugar, gelatin, natural flavors, carmine/E120) or type a product (e.g., Hummus, commercial)…"></textarea>
+    <div class="fc-actions">
+      <button id="foodCheckBtn" type="button">Check</button>
+      <small class="fc-hint">We’ll flag Forbidden, Avoid, Verify, or Allowed — and show why.</small>
+    </div>
+
+    <div id="foodSuggestions" class="fc-suggest" hidden></div>
+    <div id="foodVerdict" class="fc-banner" hidden></div>
+    <div id="foodResults" class="example-cards" aria-live="polite"></div>
+  </div>
+</section>
 
   <section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
 
