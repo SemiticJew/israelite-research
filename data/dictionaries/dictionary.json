@@ -1,222 +1,30 @@
-<script>
-// ======= Search My Food: config =======
-const DICT_URL = '/israelite-research/data/dictionary.json'; // adjust if needed
-const FOODS_URL = '/israelite-research/data/foundation_foods.json'; // adjust if needed
+{
+  "entries": [
+    { "term": "carmine", "display": "Carmine (E120)", "status": "avoid", "reason": "insect-derived colorant", "aliases": ["cochineal"], "enumbers": ["e120"], "tradition":"Biblical", "basis":"Insects as food not normative; additive from insects" },
+    { "term": "shellac", "display": "Shellac (E904)", "status": "avoid", "reason": "insect resin coating", "aliases": ["confectioner’s glaze"], "enumbers": ["e904"], "tradition":"Biblical", "basis":"Insects-derived additive" },
 
-// Caches
-let _DICT = null;
-let _FOODS = null; // array of {desc, fdcId, nutrients: Map(number->amount)}
+    { "term": "gelatin", "display": "Gelatin", "status": "verify", "reason": "source may be porcine; prefer fish/plant/HPMC", "aliases": ["gelatine"], "tradition":"Biblical", "basis":"Lev 11 (pork forbidden); check origin" },
+    { "term": "mono- and diglycerides", "display": "Mono-/Diglycerides", "status": "verify", "reason": "may be animal-derived; confirm plant source", "aliases": ["e471","e472"], "enumbers": ["e471","e472"], "tradition":"Biblical" },
+    { "term": "rennet", "display": "Rennet", "status": "verify", "reason": "animal vs microbial source", "aliases": ["animal rennet"], "tradition":"Biblical" },
+    { "term": "lipase", "display": "Lipase (cheese enzyme)", "status": "verify", "reason": "animal vs microbial source", "tradition":"Biblical" },
+    { "term": "pepsin", "display": "Pepsin (enzyme)", "status": "verify", "reason": "animal vs microbial source", "tradition":"Biblical" },
+    { "term": "natural flavors", "display": "Natural flavors", "status": "verify", "reason": "may include meat-derived stocks; confirm source", "aliases": ["natural flavour","natural flavoring"], "tradition":"Biblical" },
 
-// Status precedence
-const PRECEDENCE = ['forbidden','prohibited','avoid','verify','allowed'];
+    { "term": "surimi", "display": "Surimi (imitation crab)", "status": "avoid", "reason": "often includes shellfish", "tradition":"Biblical", "basis":"Lev 11:10 shellfish" },
+    { "term": "oyster sauce", "display": "Oyster sauce", "status": "avoid", "reason": "shellfish-derived", "tradition":"Biblical", "basis":"Lev 11:10" },
 
-// Loaders
-async function loadJSON(url){ const r = await fetch(url); if(!r.ok) throw new Error(`Load failed: ${url}`); return r.json(); }
+    { "term": "pork", "display": "Pork", "status": "forbidden", "reason": "Lev 11:7–8", "aliases": ["porcine","pig"], "tradition":"Biblical" },
+    { "term": "lard", "display": "Lard (pork fat)", "status": "forbidden", "reason": "pork-derived", "tradition":"Biblical" },
+    { "term": "ham flavor", "display": "Ham flavor", "status": "forbidden", "reason": "pork-derived stock/flavor", "tradition":"Biblical" },
 
-async function loadDictionary(){
-  if (_DICT) return _DICT;
-  const raw = await loadJSON(DICT_URL);
-  // Expect: { entries: [{term:'carmine', status:'avoid', reason:'insect-derived', aliases:['cochineal','e120']}, ...] }
-  const map = new Map();
-  const alias = new Map();
-  (raw.entries || []).forEach(e => {
-    const key = (e.term||'').trim().toLowerCase();
-    if(!key) return;
-    map.set(key, {status:e.status, reason:e.reason, display:e.display||e.term});
-    (e.aliases||[]).forEach(a => alias.set(String(a).toLowerCase(), key));
-  });
-  // Also map e-numbers if provided
-  (raw.entries || []).forEach(e => {
-    (e.enumbers||[]).forEach(code => alias.set(String(code).toLowerCase(), (e.term||'').toLowerCase()));
-  });
-  _DICT = {map, alias};
-  return _DICT;
+    { "term": "shrimp", "display": "Shrimp", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical", "basis":"Lev 11:10" },
+    { "term": "crab", "display": "Crab", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "lobster", "display": "Lobster", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "oyster", "display": "Oyster", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "clam", "display": "Clam", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "scallop", "display": "Scallop", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "mussel", "display": "Mussel", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "squid", "display": "Squid", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" },
+    { "term": "octopus", "display": "Octopus", "status": "forbidden", "reason": "no fins & scales", "tradition":"Biblical" }
+  ]
 }
-
-async function loadFoundationFoods(){
-  if (_FOODS) return _FOODS;
-  const data = await loadJSON(FOODS_URL);
-  // Normalize minimal index for quick search
-  const arr = (data.FoundationFoods || []).map(ff => {
-    const nutrients = new Map();
-    (ff.foodNutrients||[]).forEach(fn => {
-      const num = fn?.nutrient?.number; const amt = fn?.amount;
-      if (num != null && amt != null) nutrients.set(String(num), amt);
-    });
-    return { desc: ff.description || '', fdcId: ff.fdcId, nutrients };
-  });
-  _FOODS = arr;
-  return _FOODS;
-}
-
-// Tokenize ingredients / detect E-numbers
-function tokenize(input){
-  const text = String(input||'').toLowerCase();
-  const enumbers = Array.from(text.matchAll(/\b(e\d{3}[a-z]?)\b/gi)).map(m => m[1].toLowerCase());
-  const parts = text
-    .replace(/[()]/g, ' ')
-    .split(/[,;|/]+/)
-    .map(s => s.trim())
-    .filter(Boolean);
-  return {parts, enumbers};
-}
-
-// Match tokens against dictionary
-function matchTokens(tokens, dict){
-  const hits = [];
-  const seen = new Set();
-  function record(termKey, display, status, reason){
-    const sig = `${termKey}|${status}`;
-    if (seen.has(sig)) return;
-    seen.add(sig);
-    hits.push({ term: display, status, reason });
-  }
-  // direct + alias
-  tokens.parts.concat(tokens.enumbers).forEach(tok => {
-    const t = tok.toLowerCase();
-    const mainKey = dict.map.has(t) ? t : (dict.alias.get(t) || null);
-    if (mainKey){
-      const entry = dict.map.get(mainKey);
-      record(mainKey, entry.display || tok, String(entry.status).toLowerCase(), entry.reason || '');
-    }
-  });
-  return hits;
-}
-
-// Compute overall verdict from hits
-function overallVerdict(hits){
-  if (!hits.length) return {cls:'allowed', text:'No issues found (based on current dictionary)'};
-  const best = hits
-    .map(h => h.status)
-    .sort((a,b)=> PRECEDENCE.indexOf(a)-PRECEDENCE.indexOf(b))[0];
-  const textMap = { allowed:'Allowed', verify:'Verify', avoid:'Avoid', forbidden:'Forbidden', prohibited:'Prohibited' };
-  return { cls: best, text: textMap[best] || best };
-}
-
-// Render one result card (Header/Middle/Footer)
-function renderCard({status, term, reason}, extraClass=''){
-  const textMap = { allowed:'Allowed', verify:'Verify Source', avoid:'Avoid', forbidden:'Forbidden', prohibited:'Prohibited' };
-  const head = textMap[status] || status;
-  const safeWhy = reason ? `<div class="card-foot">${reason}</div>` : '';
-  const div = document.createElement('div');
-  div.className = `example-card ${status} ${extraClass}`.trim();
-  div.innerHTML = `
-    <div class="card-head" aria-label="Status: ${head}">${head}</div>
-    <div class="card-title">${term}</div>
-    ${safeWhy}
-  `;
-  return div;
-}
-
-// Nutrition snapshot card (optional)
-function renderNutritionCard(food){
-  const kcal = food.nutrients.get('208'); // Energy kcal
-  const prot = food.nutrients.get('203');
-  const fat  = food.nutrients.get('204');
-  const carb = food.nutrients.get('205');
-  const card = document.createElement('div');
-  card.className = 'example-card nutri-card allowed';
-  card.innerHTML = `
-    <div class="card-head">Nutrition (per 100 g)</div>
-    <div class="card-title">${food.desc}</div>
-    <div class="nutri-lines">
-      <div><span>Energy</span><strong>${kcal ?? '—'} kcal</strong></div>
-      <div><span>Protein</span><strong>${prot ?? '—'} g</strong></div>
-      <div><span>Fat</span><strong>${fat ?? '—'} g</strong></div>
-      <div><span>Carbs</span><strong>${carb ?? '—'} g</strong></div>
-      <small>Values from your FoundationFoods file.</small>
-    </div>
-  `;
-  return card;
-}
-
-// Suggestions list
-function renderSuggestions(list, onPick){
-  const box = document.getElementById('foodSuggestions');
-  box.innerHTML = '';
-  if (!list.length){ box.hidden = true; return; }
-  list.slice(0,5).forEach(item => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = item.desc;
-    b.addEventListener('click', ()=> onPick(item));
-    box.appendChild(b);
-  });
-  box.hidden = false;
-}
-
-// Wire up UI
-(function initFoodTool(){
-  const textEl = document.getElementById('foodText');
-  const btn = document.getElementById('foodCheckBtn');
-  const res = document.getElementById('foodResults');
-  const banner = document.getElementById('foodVerdict');
-  const sugg = document.getElementById('foodSuggestions');
-
-  function setBanner(cls, message){
-    banner.className = `fc-banner ${cls}`;
-    banner.textContent = message;
-    banner.hidden = false;
-  }
-
-  async function doCheck(fromSuggestion){
-    const input = textEl.value.trim();
-    sugg.hidden = true;
-    res.innerHTML = '';
-    banner.hidden = true;
-
-    // Lazy-load dict
-    const dict = await loadDictionary();
-
-    // If it looks like a product name (no commas/semicolons) try FoundationFoods
-    const looksLikeName = !/[;,]/.test(input) && input.split(/\s+/).length >= 2;
-    let pickedFood = fromSuggestion || null;
-
-    if (looksLikeName && !fromSuggestion && input.length >= 3){
-      const foods = await loadFoundationFoods();
-      const q = input.toLowerCase();
-      const matches = foods.filter(f => f.desc.toLowerCase().includes(q));
-      renderSuggestions(matches, (item)=>{
-        textEl.value = item.desc;
-        doCheck(item); // re-run with picked item
-      });
-      // still continue with dictionary scan (names can contain clues)
-    }
-
-    // Tokenize + match
-    const tokens = tokenize(input);
-    const hits = matchTokens(tokens, dict);
-
-    // Verdict banner
-    const {cls, text} = overallVerdict(hits);
-    setBanner(cls, text);
-
-    // Render nutrition card if a food was picked
-    if (pickedFood){
-      res.appendChild(renderNutritionCard(pickedFood));
-    }
-
-    // Render hit cards (dedup by term+status)
-    const seenTerms = new Set();
-    hits.forEach(h => {
-      const sig = `${h.term}|${h.status}`;
-      if (seenTerms.has(sig)) return;
-      seenTerms.add(sig);
-      res.appendChild(renderCard(h));
-    });
-
-    // No hits? Show a friendly card
-    if (!hits.length && !pickedFood){
-      res.appendChild(renderCard({status:'allowed', term:'No flags from dictionary', reason:'No Forbidden/Avoid/Verify matches found.'}));
-    }
-  }
-
-  btn.addEventListener('click', ()=> doCheck(null));
-  textEl.addEventListener('input', async (e)=>{
-    const v = e.target.value.trim();
-    if (!v || /[,;]/.test(v) || v.length < 3){ sugg.hidden = true; return; }
-    // Preload foods for autocomplete (non-blocking)
-    try { await loadFoundationFoods(); } catch {}
-  });
-})();
-</script>
