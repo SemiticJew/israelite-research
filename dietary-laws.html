@@ -590,3 +590,86 @@ const FOODS_URL = '/israelite-research/data/foundation_foods.json';
 // ====== Search My Food configuration (data paths) ======
 const DICT_URL = '/israelite-research/data/dictionary.json';
 const FOODS_URL = '/israelite-research/data/foundation_foods.json';
+// ====== Search My Food configuration (data paths) ======
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/foundation_foods.json'; }
+<script>
+// ======= Search My Food: minimal implementation =======
+const PRECEDENCE = ['forbidden','prohibited','avoid','verify','allowed'];
+let _DICT=null, _FOODS=null;
+
+async function loadJSON(u){ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) throw new Error('Load failed '+u); return r.json(); }
+async function loadDictionary(){
+  if(_DICT) return _DICT;
+  const raw = await loadJSON(DICT_URL);
+  const map = new Map(), alias = new Map();
+  (raw.entries||[]).forEach(e=>{
+    const k=(e.term||'').toLowerCase().trim(); if(!k) return;
+    map.set(k,{status:e.status,reason:e.reason,display:e.display||e.term});
+    (e.aliases||[]).forEach(a=>alias.set(String(a).toLowerCase(),k));
+    (e.enumbers||[]).forEach(code=>alias.set(String(code).toLowerCase(),k));
+  });
+  _DICT={map,alias}; return _DICT;
+}
+function tokenize(text){
+  const t=String(text||'').toLowerCase();
+  const en=Array.from(t.matchAll(/\b(e\d{3}[a-z]?)\b/gi)).map(m=>m[1].toLowerCase());
+  const parts=t.replace(/[()]/g,' ').split(/[,;|/]+/).map(s=>s.trim()).filter(Boolean);
+  return {parts,enumbers:en};
+}
+function matchTokens(tokens,dict){
+  const hits=[], seen=new Set();
+  function add(key,disp,status,reason){ const sig=key+'|'+status; if(seen.has(sig))return; seen.add(sig); hits.push({term:disp,status:status.toLowerCase(),reason:reason||''}); }
+  tokens.parts.concat(tokens.enumbers).forEach(tok=>{
+    const t=tok.toLowerCase();
+    const main = dict.map.has(t) ? t : (dict.alias.get(t)||null);
+    if(main){ const e=dict.map.get(main); add(main,e.display||tok,e.status,e.reason); }
+  });
+  return hits;
+}
+function verdict(hits){
+  if(!hits.length) return {cls:'allowed',text:'No issues found (based on current dictionary)'};
+  const best=hits.map(h=>h.status).sort((a,b)=>PRECEDENCE.indexOf(a)-PRECEDENCE.indexOf(b))[0];
+  const m={allowed:'Allowed',verify:'Verify',avoid:'Avoid',forbidden:'Forbidden',prohibited:'Prohibited'};
+  return {cls:best,text:m[best]||best};
+}
+function renderCard(hit, extra=''){
+  const m={allowed:'Allowed',verify:'Verify Source',avoid:'Avoid',forbidden:'Forbidden',prohibited:'Prohibited'};
+  const head=m[hit.status]||hit.status;
+  const div=document.createElement('div');
+  div.className=`example-card ${hit.status} ${extra}`.trim();
+  div.innerHTML=`
+    <div class="card-head" aria-label="Status: ${head}">${head}</div>
+    <div class="card-title">${hit.term}</div>
+    ${hit.reason?`<div class="card-foot">${hit.reason}</div>`:''}
+  `;
+  return div;
+}
+(function initFoodTool(){
+  const ta=document.getElementById('foodText');
+  const btn=document.getElementById('foodCheckBtn');
+  const res=document.getElementById('foodResults');
+  const ban=document.getElementById('foodVerdict');
+  if(!ta||!btn||!res||!ban) return;
+
+  function setBanner(cls,msg){ ban.className=`fc-banner ${cls}`; ban.textContent=msg; ban.hidden=false; }
+
+  btn.addEventListener('click', async ()=>{
+    res.innerHTML=''; ban.hidden=true;
+    let dict; try{ dict=await loadDictionary(); }catch(e){ setBanner('forbidden','Dictionary failed to load.'); return; }
+    const tokens=tokenize(ta.value);
+    const hits=matchTokens(tokens,dict);
+    const v=verdict(hits);
+    setBanner(v.cls,v.text);
+    const seen=new Set();
+    hits.forEach(h=>{ const sig=h.term+'|'+h.status; if(seen.has(sig))return; seen.add(sig); res.appendChild(renderCard(h)); });
+    if(!hits.length){ res.appendChild(renderCard({status:'allowed',term:'No flags from dictionary',reason:'No Forbidden/Avoid/Verify matches found.'})); }
+  });
+})();
+</script>
+// ====== Search My Food configuration (data paths) ======
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/foundation_foods.json'; }
+// ====== Search My Food configuration (data paths) ======
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/foundation_foods.json'; }
