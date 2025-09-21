@@ -86,6 +86,8 @@
   .arg h3{ margin:0 0 6px; font-size:1rem; font-weight:900; color:var(--ink); }
   .arg p{ margin:0; color:var(--muted); }
 
+  /* Filter utility */
+  .hide{display:none !important;}
   /* Quiet divider */
   .rule{ height:1px; background:var(--sky); margin:8px 0 0; }
 
@@ -385,3 +387,49 @@
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
+<script>
+(function(){
+  const input = document.querySelector(".tools .input");
+  const chips = document.querySelectorAll(".tools .chip");
+  const grids = [
+    ...document.querySelectorAll("#core .grid-3 .card, #arguments .grid-3 .card, #utilities .grid-2 .card")
+  ];
+  if(!input || !grids.length) return;
+  let countBox = document.createElement("div");
+  countBox.id = "apolCount";
+  countBox.style.marginTop = "8px";
+  countBox.style.color = "var(--muted)";
+  countBox.setAttribute("aria-live","polite");
+  input.closest(".tools").appendChild(countBox);
+
+  function normalize(s){ return String(s||"").toLowerCase().trim(); }
+  function applyFilter(q){
+    const query = normalize(q);
+    let visible = 0;
+    grids.forEach(card=>{
+      const hay = normalize(card.textContent);
+      const match = !query || hay.includes(query);
+      card.classList.toggle("hide", !match);
+      if (match) visible++;
+    });
+    countBox.textContent = visible + " item" + (visible===1?"":"s") + " visible";
+  }
+
+  input.addEventListener("input", e=> applyFilter(e.target.value));
+  chips.forEach(ch => {
+    ch.addEventListener("click", ev=>{
+      ev.preventDefault();
+      const v = ch.textContent.trim();
+      input.value = v;
+      applyFilter(v);
+      const id = ch.getAttribute("href");
+      if (id) {
+        const target = document.querySelector(id);
+        if (target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      }
+      history.replaceState(null, "", id || "#");
+    });
+  });
+  applyFilter("");
+})();
+</script>
