@@ -64,7 +64,38 @@
 
   /* Hidden during filter */
   .hide{ display:none !important; }
-</style>
+/* Remove default arrows */
+.tree summary::-webkit-details-marker { display: none; }
+.tree summary { list-style: none; }
+
+/* Chevron + highlight */
+.tree summary {
+  padding: .4rem .6rem .4rem 1.5rem;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--brand);
+  transition: background .2s;
+}
+.tree summary:hover {
+  background: #f8fafc;
+}
+.tree summary::before {
+  content: "";
+  border: solid var(--accent);
+  border-width: 0 .15em .15em 0;
+  display: inline-block;
+  padding: .25em;
+  position: absolute;
+  left: .5rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  transition: transform .2s;
+}
+.tree details[open] > summary::before {
+  transform: translateY(-50%) rotate(135deg);
+}</style>
 </head>
 <body>
 <div id="site-header"></div>
