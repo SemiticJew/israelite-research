@@ -98,6 +98,21 @@
   box-shadow: 0 1px 2px rgba(0,0,0,.04);
 }
 .example-card .card-head {
+  padding: 4px 6px;
+  border-radius: 6px 6px 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Status-based colors */
+.example-card.forbidden .card-head   { background: #F17300; }
+.example-card.prohibited .card-head  { background: #000; }
+.example-card.avoid .card-head       { background: #81A4CD; }
+.example-card.verify .card-head      { background: #3E7CB1; }
+.example-card.allowed .card-head     { background: #054A91; }
+
+.example-card .card-head {
   font-size: 0.8rem;
   padding: 2px 4px;
 }
