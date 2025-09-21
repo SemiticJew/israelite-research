@@ -29,39 +29,7 @@
   /* Tree */
   .tree{margin:14px 0 36px}
   .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
-  /* Remove default arrows */
-.tree summary::-webkit-details-marker { display: none; }
-.tree summary { list-style: none; }
-
-/* Chevron + highlight */
-.tree summary {
-  padding: .4rem .6rem .4rem 1.5rem;
-  border-radius: 8px;
-  position: relative;
-  cursor: pointer;
-  font-weight: 800;
-  color: var(--brand);
-  transition: background .2s;
-}
-.tree summary:hover {
-  background: #f8fafc;
-}
-.tree summary::before {
-  content: "";
-  border: solid var(--accent);
-  border-width: 0 .15em .15em 0;
-  display: inline-block;
-  padding: .25em;
-  position: absolute;
-  left: .5rem;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg); /* right */
-  transition: transform .2s;
-}
-.tree details[open] > summary::before {
-  transform: translateY(-50%) rotate(135deg); /* down */
-}
-
+  .tree details>summary{cursor:pointer; font-weight:800; color:var(--brand); outline:none}
   .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
   .tree .group{margin:8px 0 0 0; padding:0}
   .tree .group details{margin:6px 0}
@@ -84,10 +52,11 @@
 </head>
 <body>
 <div id="site-header"></div>
+
 <main class="container">
   <!-- Search / Filter -->
   <div class="searchbar" role="search">
-    <input aria-label="Search dietary items" id="dietSearch" placehnewer="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
+    <input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
     <button class="btn" id="dietClear" type="button">Clear</button>
   </div>
 
@@ -97,29 +66,50 @@
     <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
   </p>
 </main>
+
 <div id="site-footer"></div>
 
-<script src="/israelite-research/js/include.js"></script>
+<!-- Include universal header/footer loader -->
+<script src="/israelite-research/js/include.js" defer></script>
+
+<!-- Use the same Scripture hover as articles -->
+<script src="/israelite-research/js/citations.js" defer></script>
+<script src="/israelite-research/js/xref-hover.js" defer></script>
 
 <script>
   // --- Book slug map for links (extend anytime) ---
   const BOOK_SLUG = {
     "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
-    "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans"
+    "Joshua":"joshua","Judges":"judges","Ruth":"ruth","1 Samuel":"1-samuel","2 Samuel":"2-samuel",
+    "1 Kings":"1-kings","2 Kings":"2-kings","1 Chronicles":"1-chronicles","2 Chronicles":"2-chronicles",
+    "Ezra":"ezra","Nehemiah":"nehemiah","Esther":"esther","Job":"job","Psalms":"psalms","Proverbs":"proverbs",
+    "Ecclesiastes":"ecclesiastes","Song of Solomon":"song-of-songs","Isaiah":"isaiah","Jeremiah":"jeremiah",
+    "Lamentations":"lamentations","Ezekiel":"ezekiel","Daniel":"daniel","Hosea":"hosea","Joel":"joel","Amos":"amos",
+    "Obadiah":"obadiah","Jonah":"jonah","Micah":"micah","Nahum":"nahum","Habakkuk":"habakkuk","Zephaniah":"zephaniah",
+    "Haggai":"haggai","Zechariah":"zechariah","Malachi":"malachi",
+    "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans",
+    "1 Corinthians":"1-corinthians","2 Corinthians":"2-corinthians","Galatians":"galatians","Ephesians":"ephesians",
+    "Philippians":"philippians","Colossians":"colossians","1 Thessalonians":"1-thessalonians","2 Thessalonians":"2-thessalonians",
+    "1 Timothy":"1-timothy","2 Timothy":"2-timothy","Titus":"titus","Philemon":"philemon","Hebrews":"hebrews",
+    "James":"james","1 Peter":"1-peter","2 Peter":"2-peter","1 John":"1-john","2 John":"2-john","3 John":"3-john",
+    "Jude":"jude","Revelation":"revelation"
   };
 
   function parseRef(ref){
-    const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
+    const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z][A-Za-z\s\-]+?)\s+(\d+):(\d+)$/);
     if(!m) return null;
     const bookName = m[1].replace(/\s+/g," ").trim();
     const ch = parseInt(m[2],10), v = parseInt(m[3],10);
-    const base = bookName.replace(/^1\s|^2\s|^3\s/,'');
-    const slug = BOOK_SLUG[base] || BOOK_SLUG[bookName] || base.toLowerCase();
+    const slug = BOOK_SLUG[bookName] || bookName.toLowerCase().replace(/\s+/g,'-');
     return { book:bookName, ch, v, slug };
+  }
+  function canonFor(book){
+    const OT = new Set(["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"]);
+    return OT.has(book) ? "tanakh" : "newtestament";
   }
   function refHref(ref){
     const p = parseRef(ref); if(!p) return '#';
-    const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
+    const canon = canonFor(p.book);
     return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
   }
 
@@ -306,13 +296,17 @@
         gsum.innerHTML = `${label} <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
         grp.appendChild(gsum);
 
-        // Refs list
+        // Refs list (create xref-trigger links compatible with xref-hover.js)
         if (refs.length) {
           const ul = document.createElement('ul');
           ul.style.margin = '6px 0 0 18px'; ul.style.padding = '0';
           refs.forEach(r => {
             const li = document.createElement('li'); li.className = 'leaf';
-            const a = document.createElement('a'); a.className = 'law-link xref'; a.dataset.ref = r; a.href = refHref(r); a.textContent = r;
+            const a = document.createElement('a');
+            a.className = 'law-link xref-trigger';
+            a.setAttribute('data-xref', r);
+            a.href = refHref(r);
+            a.textContent = r;
             a.dataset.search = `ref ${r.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
             li.appendChild(a);
             ul.appendChild(li);
@@ -360,6 +354,13 @@
 
     tree.innerHTML = '';
     tree.appendChild(frag);
+
+    // Re-init article-style hover for dynamically-added refs
+    if (window.XRef && typeof window.XRef.scan === "function") {
+      window.XRef.scan(document);
+    } else {
+      document.dispatchEvent(new CustomEvent("xref:refresh"));
+    }
   }
 
   function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
@@ -412,37 +413,15 @@
     });
   }
 
-  // Bootstrap render + search
-  renderTree();
-
-// Re-init article-style hover for dynamically-added refs
-if (window.XRef && typeof window.XRef.scan === "function") {
-  window.XRef.scan(document);
-} else {
-  document.dispatchEvent(new CustomEvent("xref:refresh"));
-}
-
-const search = document.getElementById('dietSearch');
-  const clearBtn = document.getElementById('dietClear');
-  const doFilter = debounce(applyFilter, 120);
-  search.addEventListener('input', e => doFilter(e.target.value));
-  clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
-</script>
-
-<!-- Use the same Scripture hover as articles -->
-<script src="/israelite-research/js/citations.js" defer></script><script src="/israelite-research/js/xref-hover.js" defer></script>
-<script>
-  // Bridge our refs to xref-hover targets (no markup changes needed)
+  // Bootstrap render + search wiring
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.law-link').forEach(a => {
-      const ref = a.textContent.trim();
-      a.classList.add('xref');
-      a.setAttribute('data-ref', ref);
-    });
+    renderTree();
+    const search = document.getElementById('dietSearch');
+    const clearBtn = document.getElementById('dietClear');
+    const doFilter = debounce(applyFilter, 120);
+    search.addEventListener('input', e => doFilter(e.target.value));
+    clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
   });
 </script>
-
-<div id="site-footer"></div>
-<script>(function(){function rescan(){if(window.XRef&&typeof window.XRef.scan==='function'){window.XRef.scan(document);}else{document.dispatchEvent(new CustomEvent('xref:refresh'));}}document.addEventListener('DOMContentLoaded',rescan);window.addEventListener('load',rescan);var dietTree=document.getElementById('dietTree');if(dietTree&&'MutationObserver'in window){new MutationObserver(function(){rescan();}).observe(dietTree,{childList:true,subtree:true});}(function waitForXRef(){if(window.XRef&&typeof window.XRef.scan==='function'){rescan();var search=document.getElementById('dietSearch');if(search){var t;search.addEventListener('input',function(){clearTimeout(t);t=setTimeout(rescan,150);});}return;}setTimeout(waitForXRef,100);} )();})();</script>
 </body>
 </html>
