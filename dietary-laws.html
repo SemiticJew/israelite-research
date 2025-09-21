@@ -89,6 +89,39 @@
   .tree summary .sumline{
     display:inline-flex; align-items:center; gap:.45rem;
   }
+/* --- Example cards (#8) --- */
+.example-cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+.example-card {
+  background: #fff;
+  border: 1px solid var(--sky);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+.example-card .ex-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--ink);
+}
+.example-card .why {
+  font-size: .85rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.badge {
+  font-size: .75rem;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.example-card.forbidden .badge { background: #F17300; color: #fff; }
+.example-card.allowed .badge   { background: #054A91; color: #fff; }
 </style>
 </head>
 <body>
@@ -385,35 +418,74 @@
           grp.appendChild(ul);
         }
 
-        // Examples chips
-        if (examples.length) {
-          const chipWrap = document.createElement('div');
-          chipWrap.className = 'chips';
-          examples.forEach(ex => {
-            const chip = document.createElement('span');
-            chip.className = 'chip';
+        // Examples renderer: Cards for Aquatics, chips elsewhere
+if (examples.length) {
+  const isAquatic = label.toLowerCase().startsWith('aquatic');
 
-            const name = ex.name || '';
-            const why  = ex.why  || '';
-            const tip  = why ? `${name}: ${why}` : name;
-            chip.title = tip;
-            chip.setAttribute('aria-label', tip);
+  // Helper: split combined names like "Shrimp, Prawn" into individual cards
+  const splitNames = (s) =>
+    String(s || '')
+      .split(/[,/]/)
+      .map(t => t.trim())
+      .filter(Boolean);
 
-            const main = document.createElement('span'); 
-            main.textContent = name;
-            chip.appendChild(main);
+  if (isAquatic) {
+    const grid = document.createElement('div');
+    grid.className = 'example-cards';
 
-            if (why) {
-              const sm = document.createElement('small'); 
-              sm.textContent = '— ' + why;
-              chip.appendChild(sm);
-            }
+    examples.forEach(ex => {
+      const names = splitNames(ex.name);
+      const why   = ex.why || 'No fins & scales';
 
-            chip.dataset.search = `${name.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
-            chipWrap.appendChild(chip);
-          });
-          grp.appendChild(chipWrap);
-        }
+      names.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'example-card forbidden'; // Aquatic (no fins & scales) = Forbidden
+        card.innerHTML = `
+          <div class="ex-head">
+            <span>${n}</span>
+            <span class="badge">Forbidden</span>
+          </div>
+          <p class="why">${why}</p>
+        `;
+        card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+        grid.appendChild(card);
+      });
+    });
+
+    grp.appendChild(grid);
+  } else {
+    // Default = chips (unchanged behavior)
+    const chipWrap = document.createElement('div');
+    chipWrap.className = 'chips';
+
+    examples.forEach(ex => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+
+      const name = ex.name || '';
+      const why  = ex.why  || '';
+      const tip  = why ? `${name}: ${why}` : name;
+      chip.title = tip;
+      chip.setAttribute('aria-label', tip);
+
+      const main = document.createElement('span');
+      main.textContent = name;
+      chip.appendChild(main);
+
+      if (why) {
+        const sm = document.createElement('small');
+        sm.textContent = '— ' + why;
+        chip.appendChild(sm);
+      }
+
+      chip.dataset.search = `${name.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+      chipWrap.appendChild(chip);
+    });
+
+    grp.appendChild(chipWrap);
+  }
+}
+
 
         grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
         wrap.appendChild(grp);
