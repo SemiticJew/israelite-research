@@ -382,7 +382,15 @@
 
   // Bootstrap render + search
   renderTree();
-n// Re-init article-style hover for dynamically-added refsnif (window.XRef && typeof window.XRef.scan === "function") {n  window.XRef.scan(document);n} else {n  document.dispatchEvent(new CustomEvent("xref:refresh"));n}n  const search = document.getElementById('dietSearch');
+
+// Re-init article-style hover for dynamically-added refs
+if (window.XRef && typeof window.XRef.scan === "function") {
+  window.XRef.scan(document);
+} else {
+  document.dispatchEvent(new CustomEvent("xref:refresh"));
+}
+
+const search = document.getElementById('dietSearch');
   const clearBtn = document.getElementById('dietClear');
   const doFilter = debounce(applyFilter, 120);
   search.addEventListener('input', e => doFilter(e.target.value));
