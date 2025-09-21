@@ -6,140 +6,204 @@
 <title>Apocrypha</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{ --ink:#0b2340; --accent:#F17300; --brand:#054A91; --muted:#6b7280; --sky:#DBE4EE; --white:#fff; }
+  :root{
+    --ink:#0b2340; --muted:#6b7280; --sky:#DBE4EE; --white:#fff;
+    --narr:#054A91; --wisdom:#81A4CD; --adds:#3E7CB1; --macc:#F17300; --esdras:#000000;
+  }
   body{background:#fbfdff;}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .page-header{padding:28px 0 8px; text-align:center}
   .page-title{margin:0;font-size:2.2rem;font-weight:800;color:var(--ink)}
-  .sections{display:grid; gap:22px; margin:20px 0 54px}
-  .sect-label{font-weight:800;color:var(--brand);letter-spacing:.06em;margin:0 0 8px;font-size:.85rem}
-  .pt-grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fill, minmax(140px,1fr))}
+  .page-sub{margin:8px auto 0; color:var(--muted); max-width:70ch}
+
+  /* Periodic-style columns */
+  .pt-wrap{margin:20px 0 18px}
+  .pt-columns{display:flex; gap:12px; align-items:flex-start; justify-content:center; flex-wrap:nowrap}
+  .pt-col{display:grid; gap:12px}
+  .pt-col--narrow{width:150px}
+  .pt-col--wide{width:150px}
+
+  /* Tile anatomy */
   .pt-card{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:10px; min-height:160px; padding:16px 14px;
-    background:var(--white); border:1px solid var(--sky); border-radius:14px;
-    text-decoration:none; color:inherit; text-align:center;
-    box-shadow:0 1px 3px rgba(0,0,0,.03);
+    position:relative;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    min-height:160px; padding:12px 10px 10px;
+    border-radius:12px; background:var(--white); border:1px solid var(--sky);
+    text-decoration:none; color:inherit;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
     transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
   }
-  .pt-card:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.09); border-color:#cfd9e6; background:#fff}
-  .pt-era{font-size:.82rem; color:var(--muted); margin-top:2px; margin-bottom:4px}
-  .pt-abbr{font-size:2rem; font-weight:900; color:var(--accent); letter-spacing:.02em; line-height:1; margin:4px 0}
-  .pt-abbr sup{font-size:.6em; position:relative; top:-.4em; color:var(--accent)}
-  .pt-name{border-top:1px solid var(--sky); width:100%; padding-top:8px; margin-top:6px; font-weight:700; color:var(--brand)}
-  @media (max-width:520px){
-    .pt-abbr{font-size:1.7rem}
-    .pt-grid{grid-template-columns:repeat(auto-fill, minmax(120px,1fr))}
+  .pt-card:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.09); border-color:#cfd9e6}
+
+  .pt-era{
+    position:absolute; top:8px; right:10px;
+    font-size:.78rem; color:#324861; opacity:.85; font-weight:700;
   }
+  .pt-abbr{
+    margin-top:30px;
+    display:grid; place-items:center;
+    min-height:72px;
+    font-size:2.2rem; font-weight:900; letter-spacing:.02em; line-height:1; text-align:center; color:#0b2340;
+  }
+  .pt-abbr sup{font-size:.6em; position:relative; top:-.25em; margin-left:2px}
+  .pt-name{
+    margin-top:auto; width:100%; text-align:center;
+    font-size:.92rem; font-weight:800; color:#163254;
+    border-top:1px solid var(--sky); padding-top:8px;
+  }
+
+  /* Category skins (tinted backgrounds) */
+  .pt-card.narr  { background:linear-gradient(180deg, rgba(5,74,145,.18),    rgba(5,74,145,.10));    border-color:#c6d7ea; }
+  .pt-card.wis   { background:linear-gradient(180deg, rgba(129,164,205,.20), rgba(129,164,205,.12)); border-color:#dbe6f3; }
+  .pt-card.adds  { background:linear-gradient(180deg, rgba(62,124,177,.18),  rgba(62,124,177,.10));  border-color:#cfe1f2; }
+  .pt-card.macc  { background:linear-gradient(180deg, rgba(241,115,0,.20),   rgba(241,115,0,.12));   border-color:#ffd9b9; }
+  .pt-card.esd   { background:linear-gradient(180deg, rgba(0,0,0,.20),       rgba(0,0,0,.12));       border-color:#cfd3da; }
+
+  /* Responsive */
+  @media (max-width:1020px){
+    .pt-columns{flex-wrap:wrap; justify-content:flex-start}
+    .pt-col{width:calc(50% - 8px)}
+  }
+  @media (max-width:560px){
+    .pt-col{width:100%}
+    .pt-card{min-height:150px}
+    .pt-abbr{font-size:1.9rem}
+  }
+
+  /* Legend below the grid */
+  .legend{margin:16px 0 48px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center}
+  .legend .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:8px 10px; border:1px solid var(--sky); border-radius:999px;
+    background:#fff; color:#0b2340; font-weight:800; font-size:.9rem;
+  }
+  .legend .dot{width:12px; height:12px; border-radius:50%}
+  .legend .dot.narr{background:var(--narr)}
+  .legend .dot.wis{background:var(--wisdom)}
+  .legend .dot.adds{background:var(--adds)}
+  .legend .dot.macc{background:var(--macc)}
+  .legend .dot.esd{background:var(--esdras)}
 </style>
 </head>
 <body class="apocrypha-page">
 <div id="site-header"></div>
+
 <main class="container">
-  <header class="page-header"><h1 class="page-title">Apocrypha</h1></header>
-  <div class="sections">
-<section class="sect">
-  <div class="sect-label">A</div>
-  <div class="pt-grid">
-<a class="pt-card" href="/israelite-research/apocrypha/tobit.html" aria-label="Tobit">
-  <div class="pt-era">3rd–2nd c. BCE</div>
-  <div class="pt-abbr">Tb</div>
-  <div class="pt-name">Tobit</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/judith.html" aria-label="Judith">
-  <div class="pt-era">late 2nd c. BCE</div>
-  <div class="pt-abbr">Jdt</div>
-  <div class="pt-name">Judith</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/additions-to-esther.html" aria-label="Additions to Esther">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Add Est</div>
-  <div class="pt-name">Additions to Esther</div>
-</a>
-  </div>
-</section>
-<section class="sect">
-  <div class="sect-label">B</div>
-  <div class="pt-grid">
-<a class="pt-card" href="/israelite-research/apocrypha/wisdom.html" aria-label="Wisdom">
-  <div class="pt-era">late 1st c. BCE–early 1st c. CE</div>
-  <div class="pt-abbr">Wis</div>
-  <div class="pt-name">Wisdom</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/sirach.html" aria-label="Sirach">
-  <div class="pt-era">early 2nd c. BCE</div>
-  <div class="pt-abbr">Sir</div>
-  <div class="pt-name">Sirach</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/baruch.html" aria-label="Baruch">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Bar</div>
-  <div class="pt-name">Baruch</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/letter-of-jeremiah.html" aria-label="Letter of Jeremiah">
-  <div class="pt-era">4th–2nd c. BCE</div>
-  <div class="pt-abbr">Let Jer</div>
-  <div class="pt-name">Letter of Jeremiah</div>
-</a>
-  </div>
-</section>
-<section class="sect">
-  <div class="sect-label">C</div>
-  <div class="pt-grid">
-<a class="pt-card" href="/israelite-research/apocrypha/prayer-of-azariah.html" aria-label="Prayer of Azariah">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Pr Az</div>
-  <div class="pt-name">Prayer of Azariah</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/susanna.html" aria-label="Susanna">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Sus</div>
-  <div class="pt-name">Susanna</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/bel-and-the-dragon.html" aria-label="Bel and the Dragon">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Bel</div>
-  <div class="pt-name">Bel and the Dragon</div>
-</a>
-  </div>
-</section>
-<section class="sect">
-  <div class="sect-label">D</div>
-  <div class="pt-grid">
-<a class="pt-card" href="/israelite-research/apocrypha/1-maccabees.html" aria-label="1 Maccabees">
-  <div class="pt-era">late 2nd c. BCE</div>
-  <div class="pt-abbr"><sup>1</sup>Mac</div>
-  <div class="pt-name">1 Maccabees</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/2-maccabees.html" aria-label="2 Maccabees">
-  <div class="pt-era">late 2nd c. BCE</div>
-  <div class="pt-abbr"><sup>2</sup>Mac</div>
-  <div class="pt-name">2 Maccabees</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/1-esdras.html" aria-label="1 Esdras">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr"><sup>1</sup>Esd</div>
-  <div class="pt-name">1 Esdras</div>
-</a>
-<a class="pt-card" href="/israelite-research/apocrypha/2-esdras.html" aria-label="2 Esdras">
-  <div class="pt-era">late 1st–early 2nd c. CE</div>
-  <div class="pt-abbr"><sup>2</sup>Esd</div>
-  <div class="pt-name">2 Esdras</div>
-</a>
-  </div>
-</section>
-<section class="sect">
-  <div class="sect-label">E</div>
-  <div class="pt-grid">
-<a class="pt-card" href="/israelite-research/apocrypha/prayer-of-manasseh.html" aria-label="Prayer of Manasseh">
-  <div class="pt-era">2nd–1st c. BCE</div>
-  <div class="pt-abbr">Pr Man</div>
-  <div class="pt-name">Prayer of Manasseh</div>
-</a>
-  </div>
-</section>
+  <header class="page-header">
+    <h1 class="page-title">Apocrypha</h1>
+    <p class="page-sub">A periodic-style layout of narrative, wisdom, additions, Maccabean history, and Esdras texts.</p>
+  </header>
+
+  <!-- Periodic-style columns -->
+  <section class="pt-wrap" aria-label="Apocrypha Books (periodic layout)">
+    <div class="pt-columns">
+      <!-- Column 1: Narratives -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card narr" href="/israelite-research/apocrypha/tobit.html">
+          <div class="pt-era">3rd–2nd c. BCE</div>
+          <div class="pt-abbr">Tb</div>
+          <div class="pt-name">Tobit</div>
+        </a>
+        <a class="pt-card narr" href="/israelite-research/apocrypha/judith.html">
+          <div class="pt-era">late 2nd c. BCE</div>
+          <div class="pt-abbr">Jdt</div>
+          <div class="pt-name">Judith</div>
+        </a>
+      </div>
+
+      <!-- Column 2: Wisdom & Letters -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card wis" href="/israelite-research/apocrypha/wisdom.html">
+          <div class="pt-era">late 1st c. BCE–early 1st c. CE</div>
+          <div class="pt-abbr">Wis</div>
+          <div class="pt-name">Wisdom</div>
+        </a>
+        <a class="pt-card wis" href="/israelite-research/apocrypha/sirach.html">
+          <div class="pt-era">early 2nd c. BCE</div>
+          <div class="pt-abbr">Sir</div>
+          <div class="pt-name">Sirach</div>
+        </a>
+        <a class="pt-card wis" href="/israelite-research/apocrypha/baruch.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Bar</div>
+          <div class="pt-name">Baruch</div>
+        </a>
+        <a class="pt-card wis" href="/israelite-research/apocrypha/letter-of-jeremiah.html">
+          <div class="pt-era">4th–2nd c. BCE</div>
+          <div class="pt-abbr">Let&nbsp;Jer</div>
+          <div class="pt-name">Letter of Jeremiah</div>
+        </a>
+      </div>
+
+      <!-- Column 3: Additions to Daniel/Esther -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card adds" href="/israelite-research/apocrypha/prayer-of-azariah.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Pr&nbsp;Az</div>
+          <div class="pt-name">Prayer of Azariah</div>
+        </a>
+        <a class="pt-card adds" href="/israelite-research/apocrypha/susanna.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Sus</div>
+          <div class="pt-name">Susanna</div>
+        </a>
+        <a class="pt-card adds" href="/israelite-research/apocrypha/bel-and-the-dragon.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Bel</div>
+          <div class="pt-name">Bel and the Dragon</div>
+        </a>
+        <a class="pt-card adds" href="/israelite-research/apocrypha/additions-to-esther.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Add&nbsp;Est</div>
+          <div class="pt-name">Additions to Esther</div>
+        </a>
+      </div>
+
+      <!-- Column 4: Maccabean History -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card macc" href="/israelite-research/apocrypha/1-maccabees.html">
+          <div class="pt-era">late 2nd c. BCE</div>
+          <div class="pt-abbr"><sup>1</sup>Mac</div>
+          <div class="pt-name">1 Maccabees</div>
+        </a>
+        <a class="pt-card macc" href="/israelite-research/apocrypha/2-maccabees.html">
+          <div class="pt-era">late 2nd c. BCE</div>
+          <div class="pt-abbr"><sup>2</sup>Mac</div>
+          <div class="pt-name">2 Maccabees</div>
+        </a>
+      </div>
+
+      <!-- Column 5: Esdras & Prayer -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card esd" href="/israelite-research/apocrypha/1-esdras.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr"><sup>1</sup>Esd</div>
+          <div class="pt-name">1 Esdras</div>
+        </a>
+        <a class="pt-card esd" href="/israelite-research/apocrypha/2-esdras.html">
+          <div class="pt-era">late 1st–early 2nd c. CE</div>
+          <div class="pt-abbr"><sup>2</sup>Esd</div>
+          <div class="pt-name">2 Esdras</div>
+        </a>
+        <a class="pt-card esd" href="/israelite-research/apocrypha/prayer-of-manasseh.html">
+          <div class="pt-era">2nd–1st c. BCE</div>
+          <div class="pt-abbr">Pr&nbsp;Man</div>
+          <div class="pt-name">Prayer of Manasseh</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legend BELOW the grid -->
+  <div class="legend" aria-label="Color legend">
+    <span class="chip"><span class="dot narr"></span> Narratives</span>
+    <span class="chip"><span class="dot wisdom"></span> Wisdom &amp; Letters</span>
+    <span class="chip"><span class="dot adds"></span> Additions to Daniel/Esther</span>
+    <span class="chip"><span class="dot macc"></span> Maccabean History</span>
+    <span class="chip"><span class="dot esd"></span> Esdras &amp; Prayer</span>
   </div>
 </main>
+
 <div id="site-footer"></div>
 <script src="/israelite-research/js/include.js" defer></script>
 </body>
