@@ -574,6 +574,11 @@
   const doFilter = debounce(applyFilter, 120);
   search.addEventListener('input', e => doFilter(e.target.value));
   clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+
+// ====== Search My Food configuration (data paths) ======
+const DICT_URL = '/israelite-research/data/dictionary.json';
+const FOODS_URL = '/israelite-research/data/foundation_foods.json';
+
 </script>
 
 <!-- Use the same Scripture hover as articles -->
@@ -582,3 +587,6 @@
 
 </body>
 </html>
+// ====== Search My Food configuration (data paths) ======
+const DICT_URL = '/israelite-research/data/dictionary.json';
+const FOODS_URL = '/israelite-research/data/foundation_foods.json';
