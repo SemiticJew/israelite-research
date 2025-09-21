@@ -29,7 +29,23 @@
   /* Tree */
   .tree{margin:14px 0 36px}
   .tree details{border:1px solid var(--sky); background:var(--white); margin:8px 0; border-radius:10px; padding:8px 10px}
-  .tree details>summary{cursor:pointer; font-weight:800; color:var(--brand); outline:none}
+  /* Custom chevron for summary elements */
+.tree details > summary {
+  position: relative;
+  padding-left: 1.2rem;
+}
+.tree details > summary::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  font-size: 0.9rem;
+  color: var(--brand);
+  transition: transform .2s ease;
+}
+.tree details[open] > summary::before {
+  transform: rotate(90deg);
+}
   .tree details[open]{box-shadow:0 4px 10px rgba(0,0,0,.06)}
   .tree .group{margin:8px 0 0 0; padding:0}
   .tree .group details{margin:6px 0}
