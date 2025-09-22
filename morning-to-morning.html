@@ -126,6 +126,98 @@
 </main>
 
 <div id="site-footer"></div>
+
+<script>
+(function(){
+  const DEVO_URL = '/israelite-research/data/devotionals.json';
+
+  // Hook targets (be tolerant if IDs differ)
+  const grid = document.querySelector('#devoGrid') || document.querySelector('.grid-3');
+  const monthSel = document.getElementById('monthFilter');
+  const trackSel = document.getElementById('trackFilter');
+
+  let ALL = []; // normalized 1..365
+
+  function normalize(data){
+    const map = new Map();
+    (data.devotionals||[]).forEach(d => map.set(Number(d.day), d));
+    const arr = [];
+    for (let i=1;i<=365;i++){
+      if (map.has(i)) { arr.push(map.get(i)); }
+      else {
+        arr.push({
+          day:i, kicker:`Day ${i} · Coming Soon`,
+          title:'Coming Soon', refs:[], track:'All', image:''
+        });
+      }
+    }
+    return arr;
+  }
+
+  function cardHTML(d){
+    const refs = (d.refs||[]).join(' • ') || '—';
+    const img = d.image ? `<img src="${d.image}" alt="" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:10px;border:1px solid #e7ecf4"/>` : '';
+    return `
+      <a class="card" href="#" aria-label="Day ${d.day}">
+        <div class="card-body">
+          ${img}
+          <div class="meta" style="margin-top:8px;color:#6b7280;font-weight:700">${d.kicker}</div>
+          <h3 class="card-title" style="margin:.3rem 0 0;font-size:1.05rem;font-weight:900">${d.title}</h3>
+          <div class="meta" style="margin-top:6px">${refs}</div>
+          <div class="card-cta" style="padding:10px 0 0;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="btn">Read</span><span class="btn">Share</span>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  function monthOf(day){
+    // Lightweight mapping: 31,28,31,30,31,30,31,31,30,31,30,31
+    const lens=[31,28,31,30,31,30,31,31,30,31,30,31];
+    let d=day, m=0;
+    while(m<12){
+      if(d<=lens[m]) return m+1;
+      d-=lens[m]; m++;
+    }
+    return 12;
+  }
+
+  function applyFilters(){
+    const m = monthSel && monthSel.value ? Number(monthSel.value) : 0;
+    const t = trackSel && trackSel.value ? String(trackSel.value) : '';
+    const filtered = ALL.filter(d => {
+      const byMonth = m ? (monthOf(d.day)===m) : true;
+      const byTrack = t ? ((d.track||'').toLowerCase()===t.toLowerCase()) : true;
+      return byMonth && byTrack;
+    });
+    render(filtered);
+  }
+
+  function render(list){
+    if(!grid) return;
+    grid.innerHTML = list.map(cardHTML).join('');
+  }
+
+  async function boot(){
+    try{
+      const r = await fetch(DEVO_URL, {cache:'no-store'});
+      const j = await r.json();
+      ALL = normalize(j);
+      render(ALL);
+      if(monthSel) monthSel.addEventListener('change', applyFilters);
+      if(trackSel) trackSel.addEventListener('change', applyFilters);
+    }catch(e){
+      console.error('Devotionals failed to load', e);
+      if(grid) grid.innerHTML = `<div class="muted">Devotionals file not found yet.</div>`;
+    }
+  }
+
+  boot();
+})();
+</script>
+
+
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
