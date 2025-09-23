@@ -61,14 +61,14 @@
   <!-- Horizontal Timeline -->
   <section class="section">
     <h2 class="sec-title">Timeline (Horizontal)</h2>
-    <div class="tl-rail" role="list">
+    <div class="tl-rail" role="list"><div class="tl-track">
       <div class="era mon" style="--start:-1000; --end:-586;">Monarchy</div>
       <div class="era exl" style="--start:-586; --end:-516;">Exile</div>
       <div class="era st"  style="--start:-516; --end:-63;">Second Temple</div>
       <div class="era rm"  style="--start:-63;  --end:400;">Roman</div>
 
-    </div>
-    <div class="tl-scale">
+    </div></div>
+  <div class="tl-scale">
       <span>-1000</span><span>-500</span><span>0</span><span>500</span>
     </div>
   </section>
@@ -112,3 +112,71 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
+<style>
+  .tl-track{ position:relative; height:100%; min-width:1200px; }
+  .dot{ left:var(--x) !important; transform: translate(-50%,-50%) !important; }
+</style>
+
+<script>
+(function(){
+  const CSV_URL = "/israelite-research/data/extra_sources.csv";
+  const rail   = document.querySelector(".tl-rail");
+  const track  = document.querySelector(".tl-track");
+  if(!rail || !track) return;
+
+  function toNum(x){ const n = Number(String(x).trim()); return Number.isFinite(n)? n : null; }
+  function parseCSV(text){
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    if(!lines.length) return [];
+    const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim().toLowerCase());
+    const idx  = Object.fromEntries(head.map((h,i)=>[h,i]));
+    return lines.map(row=>{
+      const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+      const get  = k => (k in idx ? cols[idx[k]] : "");
+      const year = toNum(get("year"));
+      const title = String(get("title")||"").trim();
+      return {year, title};
+    }).filter(r => r.year !== null && r.title);
+  }
+  function getScale(){
+    const cs = getComputedStyle(rail);
+    const ppy = parseFloat(cs.getPropertyValue('--px-per-year')) || 0.8;
+    return ppy;
+  }
+
+  fetch(CSV_URL, {cache:"no-store"})
+    .then(r => r.text())
+    .then(text => {
+      const rows = parseCSV(text);
+      if(!rows.length) return;
+
+      const years = rows.map(r => r.year);
+      const minY  = Math.min.apply(null, years);
+      const maxY  = Math.max.apply(null, years);
+      const ppy   = getScale();
+      const pad   = 300;
+      const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
+      track.style.width = width + "px";
+
+      track.querySelectorAll(".dot").forEach(d => d.remove());
+
+      const frag = document.createDocumentFragment();
+      rows.forEach(r => {
+        const x = Math.round((r.year - minY) * ppy) + pad;
+        const b = document.createElement("button");
+        b.className = "dot";
+        b.style.setProperty("--x", x + "px");
+        const label = r.title + " (" + (r.year < 0 ? (Math.abs(r.year) + " BCE") : (r.year + " CE")) + ")";
+        b.title = label;
+        b.setAttribute("aria-label", label);
+        frag.appendChild(b);
+      });
+      track.appendChild(frag);
+
+      const zeroX = (0 - minY) * ppy + pad;
+      const target = (zeroX >= 0 && zeroX <= width) ? zeroX : (width/2);
+      rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
+    })
+    .catch(()=>{});
+})();
+</script>
