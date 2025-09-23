@@ -67,9 +67,6 @@
       <div class="era st"  style="--start:-516; --end:-63;">Second Temple</div>
       <div class="era rm"  style="--start:-63;  --end:400;">Roman</div>
 
-      <button class="dot" title="Mesha Stele (c. 840 BCE)" style="--date:-840"></button>
-      <button class="dot" title="Tel Dan Inscription (c. 800 BCE)" style="--date:-800"></button>
-      <button class="dot" title="Pilate Stone (c. 30 CE)" style="--date:30"></button>
     </div>
     <div class="tl-scale">
       <span>-1000</span><span>-500</span><span>0</span><span>500</span>
@@ -77,6 +74,41 @@
   </section>
 </main>
 <div id="site-footer"></div>
+<script>
+(function(){
+const CSV_URL = "/israelite-research/data/extra_sources.csv";
+const rail = document.querySelector(".tl-rail");
+if(!rail) return;
+function toNum(x){ const n=Number(String(x).trim()); return Number.isFinite(n)? n : null; }
+function parseCSV(text){
+  const lines = text.split(/\r?\n/).filter(Boolean);
+  if(!lines.length) return [];
+  const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim().toLowerCase());
+  const idx = Object.fromEntries(head.map((h,i)=>[h,i]));
+  return lines.map(row=>{
+    const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+    const get = k => (k in idx ? cols[idx[k]] : "");
+    const year = toNum(get("year"));
+    const title = String(get("title")||"").trim();
+    return {year,title};
+  }).filter(r=>r.year!==null && r.title);
+}
+fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
+  const rows = parseCSV(text);
+  rail.querySelectorAll(".dot").forEach(d=>d.remove());
+  const frag = document.createDocumentFragment();
+  rows.forEach(r=>{
+    const b=document.createElement("button");
+    b.className="dot";
+    b.style.setProperty("--date", r.year);
+    const label = r.title + " (" + (r.year<0? (Math.abs(r.year)+" BCE") : (r.year+" CE")) + ")";
+    b.title = label; b.setAttribute("aria-label", label);
+    frag.appendChild(b);
+  });
+  rail.appendChild(frag);
+}).catch(()=>{});
+})();
+</script>
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
