@@ -149,7 +149,7 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
     .then(r => r.text())
     .then(text => {
       const rows = parseCSV(text);
-      if(!rows.length) return;
+      if(!rows.length){ var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent="No data loaded"; } return; }
 
       const years = rows.map(r => r.year);
       const minY  = Math.min.apply(null, years);
@@ -173,7 +173,7 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
         frag.appendChild(b);
       });
       track.appendChild(frag);
-
+      var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent = rows.length + " sources plotted"; }
       var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent = rows.length + " sources plotted"; }
       const zeroX = (0 - minY) * ppy + pad;
       const target = (zeroX >= 0 && zeroX <= width) ? zeroX : (width/2);
