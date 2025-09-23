@@ -9,47 +9,45 @@
     :root{ --ink:#0b2340; --muted:#6b7280; --brand:#054A91; --accent:#F17300; --sky:#e7ecf4; }
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
     .sec-title{margin:0 0 10px;font:900 1.2rem/1.2 system-ui;color:var(--ink)}
+    .section{ padding:24px 0; }
+
     .tl-rail{
       position:relative; border:1px solid var(--sky); border-radius:12px;
-      height:72px; overflow-x:auto; white-space:nowrap; background:#fff;
+      height:88px; overflow-x:auto; background:#fff;
       box-shadow:0 2px 8px rgba(0,0,0,.05); padding:0 8px;
-      --px-per-year: .8; --center: 1200; /* adjust center pivot */
+      --px-per-year: 1; /* px per year (JS reads this) */
     }
     .tl-rail::before{
       content:""; position:absolute; left:0; right:0; top:50%; height:2px; background:#eaf0f6;
     }
+    .tl-track{ position:relative; height:100%; min-width:1200px; }
+
     .era{
-      position:absolute; top:10px; height:52px; color:#fff; font:700 .8rem/52px system-ui;
-      padding:0 10px; border-radius:10px; white-space:nowrap; opacity:.95;
-      transform: translateX(calc(var(--center)*1px + var(--start)*var(--px-per-year)*1px));
-      width: calc((var(--end) - var(--start)) * var(--px-per-year) * 1px);
+      position:absolute; top:10px; height:68px; color:#fff; font:700 .8rem/68px system-ui;
+      padding:0 10px; border-radius:10px; white-space:nowrap; opacity:.95; overflow:hidden;
+      z-index:1;
     }
     .era.mon{ background:#1e3a8a; }
     .era.exl{ background:#7c2d12; }
     .era.st { background:#0f766e; }
     .era.rm { background:#6d28d9; }
+
     .dot{
-  .dot:hover::after {
-    content: attr(title);
-    position: absolute;
-    top: -32px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    border: 1px solid var(--sky);
-    padding: 4px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-    font-size: .8rem;
-    color: var(--ink);
-    box-shadow: 0 2px 6px rgba(0,0,0,.15);
-  }
-      position:absolute; top:50%; width:12px; height:12px; border-radius:50%;
+      position:absolute; top:50%; left:var(--x);
+      width:12px; height:12px; border-radius:50%;
       border:2px solid #fff; background:var(--brand); box-shadow:0 0 0 2px #cfe0f7;
-      transform: translate(-50%,-50%) translateX(calc(var(--center)*1px + var(--date)*var(--px-per-year)*1px));
-      cursor:pointer;
+      transform: translate(-50%,-50%);
+      cursor:pointer; z-index:3;
     }
+    .dot:hover::after{
+      content: attr(title);
+      position:absolute; top:-32px; left:50%; transform:translateX(-50%);
+      background:#fff; border:1px solid var(--sky); padding:4px 8px; border-radius:6px;
+      white-space:nowrap; font-size:.8rem; color:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.15);
+    }
+
     .tl-scale{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;margin:6px 2px 0}
+    #tlCount{ color:var(--muted); margin-top:6px; font-weight:700; }
   </style>
 </head>
 <body>
@@ -58,73 +56,31 @@
   <h1>Extra-Biblical Sources</h1>
   <p>Explore a comprehensive timeline from Adam to the present, marking major biblical eras and historical data on Israelite settlements and sojourns.</p>
 
-  <!-- Horizontal Timeline -->
   <section class="section">
     <h2 class="sec-title">Timeline (Horizontal)</h2>
-    <div class="tl-rail" role="list"><div class="tl-track">
-      <div class="era mon" style="--start:-1000; --end:-586;">Monarchy</div>
-      <div class="era exl" style="--start:-586; --end:-516;">Exile</div>
-      <div class="era st"  style="--start:-516; --end:-63;">Second Temple</div>
-      <div class="era rm"  style="--start:-63;  --end:400;">Roman</div>
 
-    </div></div>
-  <div class="tl-scale">
-      <span>-1000</span><span>-500</span><span>0</span><span>500</span>
+    <div class="tl-rail" role="list">
+      <div class="tl-track">
+        <div class="era mon" data-start="-1000" data-end="-586">Monarchy</div>
+        <div class="era exl" data-start="-586"  data-end="-516">Exile</div>
+        <div class="era st"  data-start="-516"  data-end="-63">Second Temple</div>
+        <div class="era rm"  data-start="-63"   data-end="400">Roman</div>
+      </div>
     </div>
-  <div id="tlCount" class="muted" style="margin-top:6px"></div>
+
+    <div class="tl-scale"><span>-1000</span><span>-500</span><span>0</span><span>500</span></div>
+    <div id="tlCount"></div>
   </section>
 </main>
 <div id="site-footer"></div>
-<script>
-(function(){
-const CSV_URL = "/israelite-research/data/extra_sources.csv";
-const rail = document.querySelector(".tl-rail");
-if(!rail) return;
-function toNum(x){ const n=Number(String(x).trim()); return Number.isFinite(n)? n : null; }
-function parseCSV(text){
-  const lines = text.split(/\r?\n/).filter(Boolean);
-  if(!lines.length) return [];
-  const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim().toLowerCase());
-  const idx = Object.fromEntries(head.map((h,i)=>[h,i]));
-  return lines.map(row=>{
-    const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-    const get = k => (k in idx ? cols[idx[k]] : "");
-    const year = toNum(get("year"));
-    const title = String(get("title")||"").trim();
-    return {year,title};
-  }).filter(r=>r.year!==null && r.title);
-}
-fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
-  const rows = parseCSV(text);
-  rail.querySelectorAll(".dot").forEach(d=>d.remove());
-  const frag = document.createDocumentFragment();
-  rows.forEach(r=>{
-    const b=document.createElement("button");
-    b.className="dot";
-    b.style.setProperty("--date", r.year);
-    const label = r.title + " (" + (r.year<0? (Math.abs(r.year)+" BCE") : (r.year+" CE")) + ")";
-    b.title = label; b.setAttribute("aria-label", label);
-    frag.appendChild(b);
-  });
-  rail.appendChild(frag);
-}).catch(()=>{});
-})();
-</script>
-<script src="/israelite-research/js/include.js"></script>
-</body>
-</html>
-<style>
-  .tl-track{ position:relative; height:100%; min-width:1200px; }
-  .dot{ left:var(--x) !important; transform: translate(-50%,-50%) !important; }
-</style>
 
 <script>
 (function(){
   const CSV_URL = "/israelite-research/data/extra_sources.csv";
   const rail   = document.querySelector(".tl-rail");
   const track  = document.querySelector(".tl-track");
+  const tlCount= document.getElementById("tlCount");
   if(!rail || !track) return;
-
   function toNum(x){ const n = Number(String(x).trim()); return Number.isFinite(n)? n : null; }
   function parseCSV(text){
     const lines = text.split(/\r?\n/).filter(Boolean);
@@ -135,23 +91,32 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
       const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
       const get  = k => (k in idx ? cols[idx[k]] : "");
       const year = toNum(get("year"));
-      const title = String(get("title")||"").trim();
-      return {year, title};
+      const title= String(get("title")||"").trim();
+      return {year,title};
     }).filter(r => r.year !== null && r.title);
   }
   function getScale(){
     const cs = getComputedStyle(rail);
-    const ppy = parseFloat(cs.getPropertyValue('--px-per-year')) || 0.8;
+    const ppy = parseFloat(cs.getPropertyValue('--px-per-year')) || 1;
     return ppy;
   }
-
+  function placeEras(minY, ppy, pad){
+    track.querySelectorAll('.era').forEach(e=>{
+      const start = toNum(e.getAttribute('data-start'));
+      const end   = toNum(e.getAttribute('data-end'));
+      if(start==null || end==null) return;
+      const left = Math.round((start - minY) * ppy) + pad;
+      const width= Math.max(1, Math.round((end - start) * ppy));
+      e.style.left  = left + 'px';
+      e.style.width = width + 'px';
+    });
+  }
   fetch(CSV_URL, {cache:"no-store"})
-    .then(r => r.text())
-    .then(text => {
+    .then(r=>r.ok?r.text():Promise.reject(r.status))
+    .then(text=>{
       const rows = parseCSV(text);
-      if(!rows.length){ var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent="No data loaded"; } return; }
-
-      const years = rows.map(r => r.year);
+      if(!rows.length){ if(tlCount) tlCount.textContent = "No data loaded"; return; }
+      const years = rows.map(r=>r.year);
       const minY  = Math.min.apply(null, years);
       const maxY  = Math.max.apply(null, years);
       const ppy   = getScale();
@@ -159,10 +124,10 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
       const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
       track.style.width = width + "px";
 
-      track.querySelectorAll(".dot").forEach(d => d.remove());
+      placeEras(minY, ppy, pad);
 
       const frag = document.createDocumentFragment();
-      rows.forEach(r => {
+      rows.forEach(r=>{
         const x = Math.round((r.year - minY) * ppy) + pad;
         const b = document.createElement("button");
         b.className = "dot";
@@ -173,16 +138,17 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
         frag.appendChild(b);
       });
       track.appendChild(frag);
-      var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent = rows.length + " sources plotted"; }
-      var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent = rows.length + " sources plotted"; }
+
+      if(tlCount) tlCount.textContent = rows.length + " sources plotted";
+
       const zeroX = (0 - minY) * ppy + pad;
-      const target = (zeroX >= 0 && zeroX <= width) ? zeroX : (width/2);
+      const target = (zeroX>=0 && zeroX<=width) ? zeroX : (width/2);
       rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
     })
-    .catch(()=>{});
+    .catch(()=>{ if(tlCount) tlCount.textContent = "Failed to load data"; });
 })();
 </script>
-<style>
-  .era{ z-index:1; position:absolute; }
-  .dot{ z-index:3; }
-</style>
+
+<script src="/israelite-research/js/include.js"></script>
+</body>
+</html>
