@@ -71,6 +71,7 @@
   <div class="tl-scale">
       <span>-1000</span><span>-500</span><span>0</span><span>500</span>
     </div>
+  <div id="tlCount" class="muted" style="margin-top:6px"></div>
   </section>
 </main>
 <div id="site-footer"></div>
@@ -173,6 +174,7 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
       });
       track.appendChild(frag);
 
+      var cnt=document.getElementById("tlCount"); if(cnt){ cnt.textContent = rows.length + " sources plotted"; }
       const zeroX = (0 - minY) * ppy + pad;
       const target = (zeroX >= 0 && zeroX <= width) ? zeroX : (width/2);
       rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
@@ -180,3 +182,7 @@ fetch(CSV_URL,{cache:"no-store"}).then(r=>r.text()).then(text=>{
     .catch(()=>{});
 })();
 </script>
+<style>
+  .era{ z-index:1; position:absolute; }
+  .dot{ z-index:3; }
+</style>
