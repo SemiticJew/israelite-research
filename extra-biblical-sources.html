@@ -8,220 +8,70 @@
   <style>
     :root{ --ink:#0b2340; --muted:#6b7280; --brand:#054A91; --accent:#F17300; --sky:#e7ecf4; }
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-    .sec-title{margin:0 0 10px;font:900 1.2rem/1.2 system-ui;color:var(--ink)}
     .section{ padding:24px 0; }
+    .title{ margin:0 0 8px; font:900 2rem/1.15 system-ui; color:var(--ink); }
+    .sub{ color:var(--muted); max-width:70ch; }
+    .sec-head{ display:flex; align-items:center; gap:10px; justify-content:space-between; margin:12px 0; }
+    .sec-title{ margin:0; font:900 1.2rem/1.2 system-ui; color:var(--ink); }
+    .tools{ display:flex; flex-wrap:wrap; gap:8px; }
+    .select, .btn{ border:1px solid var(--sky); background:#fff; color:var(--ink); border-radius:999px; padding:8px 12px; font-weight:800; }
+    .muted{ color:var(--muted); }
 
-    .tl-rail{
-      position:relative; border:1px solid var(--sky); border-radius:12px;
-      height:120px; overflow-x:auto; background:#fff;
-      box-shadow:0 2px 8px rgba(0,0,0,.05); padding:0 8px;
-      --px-per-year: 1.2; /* px per year (JS reads this) */
+    .wheel-wrap{ display:block; position:relative; height:620px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
+    .wheel{ --items:12; --radius:240px; --card-w:220px; --card-h:120px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
+    .wheel > li{ position:absolute; top:50%; left:50%; transform-origin:0 0; will-change: transform; }
+    .wheel input{ position:absolute; opacity:0; pointer-events:none; }
+    .wheel label{
+      display:block; width:var(--card-w); min-height:var(--card-h);
+      padding:10px 12px; background:#fff; border:1px solid var(--sky); border-radius:12px;
+      box-shadow:0 6px 24px rgba(0,0,0,.10);
+      color:var(--ink); text-decoration:none; cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s;
     }
-    .tl-rail::before{
-      content:""; position:absolute; left:0; right:0; top:50%; height:2px; background:#eaf0f6;
-    }
-    .tl-track{ position:relative; height:100%; min-width:1200px; }
+    .wheel h3{ margin:0 0 6px; font:900 1rem/1.2 system-ui; color:var(--ink); }
+    .wheel p{ margin:0; color:var(--muted); font-size:.92rem; }
+    .wheel input:checked + label{ border-color:#c6d6ea; box-shadow:0 10px 30px rgba(0,0,0,.18); transform:scale(1.03); }
+    .wheel .yr{ display:inline-block; font-weight:800; color:var(--brand); margin-right:6px; }
 
-    .era{ position:absolute; top:18px; height:84px; color:#fff; font:700 .8rem/68px system-ui;
-      padding:0 10px; border-radius:10px; white-space:nowrap; opacity:.95; overflow:hidden;
-      z-index:1;
+    @media (max-width:960px){
+      .wheel-wrap{ height:540px; }
+      .wheel{ --radius:200px; --card-w:200px; }
     }
-    .era.mon{ background:#1e3a8a; }
-    .era.exl{ background:#7c2d12; }
-    .era.st { background:#0f766e; }
-    .era.rm { background:#6d28d9; }
-
-    .dot{ position:absolute; top:calc(50% + var(--lane,0)*10px); left:var(--x); width:10px; height:10px; border-radius:50%; border:2px solid #fff; background:var(--brand); box-shadow:0 0 0 2px #cfe0f7; transform: translate(-50%,-50%); cursor:pointer; z-index:3; padding:0; line-height:0; appearance:none; }
-    .tl-scale{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;margin:6px 2px 0; gap:8px; flex-wrap:wrap}
-    #tlCount{ color:var(--muted); margin-top:6px; font-weight:700; }
+    @media (max-width:640px){
+      .wheel-wrap{ height:500px; }
+      .wheel{ --radius:160px; --card-w:180px; --card-h:110px; }
+      .wheel h3{ font-size:.95rem; }
+      .wheel p{ font-size:.85rem; }
+    }
   </style>
 </head>
 <body>
 <div id="site-header"></div>
-<main class="container extra-biblical-page">
-  <h1>Extra-Biblical Sources</h1>
-  <p>Explore a comprehensive timeline from Adam to the present, marking major biblical eras and historical data on Israelite settlements and sojourns.</p>
 
-  <section class="section">
-    <h2 class="sec-title">Timeline (Horizontal)</h2>
+<main class="container">
+  <header class="section">
+    <h1 class="title">Extra-Biblical Sources</h1>
+    <p class="sub">Explore key events beyond the biblical text, filtered by book context to keep the wheel readable.</p>
+  </header>
 
-    <div class="tl-rail" role="list">
-      <div class="tl-track">
-        <div class="era mon" data-start="-1000" data-end="-586">Monarchy</div>
-        <div class="era exl" data-start="-586"  data-end="-516">Exile</div>
-        <div class="era st"  data-start="-516"  data-end="-63">Second Temple</div>
-        <div class="era rm"  data-start="-63"   data-end="400">Roman</div>
+  <section class="section" id="wheel-only">
+    <div class="sec-head">
+      <h2 class="sec-title">Highlights Wheel</h2>
+      <div class="tools">
+        <select class="select" id="bookFilter" aria-label="Filter by Book">
+          <option value="">All Books</option>
+        </select>
+        <span class="muted" id="wheelCount"></span>
       </div>
     </div>
 
-    <div class="tl-scale"><span>-1000</span><span>-500</span><span>0</span><span>500</span></div>
-    <div id="tlCount"></div>
+    <div class="wheel-wrap">
+      <ul class="wheel cards" id="wheelCards" style="--items:0" aria-label="Timeline highlights"></ul>
+    </div>
   </section>
 </main>
+
 <div id="site-footer"></div>
-
-<script>
-(function(){
-  const CSV_SOURCES = [
-    "/israelite-research/data/extra_sources.csv",
-    "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
-  ];
-  const rail   = document.querySelector(".tl-rail");
-  const track  = document.querySelector(".tl-track");
-  const tlCount= document.getElementById("tlCount");
-  if(!rail || !track) return;
-
-  function toNum(x){ const n = Number(String(x).trim()); return Number.isFinite(n)? n : null; }
-  function parseCSV(text){
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    if(!lines.length) return [];
-    const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim().toLowerCase());
-    const idx  = Object.fromEntries(head.map((h,i)=>[h,i]));
-    return lines.map(row=>{
-      const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-      const get  = k => (k in idx ? cols[idx[k]] : "");
-      const year = toNum(get("year"));
-      const title= String(get("title")||"").trim();
-      return {year,title};
-    }).filter(r => r.year !== null && r.title);
-  }
-  function getScale(){
-    const cs = getComputedStyle(rail);
-    return parseFloat(cs.getPropertyValue('--px-per-year')) || 1;
-  }
-  function placeEras(minY, ppy, pad){
-    track.querySelectorAll('.era').forEach(e=>{
-      const start = toNum(e.getAttribute('data-start'));
-      const end   = toNum(e.getAttribute('data-end'));
-      if(start==null || end==null) return;
-      const left = Math.round((start - minY) * ppy) + pad;
-      const width= Math.max(1, Math.round((end - start) * ppy));
-      e.style.left  = left + 'px';
-      e.style.width = width + 'px';
-    });
-  }
-  function renderScale(minY, maxY){
-    const scaleEl = document.querySelector(".tl-scale");
-    if(!scaleEl) return;
-    const span = maxY - minY;
-    const steps = [100, 250, 500, 1000, 2000, 5000];
-    let step = steps[steps.length-1];
-    for(const s of steps){ if(span / s <= 8){ step = s; break; } }
-    const labels = [];
-    labels.push(minY);
-    let y = Math.ceil(minY/step)*step;
-    for(; y < maxY; y += step){ if(y !== minY) labels.push(y); }
-    labels.push(maxY);
-    const fmt = yy => yy < 0 ? (Math.abs(yy) + " BCE") : (yy + " CE");
-    scaleEl.innerHTML = labels.map(v => "<span>" + fmt(v) + "</span>").join("");
-  }
-
-  (async function(){
-    let text = null;
-    for (const url of CSV_SOURCES){
-      try{
-        const r = await fetch(url, {cache:"no-store"});
-        if (r.ok){ text = await r.text(); break; }
-      }catch(e){}
-    }
-    if (text === null){ if(tlCount) tlCount.textContent="Failed to load data"; return; }
-
-    const rows = parseCSV(text);
-    const filtered = rows.filter(r => r.year >= -4000 && r.year <= 2500);
-    const useRows = filtered.length ? filtered : rows;
-    if (!useRows.length){ if(tlCount) tlCount.textContent = "No data loaded"; return; }
-
-    const years = useRows.map(r=>r.year);
-    const minY  = Math.min.apply(null, years);
-    const maxY  = Math.max.apply(null, years);
-    const ppy   = getScale();
-    const pad   = 300;
-    const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
-    track.style.width = width + "px";
-
-    renderScale(minY, maxY);
-    placeEras(minY, ppy, pad);
-
-    const frag = document.createDocumentFragment();
-    useRows.forEach(r=>{
-      const x = Math.round((r.year - minY) * ppy) + pad;
-      const b = document.createElement("button");
-      b.className = "dot";
-      b.style.setProperty("--x", x + "px");
-      const label = r.title + " (" + (r.year < 0 ? (Math.abs(r.year) + " BCE") : (r.year + " CE")) + ")";
-      b.title = label;
-      b.setAttribute("aria-label", label);
-      const cap=document.createElement("span"); cap.className="cap"; cap.textContent=r.title; b.appendChild(cap);
-      frag.appendChild(b);
-    });
-    track.appendChild(frag);
-
-    if (tlCount) tlCount.textContent = useRows.length + " sources plotted";
-
-    const zeroX = (0 - minY) * ppy + pad;
-    const target = (zeroX>=0 && zeroX<=width) ? zeroX : (width/2);
-    rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
-  })();
-})();
-</script>
-
 <script src="/israelite-research/js/include.js"></script>
-</body>
-</html>
-<style>
-  .dot:hover::before{
-    content:"";
-    position:absolute; left:50%; top:-18px;
-    width:1px; height:16px; background:#94a3b8;
-    transform:translateX(-50%);
-    z-index:2;
-  }
-  .dot .cap{
-    position:absolute; top:-36px; left:50%; transform:translateX(-50%);
-    background:#fff; border:1px solid var(--sky); padding:2px 6px; border-radius:6px;
-    font-size:.75rem; color:var(--ink); white-space:nowrap;
-    box-shadow:0 2px 6px rgba(0,0,0,.10);
-    display:none; z-index:4;
-  }
-  .dot:hover .cap{ display:block; }
-</style>
-
-<!-- ========== DATA-DRIVEN WHEEL HIGHLIGHTS ========== -->
-<section class="section" id="wheel-timeline">
-  <h2 class="sec-title">Highlights Wheel (Data-Driven)</h2>
-  <div class="wheel-wrap">
-    <ul class="wheel cards" id="wheelCards" style="--items:0" aria-label="Timeline highlights"></ul>
-  </div>
-  <div class="muted" id="wheelCount" style="margin-top:8px"></div>
-</section>
-
-<style>
-  .wheel-wrap{ display:block; position:relative; height:600px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
-  .wheel{ --items:12; --radius:240px; --card-w:220px; --card-h:120px; --tilt:0deg; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
-  .wheel > li{ position:absolute; top:50%; left:50%; transform-origin:0 0; }
-  .wheel > li[style]{ /* ensure GPU accel on transforms */ will-change: transform; }
-  .wheel input{ position:absolute; opacity:0; pointer-events:none; }
-  .wheel label{
-    display:block; width:var(--card-w); min-height:var(--card-h);
-    padding:10px 12px; background:#fff; border:1px solid var(--sky); border-radius:12px;
-    box-shadow:0 6px 24px rgba(0,0,0,.10);
-    color:var(--ink); text-decoration:none; cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s;
-  }
-  .wheel h3{ margin:0 0 6px; font:900 1rem/1.2 system-ui; color:var(--ink); }
-  .wheel p{ margin:0; color:var(--muted); font-size:.92rem; }
-  .wheel input:checked + label{ border-color:#c6d6ea; box-shadow:0 10px 30px rgba(0,0,0,.18); transform:scale(1.03); }
-  .wheel .yr{ display:inline-block; font-weight:800; color:var(--brand); margin-right:6px; }
-  @media (max-width:960px){
-    .wheel-wrap{ height:520px; }
-    .wheel{ --radius:200px; --card-w:200px; }
-  }
-  @media (max-width:640px){
-    .wheel-wrap{ height:480px; }
-    .wheel{ --radius:160px; --card-w:180px; --card-h:110px; }
-    .wheel h3{ font-size:.95rem; }
-    .wheel p{ font-size:.85rem; }
-  }
-</style>
 
 <script>
 (function(){
@@ -229,9 +79,20 @@
     "/israelite-research/data/extra_sources.csv",
     "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
   ];
-  const UL = document.getElementById("wheelCards");
-  const CNT = document.getElementById("wheelCount");
-  if(!UL) return;
+  const UL   = document.getElementById("wheelCards");
+  const CNT  = document.getElementById("wheelCount");
+  const S    = document.getElementById("bookFilter");
+  if(!UL || !S) return;
+
+  const CANON = [
+    "Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth",
+    "1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther",
+    "Job","Psalms","Proverbs","Ecclesiastes","Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel",
+    "Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi",
+    "Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
+    "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews",
+    "James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"
+  ];
 
   function toNum(x){ const n = Number(String(x||"").trim()); return Number.isFinite(n)? n : null; }
   function fmtYear(y){ return y < 0 ? (Math.abs(y) + " BCE") : (y + " CE"); }
@@ -239,26 +100,35 @@
   function parseCSV(text){
     const lines = text.split(/\r?\n/).filter(Boolean);
     if(!lines.length) return [];
-    const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim().toLowerCase());
-    const idx  = Object.fromEntries(head.map((h,i)=>[h,i]));
+    const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim());
+    const idx  = Object.fromEntries(head.map((h,i)=>[h.toLowerCase(),i]));
+    const get  = (cols, k) => (k in idx ? cols[idx[k]] : "");
     return lines.map(row=>{
       const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-      const get  = k => (k in idx ? cols[idx[k]] : "");
-      const year = toNum(get("year"));
-      const title = String(get("title")||"").trim();
-      const summary = String(get("summary")||"").trim();
-      return {year,title,summary};
+      const year = toNum(get(cols,"year"));
+      const title= String(get(cols,"title")||"").trim();
+      const summary = String(get(cols,"summary")||"").trim();
+      const book = String(get(cols,"book")||"").trim();
+      return {year,title,summary,book};
     }).filter(r => r.year!==null && r.title);
   }
 
+  function inferBook(rec){
+    const hay = (rec.title + " " + rec.summary).toLowerCase();
+    for(const b of CANON){
+      const patt = new RegExp("\\b" + b.replace(/[\s.]/g,'\\s*').toLowerCase() + "\\b");
+      if(patt.test(hay)) return b;
+    }
+    return rec.book || "";
+  }
+
   function sampleEven(items, n){
-    if(items.length <= n) return items;
+    if(items.length <= n) return items.slice();
     const out = [];
     for(let i=0;i<n;i++){
       const idx = Math.round(i*(items.length-1)/(n-1));
       out.push(items[idx]);
     }
-    // de-dupe if rounding collided
     const seen = new Set(), dedup = [];
     for(const x of out){ const key = x.year+"|"+x.title; if(!seen.has(key)){ seen.add(key); dedup.push(x); } }
     return dedup;
@@ -266,12 +136,11 @@
 
   function buildWheel(items){
     UL.innerHTML = "";
+    if(!items.length){ UL.style.setProperty("--items", 0); if(CNT) CNT.textContent="0 highlights"; return; }
     UL.style.setProperty("--items", items.length);
     const radius = getComputedStyle(UL).getPropertyValue("--radius") || "240px";
-
     items.forEach((it, i) => {
       const li = document.createElement("li");
-      li.style.setProperty("--i", i);
       const angle = (360 * i / items.length);
       li.style.transform = `rotate(${angle}deg) translate(${radius}) rotate(${-angle}deg)`;
 
@@ -295,27 +164,44 @@
       li.appendChild(inp); li.appendChild(lab);
       UL.appendChild(li);
     });
+    if(CNT) CNT.textContent = items.length + " highlights";
+  }
+
+  function populateBookFilter(rows){
+    const set = new Set();
+    rows.forEach(r => { const b = r.book || inferBook(r); if(b) set.add(b); });
+    const list = Array.from(set);
+    list.sort((a,b)=> {
+      const ia = CANON.indexOf(a), ib = CANON.indexOf(b);
+      if(ia>=0 && ib>=0) return ia-ib;
+      if(ia>=0) return -1; if(ib>=0) return 1;
+      return a.localeCompare(b);
+    });
+    S.innerHTML = '<option value="">All Books</option>' + list.map(b=>`<option>${b}</option>`).join('');
+  }
+
+  function filterAndRender(all, book, cap=16){
+    let rows = all.slice();
+    if(book){ rows = rows.filter(r => (r.book || inferBook(r)) === book); }
+    rows = rows.filter(r => r.year >= -4000 && r.year <= 2500).sort((a,b)=> a.year - b.year);
+    const picks = sampleEven(rows, cap);
+    buildWheel(picks);
   }
 
   (async function(){
     let text = null;
     for(const url of CSV_SOURCES){
-      try{
-        const r = await fetch(url, {cache:"no-store"});
-        if(r.ok){ text = await r.text(); break; }
-      }catch(e){}
+      try{ const r = await fetch(url, {cache:"no-store"}); if(r.ok){ text = await r.text(); break; } }catch(e){}
     }
-    if(text === null){ if(CNT) CNT.textContent = "Failed to load highlights"; return; }
+    if(text === null){ if(CNT) CNT.textContent="Failed to load data"; return; }
 
-    const rows = parseCSV(text)
-      .filter(r => r.year >= -4000 && r.year <= 2500)
-      .sort((a,b)=> a.year - b.year);
+    const all = parseCSV(text).map(r => ({...r, book: r.book || inferBook(r)}));
+    populateBookFilter(all);
+    filterAndRender(all, S.value);
 
-    const picks = sampleEven(rows, 12);
-    if(!picks.length){ if(CNT) CNT.textContent = "No highlights available"; return; }
-
-    buildWheel(picks);
-    if(CNT) CNT.textContent = picks.length + " highlights";
+    S.addEventListener('change', () => filterAndRender(all, S.value));
   })();
 })();
 </script>
+</body>
+</html>
