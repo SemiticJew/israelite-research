@@ -137,6 +137,21 @@
       const pad   = 300;
       const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
       track.style.width = width + "px";
+      (function(){
+        const scaleEl = document.querySelector(".tl-scale");
+        if(!scaleEl) return;
+        const span = maxY - minY;
+        const steps = [100, 250, 500, 1000, 2000, 5000];
+        let step = steps[steps.length-1];
+        for(const s of steps){ if(span / s <= 8){ step = s; break; } }
+        const labels = [];
+        labels.push(minY);
+        let y = Math.ceil(minY/step)*step;
+        for(; y < maxY; y += step){ if(y !== minY) labels.push(y); }
+        labels.push(maxY);
+        function fmt(yy){ return yy < 0 ? (Math.abs(yy) + " BCE") : (yy + " CE"); }
+        scaleEl.innerHTML = labels.map(v => "<span>" + fmt(v) + "</span>").join("");
+      })();
 
       placeEras(minY, ppy, pad);
 
