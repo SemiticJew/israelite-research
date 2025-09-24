@@ -32,13 +32,6 @@
     .era.rm { background:#6d28d9; }
 
     .dot{ position:absolute; top:calc(50% + var(--lane,0)*10px); left:var(--x); width:10px; height:10px; border-radius:50%; border:2px solid #fff; background:var(--brand); box-shadow:0 0 0 2px #cfe0f7; transform: translate(-50%,-50%); cursor:pointer; z-index:3; padding:0; line-height:0; appearance:none; }
-    .dot:hover::after{
-      content: attr(title);
-      position:absolute; top:-32px; left:50%; transform:translateX(-50%);
-      background:#fff; border:1px solid var(--sky); padding:4px 8px; border-radius:6px;
-      white-space:nowrap; font-size:.8rem; color:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.15);
-    }
-
     .tl-scale{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;margin:6px 2px 0; gap:8px; flex-wrap:wrap}
     #tlCount{ color:var(--muted); margin-top:6px; font-weight:700; }
   </style>
@@ -158,6 +151,7 @@
       const label = r.title + " (" + (r.year < 0 ? (Math.abs(r.year) + " BCE") : (r.year + " CE")) + ")";
       b.title = label;
       b.setAttribute("aria-label", label);
+      const cap=document.createElement("span"); cap.className="cap"; cap.textContent=r.title; b.appendChild(cap);
       frag.appendChild(b);
     });
     track.appendChild(frag);
@@ -174,3 +168,20 @@
 <script src="/israelite-research/js/include.js"></script>
 </body>
 </html>
+<style>
+  .dot:hover::before{
+    content:"";
+    position:absolute; left:50%; top:-18px;
+    width:1px; height:16px; background:#94a3b8;
+    transform:translateX(-50%);
+    z-index:2;
+  }
+  .dot .cap{
+    position:absolute; top:-36px; left:50%; transform:translateX(-50%);
+    background:#fff; border:1px solid var(--sky); padding:2px 6px; border-radius:6px;
+    font-size:.75rem; color:var(--ink); white-space:nowrap;
+    box-shadow:0 2px 6px rgba(0,0,0,.10);
+    display:none; z-index:4;
+  }
+  .dot:hover .cap{ display:block; }
+</style>
