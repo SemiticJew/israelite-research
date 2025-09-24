@@ -13,17 +13,16 @@
 
     .tl-rail{
       position:relative; border:1px solid var(--sky); border-radius:12px;
-      height:88px; overflow-x:auto; background:#fff;
+      height:120px; overflow-x:auto; background:#fff;
       box-shadow:0 2px 8px rgba(0,0,0,.05); padding:0 8px;
-      --px-per-year: .6; /* px per year (JS reads this) */
+      --px-per-year: 1.2; /* px per year (JS reads this) */
     }
     .tl-rail::before{
       content:""; position:absolute; left:0; right:0; top:50%; height:2px; background:#eaf0f6;
     }
     .tl-track{ position:relative; height:100%; min-width:1200px; }
 
-    .era{
-      position:absolute; top:10px; height:68px; color:#fff; font:700 .8rem/68px system-ui;
+    .era{ position:absolute; top:18px; height:84px; color:#fff; font:700 .8rem/68px system-ui;
       padding:0 10px; border-radius:10px; white-space:nowrap; opacity:.95; overflow:hidden;
       z-index:1;
     }
@@ -32,7 +31,7 @@
     .era.st { background:#0f766e; }
     .era.rm { background:#6d28d9; }
 
-    .dot{ position:absolute; top:50%; left:var(--x); width:10px; height:10px; border-radius:50%; border:2px solid #fff; background:var(--brand); box-shadow:0 0 0 2px #cfe0f7; transform: translate(-50%,-50%); cursor:pointer; z-index:3; padding:0; line-height:0; appearance:none; }
+    .dot{ position:absolute; top:calc(50% + var(--lane,0)*10px); left:var(--x); width:10px; height:10px; border-radius:50%; border:2px solid #fff; background:var(--brand); box-shadow:0 0 0 2px #cfe0f7; transform: translate(-50%,-50%); cursor:pointer; z-index:3; padding:0; line-height:0; appearance:none; }
     .dot:hover::after{
       content: attr(title);
       position:absolute; top:-32px; left:50%; transform:translateX(-50%);
