@@ -46,7 +46,7 @@
       white-space:nowrap; font-size:.8rem; color:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.15);
     }
 
-    .tl-scale{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;margin:6px 2px 0}
+    .tl-scale{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;margin:6px 2px 0; gap:8px; flex-wrap:wrap}
     #tlCount{ color:var(--muted); margin-top:6px; font-weight:700; }
   </style>
 </head>
@@ -77,13 +77,14 @@
 <script>
 (function(){
   const CSV_SOURCES = [
-  "/israelite-research/data/extra_sources.csv",
-  "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
-];
+    "/israelite-research/data/extra_sources.csv",
+    "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
+  ];
   const rail   = document.querySelector(".tl-rail");
   const track  = document.querySelector(".tl-track");
   const tlCount= document.getElementById("tlCount");
   if(!rail || !track) return;
+
   function toNum(x){ const n = Number(String(x).trim()); return Number.isFinite(n)? n : null; }
   function parseCSV(text){
     const lines = text.split(/\r?\n/).filter(Boolean);
@@ -100,8 +101,7 @@
   }
   function getScale(){
     const cs = getComputedStyle(rail);
-    const ppy = parseFloat(cs.getPropertyValue('--px-per-year')) || 1;
-    return ppy;
+    return parseFloat(cs.getPropertyValue('--px-per-year')) || 1;
   }
   function placeEras(minY, ppy, pad){
     track.querySelectorAll('.era').forEach(e=>{
@@ -114,67 +114,67 @@
       e.style.width = width + 'px';
     });
   }
-  (async function(){
-  let text=null;
-  for(const url of CSV_SOURCES){
-    try{
-      const r=await fetch(url,{cache:"no-store"});
-      if(r.ok){ text=await r.text(); break; }
-    }catch(e){}
+  function renderScale(minY, maxY){
+    const scaleEl = document.querySelector(".tl-scale");
+    if(!scaleEl) return;
+    const span = maxY - minY;
+    const steps = [100, 250, 500, 1000, 2000, 5000];
+    let step = steps[steps.length-1];
+    for(const s of steps){ if(span / s <= 8){ step = s; break; } }
+    const labels = [];
+    labels.push(minY);
+    let y = Math.ceil(minY/step)*step;
+    for(; y < maxY; y += step){ if(y !== minY) labels.push(y); }
+    labels.push(maxY);
+    const fmt = yy => yy < 0 ? (Math.abs(yy) + " BCE") : (yy + " CE");
+    scaleEl.innerHTML = labels.map(v => "<span>" + fmt(v) + "</span>").join("");
   }
-  if(text===null){ if(tlCount) tlCount.textContent="Failed to load data"; return; }
-  const rows = parseCSV(text);
-    .then(r=>r.ok?r.text():Promise.reject(r.status))
-    .then(text=>{
-      const rows = parseCSV(text);
-      const filtered = rows.filter(r => r.year >= -4000 && r.year <= 2500);
-      const useRows = filtered.length ? filtered : rows;
-      if(!rows.length){ if(tlCount) tlCount.textContent = "No data loaded"; return; }
-      const years = useRows.map(r=>r.year);
-      const minY  = Math.min.apply(null, years);
-      const maxY  = Math.max.apply(null, years);
-      const ppy   = getScale();
-      const pad   = 300;
-      const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
-      track.style.width = width + "px";
-      (function(){
-        const scaleEl = document.querySelector(".tl-scale");
-        if(!scaleEl) return;
-        const span = maxY - minY;
-        const steps = [100, 250, 500, 1000, 2000, 5000];
-        let step = steps[steps.length-1];
-        for(const s of steps){ if(span / s <= 8){ step = s; break; } }
-        const labels = [];
-        labels.push(minY);
-        let y = Math.ceil(minY/step)*step;
-        for(; y < maxY; y += step){ if(y !== minY) labels.push(y); }
-        labels.push(maxY);
-        function fmt(yy){ return yy < 0 ? (Math.abs(yy) + " BCE") : (yy + " CE"); }
-        scaleEl.innerHTML = labels.map(v => "<span>" + fmt(v) + "</span>").join("");
-      })();
 
-      placeEras(minY, ppy, pad);
+  (async function(){
+    let text = null;
+    for (const url of CSV_SOURCES){
+      try{
+        const r = await fetch(url, {cache:"no-store"});
+        if (r.ok){ text = await r.text(); break; }
+      }catch(e){}
+    }
+    if (text === null){ if(tlCount) tlCount.textContent="Failed to load data"; return; }
 
-      const frag = document.createDocumentFragment();
-      useRows.forEach(r=>{
-        const x = Math.round((r.year - minY) * ppy) + pad;
-        const b = document.createElement("button");
-        b.className = "dot";
-        b.style.setProperty("--x", x + "px");
-        const label = r.title + " (" + (r.year < 0 ? (Math.abs(r.year) + " BCE") : (r.year + " CE")) + ")";
-        b.title = label;
-        b.setAttribute("aria-label", label);
-        frag.appendChild(b);
-      });
-      track.appendChild(frag);
+    const rows = parseCSV(text);
+    const filtered = rows.filter(r => r.year >= -4000 && r.year <= 2500);
+    const useRows = filtered.length ? filtered : rows;
+    if (!useRows.length){ if(tlCount) tlCount.textContent = "No data loaded"; return; }
 
-      if(tlCount) tlCount.textContent = useRows.length + " sources plotted";
+    const years = useRows.map(r=>r.year);
+    const minY  = Math.min.apply(null, years);
+    const maxY  = Math.max.apply(null, years);
+    const ppy   = getScale();
+    const pad   = 300;
+    const width = Math.max(1200, Math.round((maxY - minY) * ppy) + pad*2);
+    track.style.width = width + "px";
 
-      const zeroX = (0 - minY) * ppy + pad;
-      const target = (zeroX>=0 && zeroX<=width) ? zeroX : (width/2);
-      rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
-    })
-    .catch(()=>{ if(tlCount) tlCount.textContent = "Failed to load data"; });
+    renderScale(minY, maxY);
+    placeEras(minY, ppy, pad);
+
+    const frag = document.createDocumentFragment();
+    useRows.forEach(r=>{
+      const x = Math.round((r.year - minY) * ppy) + pad;
+      const b = document.createElement("button");
+      b.className = "dot";
+      b.style.setProperty("--x", x + "px");
+      const label = r.title + " (" + (r.year < 0 ? (Math.abs(r.year) + " BCE") : (r.year + " CE")) + ")";
+      b.title = label;
+      b.setAttribute("aria-label", label);
+      frag.appendChild(b);
+    });
+    track.appendChild(frag);
+
+    if (tlCount) tlCount.textContent = useRows.length + " sources plotted";
+
+    const zeroX = (0 - minY) * ppy + pad;
+    const target = (zeroX>=0 && zeroX<=width) ? zeroX : (width/2);
+    rail.scrollLeft = Math.max(0, target - rail.clientWidth/2);
+  })();
 })();
 </script>
 
