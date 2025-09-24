@@ -76,7 +76,10 @@
 
 <script>
 (function(){
-  const CSV_URL = "/israelite-research/data/extra_sources.csv";
+  const CSV_SOURCES = [
+  "/israelite-research/data/extra_sources.csv",
+  "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
+];
   const rail   = document.querySelector(".tl-rail");
   const track  = document.querySelector(".tl-track");
   const tlCount= document.getElementById("tlCount");
@@ -111,7 +114,16 @@
       e.style.width = width + 'px';
     });
   }
-  fetch(CSV_URL, {cache:"no-store"})
+  (async function(){
+  let text=null;
+  for(const url of CSV_SOURCES){
+    try{
+      const r=await fetch(url,{cache:"no-store"});
+      if(r.ok){ text=await r.text(); break; }
+    }catch(e){}
+  }
+  if(text===null){ if(tlCount) tlCount.textContent="Failed to load data"; return; }
+  const rows = parseCSV(text);
     .then(r=>r.ok?r.text():Promise.reject(r.status))
     .then(text=>{
       const rows = parseCSV(text);
