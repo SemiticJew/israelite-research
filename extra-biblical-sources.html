@@ -15,7 +15,7 @@
       position:relative; border:1px solid var(--sky); border-radius:12px;
       height:88px; overflow-x:auto; background:#fff;
       box-shadow:0 2px 8px rgba(0,0,0,.05); padding:0 8px;
-      --px-per-year: 1; /* px per year (JS reads this) */
+      --px-per-year: .6; /* px per year (JS reads this) */
     }
     .tl-rail::before{
       content:""; position:absolute; left:0; right:0; top:50%; height:2px; background:#eaf0f6;
@@ -115,8 +115,10 @@
     .then(r=>r.ok?r.text():Promise.reject(r.status))
     .then(text=>{
       const rows = parseCSV(text);
+      const filtered = rows.filter(r => r.year >= -4000 && r.year <= 2500);
+      const useRows = filtered.length ? filtered : rows;
       if(!rows.length){ if(tlCount) tlCount.textContent = "No data loaded"; return; }
-      const years = rows.map(r=>r.year);
+      const years = useRows.map(r=>r.year);
       const minY  = Math.min.apply(null, years);
       const maxY  = Math.max.apply(null, years);
       const ppy   = getScale();
@@ -127,7 +129,7 @@
       placeEras(minY, ppy, pad);
 
       const frag = document.createDocumentFragment();
-      rows.forEach(r=>{
+      useRows.forEach(r=>{
         const x = Math.round((r.year - minY) * ppy) + pad;
         const b = document.createElement("button");
         b.className = "dot";
@@ -139,7 +141,7 @@
       });
       track.appendChild(frag);
 
-      if(tlCount) tlCount.textContent = rows.length + " sources plotted";
+      if(tlCount) tlCount.textContent = useRows.length + " sources plotted";
 
       const zeroX = (0 - minY) * ppy + pad;
       const target = (zeroX>=0 && zeroX<=width) ? zeroX : (width/2);
