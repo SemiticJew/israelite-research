@@ -55,11 +55,13 @@
         </select>
         <select class="select" id="wheelCap" aria-label="Cards shown"><option>8</option><option selected>10</option><option>12</option><option>16</option></select>
         <span class="muted" id="wheelCount"></span>
+        <label class="muted" for="wheelScale" style="margin-left:8px">Scale</label>
+        <input id="wheelScale" type="range" min="200" max="520" step="20" value="420" style="vertical-align:middle">
       </div>
     </div>
 
     <div class="wheel-wrap">
-      <ul class="wheel cards" id="wheelCards" style="--items:0" aria-label="Timeline highlights"></ul>
+      <ul class="wheel cards" id="wheelCards" style="--items:0; --radius:420px" aria-label="Timeline highlights"></ul>
     </div>
   </section>
 </main>
@@ -73,7 +75,7 @@
     "/israelite-research/data/extra_sources.csv",
     "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
   ];
-  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap"); const SCALE=document.getElementById("wheelScale");
+  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap"); const SCALE=document.getElementById("wheelScale"); const SCALE=document.getElementById("wheelScale");
   if(!UL || !S) return;
 
   const CANON = [
