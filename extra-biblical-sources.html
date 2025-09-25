@@ -17,8 +17,8 @@
     .select, .btn{ border:1px solid var(--sky); background:#fff; color:var(--ink); border-radius:999px; padding:8px 12px; font-weight:800; }
     .muted{ color:var(--muted); }
 
-    .wheel-wrap{ display:block; position:relative; height:720px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
-    .wheel{ --items:12; --radius:380px; --card-w:170px; --card-h:110px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
+    .wheel-wrap{ display:block; position:relative; height:760px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
+    .wheel{ --items:12; --radius:420px; --card-w:170px; --card-h:110px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
     .wheel > li{ position:absolute; top:50%; left:50%; transform-origin:0 0; will-change: transform; }
     .wheel input{ position:absolute; opacity:0; pointer-events:none; }
     .wheel label{
@@ -73,7 +73,7 @@
     "/israelite-research/data/extra_sources.csv",
     "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
   ];
-  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap");
+  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap"); const SCALE=document.getElementById("wheelScale");
   if(!UL || !S) return;
 
   const CANON = [
