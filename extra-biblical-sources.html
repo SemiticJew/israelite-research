@@ -17,8 +17,8 @@
     .select, .btn{ border:1px solid var(--sky); background:#fff; color:var(--ink); border-radius:999px; padding:8px 12px; font-weight:800; }
     .muted{ color:var(--muted); }
 
-    .wheel-wrap{ display:block; position:relative; height:620px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
-    .wheel{ --items:12; --radius:240px; --card-w:220px; --card-h:120px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
+    .wheel-wrap{ display:block; position:relative; height:680px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
+    .wheel{ --items:12; --radius:300px; --card-w:190px; --card-h:120px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
     .wheel > li{ position:absolute; top:50%; left:50%; transform-origin:0 0; will-change: transform; }
     .wheel input{ position:absolute; opacity:0; pointer-events:none; }
     .wheel label{
@@ -32,16 +32,8 @@
     .wheel input:checked + label{ border-color:#c6d6ea; box-shadow:0 10px 30px rgba(0,0,0,.18); transform:scale(1.03); }
     .wheel .yr{ display:inline-block; font-weight:800; color:var(--brand); margin-right:6px; }
 
-    @media (max-width:960px){
-      .wheel-wrap{ height:540px; }
-      .wheel{ --radius:200px; --card-w:200px; }
-    }
-    @media (max-width:640px){
-      .wheel-wrap{ height:500px; }
-      .wheel{ --radius:160px; --card-w:180px; --card-h:110px; }
-      .wheel h3{ font-size:.95rem; }
-      .wheel p{ font-size:.85rem; }
-    }
+    @media (max-width:960px){ .wheel-wrap{ height:560px; } .wheel{ --radius:240px; --card-w:180px; } }
+    @media (max-width:640px){ .wheel-wrap{ height:520px; } .wheel{ --radius:200px; --card-w:170px; --card-h:110px; } .wheel h3{ font-size:.9rem; } .wheel p{ font-size:.82rem; } }
   </style>
 </head>
 <body>
@@ -60,6 +52,7 @@
         <select class="select" id="bookFilter" aria-label="Filter by Book">
           <option value="">All Books</option>
         </select>
+        <select class="select" id="wheelCap" aria-label="Cards shown"><option>8</option><option selected>10</option><option>12</option><option>16</option></select>
         <span class="muted" id="wheelCount"></span>
       </div>
     </div>
@@ -79,9 +72,7 @@
     "/israelite-research/data/extra_sources.csv",
     "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
   ];
-  const UL   = document.getElementById("wheelCards");
-  const CNT  = document.getElementById("wheelCount");
-  const S    = document.getElementById("bookFilter");
+  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap");
   if(!UL || !S) return;
 
   const CANON = [
@@ -180,7 +171,7 @@
     S.innerHTML = '<option value="">All Books</option>' + list.map(b=>`<option>${b}</option>`).join('');
   }
 
-  function filterAndRender(all, book, cap=16){
+  function filterAndRender(all, book){ const cap = CAP ? parseInt(CAP.value,10) || 10 : 10;
     let rows = all.slice();
     if(book){ rows = rows.filter(r => (r.book || inferBook(r)) === book); }
     rows = rows.filter(r => r.year >= -4000 && r.year <= 2500).sort((a,b)=> a.year - b.year);
