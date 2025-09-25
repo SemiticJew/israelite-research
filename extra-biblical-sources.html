@@ -143,13 +143,9 @@
       const lab = document.createElement("label");
       lab.setAttribute("for", inp.id);
 
-      const h3 = document.createElement("h3");
-      h3.textContent = it.title;
+      const h3=document.createElement("h3"); const yr=document.createElement("span"); yr.className="yr"; yr.textContent=fmtYear(it.year)+" · "; h3.appendChild(yr); h3.appendChild(document.createTextNode(it.title));
 
-      const p = document.createElement("p");
-      const yr = document.createElement("span");
-      yr.className = "yr"; yr.textContent = fmtYear(it.year);
-      p.appendChild(yr);
+      const p=document.createElement("p");
       if(it.summary){ p.appendChild(document.createTextNode(it.summary)); }
 
       lab.appendChild(h3); lab.appendChild(p);
