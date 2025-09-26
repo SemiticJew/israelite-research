@@ -1,6 +1,5 @@
-// /israelite-research/js/extra-biblical-sources.js
-// Scholarly, neutral, and safe. No font overrides; inherits site styles.
-// Retains: universal header/footer includes, safe CSV loader with fallback, textContent insertions.
+// Robust header inference edition — adapts to many column name variants.
+// Path: /israelite-research/js/extra-biblical-sources.js
 
 const DATA = {
   chron: "/israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
@@ -16,81 +15,33 @@ const GH_RAW = {
   epochs: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Epoch.csv",
 };
 
-// ---------- Utilities ----------
+// ---------- small utils ----------
 const toLower = (s) => (s ?? "").toString().toLowerCase();
 const excerpt = (s, n = 220) => {
-  const txt = (s ?? "").toString();
+  const txt = (s ?? "").toString().trim();
   return txt.length > n ? txt.slice(0, n) + "…" : txt;
 };
-const debounce = (fn, ms = 150) => {
-  let t;
-  return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), ms);
-  };
-};
+const debounce = (fn, ms = 150) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
 
-// Get first present, non-empty field from a list of possible keys
-const get = (row, keys) => {
-  for (const k of keys) {
-    if (row[k] != null && row[k] !== "") return row[k];
-    // also try case-insensitive match
-    const found = Object.keys(row).find((kk) => kk.toLowerCase() === k.toLowerCase());
-    if (found && row[found] !== "") return row[found];
-  }
-  return "";
-};
-
-function setCount(el, n) {
-  el.textContent = `${n.toLocaleString()} result${n === 1 ? "" : "s"}`;
-}
+function setCount(el, n) { el.textContent = `${n.toLocaleString()} result${n===1?"":"s"}`; }
 
 function makeCard({ title, meta, teaser, cite }) {
-  const div = document.createElement("div");
-  div.className = "card";
-
-  const h = document.createElement("h3");
-  h.textContent = title || "—";
-  div.appendChild(h);
-
-  if (meta) {
-    const m = document.createElement("div");
-    m.className = "meta";
-    m.textContent = meta;
-    div.appendChild(m);
-  }
-
-  if (teaser) {
-    const p = document.createElement("p");
-    p.className = "teaser";
-    p.textContent = teaser;
-    div.appendChild(p);
-  }
-
-  if (cite) {
-    const c = document.createElement("div");
-    c.className = "cite";
-    c.textContent = cite;
-    div.appendChild(c);
-  }
-
+  const div = document.createElement("div"); div.className = "card";
+  const h = document.createElement("h3"); h.textContent = title || "—"; div.appendChild(h);
+  if (meta)   { const m = document.createElement("div"); m.className="meta";   m.textContent = meta;   div.appendChild(m); }
+  if (teaser) { const p = document.createElement("p");   p.className="teaser"; p.textContent = teaser; div.appendChild(p); }
+  if (cite)   { const c = document.createElement("div"); c.className="cite";   c.textContent = cite;   div.appendChild(c); }
   return div;
 }
 
 function errorCallout(where, msg) {
-  const div = document.createElement("div");
-  div.className = "card";
-  const h = document.createElement("h3");
-  h.textContent = "Load error";
-  const p = document.createElement("p");
-  p.textContent = msg;
-  div.appendChild(h);
-  div.appendChild(p);
-  where.innerHTML = "";
-  where.appendChild(div);
+  const div = document.createElement("div"); div.className="card";
+  const h=document.createElement("h3"); h.textContent="Load error";
+  const p=document.createElement("p");  p.textContent=msg;
+  div.append(h,p); where.innerHTML=""; where.appendChild(div);
 }
 
-// ---------- CSV loader (local → GitHub Raw fallback) ----------
+// ---------- CSV load + parse ----------
 async function fetchCSV(urlLocal, urlCDN) {
   try {
     const r = await fetch(urlLocal, { cache: "default" });
@@ -103,95 +54,84 @@ async function fetchCSV(urlLocal, urlCDN) {
   }
 }
 
-// Tiny CSV parser that handles quotes, commas, and embedded newlines
+// Quote-aware CSV parser
 function parseCSV(text) {
   const out = [];
   if (!text) return out;
-  const lines = text.replace(/\r\n/g, "\n").split("\n");
+  const norm = text.replace(/\r\n/g, "\n");
+  const lines = norm.split("\n");
   if (!lines.length) return out;
 
-  const splitHeader = (line) => {
-    const arr = [];
-    let field = "", inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') {
-        if (inQ && line[i + 1] === '"') {
-          field += '"';
-          i++;
-        } else inQ = !inQ;
-      } else if (ch === "," && !inQ) {
-        arr.push(field);
-        field = "";
-      } else {
-        field += ch;
-      }
+  const split = (line) => {
+    const a=[]; let f="", q=false;
+    for (let i=0;i<line.length;i++){
+      const ch=line[i];
+      if (ch === '"'){ if(q && line[i+1]==='"'){ f+='"'; i++; } else q=!q; }
+      else if (ch === "," && !q){ a.push(f); f=""; }
+      else f+=ch;
     }
-    arr.push(field);
-    return arr.map((h) => h.trim());
+    a.push(f); return a;
   };
 
-  const headers = splitHeader(lines[0]);
-  let row = [];
-  let field = "";
-  let inQ = false;
+  const headers = split(lines[0]).map(h=>h.trim());
+  const Hlower = headers.map(h=>h.toLowerCase());
+  const rows = [];
 
-  const pushField = () => {
-    row.push(field);
-    field = "";
-  };
-  const pushRow = () => {
-    if (row.length) {
-      const obj = {};
-      headers.forEach((h, i) => (obj[h] = row[i] ?? ""));
-      out.push(obj);
-    }
-    row = [];
-  };
+  let row=[], field="", q=false;
+  const pushField = ()=>{ row.push(field); field=""; };
+  const pushRow   = ()=>{ if(row.length){ const o={}; headers.forEach((h,i)=>o[h]=row[i]??""); rows.push(o); } row=[]; };
 
-  for (let li = 1; li < lines.length; li++) {
+  for (let li=1; li<lines.length; li++){
     const line = lines[li];
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') {
-        if (inQ && line[i + 1] === '"') {
-          field += '"';
-          i++;
-        } else inQ = !inQ;
-      } else if (ch === "," && !inQ) {
-        pushField();
-      } else {
-        field += ch;
-      }
+    for (let i=0;i<line.length;i++){
+      const ch=line[i];
+      if (ch === '"'){ if(q && line[i+1]==='"'){ field+='"'; i++; } else q=!q; }
+      else if (ch === "," && !q){ pushField(); }
+      else field+=ch;
     }
-    if (inQ) {
-      field += "\n";
-    } else {
-      pushField();
-      pushRow();
-    }
+    if (q) field+="\n"; else { pushField(); pushRow(); }
   }
-  // handle possible trailing line without newline
-  if (field || row.length) {
-    pushField();
-    pushRow();
-  }
-  return out;
+  if (field || row.length){ pushField(); pushRow(); }
+
+  // attach header helpers
+  rows.headers = headers;
+  rows.headersLower = Hlower;
+  return rows;
 }
 
-// ---------- Tabs ----------
+// ---------- header inference: pick best column by synonyms/substrings ----------
+function chooseColumn(headersLower, candidates) {
+  // exact or substring match against lowercased headers
+  const list = Array.isArray(candidates) ? candidates : [candidates];
+  // exact first
+  for (const c of list){
+    const idx = headersLower.indexOf(c.toLowerCase());
+    if (idx !== -1) return idx;
+  }
+  // substring pass
+  for (const c of list){
+    for (let i=0;i<headersLower.length;i++){
+      if (headersLower[i].includes(c.toLowerCase())) return i;
+    }
+  }
+  return -1;
+}
+function getterFor(rows, prefList) {
+  const idx = chooseColumn(rows.headersLower, prefList);
+  if (idx === -1) return () => "";
+  const key = rows.headers[idx];
+  return (r) => r[key] ?? "";
+}
+
+// ---------- tabs ----------
 (function initTabs() {
   const tabs = Array.from(document.querySelectorAll(".tab-btn"));
-  const panels = new Map(
-    tabs.map((btn) => [btn.id, document.getElementById(btn.getAttribute("aria-controls"))])
-  );
-
-  tabs.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      tabs.forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
-      panels.forEach((panel) => panel.setAttribute("aria-hidden", "true"));
-      const panel = panels.get(btn.id);
-      if (panel) panel.setAttribute("aria-hidden", "false");
+  const panels = new Map(tabs.map(btn => [btn.id, document.getElementById(btn.getAttribute("aria-controls"))]));
+  tabs.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      tabs.forEach(b=>b.setAttribute("aria-selected", String(b===btn)));
+      panels.forEach(p=>p.setAttribute("aria-hidden","true"));
+      const panel = panels.get(btn.id); if (panel) panel.setAttribute("aria-hidden","false");
       btn.focus();
     });
   });
@@ -208,22 +148,29 @@ function parseCSV(text) {
     const text = await fetchCSV(DATA.chron, GH_RAW.chron);
     const rows = parseCSV(text);
 
+    // flexible getters
+    const gEvent = getterFor(rows, ["event","narrative","text","description"]);
+    const gYear  = getterFor(rows, ["gc_year","year","gregorian","date"]);
+    const gEra   = getterFor(rows, ["gc_bc_ad","era"]);
+    const gAM    = getterFor(rows, ["am_year","am"]);
+    const gPara  = getterFor(rows, ["paragraph_nr","paragraph","para","§"]);
+
     const render = () => {
       const k = toLower(q.value);
       const era = eraSel.value; // all | BC | AD
-      const filtered = rows.filter((r) => {
-        const eraOk = era === "all" ? true : (get(r, ["gc_bc_ad"]) === era);
-        const hay = `${get(r, ["event"])} ${get(r, ["gc_year"])} ${get(r, ["am_year"])} ${get(r, ["paragraph_nr"])}`.toLowerCase();
+      const filtered = rows.filter(r=>{
+        const eraOk = era === "all" ? true : (toLower(gEra(r)) === toLower(era));
+        const hay = `${gEvent(r)} ${gYear(r)} ${gAM(r)} ${gPara(r)}`.toLowerCase();
         return eraOk && (!k || hay.includes(k));
       });
 
       list.innerHTML = "";
       setCount(count, filtered.length);
-      filtered.slice(0, 300).forEach((r) => {
-        const title = `${get(r, ["gc_bc_ad"])} ${get(r, ["gc_year"])} — AM ${get(r, ["am_year"])}`.trim();
-        const teaser = excerpt(get(r, ["event"]), 220);
-        const cite = `Ussher, Annals (AM ${get(r, ["am_year"]) || "?"}, §${get(r, ["paragraph_nr"]) || "?"}).`;
-        list.appendChild(makeCard({ title, meta: null, teaser, cite }));
+      filtered.slice(0,300).forEach(r=>{
+        const title = `${gEra(r)} ${gYear(r)} — AM ${gAM(r)}`.trim();
+        const teaser = excerpt(gEvent(r), 220);
+        const cite = `Ussher, Annals (AM ${gAM(r) || "?"}, §${gPara(r) || "?"}).`;
+        list.appendChild(makeCard({ title: title || "—", meta: null, teaser, cite }));
       });
     };
 
@@ -248,47 +195,38 @@ function parseCSV(text) {
     const text = await fetchCSV(DATA.persons, GH_RAW.persons);
     const rows = parseCSV(text);
 
-    // Derive unique roles/epochs when present (support various header casings)
-    const roles = new Set();
-    const epochs = new Set();
-    rows.forEach((r) => {
-      const role = get(r, ["role", "Role"]);
-      const epoch = get(r, ["epoch", "Epoch", "era"]);
-      if (role) roles.add(role);
-      if (epoch) epochs.add(epoch);
-    });
+    const gName   = getterFor(rows, ["name","person","fullname","label"]);
+    const gRole   = getterFor(rows, ["role","occupation","office","title","function"]);
+    const gEpoch  = getterFor(rows, ["epoch","era","period","age"]);
+    const gRefs   = getterFor(rows, ["refs","references","citations","sources","bibliography"]);
+    const gSum    = getterFor(rows, ["summary","notes","description","abstract"]);
 
-    Array.from(roles).sort().forEach((val) => {
-      const o = document.createElement("option");
-      o.value = o.textContent = val;
-      roleSel.appendChild(o);
-    });
-    Array.from(epochs).sort().forEach((val) => {
-      const o = document.createElement("option");
-      o.value = o.textContent = val;
-      epochSel.appendChild(o);
-    });
+    // populate filters if present
+    const roles = new Set(), epochs = new Set();
+    rows.forEach(r=>{ const R=gRole(r); if(R) roles.add(R); const E=gEpoch(r); if(E) epochs.add(E); });
+    Array.from(roles).sort().forEach(v=>{ const o=document.createElement("option"); o.value=o.textContent=v; roleSel.appendChild(o); });
+    Array.from(epochs).sort().forEach(v=>{ const o=document.createElement("option"); o.value=o.textContent=v; epochSel.appendChild(o); });
 
     const render = () => {
       const k = toLower(q.value);
       const role = roleSel.value;
       const epoch = epochSel.value;
 
-      const filtered = rows.filter((r) => {
-        const hay = `${get(r, ["name", "Name"])} ${get(r, ["role", "Role"])} ${get(r, ["refs", "References"])} ${get(r, ["summary", "Summary"])}`.toLowerCase();
+      const filtered = rows.filter(r=>{
+        const hay = `${gName(r)} ${gRole(r)} ${gRefs(r)} ${gSum(r)}`.toLowerCase();
         const okK = !k || hay.includes(k);
-        const okR = role === "all" || get(r, ["role", "Role"]) === role;
-        const okE = epoch === "all" || get(r, ["epoch", "Epoch", "era"]) === epoch;
+        const okR = role === "all" || gRole(r) === role;
+        const okE = epoch === "all" || gEpoch(r) === epoch;
         return okK && okR && okE;
       });
 
       list.innerHTML = "";
       setCount(count, filtered.length);
-      filtered.slice(0, 300).forEach((r) => {
-        const title = get(r, ["name", "Name"]) || "Unnamed";
-        const meta = [get(r, ["role", "Role"]), get(r, ["epoch", "Epoch", "era"])].filter(Boolean).join(" • ");
-        const teaser = excerpt(get(r, ["summary", "Summary"]), 220);
-        const cite = get(r, ["refs", "References"]) ? `Refs: ${get(r, ["refs", "References"])}` : "";
+      filtered.slice(0,300).forEach(r=>{
+        const title  = gName(r) || "Unnamed";
+        const meta   = [gRole(r), gEpoch(r)].filter(Boolean).join(" • ");
+        const teaser = excerpt(gSum(r), 220);
+        const cite   = gRefs(r) ? `Refs: ${gRefs(r)}` : "";
         list.appendChild(makeCard({ title, meta, teaser, cite }));
       });
     };
@@ -315,38 +253,37 @@ function parseCSV(text) {
     const text = await fetchCSV(DATA.events, GH_RAW.events);
     const rows = parseCSV(text);
 
-    const types = new Set();
-    rows.forEach((r) => {
-      const t = get(r, ["type", "Type"]);
-      if (t) types.add(t);
-    });
-    Array.from(types).sort().forEach((t) => {
-      const o = document.createElement("option");
-      o.value = o.textContent = t;
-      typeSel.appendChild(o);
-    });
+    const gTitle = getterFor(rows, ["title","event","name","label","heading"]);
+    const gType  = getterFor(rows, ["type","category","class"]);
+    const gDate  = getterFor(rows, ["date","year","gc_year","when"]);
+    const gEra   = getterFor(rows, ["era","gc_bc_ad"]);
+    const gLoc   = getterFor(rows, ["location","place","region","site"]);
+    const gRefs  = getterFor(rows, ["refs","references","citations","sources"]);
+    const gSum   = getterFor(rows, ["summary","notes","description","abstract"]);
+
+    const types = new Set(); rows.forEach(r=>{ const t=gType(r); if(t) types.add(t); });
+    Array.from(types).sort().forEach(t=>{ const o=document.createElement("option"); o.value=o.textContent=t; typeSel.appendChild(o); });
 
     const render = () => {
       const k = toLower(q.value);
       const typ = typeSel.value;
       const era = eraSel.value; // all | BC | AD
 
-      const filtered = rows.filter((r) => {
-        const hay = `${get(r, ["title", "Title"])} ${get(r, ["summary", "Summary"])} ${get(r, ["refs", "References"])} ${get(r, ["location", "Location"])}`.toLowerCase();
+      const filtered = rows.filter(r=>{
+        const hay = `${gTitle(r)} ${gSum(r)} ${gRefs(r)} ${gLoc(r)}`.toLowerCase();
         const okK = !k || hay.includes(k);
-        const okT = typ === "all" || get(r, ["type", "Type"]) === typ;
-        const eraField = get(r, ["era", "Era", "gc_bc_ad"]);
-        const okE = era === "all" || eraField === era;
+        const okT = typ === "all" || gType(r) === typ;
+        const okE = era === "all" || toLower(gEra(r)) === toLower(era);
         return okK && okT && okE;
       });
 
       list.innerHTML = "";
       setCount(count, filtered.length);
-      filtered.slice(0, 300).forEach((r) => {
-        const title = get(r, ["title", "Title"]) || "Untitled event";
-        const meta = [get(r, ["date", "Date"]), get(r, ["location", "Location"]), get(r, ["type", "Type"])].filter(Boolean).join(" • ");
-        const teaser = excerpt(get(r, ["summary", "Summary"]), 220);
-        const cite = get(r, ["refs", "References"]) ? `Refs: ${get(r, ["refs", "References"])}` : "";
+      filtered.slice(0,300).forEach(r=>{
+        const title  = gTitle(r) || "Untitled event";
+        const meta   = [gDate(r), gLoc(r), gType(r)].filter(Boolean).join(" • ");
+        const teaser = excerpt(gSum(r), 220);
+        const cite   = gRefs(r) ? `Refs: ${gRefs(r)}` : "";
         list.appendChild(makeCard({ title, meta, teaser, cite }));
       });
     };
@@ -371,20 +308,25 @@ function parseCSV(text) {
     const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
     const rows = parseCSV(text);
 
+    const gName = getterFor(rows, ["epoch","era","period","age","name","label","heading"]);
+    const gSpan = getterFor(rows, ["range","datespan","years","span"]);
+    const gSum  = getterFor(rows, ["summary","notes","description","abstract"]);
+    const gRefs = getterFor(rows, ["refs","references","citations","sources"]);
+
     const render = () => {
       const k = toLower(q.value);
-      const filtered = rows.filter((r) => {
-        const hay = `${get(r, ["epoch", "Epoch"])} ${get(r, ["range", "Range"])} ${get(r, ["summary", "Summary"])}`.toLowerCase();
+      const filtered = rows.filter(r=>{
+        const hay = `${gName(r)} ${gSpan(r)} ${gSum(r)}`.toLowerCase();
         return !k || hay.includes(k);
       });
 
       list.innerHTML = "";
       setCount(count, filtered.length);
-      filtered.slice(0, 300).forEach((r) => {
-        const title = get(r, ["epoch", "Epoch"]) || "Epoch";
-        const meta = get(r, ["range", "Range"]) || "";
-        const teaser = excerpt(get(r, ["summary", "Summary"]), 220);
-        const cite = get(r, ["refs", "References"]) ? `Refs: ${get(r, ["refs", "References"])}` : "";
+      filtered.slice(0,300).forEach(r=>{
+        const title  = gName(r) || "Epoch";
+        const meta   = gSpan(r) || "";
+        const teaser = excerpt(gSum(r), 220);
+        const cite   = gRefs(r) ? `Refs: ${gRefs(r)}` : "";
         list.appendChild(makeCard({ title, meta, teaser, cite }));
       });
     };
