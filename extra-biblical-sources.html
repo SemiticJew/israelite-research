@@ -3,65 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Extra‑Biblical Sources — Semitic Jew</title>
+  <title>Extra-Biblical Sources — Semitic Jew</title>
   <link rel="stylesheet" href="/israelite-research/styles.css" />
-  <meta name="description" content="A scholarly portal presenting extra‑biblical chronologies, persons, events, and epochs with transparent sourcing and research‑ready structure." />
-  <!-- Open Graph / Twitter (page-specific; site-wide defaults will still apply) -->
-  <meta property="og:title" content="Extra‑Biblical Sources — Semitic Jew" />
+  <meta name="description" content="A scholarly portal presenting extra-biblical chronologies, persons, events, and epochs with transparent sourcing and research-ready structure." />
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Extra-Biblical Sources — Semitic Jew" />
   <meta property="og:description" content="Scholarly chronologies, persons, events, and epochs, presented with transparent sourcing." />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <style>
-    /*
-      SCHOLARLY SCAFFOLD — retains only what you approved as “solid”:
-      - Universal header/footer via include.js
-      - Container width / palette inherited from /styles.css
-      - Safe data loader w/ local CSV then GitHub Raw fallback
-      - Safe DOM insertion via textContent
-
-      File layout (place files exactly here):
-      - /israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv
-      - /israelite-research/data/extra-biblical/BibleData-Person.csv
-      - /israelite-research/data/extra-biblical/BibleData-Event.csv
-      - /israelite-research/data/extra-biblical/BibleData-Epoch.csv
-      - /israelite-research/js/include.js               (already exists site-wide)
-      - /israelite-research/js/extra-biblical-sources.js (NEW: logic for this page)
-      - /israelite-research/tools/ (optional build scripts; no runtime use)
-    */
-
-    /* Page scaffold (inherit fonts/colors from styles.css) */
     .ebs-wrap{max-width:1200px;margin:0 auto;padding:1rem 1rem 2rem}
     .ebs-head{margin:0 0 1rem 0}
     .ebs-head h1{font-weight:800;letter-spacing:.2px;margin:.25rem 0}
     .ebs-abstract{color:var(--text-muted,#445);font-size:1rem;line-height:1.6}
-
-    /* Tabs */
     .tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
     .tab-btn{border:1px solid var(--line,#e6ebf2);background:#fff;padding:.5rem .75rem;border-radius:10px;cursor:pointer}
     .tab-btn[aria-selected="true"]{border-color:var(--brand,#054A91);box-shadow:0 0 0 2px color-mix(in oklab, var(--brand,#054A91) 20%, transparent)}
-
-    /* Panels */
     .panel{display:none}
     .panel[aria-hidden="false"]{display:block}
-
-    /* Controls */
     .controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}
     .controls .field{display:flex;gap:.35rem;align-items:center}
     .controls input[type="search"], .controls select{padding:.45rem .6rem;border:1px solid var(--line,#e6ebf2);border-radius:8px;min-width:180px}
-
-    /* Result list (neutral, researchy) */
     .list{display:grid;grid-template-columns:1fr;gap:.75rem}
     .card{border:1px solid var(--line,#e6ebf2);background:#fff;border-radius:12px;padding:.75rem}
     .card h3{margin:.1rem 0 .25rem;font-size:1.05rem}
     .meta{color:var(--text-muted,#546);font-size:.9rem}
     .teaser{margin:.35rem 0 .25rem}
     .cite{font-size:.85rem;color:var(--text-muted,#556)}
-
     .count{font-size:.95rem;color:var(--text-muted,#445);margin:.25rem 0}
-
-    @media (min-width:900px){
-      .list{grid-template-columns:repeat(2,1fr)}
-    }
+    @media (min-width:900px){ .list{grid-template-columns:repeat(2,1fr)} }
   </style>
 </head>
 <body class="page" data-page="extra-biblical-sources">
@@ -70,11 +40,10 @@
   <main class="ebs-wrap" role="main">
     <header class="ebs-head">
       <p class="kicker" style="color:var(--brand,#054A91);font-weight:700">Scholarly Portal</p>
-      <h1>Extra‑Biblical Sources</h1>
-      <p class="ebs-abstract">A research‑oriented index of chronologies, persons, events, and epochs relevant to the biblical world. Data and references are presented transparently for comparison, analysis, and further study.</p>
+      <h1>Extra-Biblical Sources</h1>
+      <p class="ebs-abstract">A research-oriented index of chronologies, persons, events, and epochs relevant to the biblical world. Data and references are presented transparently for comparison, analysis, and further study.</p>
     </header>
 
-    <!-- Tabs -->
     <div class="tabs" role="tablist" aria-label="Sections">
       <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-chron" id="tab-chron">Chronologies</button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-persons" id="tab-persons">Persons</button>
@@ -82,16 +51,12 @@
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-epochs" id="tab-epochs">Epochs</button>
     </div>
 
-    <!-- Chronologies (Ussher) -->
+    <!-- Chronologies -->
     <section class="panel" id="panel-chron" role="tabpanel" aria-labelledby="tab-chron" aria-hidden="false">
       <div class="controls">
         <div class="field"><label for="chron-q">Search</label><input id="chron-q" type="search" placeholder="Find in narrative or refs…" /></div>
         <div class="field"><label for="chron-era">Era</label>
-          <select id="chron-era">
-            <option value="all">All</option>
-            <option value="BC">BC</option>
-            <option value="AD">AD</option>
-          </select>
+          <select id="chron-era"><option value="all">All</option><option value="BC">BC</option><option value="AD">AD</option></select>
         </div>
       </div>
       <div class="count" id="chron-count">Loading…</div>
@@ -102,12 +67,12 @@
     <section class="panel" id="panel-persons" role="tabpanel" aria-labelledby="tab-persons" aria-hidden="true">
       <div class="controls">
         <div class="field"><label for="person-q">Search</label><input id="person-q" type="search" placeholder="Name, role, refs…" /></div>
-        <div class="field"><label for="person-role">Role</label>
-          <select id="person-role"><option value="all">All</option></select>
+        <div class="field"><label for="person-role">Role</label><select id="person-role"><option value="all">All</option></select></div>
+        <div class="field"><label for="person-epoch">Epoch</label><select id="person-epoch"><option value="all">All</option></select></div>
+        <div class="field"><label for="person-label-lang">Label lang</label>
+          <select id="person-label-lang"><option value="all">All</option><option value="en">English</option><option value="he">Hebrew</option><option value="gr">Greek</option></select>
         </div>
-        <div class="field"><label for="person-epoch">Epoch</label>
-          <select id="person-epoch"><option value="all">All</option></select>
-        </div>
+        <div class="field"><label for="person-label-type">Label type</label><select id="person-label-type"><option value="all">All</option></select></div>
       </div>
       <div class="count" id="person-count">Loading…</div>
       <div class="list" id="person-list" aria-live="polite"></div>
@@ -117,16 +82,8 @@
     <section class="panel" id="panel-events" role="tabpanel" aria-labelledby="tab-events" aria-hidden="true">
       <div class="controls">
         <div class="field"><label for="event-q">Search</label><input id="event-q" type="search" placeholder="War, decree, exile…" /></div>
-        <div class="field"><label for="event-type">Type</label>
-          <select id="event-type"><option value="all">All</option></select>
-        </div>
-        <div class="field"><label for="event-era">Era</label>
-          <select id="event-era">
-            <option value="all">All</option>
-            <option value="BC">BC</option>
-            <option value="AD">AD</option>
-          </select>
-        </div>
+        <div class="field"><label for="event-type">Type</label><select id="event-type"><option value="all">All</option></select></div>
+        <div class="field"><label for="event-era">Era</label><select id="event-era"><option value="all">All</option><option value="BC">BC</option><option value="AD">AD</option></select></div>
       </div>
       <div class="count" id="event-count">Loading…</div>
       <div class="list" id="event-list" aria-live="polite"></div>
@@ -140,237 +97,13 @@
       <div class="count" id="epoch-count">Loading…</div>
       <div class="list" id="epoch-list" aria-live="polite"></div>
     </section>
-
   </main>
 
   <div id="site-footer" data-include="/israelite-research/partials/footer.html"></div>
 
-  <!-- Include universal includes and this page’s module -->
   <script src="/israelite-research/js/include.js" defer></script>
+  <script src="/israelite-research/js/citations.js" defer></script>
+  <script src="/israelite-research/js/xref-hover.js" defer></script>
   <script type="module" src="/israelite-research/js/extra-biblical-sources.js" defer></script>
-
-  <!--
-    Template for /js/extra-biblical-sources.js (create this file at that path):
-
-    // /israelite-research/js/extra-biblical-sources.js
-    // Minimal, safe loader + tab wiring. Inherit fonts/colors; use textContent.
-
-    const DATA = {
-      chron: "/israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
-      persons: "/israelite-research/data/extra-biblical/BibleData-Person.csv",
-      events: "/israelite-research/data/extra-biblical/BibleData-Event.csv",
-      epochs: "/israelite-research/data/extra-biblical/BibleData-Epoch.csv",
-    };
-
-    const GH_RAW = {
-      chron: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
-      persons: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Person.csv",
-      events: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Event.csv",
-      epochs: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Epoch.csv",
-    };
-
-    async function fetchCSV(urlLocal, urlCDN){
-      try{
-        const r = await fetch(urlLocal, {cache: "default"});
-        if(!r.ok) throw new Error("Local fetch failed");
-        return await r.text();
-      }catch(e){
-        const r2 = await fetch(urlCDN, {cache: "default"});
-        if(!r2.ok) throw new Error("CDN fetch failed");
-        return await r2.text();
-      }
-    }
-
-    function parseCSV(text){
-      // Tiny CSV parser (handles quotes & commas). For very large files, consider PapaParse.
-      const out=[]; const lines = text.split(/\r?\n/);
-      if(!lines.length) return out;
-      const headers = lines.shift().split(",").map(h=>h.trim());
-      let cur=[], inQuotes=false, field="";
-      const pushField=()=>{cur.push(field); field="";};
-      const pushRow=()=>{if(cur.length){out.push(Object.fromEntries(headers.map((h,i)=>[h, cur[i]??""])));} cur=[];};
-      for(const line of lines){
-        let i=0; while(i<line.length){
-          const ch=line[i];
-          if(ch==='"'){
-            if(inQuotes && line[i+1]==='"'){ field+='"'; i+=2; continue; }
-            inQuotes=!inQuotes; i++; continue;
-          }
-          if(ch===',' && !inQuotes){ pushField(); i++; continue; }
-          if((ch==='\n' || ch==='\r') && !inQuotes){ i++; continue; }
-          field+=ch; i++;
-        }
-        if(inQuotes){ field+='\n'; continue; }
-        pushField(); pushRow();
-      }
-      return out;
-    }
-
-    function setCount(el, n){ el.textContent = `${n.toLocaleString()} results`; }
-
-    function makeCard({title, meta, teaser, cite}){
-      const div=document.createElement('div'); div.className='card';
-      const h=document.createElement('h3'); h.textContent=title; div.appendChild(h);
-      if(meta){ const m=document.createElement('div'); m.className='meta'; m.textContent=meta; div.appendChild(m);} 
-      if(teaser){ const p=document.createElement('p'); p.className='teaser'; p.textContent=teaser; div.appendChild(p);} 
-      if(cite){ const c=document.createElement('div'); c.className='cite'; c.textContent=cite; div.appendChild(c);} 
-      return div;
-    }
-
-    // Tab logic
-    const tabs = Array.from(document.querySelectorAll('.tab-btn'));
-    const panels = {
-      chron: document.getElementById('panel-chron'),
-      persons: document.getElementById('panel-persons'),
-      events: document.getElementById('panel-events'),
-      epochs: document.getElementById('panel-epochs'),
-    };
-    tabs.forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        tabs.forEach(b=>b.setAttribute('aria-selected', String(b===btn)));
-        Object.values(panels).forEach(p=>p.setAttribute('aria-hidden','true'));
-        const target = document.getElementById(btn.getAttribute('aria-controls'));
-        target.setAttribute('aria-hidden','false');
-      });
-    });
-
-    // Chronologies (Ussher) minimal render
-    (async function initChron(){
-      const text = await fetchCSV(DATA.chron, GH_RAW.chron);
-      const rows = parseCSV(text);
-      const list = document.getElementById('chron-list');
-      const count = document.getElementById('chron-count');
-      const q = document.getElementById('chron-q');
-      const era = document.getElementById('chron-era');
-      const normalize = s => (s||'').toLowerCase();
-      const view = ()=>{
-        list.innerHTML='';
-        const k = normalize(q.value);
-        const e = era.value;
-        const filtered = rows.filter(r=>{
-          const matchEra = e==='all' ? true : (r.gc_bc_ad===e);
-          const hay = `${r.event||''} ${r.gc_year||''} ${r.am_year||''}`.toLowerCase();
-          return matchEra && (!k || hay.includes(k));
-        });
-        setCount(count, filtered.length);
-        filtered.slice(0,200).forEach(r=>{
-          const title = `${r.gc_bc_ad||''} ${r.gc_year||''} — AM ${r.am_year||''}`.trim();
-          const teaser = (r.event||'').slice(0,220) + ((r.event||'').length>220?'…':'');
-          const cite = `Ussher, Annals (AM ${r.am_year||'?'}, §${r.paragraph_nr||'?'}).`;
-          list.appendChild(makeCard({title, meta:null, teaser, cite}));
-        });
-      };
-      q.addEventListener('input', view); era.addEventListener('change', view);
-      view();
-    })();
-
-    // Persons minimal render
-    (async function initPersons(){
-      const text = await fetchCSV(DATA.persons, GH_RAW.persons);
-      const rows = parseCSV(text);
-      const list = document.getElementById('person-list');
-      const count = document.getElementById('person-count');
-      const q = document.getElementById('person-q');
-      const roleSel = document.getElementById('person-role');
-      const epochSel = document.getElementById('person-epoch');
-
-      // derive unique roles/epochs if present
-      const roles = new Set(); const epochs = new Set();
-      rows.forEach(r=>{ if(r.role) roles.add(r.role); if(r.epoch) epochs.add(r.epoch); });
-      for(const r of Array.from(roles).sort()){ const o=document.createElement('option'); o.value=o.textContent=r; roleSel.appendChild(o); }
-      for(const e of Array.from(epochs).sort()){ const o=document.createElement('option'); o.value=o.textContent=e; epochSel.appendChild(o); }
-
-      const normalize = s => (s||'').toLowerCase();
-      const view = ()=>{
-        list.innerHTML='';
-        const k = normalize(q.value);
-        const role = roleSel.value; const epoch = epochSel.value;
-        const filtered = rows.filter(r=>{
-          const hay = `${r.name||''} ${r.role||''} ${r.refs||''}`.toLowerCase();
-          const okK = !k || hay.includes(k);
-          const okR = role==='all' || (r.role===role);
-          const okE = epoch==='all' || (r.epoch===epoch);
-          return okK && okR && okE;
-        });
-        setCount(count, filtered.length);
-        filtered.slice(0,200).forEach(r=>{
-          const title = r.name || 'Unnamed';
-          const meta = [r.role, r.epoch].filter(Boolean).join(' • ');
-          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
-          const cite = r.refs ? `Refs: ${r.refs}` : '';
-          list.appendChild(makeCard({title, meta, teaser, cite}));
-        });
-      };
-      q.addEventListener('input', view); roleSel.addEventListener('change', view); epochSel.addEventListener('change', view);
-      view();
-    })();
-
-    // Events minimal render
-    (async function initEvents(){
-      const text = await fetchCSV(DATA.events, GH_RAW.events);
-      const rows = parseCSV(text);
-      const list = document.getElementById('event-list');
-      const count = document.getElementById('event-count');
-      const q = document.getElementById('event-q');
-      const typeSel = document.getElementById('event-type');
-      const eraSel = document.getElementById('event-era');
-
-      const types = new Set(); rows.forEach(r=>{ if(r.type) types.add(r.type); });
-      for(const t of Array.from(types).sort()){ const o=document.createElement('option'); o.value=o.textContent=t; typeSel.appendChild(o); }
-
-      const normalize = s => (s||'').toLowerCase();
-      const view = ()=>{
-        list.innerHTML='';
-        const k = normalize(q.value);
-        const typ = typeSel.value; const era = eraSel.value;
-        const filtered = rows.filter(r=>{
-          const hay = `${r.title||''} ${r.summary||''} ${r.refs||''}`.toLowerCase();
-          const okK = !k || hay.includes(k);
-          const okT = typ==='all' || (r.type===typ);
-          const okE = era==='all' || (r.era===era || r.gc_bc_ad===era);
-          return okK && okT && okE;
-        });
-        setCount(count, filtered.length);
-        filtered.slice(0,200).forEach(r=>{
-          const title = r.title || 'Untitled event';
-          const meta = [r.date||'', r.location||'', r.type||''].filter(Boolean).join(' • ');
-          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
-          const cite = r.refs ? `Refs: ${r.refs}` : '';
-          list.appendChild(makeCard({title, meta, teaser, cite}));
-        });
-      };
-      q.addEventListener('input', view); typeSel.addEventListener('change', view); eraSel.addEventListener('change', view);
-      view();
-    })();
-
-    // Epochs minimal render
-    (async function initEpochs(){
-      const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
-      const rows = parseCSV(text);
-      const list = document.getElementById('epoch-list');
-      const count = document.getElementById('epoch-count');
-      const q = document.getElementById('epoch-q');
-      const normalize = s => (s||'').toLowerCase();
-      const view = ()=>{
-        list.innerHTML='';
-        const k = normalize(q.value);
-        const filtered = rows.filter(r=>{
-          const hay = `${r.epoch||''} ${r.range||''} ${r.summary||''}`.toLowerCase();
-          return !k || hay.includes(k);
-        });
-        setCount(count, filtered.length);
-        filtered.slice(0,200).forEach(r=>{
-          const title = r.epoch || 'Epoch';
-          const meta = r.range || '';
-          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
-          const cite = r.refs ? `Refs: ${r.refs}` : '';
-          list.appendChild(makeCard({title, meta, teaser, cite}));
-        });
-      };
-      q.addEventListener('input', view);
-      view();
-    })();
-
-  -->
 </body>
 </html>
