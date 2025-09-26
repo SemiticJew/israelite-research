@@ -1,197 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width,initial-scale=1" name="viewport"/>
-  <title>Extra-Biblical Sources — Semitic Jew</title>
-  <link href="/israelite-research/styles.css" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extra‑Biblical Sources — Semitic Jew</title>
+  <link rel="stylesheet" href="/israelite-research/styles.css" />
+  <meta name="description" content="A scholarly portal presenting extra‑biblical chronologies, persons, events, and epochs with transparent sourcing and research‑ready structure." />
+  <!-- Open Graph / Twitter (page-specific; site-wide defaults will still apply) -->
+  <meta property="og:title" content="Extra‑Biblical Sources — Semitic Jew" />
+  <meta property="og:description" content="Scholarly chronologies, persons, events, and epochs, presented with transparent sourcing." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <style>
-    :root{ --ink:#0b2340; --muted:#6b7280; --brand:#054A91; --accent:#F17300; --sky:#e7ecf4; }
-    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-    .section{ padding:24px 0; }
-    .title{ margin:0 0 8px; font:900 2rem/1.15 system-ui; color:var(--ink); }
-    .sub{ color:var(--muted); max-width:70ch; }
-    .sec-head{ display:flex; align-items:center; gap:10px; justify-content:space-between; margin:12px 0; }
-    .sec-title{ margin:0; font:900 1.2rem/1.2 system-ui; color:var(--ink); }
-    .tools{ display:flex; flex-wrap:wrap; gap:8px; }
-    .select, .btn{ border:1px solid var(--sky); background:#fff; color:var(--ink); border-radius:999px; padding:8px 12px; font-weight:800; }
-    .muted{ color:var(--muted); }
+    /*
+      SCHOLARLY SCAFFOLD — retains only what you approved as “solid”:
+      - Universal header/footer via include.js
+      - Container width / palette inherited from /styles.css
+      - Safe data loader w/ local CSV then GitHub Raw fallback
+      - Safe DOM insertion via textContent
 
-    .wheel-wrap{ display:block; position:relative; height:760px; border:1px solid var(--sky); border-radius:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06); overflow:hidden; }
-    .wheel{ --items:12; --radius:420px; --card-w:170px; --card-h:110px; list-style:none; margin:0; padding:0; position:absolute; inset:0; }
-    .wheel > li{ position:absolute; top:50%; left:50%; transform-origin:0 0; will-change: transform; }
-    .wheel input{ position:absolute; opacity:0; pointer-events:none; }
-    .wheel label{
-      display:block; width:var(--card-w); min-height:var(--card-h);
-      padding:10px 12px; background:#fff; border:1px solid var(--sky); border-radius:12px;
-      box-shadow:0 6px 24px rgba(0,0,0,.10);
-      color:var(--ink); text-decoration:none; cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s;
+      File layout (place files exactly here):
+      - /israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv
+      - /israelite-research/data/extra-biblical/BibleData-Person.csv
+      - /israelite-research/data/extra-biblical/BibleData-Event.csv
+      - /israelite-research/data/extra-biblical/BibleData-Epoch.csv
+      - /israelite-research/js/include.js               (already exists site-wide)
+      - /israelite-research/js/extra-biblical-sources.js (NEW: logic for this page)
+      - /israelite-research/tools/ (optional build scripts; no runtime use)
+    */
+
+    /* Page scaffold (inherit fonts/colors from styles.css) */
+    .ebs-wrap{max-width:1200px;margin:0 auto;padding:1rem 1rem 2rem}
+    .ebs-head{margin:0 0 1rem 0}
+    .ebs-head h1{font-weight:800;letter-spacing:.2px;margin:.25rem 0}
+    .ebs-abstract{color:var(--text-muted,#445);font-size:1rem;line-height:1.6}
+
+    /* Tabs */
+    .tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+    .tab-btn{border:1px solid var(--line,#e6ebf2);background:#fff;padding:.5rem .75rem;border-radius:10px;cursor:pointer}
+    .tab-btn[aria-selected="true"]{border-color:var(--brand,#054A91);box-shadow:0 0 0 2px color-mix(in oklab, var(--brand,#054A91) 20%, transparent)}
+
+    /* Panels */
+    .panel{display:none}
+    .panel[aria-hidden="false"]{display:block}
+
+    /* Controls */
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}
+    .controls .field{display:flex;gap:.35rem;align-items:center}
+    .controls input[type="search"], .controls select{padding:.45rem .6rem;border:1px solid var(--line,#e6ebf2);border-radius:8px;min-width:180px}
+
+    /* Result list (neutral, researchy) */
+    .list{display:grid;grid-template-columns:1fr;gap:.75rem}
+    .card{border:1px solid var(--line,#e6ebf2);background:#fff;border-radius:12px;padding:.75rem}
+    .card h3{margin:.1rem 0 .25rem;font-size:1.05rem}
+    .meta{color:var(--text-muted,#546);font-size:.9rem}
+    .teaser{margin:.35rem 0 .25rem}
+    .cite{font-size:.85rem;color:var(--text-muted,#556)}
+
+    .count{font-size:.95rem;color:var(--text-muted,#445);margin:.25rem 0}
+
+    @media (min-width:900px){
+      .list{grid-template-columns:repeat(2,1fr)}
     }
-    .wheel h3{ margin:0 0 4px; font:900 .95rem/1.15 system-ui; color:var(--ink); }
-    .wheel p{ margin:0; color:var(--muted); font-size:.85rem; display:none; }
-    .wheel input:checked + label{ border-color:#c6d6ea; box-shadow:0 10px 30px rgba(0,0,0,.18); transform:scale(1.03); z-index:2; }}
-    .wheel input:checked + label p{ display:block; }
-    .wheel .yr{ display:inline-block; font-weight:800; color:var(--brand); margin-right:6px; }
-
-    @media (max-width:960px){ .wheel-wrap{ height:600px; } .wheel{ --radius:300px; --card-w:160px; } } .wheel{ --radius:240px; --card-w:180px; } }
-    @media (max-width:640px){ .wheel-wrap{ height:560px; } .wheel{ --radius:240px; --card-w:150px; --card-h:100px; } .wheel h3{ font-size:.9rem; } .wheel p{ font-size:.8rem; } } .wheel{ --radius:200px; --card-w:170px; --card-h:110px; } .wheel h3{ font-size:.9rem; } .wheel p{ font-size:.82rem; } }
   </style>
 </head>
-<body>
-<div id="site-header"></div>
+<body class="page" data-page="extra-biblical-sources">
+  <div id="site-header" data-include="/israelite-research/partials/header.html"></div>
 
-<main class="container">
-  <header class="section">
-    <h1 class="title">Extra-Biblical Sources</h1>
-    <p class="sub">Explore key events beyond the biblical text, filtered by book context to keep the wheel readable.</p>
-  </header>
+  <main class="ebs-wrap" role="main">
+    <header class="ebs-head">
+      <p class="kicker" style="color:var(--brand,#054A91);font-weight:700">Scholarly Portal</p>
+      <h1>Extra‑Biblical Sources</h1>
+      <p class="ebs-abstract">A research‑oriented index of chronologies, persons, events, and epochs relevant to the biblical world. Data and references are presented transparently for comparison, analysis, and further study.</p>
+    </header>
 
-  <section class="section" id="wheel-only">
-    <div class="sec-head">
-      <h2 class="sec-title">Highlights Wheel</h2>
-      <div class="tools">
-        <select class="select" id="bookFilter" aria-label="Filter by Book">
-          <option value="">All Books</option>
-        </select>
-        <select class="select" id="wheelCap" aria-label="Cards shown"><option>8</option><option selected>10</option><option>12</option><option>16</option></select>
-        <span class="muted" id="wheelCount"></span>
-        <label class="muted" for="wheelScale" style="margin-left:8px">Scale</label>
-        <input id="wheelScale" type="range" min="200" max="520" step="20" value="420" style="vertical-align:middle">
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-chron" id="tab-chron">Chronologies</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-persons" id="tab-persons">Persons</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-events" id="tab-events">Events</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-epochs" id="tab-epochs">Epochs</button>
+    </div>
+
+    <!-- Chronologies (Ussher) -->
+    <section class="panel" id="panel-chron" role="tabpanel" aria-labelledby="tab-chron" aria-hidden="false">
+      <div class="controls">
+        <div class="field"><label for="chron-q">Search</label><input id="chron-q" type="search" placeholder="Find in narrative or refs…" /></div>
+        <div class="field"><label for="chron-era">Era</label>
+          <select id="chron-era">
+            <option value="all">All</option>
+            <option value="BC">BC</option>
+            <option value="AD">AD</option>
+          </select>
+        </div>
       </div>
-    </div>
+      <div class="count" id="chron-count">Loading…</div>
+      <div class="list" id="chron-list" aria-live="polite"></div>
+    </section>
 
-    <div class="wheel-wrap">
-      <ul class="wheel cards" id="wheelCards" style="--items:0; --radius:420px" aria-label="Timeline highlights"></ul>
-    </div>
-  </section>
-</main>
+    <!-- Persons -->
+    <section class="panel" id="panel-persons" role="tabpanel" aria-labelledby="tab-persons" aria-hidden="true">
+      <div class="controls">
+        <div class="field"><label for="person-q">Search</label><input id="person-q" type="search" placeholder="Name, role, refs…" /></div>
+        <div class="field"><label for="person-role">Role</label>
+          <select id="person-role"><option value="all">All</option></select>
+        </div>
+        <div class="field"><label for="person-epoch">Epoch</label>
+          <select id="person-epoch"><option value="all">All</option></select>
+        </div>
+      </div>
+      <div class="count" id="person-count">Loading…</div>
+      <div class="list" id="person-list" aria-live="polite"></div>
+    </section>
 
-<div id="site-footer"></div>
-<script src="/israelite-research/js/include.js"></script>
+    <!-- Events -->
+    <section class="panel" id="panel-events" role="tabpanel" aria-labelledby="tab-events" aria-hidden="true">
+      <div class="controls">
+        <div class="field"><label for="event-q">Search</label><input id="event-q" type="search" placeholder="War, decree, exile…" /></div>
+        <div class="field"><label for="event-type">Type</label>
+          <select id="event-type"><option value="all">All</option></select>
+        </div>
+        <div class="field"><label for="event-era">Era</label>
+          <select id="event-era">
+            <option value="all">All</option>
+            <option value="BC">BC</option>
+            <option value="AD">AD</option>
+          </select>
+        </div>
+      </div>
+      <div class="count" id="event-count">Loading…</div>
+      <div class="list" id="event-list" aria-live="polite"></div>
+    </section>
 
-<script>
-(function(){
-  const CSV_SOURCES = [
-    "/israelite-research/data/extra_sources.csv",
-    "https://raw.githubusercontent.com/SemiticJew/israelite-research/main/israelite-research/data/extra_sources.csv"
-  ];
-  const UL=document.getElementById("wheelCards"); const CNT=document.getElementById("wheelCount"); const S=document.getElementById("bookFilter"); const CAP=document.getElementById("wheelCap"); const SCALE=document.getElementById("wheelScale"); const SCALE=document.getElementById("wheelScale");
-  if(!UL || !S) return;
+    <!-- Epochs -->
+    <section class="panel" id="panel-epochs" role="tabpanel" aria-labelledby="tab-epochs" aria-hidden="true">
+      <div class="controls">
+        <div class="field"><label for="epoch-q">Search</label><input id="epoch-q" type="search" placeholder="Creation, Patriarchs, Exile…" /></div>
+      </div>
+      <div class="count" id="epoch-count">Loading…</div>
+      <div class="list" id="epoch-list" aria-live="polite"></div>
+    </section>
 
-  const CANON = [
-    "Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth",
-    "1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther",
-    "Job","Psalms","Proverbs","Ecclesiastes","Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel",
-    "Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi",
-    "Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
-    "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews",
-    "James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"
-  ];
+  </main>
 
-  function toNum(x){ const n = Number(String(x||"").trim()); return Number.isFinite(n)? n : null; }
-  function fmtYear(y){ return y < 0 ? (Math.abs(y) + " BCE") : (y + " CE"); }
+  <div id="site-footer" data-include="/israelite-research/partials/footer.html"></div>
 
-  function parseCSV(text){
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    if(!lines.length) return [];
-    const head = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim());
-    const idx  = Object.fromEntries(head.map((h,i)=>[h.toLowerCase(),i]));
-    const get  = (cols, k) => (k in idx ? cols[idx[k]] : "");
-    return lines.map(row=>{
-      const cols = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-      const year = toNum(get(cols,"year"));
-      const title= String(get(cols,"title")||"").trim();
-      const summary = String(get(cols,"summary")||"").trim();
-      const book = String(get(cols,"book")||"").trim();
-      return {year,title,summary,book};
-    }).filter(r => r.year!==null && r.title);
-  }
+  <!-- Include universal includes and this page’s module -->
+  <script src="/israelite-research/js/include.js" defer></script>
+  <script type="module" src="/israelite-research/js/extra-biblical-sources.js" defer></script>
 
-  function inferBook(rec){
-    const hay = (rec.title + " " + rec.summary).toLowerCase();
-    for(const b of CANON){
-      const patt = new RegExp("\\b" + b.replace(/[\s.]/g,'\\s*').toLowerCase() + "\\b");
-      if(patt.test(hay)) return b;
+  <!--
+    Template for /js/extra-biblical-sources.js (create this file at that path):
+
+    // /israelite-research/js/extra-biblical-sources.js
+    // Minimal, safe loader + tab wiring. Inherit fonts/colors; use textContent.
+
+    const DATA = {
+      chron: "/israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
+      persons: "/israelite-research/data/extra-biblical/BibleData-Person.csv",
+      events: "/israelite-research/data/extra-biblical/BibleData-Event.csv",
+      epochs: "/israelite-research/data/extra-biblical/BibleData-Epoch.csv",
+    };
+
+    const GH_RAW = {
+      chron: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
+      persons: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Person.csv",
+      events: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Event.csv",
+      epochs: "https://raw.githubusercontent.com/semiticjew/israelite-research/main/data/extra-biblical/BibleData-Epoch.csv",
+    };
+
+    async function fetchCSV(urlLocal, urlCDN){
+      try{
+        const r = await fetch(urlLocal, {cache: "default"});
+        if(!r.ok) throw new Error("Local fetch failed");
+        return await r.text();
+      }catch(e){
+        const r2 = await fetch(urlCDN, {cache: "default"});
+        if(!r2.ok) throw new Error("CDN fetch failed");
+        return await r2.text();
+      }
     }
-    return rec.book || "";
-  }
 
-  function sampleEven(items, n){
-    if(items.length <= n) return items.slice();
-    const out = [];
-    for(let i=0;i<n;i++){
-      const idx = Math.round(i*(items.length-1)/(n-1));
-      out.push(items[idx]);
+    function parseCSV(text){
+      // Tiny CSV parser (handles quotes & commas). For very large files, consider PapaParse.
+      const out=[]; const lines = text.split(/\r?\n/);
+      if(!lines.length) return out;
+      const headers = lines.shift().split(",").map(h=>h.trim());
+      let cur=[], inQuotes=false, field="";
+      const pushField=()=>{cur.push(field); field="";};
+      const pushRow=()=>{if(cur.length){out.push(Object.fromEntries(headers.map((h,i)=>[h, cur[i]??""])));} cur=[];};
+      for(const line of lines){
+        let i=0; while(i<line.length){
+          const ch=line[i];
+          if(ch==='"'){
+            if(inQuotes && line[i+1]==='"'){ field+='"'; i+=2; continue; }
+            inQuotes=!inQuotes; i++; continue;
+          }
+          if(ch===',' && !inQuotes){ pushField(); i++; continue; }
+          if((ch==='\n' || ch==='\r') && !inQuotes){ i++; continue; }
+          field+=ch; i++;
+        }
+        if(inQuotes){ field+='\n'; continue; }
+        pushField(); pushRow();
+      }
+      return out;
     }
-    const seen = new Set(), dedup = [];
-    for(const x of out){ const key = x.year+"|"+x.title; if(!seen.has(key)){ seen.add(key); dedup.push(x); } }
-    return dedup;
-  }
 
-  function buildWheel(items){
-    UL.innerHTML = "";
-    if(!items.length){ UL.style.setProperty("--items", 0); if(CNT) CNT.textContent="0 highlights"; return; }
-    UL.style.setProperty("--items", items.length);
-    const radius = getComputedStyle(UL).getPropertyValue("--radius") || "240px";
-    items.forEach((it, i) => {
-      const li = document.createElement("li");
-      const angle = (360 * i / items.length);
-      li.style.transform = `rotate(${angle}deg) translate(${radius}) rotate(${-angle}deg)`;
+    function setCount(el, n){ el.textContent = `${n.toLocaleString()} results`; }
 
-      const inp = document.createElement("input");
-      inp.type = "radio"; inp.name = "wheel"; inp.id = "wh-" + i;
-      if(i===0) inp.checked = true;
+    function makeCard({title, meta, teaser, cite}){
+      const div=document.createElement('div'); div.className='card';
+      const h=document.createElement('h3'); h.textContent=title; div.appendChild(h);
+      if(meta){ const m=document.createElement('div'); m.className='meta'; m.textContent=meta; div.appendChild(m);} 
+      if(teaser){ const p=document.createElement('p'); p.className='teaser'; p.textContent=teaser; div.appendChild(p);} 
+      if(cite){ const c=document.createElement('div'); c.className='cite'; c.textContent=cite; div.appendChild(c);} 
+      return div;
+    }
 
-      const lab = document.createElement("label");
-      lab.setAttribute("for", inp.id);
-
-      const h3=document.createElement("h3"); const yr=document.createElement("span"); yr.className="yr"; yr.textContent=fmtYear(it.year)+" · "; h3.appendChild(yr); h3.appendChild(document.createTextNode(it.title));
-
-      const p=document.createElement("p");
-      if(it.summary){ p.appendChild(document.createTextNode(it.summary)); }
-
-      lab.appendChild(h3); lab.appendChild(p);
-      li.appendChild(inp); li.appendChild(lab);
-      UL.appendChild(li);
+    // Tab logic
+    const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+    const panels = {
+      chron: document.getElementById('panel-chron'),
+      persons: document.getElementById('panel-persons'),
+      events: document.getElementById('panel-events'),
+      epochs: document.getElementById('panel-epochs'),
+    };
+    tabs.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        tabs.forEach(b=>b.setAttribute('aria-selected', String(b===btn)));
+        Object.values(panels).forEach(p=>p.setAttribute('aria-hidden','true'));
+        const target = document.getElementById(btn.getAttribute('aria-controls'));
+        target.setAttribute('aria-hidden','false');
+      });
     });
-    if(CNT) CNT.textContent = items.length + " highlights";
-  }
 
-  function populateBookFilter(rows){
-    const set = new Set();
-    rows.forEach(r => { const b = r.book || inferBook(r); if(b) set.add(b); });
-    const list = Array.from(set);
-    list.sort((a,b)=> {
-      const ia = CANON.indexOf(a), ib = CANON.indexOf(b);
-      if(ia>=0 && ib>=0) return ia-ib;
-      if(ia>=0) return -1; if(ib>=0) return 1;
-      return a.localeCompare(b);
-    });
-    S.innerHTML = '<option value="">All Books</option>' + list.map(b=>`<option>${b}</option>`).join('');
-  }
+    // Chronologies (Ussher) minimal render
+    (async function initChron(){
+      const text = await fetchCSV(DATA.chron, GH_RAW.chron);
+      const rows = parseCSV(text);
+      const list = document.getElementById('chron-list');
+      const count = document.getElementById('chron-count');
+      const q = document.getElementById('chron-q');
+      const era = document.getElementById('chron-era');
+      const normalize = s => (s||'').toLowerCase();
+      const view = ()=>{
+        list.innerHTML='';
+        const k = normalize(q.value);
+        const e = era.value;
+        const filtered = rows.filter(r=>{
+          const matchEra = e==='all' ? true : (r.gc_bc_ad===e);
+          const hay = `${r.event||''} ${r.gc_year||''} ${r.am_year||''}`.toLowerCase();
+          return matchEra && (!k || hay.includes(k));
+        });
+        setCount(count, filtered.length);
+        filtered.slice(0,200).forEach(r=>{
+          const title = `${r.gc_bc_ad||''} ${r.gc_year||''} — AM ${r.am_year||''}`.trim();
+          const teaser = (r.event||'').slice(0,220) + ((r.event||'').length>220?'…':'');
+          const cite = `Ussher, Annals (AM ${r.am_year||'?'}, §${r.paragraph_nr||'?'}).`;
+          list.appendChild(makeCard({title, meta:null, teaser, cite}));
+        });
+      };
+      q.addEventListener('input', view); era.addEventListener('change', view);
+      view();
+    })();
 
-  function filterAndRender(all, book){ const cap = CAP ? parseInt(CAP.value,10) || 10 : 10;
-    let rows = all.slice();
-    if(book){ rows = rows.filter(r => (r.book || inferBook(r)) === book); }
-    rows = rows.filter(r => r.year >= -4000 && r.year <= 2500).sort((a,b)=> a.year - b.year);
-    const picks = sampleEven(rows, cap);
-    buildWheel(picks);
-  }
+    // Persons minimal render
+    (async function initPersons(){
+      const text = await fetchCSV(DATA.persons, GH_RAW.persons);
+      const rows = parseCSV(text);
+      const list = document.getElementById('person-list');
+      const count = document.getElementById('person-count');
+      const q = document.getElementById('person-q');
+      const roleSel = document.getElementById('person-role');
+      const epochSel = document.getElementById('person-epoch');
 
-  (async function(){
-    let text = null;
-    for(const url of CSV_SOURCES){
-      try{ const r = await fetch(url, {cache:"no-store"}); if(r.ok){ text = await r.text(); break; } }catch(e){}
-    }
-    if(text === null){ if(CNT) CNT.textContent="Failed to load data"; return; }
+      // derive unique roles/epochs if present
+      const roles = new Set(); const epochs = new Set();
+      rows.forEach(r=>{ if(r.role) roles.add(r.role); if(r.epoch) epochs.add(r.epoch); });
+      for(const r of Array.from(roles).sort()){ const o=document.createElement('option'); o.value=o.textContent=r; roleSel.appendChild(o); }
+      for(const e of Array.from(epochs).sort()){ const o=document.createElement('option'); o.value=o.textContent=e; epochSel.appendChild(o); }
 
-    const all = parseCSV(text).map(r => ({...r, book: r.book || inferBook(r)}));
-    populateBookFilter(all);
-    filterAndRender(all, S.value);
+      const normalize = s => (s||'').toLowerCase();
+      const view = ()=>{
+        list.innerHTML='';
+        const k = normalize(q.value);
+        const role = roleSel.value; const epoch = epochSel.value;
+        const filtered = rows.filter(r=>{
+          const hay = `${r.name||''} ${r.role||''} ${r.refs||''}`.toLowerCase();
+          const okK = !k || hay.includes(k);
+          const okR = role==='all' || (r.role===role);
+          const okE = epoch==='all' || (r.epoch===epoch);
+          return okK && okR && okE;
+        });
+        setCount(count, filtered.length);
+        filtered.slice(0,200).forEach(r=>{
+          const title = r.name || 'Unnamed';
+          const meta = [r.role, r.epoch].filter(Boolean).join(' • ');
+          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
+          const cite = r.refs ? `Refs: ${r.refs}` : '';
+          list.appendChild(makeCard({title, meta, teaser, cite}));
+        });
+      };
+      q.addEventListener('input', view); roleSel.addEventListener('change', view); epochSel.addEventListener('change', view);
+      view();
+    })();
 
-    S.addEventListener('change', () => filterAndRender(all, S.value));
-  })();
-})();
-</script>
+    // Events minimal render
+    (async function initEvents(){
+      const text = await fetchCSV(DATA.events, GH_RAW.events);
+      const rows = parseCSV(text);
+      const list = document.getElementById('event-list');
+      const count = document.getElementById('event-count');
+      const q = document.getElementById('event-q');
+      const typeSel = document.getElementById('event-type');
+      const eraSel = document.getElementById('event-era');
+
+      const types = new Set(); rows.forEach(r=>{ if(r.type) types.add(r.type); });
+      for(const t of Array.from(types).sort()){ const o=document.createElement('option'); o.value=o.textContent=t; typeSel.appendChild(o); }
+
+      const normalize = s => (s||'').toLowerCase();
+      const view = ()=>{
+        list.innerHTML='';
+        const k = normalize(q.value);
+        const typ = typeSel.value; const era = eraSel.value;
+        const filtered = rows.filter(r=>{
+          const hay = `${r.title||''} ${r.summary||''} ${r.refs||''}`.toLowerCase();
+          const okK = !k || hay.includes(k);
+          const okT = typ==='all' || (r.type===typ);
+          const okE = era==='all' || (r.era===era || r.gc_bc_ad===era);
+          return okK && okT && okE;
+        });
+        setCount(count, filtered.length);
+        filtered.slice(0,200).forEach(r=>{
+          const title = r.title || 'Untitled event';
+          const meta = [r.date||'', r.location||'', r.type||''].filter(Boolean).join(' • ');
+          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
+          const cite = r.refs ? `Refs: ${r.refs}` : '';
+          list.appendChild(makeCard({title, meta, teaser, cite}));
+        });
+      };
+      q.addEventListener('input', view); typeSel.addEventListener('change', view); eraSel.addEventListener('change', view);
+      view();
+    })();
+
+    // Epochs minimal render
+    (async function initEpochs(){
+      const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
+      const rows = parseCSV(text);
+      const list = document.getElementById('epoch-list');
+      const count = document.getElementById('epoch-count');
+      const q = document.getElementById('epoch-q');
+      const normalize = s => (s||'').toLowerCase();
+      const view = ()=>{
+        list.innerHTML='';
+        const k = normalize(q.value);
+        const filtered = rows.filter(r=>{
+          const hay = `${r.epoch||''} ${r.range||''} ${r.summary||''}`.toLowerCase();
+          return !k || hay.includes(k);
+        });
+        setCount(count, filtered.length);
+        filtered.slice(0,200).forEach(r=>{
+          const title = r.epoch || 'Epoch';
+          const meta = r.range || '';
+          const teaser = (r.summary||'').slice(0,220) + ((r.summary||'').length>220?'…':'');
+          const cite = r.refs ? `Refs: ${r.refs}` : '';
+          list.appendChild(makeCard({title, meta, teaser, cite}));
+        });
+      };
+      q.addEventListener('input', view);
+      view();
+    })();
+
+  -->
 </body>
 </html>
