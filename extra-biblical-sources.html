@@ -25,7 +25,8 @@
     .controls .field{display:flex;gap:.35rem;align-items:center}
     .controls input[type="search"], .controls select{padding:.45rem .6rem;border:1px solid var(--line,#e6ebf2);border-radius:8px;min-width:180px}
     .list{display:grid;grid-template-columns:1fr;gap:.75rem}
-    .card{border:1px solid var(--line,#e6ebf2);background:#fff;border-radius:12px;padding:.75rem}
+    .list > * { min-width: 0; } /* prevent cards from leaking */
+    .card{border:1px solid var(--line,#e6ebf2);background:#fff;border-radius:12px;padding:.75rem;overflow:hidden}
     .card h3{margin:.1rem 0 .25rem;font-size:1.05rem}
     .meta{color:var(--text-muted,#546);font-size:.9rem}
     .teaser{margin:.35rem 0 .25rem}
@@ -37,7 +38,8 @@
     .label-lines{
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size:.92rem; line-height:1.35;
-      white-space: nowrap; overflow-x: auto; padding-top:.35rem
+      white-space: nowrap; overflow-x: auto; padding-top:.35rem;
+      max-width:100%;
     }
     .label-line{ padding:.15rem 0; border-top:1px dotted var(--line,#e6ebf2) }
     .label-line.header{
