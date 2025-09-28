@@ -76,6 +76,33 @@
   .timeline{height:260px}
   .epoch-bar{height:30px}
 }
+/* Timeline breathing room */
+.timeline { position:relative; /* height set dynamically by JS */ min-width: 900px; }
+.timeline-viewport { overflow-x:auto; overflow-y:hidden; padding: 0 0 .25rem; }
+
+/* Bars: two-line layout, roomier */
+.epoch-bar{
+  position:absolute; border-radius:6px; border:1px solid var(--line,#e6ebf2);
+  background: color-mix(in oklab, var(--brand,#054A91) 10%, #ffffff);
+  box-shadow: 0 1px 0 rgba(0,0,0,.03); display:flex; flex-direction:column;
+  justify-content:center; gap:.1rem; padding:.25rem .5rem .35rem;
+  height:auto; min-height:36px;  /* allow two lines */
+  min-width: 90px;               /* keep text from squashing to nothing */
+  overflow:hidden;
+}
+.epoch-bar .name{font-weight:700; font-size:.92rem; line-height:1.1}
+.epoch-bar .span{font-size:.85rem; line-height:1.1; color:var(--text-muted,#556)}
+.epoch-bar:hover{background: color-mix(in oklab, var(--brand,#054A91) 17%, #ffffff)}
+
+/* Ticks less busy */
+.ticks{position:absolute; left:0; right:0; top:0; height:22px; display:flex; align-items:flex-end; font-size:.78rem; color:var(--text-muted,#667)}
+.tick{position:absolute; bottom:0; width:1px; background:var(--line,#e6ebf2); height:22px}
+.tick-label{position:absolute; bottom:22px; transform:translateX(-50%); white-space:nowrap}
+
+/* Era band unchanged */
+.era-band{position:absolute; left:0; right:0; top:22px; height:6px; background:
+  linear-gradient(90deg, color-mix(in oklab, #b10f2e 20%, transparent) 0% 50%, color-mix(in oklab, #0a7 20%, transparent) 50% 100%)}
+
   </style>
 </head>
 <body class="page" data-page="extra-biblical-sources">

@@ -534,7 +534,7 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
         else if (mode === "ad") { viewMin = 1; viewMax = Math.max(maxYear, 2025); }
         else { viewMin = minYear; viewMax = maxYear; }
       }
-      const z = Number(zoom.value) / 100; // 0..1
+      const z = Number(zoom.value) / 30; // 0..1
       const factor = 1 / (1 + 3*z); // zoom in
       const mid = (viewMin + viewMax) / 2;
       const half = (viewMax - viewMin) / 2 * factor;
@@ -554,14 +554,16 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
       // tick step
       const span = Math.abs(viewMax - viewMin);
       let step;
-      if (span > 4000) step = 500;
-      else if (span > 2000) step = 250;
-      else if (span > 1000) step = 100;
-      else if (span > 400) step = 50;
-      else if (span > 200) step = 25;
-      else if (span > 80) step = 10;
-      else if (span > 30) step = 5;
-      else step = 1;
+      if (span > 6000) step = 1000;
+else if (span > 3000) step = 500;
+else if (span > 1500) step = 250;
+else if (span > 700)  step = 100;
+else if (span > 300)  step = 50;
+else if (span > 120)  step = 25;
+else if (span > 60)   step = 10;
+else if (span > 25)   step = 5;
+else step = 1;
+
 
       // labels
       const firstTick = Math.ceil(viewMin / step) * step;
@@ -581,11 +583,15 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
       }
 
       // lay out bars (lanes to avoid overlap)
-      const laneHeight = 30; let laneEnds = [];
+      const laneHeight = 40; let laneEnds = [];
       filtered.forEach(ep => {
         const startX = xOf(ep.start), endX = xOf(ep.end);
         const left = Math.max(0, Math.min(100, startX));
-        const width = Math.max(0.7, Math.min(100 - left, endX - startX));
+        let width = Math.max(0.7, Math.min(100 - left, endX - startX));
+// If the percent width is too tiny on a wide viewport, the text still crushes.
+// We'll keep the % for positioning, but CSS min-width handles pixel minimum.
+// No further change needed here; CSS min-width:90px will protect readability.
+
 
         let lane = 0; while (laneEnds[lane] != null && laneEnds[lane] > left) lane++;
         laneEnds[lane] = left + width;
@@ -634,6 +640,11 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
       });
       rescanXRefs();
     };
+// After placing all bars:
+const lanesUsed = laneEnds.length || 1;
+const topPadding = 40;           // space for ticks/labels above bars
+const bottomPadding = 24;        // room below
+timelineEl.style.height = `${topPadding + lanesUsed * laneHeight + bottomPadding}px`;
 
     // Wire controls
     q.addEventListener("input", debounce(doRender, 120));
