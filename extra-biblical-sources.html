@@ -32,18 +32,25 @@
     .cite{font-size:.85rem;color:var(--text-muted,#556)}
     .count{font-size:.95rem;color:var(--text-muted,#445);margin:.25rem 0}
     @media (min-width:900px){ .list{grid-template-columns:repeat(2,1fr)} }
-.label-table{display:grid;grid-template-columns:repeat(8,auto);gap:.35rem .5rem;margin-top:.5rem}
-.label-row{display:contents}
-.cell{font-size:.92rem}
-.cell.lang{font-weight:700;opacity:.8}
-.cell.label{font-weight:600}
-.cell.translit{font-style:italic}
-.cell.meaning{opacity:.95}
-.cell.strongs{opacity:.8}
-.cell.type{opacity:.85}
-.cell.given{opacity:.85}
-.cell.ref a{text-decoration:underline dotted}
-.card-details summary{cursor:pointer;margin-top:.35rem}
+
+    /* Pipe-separated label lines for Persons tab */
+    .label-lines{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:.92rem; line-height:1.35;
+      white-space: nowrap; overflow-x: auto; padding-top:.35rem
+    }
+    .label-line{ padding:.15rem 0; border-top:1px dotted var(--line,#e6ebf2) }
+    .label-line.header{
+      border-top:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.02em;
+      color:var(--text-muted,#667)
+    }
+    .label-line .ref-html a{ text-decoration: underline dotted }
+    @media (prefers-reduced-motion:no-preference){
+      .label-lines{ scroll-behavior:smooth }
+    }
+    @media (max-width:720px){
+      .label-lines{ font-size:.88rem }
+    }
   </style>
 </head>
 <body class="page" data-page="extra-biblical-sources">
@@ -56,7 +63,6 @@
       <p class="ebs-abstract">A research-oriented index of chronologies, persons, events, and epochs relevant to the biblical world. Data and references are presented transparently for comparison, analysis, and further study.</p>
     </header>
 
-    <!-- Tabs -->
     <div class="tabs" role="tablist" aria-label="Sections">
       <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-chron" id="tab-chron">Chronologies</button>
       <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-persons" id="tab-persons">Persons</button>

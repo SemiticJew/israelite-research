@@ -79,7 +79,7 @@ function parseCSV(text) {
 
   for (let li=1; li<lines.length; li++){
     const line = lines[li];
-    for (let i=0;i<line.length;i++){
+    for (let i=0; i<line.length; i++){
       const ch=line[i];
       if (ch === '"'){ if(q && line[i+1]==='"'){ field+='"'; i++; } else q=!q; }
       else if (ch === "," && !q){ pushField(); }
@@ -147,53 +147,48 @@ function rescanXRefs() {
   try { window.XRefHover?.scan?.(); } catch {}
 }
 
-// ---------- Inline evidence grid for labels ----------
-function renderLabelsTable(labs, langFilter, typeFilter){
-  const table = document.createElement("div");
-  table.className = "label-table";
+// ---------- Pipe-separated labels ----------
+function renderLabelsPipe(labs, langFilter, typeFilter){
+  const wrap = document.createElement("div");
+  wrap.className = "label-lines";
 
-  // header
-  const head = document.createElement("div"); head.className = "label-row label-head";
-  const H = t => { const d=document.createElement("div"); d.className="cell"; d.textContent=t; return d; };
-  head.append(H("Lang"), H("Label(s)"), H("Translit."), H("Meaning"), H("Strongs"), H("Type"), H("Given"), H("Ref"));
-  table.appendChild(head);
+  const header = document.createElement("div");
+  header.className = "label-line header";
+  header.textContent = "Lng. | Label(s) | Transliteration | Meaning | Strongs | Type | Given | Ref";
+  wrap.appendChild(header);
 
   labs.forEach(L=>{
-    const byLang = langFilter === "all" ? true :
-      (langFilter === "en" ? !!L.english_label :
-       langFilter === "he" ? !!(L.hebrew_label || L.hebrew_label_transliterated) :
-       langFilter === "gr" ? !!(L.greek_label  || L.greek_label_transliterated) : true);
-    const byType = typeFilter === "all" ? true : (L.label_type === typeFilter);
-    if (!byLang || !byType) return;
+    const langOK = langFilter==="all" ? true :
+      (langFilter==="en" ? !!L.english_label :
+       langFilter==="he" ? !!(L.hebrew_label || L.hebrew_label_transliterated) :
+       langFilter==="gr" ? !!(L.greek_label  || L.greek_label_transliterated) : true);
+    const typeOK = typeFilter==="all" ? true : (L.label_type===typeFilter);
+    if (!langOK || !typeOK) return;
 
-    const row = document.createElement("div");
-    row.className = "label-row";
+    const lang = (L.hebrew_label || L.hebrew_label_transliterated) ? "HE"
+               : (L.greek_label  || L.greek_label_transliterated)  ? "GR"
+               : "EN";
 
-    const lang = (L.hebrew_label || L.hebrew_label_transliterated) ? "HE" :
-                 (L.greek_label  || L.greek_label_transliterated)  ? "GR" : "EN";
+    const labelStr = [L.english_label, L.hebrew_label, L.greek_label].filter(Boolean).join(" · ");
+    const translit = L.hebrew_label_transliterated || L.greek_label_transliterated || "";
+    const meaning  = L.hebrew_label_meaning || L.greek_label_meaning || "";
+    const strongs  = L.hebrew_strongs_number || L.greek_strongs_number || "";
+    const typ      = L.label_type || "";
+    const given    = (L["label-given_by_god"]||"").toString().toUpperCase()==="Y"?"Y":"";
+    const refsHTML = L.label_reference_id ? linkifyRefs(L.label_reference_id) : "";
 
-    const cells = [
-      lang,
-      [L.english_label, L.hebrew_label, L.greek_label].filter(Boolean).join(" · "),
-      L.hebrew_label_transliterated || L.greek_label_transliterated || "",
-      L.hebrew_label_meaning || L.greek_label_meaning || "",
-      L.hebrew_strongs_number || L.greek_strongs_number || "",
-      L.label_type || "",
-      (L["label-given_by_god"] || "").toString().toUpperCase() === "Y" ? "Y" : "",
-      L.label_reference_id ? linkifyRefs(L.label_reference_id) : ""
-    ];
+    const line = document.createElement("div");
+    line.className = "label-line";
+    const left = `${lang} | ${labelStr} | ${translit} | ${meaning} | ${strongs} | ${typ} | ${given} | `;
+    line.appendChild(document.createTextNode(left));
+    const refSpan = document.createElement("span");
+    refSpan.className = "ref-html"; refSpan.innerHTML = refsHTML;
+    line.appendChild(refSpan);
 
-    cells.forEach((val,i)=>{
-      const d = document.createElement("div");
-      d.className = "cell";
-      if (i === 7) d.innerHTML = val; else d.textContent = val;
-      row.appendChild(d);
-    });
-
-    table.appendChild(row);
+    wrap.appendChild(line);
   });
 
-  return table;
+  return wrap;
 }
 
 // ---------- Tabs ----------
@@ -311,7 +306,7 @@ function renderLabelsTable(labs, langFilter, typeFilter){
           c.innerHTML=`Refs: ${linkifyRefs(gRefs(r))}`; card.appendChild(c);
         }
         if(labs.length){
-          card.appendChild(renderLabelsTable(labs, langSel.value, typeSel.value));
+          card.appendChild(renderLabelsPipe(labs, langSel.value, typeSel.value));
         }
         list.appendChild(card);
       });
