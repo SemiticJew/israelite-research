@@ -405,35 +405,260 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
   } catch(err){ errorCallout(list,`Events could not be loaded. ${err}`); count.textContent="0 results"; }
 })();
 
-// ---------- Epochs ----------
+// ---------- Epochs (Numerical Timeline) ----------
 (async function initEpochs() {
-  const list=document.getElementById("epoch-list");
-  const count=document.getElementById("epoch-count");
-  const q=document.getElementById("epoch-q");
+  const list = document.getElementById("epoch-list"); // kept for a11y/future
+  const count = document.getElementById("epoch-count");
+  const q = document.getElementById("epoch-q");
+  const timelineEl = document.getElementById("epoch-timeline");
+  const zoom = document.getElementById("epoch-zoom");
+  const focusSel = document.getElementById("epoch-focus");
+
+  // Parse a date token like "2000 BC", "586", "AD 70"
+  function parseYearToken(tok) {
+    if (!tok) return null;
+    let t = tok.trim().toUpperCase();
+    t = t.replace(/\s+/g, " ");
+    // "AD 30" or "30 AD"
+    let ad = /(^AD\s*\d+|\d+\s*AD$)/.test(t);
+    let bc = /(^\d+\s*BC$|^BC\s*\d+)/.test(t);
+    let numMatch = t.match(/(\d+)/);
+    if (!numMatch) return null;
+    let y = parseInt(numMatch[1], 10);
+    if (bc) y = -y;
+    // If neither AD nor BC explicitly: assume AD unless negative marker provided elsewhere
+    return ad || bc ? y : y; // default AD positive
+  }
+
+  // Parse a span like: "2000–1500 BC", "4 BC–AD 30", "586–538 BC", "AD 70–135"
+  function parseSpan(spanRaw) {
+    if (!spanRaw) return null;
+    let s = spanRaw.replace(/\u2013|\u2014/g, "–"); // normalize dash
+    // handle formats with era only once at end: "586–538 BC"
+    const endEra = (s.match(/\b(BC|AD)\b/i) || [])[1];
+    let parts = s.split(/–|-/).map(p => p.trim());
+    if (parts.length < 1) return null;
+
+    function qualify(p, era) {
+      // If token lacks BC/AD, inherit from group era if present
+      const hasEra = /\b(BC|AD)\b/i.test(p);
+      return hasEra ? p : (era ? `${p} ${era}` : p);
+    }
+
+    if (parts.length === 1) {
+      // Single year or label like "Creation"
+      const y = parseYearToken(qualify(parts[0], endEra));
+      if (y == null) return null;
+      return { start: y, end: y };
+    }
+
+    const p1 = qualify(parts[0], endEra);
+    const p2 = qualify(parts[1], endEra);
+    const y1 = parseYearToken(p1);
+    const y2 = parseYearToken(p2);
+    if (y1 == null || y2 == null) return null;
+
+    // Ensure start <= end numerically (remember BC is negative)
+    const start = Math.min(y1, y2);
+    const end = Math.max(y1, y2);
+    // No year zero: nudge if span crosses 0
+    return { start, end: (start < 0 && end > 0) ? (end) : end };
+  }
+
+  function yearToLabel(y) {
+    if (y < 0) return `${Math.abs(y)} BC`;
+    if (y > 0) return `AD ${y}`;
+    return "0"; // should not occur, but just in case
+  }
+
   try {
     const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
     const rows = parseCSV(text);
-    const gName=getterFor(rows,["epoch","era","period","age","name","label"]);
-    const gSpan=getterFor(rows,["range","datespan","years","span"]);
-    const gRefs=getterFor(rows,["refs","references"]);
-    const gSum=getterFor(rows,["summary","notes","description","abstract"]);
-    const render=()=>{
-      const k=toLower(q.value);
-      const filtered=rows.filter(r=>{
-        const hay=`${gName(r)} ${gSpan(r)} ${gSum(r)}`.toLowerCase();
-        return !k||hay.includes(k);
+
+    const gName = getterFor(rows, ["epoch","era","period","age","name","label"]);
+    const gSpan = getterFor(rows, ["range","datespan","years","span"]);
+    const gRefs = getterFor(rows, ["refs","references"]);
+    const gSum  = getterFor(rows, ["summary","notes","description","abstract"]);
+
+    // Parse epochs with usable spans
+    const epochs = rows.map(r => {
+      const name = gName(r) || "Epoch";
+      const spanStr = gSpan(r);
+      const parsed = parseSpan(spanStr);
+      return parsed ? {
+        name,
+        start: parsed.start,
+        end: parsed.end,
+        refs: gRefs(r),
+        summary: gSum(r),
+        rawSpan: spanStr
+      } : null;
+    }).filter(Boolean);
+
+    // If we have "Creation", try to pin it leftmost if its span is just a point
+    const creationIdx = epochs.findIndex(e => /creation/i.test(e.name));
+    if (creationIdx >= 0) {
+      const c = epochs[creationIdx];
+      if (c.start === c.end) {
+        // give a minimal width so it renders as a dot-ish bar
+        c.end = c.start + 1;
+      }
+    }
+
+    // Compute data bounds
+    const minYear = Math.min(...epochs.map(e => e.start));
+    const maxYear = Math.max(...epochs.map(e => e.end));
+
+    // State
+    let viewMin = minYear;
+    let viewMax = maxYear;
+
+    const recalcView = () => {
+      const mode = focusSel.value;
+      if (mode === "full") {
+        // If you want “Creation to Now”, keep dataset bounds (or clamp to -4000..2025 if you prefer)
+        viewMin = Math.min(minYear, -4000);
+        viewMax = Math.max(maxYear, 2025);
+      } else if (mode === "bc") {
+        viewMin = Math.min(minYear, -4000);
+        viewMax = -1;
+      } else if (mode === "ad") {
+        viewMin = 1;
+        viewMax = Math.max(maxYear, 2025);
+      } else {
+        // auto: fit data snugly
+        viewMin = minYear; viewMax = maxYear;
+      }
+
+      // Apply zoom: 0 = fit, 100 = 4x zoom-in toward center
+      const z = Number(zoom.value) / 100; // 0..1
+      const factor = 1 / (1 + 3*z); // 1 .. 0.25
+      const mid = (viewMin + viewMax) / 2;
+      const half = (viewMax - viewMin) / 2 * factor;
+      viewMin = Math.floor(mid - half);
+      viewMax = Math.ceil(mid + half);
+    };
+
+    function xOf(year) {
+      const span = (viewMax - viewMin) || 1;
+      return ((year - viewMin) / span) * 100; // %
+    }
+
+    function renderTimeline(filteredEpochs) {
+      // Clear
+      timelineEl.innerHTML = "";
+
+      // Ticks
+      const ticks = document.createElement("div");
+      ticks.className = "ticks";
+      const eraBand = document.createElement("div");
+      eraBand.className = "era-band";
+      timelineEl.appendChild(eraBand);
+      timelineEl.appendChild(ticks);
+
+      // Choose tick step based on span width
+      const span = Math.abs(viewMax - viewMin);
+      let step;
+      if (span > 4000) step = 500;
+      else if (span > 2000) step = 250;
+      else if (span > 1000) step = 100;
+      else if (span > 400) step = 50;
+      else if (span > 200) step = 25;
+      else if (span > 80) step = 10;
+      else if (span > 30) step = 5;
+      else step = 1;
+
+      // Align first tick to step
+      const firstTick = Math.ceil(viewMin / step) * step;
+      for (let y = firstTick; y <= viewMax; y += step) {
+        const x = xOf(y);
+        const t = document.createElement("div");
+        t.className = "tick";
+        t.style.left = `${x}%`;
+        t.style.height = (y === 0 ? "28px" : "22px");
+        ticks.appendChild(t);
+
+        const lbl = document.createElement("div");
+        lbl.className = "tick-label";
+        lbl.style.left = `${x}%`;
+        lbl.textContent = y === 0 ? "0" : yearToLabel(y);
+        timelineEl.appendChild(lbl);
+      }
+
+      // Bars
+      const laneHeight = 30; // vertical spacing between bars
+      let laneEnds = []; // track last X-end for each lane to avoid collisions
+
+      filteredEpochs.forEach(ep => {
+        const startX = xOf(ep.start);
+        const endX = xOf(ep.end);
+        const left = Math.max(0, Math.min(100, startX));
+        const width = Math.max(0.7, Math.min(100 - left, endX - startX)); // ensure visible
+
+        // choose a lane (simple greedy)
+        let lane = 0;
+        while (laneEnds[lane] != null && laneEnds[lane] > left) lane++;
+        laneEnds[lane] = left + width;
+
+        const top = 40 + lane * laneHeight;
+
+        const bar = document.createElement("div");
+        bar.className = "epoch-bar";
+        bar.style.left = `${left}%`;
+        bar.style.width = `${width}%`;
+        bar.style.top = `${top}px`;
+
+        const name = document.createElement("span");
+        name.className = "name";
+        name.textContent = ep.name;
+
+        const spanEl = document.createElement("span");
+        spanEl.className = "span";
+        spanEl.textContent = ` ${yearToLabel(ep.start)} – ${yearToLabel(ep.end)}`;
+
+        bar.appendChild(name);
+        bar.appendChild(spanEl);
+
+        // Click → open a small details card under timeline (optional later)
+        bar.title = ep.summary ? ep.summary : (ep.rawSpan || "");
+
+        timelineEl.appendChild(bar);
       });
-      list.innerHTML=""; setCount(count,filtered.length);
-      filtered.slice(0,200).forEach(r=>{
-        const title=gName(r)||"Epoch";
-        const meta=gSpan(r)||"";
-        const teaser=excerpt(gSum(r),220);
-        const cite= gRefs(r) ? `Refs: ${linkifyRefs(gRefs(r))}` : "";
-        list.appendChild(makeCard({title, meta, teaser, citeHTML:cite}));
+    }
+
+    const doRender = () => {
+      recalcView();
+      const k = toLower(q.value);
+      const filtered = epochs.filter(e => {
+        if (!k) return true;
+        const hay = `${e.name} ${e.rawSpan || ""} ${e.summary || ""}`.toLowerCase();
+        return hay.includes(k);
+      });
+      count.textContent = `${filtered.length.toLocaleString()} epoch${filtered.length===1?"":"s"}`;
+      renderTimeline(filtered);
+
+      // Also populate hidden list for a11y/print (optional)
+      list.innerHTML = "";
+      filtered.forEach(e=>{
+        list.appendChild(makeCard({
+          title: e.name,
+          meta: `${yearToLabel(e.start)} – ${yearToLabel(e.end)}`,
+          teaser: excerpt(e.summary, 200),
+          citeHTML: e.refs ? `Refs: ${linkifyRefs(e.refs)}` : ""
+        }));
       });
       rescanXRefs();
     };
-    q.addEventListener("input", debounce(render,120));
-    render();
-  } catch(err){ errorCallout(list,`Epochs could not be loaded. ${err}`); count.textContent="0 results"; }
+
+    // Wire controls
+    q.addEventListener("input", debounce(doRender, 120));
+    zoom.addEventListener("input", doRender);
+    focusSel.addEventListener("change", doRender);
+
+    // Initial
+    doRender();
+  } catch (err) {
+    errorCallout(list, `Epochs could not be loaded. ${err}`);
+    count.textContent = "0 results";
+  }
 })();
