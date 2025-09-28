@@ -42,6 +42,64 @@ function errorCallout(where, msg) {
   const p = document.createElement("p");  p.textContent = msg;
   div.append(h, p); where.innerHTML = ""; where.appendChild(div);
 }
+function labelLang(L){
+  if (L.hebrew_label || L.hebrew_label_transliterated) return "HE";
+  if (L.greek_label  || L.greek_label_transliterated)  return "GR";
+  return "EN";
+}
+function makeLabelDetails(labs, langFilter, typeFilter){
+  const wrap = document.createElement("details");
+  wrap.className = "card-details";
+  const sum = document.createElement("summary");
+  sum.textContent = `Labels (${labs.length})`;
+  wrap.appendChild(sum);
+
+  const table = document.createElement("div");
+  table.className = "label-table";
+  labs.forEach(L=>{
+    const langOK = langFilter === "all" ? true :
+      (langFilter === "en" ? !!L.english_label :
+       langFilter === "he" ? !!(L.hebrew_label || L.hebrew_label_transliterated) :
+       langFilter === "gr" ? !!(L.greek_label  || L.greek_label_transliterated) : true);
+    const typeOK = typeFilter === "all" ? true : (L.label_type === typeFilter);
+    if (!langOK || !typeOK) return;
+
+    const row = document.createElement("div");
+    row.className = "label-row";
+
+    const lang = document.createElement("div"); lang.className = "cell lang"; lang.textContent = labelLang(L);
+    const lbl  = document.createElement("div"); lbl.className  = "cell label";
+    const parts = [];
+    if (L.english_label) parts.push(L.english_label);
+    if (L.hebrew_label)  parts.push(L.hebrew_label);
+    if (L.greek_label)   parts.push(L.greek_label);
+    lbl.textContent = parts.join(" · ");
+
+    const tr   = document.createElement("div"); tr.className = "cell translit";
+    tr.textContent = L.hebrew_label_transliterated || L.greek_label_transliterated || "";
+
+    const mean = document.createElement("div"); mean.className = "cell meaning";
+    mean.textContent = L.hebrew_label_meaning || L.greek_label_meaning || "";
+
+    const str = document.createElement("div"); str.className = "cell strongs";
+    str.textContent = L.hebrew_strongs_number || L.greek_strongs_number || "";
+
+    const typ = document.createElement("div"); typ.className = "cell type";
+    typ.textContent = L.label_type || "";
+
+    const giv = document.createElement("div"); giv.className = "cell given";
+    giv.textContent = (L["label-given_by_god"] || "").toString().toUpperCase() === "Y" ? "Y" : "";
+
+    const ref = document.createElement("div"); ref.className = "cell ref";
+    ref.innerHTML = L.label_reference_id ? linkifyRefs(L.label_reference_id) : "";
+
+    row.append(lang,lbl,tr,mean,str,typ,giv,ref);
+    table.appendChild(row);
+  });
+
+  wrap.appendChild(table);
+  return wrap;
+}
 
 // ---------- CSV loader ----------
 async function fetchCSV(urlLocal, urlCDN) {
@@ -279,20 +337,23 @@ function rescanXRefs() {
           c.innerHTML = `Refs: ${linkifyRefs(gRefs(r))}`; card.appendChild(c);
         }
 
-        if (labs.length) {
-          const bar = document.createElement("div"); bar.className = "meta";
-          const chips = labs.slice(0, 2).map(L =>
-            L.english_label || L.hebrew_label || L.greek_label || L.hebrew_label_transliterated || L.greek_label_transliterated
-          ).filter(Boolean);
-          if (chips.length) bar.textContent = `Labels: ${chips.join(" | ")}${labs.length > 2 ? ` (+${labs.length - 2} more)` : ``}`;
-          card.appendChild(bar);
+        if (labs.length){
+  // summary counts
+  const summaryBar = document.createElement("div"); summaryBar.className = "meta";
+  const enCount = labs.filter(L=>L.english_label).length;
+  const heCount = labs.filter(L=>L.hebrew_label || L.hebrew_label_transliterated).length;
+  const grCount = labs.filter(L=>L.greek_label  || L.greek_label_transliterated).length;
+  const parts = [];
+  if (enCount) parts.push(`EN ${enCount}`);
+  if (heCount) parts.push(`HE ${heCount}`);
+  if (grCount) parts.push(`GR ${grCount}`);
+  summaryBar.textContent = `Labels: ${parts.join(" • ")}`;
+  card.appendChild(summaryBar);
 
-          const firstRef = labs.find(L => L.label_reference_id);
-          if (firstRef) {
-            const c = document.createElement("div"); c.className = "cite";
-            c.innerHTML = `Label ref: ${linkifyRefs(firstRef.label_reference_id)}`; card.appendChild(c);
-          }
-        }
+  // expandable full label details
+  card.appendChild(makeLabelDetails(labs, langSel.value, typeSel.value));
+}
+
 
         list.appendChild(card);
       });
