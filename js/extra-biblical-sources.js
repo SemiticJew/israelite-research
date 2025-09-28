@@ -41,6 +41,11 @@ function errorCallout(where, msg) {
   div.append(h,p); where.innerHTML=""; where.appendChild(div);
 }
 
+// Normalize person IDs so labels still match after YHVH→YHWH edits
+function normalizeId(id){
+  return (id ?? "").toString().trim().replace(/YHVH/gi, "YHWH");
+}
+
 // ---------- CSV loader ----------
 async function fetchCSV(urlLocal, urlCDN) {
   try {
@@ -147,7 +152,7 @@ function rescanXRefs() {
   try { window.XRefHover?.scan?.(); } catch {}
 }
 
-// ---------- Pipe-separated labels ----------
+// ---------- Pipe-separated labels with de-dup + merged refs ----------
 function renderLabelsPipe(labs, langFilter, typeFilter){
   const wrap = document.createElement("div");
   wrap.className = "label-lines";
@@ -157,6 +162,24 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
   header.textContent = "Lng. | Label(s) | Transliteration | Meaning | Strongs | Type | Given | Ref";
   wrap.appendChild(header);
 
+  const langOf = (L) =>
+    (L.hebrew_label || L.hebrew_label_transliterated) ? "HE" :
+    (L.greek_label  || L.greek_label_transliterated)  ? "GR" : "EN";
+
+  const canonKey = (L) => {
+    const lang = langOf(L);
+    const he   = (L.hebrew_label || "").trim();
+    const gr   = (L.greek_label  || "").trim();
+    const tr   = (L.hebrew_label_transliterated || L.greek_label_transliterated || "").trim();
+    const mea  = (L.hebrew_label_meaning || L.greek_label_meaning || "").trim();
+    const str  = (L.hebrew_strongs_number || L.greek_strongs_number || "").trim().toUpperCase();
+    const typ  = (L.label_type || "").trim();
+    const giv  = ((L["label-given_by_god"] || "").toString().toUpperCase() === "Y") ? "Y" : "";
+    return [lang, he, gr, tr, mea, str, typ, giv].join("||");
+  };
+  const splitRefs = (s) => (s||"").split(/[,;]+/).map(x => x.trim()).filter(Boolean);
+
+  const groups = new Map();
   labs.forEach(L=>{
     const langOK = langFilter==="all" ? true :
       (langFilter==="en" ? !!L.english_label :
@@ -165,17 +188,33 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
     const typeOK = typeFilter==="all" ? true : (L.label_type===typeFilter);
     if (!langOK || !typeOK) return;
 
-    const lang = (L.hebrew_label || L.hebrew_label_transliterated) ? "HE"
-               : (L.greek_label  || L.greek_label_transliterated)  ? "GR"
-               : "EN";
+    const key = canonKey(L);
+    const entry = groups.get(key) || { rep: L, refs: new Set() };
+    splitRefs(L.label_reference_id).forEach(r => entry.refs.add(r));
+    groups.set(key, entry);
+  });
 
-    const labelStr = [L.english_label, L.hebrew_label, L.greek_label].filter(Boolean).join(" · ");
-    const translit = L.hebrew_label_transliterated || L.greek_label_transliterated || "";
-    const meaning  = L.hebrew_label_meaning || L.greek_label_meaning || "";
-    const strongs  = L.hebrew_strongs_number || L.greek_strongs_number || "";
-    const typ      = L.label_type || "";
-    const given    = (L["label-given_by_god"]||"").toString().toUpperCase()==="Y"?"Y":"";
-    const refsHTML = L.label_reference_id ? linkifyRefs(L.label_reference_id) : "";
+  const langRank = { HE:0, GR:1, EN:2 };
+  const ordered = [...groups.values()].sort((a,b)=>{
+    const la = (a.rep && (a.rep.hebrew_label || a.rep.hebrew_label_transliterated)) ? "HE"
+             : (a.rep && (a.rep.greek_label  || a.rep.greek_label_transliterated))  ? "GR" : "EN";
+    const lb = (b.rep && (b.rep.hebrew_label || b.rep.hebrew_label_transliterated)) ? "HE"
+             : (b.rep && (b.rep.greek_label  || b.rep.greek_label_transliterated))  ? "GR" : "EN";
+    return (langRank[la] ?? 9) - (langRank[lb] ?? 9);
+  });
+
+  ordered.forEach(({rep, refs})=>{
+    const lang = (rep.hebrew_label || rep.hebrew_label_transliterated) ? "HE"
+               : (rep.greek_label  || rep.greek_label_transliterated)  ? "GR" : "EN";
+    const labelStr = [rep.english_label, rep.hebrew_label, rep.greek_label].filter(Boolean).join(" · ");
+    const translit = rep.hebrew_label_transliterated || rep.greek_label_transliterated || "";
+    const meaning  = rep.hebrew_label_meaning || rep.greek_label_meaning || "";
+    const strongs  = rep.hebrew_strongs_number || rep.greek_strongs_number || "";
+    const typ      = rep.label_type || "";
+    const given    = ((rep["label-given_by_god"] || "").toString().toUpperCase() === "Y") ? "Y" : "";
+
+    const refsJoined = Array.from(refs).join("; ");
+    const refsHTML   = refsJoined ? linkifyRefs(refsJoined) : "";
 
     const line = document.createElement("div");
     line.className = "label-line";
@@ -184,7 +223,6 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
     const refSpan = document.createElement("span");
     refSpan.className = "ref-html"; refSpan.innerHTML = refsHTML;
     line.appendChild(refSpan);
-
     wrap.appendChild(line);
   });
 
@@ -266,7 +304,7 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
 
     const labelsById=new Map(); const labelTypes=new Set();
     labelRows.forEach(L=>{
-      const pid=L["person_id"];
+      const pid=normalizeId(L["person_id"]);
       if(!pid) return;
       if(!labelsById.has(pid)) labelsById.set(pid,[]);
       labelsById.get(pid).push(L);
@@ -280,7 +318,7 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
       const k=toLower(q.value), role=roleSel.value, epoch=epochSel.value, lang=langSel.value, type=typeSel.value;
       const filtered=rows.filter(r=>{
         const hay=`${gName(r)} ${gRole(r)} ${gRefs(r)} ${gSum(r)}`.toLowerCase();
-        const pid=gId(r); const labs=labelsById.get(pid)||[];
+        const pid=normalizeId(gId(r)); const labs=labelsById.get(pid)||[];
         const labelHay=labs.map(L=>`${L.english_label||""} ${L.hebrew_label||""} ${L.greek_label||""}`).join(" ").toLowerCase();
         const okK=!k||(hay.includes(k)||labelHay.includes(k));
         const okR=role==="all"||gRole(r)===role;
@@ -296,7 +334,7 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
 
       list.innerHTML=""; setCount(count,filtered.length);
       filtered.slice(0,200).forEach(r=>{
-        const pid=gId(r); const labs=labelsById.get(pid)||[];
+        const pid=normalizeId(gId(r)); const labs=labelsById.get(pid)||[];
         const title=gName(r)||"Unnamed";
         const meta=[gRole(r),gEpoch(r)].filter(Boolean).join(" • ");
         const teaser=excerpt(gSum(r),220);
