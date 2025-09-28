@@ -1,5 +1,5 @@
 // /israelite-research/js/extra-biblical-sources.js
-// Robust scholarly module for Extra-Biblical Sources page
+// Scholarly module for Extra-Biblical Sources page
 
 const DATA = {
   chron: "/israelite-research/data/extra-biblical/Ussher-AnnalsOfTheWorld.csv",
@@ -42,64 +42,6 @@ function errorCallout(where, msg) {
   const p = document.createElement("p");  p.textContent = msg;
   div.append(h, p); where.innerHTML = ""; where.appendChild(div);
 }
-function labelLang(L){
-  if (L.hebrew_label || L.hebrew_label_transliterated) return "HE";
-  if (L.greek_label  || L.greek_label_transliterated)  return "GR";
-  return "EN";
-}
-function makeLabelDetails(labs, langFilter, typeFilter){
-  const wrap = document.createElement("details");
-  wrap.className = "card-details";
-  const sum = document.createElement("summary");
-  sum.textContent = `Labels (${labs.length})`;
-  wrap.appendChild(sum);
-
-  const table = document.createElement("div");
-  table.className = "label-table";
-  labs.forEach(L=>{
-    const langOK = langFilter === "all" ? true :
-      (langFilter === "en" ? !!L.english_label :
-       langFilter === "he" ? !!(L.hebrew_label || L.hebrew_label_transliterated) :
-       langFilter === "gr" ? !!(L.greek_label  || L.greek_label_transliterated) : true);
-    const typeOK = typeFilter === "all" ? true : (L.label_type === typeFilter);
-    if (!langOK || !typeOK) return;
-
-    const row = document.createElement("div");
-    row.className = "label-row";
-
-    const lang = document.createElement("div"); lang.className = "cell lang"; lang.textContent = labelLang(L);
-    const lbl  = document.createElement("div"); lbl.className  = "cell label";
-    const parts = [];
-    if (L.english_label) parts.push(L.english_label);
-    if (L.hebrew_label)  parts.push(L.hebrew_label);
-    if (L.greek_label)   parts.push(L.greek_label);
-    lbl.textContent = parts.join(" · ");
-
-    const tr   = document.createElement("div"); tr.className = "cell translit";
-    tr.textContent = L.hebrew_label_transliterated || L.greek_label_transliterated || "";
-
-    const mean = document.createElement("div"); mean.className = "cell meaning";
-    mean.textContent = L.hebrew_label_meaning || L.greek_label_meaning || "";
-
-    const str = document.createElement("div"); str.className = "cell strongs";
-    str.textContent = L.hebrew_strongs_number || L.greek_strongs_number || "";
-
-    const typ = document.createElement("div"); typ.className = "cell type";
-    typ.textContent = L.label_type || "";
-
-    const giv = document.createElement("div"); giv.className = "cell given";
-    giv.textContent = (L["label-given_by_god"] || "").toString().toUpperCase() === "Y" ? "Y" : "";
-
-    const ref = document.createElement("div"); ref.className = "cell ref";
-    ref.innerHTML = L.label_reference_id ? linkifyRefs(L.label_reference_id) : "";
-
-    row.append(lang,lbl,tr,mean,str,typ,giv,ref);
-    table.appendChild(row);
-  });
-
-  wrap.appendChild(table);
-  return wrap;
-}
 
 // ---------- CSV loader ----------
 async function fetchCSV(urlLocal, urlCDN) {
@@ -114,11 +56,10 @@ async function fetchCSV(urlLocal, urlCDN) {
   }
 }
 function parseCSV(text) {
-  const out = [];
-  if (!text) return out;
+  if (!text) return [];
   const norm = text.replace(/\r\n/g, "\n");
   const lines = norm.split("\n");
-  if (!lines.length) return out;
+  if (!lines.length) return [];
 
   const split = (line) => {
     const a = []; let f = "", q = false;
@@ -213,6 +154,55 @@ function rescanXRefs() {
   try { window.XRefHover?.scan?.(); } catch {}
 }
 
+// ---------- Inline evidence grid for labels ----------
+function renderLabelsTable(labs, langFilter, typeFilter){
+  const table = document.createElement("div");
+  table.className = "label-table";
+
+  // header
+  const head = document.createElement("div"); head.className = "label-row label-head";
+  const H = t => { const d=document.createElement("div"); d.className="cell"; d.textContent=t; return d; };
+  head.append(H("Lang"), H("Label(s)"), H("Translit."), H("Meaning"), H("Strongs"), H("Type"), H("Given"), H("Ref"));
+  table.appendChild(head);
+
+  labs.forEach(L=>{
+    const byLang = langFilter === "all" ? true :
+      (langFilter === "en" ? !!L.english_label :
+       langFilter === "he" ? !!(L.hebrew_label || L.hebrew_label_transliterated) :
+       langFilter === "gr" ? !!(L.greek_label  || L.greek_label_transliterated) : true);
+    const byType = typeFilter === "all" ? true : (L.label_type === typeFilter);
+    if (!byLang || !byType) return;
+
+    const row = document.createElement("div");
+    row.className = "label-row";
+
+    const lang = (L.hebrew_label || L.hebrew_label_transliterated) ? "HE" :
+                 (L.greek_label  || L.greek_label_transliterated)  ? "GR" : "EN";
+
+    const cells = [
+      lang,
+      [L.english_label, L.hebrew_label, L.greek_label].filter(Boolean).join(" · "),
+      L.hebrew_label_transliterated || L.greek_label_transliterated || "",
+      L.hebrew_label_meaning || L.greek_label_meaning || "",
+      L.hebrew_strongs_number || L.greek_strongs_number || "",
+      L.label_type || "",
+      (L["label-given_by_god"] || "").toString().toUpperCase() === "Y" ? "Y" : "",
+      L.label_reference_id ? linkifyRefs(L.label_reference_id) : ""
+    ];
+
+    cells.forEach((val,i)=>{
+      const d = document.createElement("div");
+      d.className = "cell";
+      if (i === 7) d.innerHTML = val; else d.textContent = val;
+      row.appendChild(d);
+    });
+
+    table.appendChild(row);
+  });
+
+  return table;
+}
+
 // ---------- Tabs ----------
 (function initTabs() {
   const tabs = Array.from(document.querySelectorAll(".tab-btn"));
@@ -236,47 +226,43 @@ function rescanXRefs() {
   try {
     const text = await fetchCSV(DATA.chron, GH_RAW.chron);
     const rows = parseCSV(text);
-    const gEvent = getterFor(rows, ["event", "narrative", "text", "description"]);
-    const gYear  = getterFor(rows, ["gc_year", "year"]);
-    const gEra   = getterFor(rows, ["gc_bc_ad", "era"]);
-    const gAM    = getterFor(rows, ["am_year", "am"]);
-    const gPara  = getterFor(rows, ["paragraph_nr", "paragraph", "para"]);
+    const gEvent = getterFor(rows, ["event","narrative","text"]);
+    const gYear  = getterFor(rows, ["gc_year","year"]);
+    const gEra   = getterFor(rows, ["gc_bc_ad","era"]);
+    const gAM    = getterFor(rows, ["am_year"]);
+    const gPara  = getterFor(rows, ["paragraph_nr"]);
 
     const render = () => {
       const k = toLower(q.value); const era = eraSel.value;
-      const filtered = rows.filter(r => {
-        const eraOk = era === "all" ? true : (toLower(gEra(r)) === toLower(era));
-        const hay = `${gEvent(r)} ${gYear(r)} ${gAM(r)} ${gPara(r)}`.toLowerCase();
-        return eraOk && (!k || hay.includes(k));
+      const filtered = rows.filter(r=>{
+        const eraOk = era==="all"?true:(toLower(gEra(r))===toLower(era));
+        const hay=`${gEvent(r)} ${gYear(r)} ${gAM(r)} ${gPara(r)}`.toLowerCase();
+        return eraOk && (!k||hay.includes(k));
       });
-      list.innerHTML = ""; setCount(count, filtered.length);
-      filtered.slice(0, 200).forEach(r => {
-        const title = `${gEra(r)} ${gYear(r)} — AM ${gAM(r)}`.trim();
-        const teaser = excerpt(gEvent(r), 220);
-        const citeHTML = linkifyRefs(`Ussher, Annals (AM ${gAM(r) || "?"}, §${gPara(r) || "?"})`);
-        list.appendChild(makeCard({ title, meta: null, teaser, citeHTML }));
+      list.innerHTML=""; setCount(count,filtered.length);
+      filtered.slice(0,200).forEach(r=>{
+        const title=`${gEra(r)} ${gYear(r)} — AM ${gAM(r)}`.trim();
+        const teaser=excerpt(gEvent(r),220);
+        const citeHTML=linkifyRefs(`Ussher, Annals (AM ${gAM(r)||"?"}, §${gPara(r)||"?"})`);
+        list.appendChild(makeCard({title, meta:null, teaser, citeHTML}));
       });
       rescanXRefs();
     };
-
-    q.addEventListener("input", debounce(render, 120));
+    q.addEventListener("input", debounce(render,120));
     eraSel.addEventListener("change", render);
     render();
-  } catch (err) {
-    errorCallout(list, `Chronology data could not be loaded. ${err}`);
-    count.textContent = "0 results";
-  }
+  } catch(err){ errorCallout(list,`Chronology data could not be loaded. ${err}`); count.textContent="0 results"; }
 })();
 
-// ---------- Persons (with Labels) ----------
+// ---------- Persons ----------
 (async function initPersons() {
-  const list = document.getElementById("person-list");
-  const count = document.getElementById("person-count");
-  const q = document.getElementById("person-q");
-  const roleSel = document.getElementById("person-role");
-  const epochSel = document.getElementById("person-epoch");
-  const langSel = document.getElementById("person-label-lang");
-  const typeSel = document.getElementById("person-label-type");
+  const list=document.getElementById("person-list");
+  const count=document.getElementById("person-count");
+  const q=document.getElementById("person-q");
+  const roleSel=document.getElementById("person-role");
+  const epochSel=document.getElementById("person-epoch");
+  const langSel=document.getElementById("person-label-lang");
+  const typeSel=document.getElementById("person-label-type");
 
   try {
     const text = await fetchCSV(DATA.persons, GH_RAW.persons);
@@ -284,183 +270,61 @@ function rescanXRefs() {
     const text2 = await fetchCSV(DATA.personLabels, GH_RAW.personLabels);
     const labelRows = parseCSV(text2);
 
-    const gId    = getterFor(rows, ["person_id", "id"]);
-    const gName  = getterFor(rows, ["name", "person", "fullname", "label"]);
-    const gRole  = getterFor(rows, ["role", "occupation", "office", "title", "function"]);
-    const gEpoch = getterFor(rows, ["epoch", "era", "period"]);
-    const gRefs  = getterFor(rows, ["refs", "references", "citations", "sources"]);
-    const gSum   = getterFor(rows, ["summary", "notes", "description", "abstract"]);
+    const gId    = getterFor(rows,["person_id","id"]);
+    const gName  = getterFor(rows,["name"]);
+    const gRole  = getterFor(rows,["role"]);
+    const gEpoch = getterFor(rows,["epoch","era"]);
+    const gRefs  = getterFor(rows,["refs","references"]);
+    const gSum   = getterFor(rows,["summary","notes"]);
 
-    const labelsById = new Map(); const labelTypes = new Set();
-    labelRows.forEach(L => {
-      const pid = L["person_id"];
-      if (!pid) return;
-      if (!labelsById.has(pid)) labelsById.set(pid, []);
+    const labelsById=new Map(); const labelTypes=new Set();
+    labelRows.forEach(L=>{
+      const pid=L["person_id"];
+      if(!pid) return;
+      if(!labelsById.has(pid)) labelsById.set(pid,[]);
       labelsById.get(pid).push(L);
-      if (L["label_type"]) labelTypes.add(L["label_type"]);
+      if(L["label_type"]) labelTypes.add(L["label_type"]);
     });
-    Array.from(labelTypes).sort().forEach(t => {
-      const o = document.createElement("option"); o.value = o.textContent = t; typeSel.appendChild(o);
+    Array.from(labelTypes).sort().forEach(t=>{
+      const o=document.createElement("option"); o.value=o.textContent=t; typeSel.appendChild(o);
     });
 
-    const render = () => {
-      const k = toLower(q.value), role = roleSel.value, epoch = epochSel.value, lang = langSel.value, type = typeSel.value;
-
-      const filtered = rows.filter(r => {
-        const hay = `${gName(r)} ${gRole(r)} ${gRefs(r)} ${gSum(r)}`.toLowerCase();
-        const pid = gId(r); const labs = labelsById.get(pid) || [];
-        const labelHay = labs.map(L => `${L.english_label || ""} ${L.hebrew_label || ""} ${L.greek_label || ""} ${L.hebrew_label_transliterated || ""} ${L.greek_label_transliterated || ""}`).join(" ").toLowerCase();
-
-        const okK = !k || hay.includes(k) || labelHay.includes(k);
-        const okR = role === "all" || gRole(r) === role;
-        const okE = epoch === "all" || gEpoch(r) === epoch;
-        const okT = type === "all" || labs.some(L => L.label_type === type);
-        const okL = lang === "all" || labs.some(L => {
-          if (lang === "en") return !!L.english_label;
-          if (lang === "he") return !!(L.hebrew_label || L.hebrew_label_transliterated);
-          if (lang === "gr") return !!(L.greek_label || L.greek_label_transliterated);
+    const render=()=>{
+      const k=toLower(q.value), role=roleSel.value, epoch=epochSel.value, lang=langSel.value, type=typeSel.value;
+      const filtered=rows.filter(r=>{
+        const hay=`${gName(r)} ${gRole(r)} ${gRefs(r)} ${gSum(r)}`.toLowerCase();
+        const pid=gId(r); const labs=labelsById.get(pid)||[];
+        const labelHay=labs.map(L=>`${L.english_label||""} ${L.hebrew_label||""} ${L.greek_label||""}`).join(" ").toLowerCase();
+        const okK=!k||(hay.includes(k)||labelHay.includes(k));
+        const okR=role==="all"||gRole(r)===role;
+        const okE=epoch==="all"||gEpoch(r)===epoch;
+        const okT=type==="all"||labs.some(L=>L.label_type===type);
+        const okL=lang==="all"||labs.some(L=>{
+          if(lang==="en") return L.english_label;
+          if(lang==="he") return L.hebrew_label||L.hebrew_label_transliterated;
+          if(lang==="gr") return L.greek_label||L.greek_label_transliterated;
         });
-
-        return okK && okR && okE && okT && okL;
+        return okK&&okR&&okE&&okT&&okL;
       });
 
-      list.innerHTML = ""; setCount(count, filtered.length);
-      filtered.slice(0, 200).forEach(r => {
-        const pid = gId(r); const labs = labelsById.get(pid) || [];
-        const title = gName(r) || "Unnamed";
-        const meta = [gRole(r), gEpoch(r)].filter(Boolean).join(" • ");
-        const teaser = excerpt(gSum(r), 220);
-        const card = makeCard({ title, meta, teaser, citeHTML: null });
-
-        if (gRefs(r)) {
-          const c = document.createElement("div"); c.className = "cite";
-          c.innerHTML = `Refs: ${linkifyRefs(gRefs(r))}`; card.appendChild(c);
+      list.innerHTML=""; setCount(count,filtered.length);
+      filtered.slice(0,200).forEach(r=>{
+        const pid=gId(r); const labs=labelsById.get(pid)||[];
+        const title=gName(r)||"Unnamed";
+        const meta=[gRole(r),gEpoch(r)].filter(Boolean).join(" • ");
+        const teaser=excerpt(gSum(r),220);
+        const card=makeCard({title, meta, teaser, citeHTML:null});
+        if(gRefs(r)){
+          const c=document.createElement("div"); c.className="cite";
+          c.innerHTML=`Refs: ${linkifyRefs(gRefs(r))}`; card.appendChild(c);
         }
-
-        if (labs.length){
-  // summary counts
-  const summaryBar = document.createElement("div"); summaryBar.className = "meta";
-  const enCount = labs.filter(L=>L.english_label).length;
-  const heCount = labs.filter(L=>L.hebrew_label || L.hebrew_label_transliterated).length;
-  const grCount = labs.filter(L=>L.greek_label  || L.greek_label_transliterated).length;
-  const parts = [];
-  if (enCount) parts.push(`EN ${enCount}`);
-  if (heCount) parts.push(`HE ${heCount}`);
-  if (grCount) parts.push(`GR ${grCount}`);
-  summaryBar.textContent = `Labels: ${parts.join(" • ")}`;
-  card.appendChild(summaryBar);
-
-  // expandable full label details
-  card.appendChild(makeLabelDetails(labs, langSel.value, typeSel.value));
-}
-
-
+        if(labs.length){
+          card.appendChild(renderLabelsTable(labs, langSel.value, typeSel.value));
+        }
         list.appendChild(card);
       });
       rescanXRefs();
     };
 
-    q.addEventListener("input", debounce(render, 120));
+    q.addEventListener("input", debounce(render,120));
     roleSel.addEventListener("change", render);
-    epochSel.addEventListener("change", render);
-    langSel.addEventListener("change", render);
-    typeSel.addEventListener("change", render);
-    render();
-  } catch (err) {
-    errorCallout(list, `Persons could not be loaded. ${err}`);
-    count.textContent = "0 results";
-  }
-})();
-
-// ---------- Events ----------
-(async function initEvents() {
-  const list = document.getElementById("event-list");
-  const count = document.getElementById("event-count");
-  const q = document.getElementById("event-q");
-  const typeSel = document.getElementById("event-type");
-  const eraSel = document.getElementById("event-era");
-  try {
-    const text = await fetchCSV(DATA.events, GH_RAW.events);
-    const rows = parseCSV(text);
-
-    const gTitle = getterFor(rows, ["title", "event", "name", "label"]);
-    const gType  = getterFor(rows, ["type", "category", "class"]);
-    const gDate  = getterFor(rows, ["date", "year", "gc_year"]);
-    const gEra   = getterFor(rows, ["era", "gc_bc_ad"]);
-    const gLoc   = getterFor(rows, ["location", "place", "region", "site"]);
-    const gRefs  = getterFor(rows, ["refs", "references", "citations", "sources"]);
-    const gSum   = getterFor(rows, ["summary", "notes", "description", "abstract"]);
-
-    const types = new Set(); rows.forEach(r => { const t = gType(r); if (t) types.add(t); });
-    Array.from(types).sort().forEach(t => { const o = document.createElement("option"); o.value = o.textContent = t; typeSel.appendChild(o); });
-
-    const render = () => {
-      const k = toLower(q.value), typ = typeSel.value, era = eraSel.value;
-      const filtered = rows.filter(r => {
-        const hay = `${gTitle(r)} ${gSum(r)} ${gRefs(r)} ${gLoc(r)}`.toLowerCase();
-        const okK = !k || hay.includes(k);
-        const okT = typ === "all" || gType(r) === typ;
-        const okE = era === "all" || toLower(gEra(r)) === toLower(era);
-        return okK && okT && okE;
-      });
-
-      list.innerHTML = ""; setCount(count, filtered.length);
-      filtered.slice(0, 200).forEach(r => {
-        const title  = gTitle(r) || "Untitled event";
-        const meta   = [gDate(r), gLoc(r), gType(r)].filter(Boolean).join(" • ");
-        const teaser = excerpt(gSum(r), 220);
-        const cite   = gRefs(r) ? `Refs: ${linkifyRefs(gRefs(r))}` : "";
-        list.appendChild(makeCard({ title, meta, teaser, citeHTML: cite }));
-      });
-      rescanXRefs();
-    };
-
-    q.addEventListener("input", debounce(render, 120));
-    typeSel.addEventListener("change", render);
-    eraSel.addEventListener("change", render);
-    render();
-  } catch (err) {
-    errorCallout(list, `Events could not be loaded. ${err}`);
-    count.textContent = "0 results";
-  }
-})();
-
-// ---------- Epochs ----------
-(async function initEpochs() {
-  const list = document.getElementById("epoch-list");
-  const count = document.getElementById("epoch-count");
-  const q = document.getElementById("epoch-q");
-  try {
-    const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
-    const rows = parseCSV(text);
-
-    const gName = getterFor(rows, ["epoch", "era", "period", "age", "name", "label"]);
-    const gSpan = getterFor(rows, ["range", "datespan", "years", "span"]);
-    const gRefs = getterFor(rows, ["refs", "references", "citations", "sources"]);
-    const gSum  = getterFor(rows, ["summary", "notes", "description", "abstract"]);
-
-    const render = () => {
-      const k = toLower(q.value);
-      const filtered = rows.filter(r => {
-        const hay = `${gName(r)} ${gSpan(r)} ${gSum(r)}`.toLowerCase();
-        return !k || hay.includes(k);
-      });
-
-      list.innerHTML = ""; setCount(count, filtered.length);
-      filtered.slice(0, 200).forEach(r => {
-        const title  = gName(r) || "Epoch";
-        const meta   = gSpan(r) || "";
-        const teaser = excerpt(gSum(r), 220);
-        const cite   = gRefs(r) ? `Refs: ${linkifyRefs(gRefs(r))}` : "";
-        list.appendChild(makeCard({ title, meta, teaser, citeHTML: cite }));
-      });
-      rescanXRefs();
-    };
-
-    q.addEventListener("input", debounce(render, 120));
-    render();
-  } catch (err) {
-    errorCallout(list, `Epochs could not be loaded. ${err}`);
-    count.textContent = "0 results";
-  }
-})();
