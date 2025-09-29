@@ -57,6 +57,9 @@
   }
   const ctx = getCtx();
 
+  // 3a) Strong's: pick language set by canon (OT=Hebrew, NT=Greek, Apocrypha=mixed)
+  const STRONGS_LANG = (ctx.canon === 'tanakh') ? 'he' : (ctx.canon === 'newtestament' ? 'gr' : 'auto');
+
   const DATA_ROOT = '/israelite-research/data';
   const BOOKS_JSON    = (canon)        => `${DATA_ROOT}/${canon}/books.json`;
   const CHAPTER_JSON  = (canon,b,c)    => `${DATA_ROOT}/${canon}/${b}/${c}.json`;
@@ -274,14 +277,33 @@
 
       const pST = document.createElement('div');
       pST.className = 'v-panel st';
+
+      // 3b) Strong's panel content (use v.s codes; render inline entries)
       if (Array.isArray(v.s) && v.s.length){
         const seen = new Set();
-        const parts = [];
+        const codes = [];
         v.s.forEach(code=>{
-          if (!code || seen.has(code)) return; seen.add(code);
-          parts.push(`<span class="badge" data-strong="${esc(code)}">${esc(code)}</span>`);
+          if (!code) return;
+          const up = String(code).toUpperCase();
+          if (seen.has(up)) return; seen.add(up);
+          codes.push(up);
         });
-        pST.innerHTML = parts.length ? `<div>${parts.join(' ')}</div>` : '<div class="muted">No Strong’s for this verse.</div>';
+
+        if (!codes.length){
+          pST.innerHTML = '<div class="muted">No Strong’s for this verse.</div>';
+        } else {
+          const chips = codes.map(c=>`<span class="badge" data-strong="${esc(c)}">${esc(c)}</span>`).join(' ');
+          const items = codes.map(c=>{
+            const e = window.Strongs?.get(c);
+            return e ? window.Strongs.renderRow(e)
+                     : `<div class="strongs-item"><div class="head"><span class="code">${esc(c)}</span><span class="gloss" style="color:#556">definition not found</span></div></div>`;
+          }).join('');
+          pST.innerHTML = `
+            <div style="margin-bottom:.35rem">${chips}</div>
+            <div class="strongs-list">${items}</div>
+          `;
+          window.Strongs?._rescan?.();
+        }
       } else {
         pST.innerHTML = '<div class="muted">No Strong’s for this verse.</div>';
       }
@@ -485,6 +507,10 @@
     wireDictionary();
 
     await loadXrefs();
+
+    // Preload Strong's so verse Strong's panels can render rich immediately
+    try { await window.Strongs?.load(STRONGS_LANG); } catch {}
+
     await loadChapter();
   })();
 

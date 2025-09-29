@@ -3812,3 +3812,16 @@ hr{border:0;border-top:1px solid var(--border)}
   background: #054A91;
   color: #fff;
 }
+/* Canon: Strong's panel */
+.v-panel.st .strongs-list{display:flex; flex-direction:column; gap:.35rem}
+.v-panel.st .strongs-item{border:1px solid var(--sky); background:#fff; border-radius:8px; padding:.45rem .55rem}
+.v-panel.st .strongs-item .head{display:flex; flex-wrap:wrap; gap:.45rem; align-items:baseline}
+.v-panel.st .strongs-item .code{font-weight:800; color:var(--brand)}
+.v-panel.st .strongs-item .lemma{font-weight:700}
+.v-panel.st .strongs-item .tr{color:#556}
+.v-panel.st .strongs-item .pos{color:#556}
+.v-panel.st .strongs-item .gloss{color:#334}
+.v-panel.st .strongs-item details.more{margin-top:.25rem}
+.v-panel.st .strongs-item .defs{margin:.25rem 0 .35rem .95rem}
+.v-panel.st .strongs-item .refs{font-size:.9rem; color:#556}
+.badge{display:inline-block; padding:.1rem .4rem; border:1px solid var(--sky); border-radius:999px; font-size:.8rem; background:#fff}
