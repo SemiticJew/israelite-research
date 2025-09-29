@@ -414,7 +414,10 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
   const zoom = document.getElementById("epoch-zoom");
   const focusSel = document.getElementById("epoch-focus");
 
-  // Fallback BC/AD parser (kept for rows that might have text spans)
+  // Comfortable default zoom (less scrunch)
+  if (zoom) zoom.value = "30";
+
+  // Fallback BC/AD parser (for any textual rows)
   function parseYearToken(tok) {
     if (!tok) return null;
     let t = tok.trim().toUpperCase().replace(/\s+/g, " ");
@@ -440,7 +443,7 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
     const y1 = parseYearToken(p1), y2 = parseYearToken(p2);
     if (y1 == null || y2 == null) return null;
     const start = Math.min(y1, y2), end = Math.max(y1, y2);
-    return { start, end: (start < 0 && end > 0) ? end : end };
+    return { start, end };
   }
   const yearToLabelBCAD = (y) => (y < 0 ? `${Math.abs(y)} BC` : y > 0 ? `AD ${y}` : "0");
 
@@ -448,84 +451,63 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
     const text = await fetchCSV(DATA.epochs, GH_RAW.epochs);
     const rows = parseCSV(text);
 
-    // Support your actual headers:
-    // epoch_id, epoch_name, epoch_description, epoch_type, person_id,
-    // start_year_ah, end_year_ah, period_length, ... refs/notes
-    const gName  = getterFor(rows, ["epoch_name","epoch","era","period","age","name","label"]);
-    const gDesc  = getterFor(rows, ["epoch_description","summary","notes","description","abstract"]);
+    // Your actual headers:
+    const gName    = getterFor(rows, ["epoch_name","epoch","era","period","age","name","label"]);
+    const gDesc    = getterFor(rows, ["epoch_description","summary","notes","description","abstract"]);
     const gStartAH = getterFor(rows, ["start_year_ah","start_ah","start_year_am","start_am"]);
     const gEndAH   = getterFor(rows, ["end_year_ah","end_ah","end_year_am","end_am"]);
     const gLen     = getterFor(rows, ["period_length","length_years"]);
     const gRefs    = getterFor(rows, ["refs","references","start_year_reference_id","end_year_reference_id"]);
-
-    // Also allow textual range fallback (range/datespan/years/span)
     const gSpanTxt = getterFor(rows, ["range","datespan","years","span"]);
 
-    // Build epochs array with AH-first strategy, fallback to BC/AD spans
     const epochs = [];
     rows.forEach(r => {
       const name = gName(r) || "Epoch";
       const desc = gDesc(r);
       const refs = gRefs(r);
 
-      // AH first
       let startAH = parseInt((gStartAH(r) || "").toString().trim(), 10);
       let endAH   = parseInt((gEndAH(r)   || "").toString().trim(), 10);
       let len     = parseInt((gLen(r)     || "").toString().trim(), 10);
 
       if (!isNaN(startAH)) {
-        if (isNaN(endAH)) {
-          // If no end year, try to infer from period_length; otherwise give a minimal width
-          endAH = !isNaN(len) ? (startAH + Math.max(1, len)) : (startAH + 1);
-        }
-        epochs.push({
-          name, summary: desc, refs,
-          mode: "AH",
-          start: startAH, end: endAH,
-          rawSpan: `${startAH}–${endAH} AH`
-        });
+        if (isNaN(endAH)) endAH = !isNaN(len) ? (startAH + Math.max(1, len)) : (startAH + 1);
+        epochs.push({ name, summary: desc, refs, mode: "AH", start: startAH, end: endAH, rawSpan: `${startAH}–${endAH} AH` });
         return;
       }
 
-      // Fallback: parse BC/AD span text if present
       const spanParsed = parseSpan(gSpanTxt(r));
       if (spanParsed) {
-        epochs.push({
-          name, summary: desc, refs,
-          mode: "BCAD",
-          start: spanParsed.start, end: spanParsed.end,
-          rawSpan: gSpanTxt(r) || ""
-        });
+        epochs.push({ name, summary: desc, refs, mode: "BCAD", start: spanParsed.start, end: spanParsed.end, rawSpan: gSpanTxt(r) || "" });
       }
     });
 
     if (!epochs.length) {
       errorCallout(timelineEl, "No epoch rows contained usable AH or BC/AD dates.");
-      count.textContent = "0 results";
+      if (count) count.textContent = "0 results";
       return;
     }
 
-    // Determine mode: if majority are AH, show AH axis; else BC/AD
+    // AH vs BC/AD mode (majority wins)
     const ahCount = epochs.filter(e => e.mode === "AH").length;
     const useAH = ahCount >= (epochs.length - ahCount);
 
-    // If "Creation" point is zero-width, widen slightly
+    // Widen a single-point "Creation"
     const creationIdx = epochs.findIndex(e => /creation/i.test(e.name));
     if (creationIdx >= 0) {
       const c = epochs[creationIdx];
       if (c.start === c.end) c.end = c.start + 1;
     }
 
-    // bounds
     const minYear = Math.min(...epochs.map(e => e.start));
     const maxYear = Math.max(...epochs.map(e => e.end));
 
     // state & helpers
     let viewMin = minYear, viewMax = maxYear;
+
     const recalcView = () => {
-      const mode = focusSel.value;
+      const mode = focusSel?.value || "auto";
       if (useAH) {
-        // For AH we ignore bc/ad options except "full" and "auto"
         if (mode === "full") { viewMin = Math.min(minYear, 1); viewMax = Math.max(maxYear, minYear + 100); }
         else { viewMin = minYear; viewMax = maxYear; }
       } else {
@@ -534,38 +516,37 @@ function renderLabelsPipe(labs, langFilter, typeFilter){
         else if (mode === "ad") { viewMin = 1; viewMax = Math.max(maxYear, 2025); }
         else { viewMin = minYear; viewMax = maxYear; }
       }
-      const z = Number(zoom.value) / 30; // 0..1
+      const z = Number(zoom?.value || 0) / 100; // 0..1
       const factor = 1 / (1 + 3*z); // zoom in
       const mid = (viewMin + viewMax) / 2;
       const half = (viewMax - viewMin) / 2 * factor;
       viewMin = Math.floor(mid - half);
       viewMax = Math.ceil(mid + half);
     };
+
     const xOf = (year) => (((year - viewMin) / ((viewMax - viewMin) || 1)) * 100);
 
     function renderTimeline(filtered) {
       timelineEl.innerHTML = "";
 
-      // era band + ticks
+      // Era band + ticks
       const ticks = document.createElement("div"); ticks.className = "ticks";
       const eraBand = document.createElement("div"); eraBand.className = "era-band";
       timelineEl.appendChild(eraBand); timelineEl.appendChild(ticks);
 
-      // tick step
+      // Softer tick density
       const span = Math.abs(viewMax - viewMin);
       let step;
       if (span > 6000) step = 1000;
-else if (span > 3000) step = 500;
-else if (span > 1500) step = 250;
-else if (span > 700)  step = 100;
-else if (span > 300)  step = 50;
-else if (span > 120)  step = 25;
-else if (span > 60)   step = 10;
-else if (span > 25)   step = 5;
-else step = 1;
+      else if (span > 3000) step = 500;
+      else if (span > 1500) step = 250;
+      else if (span > 700)  step = 100;
+      else if (span > 300)  step = 50;
+      else if (span > 120)  step = 25;
+      else if (span > 60)   step = 10;
+      else if (span > 25)   step = 5;
+      else step = 1;
 
-
-      // labels
       const firstTick = Math.ceil(viewMin / step) * step;
       for (let y = firstTick; y <= viewMax; y += step) {
         const x = xOf(y);
@@ -582,16 +563,13 @@ else step = 1;
         timelineEl.appendChild(lbl);
       }
 
-      // lay out bars (lanes to avoid overlap)
-      const laneHeight = 40; let laneEnds = [];
+      // Bars with lane packing
+      const laneHeight = 40;  // more vertical breathing room
+      let laneEnds = [];      // track last X-end for each lane
       filtered.forEach(ep => {
         const startX = xOf(ep.start), endX = xOf(ep.end);
         const left = Math.max(0, Math.min(100, startX));
-        let width = Math.max(0.7, Math.min(100 - left, endX - startX));
-// If the percent width is too tiny on a wide viewport, the text still crushes.
-// We'll keep the % for positioning, but CSS min-width handles pixel minimum.
-// No further change needed here; CSS min-width:90px will protect readability.
-
+        const width = Math.max(0.7, Math.min(100 - left, endX - startX));
 
         let lane = 0; while (laneEnds[lane] != null && laneEnds[lane] > left) lane++;
         laneEnds[lane] = left + width;
@@ -615,45 +593,48 @@ else step = 1;
         bar.title = ep.summary ? ep.summary : (ep.rawSpan || "");
         timelineEl.appendChild(bar);
       });
+
+      // Dynamic container height based on lanes used
+      const lanesUsed = (filtered.length ? (laneEnds.length || 1) : 1);
+      const topPadding = 40;
+      const bottomPadding = 24;
+      timelineEl.style.height = `${topPadding + lanesUsed * laneHeight + bottomPadding}px`;
     }
 
     const doRender = () => {
       recalcView();
-      const k = toLower(q.value);
+      const k = toLower(q?.value || "");
       const filtered = epochs.filter(e => {
         if (!k) return true;
         const hay = `${e.name} ${e.rawSpan || ""} ${e.summary || ""}`.toLowerCase();
         return hay.includes(k);
       });
-      count.textContent = `${filtered.length.toLocaleString()} epoch${filtered.length===1?"":"s"}` + (useAH ? " (AH)" : "");
+      if (count) count.textContent = `${filtered.length.toLocaleString()} epoch${filtered.length===1?"":"s"}` + (useAH ? " (AH)" : "");
       renderTimeline(filtered);
 
       // (Optional) also populate hidden list
-      list.innerHTML = "";
-      filtered.forEach(e=>{
-        list.appendChild(makeCard({
-          title: e.name,
-          meta: useAH ? `${e.start}–${e.end} AH` : `${yearToLabelBCAD(e.start)} – ${yearToLabelBCAD(e.end)}`,
-          teaser: excerpt(e.summary, 200),
-          citeHTML: e.refs ? `Refs: ${linkifyRefs(e.refs)}` : ""
-        }));
-      });
-      rescanXRefs();
+      if (list) {
+        list.innerHTML = "";
+        filtered.forEach(e=>{
+          list.appendChild(makeCard({
+            title: e.name,
+            meta: useAH ? `${e.start}–${e.end} AH` : `${yearToLabelBCAD(e.start)} – ${yearToLabelBCAD(e.end)}`,
+            teaser: excerpt(e.summary, 200),
+            citeHTML: e.refs ? `Refs: ${linkifyRefs(e.refs)}` : ""
+          }));
+        });
+        rescanXRefs();
+      }
     };
-// After placing all bars:
-const lanesUsed = laneEnds.length || 1;
-const topPadding = 40;           // space for ticks/labels above bars
-const bottomPadding = 24;        // room below
-timelineEl.style.height = `${topPadding + lanesUsed * laneHeight + bottomPadding}px`;
 
     // Wire controls
-    q.addEventListener("input", debounce(doRender, 120));
-    zoom.addEventListener("input", doRender);
-    focusSel.addEventListener("change", doRender);
+    q?.addEventListener("input", debounce(doRender, 120));
+    zoom?.addEventListener("input", doRender);
+    focusSel?.addEventListener("change", doRender);
 
     doRender();
   } catch (err) {
     errorCallout(timelineEl, `Epochs could not be loaded. ${err}`);
-    count.textContent = "0 results";
+    if (count) count.textContent = "0 results";
   }
 })();
