@@ -3,18 +3,22 @@
 inject_strongs_from_csv.py
 Map KJV-with-Strong's CSV rows to your canon chapter JSONs and inject codes into verses[].s.
 
-- Aligns per verse (Book, Chapter, Verse) — order independent.
-- Accepts many CSV header variants:
-  * book/chapter/verse/strongs
-  * bk/chap/ch/v/vs/code/codes
-  * ref/reference like "Genesis 1:1"
-- Accepts codes separated by spaces, commas, pipes, or semicolons (e.g., "H430 H3068", "G3056,G2316", "H430|H3068").
-- Validates codes against your strongs-hebrew.json / strongs-greek.json when --validate is passed.
-- Works with chapter JSON shaped as { "total": N, "verses": [...] } or a bare list of verses.
+Your CSV format (example):
+HEADER: "Verse ID","Book Name","Book Number",Chapter,Verse,Text
+DATA:   1,Genesis,1,1,1,"In the beginning{H7225} God{H430} created{H1254}{(H8804)}{H853} ..."
+
+This script:
+  - Reads Book Name / Chapter / Verse / Text
+  - Extracts H####/G#### codes from {…} and {(…)}
+  - Maps Book Name -> your folder slug (e.g., "1 Samuel" -> "1-samuel")
+  - Writes unique/sorted codes to verses[].s in /data/<canon>/<book>/<chapter>.json
+  - Works with chapter JSON shaped as { "total": N, "verses": [...] } or a bare list
+  - Optional --validate filters codes by your lexicon JSONs
 
 Usage:
-  python3 tools/inject_strongs_from_csv.py --csv data/lexicon/kjv_strongs.csv --root data/newtestament --dry-run
-  python3 tools/inject_strongs_from_csv.py --csv data/lexicon/kjv_strongs.csv --root data/tanakh --inplace --validate
+  python3 tools/inject_strongs_from_csv.py --csv data/lexicon/kjv_strongs.csv --root data/tanakh --dry-run
+  python3 tools/inject_strongs_from_csv.py --csv data/lexicon/kjv_strongs.csv --root data/newtestament --inplace --validate \
+      --he data/lexicon/strongs-hebrew.json --gr data/lexicon/strongs-greek.json
 """
 
 import csv, json, re, sys
@@ -22,7 +26,7 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple, Optional
 
-# Map KJV book names -> your folder slugs
+# -------- Book name -> folder slug mapping --------
 KJV_BOOK_TO_SLUG = {
     # Pentateuch
     "genesis":"genesis","exodus":"exodus","leviticus":"leviticus","numbers":"numbers","deuteronomy":"deuteronomy",
@@ -31,7 +35,8 @@ KJV_BOOK_TO_SLUG = {
     "1 samuel":"1-samuel","2 samuel":"2-samuel","1 kings":"1-kings","2 kings":"2-kings",
     "1 chronicles":"1-chronicles","2 chronicles":"2-chronicles","ezra":"ezra","nehemiah":"nehemiah","esther":"esther",
     # Poetry/Wisdom
-    "job":"job","psalms":"psalms","psalm":"psalms","proverbs":"proverbs","ecclesiastes":"ecclesiastes","song of solomon":"song-of-solomon","song of songs":"song-of-solomon",
+    "job":"job","psalms":"psalms","psalm":"psalms","proverbs":"proverbs","ecclesiastes":"ecclesiastes",
+    "song of solomon":"song-of-solomon","song of songs":"song-of-solomon","canticles":"song-of-solomon",
     # Prophets
     "isaiah":"isaiah","jeremiah":"jeremiah","lamentations":"lamentations","ezekiel":"ezekiel","daniel":"daniel",
     "hosea":"hosea","joel":"joel","amos":"amos","obadiah":"obadiah","jonah":"jonah","micah":"micah",
@@ -46,7 +51,7 @@ KJV_BOOK_TO_SLUG = {
     # General + Revelation
     "hebrews":"hebrews","james":"james","1 peter":"1-peter","2 peter":"2-peter",
     "1 john":"1-john","2 john":"2-john","3 john":"3-john","jude":"jude","revelation":"revelation",
-    # Apocrypha (adjust as needed)
+    # Apocrypha (adjust if your folders differ)
     "tobit":"tobit","judith":"judith","wisdom":"wisdom","sirach":"sirach","ecclesiasticus":"sirach",
     "baruch":"baruch","1 maccabees":"1-maccabees","2 maccabees":"2-maccabees",
     "1 esdras":"1-esdras","2 esdras":"2-esdras","additions to esther":"additions-to-esther",
@@ -60,23 +65,18 @@ def norm_book_name(name: str) -> str:
 
 def book_to_slug(name: str) -> Optional[str]:
     key = norm_book_name(name)
-    if key in KJV_BOOK_TO_SLUG:
-        return KJV_BOOK_TO_SLUG[key]
-    # Try forgiving match (strip punctuation)
+    if key in KJV_BOOK_TO_SLUG: return KJV_BOOK_TO_SLUG[key]
+    # allow punctuation differences
     key2 = re.sub(r'[^\w\s-]', '', key)
     return KJV_BOOK_TO_SLUG.get(key2)
 
+# -------- Code extraction & sorting --------
 def split_codes(raw: str) -> List[str]:
     """
-    Split any string into Strong's codes (supports spaces/commas/pipes/semicolons).
-    Examples:
-      "H430 H3068" -> ["H430","H3068"]
-      "G3056,G2316" -> ["G3056","G2316"]
-      "H430|H3068"  -> ["H430","H3068"]
+    Extract Strong's codes from text (handles {H7225}, {(H8804)}, H430, G3056, etc.)
     """
     if not raw:
         return []
-    # First, grab all code-like tokens
     found = re.findall(r'[HG]\d{1,5}', raw, flags=re.I)
     return [f.upper() for f in found]
 
@@ -100,68 +100,70 @@ def read_strongs_lexicons(he_path: Path, gr_path: Path) -> set:
         pass
     return ok
 
+# -------- CSV loader (your exact header) --------
 def load_csv_map(csv_path: Path) -> Dict[Tuple[str,int,int], List[str]]:
     """
-    Build (book_slug, chapter, verse) -> codes[] from CSV.
-    Accepts:
-      - explicit columns: book, chapter, verse, strongs/codes
-      - or a ref column: ref/reference "Genesis 1:1"
-      Codes can be in one column with any separators (spaces, commas, pipes, semicolons).
+    Build (book_slug, chapter, verse) -> codes[] from your CSV:
+    HEADER: "Verse ID","Book Name","Book Number",Chapter,Verse,Text
+    Strong's codes are embedded in Text like {...} or {(H####)}.
     """
-    with csv_path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
-        cols = {c.lower(): c for c in (reader.fieldnames or [])}
+    raw = csv_path.read_text(encoding="utf-8-sig")
 
-        def col(*names):
-            for n in names:
-                if n in cols: return cols[n]
-            return None
+    from io import StringIO
+    f = StringIO(raw)
+    reader = csv.DictReader(f)
 
-        c_book = col("book","bk","bookname")
-        c_ch   = col("chapter","chap","ch")
-        c_v    = col("verse","v","vs","verse_num","versenum")
-        c_str  = col("strongs","codes","code")
-        c_ref  = col("ref","reference","scripture")
+    # Normalize fieldnames (strip quotes/case)
+    def norm(h): return (h or "").strip().strip('"').lower()
+    headers = [norm(h) for h in (reader.fieldnames or [])]
+    # Map back original keys for DictReader usage
+    cols = {norm(h): h for h in (reader.fieldnames or [])}
 
-        mapping: Dict[Tuple[str,int,int], List[str]] = defaultdict(list)
+    def col(*names):
+        for n in names:
+            if n in cols: return cols[n]
+        # try forgiving match (in case quoting/spacing varies)
+        for k,v in cols.items():
+            if k.replace(" ", "") == n.replace(" ", ""):
+                return v
+        return None
 
-        for row in reader:
-            try:
-                if c_book and c_ch and c_v:
-                    slug = book_to_slug(row[c_book])
-                    if not slug: continue
-                    ch = int(str(row[c_ch]).strip())
-                    v  = int(str(row[c_v]).strip())
-                elif c_ref:
-                    ref = str(row[c_ref]).strip()
-                    m = re.match(r'^(.+?)\s+(\d+):(\d+)$', ref)
-                    if not m: continue
-                    book_name, ch, v = m.group(1), int(m.group(2)), int(m.group(3))
-                    slug = book_to_slug(book_name)
-                    if not slug: continue
-                else:
-                    continue
+    c_book = col("book name","book","bookname")
+    c_ch   = col("chapter","chap","ch")
+    c_v    = col("verse","v","vs","verse_num","versenum")
+    c_txt  = col("text","line","content")
 
-                raw_codes = ""
-                if c_str:
-                    raw_codes = str(row[c_str] or "")
-                else:
-                    # Try to scavenge codes from any column if not provided explicitly
-                    raw_codes = " ".join(str(v) for v in row.values())
+    if not (c_book and c_ch and c_v and c_txt):
+        print("[fatal] Could not find Book Name / Chapter / Verse / Text columns in CSV.")
+        return {}
 
-                codes = split_codes(raw_codes)
-                if not codes: 
-                    continue
+    mapping: Dict[Tuple[str,int,int], List[str]] = defaultdict(list)
 
-                mapping[(slug, ch, v)].extend(codes)
-            except Exception:
+    for row in reader:
+        try:
+            book_name = str(row[c_book]).strip()
+            slug = book_to_slug(book_name)
+            if not slug:
                 continue
+            ch = int(str(row[c_ch]).strip())
+            v  = int(str(row[c_v]).strip())
+            text = str(row[c_txt] or "")
+
+            codes = split_codes(text)
+            if not codes:
+                continue
+
+            mapping[(slug, ch, v)].extend(codes)
+        except Exception:
+            # skip malformed rows
+            continue
 
     # Dedup & sort per verse
     for k in list(mapping.keys()):
         mapping[k] = sort_codes(mapping[k])
     return mapping
 
+# -------- Chapter JSON helpers --------
 def load_chapter_json(path: Path):
     """Return (root, verses_list, wrapped_bool)."""
     try:
@@ -186,6 +188,7 @@ def write_chapter_json(path: Path, root, verses, wrapped: bool) -> bool:
         print(f"[error] write {path}: {e}")
         return False
 
+# -------- Main --------
 def main():
     import argparse
     ap = argparse.ArgumentParser()
@@ -217,6 +220,7 @@ def main():
     total_verses = 0
     injected_total = 0
 
+    # Iterate book folders
     for book_dir in sorted([p for p in root.glob("*") if p.is_dir()]):
         slug = book_dir.name
         for ch_path in sorted(book_dir.glob("*.json"), key=lambda p: int(p.stem) if p.stem.isdigit() else 0):
@@ -226,7 +230,7 @@ def main():
                 continue
 
             root_obj, verses, wrapped = load_chapter_json(ch_path)
-            if verses is None: 
+            if verses is None:
                 continue
 
             file_changed = False
@@ -234,7 +238,7 @@ def main():
                 if not isinstance(vobj, dict): 
                     continue
                 vnum = vobj.get("v")
-                if not isinstance(vnum, int): 
+                if not isinstance(vnum, int):
                     continue
                 total_verses += 1
 
@@ -254,6 +258,7 @@ def main():
                     injected_total += len(codes)
 
             if file_changed:
+                changed_files += 1
                 if args.dry_run:
                     print(f"[dry] {ch_path}  (updated)")
                 elif args.inplace:
@@ -261,7 +266,6 @@ def main():
                         print(f"[ok]  {ch_path}  (written)")
                     else:
                         print(f"[err] {ch_path}  (write failed)")
-                changed_files += 1
 
     print(f"\nDone. Files changed: {changed_files}, verses scanned: {total_verses}, codes injected: {injected_total}")
     if not args.dry_run and not args.inplace:
