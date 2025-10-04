@@ -1,6 +1,6 @@
 /* nt-chapter.js — unified chapter loader for all canons
    - Canon/book/chapter selectors from /data/<canon>/books.json
-   - Verse rows with tools: e.g. (cross refs), exposition (notes), lexicon (Strong’s), copy icon
+   - Verse rows with tools: e.g. (cross refs), exposition (notes), lexicon (Strong’s incl. KJV/Strong’s defs), copy icon
    - Panels open/close properly
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
@@ -101,11 +101,12 @@
     return dict && dict[key] ? { code: key, ...dict[key] } : { code: key };
   }
 
+  // Prefer KJV line in list; show lemma/translit inline
   function strongsListRow(entry){
     if (!entry) return '';
-    const { code, lemma='', translit='', gloss='' } = entry;
+    const { code, lemma='', translit='', gloss='', kjv_def='' } = entry;
     const meta = [lemma, translit].filter(Boolean).join(' · ');
-    const desc = gloss || '';
+    const desc = (kjv_def || gloss || '').toString();
     return `
       <div class="lx-row" data-code="${esc(code)}" style="padding:.4rem 0;border-top:1px solid var(--sky);cursor:pointer">
         <div style="display:flex;align-items:baseline;gap:.5rem;">
@@ -118,12 +119,28 @@
 
   function strongsDetailHTML(entry){
     if (!entry) return '<div class="muted">No entry.</div>';
-    const { code, lemma='', translit='', pos='', gloss='', defs=[] } = entry;
+    const {
+      code,
+      lemma='',
+      translit='',
+      pos='',
+      gloss='',
+      kjv_def='',
+      strongs_def='',
+      derivation='',
+      defs=[]
+    } = entry;
+
     const defsHtml = Array.isArray(defs) && defs.length
       ? `<ul style="margin:.35rem 0 .2rem .95rem">${defs.slice(0,7).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
       : '';
-    const glossLine = gloss ? `<div style="margin-top:.1rem"><em>${esc(gloss)}</em></div>` : '';
+
+    const kjvLine     = kjv_def     ? `<div style="margin-top:.25rem"><strong>KJV:</strong> ${esc(kjv_def)}</div>` : '';
+    const strongsLine = strongs_def ? `<div style="margin-top:.15rem"><strong>Strong’s:</strong> ${esc(strongs_def)}</div>` : '';
+    const glossLine   = gloss       ? `<div style="margin-top:.15rem"><em>${esc(gloss)}</em></div>` : '';
+    const derivLine   = derivation  ? `<div class="muted" style="margin-top:.2rem"><strong>Derivation:</strong> ${esc(derivation)}</div>` : '';
     const posLine = pos ? `<span class="badge" style="margin-left:.4rem">${esc(pos)}</span>` : '';
+
     return `
       <div class="lx-details" data-code="${esc(code)}" style="margin:.45rem 0 .15rem;padding:.6rem;border:1px solid var(--sky);border-radius:8px;background:#f9fafb">
         <div style="font-weight:800;color:var(--brand)">${esc(code)}${posLine}</div>
@@ -131,7 +148,10 @@
           <span dir="auto" style="font-weight:700">${esc(lemma)}</span>
           ${translit ? `<span class="muted" style="margin-left:.4rem">${esc(translit)}</span>` : ''}
         </div>
+        ${kjvLine}
+        ${strongsLine}
         ${glossLine}
+        ${derivLine}
         ${defsHtml}
       </div>
     `;
@@ -351,54 +371,40 @@
       });
       pCM.appendChild(ta);
 
-      // NEW: inline Lexicon panel (hidden until opened)
+      // inline Lexicon panel (hidden until opened)
       const pLX = document.createElement('div');
       pLX.className = 'v-panel lx';
       pLX.innerHTML = '<div class="muted">No Strong’s codes for this verse.</div>';
 
-      // wire toggles
+      // toggles
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
-      // Lexicon button → toggle inline panel; single-open across page; dblclick quick toggle
+      // Lexicon button → toggle inline panel; single-open across page; dblclick toggle
       bLX.addEventListener('click', ()=>{
         const isOpen = pLX.classList.contains('open');
-        document.querySelectorAll('.v-panel.lx.open').forEach(el=>{ if (el !== pLX) el.classList.remove('open'); });
+        document.querySelectorAll('.v-panel.lx.open').forEach(el=> el.classList.remove('open'));
         if (isOpen){ pLX.classList.remove('open'); return; }
         pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
         pLX.classList.add('open');
         const r = pLX.getBoundingClientRect();
         if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
-      bLX.addEventListener('dblclick', (e)=>{
-        e.preventDefault();
-        const isOpen = pLX.classList.contains('open');
-        if (isOpen){
-          pLX.classList.remove('open');
-        } else {
-          document.querySelectorAll('.v-panel.lx.open').forEach(el=>{ if (el !== pLX) el.classList.remove('open'); });
-          pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
-          pLX.classList.add('open');
-        }
-      });
+      bLX.addEventListener('dblclick', (e)=>{ e.preventDefault(); pLX.classList.toggle('open'); });
 
-      // delegation inside Lexicon panel: click code row → only one detail at a time
+      // delegation inside Lexicon panel: click code row → only one detail open per verse
       pLX.addEventListener('click', (e)=>{
         const row = e.target.closest('.lx-row');
         if (!row) return;
-        const code = row.getAttribute('data-code');
-
-        // close any other open details in this panel
+        // close others
         [...pLX.querySelectorAll('.lx-details')].forEach(n=>n.remove());
         [...pLX.querySelectorAll('.lx-row[data-open="1"]')].forEach(r=>r.setAttribute('data-open','0'));
-
+        const code = row.getAttribute('data-code');
         const wasOpen = row.getAttribute('data-open') === '1';
         if (wasOpen){ row.setAttribute('data-open','0'); return; }
-
         const entry = strongsLookup(code);
-        const html = strongsDetailHTML(entry);
         const det = document.createElement('div');
-        det.innerHTML = html;
+        det.innerHTML = strongsDetailHTML(entry);
         row.after(det.firstElementChild);
         row.setAttribute('data-open','1');
       });
@@ -410,7 +416,7 @@
       row.appendChild(pCM);
       row.appendChild(pLX);
 
-      // append verse + divider
+      // divider
       const hr = document.createElement('hr');
       hr.className = 'scripture-divider';
       const wrap = document.createDocumentFragment();
@@ -419,11 +425,9 @@
       frag.appendChild(wrap);
     });
 
-    // clear placeholder and append all verses at once
     versesEl.innerHTML = '';
     versesEl.appendChild(frag);
 
-    // anchor scroll
     if (location.hash && /^#v\d+$/.test(location.hash)){
       const anchor = document.getElementById(location.hash.slice(1));
       if (anchor) anchor.scrollIntoView({behavior:'instant', block:'start'});
