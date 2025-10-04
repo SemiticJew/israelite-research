@@ -1,133 +1,160 @@
 #!/usr/bin/env python3
+# tools/merge_hebrew_dict_into_strongs.py
 """
-Merge classic Strong's Hebrew dictionary JS into strongs-hebrew.json
+Robustly merge classic Strong's Hebrew JS dictionary into strongs-hebrew.json.
 
-Inputs (expected paths):
+Strategy:
+1) Try macOS JXA (osascript -l JavaScript) to evaluate the JS and JSON.stringify the object.
+2) If JXA not available or fails, fall back to a sanitizer that converts JS-ish to JSON.
+3) Merge fields: xlit, pron, derivation, strongs_def, kjv_def (only add if missing).
+
+Inputs:
 - data/lexicon/strongs-hebrew.json
-- data/lexicon/strongs-hebrew-dictionary.js   (var strongsHebrewDictionary = { ... })
+- data/lexicon/strongs-hebrew-dictionary.js
 
-Output (overwrites):
-- data/lexicon/strongs-hebrew.json
-
-What gets merged per key (e.g., H7225):
-- xlit, pron, derivation, strongs_def, kjv_def  (only if present in the JS dictionary)
-Keeps your existing fields (lemma, translit, pos, gloss, defs, refs) intact.
+Output:
+- data/lexicon/strongs-hebrew.json (overwritten)
 """
 
-import json, re, sys
+import json, re, subprocess, shlex, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 JSON_PATH = ROOT / "data" / "lexicon" / "strongs-hebrew.json"
 DICT_JS   = ROOT / "data" / "lexicon" / "strongs-hebrew-dictionary.js"
-DEBUG_DUMP = ROOT / "data" / "lexicon" / "_debug_strongs_hebrew_obj.json5"
+DEBUG_JS5 = ROOT / "data" / "lexicon" / "_debug_strongs_hebrew_obj.json5"
 
 def load_base_json(p: Path):
-    try:
-        return json.loads(p.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"[err] Could not read {p}: {e}")
-        sys.exit(1)
+    return json.loads(p.read_text(encoding="utf-8"))
 
-def extract_js_object(js_text: str):
+def try_jxa_extract(js_path: Path):
     """
-    Try to extract the JS object assigned to strongsHebrewDictionary = { ... };
-    Then convert to JSON-ish and parse.
+    Use macOS JXA to evaluate the JS and stringify global 'strongsHebrewDictionary'.
+    Returns Python dict on success, or None on failure.
     """
-    m = re.search(
-        r"strongsHebrewDictionary\s*=\s*({.*});?",
-        js_text, re.S
-    )
-    if not m:
-        raise ValueError("Could not find strongsHebrewDictionary in JS file")
-    obj_text = m.group(1).strip()
-
-    # Heuristic sanitation to JSON:
-    # 1) ensure keys are quoted (simple dotted/word keys)
-    obj_text = re.sub(r"(\s*)([A-Za-z0-9_.$]+)\s*:", r'\1"\2":', obj_text)
-    # 2) single quotes -> double quotes
-    obj_text = obj_text.replace("'", '"')
-    # 3) Allow trailing commas by removing them before } or ]
-    obj_text = re.sub(r",(\s*[}\]])", r"\1", obj_text)
-    # 4) Remove JS comments (/*...*/ and //...)
-    obj_text = re.sub(r"/\*.*?\*/", "", obj_text, flags=re.S)
-    obj_text = re.sub(r"//.*?$", "", obj_text, flags=re.M)
-
+    jxa = r'''
+    ObjC.import('Foundation');
+    function run(argv){
+      var fm = $.NSFileManager.defaultManager;
+      var path = argv[0];
+      var s = $.NSString.stringWithContentsOfFileEncodingError(path, $.NSUTF8StringEncoding, null).js;
+      // Evaluate in a clean Function scope to avoid leaking variables
+      var fn = new Function(s + "\n;return (this.strongsHebrewDictionary || strongsHebrewDictionary || (typeof module!=='undefined' && module.exports) || (typeof exports!=='undefined' && (exports.default || exports)) || null);");
+      var obj = fn.call({});
+      if (!obj) throw new Error("strongsHebrewDictionary variable not found.");
+      return JSON.stringify(obj);
+    }
+    '''
     try:
-        return json.loads(obj_text)
-    except Exception as e:
-        DEBUG_DUMP.write_text(obj_text, encoding="utf-8")
-        raise ValueError(
-            f"JSON parse failed. Wrote debug to {DEBUG_DUMP.name}\n{e}"
+        out = subprocess.check_output(
+            ["osascript", "-l", "JavaScript", "-e", jxa, str(js_path)],
+            stderr=subprocess.STDOUT,
+            text=True
         )
-
-def load_dict_js(p: Path):
-    try:
-        js = p.read_text(encoding="utf-8", errors="replace")
+        return json.loads(out)
     except Exception as e:
-        print(f"[err] Could not read {p}: {e}")
-        sys.exit(1)
-    return extract_js_object(js)
+        return None
 
-def merge_entry(dst: dict, add: dict):
+def sanitize_js_object(raw_text: str):
     """
-    Merge dictionary fields if present. Prefer existing values in dst;
-    only add new fields or fill null/empty ones.
+    Fallback: extract `strongsHebrewDictionary = { ... };` and coerce to JSON.
+    Not as bulletproof as JXA, but works for most clean JS object literals.
     """
-    if not add:
+    m = re.search(r"strongsHebrewDictionary\s*=\s*({.*});?\s*$", raw_text, re.S)
+    if not m:
+        raise ValueError("Could not locate strongsHebrewDictionary object in JS.")
+    obj = m.group(1)
+
+    # Strip block and line comments
+    obj = re.sub(r"/\*.*?\*/", "", obj, flags=re.S)
+    obj = re.sub(r"//.*?$", "", obj, flags=re.M)
+
+    # Quote bare keys: foo: -> "foo":
+    obj = re.sub(r'(?m)(^|\s|{|,)([A-Za-z_$][\w$]*)\s*:', r'\1"\2":', obj)
+
+    # Convert single quotes to double quotes
+    obj = obj.replace("'", '"')
+
+    # Remove trailing commas before } or ]
+    obj = re.sub(r",(\s*[}\]])", r"\1", obj)
+
+    try:
+        return json.loads(obj)
+    except Exception as e:
+        DEBUG_JS5.write_text(obj, encoding="utf-8")
+        raise ValueError(f"JSON parse failed; wrote debug to {DEBUG_JS5.name}\n{e}")
+
+def load_dict(js_path: Path):
+    # 1) Prefer JXA
+    data = try_jxa_extract(js_path)
+    if data is not None:
+        return data
+    # 2) Fallback sanitizer
+    raw = js_path.read_text(encoding="utf-8", errors="replace")
+    return sanitize_js_object(raw)
+
+def merge_entry(dst: dict, src: dict):
+    """
+    Only add these fields if they are missing/empty in dst:
+    xlit, pron, derivation, strongs_def, kjv_def
+    """
+    if not isinstance(src, dict):
         return dst
-    # Fields we want to copy from the classic dictionary:
     for k in ("xlit", "pron", "derivation", "strongs_def", "kjv_def"):
-        val = add.get(k)
-        if val is None or (isinstance(val, str) and not val.strip()):
+        v = src.get(k)
+        if v is None: 
             continue
-        # only set if missing
-        if dst.get(k) in (None, ""):
-            dst[k] = val
+        if isinstance(v, str) and not v.strip():
+            continue
+        if k not in dst or (isinstance(dst.get(k), str) and not dst.get(k).strip()):
+            dst[k] = v
     return dst
 
+def normalize_key(k: str) -> str:
+    k = str(k).strip()
+    # Accept "H07225", "H7225", "7225", "h07225"
+    m = re.match(r'^[Hh]?0*([0-9]+)$', k)
+    if m:
+        return f"H{int(m.group(1),10)}"
+    m = re.match(r'^[Hh]([0-9]+)$', k)
+    if m:
+        return f"H{int(m.group(1),10)}"
+    return k.upper()
+
 def main():
-    base = load_base_json(JSON_PATH)
-    he_dict = load_dict_js(DICT_JS)
+    try:
+        base = load_base_json(JSON_PATH)
+    except Exception as e:
+        print(f"[err] read {JSON_PATH}: {e}")
+        sys.exit(1)
+
+    try:
+        he = load_dict(DICT_JS)
+    except Exception as e:
+        print(f"[err] parse {DICT_JS}: {e}")
+        sys.exit(1)
 
     if not isinstance(base, dict):
         print("[err] strongs-hebrew.json must be an object of H#### keys.")
         sys.exit(1)
-    if not isinstance(he_dict, dict):
-        print("[err] strongs-hebrew-dictionary.js extracted object is not a dict.")
+    if not isinstance(he, dict):
+        print("[err] parsed dictionary is not an object.")
         sys.exit(1)
 
-    merged = 0
-    created = 0
-    updated = 0
-
-    for key, dval in he_dict.items():
-        # Normalize key e.g., "H07225" → "H7225"
-        m = re.match(r'^[Hh]?0*([0-9]+)$', key) or re.match(r'^([Hh]\d+)$', key)
-        if m:
-            n = m.group(1)
-            if not n.startswith(("H","h")):
-                key_norm = f"H{int(n,10)}"
-            else:
-                key_norm = f"H{int(n[1:],10)}"
-        else:
-            key_norm = key.upper()
-
-        if key_norm not in base:
-            # create minimal skeleton if dictionary has something we don't have
-            base[key_norm] = {}
+    merged = updated = created = 0
+    for k, v in he.items():
+        key = normalize_key(k)
+        if key not in base:
+            base[key] = {}
             created += 1
-
-        before = json.dumps(base[key_norm], ensure_ascii=False, sort_keys=True)
-        base[key_norm] = merge_entry(base[key_norm], dval)
-        after = json.dumps(base[key_norm], ensure_ascii=False, sort_keys=True)
+        before = json.dumps(base[key], ensure_ascii=False, sort_keys=True)
+        merge_entry(base[key], v)
+        after = json.dumps(base[key], ensure_ascii=False, sort_keys=True)
         if before != after:
             updated += 1
         merged += 1
 
-    # Write back
     JSON_PATH.write_text(json.dumps(base, ensure_ascii=False, indent=2), encoding="utf-8")
-
     print(f"[ok] merged entries: {merged}  (updated: {updated}, created: {created})")
     print(f"[ok] wrote → {JSON_PATH}")
 
