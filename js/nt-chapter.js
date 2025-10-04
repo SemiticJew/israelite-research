@@ -354,11 +354,12 @@
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
       // Lexicon popup on click (uses v.s)
-      bLX.addEventListener('click', ()=>{
-        const html = verseLexiconHTML(v.s || []);
-        const r = bLX.getBoundingClientRect();
-        openHover(html, r.left + 8, r.bottom + 8);
-      });
+      bLX.addEventListener("click", (e)=>{
+  e.stopPropagation();
+  const html = verseLexiconHTML(v.s || []);
+  const r = bLX.getBoundingClientRect();
+  openHover(html, r.left + 8, r.bottom + 8);
+});
 
       // copy handler
       {
@@ -428,8 +429,9 @@
     const pad = 16;
     const vw = window.innerWidth, vh = window.innerHeight;
 
-    hover.style.display = 'block';
-    hover.style.visibility = 'hidden';
+    hover.style.display = "block";
+    hover.style.visibility = "hidden";
+    hover.style.zIndex = "9999";
     hover.classList.add('open');
 
     const r = hover.getBoundingClientRect();
