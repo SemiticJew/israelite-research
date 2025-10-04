@@ -1,3 +1,4 @@
+(function(){ if (typeof window.isArticlePage==="undefined"){ window.isArticlePage=function(){ return false; }; } })();
 // js/include.js
 (function(){
   const BASE = '/israelite-research'; // absolute base for GitHub Pages
