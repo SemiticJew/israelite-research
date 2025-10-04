@@ -5,7 +5,7 @@
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
    - Inserts <hr class="scripture-divider"> after each verse block
-   - Robust on-hover/focus cross-ref previews via #hovercard
+   - Robust on-hover/focus cross-ref previews via #hovercard (for xrefs)
    - URL: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
@@ -24,7 +24,7 @@
 
   // ---------- DOM ----------
   const versesEl = $('#verses');
-  const hover = $('#hovercard');
+  const hover = $('#hovercard'); // still used for xref previews
 
   const selCanon = $('#canonSelect');
   const selBook  = $('#bookSelect');
@@ -101,42 +101,32 @@
     return dict && dict[key] ? { code: key, ...dict[key] } : { code: key };
   }
 
-  function strongsRowHTML(entry){
+  function strongsListRow(entry){
     if (!entry) return '';
     const { code, lemma='', translit='', gloss='' } = entry;
     const meta = [lemma, translit].filter(Boolean).join(' · ');
     const desc = gloss || '';
     return `
-      <div class="lx-row" data-code="${esc(code)}" style="padding:.25rem 0;border-top:1px solid var(--sky);cursor:pointer">
-        <div style="font-weight:700;color:var(--brand)">${esc(code)}</div>
-        ${meta ? `<div style="font-size:.92rem">${esc(meta)}</div>` : ''}
-        ${desc ? `<div class="muted" style="font-size:.9rem">${esc(desc)}</div>` : ''}
+      <div class="lx-row" data-code="${esc(code)}" style="padding:.4rem 0;border-top:1px solid var(--sky);cursor:pointer">
+        <div style="display:flex;align-items:baseline;gap:.5rem;">
+          <div style="font-weight:700;color:var(--brand)">${esc(code)}</div>
+          ${meta ? `<div style="font-size:.92rem">${esc(meta)}</div>` : ''}
+        </div>
+        ${desc ? `<div class="muted" style="font-size:.9rem;margin-top:.15rem">${esc(desc)}</div>` : ''}
       </div>`;
   }
 
-  function verseLexiconHTML(codes){
-    const uniq = Array.from(new Set((codes||[]).map(c=>String(c).toUpperCase())));
-    if (!uniq.length) return '<div class="muted">No Strong’s codes for this verse.</div>';
-    const rows = uniq.map(c=> strongsRowHTML(strongsLookup(c))).join('');
-    return `
-      <div style="min-width:300px;max-width:54ch">
-        <div style="font-weight:800;margin-bottom:.35rem">Lexicon</div>
-        ${rows}
-        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to see details.</div>
-      </div>`;
-  }
-
-  function strongsCardHTML(entry){
+  function strongsDetailHTML(entry){
     if (!entry) return '<div class="muted">No entry.</div>';
     const { code, lemma='', translit='', pos='', gloss='', defs=[] } = entry;
     const defsHtml = Array.isArray(defs) && defs.length
-      ? `<ul style="margin:.4rem 0 .2rem .95rem">${defs.slice(0,5).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
+      ? `<ul style="margin:.35rem 0 .2rem .95rem">${defs.slice(0,7).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
       : '';
-    const glossLine = gloss ? `<div style="margin-top:.15rem"><em>${esc(gloss)}</em></div>` : '';
+    const glossLine = gloss ? `<div style="margin-top:.1rem"><em>${esc(gloss)}</em></div>` : '';
     const posLine = pos ? `<span class="badge" style="margin-left:.4rem">${esc(pos)}</span>` : '';
     return `
-      <div style="min-width:280px; max-width:46ch">
-        <div style="font-weight:800; color:var(--brand)">${esc(code)}${posLine}</div>
+      <div class="lx-details" data-code="${esc(code)}" style="margin:.45rem 0 .15rem;padding:.6rem;border:1px solid var(--sky);border-radius:8px;background:#f9fafb">
+        <div style="font-weight:800;color:var(--brand)">${esc(code)}${posLine}</div>
         <div style="margin:.2rem 0 .1rem">
           <span dir="auto" style="font-weight:700">${esc(lemma)}</span>
           ${translit ? `<span class="muted" style="margin-left:.4rem">${esc(translit)}</span>` : ''}
@@ -145,6 +135,18 @@
         ${defsHtml}
       </div>
     `;
+  }
+
+  function verseLexiconPanelHTML(codes){
+    const uniq = Array.from(new Set((codes||[]).map(c=>String(c).toUpperCase())));
+    if (!uniq.length) return '<div class="muted">No Strong’s codes for this verse.</div>';
+    const rows = uniq.map(c=> strongsListRow(strongsLookup(c))).join('');
+    return `
+      <div>
+        <div style="font-weight:800;margin:0 0 .35rem">Lexicon</div>
+        ${rows}
+        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details.</div>
+      </div>`;
   }
 
   // ---------- Toolbar / Navigation ----------
@@ -189,8 +191,8 @@
       selCanon.value = ctx.canon;
       selCanon.addEventListener('change', ()=>{
         const canon = selCanon.value;
-        theBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
-        location.href = chapterHref(canon, theBook, 1);
+        const nextBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
+        location.href = chapterHref(canon, nextBook, 1);
       });
     }
     if (selBook){
@@ -349,36 +351,53 @@
       });
       pCM.appendChild(ta);
 
+      // NEW: inline Lexicon panel (hidden until opened)
+      const pLX = document.createElement('div');
+      pLX.className = 'v-panel lx';
+      pLX.innerHTML = '<div class="muted">No Strong’s codes for this verse.</div>';
+
       // wire toggles
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
-      // Lexicon popup on click (uses v.s)
-      bLX.addEventListener("click", (e)=>{
-  e.stopPropagation();
-  const html = verseLexiconHTML(v.s || []);
-  const r = bLX.getBoundingClientRect();
-  openHover(html, r.left + 8, r.bottom + 8);
-});
+      // Lexicon button → toggle inline panel; render list if needed
+      bLX.addEventListener('click', ()=>{
+        // render fresh each time to reflect any updates
+        pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
+        pLX.classList.add('open');
+        // scroll into view if off-screen (optional nicety)
+        const r = pLX.getBoundingClientRect();
+        if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
+      });
 
-      // copy handler
-      {
-        const refLabel = `${prettyBook(ctx.book)} ${ctx.chapter}:${v.v}`;
-        bCP.addEventListener('click', async ()=>{
-          const payload = `${refLabel} ${v.t || ''}`.trim();
-          try {
-            await navigator.clipboard.writeText(payload);
-            bCP.classList.add('copied');
-            setTimeout(()=>bCP.classList.remove('copied'), 900);
-          } catch {}
-        });
-      }
+      // delegation inside Lexicon panel: click code row → toggle details
+      pLX.addEventListener('click', (e)=>{
+        const row = e.target.closest('.lx-row');
+        if (!row) return;
+        const code = row.getAttribute('data-code');
+        const open = row.getAttribute('data-open') === '1';
+        // close if already open
+        if (open){
+          const det = row.nextElementSibling;
+          if (det && det.classList.contains('lx-details')) det.remove();
+          row.setAttribute('data-open','0');
+          return;
+        }
+        // otherwise open
+        const entry = strongsLookup(code);
+        const html = strongsDetailHTML(entry);
+        const det = document.createElement('div');
+        det.innerHTML = html;
+        row.after(det.firstElementChild);
+        row.setAttribute('data-open','1');
+      });
 
       // assemble verse block
       row.appendChild(line);
       row.appendChild(tools);
       row.appendChild(pXR);
       row.appendChild(pCM);
+      row.appendChild(pLX);
 
       // append verse + divider
       const hr = document.createElement('hr');
@@ -387,7 +406,6 @@
       wrap.appendChild(row);
       wrap.appendChild(hr);
       frag.appendChild(wrap);
-    
     });
 
     // clear placeholder and append all verses at once
@@ -421,7 +439,7 @@
     } catch { XREFS = null; }
   }
 
-  // ---------- Hover card core ----------
+  // ---------- Hover card core (kept for cross-refs only) ----------
   function openHover(html, x, y){
     if (!hover) return;
     hover.innerHTML = html;
@@ -429,9 +447,9 @@
     const pad = 16;
     const vw = window.innerWidth, vh = window.innerHeight;
 
-    hover.style.display = "block";
-    hover.style.visibility = "hidden";
-    hover.style.zIndex = "9999";
+    hover.style.display = 'block';
+    hover.style.visibility = 'hidden';
+    hover.style.zIndex = '9999';
     hover.classList.add('open');
 
     const r = hover.getBoundingClientRect();
@@ -502,11 +520,9 @@
   if (versesEl && hover){
     let hideTimer = null;
 
-    // Keep card open while mouse is over it
     hover.addEventListener('mouseenter', ()=> { if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }});
     hover.addEventListener('mouseleave', ()=> { hideTimer = setTimeout(closeHover, 120); });
 
-    // Cross-ref preview
     versesEl.addEventListener('mouseover', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
@@ -521,7 +537,6 @@
       hideTimer = setTimeout(closeHover, 120);
     });
 
-    // Keyboard accessibility for refs
     versesEl.addEventListener('focusin', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
@@ -533,23 +548,7 @@
       if (!a) return;
       hideTimer = setTimeout(closeHover, 120);
     });
-
-    // Click inside hover: open Strong’s detailed card when clicking a code row
-    hover.addEventListener('click', (e)=>{
-      const row = e.target.closest('.lx-row');
-      if (!row) return;
-      const code = row.getAttribute('data-code');
-      const entry = strongsLookup(code);
-      const r = hover.getBoundingClientRect();
-      openHover(strongsCardHTML(entry), r.left + 8, r.top + 8);
-    });
   }
-
-  // Close on scroll or click outside
-  document.addEventListener('scroll', closeHover);
-  document.addEventListener('click', (e)=>{
-    if (hover && !hover.contains(e.target) && !e.target.closest('.v-panel.xr')) closeHover();
-  });
 
   // ---------- Init ----------
   (async function init(){
