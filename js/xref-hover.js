@@ -1,3 +1,4 @@
+(function(w){if(typeof w.__isArticlePage!=="function"){w.__isArticlePage=function(){return (typeof w.isArticlePage==="function")?!!w.isArticlePage():!!w.isArticlePage;};}})(window);
 /* xref-hover.js — article inline Scripture hover (brand header + KJV footer + 4-verse range)
    Works with links created by citations.js (class="xref-trigger", data-xref="Book C:V–V")
 */

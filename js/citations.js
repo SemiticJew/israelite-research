@@ -1,3 +1,4 @@
+(function(w){if(typeof w.__isArticlePage!=="function"){w.__isArticlePage=function(){return (typeof w.isArticlePage==="function")?!!w.isArticlePage():!!w.isArticlePage;};}})(window);
 document.addEventListener('DOMContentLoaded', function(){
   (function(){
     var BOOK_SLUG = {
