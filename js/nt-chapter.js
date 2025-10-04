@@ -189,8 +189,8 @@
       selCanon.value = ctx.canon;
       selCanon.addEventListener('change', ()=>{
         const canon = selCanon.value;
-        const nextBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
-        location.href = chapterHref(canon, nextBook, 1);
+        theBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
+        location.href = chapterHref(canon, theBook, 1);
       });
     }
     if (selBook){
@@ -307,7 +307,7 @@
       const bCM = document.createElement('button');
       bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'exposition'; bCM.title = 'Exposition — your notes';
 
-      // NEW: Lexicon button (replaces old 'strongs' panel)
+      // Lexicon button
       const bLX = document.createElement('button');
       bLX.type = 'button';
       bLX.className = 'tool-btn';
@@ -425,22 +425,18 @@
     if (!hover) return;
     hover.innerHTML = html;
 
-    // Treat x,y as viewport (client) coordinates for position:fixed
     const pad = 16;
     const vw = window.innerWidth, vh = window.innerHeight;
 
-    // Show to measure
     hover.style.display = 'block';
     hover.style.visibility = 'hidden';
     hover.classList.add('open');
 
     const r = hover.getBoundingClientRect();
 
-    // Initial placement with small offset
     let left = (x ?? 0) + 12;
     let top  = (y ?? 0) + 12;
 
-    // Clamp within viewport
     if (left + r.width + pad > vw) left = vw - r.width - pad;
     if (top + r.height + pad > vh) top = vh - r.height - pad;
     if (left < pad) left = pad;
@@ -555,7 +551,7 @@
 
   // ---------- Init ----------
   (async function init(){
-    const pageTitle = $('#pageTitle'); if (pageTitle) textContent = 'Bible Reader';
+    const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
     const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${prettyBook(ctx.book)} → ${ctx.chapter}`;
 
     await loadBooks();
