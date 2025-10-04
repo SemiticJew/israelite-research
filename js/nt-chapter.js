@@ -372,25 +372,24 @@
 
       // delegation inside Lexicon panel: click code row → toggle details
       pLX.addEventListener('click', (e)=>{
-        const row = e.target.closest('.lx-row');
-        if (!row) return;
-        const code = row.getAttribute('data-code');
-        const open = row.getAttribute('data-open') === '1';
-        // close if already open
-        if (open){
-          const det = row.nextElementSibling;
-          if (det && det.classList.contains('lx-details')) det.remove();
-          row.setAttribute('data-open','0');
-          return;
-        }
-        // otherwise open
-        const entry = strongsLookup(code);
-        const html = strongsDetailHTML(entry);
-        const det = document.createElement('div');
-        det.innerHTML = html;
-        row.after(det.firstElementChild);
-        row.setAttribute('data-open','1');
-      });
+  const row = e.target.closest('.lx-row');
+  if (!row) return;
+  const code = row.getAttribute('data-code');
+
+  // close any other open details in this panel
+  [...pLX.querySelectorAll('.lx-details')].forEach(n=>n.remove());
+  [...pLX.querySelectorAll('.lx-row[data-open="1"]')].forEach(r=>r.setAttribute('data-open','0'));
+
+  const wasOpen = row.getAttribute('data-open') === '1';
+  if (wasOpen){ row.setAttribute('data-open','0'); return; }
+
+  const entry = strongsLookup(code);
+  const html = strongsDetailHTML(entry);
+  const det = document.createElement('div');
+  det.innerHTML = html;
+  row.after(det.firstElementChild);
+  row.setAttribute('data-open','1');
+});
 
       // assemble verse block
       row.appendChild(line);
