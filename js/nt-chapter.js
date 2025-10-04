@@ -1,6 +1,6 @@
 /* nt-chapter.js — unified chapter loader for all canons
    - Canon/book/chapter selectors from /data/<canon>/books.json
-   - Verse rows with tools: e.g. (cross refs), exposition (notes), strongs, copy icon
+   - Verse rows with tools: e.g. (cross refs), exposition (notes), lexicon (Strong’s), copy icon
    - Panels open/close properly
    - Cross-references inline, semicolon-separated, small font
    - Easton dictionary: /data/dictionaries/easton_dictionary.json
@@ -57,9 +57,6 @@
   }
   const ctx = getCtx();
 
-  // 3a) Strong's: pick language set by canon (OT=Hebrew, NT=Greek, Apocrypha=mixed)
-  const STRONGS_LANG = (ctx.canon === 'tanakh') ? 'he' : (ctx.canon === 'newtestament' ? 'gr' : 'auto');
-
   const DATA_ROOT = '/israelite-research/data';
   const BOOKS_JSON    = (canon)        => `${DATA_ROOT}/${canon}/books.json`;
   const CHAPTER_JSON  = (canon,b,c)    => `${DATA_ROOT}/${canon}/${b}/${c}.json`;
@@ -76,6 +73,79 @@
   let XREFS = null;   // {"1": [{canon,slug,c,v,label}, ...]}
   let EASTON = null;  // [{term, definitions[]}]
   const _CHAPTER_CACHE = Object.create(null);
+
+  // ---------- Strong’s (lexicon) ----------
+  const LEX_ROOT = '/israelite-research/data/lexicon';
+  let STRONGS_HE = null;
+  let STRONGS_GR = null;
+
+  async function loadStrongLexicons(){
+    try{
+      const [he, gr] = await Promise.all([
+        fetch(`${LEX_ROOT}/strongs-hebrew.json`).then(r=> r.ok ? r.json() : {}),
+        fetch(`${LEX_ROOT}/strongs-greek.json`).then(r=> r.ok ? r.json() : {}),
+      ]);
+      STRONGS_HE = he; STRONGS_GR = gr;
+    }catch{
+      STRONGS_HE = STRONGS_HE || {};
+      STRONGS_GR = STRONGS_GR || {};
+    }
+  }
+
+  function strongsLookup(code){
+    if (!code) return null;
+    const m = /^([HG])(\d+)$/.exec(String(code).toUpperCase());
+    if (!m) return null;
+    const key = m[1] + String(parseInt(m[2],10));
+    const dict = m[1] === 'H' ? STRONGS_HE : STRONGS_GR;
+    return dict && dict[key] ? { code: key, ...dict[key] } : { code: key };
+  }
+
+  function strongsRowHTML(entry){
+    if (!entry) return '';
+    const { code, lemma='', translit='', gloss='' } = entry;
+    const meta = [lemma, translit].filter(Boolean).join(' · ');
+    const desc = gloss || '';
+    return `
+      <div class="lx-row" data-code="${esc(code)}" style="padding:.25rem 0;border-top:1px solid var(--sky);cursor:pointer">
+        <div style="font-weight:700;color:var(--brand)">${esc(code)}</div>
+        ${meta ? `<div style="font-size:.92rem">${esc(meta)}</div>` : ''}
+        ${desc ? `<div class="muted" style="font-size:.9rem">${esc(desc)}</div>` : ''}
+      </div>`;
+  }
+
+  function verseLexiconHTML(codes){
+    const uniq = Array.from(new Set((codes||[]).map(c=>String(c).toUpperCase())));
+    if (!uniq.length) return '<div class="muted">No Strong’s codes for this verse.</div>';
+    const rows = uniq.map(c=> strongsRowHTML(strongsLookup(c))).join('');
+    return `
+      <div style="min-width:300px;max-width:54ch">
+        <div style="font-weight:800;margin-bottom:.35rem">Lexicon</div>
+        ${rows}
+        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to see details.</div>
+      </div>`;
+  }
+
+  function strongsCardHTML(entry){
+    if (!entry) return '<div class="muted">No entry.</div>';
+    const { code, lemma='', translit='', pos='', gloss='', defs=[] } = entry;
+    const defsHtml = Array.isArray(defs) && defs.length
+      ? `<ul style="margin:.4rem 0 .2rem .95rem">${defs.slice(0,5).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
+      : '';
+    const glossLine = gloss ? `<div style="margin-top:.15rem"><em>${esc(gloss)}</em></div>` : '';
+    const posLine = pos ? `<span class="badge" style="margin-left:.4rem">${esc(pos)}</span>` : '';
+    return `
+      <div style="min-width:280px; max-width:46ch">
+        <div style="font-weight:800; color:var(--brand)">${esc(code)}${posLine}</div>
+        <div style="margin:.2rem 0 .1rem">
+          <span dir="auto" style="font-weight:700">${esc(lemma)}</span>
+          ${translit ? `<span class="muted" style="margin-left:.4rem">${esc(translit)}</span>` : ''}
+        </div>
+        ${glossLine}
+        ${defsHtml}
+      </div>
+    `;
+  }
 
   // ---------- Toolbar / Navigation ----------
   async function loadBooks(){
@@ -116,13 +186,13 @@
 
   function wireToolbar(){
     if (selCanon){
-  selCanon.value = ctx.canon;
-  selCanon.addEventListener('change', ()=>{
-    const canon = selCanon.value;
-    const nextBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
-    location.href = chapterHref(canon, nextBook, 1);
-  });
-}
+      selCanon.value = ctx.canon;
+      selCanon.addEventListener('change', ()=>{
+        const canon = selCanon.value;
+        const nextBook = (CANON_DEFAULTS[canon] || 'matthew').toLowerCase();
+        location.href = chapterHref(canon, nextBook, 1);
+      });
+    }
     if (selBook){
       selBook.addEventListener('change', ()=>{
         const book = selBook.value;
@@ -237,13 +307,17 @@
       const bCM = document.createElement('button');
       bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'exposition'; bCM.title = 'Exposition — your notes';
 
-      const bST = document.createElement('button');
-      bST.type = 'button'; bST.className = 'tool-btn'; bST.textContent = 'strongs'; bST.title = 'Strongs — lexical codes';
+      // NEW: Lexicon button (replaces old 'strongs' panel)
+      const bLX = document.createElement('button');
+      bLX.type = 'button';
+      bLX.className = 'tool-btn';
+      bLX.textContent = 'lexicon';
+      bLX.title = 'Show Strong’s entries for this verse';
 
       tools.appendChild(bCP);
       tools.appendChild(bXR);
       tools.appendChild(bCM);
-      tools.appendChild(bST);
+      tools.appendChild(bLX);
 
       // panels
       const pXR = document.createElement('div');
@@ -275,43 +349,16 @@
       });
       pCM.appendChild(ta);
 
-      const pST = document.createElement('div');
-      pST.className = 'v-panel st';
-
-      // 3b) Strong's panel content (use v.s codes; render inline entries)
-      if (Array.isArray(v.s) && v.s.length){
-        const seen = new Set();
-        const codes = [];
-        v.s.forEach(code=>{
-          if (!code) return;
-          const up = String(code).toUpperCase();
-          if (seen.has(up)) return; seen.add(up);
-          codes.push(up);
-        });
-
-        if (!codes.length){
-          pST.innerHTML = '<div class="muted">No Strong’s for this verse.</div>';
-        } else {
-          const chips = codes.map(c=>`<span class="badge" data-strong="${esc(c)}">${esc(c)}</span>`).join(' ');
-          const items = codes.map(c=>{
-            const e = window.Strongs?.get(c);
-            return e ? window.Strongs.renderRow(e)
-                     : `<div class="strongs-item"><div class="head"><span class="code">${esc(c)}</span><span class="gloss" style="color:#556">definition not found</span></div></div>`;
-          }).join('');
-          pST.innerHTML = `
-            <div style="margin-bottom:.35rem">${chips}</div>
-            <div class="strongs-list">${items}</div>
-          `;
-          window.Strongs?._rescan?.();
-        }
-      } else {
-        pST.innerHTML = '<div class="muted">No Strong’s for this verse.</div>';
-      }
-
       // wire toggles
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
-      bST.addEventListener('click', ()=> togglePanel(pST));
+
+      // Lexicon popup on click (uses v.s)
+      bLX.addEventListener('click', ()=>{
+        const html = verseLexiconHTML(v.s || []);
+        const r = bLX.getBoundingClientRect();
+        openHover(html, r.left + 8, r.bottom + 8);
+      });
 
       // copy handler
       {
@@ -331,7 +378,6 @@
       row.appendChild(tools);
       row.appendChild(pXR);
       row.appendChild(pCM);
-      row.appendChild(pST);
 
       // append verse + divider
       const hr = document.createElement('hr');
@@ -404,7 +450,7 @@
     hover.style.top  = top  + 'px';
     hover.style.visibility = '';
     hover.setAttribute('aria-hidden','false');
-}
+  }
   function closeHover(){
     if (!hover) return;
     hover.classList.remove('open');
@@ -449,12 +495,11 @@
     const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:46ch; line-height:1.55">${txt}</div>`;
 
     const rect = a.getBoundingClientRect();
-    // Prefer client (viewport) coordinates for fixed positioning
     const x = (evt && 'clientX' in evt) ? evt.clientX : rect.left + 4;
     const y = (evt && 'clientY' in evt) ? evt.clientY : rect.bottom + 4;
 
     openHover(html, x, y);
-}
+  }
 
   if (versesEl && hover){
     let hideTimer = null;
@@ -463,21 +508,22 @@
     hover.addEventListener('mouseenter', ()=> { if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }});
     hover.addEventListener('mouseleave', ()=> { hideTimer = setTimeout(closeHover, 120); });
 
+    // Cross-ref preview
     versesEl.addEventListener('mouseover', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
-      if (e.relatedTarget && a.contains(e.relatedTarget)) return; // internal move
+      if (e.relatedTarget && a.contains(e.relatedTarget)) return;
       if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
       showXrefPreview(a, e);
     });
     versesEl.addEventListener('mouseout', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
-      if (e.relatedTarget && a.contains(e.relatedTarget)) return; // internal move
+      if (e.relatedTarget && a.contains(e.relatedTarget)) return;
       hideTimer = setTimeout(closeHover, 120);
     });
 
-    // Keyboard accessibility
+    // Keyboard accessibility for refs
     versesEl.addEventListener('focusin', (e)=>{
       const a = e.target.closest('.v-panel.xr a');
       if (!a) return;
@@ -489,6 +535,16 @@
       if (!a) return;
       hideTimer = setTimeout(closeHover, 120);
     });
+
+    // Click inside hover: open Strong’s detailed card when clicking a code row
+    hover.addEventListener('click', (e)=>{
+      const row = e.target.closest('.lx-row');
+      if (!row) return;
+      const code = row.getAttribute('data-code');
+      const entry = strongsLookup(code);
+      const r = hover.getBoundingClientRect();
+      openHover(strongsCardHTML(entry), r.left + 8, r.top + 8);
+    });
   }
 
   // Close on scroll or click outside
@@ -499,18 +555,15 @@
 
   // ---------- Init ----------
   (async function init(){
-    const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
+    const pageTitle = $('#pageTitle'); if (pageTitle) textContent = 'Bible Reader';
     const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${prettyBook(ctx.book)} → ${ctx.chapter}`;
 
     await loadBooks();
     wireToolbar();
     wireDictionary();
 
+    await loadStrongLexicons(); // load Strong’s dictionaries once
     await loadXrefs();
-
-    // Preload Strong's so verse Strong's panels can render rich immediately
-    try { await window.Strongs?.load(STRONGS_LANG); } catch {}
-
     await loadChapter();
   })();
 
