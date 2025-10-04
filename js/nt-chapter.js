@@ -148,7 +148,7 @@
       <div>
         <div style="font-weight:800;margin:0 0 .35rem">Lexicon</div>
         ${rows}
-        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details. Double-click the pill to collapse.</div>
+        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details. Click the “lexicon” pill again to collapse.</div>
       </div>`;
   }
 
@@ -366,27 +366,19 @@
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
-      // Lexicon button behavior:
-      //  - single-open across page (close any other open lexicon panel)
-      //  - click toggles open; double-click on the pill closes if open
+      // Lexicon button behavior: single-click toggle with single-open across page
       bLX.addEventListener('click', ()=>{
-        // close previously open panel
-        if (currentlyOpenLX && currentlyOpenLX !== pLX){
-          currentlyOpenLX.classList.remove('open');
-        }
-        // (re)render and open
-        pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
-        pLX.classList.add('open');
-        currentlyOpenLX = pLX;
-
-        const r = pLX.getBoundingClientRect();
-        if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
-      });
-      bLX.addEventListener('dblclick', ()=>{
         if (pLX.classList.contains('open')){
           pLX.classList.remove('open');
           if (currentlyOpenLX === pLX) currentlyOpenLX = null;
+          return;
         }
+        if (currentlyOpenLX && currentlyOpenLX !== pLX){ currentlyOpenLX.classList.remove('open'); }
+        pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
+        pLX.classList.add('open');
+        currentlyOpenLX = pLX;
+        const r = pLX.getBoundingClientRect();
+        if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
 
       // delegation inside Lexicon panel: click code row → toggle one details block per verse
