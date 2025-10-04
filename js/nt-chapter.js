@@ -360,36 +360,48 @@
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
-      // Lexicon button → toggle inline panel; render list if needed
+      // Lexicon button → toggle inline panel; single-open across page; dblclick quick toggle
       bLX.addEventListener('click', ()=>{
-        // render fresh each time to reflect any updates
+        const isOpen = pLX.classList.contains('open');
+        document.querySelectorAll('.v-panel.lx.open').forEach(el=>{ if (el !== pLX) el.classList.remove('open'); });
+        if (isOpen){ pLX.classList.remove('open'); return; }
         pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
         pLX.classList.add('open');
-        // scroll into view if off-screen (optional nicety)
         const r = pLX.getBoundingClientRect();
         if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
+      bLX.addEventListener('dblclick', (e)=>{
+        e.preventDefault();
+        const isOpen = pLX.classList.contains('open');
+        if (isOpen){
+          pLX.classList.remove('open');
+        } else {
+          document.querySelectorAll('.v-panel.lx.open').forEach(el=>{ if (el !== pLX) el.classList.remove('open'); });
+          pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
+          pLX.classList.add('open');
+        }
+      });
 
-      // delegation inside Lexicon panel: click code row → toggle details
+      // delegation inside Lexicon panel: click code row → only one detail at a time
       pLX.addEventListener('click', (e)=>{
-  const row = e.target.closest('.lx-row');
-  if (!row) return;
-  const code = row.getAttribute('data-code');
+        const row = e.target.closest('.lx-row');
+        if (!row) return;
+        const code = row.getAttribute('data-code');
 
-  // close any other open details in this panel
-  [...pLX.querySelectorAll('.lx-details')].forEach(n=>n.remove());
-  [...pLX.querySelectorAll('.lx-row[data-open="1"]')].forEach(r=>r.setAttribute('data-open','0'));
+        // close any other open details in this panel
+        [...pLX.querySelectorAll('.lx-details')].forEach(n=>n.remove());
+        [...pLX.querySelectorAll('.lx-row[data-open="1"]')].forEach(r=>r.setAttribute('data-open','0'));
 
-  const wasOpen = row.getAttribute('data-open') === '1';
-  if (wasOpen){ row.setAttribute('data-open','0'); return; }
+        const wasOpen = row.getAttribute('data-open') === '1';
+        if (wasOpen){ row.setAttribute('data-open','0'); return; }
 
-  const entry = strongsLookup(code);
-  const html = strongsDetailHTML(entry);
-  const det = document.createElement('div');
-  det.innerHTML = html;
-  row.after(det.firstElementChild);
-  row.setAttribute('data-open','1');
-});
+        const entry = strongsLookup(code);
+        const html = strongsDetailHTML(entry);
+        const det = document.createElement('div');
+        det.innerHTML = html;
+        row.after(det.firstElementChild);
+        row.setAttribute('data-open','1');
+      });
 
       // assemble verse block
       row.appendChild(line);
