@@ -1,11 +1,9 @@
 /* nt-chapter.js — unified chapter loader for all canons
    - Canon/book/chapter selectors from /data/<canon>/books.json
-   - Verse rows with tools: e.g. (cross refs), exposition (notes), lexicon (Strong’s incl. KJV/Strong’s defs), copy icon
-   - Panels open/close properly
-   - Cross-references inline, semicolon-separated, small font
-   - Easton dictionary: /data/dictionaries/easton_dictionary.json
+   - Verse rows with tools: e.g. (cross refs), exposition (notes), lexicon (Strong’s), copy icon
+   - Cross-references use shared /js/xref-hover.js via .xref-trigger + data-xref
+   - Easton dictionary: /data/dictionaries/easton_dictionary.json (sidebar search)
    - Inserts <hr class="scripture-divider"> after each verse block
-   - Robust on-hover/focus cross-ref previews via #hovercard (for xrefs)
    - URL: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
@@ -24,7 +22,6 @@
 
   // ---------- DOM ----------
   const versesEl = $('#verses');
-  const hover = $('#hovercard'); // still used for xref previews
 
   const selCanon = $('#canonSelect');
   const selBook  = $('#bookSelect');
@@ -101,12 +98,11 @@
     return dict && dict[key] ? { code: key, ...dict[key] } : { code: key };
   }
 
-  // Prefer KJV line in list; show lemma/translit inline
   function strongsListRow(entry){
     if (!entry) return '';
-    const { code, lemma='', translit='', gloss='', kjv_def='' } = entry;
+    const { code, lemma='', translit='', gloss='' } = entry;
     const meta = [lemma, translit].filter(Boolean).join(' · ');
-    const desc = (kjv_def || gloss || '').toString();
+    const desc = gloss || '';
     return `
       <div class="lx-row" data-code="${esc(code)}" style="padding:.4rem 0;border-top:1px solid var(--sky);cursor:pointer">
         <div style="display:flex;align-items:baseline;gap:.5rem;">
@@ -119,28 +115,17 @@
 
   function strongsDetailHTML(entry){
     if (!entry) return '<div class="muted">No entry.</div>';
-    const {
-      code,
-      lemma='',
-      translit='',
-      pos='',
-      gloss='',
-      kjv_def='',
-      strongs_def='',
-      derivation='',
-      defs=[]
-    } = entry;
-
+    const { code, lemma='', translit='', pos='', gloss='', defs=[], derivation='', strongs_def='', kjv_def='' } = entry;
     const defsHtml = Array.isArray(defs) && defs.length
       ? `<ul style="margin:.35rem 0 .2rem .95rem">${defs.slice(0,7).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
       : '';
-
-    const kjvLine     = kjv_def     ? `<div style="margin-top:.25rem"><strong>KJV:</strong> ${esc(kjv_def)}</div>` : '';
-    const strongsLine = strongs_def ? `<div style="margin-top:.15rem"><strong>Strong’s:</strong> ${esc(strongs_def)}</div>` : '';
-    const glossLine   = gloss       ? `<div style="margin-top:.15rem"><em>${esc(gloss)}</em></div>` : '';
-    const derivLine   = derivation  ? `<div class="muted" style="margin-top:.2rem"><strong>Derivation:</strong> ${esc(derivation)}</div>` : '';
+    const glossLine = gloss ? `<div style="margin-top:.1rem"><em>${esc(gloss)}</em></div>` : '';
     const posLine = pos ? `<span class="badge" style="margin-left:.4rem">${esc(pos)}</span>` : '';
-
+    const extra = `
+      ${derivation ? `<div style="margin-top:.35rem"><b>Derivation:</b> ${esc(derivation)}</div>`:''}
+      ${strongs_def ? `<div style="margin-top:.35rem"><b>Strong’s:</b> ${esc(strongs_def)}</div>`:''}
+      ${kjv_def ? `<div style="margin-top:.35rem"><b>KJV:</b> ${esc(kjv_def)}</div>`:''}
+    `;
     return `
       <div class="lx-details" data-code="${esc(code)}" style="margin:.45rem 0 .15rem;padding:.6rem;border:1px solid var(--sky);border-radius:8px;background:#f9fafb">
         <div style="font-weight:800;color:var(--brand)">${esc(code)}${posLine}</div>
@@ -148,11 +133,9 @@
           <span dir="auto" style="font-weight:700">${esc(lemma)}</span>
           ${translit ? `<span class="muted" style="margin-left:.4rem">${esc(translit)}</span>` : ''}
         </div>
-        ${kjvLine}
-        ${strongsLine}
         ${glossLine}
-        ${derivLine}
         ${defsHtml}
+        ${extra}
       </div>
     `;
   }
@@ -165,7 +148,7 @@
       <div>
         <div style="font-weight:800;margin:0 0 .35rem">Lexicon</div>
         ${rows}
-        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details.</div>
+        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details. Double-click the pill to collapse.</div>
       </div>`;
   }
 
@@ -278,6 +261,8 @@
   }
 
   // ---------- Rendering ----------
+  let currentlyOpenLX = null; // only one lexicon panel open across the page
+
   function renderVerses(chJson){
     const arr = Array.isArray(chJson?.verses) ? chJson.verses : [];
     if (!arr.length){ status('Verses coming soon.'); return; }
@@ -348,6 +333,11 @@
       if (!refs.length){
         pXR.innerHTML = '<div class="muted">No cross references.</div>';
       } else {
+        const lineRefs = refs.map(r=>{
+          const href  = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
+          const label = `${prettyBook(r.slug)} ${r.c}:${r.v}`;
+          return `<a class="xref-trigger" data-xref="${esc(label)}" href="${href}">${esc(label)}</a>`;
+        }).join('; ');
         pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${lineRefs};</div>`;
       }
 
@@ -355,7 +345,7 @@
       pCM.className = 'v-panel cm';
       const ta = document.createElement('textarea');
       ta.className = 'exposition-text';
-      ta.setAttribute('rows','8'); // fixed height via CSS
+      ta.setAttribute('rows','8');
       ta.placeholder = 'Personal exposition for this verse…';
       ta.value = notes[v.v] || '';
       ta.addEventListener('input', ()=>{
@@ -367,43 +357,71 @@
       });
       pCM.appendChild(ta);
 
-      // inline Lexicon panel (hidden until opened)
+      // Inline Lexicon panel (hidden until opened)
       const pLX = document.createElement('div');
       pLX.className = 'v-panel lx';
       pLX.innerHTML = '<div class="muted">No Strong’s codes for this verse.</div>';
 
-      // toggles
+      // wire toggles
       bXR.addEventListener('click', ()=> togglePanel(pXR));
       bCM.addEventListener('click', ()=> togglePanel(pCM));
 
-      // Lexicon button → toggle inline panel; single-open across page; dblclick toggle
+      // Lexicon button behavior:
+      //  - single-open across page (close any other open lexicon panel)
+      //  - click toggles open; double-click on the pill closes if open
       bLX.addEventListener('click', ()=>{
-        const isOpen = pLX.classList.contains('open');
-        document.querySelectorAll('.v-panel.lx.open').forEach(el=> el.classList.remove('open'));
-        if (isOpen){ pLX.classList.remove('open'); return; }
+        // close previously open panel
+        if (currentlyOpenLX && currentlyOpenLX !== pLX){
+          currentlyOpenLX.classList.remove('open');
+        }
+        // (re)render and open
         pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
         pLX.classList.add('open');
+        currentlyOpenLX = pLX;
+
         const r = pLX.getBoundingClientRect();
         if (r.bottom > window.innerHeight) pLX.scrollIntoView({behavior:'smooth', block:'nearest'});
       });
-      bLX.addEventListener('dblclick', (e)=>{ e.preventDefault(); pLX.classList.toggle('open'); });
+      bLX.addEventListener('dblclick', ()=>{
+        if (pLX.classList.contains('open')){
+          pLX.classList.remove('open');
+          if (currentlyOpenLX === pLX) currentlyOpenLX = null;
+        }
+      });
 
-      // delegation inside Lexicon panel: click code row → only one detail open per verse
+      // delegation inside Lexicon panel: click code row → toggle one details block per verse
       pLX.addEventListener('click', (e)=>{
         const row = e.target.closest('.lx-row');
         if (!row) return;
-        // close others
+        const code = row.getAttribute('data-code');
+
+        // close any other open details in this panel
         [...pLX.querySelectorAll('.lx-details')].forEach(n=>n.remove());
         [...pLX.querySelectorAll('.lx-row[data-open="1"]')].forEach(r=>r.setAttribute('data-open','0'));
-        const code = row.getAttribute('data-code');
+
         const wasOpen = row.getAttribute('data-open') === '1';
         if (wasOpen){ row.setAttribute('data-open','0'); return; }
+
         const entry = strongsLookup(code);
+        const html = strongsDetailHTML(entry);
         const det = document.createElement('div');
-        det.innerHTML = strongsDetailHTML(entry);
+        det.innerHTML = html;
         row.after(det.firstElementChild);
         row.setAttribute('data-open','1');
       });
+
+      // copy handler
+      {
+        const refLabel = `${prettyBook(ctx.book)} ${ctx.chapter}:${v.v}`;
+        bCP.addEventListener('click', async ()=>{
+          const payload = `${refLabel} ${v.t || ''}`.trim();
+          try {
+            await navigator.clipboard.writeText(payload);
+            bCP.classList.add('copied');
+            setTimeout(()=>bCP.classList.remove('copied'), 900);
+          } catch {}
+        });
+      }
 
       // assemble verse block
       row.appendChild(line);
@@ -412,7 +430,7 @@
       row.appendChild(pCM);
       row.appendChild(pLX);
 
-      // divider
+      // append verse + divider
       const hr = document.createElement('hr');
       hr.className = 'scripture-divider';
       const wrap = document.createDocumentFragment();
@@ -421,9 +439,11 @@
       frag.appendChild(wrap);
     });
 
+    // clear placeholder and append all verses at once
     versesEl.innerHTML = '';
     versesEl.appendChild(frag);
 
+    // anchor scroll
     if (location.hash && /^#v\d+$/.test(location.hash)){
       const anchor = document.getElementById(location.hash.slice(1));
       if (anchor) anchor.scrollIntoView({behavior:'instant', block:'start'});
@@ -450,117 +470,6 @@
     } catch { XREFS = null; }
   }
 
-  // ---------- Hover card core (kept for cross-refs only) ----------
-  function openHover(html, x, y){
-    if (!hover) return;
-    hover.innerHTML = html;
-
-    const pad = 16;
-    const vw = window.innerWidth, vh = window.innerHeight;
-
-    hover.style.display = 'block';
-    hover.style.visibility = 'hidden';
-    hover.style.zIndex = '9999';
-    hover.classList.add('open');
-
-    const r = hover.getBoundingClientRect();
-
-    let left = (x ?? 0) + 12;
-    let top  = (y ?? 0) + 12;
-
-    if (left + r.width + pad > vw) left = vw - r.width - pad;
-    if (top + r.height + pad > vh) top = vh - r.height - pad;
-    if (left < pad) left = pad;
-    if (top  < pad) top  = pad;
-
-    hover.style.left = left + 'px';
-    hover.style.top  = top  + 'px';
-    hover.style.visibility = '';
-    hover.setAttribute('aria-hidden','false');
-  }
-  function closeHover(){
-    if (!hover) return;
-    hover.classList.remove('open');
-    hover.setAttribute('aria-hidden','true');
-    hover.style.display = 'none';
-  }
-
-  // ---------- Cross-ref hover previews ----------
-  async function getChapterJson(canon, slug, cnum){
-    const key = `${canon}/${slug}/${cnum}`;
-    if (_CHAPTER_CACHE[key]) return _CHAPTER_CACHE[key];
-    try{
-      const r = await fetch(CHAPTER_JSON(canon, slug, cnum));
-      if (!r.ok) throw 0;
-      const j = await r.json();
-      _CHAPTER_CACHE[key] = j;
-      return j;
-    }catch{ return null; }
-  }
-
-  function parseRefFromHref(href){
-    try{
-      const u = new URL(href, location.origin);
-      const parts = u.pathname.split('/').filter(Boolean);
-      const canon = parts[1] || '';
-      const qs = new URLSearchParams(u.search);
-      const slug = (qs.get('book')||'').toLowerCase();
-      const ch = parseInt(qs.get('ch')||'1',10) || 1;
-      const v = parseInt((u.hash||'').replace(/^#v/,''),10) || 1;
-      return {canon, slug, ch, v};
-    }catch{ return null; }
-  }
-
-  async function showXrefPreview(a, evt){
-    const ref = parseRefFromHref(a.getAttribute('href'));
-    if (!ref) return;
-    const data = await getChapterJson(ref.canon, ref.slug, ref.ch);
-    if (!data || !Array.isArray(data.verses)) return;
-    const vv = data.verses.find(x => Number(x.v) === Number(ref.v));
-    const title = `${prettyBook(ref.slug)} ${ref.ch}:${ref.v}`;
-    const txt = vv ? esc(vv.t||'') : 'Verse not available.';
-    const html = `<div style="font-weight:700; margin-bottom:.25rem">${esc(title)}</div><div style="max-width:46ch; line-height:1.55">${txt}</div>`;
-
-    const rect = a.getBoundingClientRect();
-    const x = (evt && 'clientX' in evt) ? evt.clientX : rect.left + 4;
-    const y = (evt && 'clientY' in evt) ? evt.clientY : rect.bottom + 4;
-
-    openHover(html, x, y);
-  }
-
-  if (versesEl && hover){
-    let hideTimer = null;
-
-    hover.addEventListener('mouseenter', ()=> { if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }});
-    hover.addEventListener('mouseleave', ()=> { hideTimer = setTimeout(closeHover, 120); });
-
-    versesEl.addEventListener('mouseover', (e)=>{
-      const a = e.target.closest('.v-panel.xr a');
-      if (!a) return;
-      if (e.relatedTarget && a.contains(e.relatedTarget)) return;
-      if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
-      showXrefPreview(a, e);
-    });
-    versesEl.addEventListener('mouseout', (e)=>{
-      const a = e.target.closest('.v-panel.xr a');
-      if (!a) return;
-      if (e.relatedTarget && a.contains(e.relatedTarget)) return;
-      hideTimer = setTimeout(closeHover, 120);
-    });
-
-    versesEl.addEventListener('focusin', (e)=>{
-      const a = e.target.closest('.v-panel.xr a');
-      if (!a) return;
-      if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
-      showXrefPreview(a, {pageX:0,pageY:0});
-    });
-    versesEl.addEventListener('focusout', (e)=>{
-      const a = e.target.closest('.v-panel.xr a');
-      if (!a) return;
-      hideTimer = setTimeout(closeHover, 120);
-    });
-  }
-
   // ---------- Init ----------
   (async function init(){
     const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
@@ -570,7 +479,7 @@
     wireToolbar();
     wireDictionary();
 
-    await loadStrongLexicons(); // load Strong’s dictionaries once
+    await loadStrongLexicons();
     await loadXrefs();
     await loadChapter();
   })();
