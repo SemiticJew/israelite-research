@@ -1,7 +1,12 @@
-(function(){ if (typeof window.isArticlePage==="undefined"){ window.isArticlePage=function(){ return false; }; } })();
+(function(){
+  if (typeof window.isArticlePage === "undefined"){
+    window.isArticlePage = function(){ return false; };
+  }
+})();
+
 // js/include.js
 (function(){
-  const BASE = '/israelite-research'; // absolute base for GitHub Pages
+  const BASE = '/israelite-research';
 
   function inject(id, path){
     const host = document.getElementById(id);
@@ -9,13 +14,9 @@
     fetch(`${BASE}${path}`, {cache:'no-store'})
       .then(r => r.ok ? r.text() : Promise.reject(new Error(r.status)))
       .then(html => { host.innerHTML = html; })
-      .catch(err => {
-        console.warn('Include failed:', path, err);
-        // fail open: no header/footer is better than breaking the page
-      });
+      .catch(()=>{});
   }
 
-  // Always absolute so subpages like /articles/... work
   inject('site-header', '/partials/header.html');
   inject('site-footer', '/partials/footer.html');
 })();
@@ -27,6 +28,7 @@
   window.refTagger = { settings: { bibleVersion: 'KJV', autodetect: true } };
   var rt = document.createElement('script');
   rt.defer = true;
+  rt.src = 'https://api.reftagger.com/v2/RefTagger.js';
   document.head.appendChild(rt);
 })();
 
@@ -35,10 +37,13 @@
   if (!isArticlePage()) return;
   var s = document.createElement('script');
   s.defer = true;
+  s.src = '/israelite-research/js/xref-hover.js';
   document.head.appendChild(s);
 })();
 
+/* Inject Author Modal (articles only) */
 (function(){
+  if (!isArticlePage()) return;
   if (document.getElementById("author-modal")) return;
   fetch("/israelite-research/partials/author-modal.html", {cache:"no-store"})
     .then(function(r){ return r.ok ? r.text() : null; })
@@ -52,8 +57,3 @@
     })
     .catch(function(){});
 })();
-
-// __isArticlePageGuard__
-if (typeof window.__isArticlePage !== "undefined" && window.__isArticlePage === false) {
-  // Skip site-wide modal on non-article pages
-}
