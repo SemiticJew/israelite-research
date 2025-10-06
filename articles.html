@@ -107,6 +107,7 @@
     .featured-right .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
 
 /* Remove the divider line above the author area on article cards (this page only) */
+.articles-page .card-footer { border-top: none !important; }
 
     .recent-grid{ display:flex; flex-wrap:wrap; gap:24px; }
     .article-card{ width:290px; height:450px; display:flex; flex-direction:column; }
@@ -146,6 +147,7 @@
     html[data-theme="dark"] body.articles-page .boxed,
     html[data-theme="dark"] body.articles-page .featured-left .excerpt-wrap,
     html[data-theme="dark"] body.articles-page .featured-right .card-body,
+    html[data-theme="dark"] body.articles-page .card-footer{
       background: var(--surface) !important;
       border-color: var(--border) !important;
       color:#FFFFFF !important;
@@ -167,6 +169,8 @@
     html[data-theme="dark"] body.articles-page .featured-right .card-body p,
     html[data-theme="dark"] body.articles-page .meta-date,
     html[data-theme="dark"] body.articles-page .author,
+    html[data-theme="dark"] body.articles-page .card-footer,
+    html[data-theme="dark"] body.articles-page .card-footer *{
       color:#FFFFFF !important;
     }
     /* links inside cards */
@@ -336,8 +340,13 @@
     })();
   </script>
 <script src="/israelite-research/js/include.js"></script>
+<style>/* Page-only: remove divider above author footer */ body.articles-page .card-footer{border-top:0!important;box-shadow:none!important;background-image:none!important} body.articles-page .card-body{border-bottom:0!important} body.articles-page .card-body + .card-footer{border-top:0!important} body.articles-page .article-card .card-footer, body.articles-page .featured-left .card-footer, body.articles-page .featured-right .card-footer{border-top:0!important}</style>
 <style>/* Remove divider above author footers on all article cards (featured + recent) */ body.articles-page .featured-left .card-footer, body.articles-page .featured-right .card-footer, body.articles-page .recent-grid .card-footer, body.articles-page .article-card .card-footer, body.articles-page .boxed .card-footer { border-top:0!important; border-block-start:0!important; border-top-color:transparent!important; box-shadow:none!important; background-image:none!important; } body.articles-page .featured-left .card-body, body.articles-page .featured-right .card-body, body.articles-page .recent-grid .card-body, body.articles-page .article-card .card-body, body.articles-page .boxed .card-body { border-bottom:0!important; border-block-end:0!important; border-bottom-color:transparent!important; } body.articles-page .article-card hr, body.articles-page .featured-left hr, body.articles-page .featured-right hr { display:none!important; }</style>
 <style>/* Remove internal grey hover and image zoom on all article cards (featured + recent) */ body.articles-page .article-card a:hover, body.articles-page .featured-left a:hover, body.articles-page .featured-right a:hover, body.articles-page .article-card .card-body:hover, body.articles-page .featured-left .excerpt-block:hover, body.articles-page .featured-right .card-body:hover { background: transparent !important; background-image: none !important; box-shadow: none !important; } body.articles-page .article-card .image-block img, body.articles-page .featured-left .image-block img, body.articles-page .featured-right .image-block img { transform: none !important; transition: none !important; } body.articles-page .article-card:hover .image-block img, body.articles-page .featured-left:hover .image-block img, body.articles-page .featured-right:hover .image-block img { transform: none !important; }</style>
 </body>
 </html>
 
+/* Page-only: remove divider above author footer */
+.articles-page .card-footer{border-top:0!important;box-shadow:none!important}
+.articles-page .card-footer::before,.articles-page .card-footer::after{content:none!important;border:0!important}
+.articles-page .card-body{border-bottom:0!important}
