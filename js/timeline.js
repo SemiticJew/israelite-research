@@ -1,358 +1,215 @@
-/* js/timelines.js
-   Renders multiple horizontal SVG timelines on Extra-Biblical Sources page:
-   - Books (if metadata available)
-   - Patriarchs (from BibleData-Epoch.csv Life entries)
-   - Judges (epoch_name/type heuristic)
-   - Captivities & Returns
-   - Scattering / Diaspora
-   Data roots use your /israelite-research/data/ files. Safe if files are missing.
+/* timelines.js — lightweight, dependency-free timeline/bar renderer
+   - Supports two modes:
+     A) lifespan-scale (no absolute start/end; bar length = lifespan)
+     B) absolute-scale    (place bars from `start` to `end` on a shared axis)
+   - Hovercard: attach any HTML via `hoverHTML(item)` and we'll display it.
 */
+
 (function(){
-  const DATA_ROOT = '/israelite-research/data';
-  const EPOCH_CSV = `${DATA_ROOT}/BibleData-Epoch.csv`;
-  const BOOK_META = `${DATA_ROOT}/metadata/book-periods.json`; // optional
+  const CSS = `
+  .tl-wrap{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--sky:#DBE4EE;--muted:#6b7280;--bg:#fff}
+  .tl{position:relative; width:100%; border:1px solid var(--sky); border-radius:12px; background:var(--bg); padding:12px 10px 16px}
+  .tl-axis{display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); margin:0 0 8px}
+  .tl-rows{display:flex; flex-direction:column; gap:8px}
+  .tl-row{display:grid; grid-template-columns:180px 1fr; gap:8px; align-items:center}
+  .tl-name{font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .tl-barwrap{position:relative; height:30px; background:#f8fafc; border:1px dashed #e6ebf2; border-radius:999px; overflow:hidden}
+  .tl-bar{position:absolute; left:0; top:0; height:100%; background:linear-gradient(90deg,var(--brand),#3E7CB1); border-radius:999px}
+  .tl-tickrow{position:relative; height:0; margin:6px 0 0}
+  .tl-tick{position:absolute; top:0; height:6px; width:1px; background:#cfd8e3}
+  .tl-ticklabel{position:absolute; top:8px; transform:translateX(-50%); font-size:.75rem; color:#667085}
+  .tl-legend{display:flex; gap:12px; flex-wrap:wrap; font-size:.85rem; color:#475569; margin-top:10px}
 
-  // ---------- DOM helpers ----------
-  const $ = (s, r=document)=>r.querySelector(s);
-  const esc = s => String(s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-  const clamp = (n, lo, hi)=>Math.max(lo, Math.min(hi, n));
+  /* Hovercard */
+  .hovercard{position:fixed; pointer-events:none; z-index:9999; max-width:320px; background:#fff; border:1px solid #e6ebf2; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08); padding:10px 12px}
+  .hovercard h5{margin:0 0 .25rem; font-size:1rem; color:#0b2340}
+  .hovercard .muted{color:#6b7280; font-size:.88rem}
+  `;
 
-  // ---------- CSV helpers ----------
-  function parseCSV(text){
-    // tiny CSV parser: handles quoted fields and commas/newlines
-    const rows=[]; let i=0, cur='', cell='', inQ=false;
-    while(i<=text.length){
-      const c = text[i] || '\n';
-      if (inQ){
-        if (c === '"'){
-          if (text[i+1] === '"'){ cell+='"'; i+=2; continue; }
-          inQ=false; i++; continue;
-        }
-        cell+=c; i++; continue;
-      }
-      if (c === '"'){ inQ=true; i++; continue; }
-      if (c === ','){ cur+=cell+'\x1f'; cell=''; i++; continue; }
-      if (c === '\r'){ i++; continue; } // skip
-      if (c === '\n'){
-        cur+=cell; rows.push(cur.split('\x1f')); cur=''; cell=''; i++; continue;
-      }
-      cell+=c; i++;
+  function ensureStyle(id, css){
+    if (document.getElementById(id)) return;
+    const s = document.createElement('style');
+    s.id = id;
+    s.textContent = css;
+    document.head.appendChild(s);
+  }
+
+  function createEl(tag, cls, html){
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (html != null) el.innerHTML = html;
+    return el;
+  }
+
+  function mountHover(){
+    let hc = document.getElementById('hovercard');
+    if (!hc){
+      hc = createEl('div','hovercard');
+      hc.id = 'hovercard';
+      document.body.appendChild(hc);
     }
-    if (rows.length && rows[rows.length-1].every(x=>x==='' )) rows.pop();
-    return rows;
-  }
-  function csvToObjects(text){
-    const rows = parseCSV(text);
-    if (!rows.length) return [];
-    const head = rows[0].map(h=>h.trim());
-    return rows.slice(1).map(r=>{
-      const obj={}; head.forEach((k,idx)=> obj[k]=r[idx]??''); return obj;
-    });
+    hc.setAttribute('aria-hidden','true');
+    hc.style.display = 'none';
+    return hc;
   }
 
-  // ---------- Year helpers ----------
-  function toNum(v){ const n = Number(String(v||'').trim()); return Number.isFinite(n) ? n : null; }
-  function yearFromRow(r){
-    // Prefer AH fields; else attempt calculation. Fall back null.
-    let s = toNum(r.start_year_ah);
-    let e = toNum(r.end_year_ah);
-    const len = toNum(r.period_length);
-    if (s!=null && e==null && len!=null) e = s + len;
-    if (s==null && e!=null && len!=null) s = e - len;
-    return { start:s, end:e };
+  function showHover(hc, html, x, y){
+    hc.innerHTML = html;
+    hc.style.left = (x + 12) + 'px';
+    hc.style.top  = (y + 12) + 'px';
+    hc.style.display = 'block';
+    hc.setAttribute('aria-hidden','false');
+  }
+  function hideHover(hc){
+    hc.style.display = 'none';
+    hc.setAttribute('aria-hidden','true');
   }
 
-  // ---------- Timeline renderer ----------
-  function renderTimeline(container, items, opts={}){
-    const el = (typeof container==='string') ? $(container) : container;
-    if (!el) return;
-    el.innerHTML = '';
-    const clean = items.filter(it=> it && it.start!=null && it.end!=null && it.end>=it.start);
-    if (!clean.length){ el.innerHTML = `<div class="muted">No data available.</div>`; return; }
-
-    const padL=90, padR=20, padT=18, rowH=28, gapV=6, labelPad=6;
-    const lanes = packLanes(clean); // compute lane (row) to avoid overlaps
-    const nlanes = Math.max(...lanes.map(x=>x.lane))+1;
-
-    const w = el.clientWidth || 900;
-    const h = padT + nlanes*(rowH+gapV) + 30;
-
-    const years = clean.flatMap(d=>[d.start, d.end]);
-    const minY = Math.min(...years);
-    const maxY = Math.max(...years);
-    const span = Math.max(1, maxY - minY);
-
-    const xScale = (y)=> padL + ( (w - padL - padR) * ( (y - minY) / span ) );
-
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('width', String(w));
-    svg.setAttribute('height', String(h));
-    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    svg.setAttribute('role','img');
-    svg.style.display='block';
-
-    // Axis
-    const axis = document.createElementNS(svgNS,'g');
-    const axisY = padT + nlanes*(rowH+gapV) + 6;
-    const base = document.createElementNS(svgNS,'line');
-    base.setAttribute('x1', String(padL));
-    base.setAttribute('x2', String(w - padR));
-    base.setAttribute('y1', String(axisY));
-    base.setAttribute('y2', String(axisY));
-    base.setAttribute('stroke', '#cbd5e1');
-    axis.appendChild(base);
-
-    const ticks = 6;
-    for (let i=0;i<=ticks;i++){
-      const yv = Math.round(minY + (span*i)/ticks);
-      const x = xScale(yv);
-      const t = document.createElementNS(svgNS,'line');
-      t.setAttribute('x1', String(x));
-      t.setAttribute('x2', String(x));
-      t.setAttribute('y1', String(axisY));
-      t.setAttribute('y2', String(axisY+6));
-      t.setAttribute('stroke', '#cbd5e1');
-      axis.appendChild(t);
-
-      const tx = document.createElementNS(svgNS,'text');
-      tx.setAttribute('x', String(x));
-      tx.setAttribute('y', String(axisY+18));
-      tx.setAttribute('text-anchor','middle');
-      tx.setAttribute('fill','#475569');
-      tx.setAttribute('font-size','11');
-      tx.textContent = `${yv} AH`;
-      axis.appendChild(tx);
-    }
-    svg.appendChild(axis);
-
-    // Bars
-    const g = document.createElementNS(svgNS,'g');
-    clean.forEach((d, idx)=>{
-      const lane = lanes[idx].lane;
-      const y = padT + lane*(rowH+gapV);
-      const x1 = xScale(d.start);
-      const x2 = xScale(d.end);
-      const rect = document.createElementNS(svgNS,'rect');
-      rect.setAttribute('x', String(x1));
-      rect.setAttribute('y', String(y));
-      rect.setAttribute('width', String(Math.max(2, x2-x1)));
-      rect.setAttribute('height', String(rowH));
-      rect.setAttribute('rx','6'); rect.setAttribute('ry','6');
-      rect.setAttribute('fill', d.color || '#DBE4EE');
-      rect.setAttribute('stroke', '#cfd8e3');
-      rect.setAttribute('data-title', d.title||'');
-      rect.setAttribute('data-range', `${d.start}–${d.end} AH`);
-      rect.style.cursor = d.url ? 'pointer' : 'default';
-      if (d.url){
-        rect.addEventListener('click', ()=> window.open(d.url,'_blank','noopener'));
-      }
-      g.appendChild(rect);
-
-      const label = document.createElementNS(svgNS,'text');
-      label.setAttribute('x', String(x1 + labelPad));
-      label.setAttribute('y', String(y + rowH/2 + 4));
-      label.setAttribute('fill', '#0b2340');
-      label.setAttribute('font-size','12');
-      label.setAttribute('font-weight','700');
-      label.textContent = (d.short || d.title || '').slice(0,50);
-      g.appendChild(label);
-
-      const sub = document.createElementNS(svgNS,'text');
-      sub.setAttribute('x', String(x1 + labelPad));
-      sub.setAttribute('y', String(y + rowH - 6));
-      sub.setAttribute('fill', '#64748b');
-      sub.setAttribute('font-size','11');
-      sub.textContent = `${d.start}–${d.end} AH`;
-      g.appendChild(sub);
-    });
-    svg.appendChild(g);
-
-    // Title (optional)
-    if (opts && opts.title){
-      const t = document.createElementNS(svgNS,'text');
-      t.setAttribute('x', String(10));
-      t.setAttribute('y', String(16));
-      t.setAttribute('fill', '#054A91');
-      t.setAttribute('font-size','12');
-      t.setAttribute('font-weight','700');
-      t.textContent = opts.title;
-      svg.appendChild(t);
-    }
-
-    el.appendChild(svg);
-
-    // responsive re-render
-    let ro;
-    if (window.ResizeObserver){
-      ro = new ResizeObserver(()=> renderTimeline(el, items, opts));
-      ro.observe(el);
-    }
-  }
-
-  // pack bars into lanes to reduce overlap
-  function packLanes(items){
-    const slots = []; // [{end}]
-    return items.map(it=>{
-      const s = it.start, e = it.end;
-      let lane = 0;
-      while (lane < slots.length && s < slots[lane]) lane++;
-      slots[lane] = e + 1e-6; // track last end
-      return { lane };
-    });
-  }
-
-  // ---------- Data mapping from Epoch CSV ----------
-  function mapPatriarchs(rows){
-    const out=[];
-    rows.forEach(r=>{
-      const typ = String(r.epoch_type||'').toLowerCase();
-      const name = String(r.epoch_name||'');
-      if (typ === 'life' || /^life[\s_-]?of/i.test(name)){
-        const {start, end} = yearFromRow(r);
-        if (start!=null && end!=null){
-          out.push({
-            title: name || (r.person_id||'Patriarch'),
-            short: (name.replace(/^The\s+/i,'')||'').replace(/^Life of\s+/i,''),
-            start, end, color:'#E8F3FF',
-            url: refURL(r.start_year_reference_id||'')
-          });
-        }
-      }
-    });
+  function scaleTicks(min, max, count=6){
+    const span = max - min;
+    if (span <= 0) return [];
+    const step = Math.max(1, Math.round(span / (count-1)));
+    const out = [];
+    for (let t=min; t<=max; t+=step) out.push(t);
+    if (out[out.length-1] !== max) out.push(max);
     return out;
   }
 
-  function mapJudges(rows){
-    const out=[];
-    rows.forEach(r=>{
-      const typ = String(r.epoch_type||'').toLowerCase();
-      const name = String(r.epoch_name||'');
-      if (typ==='judge' || typ==='judges' || /judge/i.test(name) || /judges/i.test(name) || /ruled/i.test(name)){
-        const {start, end} = yearFromRow(r);
-        if (start!=null && end!=null){
-          out.push({
-            title: name || 'Judge',
-            short: name.replace(/\b(The|Period of)\b\s*/gi,''),
-            start, end, color:'#FFF1E6',
-            url: refURL(r.start_year_reference_id||'')
-          });
+  function renderLifespanScale({container, items, label='Years', hoverHTML}){
+    const maxLife = Math.max(...items.map(d=> d.lifespan||0), 1);
+    const ticks   = scaleTicks(0, maxLife, 7);
+
+    const wrap = createEl('div','tl-wrap');
+    const tl   = createEl('div','tl');
+
+    const axis = createEl('div','tl-axis', `<strong style="color:#0b2340">Scale:</strong> ${label} (bar length = lifespan)`);
+    tl.appendChild(axis);
+
+    // Tick row over full width
+    const tickRow = createEl('div','tl-tickrow');
+    ticks.forEach(t=>{
+      const tk = createEl('div','tl-tick');
+      tk.style.left = (t/maxLife*100)+'%';
+      const lb = createEl('div','tl-ticklabel', t.toString());
+      lb.style.left = (t/maxLife*100)+'%';
+      tickRow.appendChild(tk);
+      tickRow.appendChild(lb);
+    });
+    tl.appendChild(tickRow);
+
+    const rows = createEl('div','tl-rows');
+    const hc = mountHover();
+
+    items.forEach(d=>{
+      const row = createEl('div','tl-row');
+      const name = createEl('div','tl-name', d.name);
+      const barw = createEl('div','tl-barwrap');
+      const bar  = createEl('div','tl-bar');
+
+      const w = Math.max(2, (d.lifespan/maxLife)*100);
+      bar.style.width = w + '%';
+
+      // Hover handlers (on name and bar)
+      const onEnter = (ev)=>{
+        if (!hoverHTML) return;
+        const html = hoverHTML(d);
+        showHover(hc, html, ev.clientX, ev.clientY);
+      };
+      const onMove = (ev)=>{
+        if (hc.getAttribute('aria-hidden')==='false'){
+          hc.style.left = (ev.clientX + 12)+'px';
+          hc.style.top  = (ev.clientY + 12)+'px';
         }
-      }
+      };
+      const onLeave = ()=> hideHover(hc);
+
+      [name, bar].forEach(el=>{
+        el.addEventListener('mouseenter', onEnter);
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+      });
+
+      barw.appendChild(bar);
+      row.appendChild(name);
+      row.appendChild(barw);
+      rows.appendChild(row);
     });
-    return out;
+
+    tl.appendChild(rows);
+    wrap.appendChild(tl);
+    container.innerHTML = '';
+    container.appendChild(wrap);
   }
 
-  function mapCaptivities(rows){
-    const out=[];
-    rows.forEach(r=>{
-      const typ = String(r.epoch_type||'').toLowerCase();
-      const name = String(r.epoch_name||'');
-      if (typ==='captivity' || typ==='exile' || /captiv|exile|return/i.test(name)){
-        const {start, end} = yearFromRow(r);
-        if (start!=null && end!=null){
-          out.push({
-            title: name || 'Captivity/Return',
-            short: name.replace(/\b(The|Period of)\b\s*/gi,''),
-            start, end, color:'#FFEDEB',
-            url: refURL(r.start_year_reference_id||'')
-          });
+  function renderAbsoluteScale({container, items, min, max, axisLabel='Year', hoverHTML}){
+    // Items need {start, end}. Draw bars positioned by (start..end) across min..max.
+    const span = Math.max(1, max - min);
+    const ticks = scaleTicks(min, max, 7);
+
+    const wrap = createEl('div','tl-wrap');
+    const tl   = createEl('div','tl');
+    tl.appendChild(createEl('div','tl-axis', `<strong style="color:#0b2340">Scale:</strong> ${axisLabel}`));
+
+    const tickRow = createEl('div','tl-tickrow');
+    ticks.forEach(t=>{
+      const p = ((t - min)/span)*100;
+      const tk = createEl('div','tl-tick');
+      tk.style.left = p + '%';
+      const lb = createEl('div','tl-ticklabel', t.toString());
+      lb.style.left = p + '%';
+      tickRow.appendChild(tk);
+      tickRow.appendChild(lb);
+    });
+    tl.appendChild(tickRow);
+
+    const rows = createEl('div','tl-rows');
+    const hc = mountHover();
+
+    items.forEach(d=>{
+      const row  = createEl('div','tl-row');
+      const name = createEl('div','tl-name', d.name);
+      const barw = createEl('div','tl-barwrap');
+      const bar  = createEl('div','tl-bar');
+
+      const left = Math.max(0, ((d.start - min)/span)*100);
+      const wid  = Math.max(1, ((d.end   - d.start)/span)*100);
+      bar.style.left  = left + '%';
+      bar.style.width = wid  + '%';
+
+      const onEnter = (ev)=>{
+        if (!hoverHTML) return;
+        showHover(hc, hoverHTML(d), ev.clientX, ev.clientY);
+      };
+      const onMove  = (ev)=>{
+        if (hc.getAttribute('aria-hidden')==='false'){
+          hc.style.left = (ev.clientX + 12)+'px';
+          hc.style.top  = (ev.clientY + 12)+'px';
         }
-      }
+      };
+      const onLeave = ()=> hideHover(hc);
+      [name, bar].forEach(el=>{
+        el.addEventListener('mouseenter', onEnter);
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+      });
+
+      barw.appendChild(bar);
+      row.appendChild(name);
+      row.appendChild(barw);
+      rows.appendChild(row);
     });
-    return out;
+
+    tl.appendChild(rows);
+    wrap.appendChild(tl);
+    container.innerHTML = '';
+    container.appendChild(wrap);
   }
 
-  function mapScattering(rows){
-    const out=[];
-    rows.forEach(r=>{
-      const typ = String(r.epoch_type||'').toLowerCase();
-      const name = String(r.epoch_name||'');
-      if (typ==='diaspora' || /scatter|dispersion|diaspora/i.test(name)){
-        const {start, end} = yearFromRow(r);
-        if (start!=null && end!=null){
-          out.push({
-            title: name || 'Scattering',
-            short: name.replace(/\b(The|Period of)\b\s*/gi,''),
-            start, end, color:'#EEFCEB',
-            url: refURL(r.start_year_reference_id||'')
-          });
-        }
-      }
-    });
-    return out;
-  }
+  ensureStyle('timelines-css', CSS);
 
-  function mapBooks(bookMeta){
-    // bookMeta: [{title, start_ah, end_ah, canon, slug}]
-    const out=[];
-    (Array.isArray(bookMeta) ? bookMeta : []).forEach(b=>{
-      const s = toNum(b.start_ah), e = toNum(b.end_ah);
-      if (s!=null && e!=null){
-        out.push({
-          title: b.title,
-          short: b.title,
-          start:s, end:e, color:'#F3F4F6',
-          url: b.slug ? `/israelite-research/${b.canon||'newtestament'}/chapter.html?book=${encodeURIComponent(b.slug)}&ch=1` : ''
-        });
-      }
-    });
-    return out;
-  }
-
-  function refURL(ref){
-    // expects like "GEN 5:5" or "GEN5:5"
-    if (!ref) return '';
-    const m = /^([A-Za-z]+)\s*([0-9]+):([0-9]+)$/i.exec(String(ref).replace(/\s+/g,' ').trim());
-    if (!m) return '';
-    const bookLabel = m[1]; // we don't know canon from ref → leave empty
-    return ''; // link unknown; can wire to your canon resolver later
-  }
-
-  // ---------- Load + render orchestration ----------
-  async function loadEpochs(){
-    try{
-      const r = await fetch(EPOCH_CSV);
-      if (!r.ok) throw 0;
-      const txt = await r.text();
-      return csvToObjects(txt);
-    }catch{ return []; }
-  }
-  async function loadBookMeta(){
-    try{
-      const r = await fetch(BOOK_META);
-      if (!r.ok) throw 0;
-      return await r.json();
-    }catch{
-      // Soft fallback: minimal examples so the track renders
-      return [
-        { title:'Torah (Genesis–Deuteronomy)', start_ah:1, end_ah:2550, canon:'tanakh', slug:'genesis' },
-        { title:'Prophets (Selected)', start_ah:2800, end_ah:3500, canon:'tanakh', slug:'isaiah' },
-        { title:'Gospels (Public ministry era)', start_ah:3950, end_ah:3985, canon:'newtestament', slug:'matthew' }
-      ];
-    }
-  }
-
-  async function init(){
-    const [rows, books] = await Promise.all([ loadEpochs(), loadBookMeta() ]);
-
-    const patri = mapPatriarchs(rows);
-    const judges = mapJudges(rows);
-    const caps   = mapCaptivities(rows);
-    const dias   = mapScattering(rows);
-    const bookT  = mapBooks(books);
-
-    const has = id => !!$(id);
-
-    if (has('#timelineBooks'))       renderTimeline('#timelineBooks', bookT, {title:'Books (approximate periods, AH)'});
-    if (has('#timelinePatriarchs'))  renderTimeline('#timelinePatriarchs', patri, {title:'Patriarchs (lifespans, AH)'});
-    if (has('#timelineJudges'))      renderTimeline('#timelineJudges', judges, {title:'Judges / Rules (AH)'});
-    if (has('#timelineCaptivities')) renderTimeline('#timelineCaptivities', caps, {title:'Captivities & Returns (AH)'});
-    if (has('#timelineScattering'))  renderTimeline('#timelineScattering', dias, {title:'Scattering / Diaspora (AH)'});
-  }
-
-  // Kickoff when DOM ready
-  if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else { init(); }
+  // Expose minimal API
+  window.Timelines = {
+    renderLifespanScale,
+    renderAbsoluteScale
+  };
 })();
