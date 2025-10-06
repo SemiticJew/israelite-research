@@ -138,7 +138,7 @@
     onEachFeature
   }).addTo(map);
 
-  // --- LEGEND / INFO BOX ---
+    // --- LEGEND / INFO BOX ---
   const ctl = L.control({position:"topright"});
   ctl.onAdd = function(){
     const div = L.DomUtil.create('div', 'leaf-legend');
@@ -157,4 +157,66 @@
     return div;
   };
   ctl.addTo(map);
+
+  /* ⬇️ ERA PRESET WIRING BELOW (insert here, before the closing })(); ) */
+  // ===============================
+  const ERA_JSON = "/israelite-research/data/eras/eras.json";
+  let maskLayer, regionsLayer, labelsLayer;
+
+  async function loadEraById(eraId){
+    const eras = await (await fetch(ERA_JSON)).json();
+    const era = eras.find(e => e.id === eraId);
+    if(!era) return console.warn("Era not found:", eraId);
+    if(maskLayer) map.removeLayer(maskLayer);
+    if(regionsLayer) map.removeLayer(regionsLayer);
+    if(labelsLayer) map.removeLayer(labelsLayer);
+
+    map.fitBounds(era.bounds);
+
+    // 1. Mask (darken world outside area)
+    maskLayer = L.geoJSON({
+      "type":"Feature",
+      "geometry":{"type":"Polygon","coordinates":era.mask}
+    }, {
+      style:{color:"#000",weight:0,fillColor:"#000",fillOpacity:0.75}
+    }).addTo(map);
+
+    // 2. Ancient regions overlay
+    const regions = await (await fetch(era.regions_geojson)).json();
+    regionsLayer = L.geoJSON(regions, {
+      style:{color:"#054A91",weight:1.2,fillColor:"#DBE4EE",fillOpacity:0.4}
+    }).addTo(map);
+
+    // 3. Optional custom labels
+    if(era.labels_geojson){
+      const labels = await (await fetch(era.labels_geojson)).json();
+      labelsLayer = L.geoJSON(labels, {
+        pointToLayer:(f,latlng)=>L.marker(latlng,{opacity:0})
+          .bindTooltip(f.properties.name,{permanent:true,direction:'center',className:'era-label'})
+      }).addTo(map);
+    }
+  }
+
+  // Example: add simple dropdown (top-left)
+  const eraCtl = L.control({position:"topleft"});
+  eraCtl.onAdd = function(){
+    const div = L.DomUtil.create('div','leaf-era');
+    div.innerHTML = `
+      <select id="era-select" style="font:inherit;padding:.25rem .4rem;border:1px solid #e6ebf2;border-radius:8px;">
+        <option value="">Select Era</option>
+        <option value="egyptian_period">Egyptian Period</option>
+        <option value="babylonian_period">Babylonian Period</option>
+        <option value="roman_period">Roman Period</option>
+      </select>
+    `;
+    return div;
+  };
+  eraCtl.addTo(map);
+
+  document.addEventListener('change', e=>{
+    if(e.target.id==='era-select' && e.target.value){
+      loadEraById(e.target.value);
+    }
+  });
+  // ===============================
 })();
