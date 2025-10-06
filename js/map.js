@@ -1,12 +1,14 @@
-/* map.js — Leaflet demo with clickable GeoJSON regions + data from your timelines JSONs */
+/* map.js — Leaflet map with clickable GeoJSON regions + timeline dataset linkage
+   Now using CARTO Positron (English labels, global coverage)
+*/
 
 (async function(){
   // --- CONFIG ---
   const BRAND = { blue:"#054A91", light:"#DBE4EE", orange:"#F17300" };
-  const TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"; // OSM tiles
+  const TILE_URL = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"; // English world map
   const REGIONS_GEOJSON = "/israelite-research/data/regions/israelite-regions.geojson";
 
-  // Timeline datasets (already created earlier)
+  // Timeline datasets
   const TL = "/israelite-research/data/timelines";
   const SOURCES = {
     patriarchs:   `${TL}/patriarchs.json`,
@@ -24,7 +26,7 @@
     return r.json();
   }
 
-  // Build an index from your datasets keyed by region id
+  // Build an index keyed by region id for quick lookup
   function indexByRegion(datasets){
     const idx = {};
     function add(regionId, payload){
@@ -32,9 +34,8 @@
       if(!idx[regionId]) idx[regionId] = [];
       idx[regionId].push(payload);
     }
-    // helper to push each region id
     function pushRegions(entry, type){
-      const ridList = entry.region_ids || []; // optional; add later as you curate
+      const ridList = entry.region_ids || [];
       ridList.forEach(rid=>{
         add(rid, {
           type,
@@ -84,13 +85,18 @@
   const regionIndex = indexByRegion({patriarchs, judges, captivities, scattering, books});
 
   // --- INIT LEAFLET MAP ---
-  const map = L.map("isr-map", { zoomControl: true, minZoom: 3, maxZoom: 12 });
+  const map = L.map("isr-map", { zoomControl: true, minZoom: 2, maxZoom: 12 });
+
+  // CARTO Positron (English labels)
   L.tileLayer(TILE_URL, {
-    attribution: "&copy; OpenStreetMap contributors"
+    attribution: '&copy; OpenStreetMap contributors, &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 20,
+    detectRetina: true
   }).addTo(map);
 
-  // Fit to Eastern Med / Near East quickly
-  const initBounds = [[18, -10],[48, 60]]; // [southWest],[northEast] lat/lon
+  // Fit view roughly around the Old World (adjust later if needed)
+  const initBounds = [[-40, -25],[65, 85]]; // global-ish
   map.fitBounds(initBounds);
 
   // --- REGION STYLE + INTERACTION ---
@@ -132,7 +138,7 @@
     onEachFeature
   }).addTo(map);
 
-  // --- LEGEND / FILTERS (simple toggles for now) ---
+  // --- LEGEND / INFO BOX ---
   const ctl = L.control({position:"topright"});
   ctl.onAdd = function(){
     const div = L.DomUtil.create('div', 'leaf-legend');
@@ -144,10 +150,11 @@
     div.innerHTML = `
       <div style="font-weight:700;color:${BRAND.blue};margin-bottom:4px">Layers</div>
       <label style="display:block;font-size:.9rem"><input type="checkbox" checked disabled/> Regions</label>
-      <div class="muted" style="font-size:.8rem;color:#6b7280;margin-top:4px">Click any region to view linked records.</div>
+      <div class="muted" style="font-size:.8rem;color:#6b7280;margin-top:4px">
+        Click any region to view linked records.
+      </div>
     `;
     return div;
   };
   ctl.addTo(map);
-
 })();
