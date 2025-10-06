@@ -3,41 +3,47 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources</title>
+<title>Extra-Biblical Sources — Interactive Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 
+<!-- Leaflet (for Option B map) -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  crossorigin=""
+/>
+
 <style>
-  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  :root{
+    --ink:#0b2340; --accent:#F17300; --brand:#054A91;
+    --muted:#6b7280; --sky:#DBE4EE; --white:#fff
+  }
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
-  .page-header{padding:24px 0 8px}
-  .page-title{margin:0;font-size:2rem;font-weight:800}
-  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+  .page-header{padding:28px 0 16px}
+  .page-title{margin:0;font-size:2.1rem;font-weight:800}
+  .crumbs{color:var(--muted);font-size:.95rem;margin-top:4px}
 
-  .layout{display:grid;grid-template-columns:1fr;gap:18px;margin:16px 0 40px}
-  .panel{background:var(--white);border:1px solid var(--sky);border-radius:12px;padding:14px}
+  /* Hero */
+  .hero{
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border:1px solid var(--sky); border-radius:14px; padding:16px;
+    display:flex; flex-direction:column; gap:.25rem
+  }
+  .hero h2{margin:.2rem 0; font-size:1.35rem; color:var(--brand)}
+  .hero p{margin:0; color:#475569}
+
+  /* Panels */
+  .panel{background:var(--white);border:1px solid var(--sky);border-radius:12px;padding:14px;margin:18px 0}
   .panel h3{margin:.2rem 0 .6rem;font-size:1.1rem;color:var(--brand)}
-  .muted{color:var(--muted)}
 
-  /* Tabs (People/Events/Epochs) */
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-  .tab-btn{border:1px solid var(--sky);background:#fff;border-radius:10px;padding:.45rem .7rem;cursor:pointer;font:inherit}
-  .tab-btn[aria-selected="true"]{background:#f8fafc;border-color:#cfd8e3;font-weight:700}
-  .tab-panel{display:none}
-  .tab-panel.open{display:block}
+  /* Map */
+  #isr-map{
+    width:100%; height:560px;
+    border:1px solid var(--sky); border-radius:12px; overflow:hidden
+  }
+  .leaf-legend input{vertical-align:middle}
 
-  /* Data grids */
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-  .card{border:1px solid var(--sky);border-radius:12px;padding:12px;background:#fff}
-  .card h4{margin:.1rem 0 .4rem;font-size:1.02rem;color:#0b2340}
-  .kv{font-size:.92rem;line-height:1.5}
-  .kv .row{padding:.22rem 0;border-top:1px dashed #e6ebf2;white-space:pre-wrap}
-  .kv .row:first-child{border-top:none}
-
-  /* Timelines */
-  .timeline-refs a{color:var(--brand);text-decoration:none;border-bottom:1px dotted #cbd5e1}
-  .timeline-refs a:hover{border-bottom-color:var(--brand)}
-
-  /* Author modal visibility fix (kept from your prior page) */
+  /* Optional: author modal visibility fix retained from earlier pages */
   #author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
   #author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}
 </style>
@@ -51,87 +57,34 @@
     <div class="crumbs">Research → Extra-Biblical Sources</div>
   </header>
 
-  <!-- What is solid (kept) -->
-  <section class="panel" id="what-is-solid">
-    <h3>What is solid</h3>
-    <p class="muted" id="solid-note">
-      This section preserves the vetted material you marked as “solid.” You can keep curating here without it being affected by layout changes.
-    </p>
-    <div id="solid-content">
-      <!-- Keep/maintain your curated HTML here (unchanged from your previous version). -->
-    </div>
+  <!-- Hero -->
+  <section class="hero">
+    <h2>Israelite Regions — Interactive Map</h2>
+    <p>Explore core regions tied to Israelites’ sojourns and historical periods. Click a region to see linked entries from your datasets (Patriarchs, Captivities, Scattering, Books).</p>
   </section>
 
-  <!-- Source Datasets (People / Events / Epochs) -->
+  <!-- Map only (no timelines on this page) -->
   <section class="panel">
-    <h3>Datasets</h3>
-    <div class="tabs" role="tablist" aria-label="Datasets">
-      <button class="tab-btn" role="tab" id="tab-persons" aria-controls="panel-persons" aria-selected="true">Persons</button>
-      <button class="tab-btn" role="tab" id="tab-events" aria-controls="panel-events" aria-selected="false">Events</button>
-      <button class="tab-btn" role="tab" id="tab-epochs" aria-controls="panel-epochs" aria-selected="false">Epochs</button>
-    </div>
-
-    <div id="panel-persons" class="tab-panel open" role="tabpanel" aria-labelledby="tab-persons">
-      <div class="grid" id="personsGrid"><p class="muted">Loading…</p></div>
-    </div>
-    <div id="panel-events" class="tab-panel" role="tabpanel" aria-labelledby="tab-events">
-      <div class="grid" id="eventsGrid"><p class="muted">Loading…</p></div>
-    </div>
-    <div id="panel-epochs" class="tab-panel" role="tabpanel" aria-labelledby="tab-epochs">
-      <div class="grid" id="epochsGrid"><p class="muted">Loading…</p></div>
-    </div>
-  </section>
-
-  <!-- Timelines Lab -->
-  <section class="panel" id="timelines">
-    <h3>Timelines</h3>
-
-    <h4 style="margin-top:.5rem">Books</h4>
-    <div id="timelineBooks" style="width:100%;"></div>
-
-    <h4 style="margin-top:1.25rem">Patriarchs</h4>
-    <div id="timelinePatriarchs" style="width:100%;"><p class="muted">Loading…</p></div>
-
-    <h4 style="margin-top:1.25rem">Judges</h4>
-    <div id="timelineJudges" style="width:100%;"></div>
-
-    <h4 style="margin-top:1.25rem">Israelite Captivities &amp; Returns</h4>
-    <div id="timelineCaptivities" style="width:100%;"></div>
-
-    <h4 style="margin-top:1.25rem">Scattering / Diaspora</h4>
-    <div id="timelineScattering" style="width:100%;"></div>
+    <h3>Map</h3>
+    <div id="isr-map" role="region" aria-label="Interactive map of Israelite regions"></div>
   </section>
 </main>
 
 <div id="site-footer"></div>
-<div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
 
 <!-- Base site scripts -->
 <script src="/israelite-research/js/shims.js" defer></script>
 <script src="/israelite-research/js/include.js" defer></script>
-
-<!-- Article hover for verse refs (same as Articles page) -->
 <script src="/israelite-research/js/xref-hover.js" defer></script>
 
-<!-- Timeline engine must load BEFORE the page-specific renderer -->
-<script src="/israelite-research/js/timeline.js" defer></script>
-<script src="/israelite-research/js/extra-biblical-sources.js" defer></script>
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  crossorigin=""
+  defer
+></script>
 
-<script>
-/* Small tab controller (keeps your styles) */
-(function(){
-  const tabs = document.querySelectorAll('.tab-btn');
-  const panels = document.querySelectorAll('.tab-panel');
-  tabs.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      tabs.forEach(b=> b.setAttribute('aria-selected','false'));
-      panels.forEach(p=> p.classList.remove('open'));
-      btn.setAttribute('aria-selected','true');
-      const panel = document.getElementById(btn.getAttribute('aria-controls'));
-      if (panel) panel.classList.add('open');
-    });
-  });
-})();
-</script>
+<!-- Map logic (loads regions GeoJSON and links to your JSON datasets) -->
+<script src="/israelite-research/js/map.js" defer></script>
 </body>
 </html>
