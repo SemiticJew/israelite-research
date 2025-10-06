@@ -1,16 +1,17 @@
-/* extra-biblical-sources.js — loads JSON datasets and renders simple number lines */
+/* extra-biblical-sources.js — loads JSON and renders dot-plot timelines */
 (async function(){
   const base = '/israelite-research/data/timelines';
-  const byId = id => document.getElementById(id);
+  const $ = id => document.getElementById(id);
+
   async function loadJSON(path){
     const r = await fetch(path + `?v=${Date.now()}`, { cache:'no-store' });
     if(!r.ok) throw new Error(`Load failed: ${path}`);
     return r.json();
   }
-  // Simple grids (unchanged)
+
+  // Simple dataset cards (unchanged scaffolding)
   function mountGrid(id, rows, toCard){
-    const el = byId(id); if(!el) return; el.innerHTML='';
-    rows.forEach(r=> el.appendChild(toCard(r)));
+    const el = $(id); if(!el) return; el.innerHTML=''; rows.forEach(r=> el.appendChild(toCard(r)));
   }
   const persons = [
     { name:'Abraham', role:'Patriarch', notes:'Covenant; father of Isaac; sojourned in Canaan.' },
@@ -23,32 +24,18 @@
     { title:'Binding of Isaac', where:'Moriah', era:'Genesis 22' }
   ];
   const epochs  = [{ label:'Patriarchal period', span:'From Abraham to Joseph' }];
-  const personCard = p => {
-    const c = document.createElement('div'); c.className='card';
-    c.innerHTML = `<h4>${p.name}</h4><div class="kv">
-      <div class="row"><strong>Role:</strong> ${p.role||'—'}</div>
-      <div class="row"><strong>Notes:</strong> ${p.notes||'—'}</div></div>`;
-    return c;
-  };
-  const eventCard = e => {
-    const c = document.createElement('div'); c.className='card';
-    c.innerHTML = `<h4>${e.title}</h4><div class="kv">
-      <div class="row"><strong>Where:</strong> ${e.where||'—'}</div>
-      <div class="row"><strong>Text/Era:</strong> ${e.era||'—'}</div></div>`;
-    return c;
-  };
-  const epochCard = ep => {
-    const c = document.createElement('div'); c.className='card';
-    c.innerHTML = `<h4>${ep.label}</h4><div class="kv">
-      <div class="row"><strong>Span:</strong> ${ep.span||'—'}</div></div>`;
-    return c;
-  };
-  mountGrid('personsGrid', persons, personCard);
-  mountGrid('eventsGrid',  events,  eventCard);
-  mountGrid('epochsGrid',  epochs,  epochCard);
 
-  // Helper: common hover HTML
-  const hover = d => `
+  const card = (title, rows) => {
+    const c=document.createElement('div'); c.className='card';
+    c.innerHTML = `<h4>${title.name||title.label||title.title}</h4><div class="kv">` + rows.map(r=>`<div class="row"><strong>${r[0]}:</strong> ${r[1]??'—'}</div>`).join('') + `</div>`;
+    return c;
+  };
+  mountGrid('personsGrid', persons, p=>card(p,[['Role',p.role],['Notes',p.notes]]));
+  mountGrid('eventsGrid',  events,  e=>card(e,[['Where',e.where],['Text/Era',e.era]]));
+  mountGrid('epochsGrid',  epochs,  ep=>card(ep,[['Span',ep.span]]));
+
+  // Common hover template
+  const hoverHTML = (d)=> `
     <h5>${d.name}</h5>
     ${d.short ? `<div class="muted">${d.short}</div>` : ''}
     ${
@@ -59,29 +46,21 @@
     ${d.refs ? `<div class="muted" style="margin-top:.25rem"><em>${d.refs}</em></div>` : ''}
   `;
 
-  async function loadAndRender(containerId, file, axisLabel){
-    const el = byId(containerId); if(!el) return;
-    el.innerHTML = `<p class="muted">Loading…</p>`;
-    try {
+  async function renderDot(containerId, file, axisLabel){
+    const el = $(containerId); if(!el) return; el.innerHTML = `<p class="muted">Loading…</p>`;
+    try{
       const data = await loadJSON(`${base}/${file}`);
-      // The number line expects items with either lifespan or duration. We pass as-is.
-      window.Timelines.renderNumberLine({
-        container: el,
-        items: data,
-        label: axisLabel,
-        hoverHTML: hover
-      });
-    } catch (e){
-      console.error(e);
-      el.innerHTML = `<p class="muted">Failed to load ${file}</p>`;
+      window.Timelines.renderDotPlot({ container: el, items: data, label: axisLabel, hoverHTML });
+    }catch(e){
+      console.error(e); el.innerHTML = `<p class="muted">Failed to load ${file}</p>`;
     }
   }
 
   await Promise.all([
-    loadAndRender('timelineBooks',        'books.json',       'Years'),
-    loadAndRender('timelinePatriarchs',   'patriarchs.json',  'Years'),
-    loadAndRender('timelineJudges',       'judges.json',      'Years'),
-    loadAndRender('timelineCaptivities',  'captivities.json', 'Years'),
-    loadAndRender('timelineScattering',   'scattering.json',  'Years')
+    renderDot('timelineBooks',        'books.json',       'Years'),
+    renderDot('timelinePatriarchs',   'patriarchs.json',  'Years'),
+    renderDot('timelineJudges',       'judges.json',      'Years'),
+    renderDot('timelineCaptivities',  'captivities.json', 'Years'),
+    renderDot('timelineScattering',   'scattering.json',  'Years')
   ]);
 })();
