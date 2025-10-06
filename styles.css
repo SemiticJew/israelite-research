@@ -3832,3 +3832,7 @@ hr{border:0;border-top:1px solid var(--border)}
 .v-panel.lx.open{animation:fadeSlide .12s ease}
 @keyframes fadeSlide{from{opacity:0;transform:translateY(-2px)}to{opacity:1;transform:translateY(0)}}
 
+
+# Author modal visibility guard
+#author-modal.modal-overlay{display:none!important}
+body.articles-page #author-modal.modal-overlay{display:flex!important}
