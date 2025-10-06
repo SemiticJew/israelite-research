@@ -52,3 +52,8 @@
     })
     .catch(function(){});
 })();
+
+// __isArticlePageGuard__
+if (typeof window.__isArticlePage !== "undefined" && window.__isArticlePage === false) {
+  // Skip site-wide modal on non-article pages
+}
