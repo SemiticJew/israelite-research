@@ -49,7 +49,7 @@
       temp.innerHTML = html.trim();
       var modal = temp.firstElementChild;
       if (modal) document.body.appendChild(modal);
-    })
+    }    })
     .catch(function(){});
 })();
 
