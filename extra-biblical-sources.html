@@ -36,6 +36,10 @@
   /* Timelines */
   .timeline-refs a{color:var(--brand);text-decoration:none;border-bottom:1px dotted #cbd5e1}
   .timeline-refs a:hover{border-bottom-color:var(--brand)}
+
+  /* Author modal visibility fix (kept from your prior page) */
+  #author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
+  #author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}
 </style>
 </head>
 <body>
@@ -86,7 +90,7 @@
     <div id="timelineBooks" style="width:100%;"></div>
 
     <h4 style="margin-top:1.25rem">Patriarchs</h4>
-    <div id="timelinePatriarchs" style="width:100%;"></div>
+    <div id="timelinePatriarchs" style="width:100%;"><p class="muted">Loading…</p></div>
 
     <h4 style="margin-top:1.25rem">Judges</h4>
     <div id="timelineJudges" style="width:100%;"></div>
@@ -109,9 +113,9 @@
 <!-- Article hover for verse refs (same as Articles page) -->
 <script src="/israelite-research/js/xref-hover.js" defer></script>
 
-<!-- Page data/render modules -->
+<!-- Timeline engine must load BEFORE the page-specific renderer -->
+<script src="/israelite-research/js/timeline.js" defer></script>
 <script src="/israelite-research/js/extra-biblical-sources.js" defer></script>
-<script src="/israelite-research/js/timelines.js" defer></script>
 
 <script>
 /* Small tab controller (keeps your styles) */
@@ -131,5 +135,3 @@
 </script>
 </body>
 </html>
-<style>#author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
-#author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}</style>
