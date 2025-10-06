@@ -2,9 +2,34 @@
   {
     "id": "egyptian_period",
     "name": "Egyptian Period",
-    "bounds": [[18, -10], [36, 50]],
-    "mask": [[[-180,-90],[-180,90],[180,90],[180,-90],[-180,-90]], [[-10,10],[50,10],[50,40],[-10,40],[-10,10]]],
+    "dates": "Late Bronze Age (approx.)",
+    "overview": "Focus on the Nile Delta to Sinai and Canaan. Emphasize Israel’s sojourn and the Exodus context.",
+    "highlights": ["Sojourn in Egypt", "Oppression and Exodus", "Wilderness route toward Canaan"],
+    "scripture": ["Exodus 1–14", "Numbers 33"],
+    "bounds": [[22, 24], [34, 36]],
+    "mask": [[[-180,-90],[-180,90],[180,90],[180,-90],[-180,-90]],[ [24,22],[36,22],[36,36],[24,36],[24,22] ]],
     "regions_geojson": "/israelite-research/data/eras/egyptian_regions.geojson",
     "labels_geojson": "/israelite-research/data/eras/egyptian_labels.geojson"
+  },
+  {
+    "id": "babylonian_period",
+    "name": "Babylonian Period",
+    "dates": "Neo-Babylonian Empire (7th–6th c. BCE)",
+    "overview": "Judah’s exile and the power center shifting to Mesopotamia.",
+    "highlights": ["Siege of Jerusalem", "Temple destruction", "Exile to Babylon"],
+    "scripture": ["2 Kings 24–25", "Jeremiah 29", "Daniel 1"],
+    "bounds": [[28, 27], [50, 38]],
+    "mask": [[[-180,-90],[-180,90],[180,90],[180,-90],[-180,-90]],[ [27,28],[38,28],[38,50],[27,50],[27,28] ]],
+    "regions_geojson": "/israelite-research/data/eras/babylon_regions.geojson"
+  },
+  {
+    "id": "roman_period",
+    "name": "Roman Period",
+    "dates": "1st–2nd c. CE (70–135 CE dispersion emphasis)",
+    "overview": "Roman rule across the Mediterranean; Judea’s uprisings and dispersion.",
+    "highlights": ["Destruction of the Second Temple (70 CE)", "Bar Kokhba revolt (132–135 CE)"],
+    "scripture": ["Luke 21:24"],
+    "bounds": [[20, -10], [50, 25]],
+    "mask": [[[-180,-90],[-180,90],[180,90],[180,-90],[-180,-90]],[ [-10,20],[25,20],[25,50],[-10,50],[-10,20] ]]
   }
 ]

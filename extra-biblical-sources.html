@@ -14,6 +14,31 @@
 />
 
 <style>
+/* Context panel */
+#context-panel{
+  position: relative;
+  margin-top: 12px;
+  background:#fff;
+  border:1px solid var(--sky);
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+#context-panel header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; border-bottom:1px solid #eef2f7;
+}
+#context-panel h3{margin:0; font-size:1rem; color:var(--brand); font-weight:800}
+#context-panel #ctx-close{
+  border:1px solid #e6ebf2; border-radius:999px; background:#fff; cursor:pointer;
+  width:28px; height:28px; line-height:26px; text-align:center; font-size:.9rem; color:#334155;
+}
+#context-panel #ctx-close:hover{background:#f8fafc}
+#context-panel #ctx-body{padding:12px}
+#context-panel .subtle{color:#0b2340; font-weight:700; margin:.6rem 0 .25rem}
+#context-panel .muted{color:#6b7280}
+#context-panel ul{margin:.25rem 0 .75rem; padding-left:1.1rem}
+#context-panel li{margin:.15rem 0}
+
   :root{
     --ink:#0b2340; --accent:#F17300; --brand:#054A91;
     --muted:#6b7280; --sky:#DBE4EE; --white:#fff
@@ -67,6 +92,17 @@
   <section class="panel">
     <h3>Map</h3>
     <div id="isr-map" role="region" aria-label="Interactive map of Israelite regions"></div>
+<!-- Context panel (dynamic) -->
+<aside id="context-panel" aria-live="polite">
+  <header>
+    <h3 id="ctx-title">Map Context</h3>
+    <button id="ctx-close" type="button" aria-label="Close context">✕</button>
+  </header>
+  <div id="ctx-body">
+    <p class="muted">Select an era or click a region to see details.</p>
+  </div>
+</aside>
+
   </section>
 </main>
 
