@@ -1,4 +1,4 @@
-// js/map3d.js — Cesium 3D globe for Extra-Biblical Sources (patriarch trails clamped to ground)
+// map3d.js — Cesium 3D globe for Extra-Biblical Sources (relative data path + diagnostics + clamped trails)
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -18,14 +18,13 @@
   ssc.minimumZoomDistance = 20000;
   ssc.maximumZoomDistance = 20000000;
 
-
-  // Make ground clamping look good
   viewer.scene.globe.enableLighting = true;
   viewer.scene.skyAtmosphere.hueShift = -0.02;
   viewer.scene.skyAtmosphere.saturationShift = -0.05;
   viewer.scene.skyAtmosphere.brightnessShift = -0.05;
 
-  const base = '/israelite-research/data/timelines';
+  // RELATIVE data path (prevents 404 on GitHub Pages subpaths)
+  const base = 'data/timelines';
   const SOURCES = {
     patriarchs:   `${base}/patriarchs.json`,
     judges:       `${base}/judges.json`,
@@ -46,7 +45,7 @@
 
   async function jget(url) {
     const r = await fetch(url + `?v=${Date.now()}`, { cache: 'no-store' });
-    if (!r.ok) throw new Error('Failed to load ' + url);
+    if (!r.ok) throw new Error('Failed: ' + url + ' (' + r.status + ')');
     return r.json();
   }
 
@@ -68,12 +67,23 @@
     return `${header}${short}<div style="margin-top:.35rem;color:#0b2340"><strong>Span:</strong> ${span}</div>${refs}`;
   }
 
-  const [patriarchs, judges, captivities, scattering] = await Promise.all([
-    jget(SOURCES.patriarchs),
-    jget(SOURCES.judges),
-    jget(SOURCES.captivities),
-    jget(SOURCES.scattering)
-  ]);
+  let patriarchs = [], judges = [], captivities = [], scattering = [];
+  try {
+    [patriarchs, judges, captivities, scattering] = await Promise.all([
+      jget(SOURCES.patriarchs),
+      jget(SOURCES.judges),
+      jget(SOURCES.captivities),
+      jget(SOURCES.scattering)
+    ]);
+    console.log('[3D] datasets', {
+      patriarchs: patriarchs.length,
+      judges: judges.length,
+      captivities: captivities.length,
+      scattering: scattering.length
+    });
+  } catch (e) {
+    console.error('[3D] dataset load error:', e);
+  }
 
   const layers = {
     patriarchs: new Cesium.CustomDataSource('Patriarchs'),
@@ -94,8 +104,6 @@
 
   function addTrail(entry, color, ds) {
     if (!Array.isArray(entry.trail) || entry.trail.length < 2) return;
-
-    // Polyline clamped to ground so it's always visible on terrain
     ds.entities.add({
       polyline: {
         positions: Cesium.Cartesian3.fromDegreesArray(toDegs(entry.trail)),
@@ -104,8 +112,6 @@
         material: color.withAlpha(0.9)
       }
     });
-
-    // Stops as small dots clamped to ground
     for (const stop of entry.trail) {
       ds.entities.add({
         position: Cesium.Cartesian3.fromDegrees(stop[0], stop[1]),
@@ -146,9 +152,9 @@
           },
           description: describe(entry, ds.name)
         });
+      } else {
+        console.warn('[3D] missing coords for', type, '→', entry.name, '(add coords or region_ids matching REGION_COORDS)');
       }
-
-      // Draw trail if present
       addTrail(entry, s.color, ds);
     }
   }
