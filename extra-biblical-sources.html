@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Extra-Biblical Sources — 3D Map</title>
-<link rel="stylesheet" href="https://unpkg.com/cesium/Build/Cesium/Widgets/widgets.css">
+
+<link rel="stylesheet" href="https://unpkg.com/cesium@1.134.0/Build/Cesium/Widgets/widgets.css">
 <style>
   :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280}
   html,body{height:100%;margin:0}
@@ -14,7 +15,7 @@
     background:#ffffff; border:1px solid #e6ebf2; border-radius:12px;
     box-shadow:0 10px 24px rgba(0,0,0,.08);
     font:14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    color:#0b2340; min-width:240px
+    color:#0b2340; min-width:260px
   }
   .ui header{padding:10px 12px;border-bottom:1px solid #eef2f7;font-weight:800;color:var(--brand)}
   .ui .body{padding:10px 12px}
@@ -26,6 +27,7 @@
 </head>
 <body>
 <div id="cesiumContainer"></div>
+
 <div class="ui" role="region" aria-label="Map controls">
   <header>3D Map Layers</header>
   <div class="body">
@@ -34,7 +36,7 @@
     <label><input type="checkbox" id="layer-captivities" checked> Captivities</label>
     <label><input type="checkbox" id="layer-scattering" checked> Scattering</label>
     <label><input type="checkbox" id="layer-tribes" checked> Tribal Allotments</label>
-    <small>Click a marker to see details and references.</small>
+    <small>Click markers for details. Use ＋ / － to zoom.</small>
     <div>
       <button class="btn" id="btn-near-east">Fly to Near East</button>
       <button class="btn" id="btn-reset">Reset View</button>
@@ -43,9 +45,13 @@
     </div>
   </div>
 </div>
-<script>window.CESIUM_BASE_URL="https://unpkg.com/cesium.134.0/Build/Cesium/";</script>
-<script>window.CESIUM_BASE_URL="https://unpkg.com/cesium.134.0/Build/Cesium/";</script>
-<script src="https://unpkg.com/cesium.134.0/Build/Cesium/Cesium.js"></script>
-<script src="js/map3d.js?v=2" defer></script>
+
+<script>window.CESIUM_BASE_URL="https://unpkg.com/cesium@1.134.0/Build/Cesium/";</script>
+<script src="https://unpkg.com/cesium@1.134.0/Build/Cesium/Cesium.js"></script>
+<script src="js/map3d.js?v=3" defer></script>
+<script>
+  document.getElementById('btn-zoom-in')?.addEventListener('click', ()=> { try{ viewer.camera.zoomIn(100000); }catch(e){} });
+  document.getElementById('btn-zoom-out')?.addEventListener('click', ()=> { try{ viewer.camera.zoomOut(100000); }catch(e){} });
+</script>
 </body>
 </html>
