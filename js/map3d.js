@@ -13,6 +13,12 @@
     infoBox: true
   });
 
+  const ssc = viewer.scene.screenSpaceCameraController;
+  ssc.enableZoom = true;
+  ssc.minimumZoomDistance = 20000;
+  ssc.maximumZoomDistance = 20000000;
+
+
   // Make ground clamping look good
   viewer.scene.globe.enableLighting = true;
   viewer.scene.skyAtmosphere.hueShift = -0.02;
