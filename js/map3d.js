@@ -1,4 +1,4 @@
-// js/map3d.js — 3D globe with de-overlapped patriarch markers (billboard fan-out) + clamped trails
+// map3d.js — Cesium 3D globe with trails, de-overlap markers, and tribal allotments
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -51,9 +51,7 @@
   function getCoords(entry) {
     if (Array.isArray(entry.coords) && entry.coords.length === 2) return entry.coords;
     const rids = entry.region_ids || [];
-    for (const rid of rids) {
-      if (REGION_COORDS[rid]) return REGION_COORDS[rid];
-    }
+    for (const rid of rids) if (REGION_COORDS[rid]) return REGION_COORDS[rid];
     return null;
   }
 
@@ -66,12 +64,23 @@
     return `${header}${short}<div style="margin-top:.35rem;color:#0b2340"><strong>Span:</strong> ${span}</div>${refs}`;
   }
 
-  const [patriarchs, judges, captivities, scattering] = await Promise.all([
-    jget(SOURCES.patriarchs),
-    jget(SOURCES.judges),
-    jget(SOURCES.captivities),
-    jget(SOURCES.scattering)
-  ]);
+  let patriarchs = [], judges = [], captivities = [], scattering = [];
+  try {
+    [patriarchs, judges, captivities, scattering] = await Promise.all([
+      jget(SOURCES.patriarchs),
+      jget(SOURCES.judges),
+      jget(SOURCES.captivities),
+      jget(SOURCES.scattering)
+    ]);
+    console.log('[3D] datasets', {
+      patriarchs: patriarchs.length,
+      judges: judges.length,
+      captivities: captivities.length,
+      scattering: scattering.length
+    });
+  } catch (e) {
+    console.error('[3D] dataset load error:', e);
+  }
 
   const layers = {
     patriarchs: new Cesium.CustomDataSource('Patriarchs'),
@@ -114,7 +123,6 @@
     }
   }
 
-  // small circular SVG as billboard image (colorized)
   function circleDataUrl(hex = '#054A91', r = 6) {
     const s = encodeURIComponent(
       `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2}" height="${r*2}">
@@ -124,7 +132,6 @@
     return `data:image/svg+xml;charset=utf-8,${s}`;
   }
 
-  // fan-out offsets for N overlapping points (screen-space, in pixels)
   function offsetsFor(n, radius = 14) {
     if (n === 1) return [new Cesium.Cartesian2(0,0)];
     const arr = [];
@@ -137,8 +144,6 @@
 
   function addEntities(arr, type, ds) {
     const color = styles[type].color;
-
-    // group by position to detect overlaps (round to 4 decimals)
     const groups = new Map();
     const items = [];
 
@@ -152,15 +157,11 @@
       groups.set(key, bucket);
     }
 
-    // precompute offsets per group
     const groupOffsets = new Map();
-    for (const [key, bucket] of groups.entries()) {
-      groupOffsets.set(key, offsetsFor(bucket.length, 14));
-    }
-    const groupIndex = new Map(); // track current index used per group
+    for (const [key, bucket] of groups.entries()) groupOffsets.set(key, offsetsFor(bucket.length, 14));
+    const groupIndex = new Map();
 
     for (const {entry, pos} of items) {
-      // marker with fan-out if overlapping
       if (pos) {
         const key = `${pos[0].toFixed(4)},${pos[1].toFixed(4)}`;
         const offsArr = groupOffsets.get(key) || [new Cesium.Cartesian2(0,0)];
@@ -172,7 +173,7 @@
           position: Cesium.Cartesian3.fromDegrees(pos[0], pos[1]),
           billboard: {
             image: circleDataUrl(color.toCssColorString(), 6),
-            color: Cesium.Color.WHITE.withAlpha(1.0), // image already colored
+            color: Cesium.Color.WHITE.withAlpha(1.0),
             scale: 1,
             pixelOffset: pxOffset,
             verticalOrigin: Cesium.VerticalOrigin.CENTER,
@@ -193,8 +194,6 @@
       } else {
         console.warn('[3D] missing coords for', type, '→', entry.name);
       }
-
-      // trails (unchanged)
       addTrail(entry, color, ds);
     }
   }
@@ -204,14 +203,62 @@
   addEntities(captivities, 'captivities', layers.captivities);
   addEntities(scattering, 'scattering', layers.scattering);
 
-  function setLayerVisible(key, visible) {
-    const ds = layers[key];
-    if (ds) ds.show = !!visible;
+  // Tribal allotments
+  const TRIBAL_GEOJSON = 'data/maps/tribal-allotments.geojson';
+  let tribalDS;
+  try {
+    tribalDS = await Cesium.GeoJsonDataSource.load(TRIBAL_GEOJSON, { clampToGround: true });
+    const ents = tribalDS.entities.values;
+    for (const e of ents) {
+      const props = e.properties && e.properties.getValue ? e.properties.getValue() : (e.properties || {});
+      const style = props.style || (props.getValue ? props.getValue().style : null);
+
+      if (e.polygon) {
+        const fill = style && style.fill ? style.fill : '#ffff00';
+        const stroke = style && style.stroke ? style.stroke : '#000000';
+        e.polygon.material = Cesium.Color.fromCssColorString(fill).withAlpha(0.45);
+        e.polygon.outline = true;
+        e.polygon.outlineColor = Cesium.Color.fromCssColorString(stroke);
+        e.polygon.outlineWidth = 1;
+      }
+      if (e.point) {
+        const fill = style && style.fill ? style.fill : '#333333';
+        e.point.color = Cesium.Color.fromCssColorString(fill).withAlpha(0.9);
+        e.point.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+        if (!e.point.pixelSize) e.point.pixelSize = 8;
+      }
+
+      const tribeName = props.tribe || (props.getValue ? props.getValue().tribe : null);
+      const lp = props.label_point || (props.getValue ? props.getValue().label_point : null);
+      if (!e.label && Array.isArray(lp) && lp.length === 2) {
+        tribalDS.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(lp[0], lp[1]),
+          label: {
+            text: tribeName || 'Tribe',
+            font: '14px Helvetica, Arial, sans-serif',
+            fillColor: Cesium.Color.fromCssColorString('#0b2340'),
+            showBackground: true,
+            backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
+            pixelOffset: new Cesium.Cartesian2(0, -10),
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+            scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
+          }
+        });
+      }
+    }
+    viewer.dataSources.add(tribalDS);
+  } catch(e) {
+    console.error('[3D] tribal allotments load error:', e);
   }
-  document.getElementById('layer-patriarchs')?.addEventListener('change', e => setLayerVisible('patriarchs', e.target.checked));
-  document.getElementById('layer-judges')?.addEventListener('change', e => setLayerVisible('judges', e.target.checked));
-  document.getElementById('layer-captivities')?.addEventListener('change', e => setLayerVisible('captivities', e.target.checked));
-  document.getElementById('layer-scattering')?.addEventListener('change', e => setLayerVisible('scattering', e.target.checked));
+
+  document.getElementById('layer-tribes')?.addEventListener('change', e => {
+    if (tribalDS) tribalDS.show = e.target.checked;
+  });
+
+  document.getElementById('layer-patriarchs')?.addEventListener('change', e => { layers.patriarchs.show = !!e.target.checked; });
+  document.getElementById('layer-judges')?.addEventListener('change', e => { layers.judges.show = !!e.target.checked; });
+  document.getElementById('layer-captivities')?.addEventListener('change', e => { layers.captivities.show = !!e.target.checked; });
+  document.getElementById('layer-scattering')?.addEventListener('change', e => { layers.scattering.show = !!e.target.checked; });
 
   document.getElementById('btn-near-east')?.addEventListener('click', () => {
     const rect = Cesium.Rectangle.fromDegrees(20, 20, 60, 42);
@@ -222,58 +269,4 @@
   });
 
   viewer.camera.setView({ destination: Cesium.Rectangle.fromDegrees(10, 10, 70, 50) });
-}
-
-  const TRIBAL_GEOJSON = "data/maps/tribal-allotments.geojson";
-  let tribalDS;
-  try {
-    tribalDS = await Cesium.GeoJsonDataSource.load(TRIBAL_GEOJSON, { clampToGround: true });
-    const ents = tribalDS.entities.values;
-    for (const e of ents) {
-      const props = e.properties && e.properties.getValue ? e.properties.getValue() : null;
-      const style = props && props.style;
-      if (e.polygon) {
-        e.polygon.material = (style && style.fill) ? Cesium.Color.fromCssColorString(style.fill).withAlpha(0.45) : Cesium.Color.YELLOW.withAlpha(0.35);
-        e.polygon.outline = true;
-        e.polygon.outlineColor = (style && style.stroke) ? Cesium.Color.fromCssColorString(style.stroke) : Cesium.Color.BLACK;
-        e.polygon.outlineWidth = 1;
-        const lp = props && props.label_point;
-        if (Array.isArray(lp) && lp.length===2) {
-          tribalDS.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(lp[0], lp[1]),
-            label: {
-              text: props.tribe || "Tribe",
-              font: "14px Helvetica, Arial, sans-serif",
-              fillColor: Cesium.Color.fromCssColorString("#0b2340"),
-              showBackground: true,
-              backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
-              pixelOffset: new Cesium.Cartesian2(0, -10),
-              heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-              scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
-            }
-          });
-        }
-      }
-      if (e.point) {
-        if (style && style.fill) e.point.color = Cesium.Color.fromCssColorString(style.fill).withAlpha(0.9);
-        e.point.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
-        if (!e.point.pixelSize) e.point.pixelSize = 8;
-        if (props && props.tribe && !e.label) {
-          e.label = new Cesium.LabelGraphics({
-            text: props.tribe,
-            font: "13px Helvetica, Arial, sans-serif",
-            fillColor: Cesium.Color.fromCssColorString("#0b2340"),
-            pixelOffset: new Cesium.Cartesian2(0, -14),
-            showBackground: true,
-            backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
-            scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.0, 1.0e7, 0.2)
-          });
-        }
-      }
-    }
-    viewer.dataSources.add(tribalDS);
-  } catch(e) { console.error("[3D] tribal allotments load error:", e); }
-
-  document.getElementById("layer-tribes")?.addEventListener("change", e => { if (tribalDS) tribalDS.show = e.target.checked; });
-
 })();
