@@ -83,31 +83,30 @@
   };
 
   function addEntities(arr, type, ds) {
-    const s = styles[type];
-    for (const entry of arr) {
-      const pos = getCoords(entry);
-      if (!pos) continue;
-      ds.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(pos[0], pos[1]),
-        point: {
-          color: s.color.withAlpha(0.95),
-          pixelSize: s.pixelSize,
-          outlineColor: Cesium.Color.WHITE,
-          outlineWidth: 1.25
-        },
-        label: {
-          text: entry.name,
-          font: '14px "Helvetica", "Arial", sans-serif',
-          fillColor: Cesium.Color.fromCssColorString('#0b2340'),
-          style: Cesium.LabelStyle.FILL,
-          showBackground: true,
-          backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
-          pixelOffset: new Cesium.Cartesian2(0, -18),
-          scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
-        },
+    const toDegs = (pts)=>{ const out=[]; for(const p of pts){ out.push(p[0], p[1]); } return out; };
         description: describe(entry, ds.name)
       });
-    }
+      if (Array.isArray(entry.trail) && entry.trail.length >= 2) {
+        ds.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray(toDegs(entry.trail)),
+            width: 3,
+            material: new Cesium.PolylineGlowMaterialProperty({
+              glowPower: 0.15,
+              color: s.color.withAlpha(0.85)
+            })
+          }
+        });
+        for (const stop of entry.trail) {
+          ds.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(stop[0], stop[1]),
+            point: { color: s.color.withAlpha(0.9), pixelSize: 6, outlineColor: Cesium.Color.WHITE, outlineWidth: 1 },
+            label: { text: "", font: "12px Helvetica", showBackground: false, pixelOffset: new Cesium.Cartesian2(0,-10),
+                     scaleByDistance: new Cesium.NearFarScalar(1.0e3, 1.0, 1.0e7, 0.2) }
+          });
+        }
+      }
+      continue
   }
 
   addEntities(patriarchs, 'patriarchs', layers.patriarchs);

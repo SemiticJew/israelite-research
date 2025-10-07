@@ -4,27 +4,54 @@
     "lifespan": 175,
     "short": "Covenant bearer; sojourned in Canaan.",
     "refs": "Genesis 12–25",
-    "region_ids": ["CANAAN", "EGYPT", "HARAN", "UR"]
+    "region_ids": ["UR","HARAN","CANAAN","EGYPT"],
+    "trail": [
+      [46.1030,30.9640],  // Ur
+      [39.0333,36.8667],  // Haran
+      [35.3000,32.2000],  // Shechem
+      [35.2000,31.9000],  // Bethel
+      [35.1000,31.5000],  // Hebron
+      [34.8000,30.8000],  // Negev
+      [31.2357,30.0444],  // Egypt (Cairo area as proxy)
+      [35.1000,31.5000]   // Return to Hebron
+    ]
   },
   {
     "name": "Isaac",
     "lifespan": 180,
     "short": "Son of promise; father of Jacob and Esau.",
     "refs": "Genesis 21–35",
-    "region_ids": ["CANAAN"]
+    "region_ids": ["CANAAN"],
+    "trail": [
+      [34.8000,31.2500],  // Beersheba area
+      [34.5800,31.4000],  // Gerar area
+      [35.1000,31.5000]   // Hebron area
+    ]
   },
   {
     "name": "Jacob (Israel)",
     "lifespan": 147,
     "short": "Father of the twelve tribes; migrated to Egypt.",
     "refs": "Genesis 25–49",
-    "region_ids": ["CANAAN", "EGYPT"]
+    "region_ids": ["CANAAN","EGYPT","HARAN"],
+    "trail": [
+      [35.1000,31.5000],  // Hebron
+      [35.2000,31.9000],  // Bethel
+      [39.0333,36.8667],  // Haran
+      [35.6000,31.8000],  // Gilead area
+      [35.2137,31.7683],  // Jerusalem (proxy)
+      [31.2357,30.0444]   // Egypt
+    ]
   },
   {
     "name": "Joseph",
     "lifespan": 110,
     "short": "Preserver of Israel in Egypt; second to Pharaoh during famine.",
     "refs": "Genesis 37–50",
-    "region_ids": ["EGYPT"]
+    "region_ids": ["EGYPT","CANAAN"],
+    "trail": [
+      [35.3000,32.2000],  // Shechem/Dothan area
+      [31.2357,30.0444]   // Egypt
+    ]
   }
 ]
