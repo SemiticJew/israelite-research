@@ -1,4 +1,4 @@
-// map3d.js — Cesium 3D globe for Extra-Biblical Sources
+// map3d.js — Cesium 3D globe for Extra-Biblical Sources (with trails)
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -23,7 +23,7 @@
     patriarchs:   `${base}/patriarchs.json`,
     judges:       `${base}/judges.json`,
     captivities:  `${base}/captivities.json`,
-    scattering:   `${base}/scattering.json`,
+    scattering:   `${base}/scattering.json`
   };
 
   const REGION_COORDS = {
@@ -61,17 +61,18 @@
     return `${header}${short}<div style="margin-top:.35rem;color:#0b2340"><strong>Span:</strong> ${span}</div>${refs}`;
   }
 
+  const [patriarchs, judges, captivities, scattering] = await Promise.all([
     jget(SOURCES.patriarchs),
     jget(SOURCES.judges),
     jget(SOURCES.captivities),
-    jget(SOURCES.scattering),
+    jget(SOURCES.scattering)
   ]);
 
   const layers = {
     patriarchs: new Cesium.CustomDataSource('Patriarchs'),
     judges: new Cesium.CustomDataSource('Judges'),
     captivities: new Cesium.CustomDataSource('Captivities'),
-    scattering: new Cesium.CustomDataSource('Scattering'),
+    scattering: new Cesium.CustomDataSource('Scattering')
   };
   Object.values(layers).forEach(ds => viewer.dataSources.add(ds));
 
@@ -79,13 +80,38 @@
     patriarchs: { color: Cesium.Color.fromCssColorString('#054A91'), pixelSize: 10 },
     judges: { color: Cesium.Color.fromCssColorString('#3E7CB1'), pixelSize: 9 },
     captivities: { color: Cesium.Color.fromCssColorString('#F17300'), pixelSize: 11 },
-    scattering: { color: Cesium.Color.fromCssColorString('#7C3AED'), pixelSize: 9 },
+    scattering: { color: Cesium.Color.fromCssColorString('#7C3AED'), pixelSize: 9 }
   };
 
+  function toDegs(pts){ const out=[]; for(const p of pts){ out.push(p[0], p[1]); } return out; }
+
   function addEntities(arr, type, ds) {
-    const toDegs = (pts)=>{ const out=[]; for(const p of pts){ out.push(p[0], p[1]); } return out; };
-        description: describe(entry, ds.name)
-      });
+    const s = styles[type];
+    for (const entry of arr) {
+      const pos = getCoords(entry);
+      if (pos) {
+        ds.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(pos[0], pos[1]),
+          point: {
+            color: s.color.withAlpha(0.95),
+            pixelSize: s.pixelSize,
+            outlineColor: Cesium.Color.WHITE,
+            outlineWidth: 1.25
+          },
+          label: {
+            text: entry.name,
+            font: '14px "Helvetica", "Arial", sans-serif',
+            fillColor: Cesium.Color.fromCssColorString('#0b2340'),
+            style: Cesium.LabelStyle.FILL,
+            showBackground: true,
+            backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
+            pixelOffset: new Cesium.Cartesian2(0, -18),
+            scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
+          },
+          description: describe(entry, ds.name)
+        });
+      }
+
       if (Array.isArray(entry.trail) && entry.trail.length >= 2) {
         ds.entities.add({
           polyline: {
@@ -100,13 +126,11 @@
         for (const stop of entry.trail) {
           ds.entities.add({
             position: Cesium.Cartesian3.fromDegrees(stop[0], stop[1]),
-            point: { color: s.color.withAlpha(0.9), pixelSize: 6, outlineColor: Cesium.Color.WHITE, outlineWidth: 1 },
-            label: { text: "", font: "12px Helvetica", showBackground: false, pixelOffset: new Cesium.Cartesian2(0,-10),
-                     scaleByDistance: new Cesium.NearFarScalar(1.0e3, 1.0, 1.0e7, 0.2) }
+            point: { color: s.color.withAlpha(0.9), pixelSize: 6, outlineColor: Cesium.Color.WHITE, outlineWidth: 1 }
           });
         }
       }
-      continue
+    }
   }
 
   addEntities(patriarchs, 'patriarchs', layers.patriarchs);
@@ -123,9 +147,14 @@
   document.getElementById('layer-captivities')?.addEventListener('change', e => setLayerVisible('captivities', e.target.checked));
   document.getElementById('layer-scattering')?.addEventListener('change', e => setLayerVisible('scattering', e.target.checked));
 
-  document.getElementById('btn-near-east')?.addEventListener('click', () => {
-    const rect = Cesium.Rectangle.fromDegrees(20, 20, 60, 42);
-    viewer.camera.flyTo({ destination: rect, duration: 1.2 });
+  document.getElementById('btn-near-east')?.addEventListener('          });
+        }
+      }
+    }
+  }
+
+  addE.fromDegrees(20, 20        }
+     viewer.camera.flyTo({ destination: rect, duration: 1.2 });
   });
   document.getElementById('btn-reset')?.addEventListener('click', () => {
     viewer.camera.flyHome(1.2);
