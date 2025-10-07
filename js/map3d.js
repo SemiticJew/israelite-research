@@ -1,4 +1,4 @@
-// map3d.js — Cesium 3D globe for Extra-Biblical Sources (with patriarch trails)
+// js/map3d.js — Cesium 3D globe for Extra-Biblical Sources (patriarch trails clamped to ground)
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -13,6 +13,7 @@
     infoBox: true
   });
 
+  // Make ground clamping look good
   viewer.scene.globe.enableLighting = true;
   viewer.scene.skyAtmosphere.hueShift = -0.02;
   viewer.scene.skyAtmosphere.saturationShift = -0.05;
@@ -85,6 +86,34 @@
 
   function toDegs(pts){ const out=[]; for(const p of pts){ out.push(p[0], p[1]); } return out; }
 
+  function addTrail(entry, color, ds) {
+    if (!Array.isArray(entry.trail) || entry.trail.length < 2) return;
+
+    // Polyline clamped to ground so it's always visible on terrain
+    ds.entities.add({
+      polyline: {
+        positions: Cesium.Cartesian3.fromDegreesArray(toDegs(entry.trail)),
+        clampToGround: true,
+        width: 3,
+        material: color.withAlpha(0.9)
+      }
+    });
+
+    // Stops as small dots clamped to ground
+    for (const stop of entry.trail) {
+      ds.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(stop[0], stop[1]),
+        point: {
+          color: color.withAlpha(0.95),
+          pixelSize: 6,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 1,
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
+        }
+      });
+    }
+  }
+
   function addEntities(arr, type, ds) {
     const s = styles[type];
     for (const entry of arr) {
@@ -96,7 +125,8 @@
             color: s.color.withAlpha(0.95),
             pixelSize: s.pixelSize,
             outlineColor: Cesium.Color.WHITE,
-            outlineWidth: 1.25
+            outlineWidth: 1.25,
+            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
           },
           label: {
             text: entry.name,
@@ -112,24 +142,8 @@
         });
       }
 
-      if (Array.isArray(entry.trail) && entry.trail.length >= 2) {
-        ds.entities.add({
-          polyline: {
-            positions: Cesium.Cartesian3.fromDegreesArray(toDegs(entry.trail)),
-            width: 3,
-            material: new Cesium.PolylineGlowMaterialProperty({
-              glowPower: 0.15,
-              color: s.color.withAlpha(0.85)
-            })
-          }
-        });
-        for (const stop of entry.trail) {
-          ds.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(stop[0], stop[1]),
-            point: { color: s.color.withAlpha(0.9), pixelSize: 6, outlineColor: Cesium.Color.WHITE, outlineWidth: 1 }
-          });
-        }
-      }
+      // Draw trail if present
+      addTrail(entry, s.color, ds);
     }
   }
 
