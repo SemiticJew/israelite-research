@@ -1,4 +1,4 @@
-// map3d.js — Cesium 3D globe for Extra-Biblical Sources (with trails)
+// map3d.js — Cesium 3D globe for Extra-Biblical Sources (with patriarch trails)
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -147,14 +147,9 @@
   document.getElementById('layer-captivities')?.addEventListener('change', e => setLayerVisible('captivities', e.target.checked));
   document.getElementById('layer-scattering')?.addEventListener('change', e => setLayerVisible('scattering', e.target.checked));
 
-  document.getElementById('btn-near-east')?.addEventListener('          });
-        }
-      }
-    }
-  }
-
-  addE.fromDegrees(20, 20        }
-     viewer.camera.flyTo({ destination: rect, duration: 1.2 });
+  document.getElementById('btn-near-east')?.addEventListener('click', () => {
+    const rect = Cesium.Rectangle.fromDegrees(20, 20, 60, 42);
+    viewer.camera.flyTo({ destination: rect, duration: 1.2 });
   });
   document.getElementById('btn-reset')?.addEventListener('click', () => {
     viewer.camera.flyHome(1.2);
