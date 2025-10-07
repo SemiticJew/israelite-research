@@ -222,4 +222,58 @@
   });
 
   viewer.camera.setView({ destination: Cesium.Rectangle.fromDegrees(10, 10, 70, 50) });
+}
+
+  const TRIBAL_GEOJSON = "data/maps/tribal-allotments.geojson";
+  let tribalDS;
+  try {
+    tribalDS = await Cesium.GeoJsonDataSource.load(TRIBAL_GEOJSON, { clampToGround: true });
+    const ents = tribalDS.entities.values;
+    for (const e of ents) {
+      const props = e.properties && e.properties.getValue ? e.properties.getValue() : null;
+      const style = props && props.style;
+      if (e.polygon) {
+        e.polygon.material = (style && style.fill) ? Cesium.Color.fromCssColorString(style.fill).withAlpha(0.45) : Cesium.Color.YELLOW.withAlpha(0.35);
+        e.polygon.outline = true;
+        e.polygon.outlineColor = (style && style.stroke) ? Cesium.Color.fromCssColorString(style.stroke) : Cesium.Color.BLACK;
+        e.polygon.outlineWidth = 1;
+        const lp = props && props.label_point;
+        if (Array.isArray(lp) && lp.length===2) {
+          tribalDS.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(lp[0], lp[1]),
+            label: {
+              text: props.tribe || "Tribe",
+              font: "14px Helvetica, Arial, sans-serif",
+              fillColor: Cesium.Color.fromCssColorString("#0b2340"),
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
+              pixelOffset: new Cesium.Cartesian2(0, -10),
+              heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+              scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
+            }
+          });
+        }
+      }
+      if (e.point) {
+        if (style && style.fill) e.point.color = Cesium.Color.fromCssColorString(style.fill).withAlpha(0.9);
+        e.point.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+        if (!e.point.pixelSize) e.point.pixelSize = 8;
+        if (props && props.tribe && !e.label) {
+          e.label = new Cesium.LabelGraphics({
+            text: props.tribe,
+            font: "13px Helvetica, Arial, sans-serif",
+            fillColor: Cesium.Color.fromCssColorString("#0b2340"),
+            pixelOffset: new Cesium.Cartesian2(0, -14),
+            showBackground: true,
+            backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
+            scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.0, 1.0e7, 0.2)
+          });
+        }
+      }
+    }
+    viewer.dataSources.add(tribalDS);
+  } catch(e) { console.error("[3D] tribal allotments load error:", e); }
+
+  document.getElementById("layer-tribes")?.addEventListener("change", e => { if (tribalDS) tribalDS.show = e.target.checked; });
+
 })();
