@@ -1,4 +1,4 @@
-// map3d.js — Cesium 3D globe for Extra-Biblical Sources (relative data path + diagnostics + clamped trails)
+// js/map3d.js — 3D globe with de-overlapped patriarch markers (billboard fan-out) + clamped trails
 (async function () {
   Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZWU1MTYyOS1iYjZkLTRlMWMtODFhNy1iNzJlZjJlN2VmOWQiLCJpZCI6MzQ4MTI5LCJpYXQiOjE3NTk4NTg3NDB9.P-FQaGFbRTEaGJovFo6Bc9NuzPAFPNJNcNlaSXrqIA0';
 
@@ -23,7 +23,6 @@
   viewer.scene.skyAtmosphere.saturationShift = -0.05;
   viewer.scene.skyAtmosphere.brightnessShift = -0.05;
 
-  // RELATIVE data path (prevents 404 on GitHub Pages subpaths)
   const base = 'data/timelines';
   const SOURCES = {
     patriarchs:   `${base}/patriarchs.json`,
@@ -67,23 +66,12 @@
     return `${header}${short}<div style="margin-top:.35rem;color:#0b2340"><strong>Span:</strong> ${span}</div>${refs}`;
   }
 
-  let patriarchs = [], judges = [], captivities = [], scattering = [];
-  try {
-    [patriarchs, judges, captivities, scattering] = await Promise.all([
-      jget(SOURCES.patriarchs),
-      jget(SOURCES.judges),
-      jget(SOURCES.captivities),
-      jget(SOURCES.scattering)
-    ]);
-    console.log('[3D] datasets', {
-      patriarchs: patriarchs.length,
-      judges: judges.length,
-      captivities: captivities.length,
-      scattering: scattering.length
-    });
-  } catch (e) {
-    console.error('[3D] dataset load error:', e);
-  }
+  const [patriarchs, judges, captivities, scattering] = await Promise.all([
+    jget(SOURCES.patriarchs),
+    jget(SOURCES.judges),
+    jget(SOURCES.captivities),
+    jget(SOURCES.scattering)
+  ]);
 
   const layers = {
     patriarchs: new Cesium.CustomDataSource('Patriarchs'),
@@ -94,10 +82,10 @@
   Object.values(layers).forEach(ds => viewer.dataSources.add(ds));
 
   const styles = {
-    patriarchs: { color: Cesium.Color.fromCssColorString('#054A91'), pixelSize: 10 },
-    judges: { color: Cesium.Color.fromCssColorString('#3E7CB1'), pixelSize: 9 },
-    captivities: { color: Cesium.Color.fromCssColorString('#F17300'), pixelSize: 11 },
-    scattering: { color: Cesium.Color.fromCssColorString('#7C3AED'), pixelSize: 9 }
+    patriarchs: { color: Cesium.Color.fromCssColorString('#054A91') },
+    judges: { color: Cesium.Color.fromCssColorString('#3E7CB1') },
+    captivities: { color: Cesium.Color.fromCssColorString('#F17300') },
+    scattering: { color: Cesium.Color.fromCssColorString('#7C3AED') }
   };
 
   function toDegs(pts){ const out=[]; for(const p of pts){ out.push(p[0], p[1]); } return out; }
@@ -126,18 +114,68 @@
     }
   }
 
+  // small circular SVG as billboard image (colorized)
+  function circleDataUrl(hex = '#054A91', r = 6) {
+    const s = encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${r*2}" height="${r*2}">
+         <circle cx="${r}" cy="${r}" r="${r-1}" fill="${hex}" stroke="white" stroke-width="1"/>
+       </svg>`
+    );
+    return `data:image/svg+xml;charset=utf-8,${s}`;
+  }
+
+  // fan-out offsets for N overlapping points (screen-space, in pixels)
+  function offsetsFor(n, radius = 14) {
+    if (n === 1) return [new Cesium.Cartesian2(0,0)];
+    const arr = [];
+    for (let i=0;i<n;i++){
+      const angle = (i / n) * Math.PI * 2;
+      arr.push(new Cesium.Cartesian2(Math.cos(angle)*radius, Math.sin(angle)*radius));
+    }
+    return arr;
+  }
+
   function addEntities(arr, type, ds) {
-    const s = styles[type];
+    const color = styles[type].color;
+
+    // group by position to detect overlaps (round to 4 decimals)
+    const groups = new Map();
+    const items = [];
+
     for (const entry of arr) {
       const pos = getCoords(entry);
+      items.push({ entry, pos });
+      if (!pos) continue;
+      const key = `${pos[0].toFixed(4)},${pos[1].toFixed(4)}`;
+      const bucket = groups.get(key) || [];
+      bucket.push(entry);
+      groups.set(key, bucket);
+    }
+
+    // precompute offsets per group
+    const groupOffsets = new Map();
+    for (const [key, bucket] of groups.entries()) {
+      groupOffsets.set(key, offsetsFor(bucket.length, 14));
+    }
+    const groupIndex = new Map(); // track current index used per group
+
+    for (const {entry, pos} of items) {
+      // marker with fan-out if overlapping
       if (pos) {
+        const key = `${pos[0].toFixed(4)},${pos[1].toFixed(4)}`;
+        const offsArr = groupOffsets.get(key) || [new Cesium.Cartesian2(0,0)];
+        const used = groupIndex.get(key) || 0;
+        const pxOffset = offsArr[Math.min(used, offsArr.length-1)];
+        groupIndex.set(key, used + 1);
+
         ds.entities.add({
           position: Cesium.Cartesian3.fromDegrees(pos[0], pos[1]),
-          point: {
-            color: s.color.withAlpha(0.95),
-            pixelSize: s.pixelSize,
-            outlineColor: Cesium.Color.WHITE,
-            outlineWidth: 1.25,
+          billboard: {
+            image: circleDataUrl(color.toCssColorString(), 6),
+            color: Cesium.Color.WHITE.withAlpha(1.0), // image already colored
+            scale: 1,
+            pixelOffset: pxOffset,
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
           },
           label: {
@@ -147,15 +185,17 @@
             style: Cesium.LabelStyle.FILL,
             showBackground: true,
             backgroundColor: Cesium.Color.fromBytes(255,255,255,220),
-            pixelOffset: new Cesium.Cartesian2(0, -18),
+            pixelOffset: new Cesium.Cartesian2(pxOffset.x, pxOffset.y - 18),
             scaleByDistance: new Cesium.NearFarScalar(1.0e2, 1.1, 1.0e7, 0.2)
           },
           description: describe(entry, ds.name)
         });
       } else {
-        console.warn('[3D] missing coords for', type, '→', entry.name, '(add coords or region_ids matching REGION_COORDS)');
+        console.warn('[3D] missing coords for', type, '→', entry.name);
       }
-      addTrail(entry, s.color, ds);
+
+      // trails (unchanged)
+      addTrail(entry, color, ds);
     }
   }
 
