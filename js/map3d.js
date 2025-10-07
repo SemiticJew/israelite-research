@@ -24,7 +24,6 @@
     judges:       `${base}/judges.json`,
     captivities:  `${base}/captivities.json`,
     scattering:   `${base}/scattering.json`,
-    books:        `${base}/books.json`
   };
 
   const REGION_COORDS = {
@@ -62,12 +61,10 @@
     return `${header}${short}<div style="margin-top:.35rem;color:#0b2340"><strong>Span:</strong> ${span}</div>${refs}`;
   }
 
-  const [patriarchs, judges, captivities, scattering, books] = await Promise.all([
     jget(SOURCES.patriarchs),
     jget(SOURCES.judges),
     jget(SOURCES.captivities),
     jget(SOURCES.scattering),
-    jget(SOURCES.books)
   ]);
 
   const layers = {
@@ -75,7 +72,6 @@
     judges: new Cesium.CustomDataSource('Judges'),
     captivities: new Cesium.CustomDataSource('Captivities'),
     scattering: new Cesium.CustomDataSource('Scattering'),
-    books: new Cesium.CustomDataSource('Books')
   };
   Object.values(layers).forEach(ds => viewer.dataSources.add(ds));
 
@@ -84,7 +80,6 @@
     judges: { color: Cesium.Color.fromCssColorString('#3E7CB1'), pixelSize: 9 },
     captivities: { color: Cesium.Color.fromCssColorString('#F17300'), pixelSize: 11 },
     scattering: { color: Cesium.Color.fromCssColorString('#7C3AED'), pixelSize: 9 },
-    books: { color: Cesium.Color.fromCssColorString('#0EA5E9'), pixelSize: 8 }
   };
 
   function addEntities(arr, type, ds) {
@@ -119,7 +114,6 @@
   addEntities(judges, 'judges', layers.judges);
   addEntities(captivities, 'captivities', layers.captivities);
   addEntities(scattering, 'scattering', layers.scattering);
-  addEntities(books, 'books', layers.books);
 
   function setLayerVisible(key, visible) {
     const ds = layers[key];
@@ -129,7 +123,6 @@
   document.getElementById('layer-judges')?.addEventListener('change', e => setLayerVisible('judges', e.target.checked));
   document.getElementById('layer-captivities')?.addEventListener('change', e => setLayerVisible('captivities', e.target.checked));
   document.getElementById('layer-scattering')?.addEventListener('change', e => setLayerVisible('scattering', e.target.checked));
-  document.getElementById('layer-books')?.addEventListener('change', e => setLayerVisible('books', e.target.checked));
 
   document.getElementById('btn-near-east')?.addEventListener('click', () => {
     const rect = Cesium.Rectangle.fromDegrees(20, 20, 60, 42);
