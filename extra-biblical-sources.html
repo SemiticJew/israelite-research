@@ -26,7 +26,8 @@
       <label for="mapSelect"><strong>View:</strong></label>
       <select id="mapSelect">
         <option value="world">World</option>
-        <option value="middleEast" selected>Middle East</option>
+        <option value="middleEast">Middle East</option>
+        <option value="africaME" selected>Africa + Middle East</option>
       </select>
     </div>
     <div id="chartdiv"></div>
@@ -42,14 +43,29 @@
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/africaLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
 <script>
 am5.ready(function() {
-  let root, chart, polygonSeries, zoomControl, eventsSeries;
+  let root, chart, zoomControl, eventsSeries;
 
   function disposeAll() {
     if (root) { root.dispose(); root = null; }
+  }
+
+  function styleSeries(series, root) {
+    series.mapPolygons.template.setAll({
+      tooltipText: "{name}",
+      toggleKey: "active",
+      interactive: true,
+      fill: am5.color("#f4ede1"),
+      stroke: am5.color("#c4b79c"),
+      strokeOpacity: 1,
+      strokeWidth: 0.8
+    });
+    series.mapPolygons.template.states.create("hover", { fill: am5.color("#fcd34d") });
+    series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
   function makeMap(view) {
@@ -66,40 +82,33 @@ am5.ready(function() {
 
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
-    const seriesCfg = {};
-    if (view === "middleEast") {
-      seriesCfg.geoJSON = am5geodata_region_world_middleEastLow;
+    if (view === "africaME") {
+      const africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_region_world_africaLow
+      }));
+      const meSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_region_world_middleEastLow
+      }));
+      styleSeries(africaSeries, root);
+      styleSeries(meSeries, root);
     } else {
-      seriesCfg.geoJSON = am5geodata_worldLow;
-      seriesCfg.exclude = ["AQ"];
+      const seriesCfg = {};
+      if (view === "middleEast") {
+        seriesCfg.geoJSON = am5geodata_region_world_middleEastLow;
+      } else {
+        seriesCfg.geoJSON = am5geodata_worldLow;
+        seriesCfg.exclude = ["AQ"];
+      }
+      const polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, seriesCfg));
+      styleSeries(polygonSeries, root);
     }
-
-    polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, seriesCfg));
-
-    polygonSeries.mapPolygons.template.setAll({
-      tooltipText: "{name}",
-      toggleKey: "active",
-      interactive: true,
-      fill: am5.color("#f4ede1"),
-      stroke: am5.color("#c4b79c"),
-      strokeOpacity: 1,
-      strokeWidth: 0.8
-    });
-
-    polygonSeries.mapPolygons.template.states.create("hover", { fill: am5.color("#fcd34d") });
-    polygonSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
     zoomControl.homeButton.set("visible", true);
     zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
-
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
-
-    if (view === "middleEast") {
-      
-    }
 
     eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
       valueField: "value",
@@ -113,6 +122,7 @@ am5.ready(function() {
       miracle: "assets/icons/miracle.svg",
       generic: "assets/icons/generic.svg"
     };
+    function ICONSRC(t){ return ICON_SRC[t] || null; }
 
     eventsSeries.bullets.push(() => {
       return am5.Bullet.new(root, {
@@ -132,8 +142,6 @@ am5.ready(function() {
         if (pic.set) pic.set("src", src);
       });
     });
-
-    function ICONSRC(t){ return ICON_SRC[t] || null; }
 
     eventsSeries.set("clustered", true);
     eventsSeries.set("clusteredSettings", {
