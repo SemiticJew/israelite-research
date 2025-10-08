@@ -69,7 +69,9 @@ am5.ready(function() {
       projection: am5map.geoNaturalEarth1()
     }));
 
-    const seriesCfg = { geoJSON: am5geodata_worldLow };
+    
+    chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
+const seriesCfg = { geoJSON: am5geodata_worldLow };
     if (view === "middleEast") {
       seriesCfg.include = MID_EAST;
     } else {
@@ -81,7 +83,11 @@ am5.ready(function() {
     polygonSeries.mapPolygons.template.setAll({
       tooltipText: "{name}",
       toggleKey: "active",
-      interactive: true
+      interactive: true,
+      fill: am5.color("#f4ede1"),
+      stroke: am5.color("#c4b79c"),
+      strokeOpacity: 1,
+      strokeWidth: 0.8
     });
 
     polygonSeries.mapPolygons.template.states.create("hover", {
