@@ -42,16 +42,13 @@
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
+</script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
 <script>
 am5.ready(function() {
-  const MID_EAST = [
-    "EGY","SDN","TUR","CYP","ISR","PSE","JOR","LBN","SYR",
-    "IRQ","IRN","KWT","SAU","BHR","QAT","ARE","OMN","YEM"
-  ];
-
-  let root, chart, polygonSeries, zoomControl;
+    let root, chart, polygonSeries, zoomControl;
 
   function disposeAll() {
     if (root) { root.dispose(); root = null; }
@@ -71,10 +68,12 @@ am5.ready(function() {
 
     
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
-const seriesCfg = { geoJSON: am5geodata_worldLow };
+
+    const seriesCfg = { };
     if (view === "middleEast") {
-      seriesCfg.include = MID_EAST;
+      seriesCfg.geoJSON = am5geodata_region_world_middleEastLow;
     } else {
+      seriesCfg.geoJSON = am5geodata_worldLow;
       seriesCfg.exclude = ["AQ"];
     }
 
