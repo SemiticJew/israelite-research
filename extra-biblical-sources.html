@@ -38,17 +38,15 @@
 <script src="/israelite-research/js/shims.js" defer></script>
 <script src="/israelite-research/js/include.js" defer></script>
 
-<!-- amCharts v5 (CDN) -->
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
-</script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
 <script>
 am5.ready(function() {
-    let root, chart, polygonSeries, zoomControl;
+  let root, chart, polygonSeries, zoomControl, eventsSeries;
 
   function disposeAll() {
     if (root) { root.dispose(); root = null; }
@@ -66,10 +64,9 @@ am5.ready(function() {
       projection: am5map.geoNaturalEarth1()
     }));
 
-    
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
-    const seriesCfg = { };
+    const seriesCfg = {};
     if (view === "middleEast") {
       seriesCfg.geoJSON = am5geodata_region_world_middleEastLow;
     } else {
@@ -89,12 +86,8 @@ am5.ready(function() {
       strokeWidth: 0.8
     });
 
-    polygonSeries.mapPolygons.template.states.create("hover", {
-      fill: root.interfaceColors.get("primaryButtonHover")
-    });
-    polygonSeries.mapPolygons.template.states.create("active", {
-      fill: root.interfaceColors.get("primaryButtonActive")
-    });
+    polygonSeries.mapPolygons.template.states.create("hover", { fill: am5.color("#fcd34d") });
+    polygonSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
     zoomControl.homeButton.set("visible", true);
@@ -105,16 +98,66 @@ am5.ready(function() {
     chart.appear(600, 100);
 
     if (view === "middleEast") {
-      // Zoom to the included polygons once ready
       polygonSeries.events.on("datavalidated", function() {
         polygonSeries.zoomToDataItems(polygonSeries.dataItems, 1.1, 0);
       });
     }
+
+    eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+      valueField: "value",
+      longitudeField: "lon",
+      latitudeField: "lat"
+    }));
+
+    const ICON_SRC = {
+      covenant: "assets/icons/covenant.svg",
+      exodus: "assets/icons/exodus.svg",
+      miracle: "assets/icons/miracle.svg",
+      generic: "assets/icons/generic.svg"
+    };
+
+    eventsSeries.bullets.push(() => {
+      return am5.Bullet.new(root, {
+        sprite: am5.Picture.new(root, {
+          width: 18, height: 18,
+          centerX: am5.p50, centerY: am5.p50,
+          src: "assets/icons/generic.svg",
+          tooltipText: "{title}\n{subtitle}"
+        })
+      });
+    });
+
+    eventsSeries.bulletsContainer.events.on("boundschanged", () => {
+      eventsSeries.bulletsContainer.children.each(pic => {
+        const d = pic.dataItem && pic.dataItem.dataContext ? pic.dataItem.dataContext : {};
+        const src = (d && d.icon) ? d.icon : (ICONSRC(d && d.type) || ICON_SRC.generic);
+        if (pic.set) pic.set("src", src);
+      });
+    });
+
+    function ICONSRC(t){ return ICON_SRC[t] || null; }
+
+    eventsSeries.set("clustered", true);
+    eventsSeries.set("clusteredSettings", {
+      text: "{count}",
+      fill: am5.color("#fcd34d"),
+      stroke: am5.color("#b45309")
+    });
+
+    eventsSeries.bulletsContainer.events.on("click", ev => {
+      const d = ev.target && ev.target.dataItem ? ev.target.dataItem.dataContext : null;
+      if (!d) return;
+      console.log("Event clicked:", d);
+    });
+
+    fetch("data/events.json?v=" + Date.now())
+      .then(r => r.json())
+      .then(data => eventsSeries.data.setAll(data))
+      .catch(err => console.error("events load error", err));
   }
 
   const select = document.getElementById("mapSelect");
   makeMap(select.value);
-
   select.addEventListener("change", () => makeMap(select.value));
 });
 </script>
