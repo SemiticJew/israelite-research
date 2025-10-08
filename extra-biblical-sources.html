@@ -3,62 +3,82 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — 3D Map</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.134.0/Build/Cesium/Widgets/widgets.css">
+<title>Extra-Biblical Sources — Simple SVG Map</title>
 <style>
-  :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280}
-  html,body{height:100%;margin:0}
-  #cesiumContainer{width:100%;height:100%;display:block}
-  .ui{
-    position:fixed; top:12px; left:12px; z-index:10;
-    background:#ffffff; border:1px solid #e6ebf2; border-radius:12px;
-    box-shadow:0 10px 24px rgba(0,0,0,.08);
-    font:14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    color:#0b2340; min-width:260px
-  }
-  .ui header{padding:10px 12px;border-bottom:1px solid #eef2f7;font-weight:800;color:var(--brand)}
-  .ui .body{padding:10px 12px}
-  .ui label{display:flex;align-items:center;gap:8px;margin:6px 0;cursor:pointer}
-  .ui small{display:block;color:var(--muted);margin-top:6px}
-  .ui .btn{margin-top:8px;display:inline-block;padding:6px 10px;border:1px solid #e6ebf2;border-radius:8px;background:#fff;cursor:pointer}
-  .ui .btn:hover{background:#f8fafc}
+  :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280;--sea:#eaf2fb;--land:#f5efe7;--hover:#fde68a}
+  html,body{height:100%;margin:0;background:#fff;color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  h1{margin:.2rem 0 1rem;font-size:1.6rem}
+  .map-card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
+  .toolbar{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid #eef2f7}
+  .toolbar .legend{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+  .legend .chip{display:inline-flex;align-items:center;gap:6px}
+  .chip i{width:12px;height:12px;border-radius:3px;display:inline-block;border:1px solid #cbd5e1}
+  .chip i.canaan{background:#cdeafe} .chip i.egypt{background:#fde2e4}
+  .chip i.assyria{background:#e9d5ff} .chip i.babylon{background:#fde68a}
+  .chip i.sinai{background:#e7e5e4} .chip i.arabia{background:#dcfce7}
+
+  .svg-frame{background:var(--sea)}
+  svg{display:block;width:100%;height:auto;max-height:70vh}
+  .land{fill:var(--land);stroke:#c8bea3;stroke-width:1}
+  .r{cursor:pointer;fill:#ffffff;stroke:#9aa6b2;stroke-width:1.2;transition:fill .15s,stroke .15s}
+  .r:focus{outline:none;stroke:#054A91;stroke-width:2}
+  .r:hover{fill:var(--hover)}
+  .r.active{fill:#ffd166;stroke:#b45309}
+
+  /* Tooltip */
+  .tip{position:fixed;z-index:50;pointer-events:none;background:#fff;border:1px solid #e6ebf2;border-radius:10px;padding:8px 10px;box-shadow:0 10px 24px rgba(0,0,0,.08);min-width:180px}
+  .tip h4{margin:.1rem 0 .2rem;font-size:.95rem;color:#0b2340}
+  .tip p{margin:0;color:#334155}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,1,1);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
-<div id="cesiumContainer"></div>
+<div class="wrap">
+  <h1>Interactive Map (Lightweight SVG)</h1>
 
-<div class="ui" role="region" aria-label="Map controls">
-  <header>3D Map Layers</header>
-  <div class="body">
-    <label><input type="checkbox" id="layer-patriarchs" checked> Patriarchs</label>
-    <label><input type="checkbox" id="layer-judges" checked> Judges</label>
-    <label><input type="checkbox" id="layer-captivities" checked> Captivities</label>
-    <label><input type="checkbox" id="layer-scattering" checked> Scattering</label>
-    <label><input type="checkbox" id="layer-tribes" checked> Tribal Allotments</label>
-    <small>Click markers for details. Use ＋ / － to zoom.</small>
-    <div>
-      <button class="btn" id="btn-near-east">Fly to Near East</button>
-      <button class="btn" id="btn-reset">Reset View</button>
-      <button class="btn" id="btn-zoom-in">＋</button>
-      <button class="btn" id="btn-zoom-out">－</button>
+  <div class="map-card">
+    <div class="toolbar">
+      <div>Hover or tap regions to learn more</div>
+      <div class="legend">
+        <span class="chip"><i class="canaan"></i> Canaan</span>
+        <span class="chip"><i class="egypt"></i> Egypt</span>
+        <span class="chip"><i class="assyria"></i> Assyria</span>
+        <span class="chip"><i class="babylon"></i> Babylon</span>
+        <span class="chip"><i class="sinai"></i> Sinai</span>
+        <span class="chip"><i class="arabia"></i> Arabia</span>
+      </div>
+    </div>
+
+    <div class="svg-frame">
+      <!-- Minimal Middle-East-ish schematic; replace with nicer paths later if you like -->
+      <svg viewBox="22 20 44 20" role="img" aria-labelledby="title desc">
+        <title id="title">Middle East (schematic)</title>
+        <desc id="desc">Clickable regions for Egypt, Sinai, Canaan, Assyria, Babylon, Arabia.</desc>
+
+        <!-- backdrop land silhouette -->
+        <path class="land" d="
+          M24,21 L60,21 L60,38 L24,38 Z
+        "/>
+
+        <!-- Regions (schematic rectangles/polys; ids are keys used by JS) -->
+        <rect id="EGYPT"   class="r" x="24.5" y="31"  width="6.5" height="6.5" rx="0.6"/>
+        <rect id="SINAI"   class="r" x="31.2" y="31.2" width="3.8" height="3.6" rx="0.6"/>
+        <rect id="CANAAN"  class="r" x="35.3" y="29.3" width="4.6" height="4.4" rx="0.6"/>
+        <rect id="ASSYRIA" class="r" x="43.0" y="26.5" width="6.2" height="4.6" rx="0.6"/>
+        <rect id="BABYLON" class="r" x="45.5" y="31.2" width="6.2" height="4.6" rx="0.6"/>
+        <rect id="ARABIA"  class="r" x="38.5" y="33.2" width="8.2" height="4.8" rx="0.6"/>
+
+        <!-- Simple water (Mediterranean) -->
+        <rect x="22" y="20" width="44" height="5" fill="var(--sea)" />
+      </svg>
     </div>
   </div>
 </div>
 
-<script>
-  window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.134.0/Build/Cesium/";
-</script>
-<script src="https://cdn.jsdelivr.net/npm/cesium@1.134.0/Build/Cesium/Cesium.js" crossorigin="anonymous"></script>
-<script>
-  if (window.Cesium && Cesium.buildModuleUrl && Cesium.buildModuleUrl.setBaseUrl) {
-    Cesium.buildModuleUrl.setBaseUrl(window.CESIUM_BASE_URL);
-  }
-  window.viewer = window.viewer || null;
-</script>
-<script src="js/map3d.js?v=4" defer></script>
-<script>
-  document.getElementById('btn-zoom-in')?.addEventListener('click', ()=> { try{ viewer.camera.zoomIn(100000); }catch(e){} });
-  document.getElementById('btn-zoom-out')?.addEventListener('click', ()=> { try{ viewer.camera.zoomOut(100000); }catch(e){} });
-</script>
+<div id="tooltip" class="tip" hidden aria-live="polite"></div>
+<div class="sr-only" id="announcer" aria-live="polite"></div>
+
+<script src="js/map-svg.js"></script>
 </body>
 </html>
