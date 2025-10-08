@@ -98,9 +98,7 @@ am5.ready(function() {
     chart.appear(600, 100);
 
     if (view === "middleEast") {
-      polygonSeries.events.on("datavalidated", function() {
-        polygonSeries.zoomToDataItems(polygonSeries.dataItems, 1.1, 0);
-      });
+      
     }
 
     eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
