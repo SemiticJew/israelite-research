@@ -4,11 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Extra-Biblical Sources — Simple SVG Map</title>
+
+<link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280;--sea:#eaf2fb;--land:#f5efe7;--hover:#fde68a}
+  :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280;--sea:#eaf2fb;--land:#f3efe2;--coast:#c8bea3;--hover:#fde68a}
   html,body{height:100%;margin:0;background:#fff;color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  .wrap{max-width:1100px;margin:0 auto;padding:18px}
-  h1{margin:.2rem 0 1rem;font-size:1.6rem}
+  .container{max-width:1100px;margin:0 auto;padding:18px}
+  .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
   .map-card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
   .toolbar{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid #eef2f7}
   .toolbar .legend{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
@@ -20,13 +22,12 @@
 
   .svg-frame{background:var(--sea)}
   svg{display:block;width:100%;height:auto;max-height:70vh}
-  .land{fill:var(--land);stroke:#c8bea3;stroke-width:1}
-  .r{cursor:pointer;fill:#ffffff;stroke:#9aa6b2;stroke-width:1.2;transition:fill .15s,stroke .15s}
-  .r:focus{outline:none;stroke:#054A91;stroke-width:2}
+  .land{fill:var(--land);stroke:var(--coast);stroke-width:0.6}
+  .coast{fill:none;stroke:#b8a98c;stroke-width:0.5;opacity:.9}
+  .r{cursor:pointer;fill:#ffffff;stroke:#9aa6b2;stroke-width:0.6;transition:fill .15s,stroke .15s}
   .r:hover{fill:var(--hover)}
   .r.active{fill:#ffd166;stroke:#b45309}
 
-  /* Tooltip */
   .tip{position:fixed;z-index:50;pointer-events:none;background:#fff;border:1px solid #e6ebf2;border-radius:10px;padding:8px 10px;box-shadow:0 10px 24px rgba(0,0,0,.08);min-width:180px}
   .tip h4{margin:.1rem 0 .2rem;font-size:.95rem;color:#0b2340}
   .tip p{margin:0;color:#334155}
@@ -34,10 +35,12 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Interactive Map (Lightweight SVG)</h1>
+<div id="site-header"></div>
 
-  <div class="map-card">
+<main class="container">
+  <h1 class="page-title">Interactive Map (Lightweight SVG)</h1>
+
+  <section class="map-card">
     <div class="toolbar">
       <div>Hover or tap regions to learn more</div>
       <div class="legend">
@@ -51,34 +54,54 @@
     </div>
 
     <div class="svg-frame">
-      <!-- Minimal Middle-East-ish schematic; replace with nicer paths later if you like -->
-      <svg viewBox="22 20 44 20" role="img" aria-labelledby="title desc">
+      <!-- Schematic Middle East map with land + coastline backdrop -->
+      <svg viewBox="20 18 50 22" role="img" aria-labelledby="title desc">
         <title id="title">Middle East (schematic)</title>
-        <desc id="desc">Clickable regions for Egypt, Sinai, Canaan, Assyria, Babylon, Arabia.</desc>
+        <desc id="desc">Clickable regions with basemap silhouette and coastline.</desc>
 
-        <!-- backdrop land silhouette -->
+        <!-- Sea background -->
+        <rect x="20" y="18" width="50" height="22" fill="var(--sea)"/>
+
+        <!-- Land silhouette (very simplified) -->
         <path class="land" d="
-          M24,21 L60,21 L60,38 L24,38 Z
+          M24,20
+          C32,19 40,19.5 48,20
+          C55,20.5 61,22 66,24
+          L68,26 69,29
+          C69,32 66,35 62,36.5
+          C56,39 48,40 41,39.5
+          C34,39 28,37.5 25,35
+          L23.5,33 23.5,30 Z
         "/>
 
-        <!-- Regions (schematic rectangles/polys; ids are keys used by JS) -->
-        <rect id="EGYPT"   class="r" x="24.5" y="31"  width="6.5" height="6.5" rx="0.6"/>
-        <rect id="SINAI"   class="r" x="31.2" y="31.2" width="3.8" height="3.6" rx="0.6"/>
-        <rect id="CANAAN"  class="r" x="35.3" y="29.3" width="4.6" height="4.4" rx="0.6"/>
-        <rect id="ASSYRIA" class="r" x="43.0" y="26.5" width="6.2" height="4.6" rx="0.6"/>
-        <rect id="BABYLON" class="r" x="45.5" y="31.2" width="6.2" height="4.6" rx="0.6"/>
-        <rect id="ARABIA"  class="r" x="38.5" y="33.2" width="8.2" height="4.8" rx="0.6"/>
+        <!-- A few coastline accents -->
+        <path class="coast" d="M24,20 C30,19.4 36,19.8 42,20.1 M42,20.1 C46,20.3 50,20.8 54,21.8" />
+        <path class="coast" d="M66,24 L68,26 L69,29" />
+        <path class="coast" d="M25,35 L29,36.2 L34,37 L41,37.7" />
 
-        <!-- Simple water (Mediterranean) -->
-        <rect x="22" y="20" width="44" height="5" fill="var(--sea)" />
+        <!-- Regions (keep ids for JS) -->
+        <rect id="EGYPT"   class="r" x="25.0" y="31.0" width="6.5" height="6.2" rx="0.8"/>
+        <rect id="SINAI"   class="r" x="31.8" y="31.2" width="3.8" height="3.4" rx="0.8"/>
+        <rect id="CANAAN"  class="r" x="36.0" y="29.2" width="4.6" height="4.2" rx="0.8"/>
+        <rect id="ASSYRIA" class="r" x="44.0" y="26.2" width="6.2" height="4.4" rx="0.8"/>
+        <rect id="BABYLON" class="r" x="46.3" y="31.0" width="6.2" height="4.4" rx="0.8"/>
+        <rect id="ARABIA"  class="r" x="39.2" y="33.0" width="8.2" height="4.6" rx="0.8"/>
       </svg>
     </div>
-  </div>
-</div>
+  </section>
+</main>
 
+<div id="site-footer"></div>
+
+<!-- Base site scripts to inject header/footer & shared behaviors -->
+<script src="/israelite-research/js/shims.js" defer></script>
+<script src="/israelite-research/js/include.js" defer></script>
+
+<!-- Page script -->
+<script src="js/map-svg.js" defer></script>
+
+<!-- Tooltip + a11y nodes -->
 <div id="tooltip" class="tip" hidden aria-live="polite"></div>
 <div class="sr-only" id="announcer" aria-live="polite"></div>
-
-<script src="js/map-svg.js"></script>
 </body>
 </html>
