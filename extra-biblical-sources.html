@@ -71,6 +71,128 @@ am5.ready(function() {
   styleSeries(africaSeries);
   styleSeries(meSeries);
 
+  // === Linked Ancient Layers (Option B) ===
+  async function loadLinkedAncientLayers() {
+    const [geom, recs] = await Promise.all([
+      fetch("data/geometry.json?v=" + Date.now()).then(r => r.json()),
+      fetch("data/ancient.json?v=" + Date.now()).then(r => r.json())
+    ]);
+
+    const gById = new Map((geom || []).map(g => [String(g.id), g]));
+    const toPoly = g => (g.lonlat && g.lonlat.length ? [g.lonlat] : (g.points && g.points.length ? [g.points] : null));
+    const toLine = g => (g.lonlat && g.lonlat.length ? g.lonlat : (g.points && g.points.length ? g.points : null));
+    const toPoint = g => (g.lonlat && g.lonlat.length ? g.lonlat[0] : (g.points && g.points.length ? g.points[0] : null));
+
+    const polyFeatures = [];
+    const lineFeatures = [];
+    const pointItems  = [];
+
+    (recs || []).forEach(r => {
+      const g = gById.get(String(r.geometry_id));
+      if (!g) return;
+
+      const props = {
+        name: r.title || r.name || r.id,
+        kind: r.type || g.type || "feature",
+        period: r.period || (g.properties && g.properties.period) || "",
+        blurb: r.blurb || (g.properties && g.properties.blurb) || "",
+        ...((g.properties) || {}),
+        ...((r.properties) || {})
+      };
+
+      if ((g.type || "").toLowerCase().startsWith("poly")) {
+        const coords = toPoly(g);
+        if (coords) {
+          polyFeatures.push({
+            type: "Feature",
+            properties: props,
+            geometry: { type: "Polygon", coordinates: coords }
+          });
+        }
+      } else if ((g.type || "").toLowerCase().includes("line")) {
+        const coords = toLine(g);
+        if (coords) {
+          lineFeatures.push({
+            type: "Feature",
+            properties: props,
+            geometry: { type: "LineString", coordinates: coords }
+          });
+        }
+      } else {
+        const coord = toPoint(g);
+        if (coord) {
+          pointItems.push({
+            longitude: coord[0],
+            latitude:  coord[1],
+            title: props.name,
+            subtitle: props.period || props.kind || "",
+            type: props.kind || "site"
+          });
+        }
+      }
+    });
+
+    const regionsSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
+    regionsSeries.mapPolygons.template.setAll({
+      tooltipText: "{name}\n{period}\n{blurb}",
+      interactive: true,
+      fillOpacity: 0.55,
+      strokeOpacity: 1,
+      strokeWidth: 1
+    });
+    const colorFor = (kind) => {
+      const table = {
+        kingdom: "#b56576", tribe: "#84a59d", province: "#6b9080",
+        territory: "#bde0fe", region: "#ffd166"
+      };
+      return am5.color(table[(kind||"").toLowerCase()] || "#cdb4db");
+    };
+    regionsSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
+      const d = target.dataItem?.dataContext?.properties;
+      return colorFor(d?.kind);
+    });
+    regionsSeries.mapPolygons.template.adapters.add("stroke", () => am5.color("#333333"));
+    regionsSeries.setAll({ geoJSON: { type: "FeatureCollection", features: polyFeatures } });
+
+    const routesSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
+    routesSeries.mapLines.template.setAll({
+      stroke: am5.color("#8b5e34"),
+      strokeWidth: 1.5,
+      tooltipText: "{name}\n{period}",
+      strokeOpacity: 0.8
+    });
+    routesSeries.setAll({ geoJSON: { type: "FeatureCollection", features: lineFeatures } });
+
+    const sitesSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+      valueField: "value", longitudeField: "longitude", latitudeField: "latitude"
+    }));
+    const ICON = {
+      site: "assets/icons/generic.svg",
+      city: "assets/icons/covenant.svg",
+      route: "assets/icons/exodus.svg",
+      shrine: "assets/icons/miracle.svg"
+    };
+    sitesSeries.bullets.push(() => am5.Bullet.new(root, {
+      sprite: am5.Picture.new(root, {
+        width: 16, height: 16, centerX: am5.p50, centerY: am5.p50,
+        src: ICON.site, tooltipText: "{title}\n{subtitle}"
+      })
+    }));
+    sitesSeries.bulletsContainer.events.on("boundschanged", () => {
+      sitesSeries.bulletsContainer.children.each(pic => {
+        const d = pic.dataItem?.dataContext || {};
+        pic.set("src", ICON[(d.type||"site").toLowerCase()] || ICON.site);
+      });
+    });
+    sitesSeries.data.setAll(pointItems);
+
+    regionsSeries.set("zIndex", 15);
+    routesSeries.set("zIndex", 20);
+    sitesSeries.set("zIndex", 30);
+  }
+
+  loadLinkedAncientLayers().catch(console.error);
+
   var zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
   zoomControl.homeButton.set("visible", true);
   zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
