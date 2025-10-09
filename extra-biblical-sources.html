@@ -199,6 +199,7 @@ am5.ready(function() {
     }));
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
+    
     if (view === "africaME") {
       const africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_region_world_africaLow
@@ -208,6 +209,10 @@ am5.ready(function() {
       }));
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
+
+      // add ancient map info layers to Africa + Middle East view as well
+      addWaterLayer(chart, root);
+      addAncientOverlay(chart, root);
       addEventsLayer(chart, root);
     } else if (isAncient) {
       const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
