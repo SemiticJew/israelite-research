@@ -61,6 +61,7 @@ am5.ready(function() {
     legendEl.innerHTML = '';
   }
 
+  // Standard earth-toned series
   function styleSeries(series, root) {
     series.mapPolygons.template.setAll({
       tooltipText: "{name}",
@@ -75,14 +76,14 @@ am5.ready(function() {
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
-  // landmask for ancient view: add clearer coastline hint
+  // Landmask for ancient: clearer and more visible
   function styleLandmask(series) {
     series.mapPolygons.template.setAll({
       fill: am5.color("#f4ede1"),
-      fillOpacity: 0.22,
+      fillOpacity: 0.40,           // ↑ make landmass visible
       stroke: am5.color("#8f7a61"),
-      strokeOpacity: 0.35,
-      strokeWidth: 0.8,
+      strokeOpacity: 0.45,         // ↑ clearer coastline hint
+      strokeWidth: 0.9,
       interactive: false,
       tooltipText: ""
     });
@@ -101,7 +102,10 @@ am5.ready(function() {
     });
     fetch("data/maps/ancient-water.geojson?v=" + Date.now())
       .then(r => r.json())
-      .then(geo => waterSeries.setAll({ geoJSON: geo }))
+      .then(geo => {
+        console.log("[water] features:", (geo.features||[]).length);
+        waterSeries.setAll({ geoJSON: geo });
+      })
       .catch(err => console.error("water load error", err));
   }
 
@@ -131,6 +135,7 @@ am5.ready(function() {
     fetch("data/maps/ancient-israel.geojson?v=" + Date.now())
       .then(r => r.json())
       .then(geo => {
+        console.log("[ancient] features:", (geo.features||[]).length);
         ancientSeries.setAll({ geoJSON: geo });
         const rows = (geo.features || []).map(f => {
           const n = (f.properties && f.properties.name) || "Region";
@@ -143,23 +148,58 @@ am5.ready(function() {
       .catch(err => console.error("ancient borders load error", err));
   }
 
+  function addEventsLayer(chart, root) {
+    const eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+      valueField: "value",
+      longitudeField: "lon",
+      latitudeField: "lat"
+    }));
+
+    const ICON_SRC = {
+      covenant: "assets/icons/covenant.svg",
+      exodus:   "assets/icons/exodus.svg",
+      miracle:  "assets/icons/miracle.svg",
+      generic:  "assets/icons/generic.svg"
+    };
+
+    eventsSeries.bullets.push(() => {
+      return am5.Bullet.new(root, {
+        sprite: am5.Picture.new(root, {
+          width: 18, height: 18,
+          centerX: am5.p50, centerY: am5.p50,
+          src: ICON_SRC.generic,
+          tooltipText: "{title}\n{subtitle}"
+        })
+      });
+    });
+
+    eventsSeries.bulletsContainer.events.on("boundschanged", () => {
+      eventsSeries.bulletsContainer.children.each(pic => {
+        const d = pic.dataItem && pic.dataItem.dataContext ? pic.dataItem.dataContext : {};
+        const src = (d && d.icon) ? d.icon : (ICON_SRC[d && d.type] || ICON_SRC.generic);
+        if (pic.set) pic.set("src", src);
+      });
+    });
+
+    fetch("data/events.json?v=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        console.log("[events] count:", (data||[]).length);
+        eventsSeries.data.setAll(data);
+      })
+      .catch(err => console.error("events load error", err));
+  }
+
   function makeMap(view) {
     disposeAll();
 
     root = am5.Root.new("chartdiv");
     root.setThemes([ am5themes_Animated.new(root) ]);
 
-    // set initial framing for ancient view (not an auto-zoom; defines home view)
-    const isAncient = (view === "ancient");
-    const initialBounds = isAncient
-      ? { north: 34.4, south: 30.0, west: 33.6, east: 37.0 }  // Levant frame
-      : undefined;
-
     chart = root.container.children.push(am5map.MapChart.new(root, {
       panX: "rotateX",
       panY: "translateY",
-      projection: am5map.geoNaturalEarth1(),
-      homeGeoBounds: initialBounds
+      projection: am5map.geoNaturalEarth1()
     }));
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
@@ -172,7 +212,9 @@ am5.ready(function() {
       }));
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
-    } else if (isAncient) {
+      addEventsLayer(chart, root);
+    } else if (view === "ancient") {
+      // Visible landmass context (no modern borders)
       const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_region_world_africaLow
       }));
@@ -181,8 +223,13 @@ am5.ready(function() {
       }));
       styleLandmask(landAfrica);
       styleLandmask(landME);
+
+      // Lakes/seas and ancient overlays
       addWaterLayer(chart, root);
       addAncientOverlay(chart, root);
+
+      // Restore biblical events markers on Ancient view
+      addEventsLayer(chart, root);
     }
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
@@ -191,7 +238,6 @@ am5.ready(function() {
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
-    if (isAncient) chart.goHome(); // use the Levant frame on load
   }
 
   const select = document.getElementById("mapSelect");
