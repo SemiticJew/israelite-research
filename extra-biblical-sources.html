@@ -6,7 +6,7 @@
 <title>Extra-Biblical Sources — amCharts Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340;--brand:#054A91;--muted:#6b7280}
+  :root{--ink:#0b2340}
   html,body{height:100%;margin:0;background:#fff;color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   .container{max-width:1200px;margin:0 auto;padding:18px}
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
@@ -30,9 +30,7 @@
     <div class="toolbar">
       <label for="mapSelect"><strong>View:</strong></label>
       <select id="mapSelect">
-        <option value="world">World</option>
-        <option value="middleEast">Middle East</option>
-        <option value="africaME">Africa + Middle East</option>
+        <option value="africaME" selected>Africa + Middle East</option>
         <option value="ancient">Ancient Israel (schematic)</option>
       </select>
     </div>
@@ -48,9 +46,8 @@
 
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/region/world/africaLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
 <script>
@@ -65,31 +62,28 @@ am5.ready(function() {
     legendEl.innerHTML = '';
   }
 
-  // Earth-toned style (shared)
   function styleSeries(series, root) {
     series.mapPolygons.template.setAll({
       tooltipText: "{name}",
       toggleKey: "active",
       interactive: true,
-      fill: am5.color("#f4ede1"),      // parchment land
-      stroke: am5.color("#c4b79c"),    // warm borders
+      fill: am5.color("#f4ede1"),
+      stroke: am5.color("#c4b79c"),
       strokeOpacity: 1,
       strokeWidth: 0.8
     });
-    series.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") }); // golden hover
-    series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") }); // bronze active
+    series.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") });
+    series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
-  function styleFaint(series) {
-    // faint base so Ancient looks like other maps but keeps focus on ancient regions
+  // For "ancient" view: show landmass without modern borders (no outlines).
+  function styleLandmask(series) {
     series.mapPolygons.template.setAll({
       fill: am5.color("#f4ede1"),
-      fillOpacity: 0.18,
-      stroke: am5.color("#c4b79c"),
-      strokeOpacity: 0.35,
-      strokeWidth: 0.6,
-      tooltipText: "{name}",
-      interactive: false
+      fillOpacity: 0.20,
+      strokeOpacity: 0,  // remove modern borders
+      interactive: false,
+      tooltipText: ""
     });
   }
 
@@ -133,12 +127,6 @@ am5.ready(function() {
       stroke: am5.color("#b45309")
     });
 
-    eventsSeries.bulletsContainer.events.on("click", ev => {
-      const d = ev.target && ev.target.dataItem ? ev.target.dataItem.dataContext : null;
-      if (!d) return;
-      console.log("Event clicked:", d);
-    });
-
     fetch("data/events.json?v=" + Date.now())
       .then(r => r.json())
       .then(data => eventsSeries.data.setAll(data))
@@ -154,7 +142,6 @@ am5.ready(function() {
       strokeOpacity: 1,
       strokeWidth: 1
     });
-    // match hover/active to other maps
     ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.8 });
     ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.9 });
 
@@ -173,7 +160,6 @@ am5.ready(function() {
       .then(r => r.json())
       .then(geo => {
         ancientSeries.setAll({ geoJSON: geo });
-        // Build legend from feature fills
         const rows = (geo.features || []).map(f => {
           const n = (f.properties && f.properties.name) || "Region";
           const c = (f.properties && f.properties.fill) || "#cccccc";
@@ -196,8 +182,7 @@ am5.ready(function() {
       panY: "translateY",
       projection: am5map.geoNaturalEarth1()
     }));
-
-    chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") })); // ocean
+    chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
     if (view === "africaME") {
       const africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
@@ -210,24 +195,20 @@ am5.ready(function() {
       styleSeries(meSeries, root);
       addEventsLayer(chart, root);
     } else if (view === "ancient") {
-      // faint modern base for landmass context
-      const baseME = chart.series.push(am5map.MapPolygonSeries.new(root, {
+      // Landmass only (no modern borders): faint Africa + Middle East
+      const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_region_world_africaLow
+      }));
+      const landME = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_region_world_middleEastLow
       }));
-      styleFaint(baseME);
-      // ancient overlay styled like other maps
+      styleLandmask(landAfrica);
+      styleLandmask(landME);
+
+      // Ancient overlay
       addAncientOverlay(chart, root);
-      addEventsLayer(chart, root);
-    } else {
-      const cfg = {};
-      if (view === "middleEast") {
-        cfg.geoJSON = am5geodata_region_world_middleEastLow;
-      } else {
-        cfg.geoJSON = am5geodata_worldLow;
-        cfg.exclude = ["AQ"];
-      }
-      const baseSeries = chart.series.push(am5map.MapPolygonSeries.new(root, cfg));
-      styleSeries(baseSeries, root);
+
+      // (Optional) event icons on top
       addEventsLayer(chart, root);
     }
 
