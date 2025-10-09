@@ -30,8 +30,8 @@
     <div class="toolbar">
       <label for="mapSelect"><strong>View:</strong></label>
       <select id="mapSelect">
-        <option value="africaME" selected>Africa + Middle East</option>
-        <option value="ancient">Ancient Israel (schematic)</option>
+        <option value="africaME">Africa + Middle East</option>
+        <option value="ancient" selected>Ancient Israel (schematic)</option>
       </select>
     </div>
     <div id="chartdiv"></div>
@@ -53,7 +53,6 @@
 <script>
 am5.ready(function() {
   let root, chart, zoomControl;
-
   const legendEl = document.getElementById("legend");
 
   function disposeAll() {
@@ -76,61 +75,33 @@ am5.ready(function() {
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
-  // For "ancient" view: show landmass without modern borders (no outlines).
   function styleLandmask(series) {
     series.mapPolygons.template.setAll({
       fill: am5.color("#f4ede1"),
       fillOpacity: 0.20,
-      strokeOpacity: 0,  // remove modern borders
+      stroke: am5.color("#a58f73"),
+      strokeOpacity: 0.12,
+      strokeWidth: 0.6,
       interactive: false,
       tooltipText: ""
     });
   }
 
-  function addEventsLayer(chart, root) {
-    const eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
-      valueField: "value",
-      longitudeField: "lon",
-      latitudeField: "lat"
-    }));
-
-    const ICON_SRC = {
-      covenant: "assets/icons/covenant.svg",
-      exodus:   "assets/icons/exodus.svg",
-      miracle:  "assets/icons/miracle.svg",
-      generic:  "assets/icons/generic.svg"
-    };
-
-    eventsSeries.bullets.push(() => {
-      return am5.Bullet.new(root, {
-        sprite: am5.Picture.new(root, {
-          width: 18, height: 18,
-          centerX: am5.p50, centerY: am5.p50,
-          src: ICON_SRC.generic,
-          tooltipText: "{title}\n{subtitle}"
-        })
-      });
+  function addWaterLayer(chart, root) {
+    const waterSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
+    waterSeries.mapPolygons.template.setAll({
+      fill: am5.color("#cfe6ff"),
+      fillOpacity: 0.9,
+      stroke: am5.color("#85a6c5"),
+      strokeOpacity: 0.9,
+      strokeWidth: 0.8,
+      tooltipText: "{name}",
+      interactive: false
     });
-
-    eventsSeries.bulletsContainer.events.on("boundschanged", () => {
-      eventsSeries.bulletsContainer.children.each(pic => {
-        const d = pic.dataItem && pic.dataItem.dataContext ? pic.dataItem.dataContext : {};
-        const src = (d && d.icon) ? d.icon : (ICON_SRC[d && d.type] || ICON_SRC.generic);
-        if (pic.set) pic.set("src", src);
-      });
-    });
-
-    eventsSeries.set("clustered", true);
-    eventsSeries.set("clusteredSettings", {
-      text: "{count}",
-      fill: am5.color("#fcd34d"),
-      stroke: am5.color("#b45309")
-    });
-
-    fetch("data/events.json?v=" + Date.now())
+    fetch("data/maps/ancient-water.geojson?v=" + Date.now())
       .then(r => r.json())
-      .then(data => eventsSeries.data.setAll(data))
-      .catch(err => console.error("events load error", err));
+      .then(geo => waterSeries.setAll({ geoJSON: geo }))
+      .catch(err => console.error("water load error", err));
   }
 
   function addAncientOverlay(chart, root) {
@@ -138,11 +109,11 @@ am5.ready(function() {
     ancientSeries.mapPolygons.template.setAll({
       tooltipText: "{name} — {period}",
       interactive: true,
-      fillOpacity: 0.55,
+      fillOpacity: 0.5,
       strokeOpacity: 1,
-      strokeWidth: 1
+      strokeWidth: 1.2
     });
-    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.8 });
+    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.75 });
     ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.9 });
 
     ancientSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
@@ -193,9 +164,7 @@ am5.ready(function() {
       }));
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
-      addEventsLayer(chart, root);
     } else if (view === "ancient") {
-      // Landmass only (no modern borders): faint Africa + Middle East
       const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_region_world_africaLow
       }));
@@ -204,12 +173,8 @@ am5.ready(function() {
       }));
       styleLandmask(landAfrica);
       styleLandmask(landME);
-
-      // Ancient overlay
+      addWaterLayer(chart, root);
       addAncientOverlay(chart, root);
-
-      // (Optional) event icons on top
-      addEventsLayer(chart, root);
     }
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
