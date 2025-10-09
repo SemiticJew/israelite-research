@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — amCharts Map</title>
+<title>Extra-Biblical Sources — Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
   :root{--ink:#0b2340}
@@ -11,32 +11,17 @@
   .container{max-width:1200px;margin:0 auto;padding:18px}
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
   .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
-  .toolbar{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #eef2f7;flex-wrap:wrap}
-  select{border:1px solid #cfd8e3;border-radius:10px;padding:.45rem .6rem;background:#fff;font:inherit}
   #chartdiv{width:100%;height:72vh;min-height:420px}
-  .legend{position:absolute;right:14px;top:68px;background:#fff;border:1px solid #e6ebf2;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:8px 10px;display:none}
-  .legend h4{margin:.2rem 0 .4rem;font-size:.9rem;color:#054A91}
-  .legend .row{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .legend .swatch{width:14px;height:14px;border-radius:3px;border:1px solid #cbd5e1}
-  .legend.show{display:block}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 
-<main class="container" style="position:relative">
-  <h1 class="page-title">Interactive Map (amCharts v5)</h1>
+<main class="container">
+  <h1 class="page-title">Africa + Middle East Map</h1>
   <section class="card">
-    <div class="toolbar">
-      <label for="mapSelect"><strong>View:</strong></label>
-      <select id="mapSelect">
-        <option value="africaME">Africa + Middle East</option>
-        
-      </select>
-    </div>
     <div id="chartdiv"></div>
   </section>
-  <div id="legend" class="legend" aria-live="polite"></div>
 </main>
 
 <div id="site-footer"></div>
@@ -52,16 +37,18 @@
 
 <script>
 am5.ready(function() {
-  let root, chart, zoomControl;
-  const legendEl = document.getElementById("legend");
+  var root = am5.Root.new("chartdiv");
+  root.setThemes([ am5themes_Animated.new(root) ]);
 
-  function disposeAll() {
-    if (root) { root.dispose(); root = null; }
-    legendEl.classList.remove('show');
-    legendEl.innerHTML = '';
-  }
+  var chart = root.container.children.push(am5map.MapChart.new(root, {
+    panX: "rotateX",
+    panY: "translateY",
+    projection: am5map.geoNaturalEarth1()
+  }));
 
-  function styleSeries(series, root) {
+  chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
+
+  function styleSeries(series) {
     series.mapPolygons.template.setAll({
       tooltipText: "{name}",
       toggleKey: "active",
@@ -75,152 +62,21 @@ am5.ready(function() {
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
-  function styleLandmask(series) {
-    series.mapPolygons.template.setAll({
-      fill: am5.color("#f4ede1"),
-      fillOpacity: 0.35,
-      stroke: am5.color("#8f7a61"),
-      strokeOpacity: 0.35,
-      strokeWidth: 0.8,
-      interactive: false,
-      tooltipText: ""
-    });
-  }
+  var africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+    geoJSON: am5geodata_region_world_africaLow
+  }));
+  var meSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+    geoJSON: am5geodata_region_world_middleEastLow
+  }));
+  styleSeries(africaSeries);
+  styleSeries(meSeries);
 
-  function addWaterLayer(chart, root) {
-    const waterSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { zIndex: 10 }));
-    waterSeries.mapPolygons.template.setAll({
-      fill: am5.color("#bcdcff"),
-      fillOpacity: 0.95,
-      stroke: am5.color("#6f95b8"),
-      strokeOpacity: 0.95,
-      strokeWidth: 0.9,
-      interactive: false,
-      tooltipText: "{name}"
-    });
-    fetch("data/maps/ancient-water.geojson?v=" + Date.now())
-      .then(r => { console.log("[water] fetch", r.status); return r.json(); })
-      .then(geo => { waterSeries.setAll({ geoJSON: geo }); console.log("[water] features", (geo.features||[]).length); })
-      .catch(err => console.error("[water] load error", err));
-  }
+  var zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+  zoomControl.homeButton.set("visible", true);
+  zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
+  chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
-  function addAncientOverlay(chart, root) {
-    const ancientSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { zIndex: 20 }));
-    ancientSeries.mapPolygons.template.setAll({
-      tooltipText: "{name} — {period}",
-      interactive: true,
-      fillOpacity: 0.6,
-      strokeOpacity: 1,
-      strokeWidth: 1.4
-    });
-    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.82 });
-    ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.95 });
-
-    ancientSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
-      const dc = target.dataItem && target.dataItem.dataContext;
-      const col = dc && dc.properties && dc.properties.fill;
-      return col ? am5.color(col) : am5.color("#bcbcbc");
-    });
-    ancientSeries.mapPolygons.template.adapters.add("stroke", (stroke, target) => {
-      const dc = target.dataItem && target.dataItem.dataContext;
-      const col = dc && dc.properties && dc.properties.stroke;
-      return col ? am5.color(col) : am5.color("#333333");
-    });
-
-    fetch("data/maps/ancient-israel.geojson?v=" + Date.now())
-      .then(r => { console.log("[ancient] fetch", r.status); return r.json(); })
-      .then(geo => {
-        ancientSeries.setAll({ geoJSON: geo });
-        console.log("[ancient] features", (geo.features||[]).length);
-        const rows = (geo.features || []).map(f => {
-          const n = (f.properties && f.properties.name) || "Region";
-          const c = (f.properties && f.properties.fill) || "#cccccc";
-          return `<div class="row"><span class="swatch" style="background:${c}"></span>${n}</div>`;
-        }).join("");
-        legendEl.innerHTML = `<h4>Ancient Regions</h4>${rows}`;
-        legendEl.classList.add('show');
-      })
-      .catch(err => console.error("[ancient] load error", err));
-  }
-
-  function addEventsLayer(chart, root) {
-    const eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
-      valueField: "value",
-      longitudeField: "lon",
-      latitudeField: "lat",
-      zIndex: 30
-    }));
-
-    const ICON_SRC = {
-      covenant: "assets/icons/covenant.svg",
-      exodus:   "assets/icons/exodus.svg",
-      miracle:  "assets/icons/miracle.svg",
-      generic:  "assets/icons/generic.svg"
-    };
-
-    eventsSeries.bullets.push(() => {
-      return am5.Bullet.new(root, {
-        sprite: am5.Picture.new(root, {
-          width: 18, height: 18,
-          centerX: am5.p50, centerY: am5.p50,
-          src: ICON_SRC.generic,
-          tooltipText: "{title}\n{subtitle}"
-        })
-      });
-    });
-
-    eventsSeries.bulletsContainer.events.on("boundschanged", () => {
-      eventsSeries.bulletsContainer.children.each(pic => {
-        const d = pic.dataItem && pic.dataItem.dataContext ? pic.dataItem.dataContext : {};
-        const src = (d && d.icon) ? d.icon : (ICON_SRC[d && d.type] || ICON_SRC.generic);
-        if (pic.set) pic.set("src", src);
-      });
-    });
-
-    fetch("data/events.json?v=" + Date.now())
-      .then(r => { console.log("[events] fetch", r.status); return r.json(); })
-      .then(data => { eventsSeries.data.setAll(data); console.log("[events] items", data.length); })
-      .catch(err => console.error("[events] load error", err));
-  }
-
-  function makeMap(view) {
-    disposeAll();
-
-    root = am5.Root.new("chartdiv");
-    root.setThemes([ am5themes_Animated.new(root) ]);
-
-    const isAncient = (view === "ancient");
-
-    chart = root.container.children.push(am5map.MapChart.new(root, {
-      panX: "rotateX",
-      panY: "translateY",
-      projection: am5map.geoNaturalEarth1(),
-      
-    }));
-    chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
-
-    if (view === "africaME") {
-      const africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_africaLow
-      }));
-      const meSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_middleEastLow
-      }));
-      styleSeries(africaSeries, root);
-      styleSeries(meSeries, root);
-      addEventsLayer(chart, root);
-    } 
-    zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
-    zoomControl.homeButton.set("visible", true);
-    zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
-    chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
-
-    chart.appear(600, 100);
-    
-
-  const select = document.getElementById("mapSelect");
-  makeMap(select.value);
-  select.addEventListener("change", () => makeMap(select.value));
+  chart.appear(600, 100);
 });
 </script>
 </body>
