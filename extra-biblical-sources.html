@@ -14,12 +14,17 @@
   .toolbar{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #eef2f7;flex-wrap:wrap}
   select{border:1px solid #cfd8e3;border-radius:10px;padding:.45rem .6rem;background:#fff;font:inherit}
   #chartdiv{width:100%;height:72vh;min-height:420px}
+  .legend{position:absolute;right:14px;top:68px;background:#fff;border:1px solid #e6ebf2;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:8px 10px;display:none}
+  .legend h4{margin:.2rem 0 .4rem;font-size:.9rem;color:#054A91}
+  .legend .row{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .legend .swatch{width:14px;height:14px;border-radius:3px;border:1px solid #cbd5e1}
+  .legend.show{display:block}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 
-<main class="container">
+<main class="container" style="position:relative">
   <h1 class="page-title">Interactive Map (amCharts v5)</h1>
   <section class="card">
     <div class="toolbar">
@@ -33,6 +38,7 @@
     </div>
     <div id="chartdiv"></div>
   </section>
+  <div id="legend" class="legend" aria-live="polite"></div>
 </main>
 
 <div id="site-footer"></div>
@@ -51,10 +57,15 @@
 am5.ready(function() {
   let root, chart, zoomControl;
 
+  const legendEl = document.getElementById("legend");
+
   function disposeAll() {
     if (root) { root.dispose(); root = null; }
+    legendEl.classList.remove('show');
+    legendEl.innerHTML = '';
   }
 
+  // Earth-toned style (shared)
   function styleSeries(series, root) {
     series.mapPolygons.template.setAll({
       tooltipText: "{name}",
@@ -67,6 +78,19 @@ am5.ready(function() {
     });
     series.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") }); // golden hover
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") }); // bronze active
+  }
+
+  function styleFaint(series) {
+    // faint base so Ancient looks like other maps but keeps focus on ancient regions
+    series.mapPolygons.template.setAll({
+      fill: am5.color("#f4ede1"),
+      fillOpacity: 0.18,
+      stroke: am5.color("#c4b79c"),
+      strokeOpacity: 0.35,
+      strokeWidth: 0.6,
+      tooltipText: "{name}",
+      interactive: false
+    });
   }
 
   function addEventsLayer(chart, root) {
@@ -126,10 +150,14 @@ am5.ready(function() {
     ancientSeries.mapPolygons.template.setAll({
       tooltipText: "{name} — {period}",
       interactive: true,
-      fillOpacity: 0.45,
+      fillOpacity: 0.55,
       strokeOpacity: 1,
       strokeWidth: 1
     });
+    // match hover/active to other maps
+    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.8 });
+    ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.9 });
+
     ancientSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
       const dc = target.dataItem && target.dataItem.dataContext;
       const col = dc && dc.properties && dc.properties.fill;
@@ -143,7 +171,17 @@ am5.ready(function() {
 
     fetch("data/maps/ancient-israel.geojson?v=" + Date.now())
       .then(r => r.json())
-      .then(geo => ancientSeries.setAll({ geoJSON: geo }))
+      .then(geo => {
+        ancientSeries.setAll({ geoJSON: geo });
+        // Build legend from feature fills
+        const rows = (geo.features || []).map(f => {
+          const n = (f.properties && f.properties.name) || "Region";
+          const c = (f.properties && f.properties.fill) || "#cccccc";
+          return `<div class="row"><span class="swatch" style="background:${c}"></span>${n}</div>`;
+        }).join("");
+        legendEl.innerHTML = `<h4>Ancient Regions</h4>${rows}`;
+        legendEl.classList.add('show');
+      })
       .catch(err => console.error("ancient borders load error", err));
   }
 
@@ -170,9 +208,19 @@ am5.ready(function() {
       }));
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
+      addEventsLayer(chart, root);
+    } else if (view === "ancient") {
+      // faint modern base for landmass context
+      const baseME = chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_region_world_middleEastLow
+      }));
+      styleFaint(baseME);
+      // ancient overlay styled like other maps
+      addAncientOverlay(chart, root);
+      addEventsLayer(chart, root);
     } else {
       const cfg = {};
-      if (view === "middleEast" || view === "ancient") {
+      if (view === "middleEast") {
         cfg.geoJSON = am5geodata_region_world_middleEastLow;
       } else {
         cfg.geoJSON = am5geodata_worldLow;
@@ -180,6 +228,7 @@ am5.ready(function() {
       }
       const baseSeries = chart.series.push(am5map.MapPolygonSeries.new(root, cfg));
       styleSeries(baseSeries, root);
+      addEventsLayer(chart, root);
     }
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
@@ -188,12 +237,6 @@ am5.ready(function() {
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
-
-    addEventsLayer(chart, root);
-
-    if (view === "ancient") {
-      addAncientOverlay(chart, root);
-    }
   }
 
   const select = document.getElementById("mapSelect");
