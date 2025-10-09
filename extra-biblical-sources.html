@@ -61,7 +61,6 @@ am5.ready(function() {
     legendEl.innerHTML = '';
   }
 
-  // Standard earth-toned series
   function styleSeries(series, root) {
     series.mapPolygons.template.setAll({
       tooltipText: "{name}",
@@ -76,21 +75,20 @@ am5.ready(function() {
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
-  // Landmask for ancient: clearer and more visible
   function styleLandmask(series) {
     series.mapPolygons.template.setAll({
       fill: am5.color("#f4ede1"),
-      fillOpacity: 0.40,           // ↑ make landmass visible
+      fillOpacity: 0.35,
       stroke: am5.color("#8f7a61"),
-      strokeOpacity: 0.45,         // ↑ clearer coastline hint
-      strokeWidth: 0.9,
+      strokeOpacity: 0.35,
+      strokeWidth: 0.8,
       interactive: false,
       tooltipText: ""
     });
   }
 
   function addWaterLayer(chart, root) {
-    const waterSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
+    const waterSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { zIndex: 10 }));
     waterSeries.mapPolygons.template.setAll({
       fill: am5.color("#bcdcff"),
       fillOpacity: 0.95,
@@ -101,16 +99,13 @@ am5.ready(function() {
       tooltipText: "{name}"
     });
     fetch("data/maps/ancient-water.geojson?v=" + Date.now())
-      .then(r => r.json())
-      .then(geo => {
-        console.log("[water] features:", (geo.features||[]).length);
-        waterSeries.setAll({ geoJSON: geo });
-      })
-      .catch(err => console.error("water load error", err));
+      .then(r => { console.log("[water] fetch", r.status); return r.json(); })
+      .then(geo => { waterSeries.setAll({ geoJSON: geo }); console.log("[water] features", (geo.features||[]).length); })
+      .catch(err => console.error("[water] load error", err));
   }
 
   function addAncientOverlay(chart, root) {
-    const ancientSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
+    const ancientSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { zIndex: 20 }));
     ancientSeries.mapPolygons.template.setAll({
       tooltipText: "{name} — {period}",
       interactive: true,
@@ -133,10 +128,10 @@ am5.ready(function() {
     });
 
     fetch("data/maps/ancient-israel.geojson?v=" + Date.now())
-      .then(r => r.json())
+      .then(r => { console.log("[ancient] fetch", r.status); return r.json(); })
       .then(geo => {
-        console.log("[ancient] features:", (geo.features||[]).length);
         ancientSeries.setAll({ geoJSON: geo });
+        console.log("[ancient] features", (geo.features||[]).length);
         const rows = (geo.features || []).map(f => {
           const n = (f.properties && f.properties.name) || "Region";
           const c = (f.properties && f.properties.fill) || "#cccccc";
@@ -145,14 +140,15 @@ am5.ready(function() {
         legendEl.innerHTML = `<h4>Ancient Regions</h4>${rows}`;
         legendEl.classList.add('show');
       })
-      .catch(err => console.error("ancient borders load error", err));
+      .catch(err => console.error("[ancient] load error", err));
   }
 
   function addEventsLayer(chart, root) {
     const eventsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
       valueField: "value",
       longitudeField: "lon",
-      latitudeField: "lat"
+      latitudeField: "lat",
+      zIndex: 30
     }));
 
     const ICON_SRC = {
@@ -182,12 +178,9 @@ am5.ready(function() {
     });
 
     fetch("data/events.json?v=" + Date.now())
-      .then(r => r.json())
-      .then(data => {
-        console.log("[events] count:", (data||[]).length);
-        eventsSeries.data.setAll(data);
-      })
-      .catch(err => console.error("events load error", err));
+      .then(r => { console.log("[events] fetch", r.status); return r.json(); })
+      .then(data => { eventsSeries.data.setAll(data); console.log("[events] items", data.length); })
+      .catch(err => console.error("[events] load error", err));
   }
 
   function makeMap(view) {
@@ -196,10 +189,13 @@ am5.ready(function() {
     root = am5.Root.new("chartdiv");
     root.setThemes([ am5themes_Animated.new(root) ]);
 
+    const isAncient = (view === "ancient");
+
     chart = root.container.children.push(am5map.MapChart.new(root, {
       panX: "rotateX",
       panY: "translateY",
-      projection: am5map.geoNaturalEarth1()
+      projection: am5map.geoNaturalEarth1(),
+      homeGeoBounds: isAncient ? { north: 34.6, south: 29.5, west: 33.0, east: 37.5 } : undefined
     }));
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
@@ -213,23 +209,19 @@ am5.ready(function() {
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
       addEventsLayer(chart, root);
-    } else if (view === "ancient") {
-      // Visible landmass context (no modern borders)
+    } else if (isAncient) {
       const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_africaLow
+        geoJSON: am5geodata_region_world_africaLow, zIndex: 1
       }));
       const landME = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_middleEastLow
+        geoJSON: am5geodata_region_world_middleEastLow, zIndex: 2
       }));
       styleLandmask(landAfrica);
       styleLandmask(landME);
 
-      // Lakes/seas and ancient overlays
-      addWaterLayer(chart, root);
-      addAncientOverlay(chart, root);
-
-      // Restore biblical events markers on Ancient view
-      addEventsLayer(chart, root);
+      addWaterLayer(chart, root);      // zIndex 10
+      addAncientOverlay(chart, root);  // zIndex 20
+      addEventsLayer(chart, root);     // zIndex 30
     }
 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
@@ -238,6 +230,7 @@ am5.ready(function() {
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
+    if (isAncient) chart.goHome();
   }
 
   const select = document.getElementById("mapSelect");
