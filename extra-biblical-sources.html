@@ -31,7 +31,7 @@
       <label for="mapSelect"><strong>View:</strong></label>
       <select id="mapSelect">
         <option value="africaME">Africa + Middle East</option>
-        <option value="ancient" selected>Ancient Israel (schematic)</option>
+        
       </select>
     </div>
     <div id="chartdiv"></div>
@@ -195,7 +195,7 @@ am5.ready(function() {
       panX: "rotateX",
       panY: "translateY",
       projection: am5map.geoNaturalEarth1(),
-      homeGeoBounds: { north: 34.8, south: 30.0, west: 33.5, east: 37.0 }
+      
     }));
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
@@ -209,29 +209,14 @@ am5.ready(function() {
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
       addEventsLayer(chart, root);
-    } else if (isAncient) {
-      const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_africaLow, zIndex: 1
-      }));
-      const landME = chart.series.push(am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_region_world_middleEastLow, zIndex: 2
-      }));
-      styleLandmask(landAfrica);
-      styleLandmask(landME);
-
-      addWaterLayer(chart, root);      // zIndex 10
-      addAncientOverlay(chart, root);  // zIndex 20
-      addEventsLayer(chart, root);     // zIndex 30
-    }
-
+    } 
     zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
     zoomControl.homeButton.set("visible", true);
     zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
-    if (isAncient) chart.goHome();
-  }
+    
 
   const select = document.getElementById("mapSelect");
   makeMap(select.value);
