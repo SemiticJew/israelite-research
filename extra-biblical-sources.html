@@ -75,13 +75,14 @@ am5.ready(function() {
     series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
   }
 
+  // landmask for ancient view: add clearer coastline hint
   function styleLandmask(series) {
     series.mapPolygons.template.setAll({
       fill: am5.color("#f4ede1"),
-      fillOpacity: 0.20,
-      stroke: am5.color("#a58f73"),
-      strokeOpacity: 0.12,
-      strokeWidth: 0.6,
+      fillOpacity: 0.22,
+      stroke: am5.color("#8f7a61"),
+      strokeOpacity: 0.35,
+      strokeWidth: 0.8,
       interactive: false,
       tooltipText: ""
     });
@@ -90,13 +91,13 @@ am5.ready(function() {
   function addWaterLayer(chart, root) {
     const waterSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
     waterSeries.mapPolygons.template.setAll({
-      fill: am5.color("#cfe6ff"),
-      fillOpacity: 0.9,
-      stroke: am5.color("#85a6c5"),
-      strokeOpacity: 0.9,
-      strokeWidth: 0.8,
-      tooltipText: "{name}",
-      interactive: false
+      fill: am5.color("#bcdcff"),
+      fillOpacity: 0.95,
+      stroke: am5.color("#6f95b8"),
+      strokeOpacity: 0.95,
+      strokeWidth: 0.9,
+      interactive: false,
+      tooltipText: "{name}"
     });
     fetch("data/maps/ancient-water.geojson?v=" + Date.now())
       .then(r => r.json())
@@ -109,12 +110,12 @@ am5.ready(function() {
     ancientSeries.mapPolygons.template.setAll({
       tooltipText: "{name} — {period}",
       interactive: true,
-      fillOpacity: 0.5,
+      fillOpacity: 0.6,
       strokeOpacity: 1,
-      strokeWidth: 1.2
+      strokeWidth: 1.4
     });
-    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.75 });
-    ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.9 });
+    ancientSeries.mapPolygons.template.states.create("hover",  { fillOpacity: 0.82 });
+    ancientSeries.mapPolygons.template.states.create("active", { fill: am5.color("#b45309"), fillOpacity: 0.95 });
 
     ancientSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
       const dc = target.dataItem && target.dataItem.dataContext;
@@ -148,10 +149,17 @@ am5.ready(function() {
     root = am5.Root.new("chartdiv");
     root.setThemes([ am5themes_Animated.new(root) ]);
 
+    // set initial framing for ancient view (not an auto-zoom; defines home view)
+    const isAncient = (view === "ancient");
+    const initialBounds = isAncient
+      ? { north: 34.4, south: 30.0, west: 33.6, east: 37.0 }  // Levant frame
+      : undefined;
+
     chart = root.container.children.push(am5map.MapChart.new(root, {
       panX: "rotateX",
       panY: "translateY",
-      projection: am5map.geoNaturalEarth1()
+      projection: am5map.geoNaturalEarth1(),
+      homeGeoBounds: initialBounds
     }));
     chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
 
@@ -164,7 +172,7 @@ am5.ready(function() {
       }));
       styleSeries(africaSeries, root);
       styleSeries(meSeries, root);
-    } else if (view === "ancient") {
+    } else if (isAncient) {
       const landAfrica = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_region_world_africaLow
       }));
@@ -183,6 +191,7 @@ am5.ready(function() {
     chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
 
     chart.appear(600, 100);
+    if (isAncient) chart.goHome(); // use the Levant frame on load
   }
 
   const select = document.getElementById("mapSelect");
