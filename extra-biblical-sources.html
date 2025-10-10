@@ -28,8 +28,8 @@
   </section>
 
   <div class="status">
-    <b>Source:</b> ancient.json + geometry.json<br>
-    <b>Status:</b> <span id="map-status">Loading…</span>
+    <div><b>Source:</b> ancient.json + geometry.json</div>
+    <div><b>Status:</b> <span id="map-status">Loading…</span></div>
   </div>
 </main>
 
@@ -46,8 +46,59 @@
 
 <script>
 am5.ready(async function() {
-  const status = document.getElementById("map-status");
-  const setStatus = (t,c)=>{status.textContent=t;status.className=c||"";}
+  const statusEl = document.getElementById("map-status");
+  const setStatus = (t,c)=>{statusEl.textContent=t;statusEl.className=c||"";}
+
+  function isSchema(obj){ return obj && typeof obj === "object" && !!obj.$schema; }
+
+  function normalizeRecords(raw){
+    if (Array.isArray(raw)) return raw;
+    if (raw && Array.isArray(raw.records)) return raw.records;
+    return null;
+  }
+
+  function normalizeGeoms(raw){
+    if (Array.isArray(raw)) return raw; // already list of {id,type,coords...}
+    // GeoJSON FeatureCollection -> array of light objects
+    if (raw && raw.type === "FeatureCollection" && Array.isArray(raw.features)) {
+      return raw.features.map(f=>{
+        const id = f.id || f.properties?.id || f.properties?.geometry_id || f.properties?.gid;
+        const g  = f.geometry || {};
+        return {
+          id: String(id || ""),
+          type: g.type || "Unknown",
+          coordinates: g.coordinates
+        };
+      });
+    }
+    if (raw && Array.isArray(raw.geometries)) return raw.geometries;
+    return null;
+  }
+
+  function extractCoords(obj){
+    // Accept lonlat|lonlats|points|coordinates
+    const coords = obj.lonlat || obj.lonlats || obj.points || obj.coordinates || obj.coords || null;
+    return coords;
+  }
+
+  function guessKind(obj, coords){
+    const t = (obj.type || "").toLowerCase();
+    if (t.includes("poly")) return "polygon";
+    if (t.includes("line")) return "line";
+    if (t.includes("point")) return "point";
+    // derive from coords shape
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && Array.isArray(coords[0][0])) return "polygon";
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && !Array.isArray(coords[0][0]) && coords.length >= 2) return "line";
+    if (Array.isArray(coords) && coords.length === 2 && typeof coords[0] === "number") return "point";
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && coords.length === 1 && coords[0].length === 2) return "point";
+    return null;
+  }
+
+  async function loadJSON(path){
+    const r = await fetch(path + "?v=" + Date.now(), { cache:"no-store" });
+    if (!r.ok) throw new Error(path + ": " + r.status + " " + r.statusText);
+    return r.json();
+  }
 
   var root = am5.Root.new("chartdiv");
   root.setThemes([am5themes_Animated.new(root)]);
@@ -58,41 +109,71 @@ am5.ready(async function() {
   chart.chartContainer.set("background", am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
 
   const africa = chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_africaLow}));
-  const me = chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
+  const me     = chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
   const style = s=>s.mapPolygons.template.setAll({fill:am5.color("#f4ede1"),stroke:am5.color("#c4b79c"),strokeWidth:0.8});
-  style(africa);style(me);
+  style(africa); style(me);
 
   try {
-    const [geom,recs]=await Promise.all([
-      fetch("data/geometry.json?v="+Date.now()).then(r=>r.json()),
-      fetch("data/ancient.json?v="+Date.now()).then(r=>r.json())
+    const [geomRaw, recsRaw] = await Promise.all([
+      loadJSON("data/geometry.json"),
+      loadJSON("data/ancient.json")
     ]);
-    if(!Array.isArray(geom)||!Array.isArray(recs)) throw new Error("Invalid JSON data");
-    const gById=new Map(geom.map(g=>[String(g.id),g]));
-    const poly=[],lines=[],pts=[];
-    for(const r of recs){
-      const g=gById.get(String(r.geometry_id)); if(!g) continue;
-      const coords=g.lonlat||g.points||g.coordinates;
-      const type=(g.type||"").toLowerCase();
-      const props={name:r.title||r.id,period:r.period||"",blurb:r.blurb||""};
-      if(type.includes("poly")) poly.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:[coords]}});
-      else if(type.includes("line")) lines.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
-      else if(type.includes("point")&&coords&&coords.length)
-        pts.push({longitude:coords[0][0],latitude:coords[0][1],title:props.name,subtitle:props.period});
+
+    if (isSchema(geomRaw) || isSchema(recsRaw)) {
+      setStatus("One or both files look like JSON Schema (validators), not data arrays.", "bad");
+      return;
     }
+
+    const geoms = normalizeGeoms(geomRaw);
+    const recs  = normalizeRecords(recsRaw);
+
+    if (!geoms || !recs) {
+      setStatus("Invalid data shape. Expect arrays or FeatureCollection for geometry, and array/records[] for ancient.", "bad");
+      console.warn("geometry.json shape:", geomRaw);
+      console.warn("ancient.json shape:", recsRaw);
+      return;
+    }
+
+    const gById = new Map(geoms.map(g => [String(g.id || g.geometry_id || g.gid || ""), g]));
+    const poly=[], lines=[], points=[];
+
+    for (const r of recs) {
+      const gid = String(r.geometry_id || r.geometryId || r.geometryID || r.gid || "");
+      if (!gid) continue;
+      const g = gById.get(gid);
+      if (!g) continue;
+
+      const coords = extractCoords(g);
+      const kind = guessKind(g, coords);
+      const props = { name: r.title || r.name || r.id || gid, period: r.period || "", blurb: r.blurb || "", kind: (r.type||"").toLowerCase() };
+
+      if (kind === "polygon") {
+        const rings = Array.isArray(coords[0][0]) ? coords : [coords];
+        poly.push({ type:"Feature", properties:props, geometry:{ type:"Polygon", coordinates:rings } });
+      } else if (kind === "line") {
+        lines.push({ type:"Feature", properties:props, geometry:{ type:"LineString", coordinates:coords } });
+      } else if (kind === "point") {
+        const pt = Array.isArray(coords[0]) ? coords[0] : coords;
+        points.push({ longitude: pt[0], latitude: pt[1], title: props.name, subtitle: props.period || props.kind || "" });
+      }
+    }
+
     const regions=chart.series.push(am5map.MapPolygonSeries.new(root,{}));
-    regions.mapPolygons.template.setAll({tooltipText:"{name}\n{period}\n{blurb}",interactive:true,fillOpacity:0.55});
+    regions.mapPolygons.template.setAll({tooltipText:"{name}\n{period}\n{blurb}",interactive:true,fillOpacity:0.55,strokeOpacity:1,strokeWidth:1});
     regions.setAll({geoJSON:{type:"FeatureCollection",features:poly}});
+
     const routes=chart.series.push(am5map.MapLineSeries.new(root,{}));
-    routes.mapLines.template.setAll({stroke:am5.color("#8b5e34"),strokeWidth:1.5,tooltipText:"{name}"});
+    routes.mapLines.template.setAll({stroke:am5.color("#8b5e34"),strokeWidth:1.5,tooltipText:"{name}",strokeOpacity:0.8});
     routes.setAll({geoJSON:{type:"FeatureCollection",features:lines}});
-    const points=chart.series.push(am5map.MapPointSeries.new(root,{longitudeField:"longitude",latitudeField:"latitude"}));
-    points.bullets.push(()=>am5.Bullet.new(root,{sprite:am5.Circle.new(root,{radius:4,fill:am5.color("#b91c1c"),tooltipText:"{title}\n{subtitle}"})}));
-    points.data.setAll(pts);
-    setStatus(`Loaded ${poly.length} polygons, ${lines.length} lines, ${pts.length} points`,"ok");
-  }catch(e){
+
+    const pointsSeries=chart.series.push(am5map.MapPointSeries.new(root,{longitudeField:"longitude",latitudeField:"latitude"}));
+    pointsSeries.bullets.push(()=>am5.Bullet.new(root,{sprite:am5.Circle.new(root,{radius:4,fill:am5.color("#b91c1c"),tooltipText:"{title}\n{subtitle}"})}));
+    pointsSeries.data.setAll(points);
+
+    setStatus(`Loaded ${poly.length} polygons, ${lines.length} lines, ${points.length} points`,"ok");
+  } catch(e){
     console.error(e);
-    setStatus(e.message||"Error loading data","bad");
+    setStatus(e.message || "Error loading data","bad");
   }
 
   var zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
