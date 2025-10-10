@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — Map</title>
+<title>Extra-Biblical Sources — Map (Dynamic Geometry)</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
   :root{--ink:#0b2340}
@@ -27,16 +27,15 @@
   <section class="card">
     <div id="chartdiv"></div>
   </section>
-
   <div class="status" id="status">
-    <div class="row"><b>Geometry:</b> <span id="s-geom">pending…</span></div>
-    <div class="row"><b>Ancient records:</b> <span id="s-recs">pending…</span></div>
+    <div class="row"><b>Index file:</b> <span id="s-index">pending…</span></div>
+    <div class="row"><b>Fetched geometries:</b> <span id="s-fetch">0</span> / <span id="s-total">0</span></div>
     <div class="row"><b>Joined →</b>
       Polygons: <span id="s-polys">0</span>,
       Lines: <span id="s-lines">0</span>,
       Points: <span id="s-points">0</span>
     </div>
-    <div class="row"><b>Notes:</b> <span id="s-notes">Looking good.</span></div>
+    <div class="row"><b>Notes:</b> <span id="s-notes">Initializing…</span></div>
   </div>
 </main>
 
@@ -56,7 +55,6 @@ am5.ready(function() {
   const $ = (id)=>document.getElementById(id);
   const set = (id, text, cls)=>{ const el=$(id); if(!el) return; el.textContent=text; if(cls){el.className=cls;} };
 
-  // Map setup
   var root = am5.Root.new("chartdiv");
   root.setThemes([ am5themes_Animated.new(root) ]);
 
@@ -91,127 +89,108 @@ am5.ready(function() {
   styleSeries(africaSeries);
   styleSeries(meSeries);
 
-  // === Linked Ancient Layers with Diagnostics ===
-  async function loadLinkedAncientLayers() {
-    const gPath = "data/geometry.json";
-    const aPath = "data/ancient.json";
+  const ICON = {
+    site: "assets/icons/generic.svg",
+    city: "assets/icons/covenant.svg",
+    route: "assets/icons/exodus.svg",
+    shrine: "assets/icons/miracle.svg"
+  };
 
-    // fetch helpers (with status)
-    async function getJSON(path, statusId) {
-      try {
-        const r = await fetch(path + "?v=" + Date.now(), { cache: "no-store" });
-        if (!r.ok) { set(statusId, `${r.status} ${r.statusText}`, "bad"); return null; }
-        const j = await r.json();
-        set(statusId, Array.isArray(j) ? `OK (${j.length})` : (j ? "OK (object)" : "Empty"), "ok");
-        return j;
-      } catch (e) {
-        set(statusId, e.message || "fetch error", "bad");
-        return null;
-      }
+  function asArray(x){ return Array.isArray(x) ? x : (x ? [x] : []); }
+
+  async function fetchJSON(url) {
+    const r = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status + " " + r.statusText);
+    return r.json();
+  }
+
+  async function tryFetchFirst(urls) {
+    for (const u of urls) {
+      try { const j = await fetchJSON(u); return { url:u, json:j }; } catch(e) {}
     }
+    throw new Error("none found: " + urls.join(", "));
+  }
 
-    const geom = await getJSON(gPath, "s-geom");
-    const recs = await getJSON(aPath, "s-recs");
+  function coordsKind(geomJson) {
+    const g = geomJson && geomJson.type === "Feature" ? geomJson.geometry : geomJson;
+    const coords = g && g.coordinates || g && g.lonlats || g && g.points || g && g.lonlat || g && g.coords || null;
+    if (!coords) return {kind:null, coords:null};
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && Array.isArray(coords[0][0])) return {kind:"polygon", coords: coords};
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && !Array.isArray(coords[0][0]) && coords.length >= 2) return {kind:"line", coords: coords};
+    if (Array.isArray(coords) && coords.length === 2 && typeof coords[0] === "number") return {kind:"point", coords: [coords]};
+    if (Array.isArray(coords) && Array.isArray(coords[0]) && coords.length === 1 && coords[0].length === 2) return {kind:"point", coords: coords};
+    const t = (geomJson.type || geomJson.geometry?.type || "").toLowerCase();
+    if (t.includes("polygon")) return {kind:"polygon", coords: Array.isArray(coords[0][0]) ? coords : [coords]};
+    if (t.includes("line")) return {kind:"line", coords: coords};
+    if (t.includes("point")) return {kind:"point", coords: Array.isArray(coords[0]) ? coords : [coords]};
+    return {kind:null, coords:null};
+  }
 
-    if (!geom || !recs) {
-      set("s-notes", "Missing or unreadable JSON. Ensure files exist at data/geometry.json and data/ancient.json.", "bad");
+  async function loadDynamic() {
+    set("s-index","loading…");
+    let indexData = null;
+    let indexUsed = null;
+    try {
+      indexData = await fetchJSON("data/ancient.index.json");
+      indexUsed = "data/ancient.index.json";
+    } catch(e) {
+      try {
+        const maybe = await fetchJSON("data/ancient.json");
+        if (Array.isArray(maybe)) { indexData = maybe; indexUsed = "data/ancient.json"; }
+        else if (!maybe.$schema)  { indexData = asArray(maybe); indexUsed = "data/ancient.json"; }
+      } catch(e2) {}
+    }
+    if (!indexData || !indexData.length) {
+      set("s-index","not found", "bad");
+      set("s-notes","No index found.", "bad");
       return;
     }
-
-    // Normalize geometry → accept several shapes:
-    // - { lonlat: [[lon,lat],... ] } (polygon/line)  OR  { points: [[lon,lat],...] }
-    // - { coordinates: [[lon,lat],... ] } (line) OR [[[...]]] (polygon)
-    // - Single point allowed: { lonlat: [[lon,lat]] } → point
-    const gById = new Map(geom.map(g => [String(g.id), g]));
-
-    const getCoords = (g) => {
-      if (g.lonlat) return g.lonlat;
-      if (g.points) return g.points;
-      if (g.coordinates) return g.coordinates; // might be polygon or line
-      return null;
-    };
-
-    const typeOf = (g) => (g.type || "").toLowerCase();
-
-    const isPolygonLike = (g, coords) => {
-      if (typeOf(g).startsWith("poly")) return true;
-      // GeoJSON polygon detection: array-of-rings [[[...]]]
-      return Array.isArray(coords) && Array.isArray(coords[0]) && Array.isArray(coords[0][0]);
-    };
-
-    const isLineLike = (g, coords) => {
-      if (typeOf(g).includes("line")) return true;
-      // GeoJSON LineString: [[...]]
-      return Array.isArray(coords) && Array.isArray(coords[0]) && !Array.isArray(coords[0][0]) && coords.length >= 2;
-    };
-
-    const isPointLike = (coords) => Array.isArray(coords) && Array.isArray(coords[0]) && coords.length === 1;
-
+    set("s-index", indexUsed + " (" + indexData.length + " recs)", "ok");
+    set("s-total", indexData.length.toString());
     const polyFeatures = [];
     const lineFeatures = [];
     const pointItems  = [];
-    let missingGeomLinks = 0;
-
-    (recs || []).forEach(r => {
-      const g = gById.get(String(r.geometry_id));
-      if (!g) { missingGeomLinks++; return; }
-
-      const coords = getCoords(g);
-      if (!coords) return;
-
-      const props = {
-        name: r.title || r.name || r.id,
-        kind: r.type || g.type || "feature",
-        period: r.period || (g.properties && g.properties.period) || "",
-        blurb: r.blurb || (g.properties && g.properties.blurb) || "",
-        ...((g.properties) || {}),
-        ...((r.properties) || {})
-      };
-
-      if (isPolygonLike(g, coords)) {
-        // ensure polygon rings: wrap if needed
-        const rings = Array.isArray(coords[0][0]) ? coords : [coords];
-        polyFeatures.push({
-          type: "Feature",
-          properties: props,
-          geometry: { type: "Polygon", coordinates: rings }
-        });
-      } else if (isLineLike(g, coords)) {
-        lineFeatures.push({
-          type: "Feature",
-          properties: props,
-          geometry: { type: "LineString", coordinates: coords }
-        });
-      } else if (isPointLike(coords)) {
-        const pt = coords[0];
-        pointItems.push({
-          longitude: pt[0], latitude: pt[1],
-          title: props.name,
-          subtitle: props.period || props.kind || "",
-          type: (props.kind || "site").toLowerCase()
-        });
-      } else {
-        // Try last-ditch: a single lon/lat pair?
-        if (Array.isArray(coords) && typeof coords[0] === "number" && typeof coords[1] === "number") {
-          pointItems.push({
-            longitude: coords[0], latitude: coords[1],
-            title: props.name, subtitle: props.period || props.kind || "", type: (props.kind || "site").toLowerCase()
-          });
-        }
-      }
-    });
-
-    // Show counts
+    let fetched = 0;
+    let misses  = 0;
+    for (const rec of indexData) {
+      const gid = (rec && (rec.geometry_id || rec.geometryId || rec.geometryID || rec.gid)) || "";
+      if (!gid) { misses++; continue; }
+      const base = "data/geometry/" + gid;
+      const candidates = [
+        base + ".geometry.geojson",
+        base + ".simplified.geojson",
+        base + ".lonlats.json",
+        base + ".simplified_lonlats.json",
+        "data/" + gid + ".geojson",
+        "data/" + gid + ".json"
+      ];
+      try {
+        const {url, json} = await tryFetchFirst(candidates);
+        fetched++;
+        set("s-fetch", fetched.toString());
+        const {kind, coords} = coordsKind(json);
+        const props = {
+          name: rec.title || rec.name || rec.id || gid,
+          kind: (rec.type || "").toLowerCase(),
+          period: rec.period || "",
+          blurb: rec.blurb || ""
+        };
+        if (kind === "polygon") {
+          const rings = Array.isArray(coords[0][0]) ? coords : [coords];
+          polyFeatures.push({ type:"Feature", properties: props, geometry:{ type:"Polygon", coordinates: rings } });
+        } else if (kind === "line") {
+          lineFeatures.push({ type:"Feature", properties: props, geometry:{ type:"LineString", coordinates: coords } });
+        } else if (kind === "point") {
+          const pt = coords[0];
+          pointItems.push({ longitude: pt[0], latitude: pt[1], title: props.name, subtitle: props.period || props.kind || "", type: props.kind || "site" });
+        } else { misses++; }
+      } catch(e) { misses++; }
+    }
     set("s-polys", String(polyFeatures.length));
     set("s-lines", String(lineFeatures.length));
     set("s-points", String(pointItems.length));
-    if (missingGeomLinks > 0) {
-      set("s-notes", `Warning: ${missingGeomLinks} record(s) had missing geometry_id matches.`, "bad");
-    } else {
-      set("s-notes", "Loaded linked layers.", "ok");
-    }
-
-    // Render layers
+    if (misses > 0) set("s-notes", "Missing geometry: " + misses, "bad");
+    else set("s-notes", "All records loaded.", "ok");
     const regionsSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
     regionsSeries.mapPolygons.template.setAll({
       tooltipText: "{name}\n{period}\n{blurb}",
@@ -224,12 +203,9 @@ am5.ready(function() {
       const table = { kingdom:"#b56576", tribe:"#84a59d", province:"#6b9080", territory:"#bde0fe", region:"#ffd166", city:"#f9a8d4" };
       return am5.color(table[(kind||"").toLowerCase()] || "#cdb4db");
     };
-    regionsSeries.mapPolygons.template.adapters.add("fill", (_fill, target) => {
-      const d = target.dataItem?.dataContext?.properties; return colorFor(d?.kind);
-    });
+    regionsSeries.mapPolygons.template.adapters.add("fill", (_f, t) => { const d = t.dataItem?.dataContext?.properties; return colorFor(d?.kind); });
     regionsSeries.mapPolygons.template.adapters.add("stroke", () => am5.color("#333333"));
-    regionsSeries.setAll({ geoJSON: { type: "FeatureCollection", features: polyFeatures } });
-
+    if (polyFeatures.length) regionsSeries.setAll({ geoJSON: { type: "FeatureCollection", features: polyFeatures } });
     const routesSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
     routesSeries.mapLines.template.setAll({
       stroke: am5.color("#8b5e34"),
@@ -237,17 +213,10 @@ am5.ready(function() {
       tooltipText: "{name}\n{period}",
       strokeOpacity: 0.8
     });
-    routesSeries.setAll({ geoJSON: { type: "FeatureCollection", features: lineFeatures } });
-
+    if (lineFeatures.length) routesSeries.setAll({ geoJSON: { type: "FeatureCollection", features: lineFeatures } });
     const sitesSeries = chart.series.push(am5map.MapPointSeries.new(root, {
       valueField: "value", longitudeField: "longitude", latitudeField: "latitude"
     }));
-    const ICON = {
-      site: "assets/icons/generic.svg",
-      city: "assets/icons/covenant.svg",
-      route: "assets/icons/exodus.svg",
-      shrine: "assets/icons/miracle.svg"
-    };
     sitesSeries.bullets.push(() => am5.Bullet.new(root, {
       sprite: am5.Picture.new(root, {
         width: 16, height: 16, centerX: am5.p50, centerY: am5.p50,
@@ -260,23 +229,17 @@ am5.ready(function() {
         pic.set("src", ICON[(d.type||"site")] || ICON.site);
       });
     });
-    sitesSeries.data.setAll(pointItems);
-
+    if (pointItems.length) sitesSeries.data.setAll(pointItems);
     regionsSeries.set("zIndex", 15);
     routesSeries.set("zIndex", 20);
     sitesSeries.set("zIndex", 30);
   }
 
-  loadLinkedAncientLayers().catch(err => {
-    set("s-notes", (err && err.message) ? err.message : "Unknown error", "bad");
-    console.error(err);
-  });
-
+  loadDynamic().catch(err => { set("s-notes", err.message || "Unknown error", "bad"); });
   var zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
   zoomControl.homeButton.set("visible", true);
   zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
   chart.chartContainer.get("background").events.on("click", function() { chart.goHome(); });
-
   chart.appear(600, 100);
 });
 </script>
