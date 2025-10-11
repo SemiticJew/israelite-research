@@ -3,170 +3,96 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — Maps</title>
+<title>Extra-Biblical Sources — Global Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
+
 <style>
   :root{--ink:#0b2340;--muted:#64748b;--sky:#e6ebf2}
   html,body{height:100%;margin:0;color:var(--ink);background:#fff;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   .container{max-width:1200px;margin:0 auto;padding:18px}
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
-  .tab-btn{border:1px solid var(--sky);background:#fff;border-radius:999px;padding:.5rem .8rem;cursor:pointer;font:inherit}
-  .tab-btn[aria-selected="true"]{background:#f8fafc;border-color:#cfd8e3;font-weight:700}
-  .panel{display:none}
-  .panel.open{display:block}
   .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
-  .mapwrap{width:100%;height:72vh;min-height:460px}
-  .muted{color:#64748b}
+  .mapwrap{width:100%;height:80vh;min-height:500px}
+  .muted{color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 
 <main class="container">
-  <h1 class="page-title">Interactive Maps</h1>
-
-  <div class="tabs" role="tablist" aria-label="Maps">
-    <button class="tab-btn" role="tab" id="tab-globe" aria-controls="panel-globe" aria-selected="true">Globe of Earth</button>
-    <button class="tab-btn" role="tab" id="tab-afme" aria-controls="panel-afme" aria-selected="false">Africa + Middle East</button>
-    <button class="tab-btn" role="tab" id="tab-na" aria-controls="panel-na" aria-selected="false">North America</button>
-    <button class="tab-btn" role="tab" id="tab-sa" aria-controls="panel-sa" aria-selected="false">South America</button>
-    <button class="tab-btn" role="tab" id="tab-asia" aria-controls="panel-asia" aria-selected="false">Asia</button>
-  </div>
-
-  <section id="panel-globe" class="panel open" role="tabpanel" aria-labelledby="tab-globe">
-    <div class="card"><div id="chart-globe" class="mapwrap"></div></div>
-  </section>
-
-  <section id="panel-afme" class="panel" role="tabpanel" aria-labelledby="tab-afme">
-    <div class="card"><div id="chart-afme" class="mapwrap"></div></div>
-  </section>
-
-  <section id="panel-na" class="panel" role="tabpanel" aria-labelledby="tab-na">
-    <div class="card"><div id="chart-na" class="mapwrap"></div></div>
-  </section>
-
-  <section id="panel-sa" class="panel" role="tabpanel" aria-labelledby="tab-sa">
-    <div class="card"><div id="chart-sa" class="mapwrap"></div></div>
-  </section>
-
-  <section id="panel-asia" class="panel" role="tabpanel" aria-labelledby="tab-asia">
-    <div class="card"><div id="chart-asia" class="mapwrap"></div></div>
-  </section>
+  <h1 class="page-title">Interactive Global Map</h1>
+  <div class="card"><div id="chart-globe" class="mapwrap"></div></div>
+  <p class="muted" style="margin:.5rem 0 0">Hover a country to view biblical references related to that region.</p>
 </main>
 
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/shims.js" defer></script>
 <script src="/israelite-research/js/include.js" defer></script>
+
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/africaLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/northAmericaLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/southAmericaLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/asiaLow.js"></script>
 
 <script>
-(function tabs(){
-  const btns=[...document.querySelectorAll('.tab-btn')];
-  const panels=[...document.querySelectorAll('.panel')];
-  btns.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      btns.forEach(b=>b.setAttribute('aria-selected','false'));
-      panels.forEach(p=>p.classList.remove('open'));
-      btn.setAttribute('aria-selected','true');
-      const p=document.getElementById(btn.getAttribute('aria-controls'));
-      if(p) p.classList.add('open');
-      const pid=btn.getAttribute('aria-controls');
-      if(pid==='panel-globe') initGlobe();
-      if(pid==='panel-afme')  initAfME();
-      if(pid==='panel-na')    initNA();
-      if(pid==='panel-sa')    initSA();
-      if(pid==='panel-asia')  initAsia();
+let REGION_NOTES = null;
+async function getRegionNotes(){
+  if(REGION_NOTES) return REGION_NOTES;
+  try{
+    const r = await fetch("data/region-notes.json?v="+Date.now(), {cache:"no-store"});
+    REGION_NOTES = await r.json();
+  }catch(e){ REGION_NOTES = {}; }
+  return REGION_NOTES;
+}
+
+async function attachRegionNotes(series){
+  const NOTES = await getRegionNotes();
+  series.events.on("datavalidated", ()=>{
+    series.mapPolygons.each(mp=>{
+      const ctx = mp.dataItem?.dataContext || {};
+      const id  = ctx.id || ctx.iso_a2 || ctx.code || null;
+      const hit = id && NOTES[id];
+      if(hit){
+        const lines = (hit.refs||[]).map(r=>`• ${r.verse} — ${r.note}`).join("\n");
+        mp.dataItem.set("tooltipText", `${hit.title || ctx.name || "{name}"}\n${lines}`);
+      } else {
+        mp.dataItem.set("tooltipText", "{name}");
+      }
     });
   });
-})();
-</script>
+}
 
-<script>
-let _globe,_afme,_na,_sa,_asia;
-function stylePolys(series, root){
-  series.mapPolygons.template.setAll({
+am5.ready(async function(){
+  const root = am5.Root.new("chart-globe");
+  root.setThemes([am5themes_Animated.new(root)]);
+
+  const chart = root.container.children.push(am5map.MapChart.new(root,{
+    panX:"rotateX",
+    panY:"rotateY",
+    projection:am5map.geoOrthographic()
+  }));
+
+  chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
+
+  const world = chart.series.push(am5map.MapPolygonSeries.new(root,{ geoJSON: am5geodata_worldLow, exclude:["AQ"] }));
+
+  world.mapPolygons.template.setAll({
     tooltipText: "{name}",
     interactive: true,
     fill: root.interfaceColors.get("background"),
     stroke: am5.color("#c4b79c"),
     strokeWidth: 0.8
   });
-  series.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});
-}
-function addZoom(chart, root){
-  const z=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
-  z.homeButton.set("visible",true);
-  z.homeButton.events.on("click",()=>chart.goHome());
-}
-function initGlobe(){
-  if(_globe) return;
-  const root=am5.Root.new("chart-globe");
-  root.setThemes([am5themes_Animated.new(root)]);
-  const chart=root.container.children.push(am5map.MapChart.new(root,{
-    panX:"rotateX",panY:"rotateY",projection:am5map.geoOrthographic()
-  }));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-  const world=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_worldLow,exclude:["AQ"]}));
-  stylePolys(world,root);
-  addZoom(chart,root);
-  _globe={root,chart};
-}
-function initAfME(){
-  if(_afme) return;
-  const root=am5.Root.new("chart-afme");
-  root.setThemes([am5themes_Animated.new(root)]);
-  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-  const africa=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_africaLow}));
-  const me=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
-  stylePolys(africa,root);stylePolys(me,root);
-  addZoom(chart,root);
-  _afme={root,chart};
-}
-function initNA(){
-  if(_na) return;
-  const root=am5.Root.new("chart-na");
-  root.setThemes([am5themes_Animated.new(root)]);
-  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_northAmericaLow}));
-  stylePolys(series,root);
-  addZoom(chart,root);
-  _na={root,chart};
-}
-function initSA(){
-  if(_sa) return;
-  const root=am5.Root.new("chart-sa");
-  root.setThemes([am5themes_Animated.new(root)]);
-  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_southAmericaLow}));
-  stylePolys(series,root);
-  addZoom(chart,root);
-  _sa={root,chart};
-}
-function initAsia(){
-  if(_asia) return;
-  const root=am5.Root.new("chart-asia");
-  root.setThemes([am5themes_Animated.new(root)]);
-  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_asiaLow}));
-  stylePolys(series,root);
-  addZoom(chart,root);
-  _asia={root,chart};
-}
-am5.ready(function(){initGlobe();setTimeout(initAfME,0);});
+
+  world.mapPolygons.template.states.create("hover", { fill: am5.color("#fcd34d") });
+
+  const zoom = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+  zoom.homeButton.set("visible", true);
+  zoom.homeButton.events.on("click", () => chart.goHome());
+
+  await attachRegionNotes(world);
+});
 </script>
 </body>
 </html>
