@@ -3,334 +3,170 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — Interactive Map</title>
+<title>Extra-Biblical Sources — Maps</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
-  :root{--ink:#0b2340}
-  html,body{height:100%;margin:0;background:#fff;color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  :root{--ink:#0b2340;--muted:#64748b;--sky:#e6ebf2}
+  html,body{height:100%;margin:0;color:var(--ink);background:#fff;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   .container{max-width:1200px;margin:0 auto;padding:18px}
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
-  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
-  .pill{display:inline-flex;gap:8px;align-items:center;border:1px solid #cbd5e1;border-radius:999px;padding:6px 10px;background:#fff}
-  .pill input{accent-color:#0b2340}
-  .muted{color:#64748b}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .tab-btn{border:1px solid var(--sky);background:#fff;border-radius:999px;padding:.5rem .8rem;cursor:pointer;font:inherit}
+  .tab-btn[aria-selected="true"]{background:#f8fafc;border-color:#cfd8e3;font-weight:700}
+  .panel{display:none}
+  .panel.open{display:block}
   .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
-  #chartdiv{width:100%;height:72vh;min-height:460px}
-  .status{margin-top:10px;border:1px dashed #cbd5e1;border-radius:10px;padding:10px;color:#334155;background:#f8fafc}
-  .status b{color:#0b2340}
-  .status .bad{color:#b91c1c}
-  .status .ok{color:#065f46}
+  .mapwrap{width:100%;height:72vh;min-height:460px}
+  .muted{color:#64748b}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 
 <main class="container">
-  <h1 class="page-title">Africa + Middle East Map</h1>
+  <h1 class="page-title">Interactive Maps</h1>
 
-  <div class="toolbar">
-    <label class="pill"><input type="checkbox" id="toggle-points" checked/> <span>Cities / Sites</span> <span class="muted" id="cnt-points">0</span></label>
-    <label class="pill"><input type="checkbox" id="toggle-lines"/> <span>Routes</span> <span class="muted" id="cnt-lines">0</span></label>
-    <label class="pill"><input type="checkbox" id="toggle-polys"/> <span>Regions</span> <span class="muted" id="cnt-polys">0</span></label>
-    <span class="muted" id="loader-mode"></span>
+  <div class="tabs" role="tablist" aria-label="Maps">
+    <button class="tab-btn" role="tab" id="tab-globe" aria-controls="panel-globe" aria-selected="true">Globe of Earth</button>
+    <button class="tab-btn" role="tab" id="tab-afme" aria-controls="panel-afme" aria-selected="false">Africa + Middle East</button>
+    <button class="tab-btn" role="tab" id="tab-na" aria-controls="panel-na" aria-selected="false">North America</button>
+    <button class="tab-btn" role="tab" id="tab-sa" aria-controls="panel-sa" aria-selected="false">South America</button>
+    <button class="tab-btn" role="tab" id="tab-asia" aria-controls="panel-asia" aria-selected="false">Asia</button>
   </div>
 
-  <section class="card">
-    <div id="chartdiv"></div>
+  <section id="panel-globe" class="panel open" role="tabpanel" aria-labelledby="tab-globe">
+    <div class="card"><div id="chart-globe" class="mapwrap"></div></div>
   </section>
 
-  <div class="status" id="status">
-    <div><b>Status:</b> <span id="map-status">Loading…</span></div>
-    <div><b>Counts (rendered):</b> polygons: <span id="s-polys">0</span> · lines: <span id="s-lines">0</span> · points: <span id="s-points">0</span></div>
-  </div>
+  <section id="panel-afme" class="panel" role="tabpanel" aria-labelledby="tab-afme">
+    <div class="card"><div id="chart-afme" class="mapwrap"></div></div>
+  </section>
+
+  <section id="panel-na" class="panel" role="tabpanel" aria-labelledby="tab-na">
+    <div class="card"><div id="chart-na" class="mapwrap"></div></div>
+  </section>
+
+  <section id="panel-sa" class="panel" role="tabpanel" aria-labelledby="tab-sa">
+    <div class="card"><div id="chart-sa" class="mapwrap"></div></div>
+  </section>
+
+  <section id="panel-asia" class="panel" role="tabpanel" aria-labelledby="tab-asia">
+    <div class="card"><div id="chart-asia" class="mapwrap"></div></div>
+  </section>
 </main>
 
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/shims.js" defer></script>
 <script src="/israelite-research/js/include.js" defer></script>
-
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/region/world/africaLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/region/world/middleEastLow.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/northAmericaLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/southAmericaLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/region/world/asiaLow.js"></script>
 
 <script>
-am5.ready(function() {
-  const $ = id => document.getElementById(id);
-  const set = (id, text, cls)=>{ const el=$(id); if(!el) return; el.textContent=text; if(cls){el.className=cls;} };
-
-  const modeEl = $("loader-mode");
-  const chkPoints = $("toggle-points");
-  const chkLines  = $("toggle-lines");
-  const chkPolys  = $("toggle-polys");
-
-  const cntPts = $("cnt-points");
-  const cntLines = $("cnt-lines");
-  const cntPolys = $("cnt-polys");
-
-  const sPts = $("s-points");
-  const sLines = $("s-lines");
-  const sPolys = $("s-polys");
-
-  function updateRenderedCounts() {
-    sPts.textContent = pointsRendered;
-    sLines.textContent = linesRendered;
-    sPolys.textContent = polysRendered;
-  }
-
-  var root = am5.Root.new("chartdiv");
-  root.setThemes([ am5themes_Animated.new(root) ]);
-
-  var chart = root.container.children.push(am5map.MapChart.new(root, {
-    panX: "rotateX",
-    panY: "translateY",
-    projection: am5map.geoNaturalEarth1()
-  }));
-
-  chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
-
-  function styleSeries(series) {
-    series.mapPolygons.template.setAll({
-      tooltipText: "{name}",
-      toggleKey: "active",
-      interactive: true,
-      fill: am5.color("#f4ede1"),
-      stroke: am5.color("#c4b79c"),
-      strokeOpacity: 1,
-      strokeWidth: 0.8
+(function tabs(){
+  const btns=[...document.querySelectorAll('.tab-btn')];
+  const panels=[...document.querySelectorAll('.panel')];
+  btns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btns.forEach(b=>b.setAttribute('aria-selected','false'));
+      panels.forEach(p=>p.classList.remove('open'));
+      btn.setAttribute('aria-selected','true');
+      const p=document.getElementById(btn.getAttribute('aria-controls'));
+      if(p) p.classList.add('open');
+      const pid=btn.getAttribute('aria-controls');
+      if(pid==='panel-globe') initGlobe();
+      if(pid==='panel-afme')  initAfME();
+      if(pid==='panel-na')    initNA();
+      if(pid==='panel-sa')    initSA();
+      if(pid==='panel-asia')  initAsia();
     });
-    series.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") });
-    series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
-  }
+  });
+})();
+</script>
 
-  var africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { geoJSON: am5geodata_region_world_africaLow }));
-  var meSeries     = chart.series.push(am5map.MapPolygonSeries.new(root, { geoJSON: am5geodata_region_world_middleEastLow }));
-  styleSeries(africaSeries);
-  styleSeries(meSeries);
-
-  // Data buckets (filled by loader)
-  let polyFeatures = [];
-  let lineFeatures = [];
-  let pointItems   = [];
-
-  // Rendered counters
-  let polysRendered = 0, linesRendered = 0, pointsRendered = 0;
-
-  // Series (created once)
-  const regionsSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
-  regionsSeries.mapPolygons.template.setAll({
-    tooltipText: "{name}\n{period}\n{blurb}",
+<script>
+let _globe,_afme,_na,_sa,_asia;
+function stylePolys(series, root){
+  series.mapPolygons.template.setAll({
+    tooltipText: "{name}",
     interactive: true,
-    fillOpacity: 0.55,
-    strokeOpacity: 1,
-    strokeWidth: 1
+    fill: root.interfaceColors.get("background"),
+    stroke: am5.color("#c4b79c"),
+    strokeWidth: 0.8
   });
-
-  const routesSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
-  routesSeries.mapLines.template.setAll({
-    stroke: am5.color("#8b5e34"),
-    strokeWidth: 1.1,
-    tooltipText: "{name}\n{period}",
-    strokeOpacity: 0.7
-  });
-
-  const pointsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
-    valueField: "value", longitudeField: "longitude", latitudeField: "latitude"
+  series.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});
+}
+function addZoom(chart, root){
+  const z=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
+  z.homeButton.set("visible",true);
+  z.homeButton.events.on("click",()=>chart.goHome());
+}
+function initGlobe(){
+  if(_globe) return;
+  const root=am5.Root.new("chart-globe");
+  root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{
+    panX:"rotateX",panY:"rotateY",projection:am5map.geoOrthographic()
   }));
-  pointsSeries.bullets.push(() => am5.Bullet.new(root, {
-    sprite: am5.Circle.new(root, {
-      radius: 3.2, fill: am5.color("#0b2340"),
-      tooltipText: "{title}\n{subtitle}"
-    })
-  }));
-
-  regionsSeries.set("visible", false);
-  routesSeries.set("visible", false);
-  pointsSeries.set("visible", true);
-
-  regionsSeries.set("zIndex", 15);
-  routesSeries.set("zIndex", 20);
-  pointsSeries.set("zIndex", 30);
-
-  function setCountsLabels() {
-    cntPolys.textContent = polyFeatures.length;
-    cntLines.textContent = lineFeatures.length;
-    cntPts.textContent = pointItems.length;
-  }
-
-  // Render with deferral: only set data when toggled on first time
-  let polysLoaded = false, linesLoaded = false, pointsLoaded = false;
-
-  function showPoints(on) {
-    pointsSeries.set("visible", on);
-    if (on && !pointsLoaded) {
-      pointsSeries.data.setAll(pointItems);
-      pointsRendered = pointItems.length;
-      pointsLoaded = true;
-      updateRenderedCounts();
-    }
-  }
-  function showLines(on) {
-    routesSeries.set("visible", on);
-    if (on && !linesLoaded) {
-      routesSeries.setAll({ geoJSON: { type: "FeatureCollection", features: lineFeatures } });
-      linesRendered = lineFeatures.length;
-      linesLoaded = true;
-      updateRenderedCounts();
-    }
-  }
-  function showPolys(on) {
-    regionsSeries.set("visible", on);
-    if (on && !polysLoaded) {
-      regionsSeries.setAll({ geoJSON: { type: "FeatureCollection", features: polyFeatures } });
-      polysRendered = polyFeatures.length;
-      polysLoaded = true;
-      updateRenderedCounts();
-    }
-  }
-
-  chkPoints.addEventListener("change", e => showPoints(e.target.checked));
-  chkLines.addEventListener("change",  e => showLines(e.target.checked));
-  chkPolys.addEventListener("change",  e => showPolys(e.target.checked));
-
-  // Hybrid loader reused from earlier: try linked, fallback to dynamic per-ID
-  function isSchema(obj){ return obj && typeof obj === "object" && !!obj.$schema; }
-  function asArray(x){ return Array.isArray(x) ? x : (x ? [x] : []); }
-  async function loadJSON(path){
-    const r = await fetch(path + "?v=" + Date.now(), { cache: "no-store" });
-    if (!r.ok) throw new Error(path + ": " + r.status + " " + r.statusText);
-    return r.json();
-  }
-  function extractCoords(obj){
-    return obj.coordinates ?? obj.lonlats ?? obj.points ?? obj.lonlat ?? obj.coords ?? null;
-  }
-  function guessKind(obj, coords){
-    const t=(obj.type||"").toLowerCase();
-    if (t.includes("poly")) return "polygon";
-    if (t.includes("line")) return "line";
-    if (t.includes("point")) return "point";
-    if (Array.isArray(coords) && Array.isArray(coords[0]) && Array.isArray(coords[0][0])) return "polygon";
-    if (Array.isArray(coords) && Array.isArray(coords[0]) && !Array.isArray(coords[0][0]) && coords.length>=2) return "line";
-    if (Array.isArray(coords) && coords.length===2 && typeof coords[0]==="number") return "point";
-    if (Array.isArray(coords) && Array.isArray(coords[0]) && coords.length===1 && coords[0].length===2) return "point";
-    return null;
-  }
-
-  async function loadLinked() {
-    modeEl.textContent = "Loader: linked";
-    const [geomRaw, recsRaw] = await Promise.all([
-      loadJSON("data/geometry.json"),
-      loadJSON("data/ancient.json")
-    ]);
-    if (isSchema(geomRaw) || isSchema(recsRaw)) throw new Error("schema-detected");
-    const geoms = Array.isArray(geomRaw) ? geomRaw
-                 : (geomRaw && geomRaw.type==="FeatureCollection" ? geoms.features.map(f=>({id:(f.id||f.properties?.id||f.properties?.gid||""), type:f.geometry?.type||"Unknown", coordinates:f.geometry?.coordinates})) : null);
-    const recs  = Array.isArray(recsRaw) ? recsRaw : (recsRaw && Array.isArray(recsRaw.records) ? recsRaw.records : null);
-    if (!geoms || !recs) throw new Error("invalid-shape");
-
-    const gById=new Map(geoms.map(g=>[String(g.id||g.geometry_id||g.gid||""),g]));
-    for (const r of recs){
-      const gid=String(r.geometry_id||r.gid||"");
-      if(!gid) continue;
-      const g=gById.get(gid);
-      if(!g) continue;
-      const coords=extractCoords(g);
-      const kind=guessKind(g,coords);
-      const props={name:r.title||r.name||r.id||gid,period:r.period||"",blurb:r.blurb||"",kind:(r.type||"").toLowerCase()};
-      if (kind==="polygon"){
-        const rings=Array.isArray(coords[0][0])?coords:[coords];
-        polyFeatures.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
-      } else if (kind==="line"){
-        lineFeatures.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
-      } else if (kind==="point"){
-        const pt=Array.isArray(coords[0])?coords[0]:coords;
-        pointItems.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||"",type:props.kind||"site"});
-      }
-    }
-  }
-
-  async function loadDynamic() {
-    modeEl.textContent = "Loader: dynamic";
-    let indexData=null;
-    try {
-      indexData = await loadJSON("data/ancient.index.json");
-      if (!Array.isArray(indexData)) throw new Error("index-not-array");
-    } catch(e) {
-      // fallback to using ancient.json if it's data
-      try {
-        const maybe=await loadJSON("data/ancient.json");
-        if (Array.isArray(maybe)) indexData=maybe;
-        else if (!maybe.$schema && Array.isArray(maybe.records)) indexData=maybe.records;
-        else throw new Error("no-index");
-      } catch(e2) { throw e2; }
-    }
-
-    for (const rec of indexData) {
-      const gid=String(rec.geometry_id||rec.gid||"");
-      if(!gid) continue;
-      const base="data/geometry/"+gid;
-      const candidates=[
-        base+".geometry.geojson",
-        base+".simplified.geojson",
-        base+".lonlats.json",
-        base+".simplified_lonlats.json",
-        "data/"+gid+".geojson",
-        "data/"+gid+".json"
-      ];
-      let json=null;
-      for (const u of candidates){
-        try { const r = await fetch(u+"?v="+Date.now(), {cache:"no-store"}); if(r.ok){ json = await r.json(); break; } } catch(e){}
-      }
-      if(!json) continue;
-
-      const g = (json && json.type==="Feature") ? json.geometry
-               : (json && json.type==="FeatureCollection" && Array.isArray(json.features) && json.features[0] ? json.features[0].geometry
-               : json);
-      const coords = g.coordinates ?? json.lonlats ?? json.points ?? json.lonlat ?? json.coords ?? null;
-      const kind = guessKind(g, coords);
-      const props={name:rec.title||rec.name||rec.id||gid,period:rec.period||"",blurb:rec.blurb||"",kind:(rec.type||"").toLowerCase()};
-
-      if (kind==="polygon"){
-        const rings=Array.isArray(coords[0][0])?coords:[coords];
-        polyFeatures.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
-      } else if (kind==="line"){
-        lineFeatures.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
-      } else if (kind==="point"){
-        const pt=Array.isArray(coords[0])?coords[0]:coords;
-        pointItems.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||"",type:props.kind||"site"});
-      }
-    }
-  }
-
-  (async ()=>{
-    try {
-      set("map-status","Loading records…");
-      try { await loadLinked(); }
-      catch { polyFeatures=[]; lineFeatures=[]; pointItems=[]; await loadDynamic(); }
-
-      setCountsLabels();
-
-      // Render points first (fast), keep others off until toggled
-      showPoints(true);
-      showLines(false);
-      showPolys(false);
-
-      set("map-status","Interactive. Toggle layers to load/heavy.");
-      updateRenderedCounts();
-    } catch (e) {
-      console.error(e);
-      set("map-status", e.message || "Error", "bad");
-    }
-  })();
-
-  var zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
-  zoomControl.homeButton.set("visible", true);
-  zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
-
-  chart.appear(600, 100);
-});
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const world=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_worldLow,exclude:["AQ"]}));
+  stylePolys(world,root);
+  addZoom(chart,root);
+  _globe={root,chart};
+}
+function initAfME(){
+  if(_afme) return;
+  const root=am5.Root.new("chart-afme");
+  root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const africa=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_africaLow}));
+  const me=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
+  stylePolys(africa,root);stylePolys(me,root);
+  addZoom(chart,root);
+  _afme={root,chart};
+}
+function initNA(){
+  if(_na) return;
+  const root=am5.Root.new("chart-na");
+  root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_northAmericaLow}));
+  stylePolys(series,root);
+  addZoom(chart,root);
+  _na={root,chart};
+}
+function initSA(){
+  if(_sa) return;
+  const root=am5.Root.new("chart-sa");
+  root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_southAmericaLow}));
+  stylePolys(series,root);
+  addZoom(chart,root);
+  _sa={root,chart};
+}
+function initAsia(){
+  if(_asia) return;
+  const root=am5.Root.new("chart-asia");
+  root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_asiaLow}));
+  stylePolys(series,root);
+  addZoom(chart,root);
+  _asia={root,chart};
+}
+am5.ready(function(){initGlobe();setTimeout(initAfME,0);});
 </script>
 </body>
 </html>
