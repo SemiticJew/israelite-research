@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Extra-Biblical Sources — Global Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
-
 <style>
   :root{--ink:#0b2340;--muted:#64748b;--sky:#e6ebf2}
   html,body{height:100%;margin:0;color:var(--ink);background:#fff;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
@@ -38,29 +37,14 @@
 <script>
 let REGION_NOTES = null;
 async function getRegionNotes(){
-  if(REGION_NOTES) return REGION_NOTES;
-  try{
-    const r = await fetch("data/region-notes.json?v="+Date.now(), {cache:"no-store"});
+  if (REGION_NOTES) return REGION_NOTES;
+  try {
+    const r = await fetch("data/region-notes.json?v="+Date.now(), { cache: "no-store" });
     REGION_NOTES = await r.json();
-  }catch(e){ REGION_NOTES = {}; }
+  } catch(e) {
+    REGION_NOTES = {};
+  }
   return REGION_NOTES;
-}
-
-async function attachRegionNotes(series){
-  const NOTES = await getRegionNotes();
-  series.events.on("datavalidated", ()=>{
-    series.mapPolygons.each(mp=>{
-      const ctx = mp.dataItem?.dataContext || {};
-      const id  = ctx.id || ctx.iso_a2 || ctx.code || null;
-      const hit = id && NOTES[id];
-      if(hit){
-        const lines = (hit.refs||[]).map(r=>`• ${r.verse} — ${r.note}`).join("\n");
-        mp.dataItem.set("tooltipText", `${hit.title || ctx.name || "{name}"}\n${lines}`);
-      } else {
-        mp.dataItem.set("tooltipText", "{name}");
-      }
-    });
-  });
 }
 
 am5.ready(async function(){
@@ -91,7 +75,20 @@ am5.ready(async function(){
   zoom.homeButton.set("visible", true);
   zoom.homeButton.events.on("click", () => chart.goHome());
 
-  await attachRegionNotes(world);
+  const NOTES = await getRegionNotes();
+
+  world.mapPolygons.template.adapters.add("tooltipText", function(defaultText, target){
+    const ctx = target.dataItem?.dataContext || {};
+    const id  = ctx.id || ctx.iso_a2 || ctx.code || null; // amCharts worldLow uses ISO A2 in 'id'
+    const hit = id && NOTES[id];
+    if (hit && Array.isArray(hit.refs) && hit.refs.length){
+      const lines = hit.refs.map(r => `• ${r.verse} — ${r.note}`).join("\n");
+      const title = hit.title || ctx.name || "{name}";
+      return `${title}\n${lines}`;
+    }
+    return "{name}";
+  });
+
 });
 </script>
 </body>
