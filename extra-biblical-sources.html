@@ -126,7 +126,9 @@ function initAfME(){
   const root=am5.Root.new("chart-afme");
   root.setThemes([am5themes_Animated.new(root)]);
   const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"translateY",projection:am5map.geoNaturalEarth1()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+    chart.set("homeGeoPoint",{ longitude: 100, latitude: 30 });
+  chart.set("homeZoomLevel", 1.8);
+chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
   const africa=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_africaLow}));
   const me=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
   stylePolys(africa,root);stylePolys(me,root);
@@ -164,6 +166,7 @@ function initAsia(){
   const series=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_asiaLow}));
   stylePolys(series,root);
   addZoom(chart,root);
+  chart.goHome();
   _asia={root,chart};
 }
 am5.ready(function(){initGlobe();setTimeout(initAfME,0);});
