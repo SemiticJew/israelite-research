@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — Map (Hybrid Loader)</title>
+<title>Extra-Biblical Sources — Interactive Map</title>
 <link rel="stylesheet" href="/israelite-research/styles.css"/>
 <style>
   :root{--ink:#0b2340}
   html,body{height:100%;margin:0;background:#fff;color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   .container{max-width:1200px;margin:0 auto;padding:18px}
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
+  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
+  .pill{display:inline-flex;gap:8px;align-items:center;border:1px solid #cbd5e1;border-radius:999px;padding:6px 10px;background:#fff}
+  .pill input{accent-color:#0b2340}
+  .muted{color:#64748b}
   .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);overflow:hidden}
-  #chartdiv{width:100%;height:72vh;min-height:420px}
+  #chartdiv{width:100%;height:72vh;min-height:460px}
   .status{margin-top:10px;border:1px dashed #cbd5e1;border-radius:10px;padding:10px;color:#334155;background:#f8fafc}
   .status b{color:#0b2340}
   .status .bad{color:#b91c1c}
@@ -23,14 +27,21 @@
 
 <main class="container">
   <h1 class="page-title">Africa + Middle East Map</h1>
+
+  <div class="toolbar">
+    <label class="pill"><input type="checkbox" id="toggle-points" checked/> <span>Cities / Sites</span> <span class="muted" id="cnt-points">0</span></label>
+    <label class="pill"><input type="checkbox" id="toggle-lines"/> <span>Routes</span> <span class="muted" id="cnt-lines">0</span></label>
+    <label class="pill"><input type="checkbox" id="toggle-polys"/> <span>Regions</span> <span class="muted" id="cnt-polys">0</span></label>
+    <span class="muted" id="loader-mode"></span>
+  </div>
+
   <section class="card">
     <div id="chartdiv"></div>
   </section>
 
-  <div class="status">
-    <div><b>Loader:</b> <span id="loader-mode">linked</span></div>
+  <div class="status" id="status">
     <div><b>Status:</b> <span id="map-status">Loading…</span></div>
-    <div><b>Counts:</b> <span id="map-counts">—</span></div>
+    <div><b>Counts (rendered):</b> polygons: <span id="s-polys">0</span> · lines: <span id="s-lines">0</span> · points: <span id="s-points">0</span></div>
   </div>
 </main>
 
@@ -47,15 +58,151 @@
 
 <script>
 am5.ready(function() {
-  const statusEl = document.getElementById("map-status");
-  const countsEl = document.getElementById("map-counts");
-  const modeEl   = document.getElementById("loader-mode");
-  const setStatus = (t,c)=>{statusEl.textContent=t;statusEl.className=c||"";}
-  const setCounts = (poly,lines,pts)=>{countsEl.textContent=`polygons:${poly}  lines:${lines}  points:${pts}`}
+  const $ = id => document.getElementById(id);
+  const set = (id, text, cls)=>{ const el=$(id); if(!el) return; el.textContent=text; if(cls){el.className=cls;} };
 
+  const modeEl = $("loader-mode");
+  const chkPoints = $("toggle-points");
+  const chkLines  = $("toggle-lines");
+  const chkPolys  = $("toggle-polys");
+
+  const cntPts = $("cnt-points");
+  const cntLines = $("cnt-lines");
+  const cntPolys = $("cnt-polys");
+
+  const sPts = $("s-points");
+  const sLines = $("s-lines");
+  const sPolys = $("s-polys");
+
+  function updateRenderedCounts() {
+    sPts.textContent = pointsRendered;
+    sLines.textContent = linesRendered;
+    sPolys.textContent = polysRendered;
+  }
+
+  var root = am5.Root.new("chartdiv");
+  root.setThemes([ am5themes_Animated.new(root) ]);
+
+  var chart = root.container.children.push(am5map.MapChart.new(root, {
+    panX: "rotateX",
+    panY: "translateY",
+    projection: am5map.geoNaturalEarth1()
+  }));
+
+  chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
+
+  function styleSeries(series) {
+    series.mapPolygons.template.setAll({
+      tooltipText: "{name}",
+      toggleKey: "active",
+      interactive: true,
+      fill: am5.color("#f4ede1"),
+      stroke: am5.color("#c4b79c"),
+      strokeOpacity: 1,
+      strokeWidth: 0.8
+    });
+    series.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") });
+    series.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
+  }
+
+  var africaSeries = chart.series.push(am5map.MapPolygonSeries.new(root, { geoJSON: am5geodata_region_world_africaLow }));
+  var meSeries     = chart.series.push(am5map.MapPolygonSeries.new(root, { geoJSON: am5geodata_region_world_middleEastLow }));
+  styleSeries(africaSeries);
+  styleSeries(meSeries);
+
+  // Data buckets (filled by loader)
+  let polyFeatures = [];
+  let lineFeatures = [];
+  let pointItems   = [];
+
+  // Rendered counters
+  let polysRendered = 0, linesRendered = 0, pointsRendered = 0;
+
+  // Series (created once)
+  const regionsSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {}));
+  regionsSeries.mapPolygons.template.setAll({
+    tooltipText: "{name}\n{period}\n{blurb}",
+    interactive: true,
+    fillOpacity: 0.55,
+    strokeOpacity: 1,
+    strokeWidth: 1
+  });
+
+  const routesSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
+  routesSeries.mapLines.template.setAll({
+    stroke: am5.color("#8b5e34"),
+    strokeWidth: 1.1,
+    tooltipText: "{name}\n{period}",
+    strokeOpacity: 0.7
+  });
+
+  const pointsSeries = chart.series.push(am5map.MapPointSeries.new(root, {
+    valueField: "value", longitudeField: "longitude", latitudeField: "latitude"
+  }));
+  pointsSeries.bullets.push(() => am5.Bullet.new(root, {
+    sprite: am5.Circle.new(root, {
+      radius: 3.2, fill: am5.color("#0b2340"),
+      tooltipText: "{title}\n{subtitle}"
+    })
+  }));
+
+  regionsSeries.set("visible", false);
+  routesSeries.set("visible", false);
+  pointsSeries.set("visible", true);
+
+  regionsSeries.set("zIndex", 15);
+  routesSeries.set("zIndex", 20);
+  pointsSeries.set("zIndex", 30);
+
+  function setCountsLabels() {
+    cntPolys.textContent = polyFeatures.length;
+    cntLines.textContent = lineFeatures.length;
+    cntPts.textContent = pointItems.length;
+  }
+
+  // Render with deferral: only set data when toggled on first time
+  let polysLoaded = false, linesLoaded = false, pointsLoaded = false;
+
+  function showPoints(on) {
+    pointsSeries.set("visible", on);
+    if (on && !pointsLoaded) {
+      pointsSeries.data.setAll(pointItems);
+      pointsRendered = pointItems.length;
+      pointsLoaded = true;
+      updateRenderedCounts();
+    }
+  }
+  function showLines(on) {
+    routesSeries.set("visible", on);
+    if (on && !linesLoaded) {
+      routesSeries.setAll({ geoJSON: { type: "FeatureCollection", features: lineFeatures } });
+      linesRendered = lineFeatures.length;
+      linesLoaded = true;
+      updateRenderedCounts();
+    }
+  }
+  function showPolys(on) {
+    regionsSeries.set("visible", on);
+    if (on && !polysLoaded) {
+      regionsSeries.setAll({ geoJSON: { type: "FeatureCollection", features: polyFeatures } });
+      polysRendered = polyFeatures.length;
+      polysLoaded = true;
+      updateRenderedCounts();
+    }
+  }
+
+  chkPoints.addEventListener("change", e => showPoints(e.target.checked));
+  chkLines.addEventListener("change",  e => showLines(e.target.checked));
+  chkPolys.addEventListener("change",  e => showPolys(e.target.checked));
+
+  // Hybrid loader reused from earlier: try linked, fallback to dynamic per-ID
   function isSchema(obj){ return obj && typeof obj === "object" && !!obj.$schema; }
   function asArray(x){ return Array.isArray(x) ? x : (x ? [x] : []); }
-
+  async function loadJSON(path){
+    const r = await fetch(path + "?v=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(path + ": " + r.status + " " + r.statusText);
+    return r.json();
+  }
   function extractCoords(obj){
     return obj.coordinates ?? obj.lonlats ?? obj.points ?? obj.lonlat ?? obj.coords ?? null;
   }
@@ -70,59 +217,22 @@ am5.ready(function() {
     if (Array.isArray(coords) && Array.isArray(coords[0]) && coords.length===1 && coords[0].length===2) return "point";
     return null;
   }
-  async function loadJSON(path){
-    const r=await fetch(path+"?v="+Date.now(),{cache:"no-store"});
-    if(!r.ok) throw new Error(path+": "+r.status+" "+r.statusText);
-    return r.json();
-  }
 
-  var root = am5.Root.new("chartdiv");
-  root.setThemes([am5themes_Animated.new(root)]);
-  var chart = root.container.children.push(am5map.MapChart.new(root, {
-    panX:"rotateX", panY:"translateY",
-    projection: am5map.geoNaturalEarth1()
-  }));
-  chart.chartContainer.set("background", am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
-
-  const africa = chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_africaLow}));
-  const me     = chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_region_world_middleEastLow}));
-  const style = s=>s.mapPolygons.template.setAll({fill:am5.color("#f4ede1"),stroke:am5.color("#c4b79c"),strokeWidth:0.8});
-  style(africa); style(me);
-
-  function renderLayers(polyFeatures, lineFeatures, pointItems){
-    const regions=chart.series.push(am5map.MapPolygonSeries.new(root,{}));
-    regions.mapPolygons.template.setAll({tooltipText:"{name}\n{period}\n{blurb}",interactive:true,fillOpacity:0.55,strokeOpacity:1,strokeWidth:1});
-    if (polyFeatures.length) regions.setAll({geoJSON:{type:"FeatureCollection",features:polyFeatures}});
-
-    const routes=chart.series.push(am5map.MapLineSeries.new(root,{}));
-    routes.mapLines.template.setAll({stroke:am5.color("#8b5e34"),strokeWidth:1.5,tooltipText:"{name}",strokeOpacity:0.8});
-    if (lineFeatures.length) routes.setAll({geoJSON:{type:"FeatureCollection",features:lineFeatures}});
-
-    const points=chart.series.push(am5map.MapPointSeries.new(root,{longitudeField:"longitude",latitudeField:"latitude"}));
-    points.bullets.push(()=>am5.Bullet.new(root,{sprite:am5.Circle.new(root,{radius:4,fill:am5.color("#b91c1c"),tooltipText:"{title}\n{subtitle}"})}));
-    if (pointItems.length) points.data.setAll(pointItems);
-
-    regions.set("zIndex",15); routes.set("zIndex",20); points.set("zIndex",30);
-    setCounts(polyFeatures.length, lineFeatures.length, pointItems.length);
-  }
-
-  async function loadLinked(){
-    modeEl.textContent="linked";
+  async function loadLinked() {
+    modeEl.textContent = "Loader: linked";
     const [geomRaw, recsRaw] = await Promise.all([
       loadJSON("data/geometry.json"),
       loadJSON("data/ancient.json")
     ]);
     if (isSchema(geomRaw) || isSchema(recsRaw)) throw new Error("schema-detected");
-
     const geoms = Array.isArray(geomRaw) ? geomRaw
-                 : (geomRaw && geomRaw.type==="FeatureCollection" ? geomRaw.features.map(f=>({id:(f.id||f.properties?.id||f.properties?.gid||""), type:f.geometry?.type||"Unknown", coordinates:f.geometry?.coordinates})) : null);
+                 : (geomRaw && geomRaw.type==="FeatureCollection" ? geoms.features.map(f=>({id:(f.id||f.properties?.id||f.properties?.gid||""), type:f.geometry?.type||"Unknown", coordinates:f.geometry?.coordinates})) : null);
     const recs  = Array.isArray(recsRaw) ? recsRaw : (recsRaw && Array.isArray(recsRaw.records) ? recsRaw.records : null);
     if (!geoms || !recs) throw new Error("invalid-shape");
 
     const gById=new Map(geoms.map(g=>[String(g.id||g.geometry_id||g.gid||""),g]));
-    const poly=[], lines=[], points=[];
     for (const r of recs){
-      const gid=String(r.geometry_id||r.geometryId||r.geometryID||r.gid||"");
+      const gid=String(r.geometry_id||r.gid||"");
       if(!gid) continue;
       const g=gById.get(gid);
       if(!g) continue;
@@ -131,34 +241,34 @@ am5.ready(function() {
       const props={name:r.title||r.name||r.id||gid,period:r.period||"",blurb:r.blurb||"",kind:(r.type||"").toLowerCase()};
       if (kind==="polygon"){
         const rings=Array.isArray(coords[0][0])?coords:[coords];
-        poly.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
+        polyFeatures.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
       } else if (kind==="line"){
-        lines.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
+        lineFeatures.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
       } else if (kind==="point"){
         const pt=Array.isArray(coords[0])?coords[0]:coords;
-        points.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||""});
+        pointItems.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||"",type:props.kind||"site"});
       }
     }
-    renderLayers(poly,lines,points);
-    setStatus("Linked files loaded","ok");
   }
 
-  async function loadDynamic(){
-    modeEl.textContent="dynamic";
-    let indexData=null, indexUsed=null;
-    try{ indexData=await loadJSON("data/ancient.index.json"); indexUsed="data/ancient.index.json"; }
-    catch(e){
-      try{
+  async function loadDynamic() {
+    modeEl.textContent = "Loader: dynamic";
+    let indexData=null;
+    try {
+      indexData = await loadJSON("data/ancient.index.json");
+      if (!Array.isArray(indexData)) throw new Error("index-not-array");
+    } catch(e) {
+      // fallback to using ancient.json if it's data
+      try {
         const maybe=await loadJSON("data/ancient.json");
-        if (Array.isArray(maybe)) { indexData=maybe; indexUsed="data/ancient.json"; }
-        else if (!maybe.$schema && Array.isArray(maybe.records)) { indexData=maybe.records; indexUsed="data/ancient.json records[]"; }
-      }catch(e2){}
+        if (Array.isArray(maybe)) indexData=maybe;
+        else if (!maybe.$schema && Array.isArray(maybe.records)) indexData=maybe.records;
+        else throw new Error("no-index");
+      } catch(e2) { throw e2; }
     }
-    if(!indexData || !indexData.length){ setStatus("No dynamic index found","bad"); return; }
 
-    const poly=[], lines=[], points=[];
-    for (const rec of indexData){
-      const gid=String(rec.geometry_id||rec.geometryId||rec.geometryID||rec.gid||"");
+    for (const rec of indexData) {
+      const gid=String(rec.geometry_id||rec.gid||"");
       if(!gid) continue;
       const base="data/geometry/"+gid;
       const candidates=[
@@ -169,41 +279,57 @@ am5.ready(function() {
         "data/"+gid+".geojson",
         "data/"+gid+".json"
       ];
-      let found=null, json=null;
+      let json=null;
       for (const u of candidates){
-        try{ json=await loadJSON(u); found=u; break; }catch(e){}
+        try { const r = await fetch(u+"?v="+Date.now(), {cache:"no-store"}); if(r.ok){ json = await r.json(); break; } } catch(e){}
       }
       if(!json) continue;
 
-      const g = (json && json.type==="Feature") ? json.geometry : (json && json.type==="FeatureCollection" && Array.isArray(json.features) && json.features[0] ? json.features[0].geometry : json);
+      const g = (json && json.type==="Feature") ? json.geometry
+               : (json && json.type==="FeatureCollection" && Array.isArray(json.features) && json.features[0] ? json.features[0].geometry
+               : json);
       const coords = g.coordinates ?? json.lonlats ?? json.points ?? json.lonlat ?? json.coords ?? null;
       const kind = guessKind(g, coords);
       const props={name:rec.title||rec.name||rec.id||gid,period:rec.period||"",blurb:rec.blurb||"",kind:(rec.type||"").toLowerCase()};
+
       if (kind==="polygon"){
         const rings=Array.isArray(coords[0][0])?coords:[coords];
-        poly.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
+        polyFeatures.push({type:"Feature",properties:props,geometry:{type:"Polygon",coordinates:rings}});
       } else if (kind==="line"){
-        lines.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
+        lineFeatures.push({type:"Feature",properties:props,geometry:{type:"LineString",coordinates:coords}});
       } else if (kind==="point"){
         const pt=Array.isArray(coords[0])?coords[0]:coords;
-        points.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||""});
+        pointItems.push({longitude:pt[0],latitude:pt[1],title:props.name,subtitle:props.period||props.kind||"",type:props.kind||"site"});
       }
     }
-    renderLayers(poly,lines,points);
-    setStatus("Dynamic per-ID geometry loaded","ok");
   }
 
   (async ()=>{
-    try{
-      await loadLinked();
-    }catch(e){
-      await loadDynamic();
+    try {
+      set("map-status","Loading records…");
+      try { await loadLinked(); }
+      catch { polyFeatures=[]; lineFeatures=[]; pointItems=[]; await loadDynamic(); }
+
+      setCountsLabels();
+
+      // Render points first (fast), keep others off until toggled
+      showPoints(true);
+      showLines(false);
+      showPolys(false);
+
+      set("map-status","Interactive. Toggle layers to load/heavy.");
+      updateRenderedCounts();
+    } catch (e) {
+      console.error(e);
+      set("map-status", e.message || "Error", "bad");
     }
   })();
 
-  var zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
-  zoom.homeButton.set("visible",true);
-  zoom.homeButton.events.on("click",()=>chart.goHome());
+  var zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+  zoomControl.homeButton.set("visible", true);
+  zoomControl.homeButton.events.on("click", function() { chart.goHome(); });
+
+  chart.appear(600, 100);
 });
 </script>
 </body>
