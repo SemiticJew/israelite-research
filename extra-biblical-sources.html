@@ -27,9 +27,10 @@
     <b>Notes:</b> <span id="note-status">loading…</span> ·
     <b>Keys:</b> <span id="note-keys">0</span> ·
     <b>Matched Regions:</b> <span id="note-matched">0</span> ·
+    <b>Total Regions:</b> <span id="total-regions">0</span> ·
     <b>Sample IDs:</b> <span id="sample-ids">—</span>
   </div>
-  <p class="muted" style="margin:.5rem 0 0">Hover highlighted countries for a quick line. If none highlight, check the “Sample IDs” to align your JSON keys.</p>
+  <p class="muted" style="margin:.5rem 0 0">Hover a highlighted country for the quick line from region-notes.json.</p>
 </main>
 
 <div id="site-footer"></div>
@@ -47,6 +48,7 @@ const $ = (id)=>document.getElementById(id);
 const noteStatusEl = $("note-status");
 const noteKeysEl   = $("note-keys");
 const noteMatchEl  = $("note-matched");
+const totalRegionsEl = $("total-regions");
 const sampleIdsEl  = $("sample-ids");
 
 async function getRegionNotes(){
@@ -91,51 +93,51 @@ am5.ready(async function(){
   noteKeysEl.textContent = String(keys.length);
   noteStatusEl.textContent = keys.length ? "loaded" : "empty";
 
-  // Build a fallback name index (Title -> note)
   const NAME_INDEX = {};
   for (const k of keys){
     const v = NOTES[k];
     if (v && v.title) NAME_INDEX[String(v.title).trim().toUpperCase()] = v;
   }
 
-  // Helper to get polygon code robustly
   function polyCode(mp){
     const di  = mp?.dataItem;
     const ctx = di?.dataContext || {};
-    const idFromCtx = (ctx.id || ctx.iso_a2 || ctx.iso2 || ctx.code || ctx.iso_a3 || "").toString().trim();
-    const idFromItem = (typeof di?.get === "function" ? (di.get("id") || "") : "").toString().trim();
-    const best = (idFromCtx || idFromItem).toUpperCase();
-    return best;
+    // Try several places for the ID
+    const a = (ctx.id || ctx.iso_a2 || ctx.iso2 || ctx.code || ctx.iso_a3 || "").toString().trim();
+    const b = (typeof di?.get === "function" ? (di.get("id") || "") : "").toString().trim();
+    const c = (typeof mp.get === "function" ? (mp.get("id") || "") : "").toString().trim();
+    return (a || b || c).toUpperCase();
   }
   function polyName(mp){
     const ctx = mp?.dataItem?.dataContext || {};
-    const nm = (ctx.name || "").toString().trim();
-    return nm;
+    return (ctx.name || "").toString().trim();
   }
 
-  // Show sample IDs (first 10) so we see what the geodata uses
-  world.events.on("datavalidated", ()=>{
-    const ids = [];
-    world.mapPolygons.each(mp => { if (ids.length < 10) ids.push(polyCode(mp) || "(no-id)"); });
-    sampleIdsEl.textContent = ids.join(", ");
-
-    // Mark matched
-    let matched = 0;
+  // Core: compute totals, sample IDs, and mark matches
+  function computeDiagnostics(){
+    let total = 0, matched = 0;
+    const samples = [];
     world.mapPolygons.each(mp=>{
+      total++;
       const code = polyCode(mp);
       const name = polyName(mp);
-      const note = (code && NOTES[code]) || (name && NAME_INDEX[name.toUpperCase()]);
-      if (note){
+      if (samples.length < 10) samples.push(code || "(no-id)");
+      const hit  = (code && NOTES[code]) || (name && NAME_INDEX[name.toUpperCase()]);
+      if (hit){
         matched++;
         mp.setAll({ stroke: am5.color("#0b2340"), strokeWidth: 1.2 });
-        mp.set("hover", true); // subtle visual hint on first load
-        setTimeout(()=> mp.set("hover", false), 400);
       }
     });
+    totalRegionsEl.textContent = String(total);
+    sampleIdsEl.textContent = samples.join(", ");
     noteMatchEl.textContent = String(matched);
-  });
+  }
 
-  // Tooltip with code or name fallback
+  // Run on datavalidated and also once after a short delay
+  world.events.on("datavalidated", computeDiagnostics);
+  setTimeout(computeDiagnostics, 1200);
+
+  // Tooltip with code/name fallback
   world.mapPolygons.template.adapters.add("tooltipText", function(def, target){
     const code = polyCode(target);
     const name = polyName(target);
