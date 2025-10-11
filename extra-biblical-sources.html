@@ -1,3 +1,4 @@
+cat > extra-biblical-sources.html <<'HTML'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,19 +13,26 @@
   .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
   .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px var(--shadow);overflow:hidden}
   .mapwrap{width:100%;height:80vh;min-height:520px}
-  .muted{color:var(--muted)}
+  .muted{color:#64748b}
   .status{margin-top:10px;border:1px dashed #cbd5e1;border-radius:10px;padding:8px 10px;color:#334155;background:#f8fafc}
   .status b{color:#0b2340}
 
-  .drawer{position:fixed;top:0;right:0;height:100vh;width:min(440px,92vw);background:var(--panel);
+  .drawer{position:fixed;top:0;right:0;height:100vh;width:min(460px,92vw);background:var(--panel);
           border-left:1px solid #e5e7eb;box-shadow:-12px 0 32px var(--shadow);transform:translateX(100%);
           transition:transform .28s ease;z-index:9999;display:flex;flex-direction:column}
   .drawer.open{transform:translateX(0)}
   .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #eef2f7}
   .drawer-title{margin:0;font-size:1.1rem;font-weight:800}
   .drawer-body{padding:14px 16px;overflow:auto}
+  .section{margin:10px 0 14px}
+  .section h3{margin:.2rem 0 .5rem;font-size:1rem}
   .ref{padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0;background:#fafafa}
   .ref b{display:block;margin-bottom:4px}
+  .hist{padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0;background:#fff}
+  .hist .claim{margin:0 0 6px;font-weight:600}
+  .hist .meta{font-size:.85rem;color:#475569}
+  .hist a{color:#0b2340;text-decoration:underline}
+  .badge{display:inline-block;font-size:.72rem;border:1px solid #e5e7eb;border-radius:999px;padding:2px 6px;margin-left:6px;background:#f1f5f9;color:#0b2340}
   .drawer-actions{display:flex;gap:8px;align-items:center;padding:8px 16px 14px;border-top:1px solid #eef2f7}
   .btn{border:1px solid #d1d5db;background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}
   .btn.primary{background:#0b2340;color:#fff;border-color:#0b2340}
@@ -44,7 +52,7 @@
     <b>Matched Regions:</b> <span id="note-matched">0</span> ·
     <b>Total Regions:</b> <span id="total-regions">0</span>
   </div>
-  <p class="muted" style="margin:.6rem 0 0">Hover a country for a quick note. Click to open the Bible references panel.</p>
+  <p class="muted" style="margin:.6rem 0 0">Hover a country for a quick note. Click to open detailed information.</p>
 </main>
 
 <div id="site-footer"></div>
@@ -65,7 +73,6 @@
 
 <script src="/israelite-research/js/shims.js" defer></script>
 <script src="/israelite-research/js/include.js" defer></script>
-
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -73,159 +80,65 @@
 
 <script>
 const $ = id => document.getElementById(id);
-const noteStatusEl = $("note-status");
-const noteKeysEl   = $("note-keys");
-const noteMatchEl  = $("note-matched");
-const totalRegionsEl = $("total-regions");
-
-let NOTES = {};
-let NAME_INDEX = {};
+const noteStatusEl = $("note-status"), noteKeysEl = $("note-keys"),
+      noteMatchEl = $("note-matched"), totalRegionsEl = $("total-regions");
+let NOTES={}, NAME_INDEX={};
 
 async function loadNotes(){
   try{
-    const r = await fetch("data/region-notes.json?v="+Date.now(), { cache:"no-store" });
-    if (!r.ok) throw new Error("HTTP "+r.status);
-    NOTES = await r.json();
-  }catch(e){ NOTES = {}; }
-  NAME_INDEX = {};
-  for (const [k,v] of Object.entries(NOTES)){
-    if (v && v.title) NAME_INDEX[String(v.title).trim().toUpperCase()] = v;
+    const r=await fetch("data/region-notes.json?v="+Date.now(),{cache:"no-store"});
+    NOTES=await r.json();
+  }catch(e){NOTES={};}
+  NAME_INDEX={};
+  for(const[k,v]of Object.entries(NOTES)){
+    if(v&&v.title)NAME_INDEX[String(v.title).trim().toUpperCase()]=v;
   }
-  const count = Object.keys(NOTES).length;
-  noteStatusEl.textContent = count ? "loaded" : "empty";
-  noteKeysEl.textContent = String(count);
+  const c=Object.keys(NOTES).length;
+  noteStatusEl.textContent=c?"loaded":"empty"; noteKeysEl.textContent=String(c);
 }
 
-function polyCode(mp){
-  const di  = mp?.dataItem;
-  const ctx = di?.dataContext || {};
-  const a = (ctx.id || ctx.iso_a2 || ctx.iso2 || ctx.code || ctx.iso_a3 || "").toString().trim();
-  const b = (typeof di?.get === "function" ? (di.get("id") || "") : "").toString().trim();
-  const c = (typeof mp.get === "function" ? (mp.get("id") || "") : "").toString().trim();
-  return (a || b || c).toUpperCase();
-}
-function polyName(mp){
-  const ctx = mp?.dataItem?.dataContext || {};
-  return (ctx.name || "").toString().trim();
-}
+function polyCode(mp){const di=mp?.dataItem;const ctx=di?.dataContext||{};const a=(ctx.id||ctx.iso_a2||ctx.iso_a3||"").toString().trim();return a.toUpperCase();}
+function polyName(mp){const ctx=mp?.dataItem?.dataContext||{};return(ctx.name||"").toString().trim();}
 
 function openDrawer(payload){
-  const drawer = $("drawer"), body=$("drawer-body"), title=$("drawer-title"), tag=$("drawer-region-id");
-  title.textContent = payload.title || payload.name || "Region";
-  tag.textContent   = payload.id || "—";
-  body.innerHTML = "";
-
-  if (payload.summary){
-    const p=document.createElement("p"); p.textContent=payload.summary; p.style.marginBottom="8px"; body.appendChild(p);
-  }
-  const refs = Array.isArray(payload.refs) ? payload.refs : [];
-  if (refs.length){
-    refs.forEach(r=>{
-      const div=document.createElement("div"); div.className="ref";
-      const b=document.createElement("b"); b.textContent=r.verse||"";
-      const p=document.createElement("p"); p.style.margin="0"; p.textContent=r.note||"";
-      div.appendChild(b); div.appendChild(p); body.appendChild(div);
-    });
-  } else {
-    const p=document.createElement("p"); p.className="muted"; p.textContent="No references added yet for this region."; body.appendChild(p);
-  }
-  drawer.classList.add("open");
-  drawer.setAttribute("aria-hidden","false");
-  const url = new URL(location.href); url.searchParams.set("region", payload.id||""); history.replaceState(null,"",url.toString());
+  const drawer=$("drawer"),body=$("drawer-body"),title=$("drawer-title"),tag=$("drawer-region-id");
+  title.textContent=payload.title||payload.name||"Region"; tag.textContent=payload.id||"—"; body.innerHTML="";
+  if(payload.summary){const s=document.createElement("div");s.className="section";s.innerHTML=`<h3>Summary</h3><p>${payload.summary}</p>`;body.appendChild(s);}
+  const bib=Array.isArray(payload.biblical_refs)?payload.biblical_refs:[]; if(bib.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Biblical References</h3>";bib.forEach(r=>{const div=document.createElement("div");div.className="ref";div.innerHTML=`<b>${r.verse||""}</b><p>${r.note||""}</p>`;sec.appendChild(div)});body.appendChild(sec);}
+  const hist=Array.isArray(payload.historical_refs)?payload.historical_refs:[]; if(hist.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Historical & Scholarly Notes</h3>";
+    hist.forEach(h=>{
+      const div=document.createElement("div");div.className="hist";
+      div.innerHTML=`<p class="claim">${h.claim||""}</p>`;
+      let metaParts=[];if(h.source){const src=h.link?`<a href="${h.link}" target="_blank">${h.source}</a>`:h.source;metaParts.push(src);}
+      if(Number.isFinite(h.year)){const y=h.year<0?`${Math.abs(h.year)} BCE`:`${h.year} CE`;metaParts.push(`<span class="badge">${y}</span>`);}
+      if(h.confidence){metaParts.push(`<span class="badge">${h.confidence}</span>`);}
+      if(metaParts.length){div.innerHTML+=`<p class="meta">${metaParts.join(" ")}</p>`;}
+      if(h.book){const b=h.book;let bookHtml=`<div class="meta">`;if(b.cover_url){bookHtml+=`<img src="${b.cover_url}" alt="Cover" style="max-width:120px;margin:6px 0;">`;}
+        const info=[b.title,b.author,b.publisher,b.year,b.pages].filter(Boolean).join(", ");
+        bookHtml+=b.link?`<p><a href="${b.link}" target="_blank">${info}</a></p>`:`<p>${info}</p>`;bookHtml+="</div>";div.innerHTML+=bookHtml;}
+      if(Array.isArray(h.images)&&h.images.length){const g=document.createElement("div");g.className="row";h.images.forEach(im=>{const a=document.createElement("a");a.href=im.url;a.target="_blank";const img=document.createElement("img");img.src=im.url;img.alt=im.alt||"image";img.style.maxWidth="120px";img.style.border="1px solid #e5e7eb";img.style.borderRadius="8px";img.style.padding="2px";a.appendChild(img);g.appendChild(a)});div.appendChild(g);}
+      sec.appendChild(div);
+    });body.appendChild(sec);}
+  drawer.classList.add("open");drawer.setAttribute("aria-hidden","false");
 }
-function closeDrawer(){
-  const drawer=$("drawer"); drawer.classList.remove("open"); drawer.setAttribute("aria-hidden","true");
-  const url = new URL(location.href); url.searchParams.delete("region"); history.replaceState(null,"",url.toString());
-}
+function closeDrawer(){const d=$("drawer");d.classList.remove("open");d.setAttribute("aria-hidden","true");}
 
 am5.ready(async function(){
   await loadNotes();
-
-  const root = am5.Root.new("chart-globe");
-  root.setThemes([am5themes_Animated.new(root)]);
-
-  const chart = root.container.children.push(am5map.MapChart.new(root,{
-    panX:"rotateX", panY:"rotateY", projection:am5map.geoOrthographic()
-  }));
-  chart.chartContainer.set("background", am5.Rectangle.new(root, { fill: am5.color("#e0f2ff") }));
-
-  const world = chart.series.push(am5map.MapPolygonSeries.new(root,{ geoJSON: am5geodata_worldLow, exclude:["AQ"] }));
-  world.mapPolygons.template.setAll({
-    tooltipText: "{name}",
-    interactive: true,
-    toggleKey: "active",
-    fill: root.interfaceColors.get("background"),
-    stroke: am5.color("#c4b79c"),
-    strokeWidth: 0.8
-  });
-  world.mapPolygons.template.states.create("hover",  { fill: am5.color("#fcd34d") });
-  world.mapPolygons.template.states.create("active", { fill: am5.color("#b45309") });
-
-  const zoom = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
-  zoom.homeButton.set("visible", true);
-  zoom.homeButton.events.on("click", () => chart.goHome());
-
-  function matchNote(mp){
-    const code = polyCode(mp);
-    const name = polyName(mp);
-    return (code && NOTES[code]) || (name && NAME_INDEX[name.toUpperCase()]) || null;
-  }
-
-  world.events.on("datavalidated", ()=>{
-    let total=0, matched=0;
-    world.mapPolygons.each(mp=>{
-      total++;
-      const hit = matchNote(mp);
-      if (hit){
-        matched++;
-        mp.setAll({ stroke: am5.color("#0b2340"), strokeWidth: 1.2 });
-      }
-    });
-    totalRegionsEl.textContent = String(total);
-    noteMatchEl.textContent = String(matched);
-  });
-
-  world.mapPolygons.template.adapters.add("tooltipText", (def, target)=>{
-    const mp=target, hit=matchNote(mp);
-    if (hit){
-      const name = hit.title || polyName(mp) || "{name}";
-      const line = (hit.summary || (hit.refs && hit.refs[0]?.note) || "").slice(0,140);
-      return line ? `${name}\n• ${line}` : `${name}`;
-    }
-    return "{name}";
-  });
-
-  world.mapPolygons.template.events.on("click", ev=>{
-    const mp = ev.target;
-    const code = polyCode(mp);
-    const name = polyName(mp);
-    const hit  = matchNote(mp);
-    world.mapPolygons.each(p => p.set('active', p===mp));
-    openDrawer({ id: code || name, title: (hit&&hit.title)||name||code, summary: hit&&hit.summary, refs: hit&&hit.refs });
-  });
-
-  $("drawer-close").addEventListener("click", ()=>{
-    world.mapPolygons.each(p => p.set('active', false));
-    closeDrawer();
-  });
-  $("copy-link").addEventListener("click", async ()=>{
-    try{ await navigator.clipboard.writeText(location.href); alert("Link copied!"); }catch(e){ alert("Could not copy link"); }
-  });
-
-  const u=new URL(location.href); const rid=u.searchParams.get("region");
-  if (rid){
-    world.events.once("datavalidated", ()=>{
-      world.mapPolygons.each(mp=>{
-        const code=polyCode(mp), name=polyName(mp);
-        if (code===rid || name.toUpperCase()===rid.toUpperCase()){
-          const hit=matchNote(mp);
-          world.mapPolygons.each(p => p.set('active', p===mp));
-          openDrawer({ id: code || name, title: (hit&&hit.title)||name||code, summary: hit&&hit.summary, refs: hit&&hit.refs });
-        }
-      });
-    });
-  }
+  const root=am5.Root.new("chart-globe");root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"rotateY",projection:am5map.geoOrthographic()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  const world=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_worldLow,exclude:["AQ"]}));
+  world.mapPolygons.template.setAll({tooltipText:"{name}",interactive:true,toggleKey:"active",fill:root.interfaceColors.get("background"),stroke:am5.color("#c4b79c"),strokeWidth:0.8});
+  world.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});world.mapPolygons.template.states.create("active",{fill:am5.color("#b45309")});
+  const zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));zoom.homeButton.set("visible",true);zoom.homeButton.events.on("click",()=>chart.goHome());
+  const matchNote=mp=>{const code=polyCode(mp),name=polyName(mp);return(NOTES[code])||(NAME_INDEX[name.toUpperCase()])||null;}
+  world.events.on("datavalidated",()=>{let total=0,matched=0;world.mapPolygons.each(mp=>{total++;const hit=matchNote(mp);if(hit){matched++;mp.setAll({stroke:am5.color("#0b2340"),strokeWidth:1.2});}});totalRegionsEl.textContent=String(total);noteMatchEl.textContent=String(matched);});
+  world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{const h=matchNote(t);if(h){const name=h.title||polyName(t)||"{name}";const line=(h.summary||(h.biblical_refs&&h.biblical_refs[0]?.note)||"").slice(0,140);return line?`${name}\n• ${line}`:name;}return"{name}";});
+  world.mapPolygons.template.events.on("click",ev=>{const mp=ev.target;const hit=matchNote(mp)||{};world.mapPolygons.each(p=>p.set("active",p===mp));openDrawer(hit);});
+  $("drawer-close").addEventListener("click",()=>{world.mapPolygons.each(p=>p.set("active",false));closeDrawer();});
 });
 </script>
 </body>
 </html>
+HTML
