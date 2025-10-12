@@ -115,7 +115,7 @@ function openDrawer(payload){
       if(h.book){const b=h.book;let bookHtml=`<div class="meta">`;if(b.cover_url){bookHtml+=`<img src="${b.cover_url}" alt="Cover" style="max-width:120px;margin:6px 0;">`;}
         const info=[b.title,b.author,b.publisher,b.year,b.pages].filter(Boolean).join(", ");
         bookHtml+=b.link?`<p><a href="${b.link}" target="_blank">${info}</a></p>`:`<p>${info}</p>`;bookHtml+="</div>";div.innerHTML+=bookHtml;}
-      if(Array.isArray(h.images)&&h.images.length){const g=document.createElement("div");g.className="row";h.images.forEach(im=>{const a=document.createElement("a");a.href=im.url;a.target="_blank";const img=document.createElement("img");img.src=im.url;img.alt=im.alt||"image";img.style.maxWidth="120px";img.style.border="1px solid #e5e7eb";img.style.borderRadius="8px";img.style.padding="2px";a.appendChild(img);g.appendChild(a)});div.appendChild(g);}
+      if(Array.isArray(h.images)&&h.images.length){const g=document.createElement("div");g.className="row";h.images.forEach(im=>{const thumb=im.thumb||im.path||im.url;const full=im.full||im.url||im.path||thumb;const a=document.createElement("a");a.href=full;a.target="_blank";a.rel="noopener";const img=document.createElement("img");img.src=thumb;img.srcset=`${thumb} 1x, ${full} 2x`;img.loading="lazy";img.decoding="async";img.alt=im.alt||"image";img.style.width="120px";img.style.height="auto";img.style.border="1px solid #e5e7eb";img.style.borderRadius="8px";img.style.padding="2px";a.appendChild(img);g.appendChild(a)});div.appendChild(g);}
       sec.appendChild(div);
     });body.appendChild(sec);}
   drawer.classList.add("open");drawer.setAttribute("aria-hidden","false");
