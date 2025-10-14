@@ -3836,3 +3836,14 @@ hr{border:0;border-top:1px solid var(--border)}
 # Author modal visibility guard
 #author-modal.modal-overlay{display:none!important}
 body.articles-page #author-modal.modal-overlay{display:flex!important}
+.region--tiny-island {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.8px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+.stp-marker {
+  fill: var(--brand-accent, #F17300);
+  stroke: var(--region-outline, #054A91);
+  stroke-width: 1.8px;
+}
