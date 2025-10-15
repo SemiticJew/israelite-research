@@ -5,7 +5,7 @@
         var iso = (el.getAttribute('data-iso')||'').toUpperCase();
         var id  = (el.id||'').toUpperCase();
         var n   = (el.getAttribute('data-name')||el.getAttribute('name')||'').toLowerCase();
-        return iso === 'STP' || id === 'STP' || /sao\s*t(om|om[eé])|principe/.test(n);
+        return iso === 'STP' || id === 'STP' || /(s(?:ã|a)o\s*tom(?:e|é)?|pr(?:í|i)ncipe)/i.test(n);
       });
     candidates.forEach(function(el){
       el.classList.add('region--outlined','region--tiny-island');
