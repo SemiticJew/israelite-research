@@ -3855,3 +3855,14 @@ body.articles-page #author-modal.modal-overlay{display:flex!important}
   stroke: var(--region-outline, #054A91);
   stroke-width: 2px;
 }
+/* Force visual highlight on clicked regions */
+svg path.region--active,
+svg polygon.region--active,
+svg polyline.region--active,
+svg circle.region--active {
+  fill: var(--brand-accent, #F17300) !important;
+  fill-opacity: 0.6 !important;
+  stroke: var(--region-outline, #054A91) !important;
+  stroke-width: 2px !important;
+  pointer-events: auto !important;
+}
