@@ -1,79 +1,81 @@
 (function(){
-  var activeEl = null;
-
   function getISO(el){
-    if (!el) return null;
-    var iso = el.getAttribute('data-iso');
-    if (iso) return iso.toUpperCase();
-    var id  = (el.id||'').trim();
-    var nm  = (el.getAttribute('data-name')||el.getAttribute('name')||'').trim();
-    // Heuristics: 2–3 letter IDs or known names
-    if (/^[A-Za-z]{2,3}$/.test(id)) { el.setAttribute('data-iso', id.toUpperCase()); return id.toUpperCase(); }
-    if (/^[A-Za-z]{2,3}$/.test(nm)) { el.setAttribute('data-iso', nm.toUpperCase()); return nm.toUpperCase(); }
-    if (nm) { el.setAttribute('data-iso', nm); return nm; }
+    if(!el) return null;
+    if(el.id && el.id.length===2) return el.id;
+    if(el.getAttribute) {
+      const id=el.getAttribute("id");
+      if(id && id.length===2) return id;
+      const title=el.getAttribute("title");
+      if(title && title.length===2) return title;
+    }
+    if(el.closest){
+      const p=el.closest("[id]");
+      if(p && p.id && p.id.length===2) return p.id;
+    }
     return null;
   }
 
-  function deactivate(el){
-    if (!el) return;
-    el.classList.remove('region--active');
-    el.setAttribute('aria-selected','false');
-    el.dispatchEvent(new CustomEvent('region:blur',{bubbles:true, detail:{iso:getISO(el)}}));
-    if (activeEl === el) activeEl = null;
-  }
-
-  function activate(el){
-    if (!el) return;
-    if (activeEl && activeEl !== el) deactivate(activeEl);
-    if (!el.classList.contains('region--active')) {
-      el.classList.add('region--active');
-      el.setAttribute('aria-selected','true');
-      activeEl = el;
-      el.dispatchEvent(new CustomEvent('region:focus',{bubbles:true, detail:{iso:getISO(el)}}));
-    } else {
-      deactivate(el);
+  function gatherAllSVGISO(){
+    const ids=[];
+    document.querySelectorAll("#chart-globe svg .land[id], #chart-globe [data-iso]").forEach(n=>{
+      const id=n.getAttribute("data-iso")||n.id;
+      if(id && id.length===2) ids.push(id);
+    });
+    if(ids.length===0){
+      document.querySelectorAll("svg .land[id]").forEach(n=>{
+        const id=n.id;
+        if(id && id.length===2) ids.push(id);
+      });
     }
-  }
-
-  function findRegionEl(target){
-    // Accept any vector shape; climb to nearest shape with (or derivable) ISO
-    var el = target.closest('path,polygon,polyline,circle');
-    if (!el) return null;
-    var iso = getISO(el);
-    return iso ? el : null;
-  }
-
-  function clickHandler(e){
-    var el = findRegionEl(e.target);
-    if (el) activate(el); else deactivate(activeEl);
-  }
-
-  function keyHandler(e){
-    var el = findRegionEl(e.target);
-    if (!el) return;
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(el); }
+    return Array.from(new Set(ids));
   }
 
   function prepareRegions(){
-    var svg = document.querySelector('svg');
-    if (!svg) return;
-    // Make regions clickable/accessible
-    svg.querySelectorAll('path,polygon,polyline,circle').forEach(function(el){
-      if (!getISO(el)) return; // only treat as region if we can resolve an ISO/name
-      el.style.pointerEvents = 'auto';
-      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
-      if (!el.hasAttribute('role')) el.setAttribute('role','button');
-      if (!el.hasAttribute('aria-selected')) el.setAttribute('aria-selected','false');
+    const allSVG = new Set(gatherAllSVGISO());
+    const activeFromNotes = (window.ACTIVE_ISOS instanceof Set) ? window.ACTIVE_ISOS : new Set();
+    const active = (activeFromNotes.size>0) ? activeFromNotes : allSVG;
+
+    allSVG.forEach(iso=>{
+      const sel = `#chart-globe svg .land#${iso}`;
+      document.querySelectorAll(sel).forEach(n=>{
+        if(active.has(iso)){
+          n.classList.add("region-active");
+          n.setAttribute("data-active","1");
+        }else{
+          n.classList.remove("region-active");
+          n.removeAttribute("data-active");
+        }
+      });
     });
-    svg.addEventListener('click', clickHandler);
-    svg.addEventListener('keydown', keyHandler);
+
+    const svg = document.querySelector("#chart-globe svg");
+    if(!svg) return;
+    svg.addEventListener("mouseover",(ev)=>{
+      const iso=getISO(ev.target);
+      if(!iso) return;
+      const node = document.getElementById(iso);
+      if(node) node.classList.add("region-hover");
+      window.dispatchEvent(new CustomEvent("region:focus",{bubbles:true,detail:{iso}}));
+    },{passive:true});
+    svg.addEventListener("mouseout",(ev)=>{
+      const iso=getISO(ev.target);
+      if(!iso) return;
+      const node = document.getElementById(iso);
+      if(node) node.classList.remove("region-hover");
+      window.dispatchEvent(new CustomEvent("region:blur",{bubbles:true,detail:{iso}}));
+    },{passive:true});
+    svg.addEventListener("click",(ev)=>{
+      const iso=getISO(ev.target);
+      if(!iso) return;
+      window.dispatchEvent(new CustomEvent("region:click",{bubbles:true,detail:{iso}}));
+    });
+
+    console.log("Notes:",
+      "loaded · Keys:", activeFromNotes.size,
+      "· Matched Regions:", Array.from(active).filter(x=>allSVG.has(x)).length,
+      "· Total Regions:", allSVG.size
+    );
   }
 
-  function ready(fn){
-    if (document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(fn,0);
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  ready(prepareRegions);
-  window.addEventListener('globe:ready', prepareRegions);
+  window.addEventListener("globe:ready", prepareRegions);
 })();
