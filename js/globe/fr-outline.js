@@ -1,16 +1,10 @@
 (function(){
-  window.addEventListener('globe:ready', function(){
-    var host = document.getElementById('chart-globe');
-    if (!host) return;
-    var fr =
-      host.querySelector('svg #FR') ||
-      host.querySelector('#FR');
+  function outlineFR(){
+    var fr = document.querySelector('#chart-globe svg #FR, #chart-globe #FR, svg #FR, #FR');
     if (!fr) return;
-    fr.classList.add('region-active');
-    try {
-      fr.style.stroke = 'var(--accent, #3b82f6)';
-      fr.style.strokeWidth = '2';
-      fr.style.fillOpacity = fr.style.fillOpacity || '0.95';
-    } catch(_) {}
-  });
+    fr.classList.add('active');
+    fr.dispatchEvent(new CustomEvent('region:focus',{bubbles:true, detail:{iso:'FR'}}));
+  }
+  window.addEventListener('globe:ready', outlineFR);
+  if (document.readyState !== 'loading') outlineFR();
 })();
