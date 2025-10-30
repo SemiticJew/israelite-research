@@ -123,14 +123,7 @@
 <main class="container">
   <!-- NEW: Tabs row (keeps your calendar toolbar untouched) -->
   <div class="tabs-toolbar">
-    <div class="tabs-left">
-      <button class="btn" id="tabSite" aria-pressed="true">Site Calendar</button>
-      <button class="btn" id="tabICS" aria-pressed="false">High Holy Day ICS</button>
-      <!-- Optional future Google
-      <button class="btn" id="tabGoogle" aria-pressed="false">Google Calendar</button>
-      -->
-    </div>
-    <div class="tabs-right">
+    <div class="tabs-left"></div>    <div class="tabs-right">
       <a class="btn" href="/israelite-research/assets/cal/basic.ics" download>Download ICS</a>
       <a class="btn" href="webcal://semiticjew.github.io/israelite-research/assets/cal/basic.ics">Subscribe (webcal)</a>
     </div>
@@ -193,17 +186,7 @@
     </div>
   </section>
 
-  <!-- ICS PANEL -->
-  <section id="icsPanel" class="panel" aria-labelledby="tabICS">
-    <div class="card">
-      <h3>High Holy Day ICS</h3>
-      <div class="when">Rendering upcoming entries from <code>assets/cal/basic.ics</code></div>
-    </div>
-    <div id="icsAgenda" class="agenda"></div>
-  </section>
-
-  <!-- Optional Google PANEL (commented for now)
-  <section id="gcalPanel" class="panel" aria-labelledby="tabGoogle">
+    <!-- Removed redundant ICS and Google panels after JSON integration -->  <section id="gcalPanel" class="panel" aria-labelledby="tabGoogle">
     <div style="position:relative;padding-top:56.25%;border:1px solid #e6ebf2;border-radius:12px;overflow:hidden">
       <iframe
         title="Semitic Jew — Google Calendar"
