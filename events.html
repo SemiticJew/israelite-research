@@ -391,7 +391,8 @@
 
   // ===== Day Details (additive; no visual changes elsewhere) =====
   function openDetails(dateStr){
-    const items = events
+    const combined = [...events, ...icsEvents];
+    const items = combined
       .filter(e => e.date === dateStr && enabledTypes.has(e.type || 'generic'))
       .sort((a,b)=> (a.time||'').localeCompare(b.time||''));
     ddTitle.textContent = humanDate(dateStr);
