@@ -406,6 +406,10 @@
       items.forEach(e=>{
         const card = document.createElement('div');
         card.className = 'dd-item';
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', ()=>{
+          if (e.source === 'ics') { if (e.url) window.open(e.url, '_blank'); } else { openEdit(e); }
+        });
 
         const line = document.createElement('div');
         line.className = 'dd-line';
