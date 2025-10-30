@@ -108,7 +108,7 @@ def expand_events(raw_events, window_start: date, window_end: date):
         rrule = ev.get("RRULE")
         uid = ev.get("UID") or str(uuid.uuid4())
 
-        def add_span(s: date, e: date):
+        def add_span(s: date, e: date, desc, url, loc):
             # Create per-day instances (inclusive start, exclusive end)
             for d in daterange(max(s, window_start), min(e - timedelta(days=1), window_end)):
                 instances.append({
@@ -127,7 +127,7 @@ def expand_events(raw_events, window_start: date, window_end: date):
                 # skip EXDATE days
                 for d in daterange(start, end - timedelta(days=1)):
                     if d in exdates: continue
-                add_span(start, end)
+                add_span(start, end, desc, url, loc)
             continue
 
         rule = parse_rrule(rrule)
@@ -146,7 +146,7 @@ def expand_events(raw_events, window_start: date, window_end: date):
                 while cursor <= window_end:
                     if until_date and cursor > until_date: break
                     if cursor not in exdates:
-                        add_span(cursor, cursor + (end - start))
+                        add_span(cursor, cursor + (end - start), desc, url, loc)
                     cursor += timedelta(days=7)
 
         elif freq == "YEARLY":
@@ -167,12 +167,12 @@ def expand_events(raw_events, window_start: date, window_end: date):
                         if d in exdates: 
                             continue
                         if window_start <= d <= window_end:
-                            add_span(d, d + (end - start))
+                            add_span(d, d + (end - start), desc, url, loc)
 
         else:
             # Fallback: treat as single event at DTSTART (no expansion)
             if start not in exdates and window_start <= start <= window_end:
-                add_span(start, end)
+                add_span(start, end, desc, url, loc)
 
     # Sort by date then title
     instances.sort(key=lambda x: (x["date"], x["title"]))
