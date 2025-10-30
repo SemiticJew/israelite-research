@@ -316,6 +316,53 @@
 
 <div id="site-footer"></div>
 
+<!-- Scripts -->
+<script>
+  (function(){
+    // Date stamp
+    var now=new Date(), iso=now.toISOString().slice(0,10),
+        text=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    var pub=document.getElementById('pub-date'); if(pub){pub.dateTime=iso; pub.textContent=text;}
+
+    // Share links
+    var url=location.href, title=document.title;
+    var x=document.getElementById('share-x'), fb=document.getElementById('share-fb'), cp=document.getElementById('share-copy');
+    if(x) x.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(title)+"&url="+encodeURIComponent(url);
+    if(fb) fb.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+    if(cp) cp.addEventListener('click', function(){
+      if(navigator.share){ navigator.share({title, url}).catch(function(){}); return; }
+      navigator.clipboard && navigator.clipboard.writeText(url);
+      cp.innerHTML='✓'; setTimeout(()=>cp.innerHTML='<svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path><rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect></svg>',900);
+    });
+
+    // Author modal wiring
+    var icon  = document.getElementById('author-info');
+    var modal = document.getElementById('author-modal');
+    var close = document.getElementById('author-modal-close');
+    var lastFocus;
+    function openModal(e){ if(e) e.preventDefault(); lastFocus=document.activeElement; modal.setAttribute('aria-hidden','false'); document.documentElement.style.overflow='hidden'; close && close.focus(); }
+    function closeModal(e){ if(e) e.preventDefault(); modal.setAttribute('aria-hidden','true'); document.documentElement.style.overflow=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+    if(icon) icon.addEventListener('click', openModal);
+    if(close) close.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e){ if(e.target && e.target.classList.contains('modal-overlay')) closeModal(e); });
+    document.addEventListener('keydown', function(e){ if(modal.getAttribute('aria-hidden')==='false' && e.key==='Escape') closeModal(e); });
+
+    // Backrefs: ensure each footnote ↩ points to matching inline ref
+    document.querySelectorAll('.footnote-ref a[href^="#fn"]').forEach(function (a) {
+      var liId = a.getAttribute('href').slice(1);
+      var sup = a.closest('.footnote-ref');
+      if (!sup.id) {
+        var n = a.textContent.trim() || liId.replace(/\D+/g,'');
+        sup.id = 'ref-fn' + n;
+      }
+      var li = document.getElementById(liId);
+      if (li) {
+        var back = li.querySelector('.backref');
+        if (back) back.setAttribute('href', '#' + sup.id);
+      }
+    });
+  })();
+</script>
 <!-- External scripts -->
 <script src="/israelite-research/js/metadata.js" defer></script>
 <script src="/israelite-research/js/modal.js" defer></script>
