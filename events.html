@@ -85,7 +85,7 @@
   .btn-ghost{background:transparent}
   .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
 
-  /* ===== Day Details panel (additive, below legend) ===== */
+  /* ===== Day Details panel ===== */
   .day-details{margin-top:10px;border:1px solid #e6ebf2;border-radius:12px;background:#fff;overflow:hidden}
   .day-details[hidden]{display:none}
   .dd-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e6ebf2}
@@ -102,6 +102,18 @@
   .cal-dow .dow-main{font-weight:700;font-size:.95rem;color:#333}
   .cal-dow .dow-he{font-weight:500;font-size:.8rem;color:#555;margin-top:.15rem}
   .cal-dow .dow-tr{font-weight:400;font-size:.72rem;color:#777}
+
+  /* ===== NEW: Tabs & ICS agenda ===== */
+  .tabs-toolbar{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin:1rem 0 .75rem;}
+  .tabs-left{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .tabs-right{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .btn[aria-pressed="true"]{background:#054A910D;border-color:#cfd8e3}
+  .panel{display:none}
+  .panel.active{display:block}
+  .agenda{display:grid;gap:.75rem;margin-top:.5rem}
+  .card{border:1px solid #e6ebf2;border-radius:12px;background:#fff;padding:.9rem 1rem}
+  .card h3{margin:.1rem 0 .25rem 0;font-size:1.05rem}
+  .card .when{color:#6b7280;font-size:.95rem}
 </style>
 </head>
 <body class="events-page">
@@ -109,60 +121,98 @@
 <div id="site-header"></div>
 
 <main class="container">
-  <!-- Calendar -->
-  <div class="calendar-wrap">
-    <div class="cal-toolbar">
-      <div class="cal-nav">
-        <!-- Month / Day / Year selectors -->
-        <select id="selMonth" aria-label="Month"></select>
-        <select id="selDay" aria-label="Day"></select>
-        <select id="selYear" aria-label="Year"></select>
-      </div>
-      <h2 class="cal-title" id="calTitle">Month YYYY</h2>
-      <button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
+  <!-- NEW: Tabs row (keeps your calendar toolbar untouched) -->
+  <div class="tabs-toolbar">
+    <div class="tabs-left">
+      <button class="btn" id="tabSite" aria-pressed="true">Site Calendar</button>
+      <button class="btn" id="tabICS" aria-pressed="false">High Holy Day ICS</button>
+      <!-- Optional future Google
+      <button class="btn" id="tabGoogle" aria-pressed="false">Google Calendar</button>
+      -->
     </div>
-
-    <div class="cal-grid" id="dowRow">
-      <div class="cal-dow"><div class="dow-main">Sun</div><div class="dow-he">Yom Rishon</div><div class="dow-tr">"first day"</div></div><div class="cal-dow"><div class="dow-main">Mon</div><div class="dow-he">Yom Sheni</div><div class="dow-tr">"second day"</div></div><div class="cal-dow"><div class="dow-main">Tue</div><div class="dow-he">Yom Shlishi</div><div class="dow-tr">"third day"</div></div>
-      <div class="cal-dow"><div class="dow-main">Wed</div><div class="dow-he">Yom Revi’i</div><div class="dow-tr">"fourth day"</div></div><div class="cal-dow"><div class="dow-main">Thu</div><div class="dow-he">Yom Chamishi</div><div class="dow-tr">"fifth day"</div></div><div class="cal-dow"><div class="dow-main">Fri</div><div class="dow-he">Yom Shishi</div><div class="dow-tr">"sixth day"</div></div><div class="cal-dow"><div class="dow-main">Sat</div><div class="dow-he">Yom Shabbat</div><div class="dow-tr">"Sabbath"</div></div>
+    <div class="tabs-right">
+      <a class="btn" href="/israelite-research/assets/cal/basic.ics" download>Download ICS</a>
+      <a class="btn" href="webcal://semiticjew.github.io/israelite-research/assets/cal/basic.ics">Subscribe (webcal)</a>
     </div>
-
-    <div aria-live="polite" class="cal-grid" id="calGrid"></div>
-
-    <!-- Interactive Legend -->
-    <div class="cal-legend" id="calLegend">
-      <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events">
-        <span class="dot" style="background:#054A91"></span> Event
-      </button>
-      <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space">
-        <span class="dot xspace"></span> X Space
-      </button>
-      <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live">
-        <span class="dot youtube"></span> YouTube Live
-      </button>
-      <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live">
-        <span class="dot discord"></span> Discord Live
-      </button>
-      <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath">
-        <span class="dot sabbath"></span> Sabbath
-      </button>
-      <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon">
-        <span class="dot newmoon"></span> New Moon
-      </button>
-      <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days">
-        <span class="dot feast"></span> Feast Days
-      </button>
-    </div>
-
-    <!-- NEW: Day Details panel (below legend) -->
-    <aside class="day-details" id="dayDetails" hidden>
-      <div class="dd-head">
-        <h3 class="dd-title" id="ddTitle">Events</h3>
-        <button class="dd-close" id="ddClose" aria-label="Close details">Close</button>
-      </div>
-      <div class="dd-body" id="ddBody"></div>
-    </aside>
   </div>
+
+  <!-- Site Calendar PANEL (your existing calendar lives here, unchanged) -->
+  <section id="siteCalPanel" class="panel active" aria-labelledby="tabSite">
+    <div class="calendar-wrap">
+      <div class="cal-toolbar">
+        <div class="cal-nav">
+          <!-- Month / Day / Year selectors -->
+          <select id="selMonth" aria-label="Month"></select>
+          <select id="selDay" aria-label="Day"></select>
+          <select id="selYear" aria-label="Year"></select>
+        </div>
+        <h2 class="cal-title" id="calTitle">Month YYYY</h2>
+        <button class="btn btn-primary" id="addEventBtn">+ Add Event</button>
+      </div>
+
+      <div class="cal-grid" id="dowRow">
+        <div class="cal-dow"><div class="dow-main">Sun</div><div class="dow-he">Yom Rishon</div><div class="dow-tr">"first day"</div></div><div class="cal-dow"><div class="dow-main">Mon</div><div class="dow-he">Yom Sheni</div><div class="dow-tr">"second day"</div></div><div class="cal-dow"><div class="dow-main">Tue</div><div class="dow-he">Yom Shlishi</div><div class="dow-tr">"third day"</div></div>
+        <div class="cal-dow"><div class="dow-main">Wed</div><div class="dow-he">Yom Revi’i</div><div class="dow-tr">"fourth day"</div></div><div class="cal-dow"><div class="dow-main">Thu</div><div class="dow-he">Yom Chamishi</div><div class="dow-tr">"fifth day"</div></div><div class="cal-dow"><div class="dow-main">Fri</div><div class="dow-he">Yom Shishi</div><div class="dow-tr">"sixth day"</div></div><div class="cal-dow"><div class="dow-main">Sat</div><div class="dow-he">Yom Shabbat</div><div class="dow-tr">"Sabbath"</div></div>
+      </div>
+
+      <div aria-live="polite" class="cal-grid" id="calGrid"></div>
+
+      <!-- Interactive Legend -->
+      <div class="cal-legend" id="calLegend">
+        <button type="button" data-type="generic" aria-pressed="true" title="Toggle generic events">
+          <span class="dot" style="background:#054A91"></span> Event
+        </button>
+        <button type="button" data-type="xspace" aria-pressed="true" title="Toggle X Space">
+          <span class="dot xspace"></span> X Space
+        </button>
+        <button type="button" data-type="youtube" aria-pressed="true" title="Toggle YouTube Live">
+          <span class="dot youtube"></span> YouTube Live
+        </button>
+        <button type="button" data-type="discord" aria-pressed="true" title="Toggle Discord Live">
+          <span class="dot discord"></span> Discord Live
+        </button>
+        <button type="button" data-type="sabbath" aria-pressed="true" title="Toggle Sabbath">
+          <span class="dot sabbath"></span> Sabbath
+        </button>
+        <button type="button" data-type="newmoon" aria-pressed="true" title="Toggle New Moon">
+          <span class="dot newmoon"></span> New Moon
+        </button>
+        <button type="button" data-type="feast" aria-pressed="true" title="Toggle Feast Days">
+          <span class="dot feast"></span> Feast Days
+        </button>
+      </div>
+
+      <!-- Day Details panel -->
+      <aside class="day-details" id="dayDetails" hidden>
+        <div class="dd-head">
+          <h3 class="dd-title" id="ddTitle">Events</h3>
+          <button class="dd-close" id="ddClose" aria-label="Close details">Close</button>
+        </div>
+        <div class="dd-body" id="ddBody"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ICS PANEL -->
+  <section id="icsPanel" class="panel" aria-labelledby="tabICS">
+    <div class="card">
+      <h3>High Holy Day ICS</h3>
+      <div class="when">Rendering upcoming entries from <code>assets/cal/basic.ics</code></div>
+    </div>
+    <div id="icsAgenda" class="agenda"></div>
+  </section>
+
+  <!-- Optional Google PANEL (commented for now)
+  <section id="gcalPanel" class="panel" aria-labelledby="tabGoogle">
+    <div style="position:relative;padding-top:56.25%;border:1px solid #e6ebf2;border-radius:12px;overflow:hidden">
+      <iframe
+        title="Semitic Jew — Google Calendar"
+        style="position:absolute;inset:0;width:100%;height:100%;border:0"
+        src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID%40group.calendar.google.com&ctz=America%2FNew_York&mode=AGENDA&showPrint=0&showTabs=0&showCalendars=0&wkst=1&showTitle=0">
+      </iframe>
+    </div>
+  </section>
+  -->
 </main>
 
 <!-- Footer partial -->
@@ -329,7 +379,7 @@
   function jumpToSelected(){
     const y = parseInt(selYear.value,10);
     const m = parseInt(selMonth.value,10);
-    const d = parseInt(selDay.value,10);
+       const d = parseInt(selDay.value,10);
     const maxD = new Date(y, m+1, 0).getDate();
     const safeD = Math.min(d || 1, maxD);
     current = new Date(y, m, safeD);
@@ -557,6 +607,150 @@
 
   // Initial paint
   render();
+
+  /* ===================== NEW: Tabs & ICS renderer ===================== */
+  const tabSite = document.getElementById('tabSite');
+  const tabICS  = document.getElementById('tabICS');
+  const sitePanel = document.getElementById('siteCalPanel');
+  const icsPanel  = document.getElementById('icsPanel');
+  // const tabGoogle = document.getElementById('tabGoogle');
+  // const gcalPanel  = document.getElementById('gcalPanel');
+
+  function setTab(which){
+    const siteOn = which==='site';
+    const icsOn  = which==='ics';
+    tabSite.setAttribute('aria-pressed', siteOn ? 'true':'false');
+    tabICS.setAttribute('aria-pressed',  icsOn  ? 'true':'false');
+    sitePanel.classList.toggle('active', siteOn);
+    icsPanel.classList.toggle('active',  icsOn);
+    // if (tabGoogle) tabGoogle.setAttribute('aria-pressed', which==='gcal'?'true':'false');
+    // if (gcalPanel)  gcalPanel.classList.toggle('active', which==='gcal');
+  }
+  tabSite.addEventListener('click', ()=> setTab('site'));
+  tabICS.addEventListener('click',  ()=> { setTab('ics'); ensureICSLoaded(); });
+  setTab('site');
+
+  const ICS_URL = '/israelite-research/assets/cal/basic.ics';
+  let icsLoaded = false;
+
+  async function ensureICSLoaded(){
+    if (icsLoaded) return;
+    try{
+      const txt = await fetch(ICS_URL, {cache:'no-store'}).then(r=>r.text());
+      const events = parseICS(txt);
+      const upcoming = expandAndFilter(events, 210); // ~7 months
+      renderAgenda(upcoming);
+      icsLoaded = true;
+    }catch(e){
+      document.getElementById('icsAgenda').innerHTML =
+        '<div class="card"><div class="when" style="color:#b91c1c">Unable to load ICS file.</div></div>';
+    }
+  }
+
+  function parseICS(text){
+    const lines = text.replace(/\r\n/g,'\n').split('\n');
+    const out = [];
+    let cur = null;
+    const flush = ()=>{ if(cur){ out.push(cur); cur=null; } };
+
+    for (const raw of lines){
+      if (raw==='BEGIN:VEVENT'){ cur={}; continue; }
+      if (raw==='END:VEVENT'){ flush(); continue; }
+      if (!cur) continue;
+      const idx = raw.indexOf(':');
+      if (idx<0) continue;
+      const head = raw.slice(0,idx);
+      const val  = raw.slice(idx+1);
+
+      const key = head.split(';')[0].toUpperCase();
+      if (key==='SUMMARY') cur.summary = val.trim();
+      if (key==='UID')     cur.uid = val.trim();
+      if (key==='DTSTART') cur.dtstart_raw = val.trim();
+      if (key==='DTEND')   cur.dtend_raw   = val.trim();
+      if (key==='RRULE'){
+        const obj={}; val.split(';').forEach(p=>{ const [k,v]=p.split('='); obj[k]=v; });
+        cur.rrule = obj;
+      }
+    }
+    return out.map(normalizeEvent);
+  }
+
+  function parseDateYYYYMMDD(s){
+    const y=+s.slice(0,4), m=+s.slice(4,6)-1, d=+s.slice(6,8);
+    return new Date(Date.UTC(y,m,d));
+  }
+
+  function normalizeEvent(e){
+    const start = parseDateYYYYMMDD(e.dtstart_raw);
+    const end   = e.dtend_raw ? parseDateYYYYMMDD(e.dtend_raw) : new Date(start.getTime()+86400000);
+    return {
+      uid: e.uid || (e.summary||'')+(e.dtstart_raw||''),
+      summary: e.summary || '(untitled)',
+      start, end, allDay:true,
+      rrule: e.rrule || null
+    };
+  }
+
+  function expandAndFilter(events, horizonDays){
+    const now = stripTime(new Date());
+    const horizon = new Date(now.getTime()+horizonDays*86400000);
+    const out = [];
+    for (const ev of events){
+      if (ev.rrule && ev.rrule.FREQ==='WEEKLY'){
+        const days = (ev.rrule.BYDAY||'').split(',').filter(Boolean);
+        const max = 40;
+        for (const code of days){
+          let cursor = nextWeekdayFrom(now, code);
+          let n=0;
+          while (cursor <= horizon && n<max){
+            out.push({...ev, start:cursor, end:new Date(cursor.getTime()+86400000)});
+            cursor = new Date(cursor.getTime()+7*86400000);
+            n++;
+          }
+        }
+      } else {
+        if (ev.end > now) out.push(ev);
+      }
+    }
+    out.sort((a,b)=> a.start - b.start);
+    return out;
+  }
+
+  function stripTime(d){ return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); }
+  function weekdayCodeToNum(code){ return {SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6}[code] ?? 0; }
+  function nextWeekdayFrom(base, code){
+    const target = weekdayCodeToNum(code);
+    const d = stripTime(base);
+    const delta = (target - d.getUTCDay() + 7) % 7;
+    d.setUTCDate(d.getUTCDate()+delta);
+    return d;
+  }
+
+  function fmtRange(ev){
+    const opts={month:'short',day:'numeric',timeZone:'UTC'};
+    const oneDay=86400000;
+    const same=(ev.end-ev.start)<=oneDay;
+    if(same) return ev.start.toLocaleDateString(undefined,{...opts,year:'numeric'});
+    const left  = ev.start.toLocaleDateString(undefined,{...opts,year:'numeric'});
+    const right = new Date(ev.end-oneDay).toLocaleDateString(undefined,{...opts,year:'numeric'});
+    return `${left} – ${right}`;
+  }
+
+  function renderAgenda(events){
+    const host = document.getElementById('icsAgenda');
+    host.innerHTML='';
+    if (!events.length){
+      host.innerHTML = '<div class="card"><div class="when">No upcoming events.</div></div>';
+      return;
+    }
+    for (const ev of events.slice(0,100)){
+      const el = document.createElement('div'); el.className='card';
+      el.innerHTML = `<h3>${escapeHTML(ev.summary)}</h3><div class="when">${fmtRange(ev)}</div>`;
+      host.appendChild(el);
+    }
+  }
+
+  function escapeHTML(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 })();
 </script>
 </body>
