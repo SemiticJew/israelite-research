@@ -117,7 +117,7 @@ def expand_events(raw_events, window_start: date, window_end: date):
                     "title": summary,
                     "type": map_type(summary),
                     "time": "",          # all-day in ICS file
-                    "desc": "",
+                    "desc": desc, "url": url, "loc": loc,
                     "source": "ics"
                 })
 
