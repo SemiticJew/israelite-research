@@ -1,82 +1,112 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Israelite Encyclopedia — Semitic Jew</title>
-
-<!-- Open Graph -->
-<meta property="og:title" content="Israelite Encyclopedia — Semitic Jew"/>
-<meta property="og:description" content="People & ethnonym profiles highlighting Semitic–African links, complexion context, and sources."/>
-<meta property="og:image" content="https://semiticjew.github.io/israelite-research/images/og-default-700x394.jpg"/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://semiticjew.github.io/israelite-research/encyclopedia.html"/>
-<meta property="og:site_name" content="Semitic Jew"/>
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Israelite Encyclopedia — Semitic Jew"/>
-<meta name="twitter:description" content="People & ethnonym profiles highlighting Semitic–African links, complexion context, and sources."/>
-<meta name="twitter:image" content="https://semiticjew.github.io/israelite-research/images/og-default-700x394.jpg"/>
-<meta name="twitter:site" content="@semitic_jew"/>
-<meta name="twitter:creator" content="@semitic_jew"/>
-
-<link rel="stylesheet" href="/israelite-research/styles.css"/>
-
+<link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-  .enc-hero{padding:24px 0 8px;text-align:center}
-  .enc-title{margin:0;font-size:2rem;font-weight:800}
-  .enc-desc{max-width:60ch;margin:.4rem auto 0;color:#0b2340}
-  .enc-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
-  .enc-card p{margin:0;color:#445}
-  .enc-card a{display:inline-flex;align-items:center;gap:.4rem;margin-top:.35rem;text-decoration:none}
+  :root{--ink:#0b2340;--accent:#F17300;--brand:#054A91;--muted:#6b7280;--sky:#DBE4EE;--white:#fff}
+  body{background:#fff;color:var(--ink)}
+  .container{max-width:1400px;margin:0 auto;padding:0 16px}
 
-  .enc-az{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin:8px 0 14px}
-  .enc-az .az-link{display:inline-block;padding:.35rem .55rem;border:1px solid #e6ebf2;border-radius:8px;text-decoration:none}
-  .enc-az .az-link:hover{background:#f8fafc}
-  .enc-search-wrap{display:flex;justify-content:center;margin:8px 0 18px}
-  #enc-search{max-width:520px;width:100%;border:1px solid #e6ebf2;border-radius:10px;padding:.6rem .75rem}
-  .enc-letter{margin:14px 0 26px}
-  .enc-letter-head{text-align:center;margin:.5rem 0 1rem}
+  /* Sticky top bar */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:#fff; border-bottom:1px solid var(--sky);
+  }
+  .topbar-inner{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 16px;
+  }
+  .title{font-size:1.2rem; font-weight:800; margin:0}
+
+  /* Two-pane layout */
+  .layout{display:grid; grid-template-columns: 380px 1fr; gap:16px; margin:14px 0 32px}
+  @media (max-width: 980px){ .layout{grid-template-columns:1fr} .panel-right{order:-1} }
+
+  .panel{background:#fff; border:1px solid var(--sky); border-radius:10px}
+  .panel h3{margin:10px 14px; font-size:1rem; color:var(--brand)}
+
+  /* Facets + results */
+  .facets{border-bottom:1px solid var(--sky); padding:10px 12px}
+  .az{display:grid; grid-template-columns:repeat(13,1fr); gap:4px}
+  .az button{border:1px solid var(--sky); background:#fff; border-radius:6px; padding:.3rem 0; font:inherit; cursor:pointer}
+  .az button:hover{background:#f8fafc}
+
+  .results{max-height:calc(100vh - 260px); overflow:auto; padding:8px 8px 12px}
+  .card{border:1px solid var(--sky); border-radius:10px; padding:10px; margin:8px 4px; cursor:pointer; background:#fff}
+  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+  .card .line1{display:flex; align-items:baseline; gap:.5rem}
+  .card .term{font-weight:800}
+  .card .abstract{margin-top:.25rem; font-size:.9rem; color:#374151}
+
+  /* Reader */
+  .reader{padding:10px 14px}
+  .reader .head{display:flex; align-items:center; justify-content:space-between; gap:8px; border-bottom:1px solid var(--sky); padding-bottom:8px}
+  .reader .r-title{margin:0; font-size:1.4rem; font-weight:800}
+  .reader article{line-height:1.55; margin-top:10px}
+  .submeta{color:var(--muted); font-size:.95rem; margin-top:.25rem}
+  .cite{margin-top:16px; padding-top:8px; border-top:1px solid var(--sky); color:var(--muted); font-size:.9rem}
+  .empty{padding:22px; color:var(--muted)}
+
+  /* Right search toolbar */
+  .r-toolbar{
+    display:flex; gap:.5rem; align-items:center;
+    margin-top:8px;
+  }
+  .r-toolbar input[type="search"]{
+    flex:1; border:1px solid #e6ebf2; border-radius:8px; padding:.55rem .7rem; font:inherit;
+  }
+  .r-toolbar .btn{
+    border:1px solid #e6ebf2; background:#fff; border-radius:8px; padding:.5rem .7rem; cursor:pointer;
+  }
 </style>
 </head>
-<body class="article-doc" data-page="encyclopedia">
+<body class="encyclopedia-page">
+<!-- Header include -->
 <div id="site-header"></div>
 
-<main class="enc-wrap">
-  <nav id="enc-az" class="enc-az" aria-label="A–Z index"></nav>
-  <div class="enc-search-wrap"><input id="enc-search" type="search" placeholder="Search entries…"/></div>
-  <header class="enc-hero">
-    <h1 class="enc-title">Israelite Encyclopedia</h1>
-    <p class="enc-desc">People &amp; ethnonym profiles highlighting Semitic–African links, complexion context, and primary/secondary sources.</p>
-  </header>
+<div class="topbar">
+  <div class="topbar-inner container">
+    <h1 class="title">Israelite Encyclopedia</h1>
+  </div>
+</div>
 
-  <section class="enc-grid" aria-label="Featured entries">
-    <article class="enc-card">
-      <h3>How to Use This Encyclopedia</h3>
-      <p>Browse profiles by people, ethnonyms, and regions. Each entry includes claims, evidence, counterpoints, and citations.</p>
-      <a href="#entries" class="btn-link">Start browsing →</a>
-    </article>
-
-    <article class="enc-card">
-      <h3>Method &amp; Sources</h3>
-      <p>Entries use biblical text, ancient writers, epigraphy, archaeology, and modern scholarship with clear sourcing.</p>
-      <a href="/israelite-research/articles/is-truth-reliable.html" class="btn-link">Read methodology →</a>
-    </article>
-
-    <article class="enc-card">
-      <h3>Submit an Entry</h3>
-      <p>Have a reference or artifact to include? Propose additions with full citation and image permissions.</p>
-      <a href="mailto:info@semiticjew.org" class="btn-link">Email suggestions →</a>
-    </article>
+<main class="container layout">
+  <!-- Left: results + A–Z -->
+  <section aria-label="Results and facets" class="panel panel-left">
+    <h3>Browse</h3>
+    <div class="facets">
+      <div aria-label="A–Z jump" class="az" id="az-root"></div>
+    </div>
+    <div aria-label="Search results" class="results" id="results" role="listbox">
+      <div class="empty">Type in the search or select a letter to browse.</div>
+    </div>
   </section>
 
-  <section id="enc-entries" aria-label="Encyclopedia entries"></section>
+  <!-- Right: reader -->
+  <aside aria-label="Reading panel" class="panel panel-right">
+    <div class="reader" id="reader">
+      <div class="head">
+        <h2 class="r-title">Select an entry</h2>
+        <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
+          <input aria-label="Search encyclopedia" autocapitalize="off" autocomplete="off" autocorrect="off"
+                 id="q" name="q_enc" placeholder="Search (e.g., Judeans, Gentiles, Kushites)…" spellcheck="false" type="search"/>
+          <button class="btn" id="clearQ" type="button">Clear</button>
+        </form>
+      </div>
+      <article>
+        <div class="empty">Definitions will appear here when you select a result.</div>
+      </article>
+    </div>
+  </aside>
 </main>
 
+<!-- Footer include -->
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/include.js"></script>
-<script src="/israelite-research/js/encyclopedia.js" defer></script>
+<script src="/israelite-research/js/encyclopedia.app.js" defer></script>
 </body>
 </html>
