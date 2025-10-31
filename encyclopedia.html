@@ -30,12 +30,22 @@
   .enc-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
   .enc-card p{margin:0;color:#445}
   .enc-card a{display:inline-flex;align-items:center;gap:.4rem;margin-top:.35rem;text-decoration:none}
+
+  .enc-az{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin:8px 0 14px}
+  .enc-az .az-link{display:inline-block;padding:.35rem .55rem;border:1px solid #e6ebf2;border-radius:8px;text-decoration:none}
+  .enc-az .az-link:hover{background:#f8fafc}
+  .enc-search-wrap{display:flex;justify-content:center;margin:8px 0 18px}
+  #enc-search{max-width:520px;width:100%;border:1px solid #e6ebf2;border-radius:10px;padding:.6rem .75rem}
+  .enc-letter{margin:14px 0 26px}
+  .enc-letter-head{text-align:center;margin:.5rem 0 1rem}
 </style>
 </head>
 <body class="article-doc" data-page="encyclopedia">
 <div id="site-header"></div>
 
 <main class="enc-wrap">
+  <nav id="enc-az" class="enc-az" aria-label="A–Z index"></nav>
+  <div class="enc-search-wrap"><input id="enc-search" type="search" placeholder="Search entries…"/></div>
   <header class="enc-hero">
     <h1 class="enc-title">Israelite Encyclopedia</h1>
     <p class="enc-desc">People &amp; ethnonym profiles highlighting Semitic–African links, complexion context, and primary/secondary sources.</p>
@@ -61,28 +71,12 @@
     </article>
   </section>
 
-  <section id="entries" class="enc-grid" aria-label="All entries">
-    <!-- Placeholder tiles; replace with dynamic list when data is ready -->
-    <article class="enc-card">
-      <h3>Afro-Levantine (Overview)</h3>
-      <p>Survey of Afro–Levantine populations across the biblical world.</p>
-      <a href="#">Coming soon</a>
-    </article>
-    <article class="enc-card">
-      <h3>Judeans (Ethnonym)</h3>
-      <p>Identity, dispersion, complexion context, and primary texts.</p>
-      <a href="#">Coming soon</a>
-    </article>
-    <article class="enc-card">
-      <h3>Ethiopians / Kushites</h3>
-      <p>Biblical references and historical intersections with Israel.</p>
-      <a href="#">Coming soon</a>
-    </article>
-  </section>
+  <section id="enc-entries" aria-label="Encyclopedia entries"></section>
 </main>
 
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/include.js"></script>
+<script src="/israelite-research/js/encyclopedia.js" defer></script>
 </body>
 </html>
