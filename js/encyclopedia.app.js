@@ -86,21 +86,69 @@
     return `<div class="cite">See also: ${list.map(id=>`<a href="#${id}">${escapeHtml(id.replace(/-/g,' '))}</a>`).join(', ')}</div>`;
   }
 
+  
+  function refsHTML(list){
+    if(!list || !list.length) return '';
+    const items = list.map(r => `( <em>${escapeHtml(r)}</em> )`).join(' ');
+    return `<div class="cite">${items}</div>`;
+  }
+
+  
+  function etyHTML(t){
+    return t ? `<p><em>Etymology:</em> ${escapeHtml(t)}</p>` : '';
+  }
+
+  
+  function varHTML(list){
+    return (list && list.length) ? `<p><em>Variants:</em> ${escapeHtml(list.join(', '))}</p>` : '';
+  }
+
+  
+  function useHTML(t){
+    return t ? `<p><em>Usage:</em> ${escapeHtml(t)}</p>` : '';
+  }
+
+  
+  function seeHTML(list){
+    if(!list || !list.length) return '';
+    const links = list.map(id => `<a href="#${encodeURIComponent(id)}">${escapeHtml(id)}</a>`).join(' · ');
+    return `<p><em>See also:</em> ${links}</p>`;
+  }
+
+  
+  function wrapBibleRefs(root){
+    if(!root) return;
+    const BOOK_SLUGS = {"Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy","Isaiah":"isaiah","Matthew":"matthew","John":"john","Romans":"romans","Luke":"luke","Amos":"amos","2 Chronicles":"2-chronicles","1 Kings":"1-kings"};
+    const CANON = new Map(Object.entries({"genesis":"tanakh","exodus":"tanakh","leviticus":"tanakh","numbers":"tanakh","deuteronomy":"tanakh","isaiah":"tanakh","amos":"tanakh","2-chronicles":"tanakh","1-kings":"tanakh","matthew":"newtestament","john":"newtestament","luke":"newtestament","romans":"newtestament"}));
+    root.querySelectorAll('.cite em').forEach(em=>{
+      const label = em.textContent.trim().replace(/\u00A0/g,' ');
+      const m = /^(.+?)\s+(\d+):(\d+)(?:[–-](\d+))?$/.exec(label);
+      if(!m) return;
+      const book = m[1].trim(); const ch=m[2]; const v=m[3];
+      const slug = BOOK_SLUGS[book]; if(!slug) return;
+      const canon = CANON.get(slug) || 'tanakh';
+      const a = document.createElement('a');
+      a.className='xref-trigger';
+      a.href = `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(ch)}#v${encodeURIComponent(v)}`;
+      a.setAttribute('data-xref', label);
+      a.textContent = label;
+      em.replaceWith(a);
+    });
+  }
   function openEntry(e, pushHash){
+
     const art = readerEl.querySelector('article');
     readerEl.querySelector('.r-title').textContent = e.headword;
-    art.innerHTML = `
-      ${e.syllables || e.pos || e.variants.length ? `<div class="submeta">
-        ${e.syllables ? `<span>${escapeHtml(e.syllables)}</span>` : ''}
-        ${e.pos ? `<span style="margin-left:.5rem">${escapeHtml(e.pos)}</span>` : ''}
-        ${e.variants.length ? `<span style="margin-left:.5rem">(${e.variants.map(escapeHtml).join(' · ')})</span>` : ''}
-      </div>` : ''}
-      ${e.etymology ? `<p><em>Etymology:</em> ${escapeHtml(e.etymology)}</p>` : ''}
-      <p>${escapeHtml(e.definition)}</p>
-      ${e.usage_notes ? `<p><em>Usage:</em> ${escapeHtml(e.usage_notes)}</p>` : ''}
-      ${seeAlsoHTML(e.see_also)}
-    `;
-    if(pushHash){
+    \1
+      wrapBibleRefs(readerEl);
+      try{
+        if(window.xrefHover && typeof window.xrefHover.rescan === 'function'){
+          window.xrefHover.rescan(readerEl);
+        }else{
+          document.dispatchEvent(new CustomEvent('xref:rescan',{detail:{root:readerEl}}));
+        }
+      }catch(_){}
+if(pushHash){
       const url = new URL(location.href);
       url.hash = e.id || '';
       history.pushState({id:e.id}, '', url);
