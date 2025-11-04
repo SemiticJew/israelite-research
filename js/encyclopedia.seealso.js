@@ -41,3 +41,16 @@
     enhance(reader);
   }
 })();
+(function(){
+  function enhanceFromDt(){
+    var dts=document.querySelectorAll("#reader dt");
+    dts.forEach(function(dt){
+      if((dt.textContent||"").trim().toLowerCase().indexOf("see also")===0){
+        var dd=dt.nextElementSibling; if(dd && dd.tagName==="DD" && !dd.classList.contains("see-also")){ dd.classList.add("see-also"); }
+      }
+    });
+  }
+  var mo=new MutationObserver(enhanceFromDt);
+  mo.observe(document.getElementById("reader")||document,{childList:true,subtree:true});
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",enhanceFromDt);}else{enhanceFromDt()}
+})();

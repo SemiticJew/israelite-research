@@ -119,6 +119,7 @@
   }
 
   function openEntry(e){
+  window.__openEntry = openEntry;
     const art = READER.querySelector('article');
     const bits = [];
 
