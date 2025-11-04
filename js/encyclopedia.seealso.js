@@ -1,73 +1,63 @@
 (function(){
-  function titleFromId(id){
+  function findEntryByKey(key){
+    key = String(key||'').trim().toLowerCase();
     var db = window.__ENC_DB || [];
-    for (var i=0;i<db.length;i++){ if(db[i].id===id) return db[i].headword||id; }
-    // fallback prettifier
-    return id.replace(/[-_]+/g,' ').replace(/\b\w/g, m=>m.toUpperCase());
+    return db.find(function(x){
+      return String(x.id||'').toLowerCase() === key ||
+             String(x.headword||'').toLowerCase() === key;
+    }) || null;
   }
-  function enhance(root){
+  function niceLabel(key){
+    var e = findEntryByKey(key);
+    if (e && e.headword) return e.headword;
+    return String(key||'')
+      .replace(/[-_]+/g,' ')
+      .replace(/\b\w/g, m=>m.toUpperCase());
+  }
+  function openById(id){
+    if (typeof window.__openEntry === 'function'){
+      var e = findEntryByKey(id);
+      if (e) window.__openEntry(e);
+    } else if (typeof window.openEncyclopediaEntryById === 'function'){
+      window.openEncyclopediaEntryById(id);
+    }
+  }
+  function linkify(root){
     root = root || document;
-    var nodes = root.querySelectorAll('.see-also:not([data-enhanced])');
-    nodes.forEach(function(dd){
-      dd.setAttribute('data-enhanced','1');
+    var scope = root.querySelector('#reader') || root;
+    var dts = scope.querySelectorAll('dt');
+    dts.forEach(function(dt){
+      var txt = (dt.textContent||'').trim().toLowerCase();
+      if(!/^see also\.?$/.test(txt)) return;              // matches “See also” or “See also.”
+      var dd = dt.nextElementSibling;
+      if (!dd || dd.tagName !== 'DD' || dd.dataset.enhanced === '1') return;
       var raw = (dd.textContent||'').trim();
       if(!raw) return;
-      var ids = raw.split(',').map(function(t){ return t.trim().toLowerCase(); }).filter(Boolean);
-      if(!ids.length) return;
-      dd.innerHTML = ids.map(function(id){
-        var label = titleFromId(id);
-        return '<a href="#" class="see-link" data-id="'+id+'">'+label+'</a>';
+      var parts = raw.split(',').map(function(s){return s.trim();}).filter(Boolean);
+      if(!parts.length) return;
+      dd.innerHTML = parts.map(function(id){
+        var key = id.toLowerCase();
+        var label = niceLabel(key);
+        return '<a href="#" class="see-link" data-id="'+key+'">'+label+'</a>';
       }).join(', ');
+      dd.dataset.enhanced = '1';
     });
   }
-  // click → open the linked entry using app helper
+  // clicks on links
   document.addEventListener('click', function(e){
     var a = e.target.closest('a.see-link');
     if(!a) return;
     e.preventDefault();
-    var id = a.getAttribute('data-id');
-    if (typeof window.openEncyclopediaEntryById === 'function'){
-      window.openEncyclopediaEntryById(id);
-    }
+    openById(a.getAttribute('data-id'));
   });
-  // Observe reader area and enhance when entries render
-  var reader = document.getElementById('reader') || document;
-  var mo = new MutationObserver(function(){ enhance(reader); });
-  mo.observe(reader, {childList:true, subtree:true});
-  // initial pass
+  // observe changes in reader to re-run
+  var target = document.getElementById('reader') || document.body;
+  var mo = new MutationObserver(function(){ linkify(target); });
+  mo.observe(target, {childList:true, subtree:true});
+  // initial run
   if (document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ enhance(reader); });
+    document.addEventListener('DOMContentLoaded', function(){ linkify(target); });
   } else {
-    enhance(reader);
-  }
-})();
-(function(){
-  function enhanceFromDt(){
-    var dts=document.querySelectorAll("#reader dt");
-    dts.forEach(function(dt){
-      if((dt.textContent||"").trim().toLowerCase().indexOf("see also")===0){
-        var dd=dt.nextElementSibling; if(dd && dd.tagName==="DD" && !dd.classList.contains("see-also")){ dd.classList.add("see-also"); }
-      }
-    });
-  }
-  var mo=new MutationObserver(enhanceFromDt);
-  mo.observe(document.getElementById("reader")||document,{childList:true,subtree:true});
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",enhanceFromDt);}else{enhanceFromDt()}
-})();
-(function(){
-  if (typeof window.openEncyclopediaEntryById !== 'function'){
-    window.openEncyclopediaEntryById = function(id){
-      try{
-        var key = String(id||'').toLowerCase();
-        var db = window.__ENC_DB || [];
-        var e = db.find(function(x){
-          return String(x.id||'').toLowerCase() === key ||
-                 String(x.headword||'').toLowerCase() === key;
-        });
-        if (e && typeof window.__openEntry === 'function'){
-          window.__openEntry(e);
-        }
-      }catch(_){}
-    };
+    linkify(target);
   }
 })();
