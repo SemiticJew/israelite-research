@@ -54,3 +54,20 @@
   mo.observe(document.getElementById("reader")||document,{childList:true,subtree:true});
   if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",enhanceFromDt);}else{enhanceFromDt()}
 })();
+(function(){
+  if (typeof window.openEncyclopediaEntryById !== 'function'){
+    window.openEncyclopediaEntryById = function(id){
+      try{
+        var key = String(id||'').toLowerCase();
+        var db = window.__ENC_DB || [];
+        var e = db.find(function(x){
+          return String(x.id||'').toLowerCase() === key ||
+                 String(x.headword||'').toLowerCase() === key;
+        });
+        if (e && typeof window.__openEntry === 'function'){
+          window.__openEntry(e);
+        }
+      }catch(_){}
+    };
+  }
+})();
