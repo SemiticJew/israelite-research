@@ -2,17 +2,16 @@
   function findEntryByKey(key){
     key = String(key||'').trim().toLowerCase();
     var db = window.__ENC_DB || [];
-    return db.find(function(x){
-      return String(x.id||'').toLowerCase() === key ||
-             String(x.headword||'').toLowerCase() === key;
-    }) || null;
+    for (var i=0;i<db.length;i++){
+      var x = db[i];
+      if (String(x.id||'').toLowerCase()===key || String(x.headword||'').toLowerCase()===key) return x;
+    }
+    return null;
   }
   function niceLabel(key){
     var e = findEntryByKey(key);
     if (e && e.headword) return e.headword;
-    return String(key||'')
-      .replace(/[-_]+/g,' ')
-      .replace(/\b\w/g, m=>m.toUpperCase());
+    return String(key||'').replace(/[-_]+/g,' ').replace(/\b\w/g,function(m){return m.toUpperCase();});
   }
   function openById(id){
     if (typeof window.__openEntry === 'function'){
@@ -22,39 +21,68 @@
       window.openEncyclopediaEntryById(id);
     }
   }
+
+  // robustly get the DD that belongs to a given DT, even if wrappers/whitespace are present
+  function ddFromDt(dt){
+    // 1) walk siblings forward until a DD is found
+    var n = dt.nextSibling, steps = 0;
+    while (n && steps < 20){
+      if (n.nodeType === 1 && n.tagName === 'DD') return n;
+      n = n.nextSibling; steps++;
+    }
+    // 2) fallback: within the closest DL, take the first DD that appears after this DT
+    var p = dt.parentElement;
+    while (p && p.tagName !== 'DL') p = p.parentElement;
+    if (p){
+      var seen = false;
+      for (var i=0;i<p.children.length;i++){
+        var el = p.children[i];
+        if (el === dt){ seen = true; continue; }
+        if (seen && el.tagName === 'DD') return el;
+      }
+    }
+    return null;
+  }
+
   function linkify(root){
     root = root || document;
     var scope = root.querySelector('#reader') || root;
     var dts = scope.querySelectorAll('dt');
-    dts.forEach(function(dt){
-      var txt = (dt.textContent||'').trim().toLowerCase();
-      if(!/^see also\.?$/.test(txt)) return;              // matches “See also” or “See also.”
-      var dd = dt.nextElementSibling;
-      if (!dd || dd.tagName !== 'DD' || dd.dataset.enhanced === '1') return;
+    for (var i=0;i<dts.length;i++){
+      var dt = dts[i];
+      var label = (dt.textContent||'').trim().toLowerCase().replace(/\.$/, '');
+      if (label !== 'see also') continue;
+
+      var dd = ddFromDt(dt);
+      if (!dd || dd.dataset.enhanced === '1') continue;
+
       var raw = (dd.textContent||'').trim();
-      if(!raw) return;
-      var parts = raw.split(',').map(function(s){return s.trim();}).filter(Boolean);
-      if(!parts.length) return;
+      if (!raw) continue;
+
+      var parts = raw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+      if (!parts.length) continue;
+
       dd.innerHTML = parts.map(function(id){
         var key = id.toLowerCase();
-        var label = niceLabel(key);
-        return '<a href="#" class="see-link" data-id="'+key+'">'+label+'</a>';
+        var text = niceLabel(key);
+        return '<a href="#" class="see-link" data-id="'+key+'">'+text+'</a>';
       }).join(', ');
+
       dd.dataset.enhanced = '1';
-    });
+    }
   }
-  // clicks on links
+
   document.addEventListener('click', function(e){
     var a = e.target.closest('a.see-link');
-    if(!a) return;
+    if (!a) return;
     e.preventDefault();
     openById(a.getAttribute('data-id'));
   });
-  // observe changes in reader to re-run
+
   var target = document.getElementById('reader') || document.body;
   var mo = new MutationObserver(function(){ linkify(target); });
   mo.observe(target, {childList:true, subtree:true});
-  // initial run
+
   if (document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', function(){ linkify(target); });
   } else {
