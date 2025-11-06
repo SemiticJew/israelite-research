@@ -1,63 +1,69 @@
 #!/usr/bin/env python3
-import json, re, sys, argparse
-from datetime import datetime
+import json, argparse, os, sys, re
+DEFAULT_FILE = "data/israelite_dictionary.json"
 
-BOOK_MAP = {
-    "genesis": ("tanakh","genesis"), "exodus": ("tanakh","exodus"), "leviticus": ("tanakh","leviticus"),
-    "numbers": ("tanakh","numbers"), "deuteronomy": ("tanakh","deuteronomy"),
-    "joshua": ("tanakh","joshua"), "judges": ("tanakh","judges"), "ruth": ("tanakh","ruth"),
-    "1 samuel": ("tanakh","1-samuel"), "2 samuel": ("tanakh","2-samuel"),
-    "1 kings": ("tanakh","1-kings"), "2 kings": ("tanakh","2-kings"),
-    "isaiah": ("tanakh","isaiah"), "jeremiah": ("tanakh","jeremiah"),
-    "matthew": ("newtestament","matthew"), "mark": ("newtestament","mark"), "luke": ("newtestament","luke"),
-    "john": ("newtestament","john"), "acts": ("newtestament","acts")
+BOOK_SLUGS = {
+  "genesis": ("tanakh","genesis"), "exodus": ("tanakh","exodus"),
+  "leviticus": ("tanakh","leviticus"), "numbers": ("tanakh","numbers"),
+  "deuteronomy": ("tanakh","deuteronomy"), "isaiah": ("tanakh","isaiah"),
+  "psalms": ("tanakh","psalms"), "john": ("newtestament","john"),
+  "matthew": ("newtestament","matthew"), "revelation": ("newtestament","revelation"),
+  "1 kings": ("tanakh","1-kings"), "deuteronomy": ("tanakh","deuteronomy"),
+  "numbers": ("tanakh","numbers"), "proverbs": ("tanakh","proverbs"),
+  "zechariah": ("tanakh","zechariah"), "1 samuel": ("tanakh","1-samuel"),
+  "mark": ("newtestament","mark"), "isaiah": ("tanakh","isaiah")
 }
 
-def slugify_headword(s:str)->str:
-    s=re.sub(r"[^\w\s\-]+","",s)
-    return re.sub(r"\s+","-",s.strip().lower())
+REF_RE = re.compile(r'^\s*([1-3]?\s*[A-Za-z ]+)\s+(\d+):(\d+)(?:[–-](\d+))?\s*$')
+def parse_ref(label):
+    m = REF_RE.match(label.replace('\u00A0',' ').strip())
+    if not m: return {"label": label}
+    book = m.group(1).strip().lower()
+    ch = int(m.group(2)); v1 = int(m.group(3)); v2 = m.group(4)
+    canon, slug = BOOK_SLUGS.get(book, (None,None))
+    d = {"label": label, "ch": ch, "vStart": v1}
+    if v2: d["vEnd"] = int(v2)
+    if canon: d["canon"] = canon
+    if slug: d["slug"] = slug
+    return d
 
-def parse_bible_label(label):
-    m=re.match(r"^\s*([1-3]?\s*[A-Za-z][A-Za-z ]+)\s+(\d+):(\d+)(?:[–-](\d+))?",label)
-    if not m: raise ValueError(f"Bad ref: {label}")
-    book=m.group(1).strip().lower(); ch=int(m.group(2)); v1=int(m.group(3)); v2=m.group(4)
-    canon,slug=BOOK_MAP.get(book,("tanakh",book.replace(" ","-")))
-    out={"label":label,"canon":canon,"slug":slug,"ch":ch,"vStart":v1}
-    if v2: out["vEnd"]=int(v2)
-    return out
+def load_db(p):
+    if not os.path.exists(p): return {"version":"1.0","entries":[]}
+    with open(p,"r",encoding="utf-8") as f: j=json.load(f)
+    if isinstance(j,list): return {"version":"1.0","entries":j}
+    if "entries" not in j: j["entries"]=[]
+    return j
 
-def load_db(path):
-    with open(path,"r",encoding="utf-8") as f: data=json.load(f)
-    return data["entries"] if isinstance(data,dict) and "entries" in data else data
+def save_db(p,d):
+    os.makedirs(os.path.dirname(p),exist_ok=True)
+    with open(p,"w",encoding="utf-8") as f: json.dump(d,f,ensure_ascii=False,indent=2)
 
-def save_db(path,entries):
-    with open(path,"w",encoding="utf-8") as f:
-        json.dump({"version":"1.0","generated":datetime.utcnow().date().isoformat(),"entries":entries},f,ensure_ascii=False,indent=2)
+def make_id(h): return re.sub(r'[^a-z0-9]+','-',h.strip().lower()).strip('-')
 
-def main():
-    ap=argparse.ArgumentParser()
-    ap.add_argument("cmd",choices=["add","list"])
-    ap.add_argument("--file","-f",default="data/israelite_dictionary.json")
-    ap.add_argument("--headword"); ap.add_argument("--pos"); ap.add_argument("--definition")
-    ap.add_argument("--bible_refs")
-    args=ap.parse_args()
+def upsert(db,e):
+    E=db["entries"]; by={x.get("id"):i for i,x in enumerate(E)}
+    if e["id"] in by: E[by[e["id"]]]=e
+    else: E.append(e)
+    E.sort(key=lambda x:(x.get("headword","").lower(),x.get("id","")))
 
-    db=load_db(args.file)
-    if args.cmd=="list":
-        for e in db: print(e.get("headword"),"(id:",e.get("id"),")"); return
+ap=argparse.ArgumentParser()
+ap.add_argument("cmd",choices=["add","list"])
+ap.add_argument("--file",default=DEFAULT_FILE)
+ap.add_argument("--headword");ap.add_argument("--pos",default="n.")
+ap.add_argument("--definition");ap.add_argument("--usage_notes",default=None)
+ap.add_argument("--see_also",default=None)
+ap.add_argument("--bible_refs",default=None)
+a=ap.parse_args()
 
-    if args.cmd=="add":
-        if not args.headword or not args.definition: sys.exit("headword and definition required")
-        entry={"id":slugify_headword(args.headword),
-               "letter":args.headword[0].upper(),
-               "headword":args.headword,"pos":args.pos or "n.",
-               "variants":[],"syllables":"","etymology":"",
-               "definition":args.definition,"usage_notes":"",
-               "see_also":[],"bible_refs":[]}
-        if args.bible_refs:
-            entry["bible_refs"]=[parse_bible_label(x.strip()) for x in args.bible_refs.split("|") if x.strip()]
-        db.append(entry); db.sort(key=lambda x:x["headword"].lower())
-        save_db(args.file,db)
-        print("Added:",entry["headword"])
+db=load_db(a.file)
+if a.cmd=="list":
+  [print(e.get("headword","?")) for e in db["entries"]]; sys.exit()
 
-if __name__=="__main__": main()
+if not a.headword or not a.definition: sys.exit(1)
+eid=make_id(a.headword)
+e={"id":eid,"letter":a.headword[0].upper(),"headword":a.headword,"pos":a.pos,
+   "variants":[a.headword],"syllables":"","etymology":"","definition":a.definition,
+   "usage_notes":(a.usage_notes or ""), "see_also":[], "bible_refs":[]}
+if a.see_also: e["see_also"]=[p.strip() for p in a.see_also.split(",") if p.strip()]
+if a.bible_refs: e["bible_refs"]=[parse_ref(lbl) for lbl in a.bible_refs.split("|") if lbl.strip()]
+upsert(db,e); save_db(a.file,db); print("Added:",a.headword)
