@@ -16,7 +16,6 @@
   }
 
   const sources = [
-    'data/encyclopedia.json',
     'data/israelite_dictionary.json'
   ];
 
