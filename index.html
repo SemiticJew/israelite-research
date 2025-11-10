@@ -79,7 +79,6 @@
 
   /* --- Two-up tiles --- */
   .tile{
-    position:relative;
     display:flex; flex-direction:column; background:#fff; border:1px solid var(--card-border);
     border-radius:12px; overflow:hidden; text-decoration:none; color:inherit;
     transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
@@ -89,18 +88,6 @@
   .tile-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
   .tile-title{ font-size:1.08rem; font-weight:900; color:var(--ink); line-height:1.28; }
   .tile-desc{ color:var(--muted); font-size:.98rem; line-height:1.55; }
-
-  /* Disabled (Coming Soon) state */
-  .tile.is-disabled{
-    filter: grayscale(100%);
-    opacity:.65;
-    pointer-events:none;
-  }
-  .tile .badge-soon{
-    position:absolute; top:8px; left:8px;
-    padding:.25rem .5rem; border-radius:8px;
-    background:rgba(0,0,0,.7); color:#fff; font-size:.75rem; letter-spacing:.04em; text-transform:uppercase;
-  }
 
   /* buttons/links */
   .btn{
@@ -241,53 +228,49 @@
     </div>
   </section>
 
-  <!-- 5) SUBSCRIBE TO OUR CONTENT (Coming Soon) -->
+  <!-- 5) SUBSCRIBE TO OUR CONTENT -->
   <section class="section" id="subscribe">
     <div class="section-head">
       <h2 class="section-title">Subscribe to Our Content</h2>
     </div>
     <div class="grid-2">
-      <div class="tile is-disabled" role="group" aria-disabled="true">
-        <span class="badge-soon">Coming Soon</span>
-        <img alt="Email Content (Coming Soon)" src="/israelite-research/images/index/subscribe-email-700x394.jpg"/>
+      <a class="tile" href="/israelite-research/subscribe-email.html">
+        <img alt="Email Content" src="/israelite-research/images/index/subscribe-email-700x394.jpg"/>
         <div class="tile-body">
           <div class="tile-title">Email Content</div>
           <div class="tile-desc">Get new articles, devotionals, and study helps in your inbox.</div>
         </div>
-      </div>
-      <div class="tile is-disabled" role="group" aria-disabled="true">
-        <span class="badge-soon">Coming Soon</span>
-        <img alt="Podcast Content (Coming Soon)" src="/israelite-research/images/index/subscribe-podcast-700x394.jpg"/>
+      </a>
+      <a class="tile" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank">
+        <img alt="Podcast Content" src="/israelite-research/images/index/subscribe-podcast-700x394.jpg"/>
         <div class="tile-body">
           <div class="tile-title">Podcast Content</div>
           <div class="tile-desc">Follow the show on your favorite platform to never miss an episode.</div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
-  <!-- 6) GET APPS (Coming Soon) -->
+  <!-- 6) GET APPS -->
   <section class="section" id="apps">
     <div class="section-head">
       <h2 class="section-title">Get Apps</h2>
     </div>
     <div class="grid-2">
-      <div class="tile is-disabled" role="group" aria-disabled="true">
-        <span class="badge-soon">Coming Soon</span>
-        <img alt="Bible App (Coming Soon)" src="/israelite-research/images/index/bible-app-700x394.jpg"/>
+      <a class="tile" href="/israelite-research/bible-app.html">
+        <img alt="Bible App" src="/israelite-research/images/index/bible-app-700x394.jpg"/>
         <div class="tile-body">
           <div class="tile-title">Bible App</div>
           <div class="tile-desc">Read plans, search passages, and keep notes across devices.</div>
         </div>
-      </div>
-      <div class="tile is-disabled" role="group" aria-disabled="true">
-        <span class="badge-soon">Coming Soon</span>
-        <img alt="Website App (Coming Soon)" src="/israelite-research/images/index/website-app-700x394.jpg"/>
+      </a>
+      <a class="tile" href="/israelite-research/website-app.html">
+        <img alt="Website App" src="/israelite-research/images/index/website-app-700x394.jpg"/>
         <div class="tile-body">
           <div class="tile-title">Website App</div>
           <div class="tile-desc">Install the site as an app—fast access to articles, podcasts, and devotionals.</div>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
