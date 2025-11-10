@@ -33,21 +33,95 @@
   </style>
 </head>
 <body>
-  <!-- Universal Header -->
-  <header class="site-header">
-    <div class="container">
-      <div class="logo">
-        <a href="/israelite-research/index.html">Semitic Jew</a>
+  <div id="site-header">
+    <!-- Universal Header Partial -->
+    <header class="site-header-bar">
+      <style>
+        #site-header .site-header-bar{
+          background: var(--surface, #ffffff);
+          color: var(--ink, #0b2340);
+          border-bottom: 1px solid var(--border, #e6ebf2);
+        }
+        #site-header .header-inner{
+          max-width:1200px; margin:0 auto; padding:10px 16px;
+          display:flex; align-items:center; justify-content:space-between; gap:12px;
+        }
+        #site-header .brand{
+          display:inline-flex; align-items:center; gap:10px;
+          text-decoration:none; color:var(--ink, #0b2340);
+          font-weight:900; font-size:1.05rem;
+        }
+        #site-header .brand .mark{
+          width:26px; height:26px; border-radius:7px;
+          border:1px solid var(--border, #e6ebf2);
+          display:inline-flex; align-items:center; justify-content:center;
+          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+        }
+        #site-header nav.primary{
+          display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+        }
+        #site-header nav.primary a{
+          text-decoration:none; color:var(--ink, #0b2340); opacity:.95;
+          padding:8px 10px; border-radius:8px; border:1px solid transparent;
+          transition:border-color .15s ease, box-shadow .15s ease;
+        }
+        #site-header nav.primary a:hover{
+          border-color:var(--border, #e6ebf2);
+          box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+        }
+        #site-header .tools{
+          display:flex; align-items:center; gap:10px;
+        }
+        #site-header .icon-btn{
+          width:40px; height:40px; border-radius:999px;
+          border:1px solid var(--border, #e6ebf2);
+          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
+          display:inline-flex; align-items:center; justify-content:center;
+          cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
+        }
+        #site-header .icon-btn:hover{
+          transform:translateY(-1px);
+          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
+          border-color:#cdd8e6;
+        }
+      </style>
+
+      <div class="header-inner">
+        <a class="brand" href="/israelite-research/">
+          <span class="mark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
+              <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+              <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
+              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Semitic&nbsp;Jew</span>
+        </a>
+
+        <nav class="primary" aria-label="Primary">
+          <a href="/israelite-research/apologetics.html">Apologetics</a>
+          <a href="/israelite-research/articles.html">Articles</a>
+          <a href="/israelite-research/biblia.html">Biblia</a>
+          <a href="/israelite-research/donate.html">Donations</a>
+          <a href="/israelite-research/events.html">Events</a>
+          <a href="/israelite-research/media.html">Media</a>
+        </nav>
+
+        <div class="tools">
+          <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
       </div>
-      <nav class="nav-links">
-        <a href="/israelite-research/articles.html">Articles</a>
-        <a href="/israelite-research/texts.html">Texts</a>
-        <a href="/israelite-research/encyclopedia.html">Encyclopedia</a>
-        <a href="/israelite-research/events.html">Events</a>
-        <a href="/israelite-research/about.html">About</a>
-      </nav>
-    </div>
-  </header>
+    </header>
+  </div>
 
   <main class="container">
     <section class="search-shell">
@@ -83,37 +157,61 @@
       <div id="emptyState" class="empty" hidden>
         <p>No results. Try different words, fewer filters, or check spelling. Use quotes for exact phrases, minus to exclude (e.g., <span class="kbd">"law of logic" -fallacy</span>).</p>
       </div>
+
+      <div class="tips" style="margin:20px 0 40px;color:#66708a;font-size:.95rem">
+        <p><strong>Tips:</strong> Press <span class="kbd">/</span> to focus search. Use quotes for phrases, minus to exclude, and tags to narrow. Results sync to the URL so you can share searches.</p>
+      </div>
     </section>
   </main>
 
-  <!-- Universal Footer -->
-  <footer class="site-footer">
-    <div class="container footer-columns">
-      <div>
-        <h3>Semitic Jew</h3>
-        <p>Researching Scripture, Logic, and History with Clarity.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="/israelite-research/articles.html">Articles</a></li>
-          <li><a href="/israelite-research/texts.html">Texts</a></li>
-          <li><a href="/israelite-research/encyclopedia.html">Encyclopedia</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="https://x.com/semitic_jew" target="_blank">Twitter</a></li>
-          <li><a href="https://youtube.com/@SemiticJew" target="_blank">YouTube</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 Semitic Jew. All rights reserved.</p>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
-  <script src="/israelite-research/js/search.js"></script>
+  <script>
+    const state={all:[],view:[],page:1,perPage:24,tags:new Set(),types:new Set(),query:'',type:'',sort:'relevance',activeTags:new Set()};
+    const $=s=>document.querySelector(s);
+    const resultsEl=$('#results');
+    const resultsMetaEl=$('#resultsMeta');
+    const emptyEl=$('#emptyState');
+    const loadMoreBtn=$('#loadMore');
+    const tagChipsEl=$('#tagChips');
+    const typeFilterEl=$('#typeFilter');
+    const sortEl=$('#sort');
+    const inputEl=$('#q');
+    const qp=new URLSearchParams(location.search);
+    function normalize(str){return (str||'').toString().toLowerCase();}
+    function tokenize(str){return normalize(str).match(/\\"[^\\"]+\\"|[^\\s]+/g)||[]}
+    function stripQuotes(s){return s.startsWith('"')&&s.endsWith('"')?s.slice(1,-1):s}
+    function levenshtein(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++){for(let j=1;j<=n;j++){const cost=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+cost)}}return d[m][n]}
+    function fuzzyMatch(term,word){if(term.length<4)return word.includes(term);return word===term||word.includes(term)||levenshtein(term,word)<=1}
+    function scoreDoc(doc,terms){let score=0;const title=normalize(doc.title);const excerpt=normalize(doc.excerpt);const tags=(doc.tags||[]).map(normalize);const haystack=title+" "+excerpt+" "+tags.join(' ');const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);for(const t of terms){if(t.startsWith('-'))continue;const term=stripQuotes(t);if(!term)continue;const inTitle=title.includes(term);const inTags=tags.some(tag=>tag.includes(term));const inExcerpt=excerpt.includes(term);if(inTitle)score+=12;if(inTags)score+=7;if(inExcerpt)score+=3;const words=new Set(haystack.split(/[^a-z0-9]+/g).filter(Boolean));for(const w of words){if(fuzzyMatch(term,w)){score+=2}}}for(const p of joined){if(title.includes(p))score+=10;if(excerpt.includes(p))score+=6}if(state.type && normalize(doc.type)!==normalize(state.type))score-=1000;if(state.activeTags.size){const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));if(!has)score-=1000}return score}
+    function applyFiltersAndSort(){const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));let pool=state.all.filter(doc=>{if(state.type && normalize(doc.type)!==normalize(state.type))return false;if(state.activeTags.size){const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));if(!has)return false}if(excludes.size){const text=(normalize(doc.title)+" "+normalize(doc.excerpt)+" "+(doc.tags||[]).map(normalize).join(' '));for(const ex of excludes){if(text.includes(ex))return false}}return true});if(terms.length){pool=pool.map(doc=>({...doc,_score:scoreDoc(doc,terms)})).filter(d=>d._score>0)}switch(state.sort){case 'newest': pool.sort((a,b)=> (Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0)); break;case 'az': pool.sort((a,b)=> a.title.localeCompare(b.title)); break;default: pool.sort((a,b)=> (b._score||0)-(a._score||0));}state.view=pool;state.page=1;render()}
+    function highlight(text,terms){let out=text;const tokens=terms.filter(t=>!t.startsWith('-')).map(stripQuotes).filter(Boolean).sort((a,b)=>b.length-a.length);for(const t of tokens){const re=new RegExp(t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&'),'ig');out=out.replace(re,m=>`<mark class="highlight">${m}</mark>`)}return out}
+    function card(doc,terms){const img=doc.image?`<img src="${doc.image}" alt="">`:'';const dateTxt=doc.date?new Date(doc.date).toLocaleDateString():'';return `
+      <article class="card">
+        <a class="card-media" href="${doc.url}">
+          ${img}
+          <span class="pill">${doc.type||''}</span>
+        </a>
+        <div class="card-body">
+          <h3 class="card-title"><a href="${doc.url}">${highlight(doc.title,terms)}</a></h3>
+          <p class="card-excerpt">${highlight(doc.excerpt||'',terms)}</p>
+          <div class="card-date">${dateTxt}</div>
+        </div>
+      </article>`}
+    function render(){const terms=tokenize(state.query);const total=state.view.length;const end=state.page*state.perPage;const slice=state.view.slice(0,end);resultsEl.innerHTML=slice.map(d=>card(d,terms)).join('');resultsMetaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';emptyEl.hidden=!!total;loadMoreBtn.hidden=end>=total||!total}
+    function populateFilters(){state.tags.clear();state.types.clear();for(const d of state.all){(d.tags||[]).forEach(t=>state.tags.add(normalize(t)));if(d.type)state.types.add(d.type)}typeFilterEl.innerHTML='<option value="">All</option>'+[...state.types].sort().map(t=>`<option value="${t}">${t}</option>`).join('');tagChipsEl.innerHTML=[...state.tags].sort().map(t=>`<label class="chip"><input type="checkbox" value="${t}"><span>#${t}</span></label>`).join('')}
+    function syncFromURL(){state.query=qp.get('q')||'';state.type=qp.get('type')||'';state.sort=qp.get('sort')||'relevance';const tags=(qp.get('tags')||'').split(',').map(t=>t.trim()).filter(Boolean);state.activeTags=new Set(tags.map(normalize));inputEl.value=state.query;sortEl.value=state.sort;typeFilterEl.value=state.type}
+    function syncToURL(){const p=new URLSearchParams();if(state.query)p.set('q',state.query);if(state.type)p.set('type',state.type);if(state.sort!=='relevance')p.set('sort',state.sort);if(state.activeTags.size)p.set('tags',[...state.activeTags].join(','));history.replaceState(null,'',`${location.pathname}?${p.toString()}`)}
+    async function loadIndex(){const url='/israelite-research/search-index.json?v='+(Date.now());const res=await fetch(url,{cache:'no-store'});const json=await res.json();state.all=json.map(d=>({type:d.type||'Page',title:d.title||'',url:d.url||'#',image:d.image||'',date:d.date||'',excerpt:d.excerpt||'',tags:d.tags||[]}));populateFilters();syncFromURL();applyFiltersAndSort()}
+    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==inputEl){e.preventDefault();inputEl.focus()}})
+    document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()})
+    sortEl.addEventListener('change',()=>{state.sort=sortEl.value;syncToURL();applyFiltersAndSort()})
+    typeFilterEl.addEventListener('change',()=>{state.type=typeFilterEl.value;syncToURL();applyFiltersAndSort()})
+    tagChipsEl.addEventListener('change',e=>{if(e.target&&e.target.matches('input[type="checkbox"]')){const v=e.target.value; if(e.target.checked)state.activeTags.add(v);else state.activeTags.delete(v);syncToURL();applyFiltersAndSort()}})
+    inputEl.addEventListener('input',(()=>{let t;return()=>{clearTimeout(t);t=setTimeout(()=>{state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()},250)}})())
+    loadMoreBtn.addEventListener('click',()=>{state.page++;render()})
+    async function injectFooter(){try{const f=await fetch('/israelite-research/partials/footer.html');if(f.ok)document.getElementById('site-footer').innerHTML=await f.text()}catch{}}
+    injectFooter();loadIndex();
+  </script>
 </body>
 </html>
