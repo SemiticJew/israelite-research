@@ -3,6 +3,7 @@ import os, re, json, sys, argparse
 from datetime import datetime
 from pathlib import Path
 from html import unescape
+from typing import Optional
 
 SITE_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = SITE_ROOT / "search-index.json"
@@ -53,7 +54,7 @@ def infer_tags(title: str, excerpt: str, path: Path) -> list:
             bins.add(p.replace("_", "-").lower())
     return sorted(bins)[:8]
 
-def parse_file(path: Path, base_url_prefix="/israelite-research") -> dict | None:
+def parse_file(path: Path, base_url_prefix="/israelite-research") -> Optional[dict]:
     try:
         html = path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
