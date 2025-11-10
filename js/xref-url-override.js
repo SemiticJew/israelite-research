@@ -1,6 +1,5 @@
 (function(){
   const MAP = {
-    /* Tanakh */
     "genesis":{canon:"tanakh",slug:"genesis"},"exodus":{canon:"tanakh",slug:"exodus"},
     "leviticus":{canon:"tanakh",slug:"leviticus"},"numbers":{canon:"tanakh",slug:"numbers"},
     "deuteronomy":{canon:"tanakh",slug:"deuteronomy"},"joshua":{canon:"tanakh",slug:"joshua"},
@@ -21,7 +20,6 @@
     "habakkuk":{canon:"tanakh",slug:"habakkuk"},"zephaniah":{canon:"tanakh",slug:"zephaniah"},
     "haggai":{canon:"tanakh",slug:"haggai"},"zechariah":{canon:"tanakh",slug:"zechariah"},
     "malachi":{canon:"tanakh",slug:"malachi"},
-    /* Apocrypha */
     "tobit":{canon:"apocrypha",slug:"tobit"},"judith":{canon:"apocrypha",slug:"judith"},
     "wisdom":{canon:"apocrypha",slug:"wisdom"},"sirach":{canon:"apocrypha",slug:"sirach"},
     "baruch":{canon:"apocrypha",slug:"baruch"},
@@ -29,7 +27,6 @@
     "susanna":{canon:"apocrypha",slug:"susanna"},"bel-and-the-dragon":{canon:"apocrypha",slug:"bel-and-the-dragon"},
     "prayer-of-azariah":{canon:"apocrypha",slug:"prayer-of-azariah"},
     "additions-to-esther":{canon:"apocrypha",slug:"additions-to-esther"},
-    /* New Testament */
     "matthew":{canon:"new-testament",slug:"matthew"},"mark":{canon:"new-testament",slug:"mark"},
     "luke":{canon:"new-testament",slug:"luke"},"john":{canon:"new-testament",slug:"john"},
     "acts":{canon:"new-testament",slug:"acts"},"romans":{canon:"new-testament",slug:"romans"},
@@ -59,12 +56,14 @@
     s=(s||"").toLowerCase().replace(/\./g,"").trim();
     return ALIASES[s] || s;
   }
+
   function parseRef(t){
     t=(t||"").replace(/[\u2012\u2013\u2014]/g,"-").trim();
-    const m=t.match(/^((?:[1-3]\s+)?[A-Za-z][A-Za-z .'-]+?)\s+(\d+):(\d+)/);
+    const m=t.match(/^((?:[1-3]\s+)?[A-Za-z][A-Za-z .'-]+?)\s+(\d+)(?::(\d+))?/);
     if(!m) return null;
-    return { book: normBook(m[1]), ch: m[2], v: m[3] };
+    return { book: normBook(m[1]), ch: m[2], v: m[3] || "" };
   }
+
   function buildHref(book, ch, v){
     const hit = MAP[book];
     if(!hit) return null;
@@ -72,22 +71,43 @@
       return `/israelite-research/apocrypha/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}`;
     }
     if (hit.canon==="tanakh"){
-      return `/israelite-research/tanakh/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}#v=${encodeURIComponent(v)}`;
+      return `/israelite-research/tanakh/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
     }
     if (hit.canon==="new-testament"){
-      return `/israelite-research/new-testament/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}#v=${encodeURIComponent(v)}`;
+      return `/israelite-research/new-testament/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
     }
     return null;
   }
-  function fix(a){
-    const ref=a.getAttribute('data-ref')||a.textContent;
-    const p=parseRef(ref); if(!p) return;
+
+  function maybeFix(a){
+    const ref = a.getAttribute('data-ref') || a.textContent || "";
+    const p = parseRef(ref);
+    if(!p) return;
     const href=buildHref(p.book, p.ch, p.v);
     if(href) a.setAttribute('href', href);
   }
-  function run(root){
-    (root||document).querySelectorAll('.encyclopedia-detail a.xref, a.xref').forEach(fix);
+
+  function fixAll(root){
+    (root||document).querySelectorAll('a.xref, a[data-ref]').forEach(maybeFix);
   }
-  document.addEventListener('DOMContentLoaded', function(){ run(document); });
-  document.addEventListener('xrefs:updated', function(ev){ run((ev&&ev.detail&&ev.detail.root)||document); });
+
+  const mo = new MutationObserver(muts=>{
+    for(const m of muts){
+      for(const node of m.addedNodes || []){
+        if(node.nodeType===1){
+          if(node.matches && (node.matches('a.xref, a[data-ref]'))) maybeFix(node);
+          fixAll(node);
+        }
+      }
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    fixAll(document);
+    mo.observe(document.body, {childList:true, subtree:true});
+  });
+
+  document.addEventListener('xrefs:updated', function(ev){
+    fixAll((ev&&ev.detail&&ev.detail.root)||document);
+  });
 })();
