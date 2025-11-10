@@ -1,34 +1,83 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Search — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
-<style>
-    .search-shell{ max-width:900px; margin:0 auto; }
-    .search-bar{ display:flex; gap:.5rem; margin:1rem 0 1.25rem; }
-    .search-bar input[type="search"]{
-      flex:1; padding:.75rem .9rem; border:1px solid #e1e6ef; border-radius:10px; font-size:1rem;
-    }
-    .search-bar button{
-      padding:.75rem 1rem; border:1px solid #054A91; background:#054A91; color:#fff; border-radius:10px; cursor:pointer;
-    }
-    .search-results{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1rem; }
-    .search-card{ border:1px solid #e6ebf2; background:#fff; padding:0; height:450px; display:flex; flex-direction:column; }
-    .search-card .media{ position:relative; height:163px; overflow:hidden; }
-    .search-card .media img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .search-card .label-pill{
-      position:absolute; left:8px; top:8px; padding:.25rem .45rem; background:rgba(0,0,0,.6);
-      color:#fff; font-size:.75rem; border-radius:0; text-transform:uppercase; letter-spacing:.04em;
-    }
-    .search-card .body{ padding:1rem; display:flex; flex-direction:column; gap:.5rem; }
-    .search-card .title{ font-size:1.05rem; line-height:1.3; margin:0; }
-    .search-card .excerpt{ color:#555; font-size:.95rem; margin:0; }
-    .search-card .date{ margin-top:auto; color:#777; font-size:.85rem; }
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Search — Semitic Jew</title>
+  <link href="/israelite-research/styles.css" rel="stylesheet" />
+  <style>
+    .search-shell{max-width:1100px;margin:0 auto;padding:0 16px}
+    .search-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:24px 0 8px}
+    .search-title{font-size:2rem;font-weight:800;margin:0}
+    .search-bar{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:12px 0}
+    .search-input{padding:.75rem .9rem;border:1px solid #e1e6ef;border-radius:10px;font-size:1rem}
+    .search-btn{padding:.75rem 1rem;border:1px solid #054A91;background:#054A91;color:#fff;border-radius:10px;cursor:pointer}
+    .toolbar{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin:6px 0 14px}
+    .toolbar select,.toolbar .chip{border:1px solid #e6ebf2;border-radius:999px;background:#fff;padding:.4rem .65rem;font-size:.9rem}
+    .chip{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+    .chip input{width:16px;height:16px}
+    .pill{padding:.25rem .45rem;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;position:absolute;left:8px;top:8px}
+    .results-meta{color:#555;font-size:.95rem}
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+    .card{border:1px solid #e6ebf2;background:#fff;display:flex;flex-direction:column;min-height:460px}
+    .card-media{position:relative;height:164px;overflow:hidden;background:linear-gradient(180deg,#eef3f9,#dde7f4)}
+    .card-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .card-body{padding:1rem;display:flex;flex-direction:column;gap:.55rem}
+    .card-title{font-size:1.05rem;line-height:1.3;margin:0}
+    .card-excerpt{color:#555;font-size:.95rem;margin:0}
+    .card-date{margin-top:auto;color:#777;font-size:.85rem}
+    .highlight{background:linear-gradient(180deg,rgba(255,235,140,.8),rgba(255,235,140,0))}
+    .empty{padding:28px;border:1px dashed #d7deea;border-radius:12px;background:#fbfcff}
+    .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid #dfe5f2;border-bottom-width:2px;padding:2px 6px;border-radius:6px;background:#fff}
+    .skeleton{animation:pulse 1.4s ease-in-out infinite;background:linear-gradient(90deg,#f5f7fb 25%,#eaedf4 37%,#f5f7fb 63%);background-size:400% 100%}
+    @keyframes pulse{0%{background-position:100% 50%}100%{background-position:0 50%}}
+    .load-more{display:block;margin:18px auto 36px;padding:.75rem 1rem;border:1px solid #cfd8ea;border-radius:10px;background:#fff;cursor:pointer}
   </style>
 </head>
 <body>
-<div id="site-header"></div>
-<main class="container">
+  <div id="site-header"></div>
+  <main class="container">
+    <section class="search-shell">
+      <div class="search-header">
+        <h1 class="search-title">Search</h1>
+        <div class="results-meta" id="resultsMeta"></div>
+      </div>
+
+      <form id="searchForm" class="search-bar" role="search">
+        <input id="q" name="q" class="search-input" type="search" placeholder="Search articles, pages, texts, and more…" autocomplete="off" />
+        <button class="search-btn" type="submit">Search</button>
+      </form>
+
+      <div class="toolbar" aria-label="Filters and sorting">
+        <label>Sort
+          <select id="sort">
+            <option value="relevance">Relevance</option>
+            <option value="newest">Newest</option>
+            <option value="az">A–Z</option>
+          </select>
+        </label>
+        <label>Type
+          <select id="typeFilter">
+            <option value="">All</option>
+          </select>
+        </label>
+        <div id="tagChips" class="chips" aria-label="Tags"></div>
+      </div>
+
+      <div id="results" class="results-grid" aria-live="polite"></div>
+      <button id="loadMore" class="load-more" hidden>Load more</button>
+
+      <div id="emptyState" class="empty" hidden>
+        <p>No results. Try different words, fewer filters, or check spelling. Use quotes for exact phrases, minus to exclude (e.g., <span class="kbd">"law of logic" -fallacy</span>).</p>
+      </div>
+
+      <div class="tips" style="margin:20px 0 40px;color:#66708a;font-size:.95rem">
+        <p><strong>Tips:</strong> Press <span class="kbd">/</span> to focus search. Use quotes for phrases, minus to exclude, and tags to narrow. Results sync to the URL so you can share searches.</p>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+
+  <script src="/israelite-research/js/search.js"></script>
+</body>
+</html>
