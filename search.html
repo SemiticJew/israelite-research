@@ -29,13 +29,26 @@
     .highlight{background:linear-gradient(180deg,rgba(255,235,140,.8),rgba(255,235,140,0))}
     .empty{padding:28px;border:1px dashed #d7deea;border-radius:12px;background:#fbfcff}
     .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid #dfe5f2;border-bottom-width:2px;padding:2px 6px;border-radius:6px;background:#fff}
-    .skeleton{animation:pulse 1.4s ease-in-out infinite;background:linear-gradient(90deg,#f5f7fb 25%,#eaedf4 37%,#f5f7fb 63%);background-size:400% 100%}
-    @keyframes pulse{0%{background-position:100% 50%}100%{background-position:0 50%}}
     .load-more{display:block;margin:18px auto 36px;padding:.75rem 1rem;border:1px solid #cfd8ea;border-radius:10px;background:#fff;cursor:pointer}
   </style>
 </head>
 <body>
-  <div id="site-header"></div>
+  <!-- Universal Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <a href="/israelite-research/index.html">Semitic Jew</a>
+      </div>
+      <nav class="nav-links">
+        <a href="/israelite-research/articles.html">Articles</a>
+        <a href="/israelite-research/texts.html">Texts</a>
+        <a href="/israelite-research/encyclopedia.html">Encyclopedia</a>
+        <a href="/israelite-research/events.html">Events</a>
+        <a href="/israelite-research/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
   <main class="container">
     <section class="search-shell">
       <div class="search-header">
@@ -70,13 +83,36 @@
       <div id="emptyState" class="empty" hidden>
         <p>No results. Try different words, fewer filters, or check spelling. Use quotes for exact phrases, minus to exclude (e.g., <span class="kbd">"law of logic" -fallacy</span>).</p>
       </div>
-
-      <div class="tips" style="margin:20px 0 40px;color:#66708a;font-size:.95rem">
-        <p><strong>Tips:</strong> Press <span class="kbd">/</span> to focus search. Use quotes for phrases, minus to exclude, and tags to narrow. Results sync to the URL so you can share searches.</p>
-      </div>
     </section>
   </main>
-  <div id="site-footer"></div>
+
+  <!-- Universal Footer -->
+  <footer class="site-footer">
+    <div class="container footer-columns">
+      <div>
+        <h3>Semitic Jew</h3>
+        <p>Researching Scripture, Logic, and History with Clarity.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/israelite-research/articles.html">Articles</a></li>
+          <li><a href="/israelite-research/texts.html">Texts</a></li>
+          <li><a href="/israelite-research/encyclopedia.html">Encyclopedia</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://x.com/semitic_jew" target="_blank">Twitter</a></li>
+          <li><a href="https://youtube.com/@SemiticJew" target="_blank">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Semitic Jew. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script src="/israelite-research/js/search.js"></script>
 </body>
