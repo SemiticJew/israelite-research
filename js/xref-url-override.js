@@ -47,6 +47,7 @@
     "ps":"psalms","psalm":"psalms","song of songs":"song-of-songs","song":"song-of-songs",
     "bel and the dragon":"bel-and-the-dragon","prayer of azariah":"prayer-of-azariah",
     "1 mac":"1 maccabees","2 mac":"2 maccabees","1 macc":"1 maccabees","2 macc":"2 maccabees",
+    "i maccabees":"1 maccabees","ii maccabees":"2 maccabees",
     "1 cor":"1 corinthians","2 cor":"2 corinthians","1 th":"1 thessalonians","2 th":"2 thessalonians",
     "1 tim":"1 timothy","2 tim":"2 timothy","1 pet":"1 peter","2 pet":"2 peter",
     "1 jn":"1 john","2 jn":"2 john","3 jn":"3 john","rev":"revelation"
@@ -54,12 +55,18 @@
 
   function normBook(s){
     s=(s||"").toLowerCase().replace(/\./g,"").trim();
+    // handle roman numeral prefixes like "I Maccabees"
+    const rom = s.match(/^(i{1,3})\s+(.*)$/i);
+    if(rom){
+      const n = {i:"1",ii:"2",iii:"3"}[rom[1].toLowerCase()] || "";
+      s = (n ? (n+" "+rom[2]) : s);
+    }
     return ALIASES[s] || s;
   }
 
   function parseRef(t){
     t=(t||"").replace(/[\u2012\u2013\u2014]/g,"-").trim();
-    const m=t.match(/^((?:[1-3]\s+)?[A-Za-z][A-Za-z .'-]+?)\s+(\d+)(?::(\d+))?/);
+    const m=t.match(/^((?:[1-3]|i{1,3})\s+[A-Za-z][A-Za-z .'-]+?|[A-Za-z][A-Za-z .'-]+?)\s+(\d+)(?::(\d+))?/i);
     if(!m) return null;
     return { book: normBook(m[1]), ch: m[2], v: m[3] || "" };
   }
@@ -88,22 +95,32 @@
   }
 
   function fixAll(root){
-    (root||document).querySelectorAll('a.xref, a[data-ref]').forEach(maybeFix);
+    const scope = (root||document);
+    scope.querySelectorAll('a.xref, a[data-ref]').forEach(maybeFix);
+    // hard override any undefined links using text
+    scope.querySelectorAll('a[href*="/undefined/"]').forEach(maybeFix);
   }
 
   const mo = new MutationObserver(muts=>{
     for(const m of muts){
       for(const node of m.addedNodes || []){
         if(node.nodeType===1){
-          if(node.matches && (node.matches('a.xref, a[data-ref]'))) maybeFix(node);
           fixAll(node);
         }
       }
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function(){
+  function schedulePasses(){
     fixAll(document);
+    // a few delayed passes to catch late renders
+    setTimeout(()=>fixAll(document), 50);
+    setTimeout(()=>fixAll(document), 200);
+    setTimeout(()=>fixAll(document), 600);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    schedulePasses();
     mo.observe(document.body, {childList:true, subtree:true});
   });
 
