@@ -33,6 +33,8 @@
   </style>
 </head>
 <body>
+
+  <!-- Wrap header partial in #site-header so its CSS targets apply -->
   <div id="site-header">
     <!-- Universal Header Partial -->
     <header class="site-header-bar">
@@ -122,6 +124,7 @@
       </div>
     </header>
   </div>
+  <!-- /#site-header -->
 
   <main class="container">
     <section class="search-shell">
@@ -164,9 +167,225 @@
     </section>
   </main>
 
-  <div id="site-footer"></div>
+  <!-- Wrap footer partial in #site-footer so its CSS targets apply -->
+  <div id="site-footer">
+    <!-- Universal Footer Partial -->
+    <footer class="site-footer">
+      <style>
+        #site-footer .site-footer{
+          background: var(--surface, #ffffff);
+          color: var(--ink, #0b2340);
+          border-top: 1px solid var(--border, #e6ebf2);
+        }
+        #site-footer .footer-inner{
+          max-width:1200px; margin:0 auto; padding:28px 16px 18px;
+          display:grid; gap:28px;
+          grid-template-columns: 1.2fr .8fr .8fr;
+        }
+        @media (max-width: 960px){
+          #site-footer .footer-inner{ grid-template-columns: 1fr; }
+        }
+
+        /* Brand / tagline / socials / newsletter */
+        #site-footer .footer-brand h3{
+          margin:0 0 6px; font-size:1.15rem; font-weight:800; color:var(--ink, #0b2340);
+          display:flex; align-items:center; gap:8px;
+        }
+        #site-footer .footer-brand .mark{
+          width:26px; height:26px; border-radius:7px; border:1px solid var(--border, #e6ebf2);
+          display:inline-flex; align-items:center; justify-content:center;
+          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+        }
+        #site-footer .footer-tagline{
+          margin:0 0 12px; color:var(--muted, #6b7280);
+          max-width:46ch; text-align:left;
+        }
+        #site-footer .footer-social{ display:flex; gap:10px; margin:10px 0 14px; }
+        #site-footer .footer-social .icon{
+          width:40px; height:40px; border-radius:10px;
+          border:1px solid var(--border, #e6ebf2);
+          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
+          display:inline-flex; align-items:center; justify-content:center;
+          text-decoration:none; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
+        }
+        #site-footer .footer-social .icon:hover{
+          transform:translateY(-1px);
+          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
+          border-color:#cdd8e6;
+        }
+
+        /* Newsletter */
+        #site-footer .footer-newsletter .newsletter-row{
+          display:flex; gap:8px; align-items:center;
+        }
+        #site-footer .footer-newsletter input[type="email"]{
+          flex:1; padding:10px 12px; border:1px solid var(--border, #e6ebf2); border-radius:10px;
+          background:var(--bg, #ffffff); color:var(--ink, #0b2340);
+        }
+        #site-footer .footer-newsletter input::placeholder{ color:var(--muted, #6b7280); }
+        #site-footer .footer-newsletter button{
+          padding:10px 12px; border-radius:10px; border:1px solid var(--border, #e6ebf2);
+          background:var(--surface, #ffffff); color:var(--ink, #0b2340); cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+          transition:transform .15s, box-shadow .15s, border-color .15s;
+        }
+        #site-footer .footer-newsletter button:hover{
+          transform:translateY(-1px);
+          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
+          border-color:#cdd8e6;
+        }
+        #site-footer .newsletter-note{ display:block; margin-top:6px; color:var(--muted, #6b7280); }
+
+        /* Column headings + nav */
+        #site-footer .footer-heading{
+          margin:0 0 8px; font-size:.95rem; font-weight:800; letter-spacing:.06em;
+          text-transform:uppercase; color:var(--ink, #0b2340);
+        }
+        #site-footer .footer-col--explore .footer-heading,
+        #site-footer .footer-col--texts .footer-heading{
+          font-style: normal; font-weight: 800; letter-spacing: .06em;
+        }
+        #site-footer .footer-nav{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+        #site-footer .footer-nav a{
+          color:var(--ink, #0b2340); text-decoration:none; padding:6px 8px; border-radius:8px;
+          border:1px solid transparent;
+          transition:border-color .15s ease, background-color .15s ease;
+        }
+        #site-footer .footer-nav a:hover{
+          border-color:var(--border, #e6ebf2);
+          background:rgba(0,0,0,.02);
+        }
+        /* Footer color tweaks */
+        #site-footer .footer-tagline { color: #F17300; }
+        #site-footer .newsletter-note {
+          color: #F17300;
+          text-align: left;
+        }
+        #site-footer .footer-bottom p {
+          color: #F17300;
+        }
+        /* Bottom bar */
+        #site-footer .footer-bottom{
+          max-width:1200px; margin:0 auto; padding:10px 16px 24px;
+          display:flex; align-items:center; justify-content:space-between; gap:12px;
+          color:var(--muted, #6b7280);
+          border-top:1px solid var(--border, #e6ebf2);
+        }
+        @media (max-width: 720px){
+          #site-footer .footer-bottom{ flex-direction:column; align-items:flex-start; gap:6px; }
+        }
+        #site-footer .legal-links{ display:flex; gap:12px; flex-wrap:wrap; }
+        #site-footer .legal-links a{ color:var(--ink, #0b2340); text-decoration:none; opacity:.85; }
+        #site-footer .legal-links a:hover{ opacity:1; }
+      </style>
+
+      <div class="footer-inner container">
+        <!-- Left: Brand + description + socials + newsletter -->
+        <div class="footer-col footer-brand">
+          <h3 class="footer-heading footer-brandname">
+            <span class="mark" aria-hidden="true">
+              <!-- Crown icon -->
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
+                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
+                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
+                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <strong>Semitic Jew</strong>
+          </h3>
+
+          <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
+
+          <div class="footer-social" aria-label="Social media">
+            <!-- Instagram -->
+            <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+              </svg>
+            </a>
+            <!-- X (Twitter) -->
+            <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+            <!-- Threads -->
+            <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+            <!-- YouTube -->
+            <a class="icon" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M22 12s0-3-0.4-4.4c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 0.5c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 0.4 4.4c.2.8.8 1.4 1.6 1.6 1.4.5 8 .5 8 .5s6.6 0 8-0.5c.8-.2 1.4-.8 1.6-1.6C22 15 22 12 22 12z" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
+              </svg>
+            </a>
+            <!-- Facebook -->
+            <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/>
+              </svg>
+            </a>
+          </div>
+
+          <form class="footer-newsletter" action="https://formspree.io/f/your-id" method="POST" novalidate>
+            <label for="nl-email" class="sr-only">Email address</label>
+            <div class="newsletter-row">
+              <input id="nl-email" name="email" type="email" placeholder="Your email" required>
+              <button type="submit">Subscribe</button>
+            </div>
+            <small class="newsletter-note">Occasional updates. No spam. Unsubscribe any time.</small>
+          </form>
+        </div>
+
+        <!-- Middle column: Resources -->
+        <div class="footer-col footer-col--explore">
+          <h4 class="footer-heading">Resources</h4>
+          <ul class="footer-nav">
+            <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
+            <li><a href="/israelite-research/articles.html">Articles</a></li>
+            <li><a href="/israelite-research/biblia.html">Biblia</a></li>
+            <li><a href="/israelite-research/donate.html">Donations</a></li>
+            <li><a href="/israelite-research/events.html">Events</a></li>
+            <li><a href="/israelite-research/media.html">Media</a></li>
+          </ul>
+        </div>
+
+        <!-- Right column: The Writings -->
+        <div class="footer-col footer-col--texts">
+          <h4 class="footer-heading">The Writings</h4>
+          <ul class="footer-nav">
+            <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
+            <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
+            <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
+            <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+            <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom container">
+        <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
+        <div class="legal-links">
+          <a href="/israelite-research/terms.html">Terms</a>
+          <a href="/israelite-research/privacy.html">Privacy</a>
+          <a href="/israelite-research/contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!-- /#site-footer -->
 
   <script>
+    // --- Robust search logic ---
     const state={all:[],view:[],page:1,perPage:24,tags:new Set(),types:new Set(),query:'',type:'',sort:'relevance',activeTags:new Set()};
     const $=s=>document.querySelector(s);
     const resultsEl=$('#results');
@@ -178,15 +397,97 @@
     const sortEl=$('#sort');
     const inputEl=$('#q');
     const qp=new URLSearchParams(location.search);
+
     function normalize(str){return (str||'').toString().toLowerCase();}
     function tokenize(str){return normalize(str).match(/\\"[^\\"]+\\"|[^\\s]+/g)||[]}
     function stripQuotes(s){return s.startsWith('"')&&s.endsWith('"')?s.slice(1,-1):s}
-    function levenshtein(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++){for(let j=1;j<=n;j++){const cost=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+cost)}}return d[m][n]}
-    function fuzzyMatch(term,word){if(term.length<4)return word.includes(term);return word===term||word.includes(term)||levenshtein(term,word)<=1}
-    function scoreDoc(doc,terms){let score=0;const title=normalize(doc.title);const excerpt=normalize(doc.excerpt);const tags=(doc.tags||[]).map(normalize);const haystack=title+" "+excerpt+" "+tags.join(' ');const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);for(const t of terms){if(t.startsWith('-'))continue;const term=stripQuotes(t);if(!term)continue;const inTitle=title.includes(term);const inTags=tags.some(tag=>tag.includes(term));const inExcerpt=excerpt.includes(term);if(inTitle)score+=12;if(inTags)score+=7;if(inExcerpt)score+=3;const words=new Set(haystack.split(/[^a-z0-9]+/g).filter(Boolean));for(const w of words){if(fuzzyMatch(term,w)){score+=2}}}for(const p of joined){if(title.includes(p))score+=10;if(excerpt.includes(p))score+=6}if(state.type && normalize(doc.type)!==normalize(state.type))score-=1000;if(state.activeTags.size){const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));if(!has)score-=1000}return score}
-    function applyFiltersAndSort(){const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));let pool=state.all.filter(doc=>{if(state.type && normalize(doc.type)!==normalize(state.type))return false;if(state.activeTags.size){const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));if(!has)return false}if(excludes.size){const text=(normalize(doc.title)+" "+normalize(doc.excerpt)+" "+(doc.tags||[]).map(normalize).join(' '));for(const ex of excludes){if(text.includes(ex))return false}}return true});if(terms.length){pool=pool.map(doc=>({...doc,_score:scoreDoc(doc,terms)})).filter(d=>d._score>0)}switch(state.sort){case 'newest': pool.sort((a,b)=> (Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0)); break;case 'az': pool.sort((a,b)=> a.title.localeCompare(b.title)); break;default: pool.sort((a,b)=> (b._score||0)-(a._score||0));}state.view=pool;state.page=1;render()}
-    function highlight(text,terms){let out=text;const tokens=terms.filter(t=>!t.startsWith('-')).map(stripQuotes).filter(Boolean).sort((a,b)=>b.length-a.length);for(const t of tokens){const re=new RegExp(t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&'),'ig');out=out.replace(re,m=>`<mark class="highlight">${m}</mark>`)}return out}
-    function card(doc,terms){const img=doc.image?`<img src="${doc.image}" alt="">`:'';const dateTxt=doc.date?new Date(doc.date).toLocaleDateString():'';return `
+
+    function levenshtein(a,b){
+      const m=a.length,n=b.length;
+      const d=Array.from({length:m+1},()=>Array(n+1).fill(0));
+      for(let i=0;i<=m;i++)d[i][0]=i;
+      for(let j=0;j<=n;j++)d[0][j]=j;
+      for(let i=1;i<=m;i++){
+        for(let j=1;j<=n;j++){
+          const cost=a[i-1]===b[j-1]?0:1;
+          d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+cost)
+        }
+      }
+      return d[m][n]
+    }
+    function fuzzyMatch(term,word){
+      if(term.length<4)return word.includes(term);
+      return word===term||word.includes(term)||levenshtein(term,word)<=1
+    }
+
+    function scoreDoc(doc,terms){
+      let score=0;
+      const title=normalize(doc.title);
+      const excerpt=normalize(doc.excerpt);
+      const tags=(doc.tags||[]).map(normalize);
+      const haystack=title+" "+excerpt+" "+tags.join(' ');
+      const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);
+      for(const t of terms){
+        if(t.startsWith('-'))continue;
+        const term=stripQuotes(t); if(!term)continue;
+        const inTitle=title.includes(term);
+        const inTags=tags.some(tag=>tag.includes(term));
+        const inExcerpt=excerpt.includes(term);
+        if(inTitle)score+=12;
+        if(inTags)score+=7;
+        if(inExcerpt)score+=3;
+        const words=new Set(haystack.split(/[^a-z0-9]+/g).filter(Boolean));
+        for(const w of words){ if(fuzzyMatch(term,w)) score+=2; }
+      }
+      for(const p of joined){ if(title.includes(p))score+=10; if(excerpt.includes(p))score+=6; }
+      if(state.type && normalize(doc.type)!==normalize(state.type))score-=1000;
+      if(state.activeTags.size){
+        const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));
+        if(!has)score-=1000;
+      }
+      return score
+    }
+
+    function applyFiltersAndSort(){
+      const terms=tokenize(state.query);
+      const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));
+      let pool=state.all.filter(doc=>{
+        if(state.type && normalize(doc.type)!==normalize(state.type))return false;
+        if(state.activeTags.size){
+          const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));
+          if(!has)return false
+        }
+        if(excludes.size){
+          const text=(normalize(doc.title)+" "+normalize(doc.excerpt)+" "+(doc.tags||[]).map(normalize).join(' '));
+          for(const ex of excludes){ if(text.includes(ex)) return false; }
+        }
+        return true
+      });
+      if(terms.length){
+        pool=pool.map(doc=>({...doc,_score:scoreDoc(doc,terms)})).filter(d=>d._score>0)
+      }
+      switch(state.sort){
+        case 'newest': pool.sort((a,b)=> (Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0)); break;
+        case 'az': pool.sort((a,b)=> a.title.localeCompare(b.title)); break;
+        default: pool.sort((a,b)=> (b._score||0)-(a._score||0));
+      }
+      state.view=pool; state.page=1; render();
+    }
+
+    function highlight(text,terms){
+      let out=text;
+      const tokens=terms.filter(t=>!t.startsWith('-')).map(stripQuotes).filter(Boolean).sort((a,b)=>b.length-a.length);
+      for(const t of tokens){
+        const re=new RegExp(t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&'),'ig');
+        out=out.replace(re,m=>`<mark class="highlight">${m}</mark>`)
+      }
+      return out
+    }
+
+    function card(doc,terms){
+      const img=doc.image?`<img src="${doc.image}" alt="">`:'';
+      const dateTxt=doc.date?new Date(doc.date).toLocaleDateString():'';
+      return `
       <article class="card">
         <a class="card-media" href="${doc.url}">
           ${img}
@@ -197,12 +498,62 @@
           <p class="card-excerpt">${highlight(doc.excerpt||'',terms)}</p>
           <div class="card-date">${dateTxt}</div>
         </div>
-      </article>`}
-    function render(){const terms=tokenize(state.query);const total=state.view.length;const end=state.page*state.perPage;const slice=state.view.slice(0,end);resultsEl.innerHTML=slice.map(d=>card(d,terms)).join('');resultsMetaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';emptyEl.hidden=!!total;loadMoreBtn.hidden=end>=total||!total}
-    function populateFilters(){state.tags.clear();state.types.clear();for(const d of state.all){(d.tags||[]).forEach(t=>state.tags.add(normalize(t)));if(d.type)state.types.add(d.type)}typeFilterEl.innerHTML='<option value="">All</option>'+[...state.types].sort().map(t=>`<option value="${t}">${t}</option>`).join('');tagChipsEl.innerHTML=[...state.tags].sort().map(t=>`<label class="chip"><input type="checkbox" value="${t}"><span>#${t}</span></label>`).join('')}
-    function syncFromURL(){state.query=qp.get('q')||'';state.type=qp.get('type')||'';state.sort=qp.get('sort')||'relevance';const tags=(qp.get('tags')||'').split(',').map(t=>t.trim()).filter(Boolean);state.activeTags=new Set(tags.map(normalize));inputEl.value=state.query;sortEl.value=state.sort;typeFilterEl.value=state.type}
-    function syncToURL(){const p=new URLSearchParams();if(state.query)p.set('q',state.query);if(state.type)p.set('type',state.type);if(state.sort!=='relevance')p.set('sort',state.sort);if(state.activeTags.size)p.set('tags',[...state.activeTags].join(','));history.replaceState(null,'',`${location.pathname}?${p.toString()}`)}
-    async function loadIndex(){const url='/israelite-research/search-index.json?v='+(Date.now());const res=await fetch(url,{cache:'no-store'});const json=await res.json();state.all=json.map(d=>({type:d.type||'Page',title:d.title||'',url:d.url||'#',image:d.image||'',date:d.date||'',excerpt:d.excerpt||'',tags:d.tags||[]}));populateFilters();syncFromURL();applyFiltersAndSort()}
+      </article>`
+    }
+
+    function render(){
+      const terms=tokenize(state.query);
+      const total=state.view.length;
+      const end=state.page*state.perPage;
+      const slice=state.view.slice(0,end);
+      resultsEl.innerHTML=slice.map(d=>card(d,terms)).join('');
+      resultsMetaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';
+      emptyEl.hidden=!!total; loadMoreBtn.hidden=end>=total||!total;
+    }
+
+    function populateFilters(){
+      state.tags.clear(); state.types.clear();
+      for(const d of state.all){
+        (d.tags||[]).forEach(t=>state.tags.add(normalize(t)));
+        if(d.type)state.types.add(d.type)
+      }
+      typeFilterEl.innerHTML='<option value="">All</option>'+[...state.types].sort().map(t=>`<option value="${t}">${t}</option>`).join('');
+      tagChipsEl.innerHTML=[...state.tags].sort().map(t=>`<label class="chip"><input type="checkbox" value="${t}"><span>#${t}</span></label>`).join('');
+    }
+
+    function syncFromURL(){
+      state.query=qp.get('q')||'';
+      state.type=qp.get('type')||'';
+      state.sort=qp.get('sort')||'relevance';
+      const tags=(qp.get('tags')||'').split(',').map(t=>t.trim()).filter(Boolean);
+      state.activeTags=new Set(tags.map(normalize));
+      inputEl.value=state.query; sortEl.value=state.sort; typeFilterEl.value=state.type;
+    }
+    function syncToURL(){
+      const p=new URLSearchParams();
+      if(state.query)p.set('q',state.query);
+      if(state.type)p.set('type',state.type);
+      if(state.sort!=='relevance')p.set('sort',state.sort);
+      if(state.activeTags.size)p.set('tags',[...state.activeTags].join(','));
+      history.replaceState(null,'',`${location.pathname}?${p.toString()}`)
+    }
+
+    async function loadIndex(){
+      const url='/israelite-research/search-index.json?v='+(Date.now());
+      const res=await fetch(url,{cache:'no-store'});
+      const json=await res.json();
+      state.all=json.map(d=>({
+        type:d.type||'Page',
+        title:d.title||'',
+        url:d.url||'#',
+        image:d.image||'',
+        date:d.date||'',
+        excerpt:d.excerpt||'',
+        tags:d.tags||[]
+      }));
+      populateFilters(); syncFromURL(); applyFiltersAndSort();
+    }
+
     document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==inputEl){e.preventDefault();inputEl.focus()}})
     document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()})
     sortEl.addEventListener('change',()=>{state.sort=sortEl.value;syncToURL();applyFiltersAndSort()})
@@ -210,8 +561,8 @@
     tagChipsEl.addEventListener('change',e=>{if(e.target&&e.target.matches('input[type="checkbox"]')){const v=e.target.value; if(e.target.checked)state.activeTags.add(v);else state.activeTags.delete(v);syncToURL();applyFiltersAndSort()}})
     inputEl.addEventListener('input',(()=>{let t;return()=>{clearTimeout(t);t=setTimeout(()=>{state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()},250)}})())
     loadMoreBtn.addEventListener('click',()=>{state.page++;render()})
-    async function injectFooter(){try{const f=await fetch('/israelite-research/partials/footer.html');if(f.ok)document.getElementById('site-footer').innerHTML=await f.text()}catch{}}
-    injectFooter();loadIndex();
+
+    loadIndex();
   </script>
 </body>
 </html>
