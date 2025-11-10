@@ -5,6 +5,28 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Historical Textual Variants — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
+<style>
+  .variants-page .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .variants-page .page-header{padding:24px 0 8px}
+  .variants-page .page-title{margin:0;font-size:2rem;font-weight:800}
+  .variants-page .controls{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.75rem;margin:16px 0 20px}
+  .variants-page .controls .full{grid-column:1/-1}
+  .variants-page select,.variants-page input[type="text"]{width:100%;padding:.6rem;border:1px solid #ddd;border-radius:8px}
+  .variants-page .chipbar{display:flex;flex-wrap:wrap;gap:.5rem}
+  .variants-page .chip{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .6rem;border-radius:999px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:.9rem}
+  .variants-page .chip input{margin:0}
+  .variants-page .results{overflow-x:auto;border:1px solid #eee;border-radius:12px}
+  .variants-page table{width:100%;border-collapse:separate;border-spacing:0}
+  .variants-page th,.variants-page td{padding:.8rem;vertical-align:top;border-bottom:1px solid #f0f0f0}
+  .variants-page thead th{position:sticky;top:0;background:#fff;font-weight:700;border-bottom:2px solid #e5e7eb;white-space:nowrap}
+  .variants-page tbody tr:hover{background:#fafafa}
+  .variants-page .ref{font-weight:700}
+  .variants-page .note{font-size:.85rem;margin-top:.25rem;opacity:.9}
+  .variants-page .pill{display:inline-block;padding:.15rem .5rem;border-radius:999px;background:#eef2ff;font-size:.75rem;margin-right:.35rem}
+  @media (max-width:900px){
+    .variants-page .controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+</style>
 </head>
 
 <body class="variants-page">
@@ -48,12 +70,67 @@
 </div>
 
 <main>
-  <!-- Your variants page content goes here -->
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Historical Textual Variants</h1>
+      <p class="page-subtitle">Side-by-side readings from major textual traditions with concise notes.</p>
+    </div>
+
+    <section class="controls">
+      <div>
+        <label for="bookSel">Book</label>
+        <select id="bookSel"></select>
+      </div>
+      <div>
+        <label for="chapSel">Chapter</label>
+        <select id="chapSel"></select>
+      </div>
+      <div>
+        <label for="verseSel">Verse</label>
+        <select id="verseSel"></select>
+      </div>
+      <div class="full">
+        <label for="searchBox">Search keywords</label>
+        <input id="searchBox" type="text" placeholder="e.g., virgin, pierced, Egypt, ships"/>
+      </div>
+      <div class="full">
+        <div class="chipbar" id="traditionsBar"></div>
+      </div>
+    </section>
+
+    <section class="results">
+      <table id="variantsTable">
+        <thead>
+          <tr>
+            <th style="min-width:180px">Reference</th>
+            <th>Masoretic Text (MT)</th>
+            <th>Septuagint (LXX)</th>
+            <th>Dead Sea Scrolls (DSS)</th>
+            <th>Vulgate</th>
+            <th>Peshitta</th>
+          </tr>
+        </thead>
+        <tbody id="variantsBody"></tbody>
+      </table>
+    </section>
+  </div>
 </main>
 
 <div id="site-footer">
   <!-- Universal Footer Partial -->
   <footer class="site-footer">
+    <style>
+      #site-footer .site-footer{background:var(--surface,#fff);color:var(--ink,#0b2340);border-top:1px solid var(--border,#e6ebf2);}
+      #site-footer .footer-inner{max-width:1200px;margin:0 auto;padding:28px 16px 18px;display:grid;gap:28px;grid-template-columns:1.2fr .8fr .8fr;}
+      @media(max-width:960px){#site-footer .footer-inner{grid-template-columns:1fr;}}
+      #site-footer .footer-heading{margin:0 0 8px;font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink,#0b2340);}
+      #site-footer .footer-nav{list-style:none;padding:0;margin:0;display:grid;gap:6px;}
+      #site-footer .footer-nav a{color:var(--ink,#0b2340);text-decoration:none;padding:6px 8px;border-radius:8px;border:1px solid transparent;transition:border-color .15s ease,background-color .15s ease;}
+      #site-footer .footer-nav a:hover{border-color:var(--border,#e6ebf2);background:rgba(0,0,0,.02);}
+      #site-footer .footer-tagline{color:#F17300;}
+      #site-footer .newsletter-note{color:#F17300;text-align:left;}
+      #site-footer .footer-bottom p{color:#F17300;}
+    </style>
     <div class="footer-inner container">
       <div class="footer-col footer-brand">
         <h3 class="footer-heading footer-brandname">
@@ -70,7 +147,27 @@
           <strong>Semitic Jew</strong>
         </h3>
         <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
-        <!-- socials + newsletter + links identical to your universal footer partial -->
+      </div>
+      <div class="footer-col footer-col--explore">
+        <h4 class="footer-heading">Resources</h4>
+        <ul class="footer-nav">
+          <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
+          <li><a href="/israelite-research/articles.html">Articles</a></li>
+          <li><a href="/israelite-research/biblia.html">Biblia</a></li>
+          <li><a href="/israelite-research/donate.html">Donations</a></li>
+          <li><a href="/israelite-research/events.html">Events</a></li>
+          <li><a href="/israelite-research/media.html">Media</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-col--texts">
+        <h4 class="footer-heading">The Writings</h4>
+        <ul class="footer-nav">
+          <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
+          <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
+          <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
+          <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+          <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom container">
@@ -83,5 +180,116 @@
     </div>
   </footer>
 </div>
-</body>
-</html>
+
+<script>
+  const data = [
+    {
+      id:"isa-7-14",
+      book:"Isaiah",
+      chapter:7,
+      verse:14,
+      tags:["Christology","Prophecy"],
+      MT:{text:"behold, the young woman shall conceive and bear a son, and shall call his name Immanuel"},
+      LXX:{text:"behold, the virgin shall conceive in the womb and shall bear a son, and you shall call his name Emmanuel"},
+      DSS:{text:"attested fragmentarily in 1QIsaa; wording aligns closely with MT in this clause"},
+      Vulg:{text:"ecce virgo concipiet et pariet filium et vocabitur nomen eius Emmanuel"},
+      Pesh:{text:"behold, the virgin shall conceive and bear a son, and she will call his name Immanuel"},
+      note:"Key term: almah (MT) vs parthenos (LXX)."
+    },
+    {
+      id:"psa-22-16",
+      book:"Psalms",
+      chapter:22,
+      verse:16,
+      tags:["Messianic","Poetry"],
+      MT:{text:"like a lion, my hands and my feet"},
+      LXX:{text:"they dug my hands and my feet"},
+      DSS:{text:"4QPsaa preserves a reading consistent with 'they pierced' interpretation"},
+      Vulg:{text:"foderunt manus meas et pedes meos"},
+      Pesh:{text:"they pierced my hands and my feet"},
+      note:"Variant focuses on ka’ari ('like a lion') vs 'they pierced/dug'."
+    },
+    {
+      id:"deu-28-68",
+      book:"Deuteronomy",
+      chapter:28,
+      verse:68,
+      tags:["Covenant","Exile"],
+      MT:{text:"YHWH will bring you back to Egypt in ships; you shall offer yourselves for sale to your enemies as male and female slaves, but no one will buy"},
+      LXX:{text:"the Lord will bring you back to Egypt in ships; you will be sold to your enemies as slaves and handmaids, and there will be no one to rescue"},
+      DSS:{text:"no extant manuscript for this verse; shown for completeness"},
+      Vulg:{text:"reduces te Dominus in Ægyptum navibus... et non erit qui redimat"},
+      Pesh:{text:"the Lord will make you return to Egypt by ships... and there will be none to buy/redeem"},
+      note:"Differences around 'buy' vs 'redeem/rescue' and verbal aspect."
+    }
+  ];
+
+  const traditions = [
+    {key:"MT",label:"Masoretic Text"},
+    {key:"LXX",label:"Septuagint"},
+    {key:"DSS",label:"Dead Sea Scrolls"},
+    {key:"Vulg",label:"Vulgate"},
+    {key:"Pesh",label:"Peshitta"}
+  ];
+
+  const bookSel=document.getElementById("bookSel");
+  const chapSel=document.getElementById("chapSel");
+  const verseSel=document.getElementById("verseSel");
+  const searchBox=document.getElementById("searchBox");
+  const traditionsBar=document.getElementById("traditionsBar");
+  const tbody=document.getElementById("variantsBody");
+
+  const state={book:"All",chapter:"All",verse:"All",search:"",visibleTrads:new Set(traditions.map(t=>t.key))};
+
+  function unique(arr){return Array.from(new Set(arr))}
+  function populateBooks(){
+    const books=["All"].concat(unique(data.map(x=>x.book)));
+    bookSel.innerHTML=books.map(b=>`<option value="${b}">${b}</option>`).join("");
+    bookSel.value="All";populateChapters();
+  }
+  function populateChapters(){
+    const filtered=state.book==="All"?data:data.filter(x=>x.book===state.book);
+    const chapters=["All"].concat(unique(filtered.map(x=>String(x.chapter))).sort((a,b)=>+a-+b));
+    chapSel.innerHTML=chapters.map(c=>`<option value="${c}">${c}</option>`).join("");
+    chapSel.value="All";populateVerses();
+  }
+  function populateVerses(){
+    let filtered=data;if(state.book!=="All")filtered=filtered.filter(x=>x.book===state.book);
+    if(state.chapter!=="All")filtered=filtered.filter(x=>String(x.chapter)===String(state.chapter));
+    const verses=["All"].concat(unique(filtered.map(x=>String(x.verse))).sort((a,b)=>+a-+b));
+    verseSel.innerHTML=verses.map(v=>`<option value="${v}">${v}</option>`).join("");verseSel.value="All";
+  }
+  function renderTraditions(){
+    traditionsBar.innerHTML=traditions.map(t=>{
+      const checked=state.visibleTrads.has(t.key)?"checked":"";
+      return `<label class="chip"><input type="checkbox" data-trad="${t.key}" ${checked}/> ${t.label}</label>`;
+    }).join("");
+    traditionsBar.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+      cb.addEventListener("change",e=>{
+        const k=e.target.getAttribute("data-trad");
+        if(e.target.checked)state.visibleTrads.add(k);else state.visibleTrads.delete(k);
+        renderTable();
+      });
+    });
+  }
+  function passesFilters(row){
+    if(state.book!=="All"&&row.book!==state.book)return false;
+    if(state.chapter!=="All"&&String(row.chapter)!==String(state.chapter))return false;
+    if(state.verse!=="All"&&String(row.verse)!==String(state.verse))return false;
+    if(state.search){
+      const q=state.search.toLowerCase();
+      const hay=[row.book,row.chapter,row.verse,row.note].concat(traditions.map(t=>row[t.key]?.text||"")).join(" ").toLowerCase();
+      if(!hay.includes(q))return false;
+    }
+    return true;
+  }
+  function renderTable(){
+    const filtered=data.filter(passesFilters);
+    tbody.innerHTML=filtered.map(r=>{
+      const ref=`${r.book} ${r.chapter}:${r.verse}`;
+      function cell(k){if(!state.visibleTrads.has(k))return`<td style="display:none"></td>`;const val=r[k]?.text?`${r[k].text}`:"—";return`<td><div>${val}</div></td>`;}
+      const tags=r.tags?.map(t=>`<span class="pill">${t}</span>`).join("")||"";
+      return`<tr><td><div class="ref">${ref}</div><div class="note">${r.note||""}</div><div class="tags">${tags}</div></td>${cell("MT")}${cell("LXX")}${cell("DSS")}${cell("Vulg")}${cell("Pesh")}</tr>`;
+    }).join("");
+    const ths=document.querySelectorAll("#variantsTable thead th");
+    const order=["MT","LXX","DSS","
