@@ -6,87 +6,57 @@
   <title>Search — Semitic Jew</title>
   <link href="/israelite-research/styles.css" rel="stylesheet" />
   <style>
-    .search-shell{max-width:1100px;margin:0 auto;padding:0 16px}
-    .search-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:24px 0 8px}
-    .search-title{font-size:2rem;font-weight:800;margin:0}
-    .search-bar{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:12px 0}
+    .page-shell{max-width:1200px;margin:0 auto;padding:0 16px}
+    .breadcrumbs{font-size:.9rem;color:#66708a;margin:16px 0}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+    .tab{display:inline-flex;align-items:center;gap:.45rem;padding:.5rem .75rem;border:1px solid var(--border,#e6ebf2);border-radius:999px;background:#fff;cursor:pointer;font-weight:600}
+    .tab[aria-selected="true"]{background:#054A91;color:#fff;border-color:#054A91}
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:24px;margin:12px 0 28px}
+    @media (max-width: 960px){.layout{grid-template-columns:1fr}}
+    .facet{border:1px solid var(--border,#e6ebf2);border-radius:12px;background:#fff;margin-bottom:14px}
+    .facet h3{margin:0;padding:12px 14px;font-size:1rem;border-bottom:1px solid var(--border,#e6ebf2)}
+    .facet .facet-body{padding:10px 14px;display:grid;gap:8px;max-height:280px;overflow:auto}
+    .facet .check{display:flex;align-items:center;gap:.55rem}
+    .facet .check input{width:16px;height:16px}
+    .facet .range{display:flex;gap:8px}
+    .facet .range input{flex:1;padding:8px;border:1px solid var(--border,#e6ebf2);border-radius:8px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
+    .results-meta{color:#66708a}
+    .sorter select{padding:.5rem .6rem;border:1px solid var(--border,#e6ebf2);border-radius:8px;background:#fff}
+    .result-list{display:grid;gap:16px}
+    .result-item{display:grid;grid-template-columns:140px 1fr;gap:14px;border:1px solid var(--border,#e6ebf2);border-radius:12px;background:#fff;padding:10px}
+    .thumb{width:140px;height:100px;overflow:hidden;border-radius:10px;background:linear-gradient(180deg,#eef3f9,#dde7f4)}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .r-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .r-type{padding:.2rem .5rem;border-radius:6px;background:rgba(0,0,0,.06);font-size:.75rem;letter-spacing:.02em;text-transform:uppercase}
+    .r-title{font-size:1.05rem;margin:0}
+    .r-excerpt{margin:6px 0 0;color:#555}
+    .r-meta{margin-top:6px;color:#777;font-size:.9rem}
+    .empty{padding:28px;border:1px dashed #d7deea;border-radius:12px;background:#fbfcff}
+    .pager{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:18px 0 36px}
+    .page-btn{min-width:38px;height:38px;border:1px solid var(--border,#e6ebf2);border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;padding:0 .6rem;cursor:pointer}
+    .page-btn[aria-current="page"]{background:#054A91;border-color:#054A91;color:#fff;font-weight:700}
+    .search-bar{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:10px 0 6px}
     .search-input{padding:.75rem .9rem;border:1px solid #e1e6ef;border-radius:10px;font-size:1rem}
     .search-btn{padding:.75rem 1rem;border:1px solid #054A91;background:#054A91;color:#fff;border-radius:10px;cursor:pointer}
-    .toolbar{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin:6px 0 14px}
-    .toolbar select,.toolbar .chip{border:1px solid #e6ebf2;border-radius:999px;background:#fff;padding:.4rem .65rem;font-size:.9rem}
-    .chip{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
-    .chip input{width:16px;height:16px}
-    .pill{padding:.25rem .45rem;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;position:absolute;left:8px;top:8px}
-    .results-meta{color:#555;font-size:.95rem}
-    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-    .card{border:1px solid #e6ebf2;background:#fff;display:flex;flex-direction:column;min-height:460px}
-    .card-media{position:relative;height:164px;overflow:hidden;background:linear-gradient(180deg,#eef3f9,#dde7f4)}
-    .card-media img{width:100%;height:100%;object-fit:cover;display:block}
-    .card-body{padding:1rem;display:flex;flex-direction:column;gap:.55rem}
-    .card-title{font-size:1.05rem;line-height:1.3;margin:0}
-    .card-excerpt{color:#555;font-size:.95rem;margin:0}
-    .card-date{margin-top:auto;color:#777;font-size:.85rem}
-    .highlight{background:linear-gradient(180deg,rgba(255,235,140,.8),rgba(255,235,140,0))}
-    .empty{padding:28px;border:1px dashed #d7deea;border-radius:12px;background:#fbfcff}
-    .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;border:1px solid #dfe5f2;border-bottom-width:2px;padding:2px 6px;border-radius:6px;background:#fff}
-    .load-more{display:block;margin:18px auto 36px;padding:.75rem 1rem;border:1px solid #cfd8ea;border-radius:10px;background:#fff;cursor:pointer}
   </style>
 </head>
 <body>
 
-  <!-- Wrap header partial in #site-header so its CSS targets apply -->
   <div id="site-header">
     <!-- Universal Header Partial -->
     <header class="site-header-bar">
       <style>
-        #site-header .site-header-bar{
-          background: var(--surface, #ffffff);
-          color: var(--ink, #0b2340);
-          border-bottom: 1px solid var(--border, #e6ebf2);
-        }
-        #site-header .header-inner{
-          max-width:1200px; margin:0 auto; padding:10px 16px;
-          display:flex; align-items:center; justify-content:space-between; gap:12px;
-        }
-        #site-header .brand{
-          display:inline-flex; align-items:center; gap:10px;
-          text-decoration:none; color:var(--ink, #0b2340);
-          font-weight:900; font-size:1.05rem;
-        }
-        #site-header .brand .mark{
-          width:26px; height:26px; border-radius:7px;
-          border:1px solid var(--border, #e6ebf2);
-          display:inline-flex; align-items:center; justify-content:center;
-          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-header nav.primary{
-          display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-        }
-        #site-header nav.primary a{
-          text-decoration:none; color:var(--ink, #0b2340); opacity:.95;
-          padding:8px 10px; border-radius:8px; border:1px solid transparent;
-          transition:border-color .15s ease, box-shadow .15s ease;
-        }
-        #site-header nav.primary a:hover{
-          border-color:var(--border, #e6ebf2);
-          box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-header .tools{
-          display:flex; align-items:center; gap:10px;
-        }
-        #site-header .icon-btn{
-          width:40px; height:40px; border-radius:999px;
-          border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
-          display:inline-flex; align-items:center; justify-content:center;
-          cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
-        }
-        #site-header .icon-btn:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
+        #site-header .site-header-bar{background:var(--surface,#ffffff);color:var(--ink,#0b2340);border-bottom:1px solid var(--border,#e6ebf2)}
+        #site-header .header-inner{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        #site-header .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink,#0b2340);font-weight:900;font-size:1.05rem}
+        #site-header .brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border,#e6ebf2);display:inline-flex;align-items:center;justify-content:center;background:var(--surface,#ffffff);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
+        #site-header nav.primary{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+        #site-header nav.primary a{text-decoration:none;color:var(--ink,#0b2340);opacity:.95;padding:8px 10px;border-radius:8px;border:1px solid transparent;transition:border-color .15s ease,box-shadow .15s ease}
+        #site-header nav.primary a:hover{border-color:var(--border,#e6ebf2);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
+        #site-header .tools{display:flex;align-items:center;gap:10px}
+        #site-header .icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s,background-color .15s}
+        #site-header .icon-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
       </style>
 
       <div class="header-inner">
@@ -96,8 +66,7 @@
               <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
               <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
               <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </span>
@@ -116,181 +85,118 @@
         <div class="tools">
           <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </a>
         </div>
       </div>
     </header>
   </div>
-  <!-- /#site-header -->
 
-  <main class="container">
-    <section class="search-shell">
-      <div class="search-header">
-        <h1 class="search-title">Search</h1>
-        <div class="results-meta" id="resultsMeta"></div>
-      </div>
+  <main class="page-shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/israelite-research/">Home</a> › <span>All Resources</span>
+    </nav>
 
-      <form id="searchForm" class="search-bar" role="search">
-        <input id="q" name="q" class="search-input" type="search" placeholder="Search articles, pages, texts, and more…" autocomplete="off" />
-        <button class="search-btn" type="submit">Search</button>
-      </form>
+    <form id="searchForm" class="search-bar" role="search">
+      <input id="q" name="q" class="search-input" type="search" placeholder="Search resources…" autocomplete="off" />
+      <button class="search-btn" type="submit">Search</button>
+    </form>
 
-      <div class="toolbar" aria-label="Filters and sorting">
-        <label>Sort
-          <select id="sort">
-            <option value="relevance">Relevance</option>
-            <option value="newest">Newest</option>
-            <option value="az">A–Z</option>
-          </select>
-        </label>
-        <label>Type
-          <select id="typeFilter">
-            <option value="">All</option>
-          </select>
-        </label>
-        <div id="tagChips" class="chips" aria-label="Tags"></div>
-      </div>
+    <div class="tabs" role="tablist" aria-label="Resource Types">
+      <button class="tab" role="tab" data-type="" aria-selected="true">All</button>
+      <button class="tab" role="tab" data-type="Article">Articles</button>
+      <button class="tab" role="tab" data-type="Encyclopedia">Encyclopedia</button>
+      <button class="tab" role="tab" data-type="Page">Pages</button>
+      <button class="tab" role="tab" data-type="Region">Regions</button>
+    </div>
 
-      <div id="results" class="results-grid" aria-live="polite"></div>
-      <button id="loadMore" class="load-more" hidden>Load more</button>
+    <div class="layout">
+      <aside>
+        <section class="facet" aria-labelledby="facet-type">
+          <h3 id="facet-type">Type</h3>
+          <div class="facet-body" id="facetType"></div>
+        </section>
 
-      <div id="emptyState" class="empty" hidden>
-        <p>No results. Try different words, fewer filters, or check spelling. Use quotes for exact phrases, minus to exclude (e.g., <span class="kbd">"law of logic" -fallacy</span>).</p>
-      </div>
+        <section class="facet" aria-labelledby="facet-tags">
+          <h3 id="facet-tags">Tags</h3>
+          <div class="facet-body" id="facetTags"></div>
+        </section>
 
-      <div class="tips" style="margin:20px 0 40px;color:#66708a;font-size:.95rem">
-        <p><strong>Tips:</strong> Press <span class="kbd">/</span> to focus search. Use quotes for phrases, minus to exclude, and tags to narrow. Results sync to the URL so you can share searches.</p>
-      </div>
-    </section>
+        <section class="facet" aria-labelledby="facet-date">
+          <h3 id="facet-date">Date</h3>
+          <div class="facet-body">
+            <div class="range">
+              <input id="dateFrom" type="date" />
+              <input id="dateTo" type="date" />
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section>
+        <div class="toolbar">
+          <div class="results-meta" id="resultsMeta"></div>
+          <div class="sorter">
+            <label for="sort" class="sr-only">Sort</label>
+            <select id="sort">
+              <option value="newest">Newest</option>
+              <option value="relevance">Relevance</option>
+              <option value="az">A–Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="results" class="result-list" aria-live="polite"></div>
+        <div id="emptyState" class="empty" hidden>
+          <p>No results. Try different words or fewer filters. Use quotes for exact phrases, minus to exclude (e.g., “law of logic” -fallacy).</p>
+        </div>
+
+        <nav class="pager" aria-label="Pagination" id="pager"></nav>
+      </section>
+    </div>
   </main>
 
-  <!-- Wrap footer partial in #site-footer so its CSS targets apply -->
   <div id="site-footer">
     <!-- Universal Footer Partial -->
     <footer class="site-footer">
       <style>
-        #site-footer .site-footer{
-          background: var(--surface, #ffffff);
-          color: var(--ink, #0b2340);
-          border-top: 1px solid var(--border, #e6ebf2);
-        }
-        #site-footer .footer-inner{
-          max-width:1200px; margin:0 auto; padding:28px 16px 18px;
-          display:grid; gap:28px;
-          grid-template-columns: 1.2fr .8fr .8fr;
-        }
-        @media (max-width: 960px){
-          #site-footer .footer-inner{ grid-template-columns: 1fr; }
-        }
-
-        /* Brand / tagline / socials / newsletter */
-        #site-footer .footer-brand h3{
-          margin:0 0 6px; font-size:1.15rem; font-weight:800; color:var(--ink, #0b2340);
-          display:flex; align-items:center; gap:8px;
-        }
-        #site-footer .footer-brand .mark{
-          width:26px; height:26px; border-radius:7px; border:1px solid var(--border, #e6ebf2);
-          display:inline-flex; align-items:center; justify-content:center;
-          background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-        }
-        #site-footer .footer-tagline{
-          margin:0 0 12px; color:var(--muted, #6b7280);
-          max-width:46ch; text-align:left;
-        }
-        #site-footer .footer-social{ display:flex; gap:10px; margin:10px 0 14px; }
-        #site-footer .footer-social .icon{
-          width:40px; height:40px; border-radius:10px;
-          border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340);
-          display:inline-flex; align-items:center; justify-content:center;
-          text-decoration:none; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
-        }
-        #site-footer .footer-social .icon:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
-
-        /* Newsletter */
-        #site-footer .footer-newsletter .newsletter-row{
-          display:flex; gap:8px; align-items:center;
-        }
-        #site-footer .footer-newsletter input[type="email"]{
-          flex:1; padding:10px 12px; border:1px solid var(--border, #e6ebf2); border-radius:10px;
-          background:var(--bg, #ffffff); color:var(--ink, #0b2340);
-        }
-        #site-footer .footer-newsletter input::placeholder{ color:var(--muted, #6b7280); }
-        #site-footer .footer-newsletter button{
-          padding:10px 12px; border-radius:10px; border:1px solid var(--border, #e6ebf2);
-          background:var(--surface, #ffffff); color:var(--ink, #0b2340); cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-          transition:transform .15s, box-shadow .15s, border-color .15s;
-        }
-        #site-footer .footer-newsletter button:hover{
-          transform:translateY(-1px);
-          box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-          border-color:#cdd8e6;
-        }
-        #site-footer .newsletter-note{ display:block; margin-top:6px; color:var(--muted, #6b7280); }
-
-        /* Column headings + nav */
-        #site-footer .footer-heading{
-          margin:0 0 8px; font-size:.95rem; font-weight:800; letter-spacing:.06em;
-          text-transform:uppercase; color:var(--ink, #0b2340);
-        }
-        #site-footer .footer-col--explore .footer-heading,
-        #site-footer .footer-col--texts .footer-heading{
-          font-style: normal; font-weight: 800; letter-spacing: .06em;
-        }
-        #site-footer .footer-nav{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
-        #site-footer .footer-nav a{
-          color:var(--ink, #0b2340); text-decoration:none; padding:6px 8px; border-radius:8px;
-          border:1px solid transparent;
-          transition:border-color .15s ease, background-color .15s ease;
-        }
-        #site-footer .footer-nav a:hover{
-          border-color:var(--border, #e6ebf2);
-          background:rgba(0,0,0,.02);
-        }
-        /* Footer color tweaks */
-        #site-footer .footer-tagline { color: #F17300; }
-        #site-footer .newsletter-note {
-          color: #F17300;
-          text-align: left;
-        }
-        #site-footer .footer-bottom p {
-          color: #F17300;
-        }
-        /* Bottom bar */
-        #site-footer .footer-bottom{
-          max-width:1200px; margin:0 auto; padding:10px 16px 24px;
-          display:flex; align-items:center; justify-content:space-between; gap:12px;
-          color:var(--muted, #6b7280);
-          border-top:1px solid var(--border, #e6ebf2);
-        }
-        @media (max-width: 720px){
-          #site-footer .footer-bottom{ flex-direction:column; align-items:flex-start; gap:6px; }
-        }
-        #site-footer .legal-links{ display:flex; gap:12px; flex-wrap:wrap; }
-        #site-footer .legal-links a{ color:var(--ink, #0b2340); text-decoration:none; opacity:.85; }
-        #site-footer .legal-links a:hover{ opacity:1; }
+        #site-footer .site-footer{background:var(--surface,#ffffff);color:var(--ink,#0b2340);border-top:1px solid var(--border,#e6ebf2)}
+        #site-footer .footer-inner{max-width:1200px;margin:0 auto;padding:28px 16px 18px;display:grid;gap:28px;grid-template-columns:1.2fr .8fr .8fr}
+        @media (max-width:960px){#site-footer .footer-inner{grid-template-columns:1fr}}
+        #site-footer .footer-brand h3{margin:0 0 6px;font-size:1.15rem;font-weight:800;color:var(--ink,#0b2340);display:flex;align-items:center;gap:8px}
+        #site-footer .footer-brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border,#e6ebf2);display:inline-flex;align-items:center;justify-content:center;background:var(--surface,#ffffff);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
+        #site-footer .footer-tagline{margin:0 0 12px;color:var(--muted,#6b7280);max-width:46ch;text-align:left}
+        #site-footer .footer-social{display:flex;gap:10px;margin:10px 0 14px}
+        #site-footer .footer-social .icon{width:40px;height:40px;border-radius:10px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s,background-color .15s}
+        #site-footer .footer-social .icon:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
+        #site-footer .footer-newsletter .newsletter-row{display:flex;gap:8px;align-items:center}
+        #site-footer .footer-newsletter input[type="email"]{flex:1;padding:10px 12px;border:1px solid var(--border,#e6ebf2);border-radius:10px;background:var(--bg,#ffffff);color:var(--ink,#0b2340)}
+        #site-footer .footer-newsletter input::placeholder{color:var(--muted,#6b7280)}
+        #site-footer .footer-newsletter button{padding:10px 12px;border-radius:10px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);cursor:pointer;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s}
+        #site-footer .footer-newsletter button:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
+        #site-footer .newsletter-note{display:block;margin-top:6px;color:#F17300}
+        #site-footer .footer-heading{margin:0 0 8px;font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink,#0b2340)}
+        #site-footer .footer-nav{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+        #site-footer .footer-nav a{color:var(--ink,#0b2340);text-decoration:none;padding:6px 8px;border-radius:8px;border:1px solid transparent;transition:border-color .15s ease,background-color .15s ease}
+        #site-footer .footer-nav a:hover{border-color:var(--border,#e6ebf2);background:rgba(0,0,0,.02)}
+        #site-footer .footer-bottom p{color:#F17300}
+        #site-footer .footer-bottom{max-width:1200px;margin:0 auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted,#6b7280);border-top:1px solid var(--border,#e6ebf2)}
+        @media (max-width:720px){#site-footer .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}}
+        #site-footer .legal-links{display:flex;gap:12px;flex-wrap:wrap}
+        #site-footer .legal-links a{color:var(--ink,#0b2340);text-decoration:none;opacity:.85}
+        #site-footer .legal-links a:hover{opacity:1}
       </style>
 
       <div class="footer-inner container">
-        <!-- Left: Brand + description + socials + newsletter -->
         <div class="footer-col footer-brand">
           <h3 class="footer-heading footer-brandname">
             <span class="mark" aria-hidden="true">
-              <!-- Crown icon -->
               <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
                 <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
                 <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z"
-                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </span>
@@ -300,7 +206,6 @@
           <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
 
           <div class="footer-social" aria-label="Social media">
-            <!-- Instagram -->
             <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -308,27 +213,22 @@
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
               </svg>
             </a>
-            <!-- X (Twitter) -->
             <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </a>
-            <!-- Threads -->
             <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </a>
-            <!-- YouTube -->
             <a class="icon" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener" aria-label="YouTube">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path d="M22 12s0-3-0.4-4.4c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 0.5c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 0.4 4.4c.2.8.8 1.4 1.6 1.6 1.4.5 8 .5 8 .5s6.6 0 8-0.5c.8-.2 1.4-.8 1.6-1.6C22 15 22 12 22 12z" fill="none" stroke="currentColor" stroke-width="2"/>
                 <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
               </svg>
             </a>
-            <!-- Facebook -->
             <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" rel="noopener" aria-label="Facebook">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/>
@@ -346,7 +246,6 @@
           </form>
         </div>
 
-        <!-- Middle column: Resources -->
         <div class="footer-col footer-col--explore">
           <h4 class="footer-heading">Resources</h4>
           <ul class="footer-nav">
@@ -359,7 +258,6 @@
           </ul>
         </div>
 
-        <!-- Right column: The Writings -->
         <div class="footer-col footer-col--texts">
           <h4 class="footer-heading">The Writings</h4>
           <ul class="footer-nav">
@@ -382,185 +280,139 @@
       </div>
     </footer>
   </div>
-  <!-- /#site-footer -->
 
   <script>
-    // --- Robust search logic ---
-    const state={all:[],view:[],page:1,perPage:24,tags:new Set(),types:new Set(),query:'',type:'',sort:'relevance',activeTags:new Set()};
-    const $=s=>document.querySelector(s);
-    const resultsEl=$('#results');
-    const resultsMetaEl=$('#resultsMeta');
-    const emptyEl=$('#emptyState');
-    const loadMoreBtn=$('#loadMore');
-    const tagChipsEl=$('#tagChips');
-    const typeFilterEl=$('#typeFilter');
-    const sortEl=$('#sort');
-    const inputEl=$('#q');
-    const qp=new URLSearchParams(location.search);
+    const state={all:[],filtered:[],page:1,perPage:20,query:'',type:'',sort:'newest',tags:new Set(),active:{types:new Set(),tags:new Set()},dateFrom:'',dateTo:''};
+    const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+    const resultsEl=$('#results'),metaEl=$('#resultsMeta'),pagerEl=$('#pager');
+    const facetTypeEl=$('#facetType'),facetTagsEl=$('#facetTags'),sortEl=$('#sort'),inputEl=$('#q');
+    const dateFromEl=$('#dateFrom'),dateToEl=$('#dateTo');
 
-    function normalize(str){return (str||'').toString().toLowerCase();}
+    function normalize(s){return (s||'').toString().toLowerCase()}
     function tokenize(str){return normalize(str).match(/\\"[^\\"]+\\"|[^\\s]+/g)||[]}
     function stripQuotes(s){return s.startsWith('"')&&s.endsWith('"')?s.slice(1,-1):s}
+    function levenshtein(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++){for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}}return d[m][n]}
+    function fuzzy(term,word){if(term.length<4)return word.includes(term);return word===term||word.includes(term)||levenshtein(term,word)<=1}
+    function score(doc,terms){let s=0;const title=normalize(doc.title),ex=normalize(doc.excerpt),tg=(doc.tags||[]).map(normalize);const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);
+      for(const t of terms){if(t.startsWith('-'))continue;const term=stripQuotes(t);if(!term)continue;if(title.includes(term))s+=12;if(tg.some(x=>x.includes(term)))s+=7;if(ex.includes(term))s+=3;const words=new Set((title+' '+ex+' '+tg.join(' ')).split(/[^a-z0-9]+/).filter(Boolean));for(const w of words){if(fuzzy(term,w))s+=2}}
+      for(const p of joined){if(title.includes(p))s+=10;if(ex.includes(p))s+=6}return s}
 
-    function levenshtein(a,b){
-      const m=a.length,n=b.length;
-      const d=Array.from({length:m+1},()=>Array(n+1).fill(0));
-      for(let i=0;i<=m;i++)d[i][0]=i;
-      for(let j=0;j<=n;j++)d[0][j]=j;
-      for(let i=1;i<=m;i++){
-        for(let j=1;j<=n;j++){
-          const cost=a[i-1]===b[j-1]?0:1;
-          d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+cost)
-        }
-      }
-      return d[m][n]
-    }
-    function fuzzyMatch(term,word){
-      if(term.length<4)return word.includes(term);
-      return word===term||word.includes(term)||levenshtein(term,word)<=1
-    }
-
-    function scoreDoc(doc,terms){
-      let score=0;
-      const title=normalize(doc.title);
-      const excerpt=normalize(doc.excerpt);
-      const tags=(doc.tags||[]).map(normalize);
-      const haystack=title+" "+excerpt+" "+tags.join(' ');
-      const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);
-      for(const t of terms){
-        if(t.startsWith('-'))continue;
-        const term=stripQuotes(t); if(!term)continue;
-        const inTitle=title.includes(term);
-        const inTags=tags.some(tag=>tag.includes(term));
-        const inExcerpt=excerpt.includes(term);
-        if(inTitle)score+=12;
-        if(inTags)score+=7;
-        if(inExcerpt)score+=3;
-        const words=new Set(haystack.split(/[^a-z0-9]+/g).filter(Boolean));
-        for(const w of words){ if(fuzzyMatch(term,w)) score+=2; }
-      }
-      for(const p of joined){ if(title.includes(p))score+=10; if(excerpt.includes(p))score+=6; }
-      if(state.type && normalize(doc.type)!==normalize(state.type))score-=1000;
-      if(state.activeTags.size){
-        const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));
-        if(!has)score-=1000;
-      }
-      return score
-    }
-
-    function applyFiltersAndSort(){
-      const terms=tokenize(state.query);
-      const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));
-      let pool=state.all.filter(doc=>{
-        if(state.type && normalize(doc.type)!==normalize(state.type))return false;
-        if(state.activeTags.size){
-          const has=[...(state.activeTags)].every(t=>doc.tags&&doc.tags.map(normalize).includes(t));
-          if(!has)return false
-        }
-        if(excludes.size){
-          const text=(normalize(doc.title)+" "+normalize(doc.excerpt)+" "+(doc.tags||[]).map(normalize).join(' '));
-          for(const ex of excludes){ if(text.includes(ex)) return false; }
-        }
+    function apply(){
+      const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));
+      let pool=state.all.filter(d=>{
+        if(state.type && d.type!==state.type)return false;
+        if(state.active.types.size && !state.active.types.has(d.type))return false;
+        if(state.active.tags.size){const set=new Set((d.tags||[]).map(normalize));for(const t of state.active.tags){if(!set.has(t))return false}}
+        if(state.dateFrom){const ts=Date.parse(d.date||'');if(ts && ts < Date.parse(state.dateFrom))return false}
+        if(state.dateTo){const ts=Date.parse(d.date||'');if(ts && ts > Date.parse(state.dateTo))return false}
+        if(excludes.size){const hay=(normalize(d.title)+' '+normalize(d.excerpt)+' '+(d.tags||[]).map(normalize).join(' '));for(const ex of excludes){if(hay.includes(ex))return false}}
         return true
       });
-      if(terms.length){
-        pool=pool.map(doc=>({...doc,_score:scoreDoc(doc,terms)})).filter(d=>d._score>0)
-      }
+      if(terms.length){pool=pool.map(d=>({...d,_score:score(d,terms)}))}
       switch(state.sort){
-        case 'newest': pool.sort((a,b)=> (Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0)); break;
-        case 'az': pool.sort((a,b)=> a.title.localeCompare(b.title)); break;
-        default: pool.sort((a,b)=> (b._score||0)-(a._score||0));
+        case 'az': pool.sort((a,b)=>a.title.localeCompare(b.title)); break;
+        case 'relevance': pool.sort((a,b)=>(b._score||0)-(a._score||0)); break;
+        default: pool.sort((a,b)=>(Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0));
       }
-      state.view=pool; state.page=1; render();
-    }
-
-    function highlight(text,terms){
-      let out=text;
-      const tokens=terms.filter(t=>!t.startsWith('-')).map(stripQuotes).filter(Boolean).sort((a,b)=>b.length-a.length);
-      for(const t of tokens){
-        const re=new RegExp(t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&'),'ig');
-        out=out.replace(re,m=>`<mark class="highlight">${m}</mark>`)
-      }
-      return out
-    }
-
-    function card(doc,terms){
-      const img=doc.image?`<img src="${doc.image}" alt="">`:'';
-      const dateTxt=doc.date?new Date(doc.date).toLocaleDateString():'';
-      return `
-      <article class="card">
-        <a class="card-media" href="${doc.url}">
-          ${img}
-          <span class="pill">${doc.type||''}</span>
-        </a>
-        <div class="card-body">
-          <h3 class="card-title"><a href="${doc.url}">${highlight(doc.title,terms)}</a></h3>
-          <p class="card-excerpt">${highlight(doc.excerpt||'',terms)}</p>
-          <div class="card-date">${dateTxt}</div>
-        </div>
-      </article>`
+      state.filtered=pool;state.page=1;render()
     }
 
     function render(){
-      const terms=tokenize(state.query);
-      const total=state.view.length;
-      const end=state.page*state.perPage;
-      const slice=state.view.slice(0,end);
-      resultsEl.innerHTML=slice.map(d=>card(d,terms)).join('');
-      resultsMetaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';
-      emptyEl.hidden=!!total; loadMoreBtn.hidden=end>=total||!total;
+      const total=state.filtered.length;metaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';
+      const start=(state.page-1)*state.perPage,end=state.page*state.perPage,chunk=state.filtered.slice(start,end);
+      resultsEl.innerHTML=chunk.map(r=>{
+        const img=r.image?`<div class="thumb"><img src="${r.image}" alt=""></div>`:`<div class="thumb"></div>`;
+        const date=r.date?new Date(r.date).toLocaleDateString():'';
+        return `<article class="result-item">
+          ${img}
+          <div>
+            <div class="r-head">
+              <span class="r-type">${r.type||''}</span>
+              <h3 class="r-title"><a href="${r.url}">${r.title}</a></h3>
+            </div>
+            <p class="r-excerpt">${r.excerpt||''}</p>
+            <div class="r-meta">${date}</div>
+          </div>
+        </article>`;
+      }).join('');
+      $('#emptyState').hidden=!!total;
+      renderPager(total);
     }
 
-    function populateFilters(){
-      state.tags.clear(); state.types.clear();
+    function renderPager(total){
+      const pages=Math.max(1,Math.ceil(total/state.perPage));
+      pagerEl.innerHTML='';
+      function btn(label,page,selected=false){const b=document.createElement('button');b.className='page-btn';b.textContent=label;b.setAttribute('type','button');if(selected)b.setAttribute('aria-current','page');b.addEventListener('click',()=>{state.page=page;render();syncURL()});pagerEl.appendChild(b)}
+      if(pages<=1)return;
+      btn('1',1,state.page===1);
+      const start=Math.max(2,state.page-1),end=Math.min(pages-1,state.page+1);
+      if(start>2){const span=document.createElement('span');span.textContent='…';pagerEl.appendChild(span)}
+      for(let p=start;p<=end;p++){btn(String(p),p,state.page===p)}
+      if(end<pages-1){const span=document.createElement('span');span.textContent='…';pagerEl.appendChild(span)}
+      if(pages>1){btn(String(pages),pages,state.page===pages)}
+      if(state.page<pages)btn('Next',state.page+1,false);
+    }
+
+    function populateFacets(){
+      const typeCounts=new Map(), tagCounts=new Map();
       for(const d of state.all){
-        (d.tags||[]).forEach(t=>state.tags.add(normalize(t)));
-        if(d.type)state.types.add(d.type)
+        typeCounts.set(d.type,(typeCounts.get(d.type)||0)+1);
+        for(const t of d.tags||[]){const k=normalize(t);tagCounts.set(k,(tagCounts.get(k)||0)+1)}
       }
-      typeFilterEl.innerHTML='<option value="">All</option>'+[...state.types].sort().map(t=>`<option value="${t}">${t}</option>`).join('');
-      tagChipsEl.innerHTML=[...state.tags].sort().map(t=>`<label class="chip"><input type="checkbox" value="${t}"><span>#${t}</span></label>`).join('');
+      facetTypeEl.innerHTML=[...typeCounts.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([t,c])=>{
+        const checked=state.active.types.has(t)?'checked':'';return `<label class="check"><input type="checkbox" value="${t}" ${checked}/> <span>${t} (${c})</span></label>`
+      }).join('');
+      facetTagsEl.innerHTML=[...tagCounts.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([t,c])=>{
+        const checked=state.active.tags.has(t)?'checked':'';return `<label class="check"><input type="checkbox" value="${t}" ${checked}/> <span>#${t} (${c})</span></label>`
+      }).join('');
     }
 
-    function syncFromURL(){
-      state.query=qp.get('q')||'';
-      state.type=qp.get('type')||'';
-      state.sort=qp.get('sort')||'relevance';
-      const tags=(qp.get('tags')||'').split(',').map(t=>t.trim()).filter(Boolean);
-      state.activeTags=new Set(tags.map(normalize));
-      inputEl.value=state.query; sortEl.value=state.sort; typeFilterEl.value=state.type;
+    function readURL(){
+      const p=new URLSearchParams(location.search);
+      state.query=p.get('q')||'';
+      state.type=p.get('type')||'';
+      state.sort=p.get('sort')||'newest';
+      state.perPage=parseInt(p.get('pp')||'20',10);
+      state.page=parseInt(p.get('page')||'1',10);
+      state.dateFrom=p.get('from')||'';
+      state.dateTo=p.get('to')||'';
+      const tags=(p.get('tags')||'').split(',').filter(Boolean).map(normalize);
+      state.active.tags=new Set(tags);
+      const tset=(p.get('types')||'').split(',').filter(Boolean);
+      state.active.types=new Set(tset);
+      inputEl.value=state.query;sortEl.value=state.sort;dateFromEl.value=state.dateFrom;dateToEl.value=state.dateTo;
+      $$('.tabs .tab').forEach(btn=>btn.setAttribute('aria-selected', String((btn.dataset.type||'')===state.type)));
     }
-    function syncToURL(){
+
+    function syncURL(){
       const p=new URLSearchParams();
       if(state.query)p.set('q',state.query);
       if(state.type)p.set('type',state.type);
-      if(state.sort!=='relevance')p.set('sort',state.sort);
-      if(state.activeTags.size)p.set('tags',[...state.activeTags].join(','));
+      if(state.sort!=='newest')p.set('sort',state.sort);
+      if(state.page>1)p.set('page',String(state.page));
+      if(state.perPage!==20)p.set('pp',String(state.perPage));
+      if(state.active.types.size)p.set('types',[...state.active.types].join(','));
+      if(state.active.tags.size)p.set('tags',[...state.active.tags].join(','));
+      if(state.dateFrom)p.set('from',state.dateFrom);
+      if(state.dateTo)p.set('to',state.dateTo);
       history.replaceState(null,'',`${location.pathname}?${p.toString()}`)
     }
 
     async function loadIndex(){
-      const url='/israelite-research/search-index.json?v='+(Date.now());
-      const res=await fetch(url,{cache:'no-store'});
+      const res=await fetch('/israelite-research/search-index.json?v='+(Date.now()),{cache:'no-store'});
       const json=await res.json();
-      state.all=json.map(d=>({
-        type:d.type||'Page',
-        title:d.title||'',
-        url:d.url||'#',
-        image:d.image||'',
-        date:d.date||'',
-        excerpt:d.excerpt||'',
-        tags:d.tags||[]
-      }));
-      populateFilters(); syncFromURL(); applyFiltersAndSort();
+      state.all=json.map(d=>({type:d.type||'Page',title:d.title||'',url:d.url||'#',image:d.image||'',date:d.date||'',excerpt:d.excerpt||'',tags:d.tags||[]}));
+      populateFacets(); readURL(); apply();
     }
 
-    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==inputEl){e.preventDefault();inputEl.focus()}})
-    document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()})
-    sortEl.addEventListener('change',()=>{state.sort=sortEl.value;syncToURL();applyFiltersAndSort()})
-    typeFilterEl.addEventListener('change',()=>{state.type=typeFilterEl.value;syncToURL();applyFiltersAndSort()})
-    tagChipsEl.addEventListener('change',e=>{if(e.target&&e.target.matches('input[type="checkbox"]')){const v=e.target.value; if(e.target.checked)state.activeTags.add(v);else state.activeTags.delete(v);syncToURL();applyFiltersAndSort()}})
-    inputEl.addEventListener('input',(()=>{let t;return()=>{clearTimeout(t);t=setTimeout(()=>{state.query=inputEl.value.trim();syncToURL();applyFiltersAndSort()},250)}})())
-    loadMoreBtn.addEventListener('click',()=>{state.page++;render()})
+    document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();state.page=1;syncURL();apply()});
+    sortEl.addEventListener('change',()=>{state.sort=sortEl.value;state.page=1;syncURL();apply()});
+    document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;state.type=b.dataset.type||'';$$('.tabs .tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');state.page=1;syncURL();apply()});
+    facetTypeEl.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')){const v=e.target.value;if(e.target.checked)state.active.types.add(v);else state.active.types.delete(v);state.page=1;syncURL();apply()}});
+    facetTagsEl.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')){const v=normalize(e.target.value);if(e.target.checked)state.active.tags.add(v);else state.active.tags.delete(v);state.page=1;syncURL();apply()}});
+    dateFromEl.addEventListener('change',()=>{state.dateFrom=dateFromEl.value;state.page=1;syncURL();apply()});
+    dateToEl.addEventListener('change',()=>{state.dateTo=dateToEl.value;state.page=1;syncURL();apply()});
+    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==inputEl){e.preventDefault();inputEl.focus()}});
 
     loadIndex();
   </script>
