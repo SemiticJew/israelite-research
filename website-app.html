@@ -157,8 +157,19 @@ a{color:#054A91}
 
 <main class="container">
   <header class="hero">
-    <h1 class="title">Website App</h1>
-    <p class="sub">Install this site as an app for quick access to articles, podcasts, and devotionals.</p>
+  <h1 class="title">Website App</h1>
+  <p class="sub">Install this site as an app for quick access to articles, podcasts, and devotionals.</p>
+
+  <!-- Install Banner moved here -->
+  <div id="install-banner" style="display:none; margin-top:16px;">
+    <div style="border:1px solid #e6ebf2;background:#ffffff;border-radius:12px;padding:10px 12px;box-shadow:0 6px 24px rgba(0,0,0,.08);">
+      <div style="color:#0b2340;font-weight:800;margin-bottom:8px;">Install the Semitic Jew Website App</div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:flex-start;">
+        <button id="btn-install" class="btn" type="button">Install</button>
+        <button id="btn-dismiss" class="btn" type="button" aria-label="Dismiss">Dismiss</button>
+      </div>
+    </div>
+  </div>
   </header>
 
   <section class="section">
@@ -413,10 +424,6 @@ a{color:#054A91}
 </footer>
 </div>
 
-<div id="install-banner" style="display:none; position:sticky; bottom:12px; z-index:50;">
-  <div style="max-width:960px;margin:0 auto;padding:0 16px;">
-    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #e6ebf2;background:#ffffff;border-radius:12px;padding:10px 12px;box-shadow:0 6px 24px rgba(0,0,0,.08);">
-      <div style="color:#0b2340;font-weight:800;">Install the Semitic Jew Website App</div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button id="btn-install" class="btn" type="button">Install</button>
         <button id="btn-dismiss" class="btn" type="button" aria-label="Dismiss">Dismiss</button>
