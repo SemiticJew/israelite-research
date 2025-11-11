@@ -3,7 +3,42 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Website App — Semitic Jew</title>
+<title>Website App — Semitic Jew\1<!-- SEO -->
+<meta name="description" content="Install this site as an app for quick access to articles, podcasts, and devotionals." />
+<link rel="canonical" href="https://semiticjew.github.io/israelite-research/website-app.html" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Website App — Semitic Jew" />
+<meta property="og:description" content="Install this site as an app for quick access to articles, podcasts, and devotionals." />
+<meta property="og:url" content="https://semiticjew.github.io/israelite-research/website-app.html" />
+<meta property="og:image" content="https://semiticjew.github.io/israelite-research/images/og-app-preview-1200x630.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Website App — Semitic Jew" />
+<meta name="twitter:description" content="Install this site as an app for quick access to articles, podcasts, and devotionals." />
+<meta name="twitter:image" content="https://semiticjew.github.io/israelite-research/images/og-app-preview-1200x630.jpg" />
+
+<!-- PWA -->
+<link rel="manifest" href="/israelite-research/manifest.webmanifest" />
+<meta name="theme-color" content="#054A91" />
+
+<!-- JSON-LD: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Semitic Jew (Website App)",
+  "applicationCategory": "EducationApplication",
+  "operatingSystem": "Any",
+  "url": "https://semiticjew.github.io/israelite-research/website-app.html",
+  "publisher": { "@type": "Organization", "name": "Semitic Jew" },
+  "description": "Install this site as an app for quick access to articles, podcasts, and devotionals."
+}
+</script>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
   :root{ --accent:#F17300; --ink:#0b2340; --muted:#6b7280; --sky:#e7ecf4; --brand:#054A91; }
@@ -33,21 +68,82 @@
   <section class="section">
     <div class="card">
       <h2 class="h2">Install steps (PWA)</h2>
-      <ol class="steps p">
-        <li>Open this site in Chrome (Android/desktop) or Safari (iOS).</li>
-        <li>Use the “Add to Home Screen” / “Install App” option.</li>
-        <li>Launch from your home screen—offline caching supported for recent pages.</li>
-      </ol>
-      <img class="img" alt="Website App Preview" src="/israelite-research/images/index/website-app-700x394.jpg"/>
+      <ol class="steps p step-ios" style="display:none;">
+  <li>Open this site in Safari on iPhone/iPad.</li>
+  <li>Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>.</li>
+  <li>Launch from your Home Screen.</li>
+</ol>
+<ol class="steps p step-android" style="display:none;">
+  <li>Open this site in Chrome on Android.</li>
+  <li>Tap the menu (<strong>⋮</strong>) → <strong>Install App</strong> or <strong>Add to Home screen</strong>.</li>
+  <li>Launch from your app list or Home Screen.</li>
+</ol>
+<ol class="steps p step-desktop" style="display:none;">
+  <li>Open this site in Chrome/Edge.</li>
+  <li>Click the <strong>Install</strong> icon in the address bar, or use the browser menu → <strong>Install</strong>.</li>
+  <li>Launch from your OS app launcher.</li>
+</ol>
+      <div class="img" style="display:flex;align-items:center;justify-content:center;flex-direction:column;"><svg width="72" height="72" viewBox="0 0 24 24" aria-hidden="true" style="color:#0b2340;margin-bottom:12px;"><circle cx="6" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="18" cy="7" r="1.5" fill="currentColor"/><path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><div style="font-weight:900;font-size:1.6rem;letter-spacing:.03em;color:#0b2340;">Semitic Jew</div></div>
     </div>
   </section>
 
   <section class="section">
-    <a class="btn" href="/israelite-research/index.html">← Back to Home</a>
-  </section>
+  <a class="btn" href="/israelite-research/index.html">← Back to Home</a>
+  <a class="btn" href="/israelite-research/bible-app.html">Bible App</a>
+</section>
 </main>
 
 <div id="site-footer"></div>
 <script src="/israelite-research/js/include.js"></script>
+<div id="install-banner" style="display:none; position:sticky; bottom:12px; z-index:50;">
+  <div style="max-width:960px;margin:0 auto;padding:0 16px;">
+    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #e6ebf2;background:#ffffff;border-radius:12px;padding:10px 12px;box-shadow:0 6px 24px rgba(0,0,0,.08);">
+      <div style="color:#0b2340;font-weight:800;">Install the Semitic Jew Website App</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="btn-install" class="btn" type="button">Install</button>
+        <button id="btn-dismiss" class="btn" type="button" aria-label="Dismiss">Dismiss</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const banner = document.getElementById('install-banner');
+  const btnInstall = document.getElementById('btn-install');
+  const btnDismiss = document.getElementById('btn-dismiss');
+
+  // Show platform-specific steps
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /Android/.test(ua);
+  function show(sel){ document.querySelectorAll(sel).forEach(x=>x.style.display='block'); }
+  function hide(sel){ document.querySelectorAll(sel).forEach(x=>x.style.display='none'); }
+  hide('.step-ios,.step-android,.step-desktop');
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    // already installed
+  } else if (isIOS) {
+    show('.step-ios');
+  } else if (isAndroid) {
+    show('.step-android');
+  } else {
+    show('.step-desktop');
+  }
+
+  // Install prompt (Android/desktop)
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); deferredPrompt = e;
+    banner.style.display = 'block';
+  });
+  btnInstall && btnInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    banner.style.display = 'none';
+    deferredPrompt = null;
+  });
+  btnDismiss && btnDismiss.addEventListener('click', () => banner.style.display = 'none');
+})();
+</script>
 </body>
 </html>
