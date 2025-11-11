@@ -98,16 +98,28 @@
   .btn:hover{ border-color:#dbe4f2; }
   .btn svg{ width:16px; height:16px; }
   /* --- Get Apps compact overrides --- */
-  #apps .tile{ border-radius:12px; }
-  #apps .tile img{ aspect-ratio:16/9; max-height:180px; object-fit:cover; }
-  #apps .tile .tile-body{ padding:12px 14px 14px; }
-  #apps .tile .tile-title{ font-size:1rem; }
-  #apps .tile .tile-desc{ font-size:.95rem; line-height:1.5; }
-  /* --- Get Apps: header band (crown + name) --- */
-  #apps .tile .app-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--card-border,#e9eef6);background:#fffaf6;}
-  #apps .tile .app-head svg{width:28px;height:28px;color:#0b2340;}
-  #apps .tile .app-head .app-name{font-weight:900;letter-spacing:.02em;color:#0b2340;}
-  #apps .tile img{aspect-ratio:16/9;max-height:170px;object-fit:cover;}
+  /* --- Get Apps cards: structured + compact --- */
+  #apps .app-card{display:flex;flex-direction:column;border:1px solid var(--card-border);border-radius:14px;overflow:hidden;background:#fff;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  #apps .app-card:hover{transform:translateY(-2px);border-color:#dbe4f2;box-shadow:0 10px 24px rgba(0,0,0,.08);}
+  #apps .app-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--card-border);background:#fffaf6;}
+  #apps .app-head svg{width:28px;height:28px;color:var(--ink);}
+  #apps .app-name{font-weight:900;letter-spacing:.02em;color:var(--ink);}
+  #apps .app-media{display:flex;align-items:center;justify-content:center;min-height:140px;padding:18px;background:#f7f9fc;}
+  #apps .app-media svg{width:64px;height:64px;color:var(--ink);opacity:.9;}
+  #apps .tile-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;}
+  #apps .tile-title{font-size:1rem;font-weight:900;color:var(--ink);line-height:1.3;}
+  #apps .tile-desc{font-size:.95rem;color:var(--muted);line-height:1.5;}
+  /* --- Get Apps cards: structured + compact --- */
+  #apps .app-card{display:flex;flex-direction:column;border:1px solid var(--card-border);border-radius:14px;overflow:hidden;background:#fff;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  #apps .app-card:hover{transform:translateY(-2px);border-color:#dbe4f2;box-shadow:0 10px 24px rgba(0,0,0,.08);}
+  #apps .app-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--card-border);background:#fffaf6;}
+  #apps .app-head svg{width:28px;height:28px;color:var(--ink);}
+  #apps .app-name{font-weight:900;letter-spacing:.02em;color:var(--ink);}
+  #apps .app-media{display:flex;align-items:center;justify-content:center;min-height:140px;padding:18px;background:#f7f9fc;}
+  #apps .app-media svg{width:64px;height:64px;color:var(--ink);opacity:.9;}
+  #apps .tile-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;}
+  #apps .tile-title{font-size:1rem;font-weight:900;color:var(--ink);line-height:1.3;}
+  #apps .tile-desc{font-size:.95rem;color:var(--muted);line-height:1.5;}
 </style>
 </head>
 <body>
@@ -268,42 +280,27 @@
       <h2 class="section-title">Get Apps</h2>
     </div>
     <div class="grid-2">
-      <a class="tile tile--compact" href="/israelite-research/bible-app.html">
+      <a class="app-card" href="/israelite-research/bible-app.html">
         <div class="app-head">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="18" cy="7" r="1.5" fill="currentColor"/><path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <div class="app-name">Semitic Jew</div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 0;background:#f9fafb;">
-          <svg width="72" height="72" viewBox="0 0 24 24" aria-hidden="true" style="color:#0b2340;margin-bottom:12px;">
-            <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-            <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-            <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-            <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <div style="font-weight:900;font-size:1.75rem;letter-spacing:.03em;color:#0b2340;margin-top:10px;">Semitic Jew</div>
+        <div class="app-media">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3" width="11" height="18" rx="2.2" ry="2.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1" fill="currentColor"/></svg>
         </div>
         <div class="tile-body">
           <div class="tile-title">Bible App</div>
           <div class="tile-desc">Read plans, search passages, and keep notes across devices.</div>
         </div>
       </a>
-      <a class="tile tile--compact" href="/israelite-research/website-app.html">
+      <a class="app-card" href="/israelite-research/website-app.html">
         <div class="app-head">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="1.5" fill="currentColor"/><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="18" cy="7" r="1.5" fill="currentColor"/><path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <div class="app-name">Semitic Jew</div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;padding:30px 0;">
-          <svg width="72" height="72" viewBox="0 0 24 24" aria-hidden="true" style="color:#0b2340;margin-bottom:12px;">
-            <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-            <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-            <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-            <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <div style="font-weight:900;font-size:1.6rem;letter-spacing:.03em;color:#0b2340;">Semitic Jew</div>
+        <div class="app-media">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="1.8" ry="1.8" fill="none" stroke="currentColor" stroke-width="2"/><rect x="8" y="19" width="8" height="1.5" rx="0.75" fill="currentColor"/></svg>
         </div>
-        <img alt="Website App" src="/israelite-research/images/index/website-app-700x394.jpg"/>
         <div class="tile-body">
           <div class="tile-title">Website App</div>
           <div class="tile-desc">Try the new in-browser app experience — optimized for fast reading and study.</div>
