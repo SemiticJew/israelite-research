@@ -1,242 +1,59 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Media — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
-<style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Media — Semitic Jew</title>
+  <link href="/israelite-research/styles.css" rel="stylesheet"/>
+  <style>
     .media-page .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
-    .media-page .page-header{ padding:24px 0 8px; }
-    .media-page .page-title{ margin:0; font-size:2rem; font-weight:800; color:#0b2340; }
+    .hero{ padding:32px 0; }
+    .hero h1{ font-size:2.2rem; margin-bottom:10px; color:#0b2340; }
+    .hero p{ max-width:720px; color:#374151; font-size:1.05rem; }
 
-    /* Filters */
-    .filters{ display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 18px; }
-    .filter-btn{
-      padding:.5rem .8rem; border:1px solid #d9e1ec; background:#fff; border-radius:999px;
-      cursor:pointer; font-weight:700; font-size:.95rem;
-    }
-    .filter-btn[aria-pressed="true"]{ background:#054A91; color:#fff; border-color:#054A91; }
-
-    /* Cards grid */
-    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px; margin-top:10px; }
+    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap:24px; margin-top:24px; }
     .card{
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px; overflow:hidden;
-      display:flex; flex-direction:column; box-shadow:0 2px 10px rgba(0,0,0,.05);
+      background:#fff; border:1px solid #e6ebf2; border-radius:14px; overflow:hidden;
+      box-shadow:0 4px 14px rgba(0,0,0,.06);
     }
-    .thumb{ width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-    .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
-    .title{ margin:0; font-size:1.05rem; font-weight:700; color:#0b2340; line-height:1.35; }
-    .meta{ color:#6b7280; font-size:.9rem; }
+    .thumb{ width:100%; aspect-ratio:16/9; object-fit:cover; }
+    .card-body{ padding:16px; }
+    .title{ font-size:1.25rem; font-weight:800; color:#0b2340; margin:0 0 6px; }
+    .meta{ color:#6b7280; margin-bottom:10px; }
     .tag{ display:inline-block; background:#eef3fa; border:1px solid #e6ebf2;
-      color:#054A91; font-weight:600; font-size:.8rem; padding:.2rem .45rem; border-radius:6px; }
-
-    /* Coming soon */
-    .soon{ position:relative; background:#f6f8fc; display:flex; align-items:center; justify-content:center; }
-    .soon::after{
-      content:"Coming Soon"; position:absolute; inset:auto 8px 8px auto;
-      background:rgba(0,0,0,.6); color:#fff; font-size:.8rem; font-weight:700;
-      padding:.25rem .45rem; border-radius:4px;
-    }
-    .soon svg{ width:48px; height:48px; opacity:.35; }
+      color:#054A91; font-weight:700; font-size:.85rem; padding:.25rem .5rem; border-radius:6px; }
   </style>
 </head>
+
 <body class="media-page">
-<!-- Header partial -->
 <div id="site-header"></div>
+
 <main>
-<!-- Simple title -->
-<section class="container">
-<!-- Filters -->
-<div aria-label="Media filters" class="filters" role="tablist">
-<button aria-pressed="true" class="filter-btn" data-filter="all">All</button>
-<button aria-pressed="false" class="filter-btn" data-filter="torah">Torah</button>
-<button aria-pressed="false" class="filter-btn" data-filter="prophets">Prophets</button>
-<button aria-pressed="false" class="filter-btn" data-filter="writings">Writings</button>
-<button aria-pressed="false" class="filter-btn" data-filter="apostolic">Apostolic Writings</button>
-<button aria-pressed="false" class="filter-btn" data-filter="themes">Themes</button>
-</div>
-<!-- Cards -->
-<div class="grid">
-<!-- ===== Apostolic Writings ===== -->
-<article class="card" data-cat="apostolic">
-<img alt="Matthew" class="thumb" src="/israelite-research/images/media/matthew-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Matthew — Lecture Overview</h3>
-<div class="meta">Lecture · Gospel Account</div>
-<span class="tag">Apostolic Writings</span>
-</div>
-</article>
-<article class="card" data-cat="apostolic">
-<img alt="Mark" class="thumb" src="/israelite-research/images/media/mark-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Mark — Lecture Overview</h3>
-<div class="meta">Lecture · Gospel Account</div>
-<span class="tag">Apostolic Writings</span>
-</div>
-</article>
-<article class="card" data-cat="apostolic">
-<img alt="Luke" class="thumb" src="/israelite-research/images/media/luke-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Luke — Lecture Overview</h3>
-<div class="meta">Lecture · Gospel Account</div>
-<span class="tag">Apostolic Writings</span>
-</div>
-</article>
-<article class="card" data-cat="apostolic">
-<img alt="The Book of Luke" class="thumb" src="/israelite-research/images/media/book-luke-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">The Book of Luke — Lecture Series</h3>
-<div class="meta">Lecture Series</div>
-<span class="tag">Apostolic Writings</span>
-</div>
-</article>
-<!-- ===== Torah ===== -->
-<article class="card" data-cat="torah">
-<img alt="Genesis" class="thumb" src="/israelite-research/images/media/genesis-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Genesis — Lecture Overview</h3>
-<div class="meta">Lecture · Torah</div>
-<span class="tag">Torah</span>
-</div>
-</article>
-<article class="card" data-cat="torah">
-<img alt="Exodus" class="thumb" src="/israelite-research/images/media/exodus-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Exodus — Lecture Overview</h3>
-<div class="meta">Lecture · Torah</div>
-<span class="tag">Torah</span>
-</div>
-</article>
-<article class="card" data-cat="torah">
-<img alt="Leviticus" class="thumb" src="/israelite-research/images/media/leviticus-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Leviticus — Lecture Overview</h3>
-<div class="meta">Lecture · Torah</div>
-<span class="tag">Torah</span>
-</div>
-</article>
-<article class="card" data-cat="torah">
-<img alt="Numbers" class="thumb" src="/israelite-research/images/media/numbers-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Numbers — Lecture Overview</h3>
-<div class="meta">Lecture · Torah</div>
-<span class="tag">Torah</span>
-</div>
-</article>
-<article class="card" data-cat="torah">
-<img alt="Deuteronomy" class="thumb" src="/israelite-research/images/media/deuteronomy-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Deuteronomy — Lecture Overview</h3>
-<div class="meta">Lecture · Torah</div>
-<span class="tag">Torah</span>
-</div>
-</article>
-<!-- ===== Prophets (Former) ===== -->
-<article class="card" data-cat="prophets">
-<img alt="Joshua" class="thumb" src="/israelite-research/images/media/joshua-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Joshua — Lecture Overview</h3>
-<div class="meta">Lecture · Former Prophets</div>
-<span class="tag">Prophets</span>
-</div>
-</article>
-<article class="card" data-cat="prophets">
-<img alt="Judges" class="thumb" src="/israelite-research/images/media/judges-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Judges — Lecture Overview</h3>
-<div class="meta">Lecture · Former Prophets</div>
-<span class="tag">Prophets</span>
-</div>
-</article>
-<article class="card" data-cat="prophets">
-<img alt="1–2 Samuel" class="thumb" src="/israelite-research/images/media/samuel-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">1–2 Samuel — Lecture Overview</h3>
-<div class="meta">Lecture · Former Prophets</div>
-<span class="tag">Prophets</span>
-</div>
-</article>
-<article class="card" data-cat="prophets">
-<img alt="1–2 Kings" class="thumb" src="/israelite-research/images/media/kings-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">1–2 Kings — Lecture Overview</h3>
-<div class="meta">Lecture · Former Prophets</div>
-<span class="tag">Prophets</span>
-</div>
-</article>
-<!-- ===== Writings ===== -->
-<article class="card" data-cat="writings">
-<img alt="Ruth" class="thumb" src="/israelite-research/images/media/ruth-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Ruth — Lecture Overview</h3>
-<div class="meta">Lecture · Writings</div>
-<span class="tag">Writings</span>
-</div>
-</article>
-<article class="card" data-cat="writings">
-<img alt="1–2 Chronicles" class="thumb" src="/israelite-research/images/media/chronicles-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">1–2 Chronicles — Lecture Overview</h3>
-<div class="meta">Lecture · Writings</div>
-<span class="tag">Writings</span>
-</div>
-</article>
-<article class="card" data-cat="writings">
-<img alt="Ezra" class="thumb" src="/israelite-research/images/media/ezra-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Ezra — Lecture Overview</h3>
-<div class="meta">Lecture · Writings</div>
-<span class="tag">Writings</span>
-</div>
-</article>
-<article class="card" data-cat="writings">
-<img alt="Nehemiah" class="thumb" src="/israelite-research/images/media/nehemiah-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Nehemiah — Lecture Overview</h3>
-<div class="meta">Lecture · Writings</div>
-<span class="tag">Writings</span>
-</div>
-</article>
-<article class="card" data-cat="writings">
-<img alt="Job" class="thumb" src="/israelite-research/images/media/job-700x394.jpg"/>
-<div class="card-body">
-<h3 class="title">Job — Lecture Overview</h3>
-<div class="meta">Lecture · Wisdom (Writings)</div>
-<span class="tag">Writings</span>
-</div>
-</article>
-<!-- ===== Themes (placeholder example) ===== -->
-<article class="card" data-cat="themes">
-<div aria-label="Coming Soon" class="thumb soon" role="img">
-<svg aria-hidden="true" fill="currentColor" viewbox="0 0 24 24">
-<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5v6h5v2h-7V7h2z"></path>
-</svg>
-</div>
-<div class="card-body">
-<h3 class="title">Temple &amp; Kingdom — Lecture Series</h3>
-<div class="meta">Lecture Series · Themes</div>
-<span class="tag">Themes</span>
-</div>
-</article>
-</div>
-</section>
+  <section class="container hero">
+    <h1>Media Projects</h1>
+    <p>
+      Curated teaching series and long-form media projects designed to present
+      Scripture as a single, continuous, historical record of the Israelites.
+    </p>
+
+    <div class="grid">
+      <!-- Bible Summaries (Flagship Project) -->
+      <article class="card">
+        <a href="/israelite-research/bible-summaries.html" style="text-decoration:none;color:inherit;">
+          <img class="thumb" src="/israelite-research/images/media/bible-summaries-700x394.jpg"
+               alt="Bible Summaries"/>
+          <div class="card-body">
+            <h2 class="title">Bible Summaries</h2>
+            <div class="meta">Book-by-Book Video Summaries · Full Canon</div>
+            <span class="tag">Featured Project</span>
+          </div>
+        </a>
+      </article>
+    </div>
+  </section>
 </main>
-<!-- Footer partial -->
+
 <div id="site-footer"></div>
 <script src="/israelite-research/js/include.js"></script>
-<script>
-    // Filter logic with aria-pressed state
-    (function(){
-      const buttons = Array.from(document.querySelectorAll('.filter-btn'));
-      const cards = Array.from(document.querySelectorAll('.grid [data-cat]'));
-      function setFilter(key){
-        buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === key)));
-        cards.forEach(el => { el.style.display = (key === 'all' || el.dataset.cat === key) ? '' : 'none'; });
-      }
-      buttons.forEach(b => b.addEventListener('click', () => setFilter(b.dataset.filter)));
-      setFilter('all');
-    })();
-  </script>
+</body>
 </html>
