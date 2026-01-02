@@ -5,27 +5,72 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Bible Summaries — Semitic Jew</title>
   <link href="/israelite-research/styles.css" rel="stylesheet"/>
+
   <style>
     .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+
     h1{ margin:24px 0 8px; color:#0b2340; }
-    h2{ margin-top:36px; color:#054A91; }
+    h2{ margin-top:40px; color:#054A91; }
 
-    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:18px; margin-top:14px; }
+    .intro{
+      max-width:780px;
+      color:#374151;
+      font-size:1.05rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      gap:22px;
+      margin-top:16px;
+    }
+
     .card{
-      background:#fff; border:1px solid #e6ebf2; border-radius:12px; overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.05);
+      background:#fff;
+      border:1px solid #e6ebf2;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 4px 14px rgba(0,0,0,.06);
     }
-    .thumb{ width:100%; aspect-ratio:16/9; object-fit:cover; }
 
-    .soon{ position:relative; background:#f6f8fc; display:flex; align-items:center; justify-content:center; height:140px; }
+    .card-body{
+      padding:14px 16px;
+    }
+
+    .title{
+      margin:0;
+      font-weight:800;
+      color:#0b2340;
+    }
+
+    iframe{
+      width:100%;
+      aspect-ratio:16/9;
+      border:0;
+      display:block;
+    }
+
+    .soon{
+      position:relative;
+      background:#f6f8fc;
+      height:150px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
     .soon::after{
-      content:"Coming Soon"; position:absolute; bottom:8px; right:8px;
-      background:rgba(0,0,0,.65); color:#fff; font-size:.8rem; font-weight:700;
-      padding:.25rem .45rem; border-radius:4px;
+      content:"Coming Soon";
+      position:absolute;
+      bottom:8px;
+      right:8px;
+      background:rgba(0,0,0,.65);
+      color:#fff;
+      font-size:.8rem;
+      font-weight:700;
+      padding:.25rem .45rem;
+      border-radius:4px;
     }
-
-    .card-body{ padding:10px 12px; }
-    .title{ font-weight:700; color:#0b2340; margin:0; }
   </style>
 </head>
 
@@ -34,7 +79,7 @@
 
 <main class="container">
   <h1>Bible Summaries</h1>
-  <p>
+  <p class="intro">
     A complete, book-by-book video summary of the Scriptures,
     following the Hebrew canon order and extending through the New Testament.
   </p>
@@ -86,17 +131,26 @@
   <!-- NEW TESTAMENT -->
   <h2>New Testament</h2>
   <div class="grid">
-    <a class="card" href="https://youtu.be/oIu_IlQpLCQ" target="_blank"><div class="card-body"><p class="title">Matthew</p></div></a>
-    <a class="card" href="https://youtu.be/67Hc_dkyUuA" target="_blank"><div class="card-body"><p class="title">Mark</p></div></a>
-    <a class="card" href="https://youtu.be/kugzKf0SKCQ" target="_blank"><div class="card-body"><p class="title">Luke</p></div></a>
-    <a class="card" href="https://youtu.be/D-nHbF7f2Bs" target="_blank"><div class="card-body"><p class="title">John</p></div></a>
-    <a class="card" href="https://youtu.be/WFucBwWd0mQ" target="_blank"><div class="card-body"><p class="title">Acts</p></div></a>
-    <a class="card" href="https://youtu.be/8IRSTGcV8K0" target="_blank"><div class="card-body"><p class="title">Romans</p></div></a>
-    <a class="card" href="https://youtu.be/qMNBYK-2gL0" target="_blank"><div class="card-body"><p class="title">1 Corinthians</p></div></a>
-    <a class="card" href="https://youtu.be/o9ybbLFWVxU" target="_blank"><div class="card-body"><p class="title">2 Corinthians</p></div></a>
-    <a class="card" href="https://youtu.be/IGCjOYmXPjE" target="_blank"><div class="card-body"><p class="title">Galatians</p></div></a>
-    <a class="card" href="https://youtu.be/29XaFokGz0U" target="_blank"><div class="card-body"><p class="title">Philippians</p></div></a>
-    <a class="card" href="https://youtu.be/O03dG1KNVsI" target="_blank"><div class="card-body"><p class="title">Colossians</p></div></a>
+
+    <!-- Matthew (Embedded) -->
+    <div class="card">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/oIu_IlQpLCQ"
+        title="Matthew — Bible Summary"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+      <div class="card-body">
+        <p class="title">Matthew</p>
+      </div>
+    </div>
+
+    <!-- Coming Soon NT -->
+    <div class="card"><div class="soon"></div><div class="card-body"><p class="title">Mark</p></div></div>
+    <div class="card"><div class="soon"></div><div class="card-body"><p class="title">Luke</p></div></div>
+    <div class="card"><div class="soon"></div><div class="card-body"><p class="title">John</p></div></div>
+    <div class="card"><div class="soon"></div><div class="card-body"><p class="title">Acts</p></div></div>
+    <div class="card"><div class="soon"></div><div class="card-body"><p class="title">Romans</p></div></div>
   </div>
 
 </main>
