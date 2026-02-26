@@ -14,27 +14,12 @@ img { max-width: 100%; display: block; }
    Root Variables
 ------------------------------ */
 :root{
-  /* Brand palette */
-  --blue-900:#054A91;
-  --blue-700:#3E7CB1;
-  --blue-400:#81A4CD;
-  --blue-100:#DBE4EE;
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --muted:#6b7280;
   --accent:#F17300;
-  --ink:#0B2340;
-
-  /* Neutrals */
-  --ink-900:#111;
-  --ink-700:#333;
-  --ink-600:#444;
-  --ink-500:#555;
-  --ink-400:#666;
-  --ink-300:#888;
-  --ink-200:#aaa;
-  --ink-100:#ddd;
-  --paper:#fff;
-:root {
-  --header-h: 72px;        /* single source of truth for header height */
-  --container-w: 1200px;   /* keep header width consistent site-wide */
+  --border:#e6ebf2;
 }
 
 /* Global header */
@@ -1273,8 +1258,12 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 
 /* --- Global Nav Thickness & Consistency (override) --- */
 :root{
-  --nav-height: 72px;      /* unified bar height */
-  --nav-pad-y: 14px;       /* slightly thicker top/bottom padding */
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --muted:#6b7280;
+  --accent:#F17300;
+  --border:#e6ebf2;
 }
 
 .site-header{
@@ -1517,16 +1506,12 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
 .diet-hover-foot{ margin-top:.35rem; font-size:.85rem; color:var(--muted); }
 /* === THEME: light/dark support === */
 :root{
-  color-scheme: light dark;
   --bg:#ffffff;
   --surface:#ffffff;
   --ink:#0b2340;
   --muted:#6b7280;
-  --blue:#054A91;
   --accent:#F17300;
   --border:#e6ebf2;
-  --shadow:0 2px 8px rgba(0,0,0,.06);
-  --shadow-hover:0 10px 20px rgba(0,0,0,.12);
 }
 [data-theme="dark"]{
   /* Higher specificity than :root so it overrides page-level :root blocks */
@@ -1573,16 +1558,12 @@ a{color:var(--blue);}
 
 /* === THEME: light/dark support === */
 :root{
-  color-scheme: light dark;
   --bg:#ffffff;
   --surface:#ffffff;
   --ink:#0b2340;
   --muted:#6b7280;
-  --blue:#054A91;
   --accent:#F17300;
   --border:#e6ebf2;
-  --shadow:0 2px 8px rgba(0,0,0,.06);
-  --shadow-hover:0 10px 20px rgba(0,0,0,.12);
 }
 [data-theme="dark"]{
   --bg:#0b1220;
@@ -1826,25 +1807,12 @@ button:hover, .btn:hover, .icon-btn:hover, .theme-toggle:hover {
 .page-header{display:none !important;}
 /* ===== SITE PALETTE (LIGHT/DARK) — single source of truth ===== */
 :root{
-  color-scheme: light dark;
-
-  /* BRAND + UTIL */
-  --brand:#054A91;      /* Navy Blue */
-  --white:#FFFFFF;
-  --black:#000000;
-  --teal:#009B77;       /* Teal Green (utility) */
-
-  /* LIGHT MODE */
-  --bg:#DBE4EE;         /* Light Gray-Blue page background */
-  --surface:#FFFFFF;    /* White cards/header/footer surfaces */
-  --ink:#000000;        /* Primary text */
-  --muted:#6B7280;      /* Slate Gray secondary text */
-  --blue:#3E7CB1;       /* Medium Blue links/actions */
-  --accent:#F17300;     /* Orange Accent (buttons/highlights) */
-  --border:#81A4CD;     /* Soft Blue borders/dividers */
-
-  --shadow:0 2px 8px rgba(0,0,0,.06);
-  --shadow-hover:0 10px 20px rgba(0,0,0,.12);
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --muted:#6b7280;
+  --accent:#F17300;
+  --border:#e6ebf2;
 }
 
 [data-theme="dark"]{
@@ -3032,34 +3000,12 @@ html[data-theme="dark"] #chapter-root .btn-ghost{
 /* styles-theme.css */
 /* Base scale: all components should read from these tokens */
 :root{
-  /* Core brand palette (your colors) */
-  --brand-900:#0b2340; /* ink navy */
-  --brand-800:#054A91; /* deep brand blue */
-  --brand-700:#3E7CB1; /* medium steel blue */
-  --brand-400:#81A4CD; /* pale blue */
-  --brand-100:#DBE4EE; /* light sky */
-  --accent-600:#F17300; /* accent orange */
-  --earth-700:#2E5339; /* deep earthy green (new) */
-  --neutral-0:#ffffff;
-  --neutral-100:#f6f8fb;
-  --neutral-900:#000000;
-  --dark-ink:#0b1220;   /* dark-mode candidate */
-
-  /* Semantic tokens (components use THESE) */
-  --bg: var(--neutral-0);
-  --surface: #ffffff;
-  --surface-2: #ffffff;
-  --text: var(--brand-900);
-  --muted: #6b7280;
-  --link: var(--brand-800);
-  --link-hover: var(--brand-700);
-  --primary: var(--brand-800);
-  --primary-contrast: #ffffff;
-  --accent: var(--accent-600);
-  --accent-contrast: #ffffff;
-  --success: var(--earth-700);
-  --border: #e6ebf2;
-  --ring: color-mix(in oklab, var(--primary), #000 15%);
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --muted:#6b7280;
+  --accent:#F17300;
+  --border:#e6ebf2;
 }
 
 /* Theme variants (toggle by setting [data-theme="..."] on <html>) */
@@ -3262,12 +3208,12 @@ hr{border:0;border-top:1px solid var(--border)}
 }
 /* ===== Base Theme Vars ===== */
 :root{
+  --bg:#ffffff;
+  --surface:#ffffff;
   --ink:#0b2340;
-  --accent:#F17300;
-  --brand:#054A91;
   --muted:#6b7280;
-  --sky:#DBE4EE;
-  --white:#fff;
+  --accent:#F17300;
+  --border:#e6ebf2;
 }
 
 /* ===== Layout ===== */
@@ -3870,10 +3816,12 @@ svg circle.region--active {
 
 /* === GLOBAL THEME VARIABLES === */
 :root{
+  --bg:#ffffff;
   --surface:#ffffff;
   --ink:#0b2340;
-  --border:#e6ebf2;
+  --muted:#6b7280;
   --accent:#F17300;
+  --border:#e6ebf2;
 }
 
 html[data-theme="dark"]{
@@ -4033,12 +3981,12 @@ html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
 
 /* === GLOBAL THEME SYSTEM === */
 :root{
+  --bg:#ffffff;
   --surface:#ffffff;
   --ink:#0b2340;
-  --border:#e6ebf2;
   --muted:#6b7280;
   --accent:#F17300;
-  --bg:#ffffff;
+  --border:#e6ebf2;
 }
 
 html[data-theme=\"dark\"]{
