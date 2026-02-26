@@ -1,30 +1,34 @@
 document.addEventListener("DOMContentLoaded", function(){
-  const html = document.documentElement;
-  const toggle = document.getElementById("theme-toggle");
-  const logo = document.getElementById("site-logo");
 
-  if(!toggle) return;
+  function initializeThemeToggle(){
+    const html = document.documentElement;
+    const logo = document.getElementById("site-logo");
+    const buttons = document.querySelectorAll(".theme-btn");
 
-  const saved = localStorage.getItem("theme") || "light";
-  html.setAttribute("data-theme", saved);
+    if(buttons.length === 0) return;
 
-  if(logo){
-    logo.src = saved === "dark"
-      ? "/israelite-research/images/white-logo-letters.png"
-      : "/israelite-research/images/black-logo-letters.png";
+    function applyTheme(theme){
+      html.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+
+      if(logo){
+        logo.src = theme === "dark"
+          ? "/israelite-research/images/white-logo-letters.png"
+          : "/israelite-research/images/black-logo-letters.png";
+      }
+    }
+
+    const saved = localStorage.getItem("theme") || "light";
+    applyTheme(saved);
+
+    buttons.forEach(btn=>{
+      btn.addEventListener("click", function(){
+        applyTheme(btn.dataset.theme);
+      });
+    });
   }
 
-  toggle.addEventListener("click", function(){
-    const current = html.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
+  // Delay slightly to allow header include to finish
+  setTimeout(initializeThemeToggle, 200);
 
-    html.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-
-    if(logo){
-      logo.src = next === "dark"
-        ? "/israelite-research/images/white-logo-letters.png"
-        : "/israelite-research/images/black-logo-letters.png";
-    }
-  });
 });
