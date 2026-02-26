@@ -3889,3 +3889,38 @@ html[data-theme="dark"]{
 
 html[data-theme="dark"] .moon-icon { display:none; }
 html[data-theme="dark"] .sun-icon  { display:block; }
+
+
+/* === Dual Theme Buttons === */
+
+.theme-toggle-group{
+  display:flex;
+  gap:8px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px;
+}
+
+.theme-btn{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:none;
+  background:transparent;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.theme-btn:hover{
+  background:rgba(0,0,0,.06);
+}
+
+html[data-theme=\"light\"] .theme-btn[data-theme=\"light\"],
+html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
+  background:var(--accent);
+  color:#fff;
+}
