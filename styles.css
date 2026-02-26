@@ -3866,3 +3866,18 @@ svg circle.region--active {
   stroke-width: 2px !important;
   pointer-events: auto !important;
 }
+
+
+/* === GLOBAL THEME VARIABLES === */
+:root{
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --border:#e6ebf2;
+  --accent:#F17300;
+}
+
+html[data-theme="dark"]{
+  --surface:#0f172a;
+  --ink:#f1f5f9;
+  --border:#1e293b;
+}
