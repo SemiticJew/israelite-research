@@ -1,4 +1,4 @@
-<!-- Universal Header Partial (Final Corrected Version) -->
+<!-- Universal Header Partial (Polished Version) -->
 <header class="site-header-bar">
   <style>
     #site-header .site-header-bar{
@@ -52,9 +52,15 @@
       opacity:.75;
     }
 
+    /* Modern Chevron */
     #site-header .arrow{
-      font-size:.75rem;
-      transition:transform .2s ease;
+      display:inline-flex;
+      align-items:center;
+      transition:transform .25s ease;
+    }
+
+    #site-header .nav-item:hover .arrow{
+      transform:rotate(180deg);
     }
 
     /* DROPDOWN */
@@ -90,10 +96,6 @@
       opacity:1;
       visibility:visible;
       transform:translateY(0);
-    }
-
-    #site-header .nav-item:hover .arrow{
-      transform:rotate(180deg);
     }
 
     /* RIGHT TOOLS */
@@ -167,7 +169,17 @@
 
       <div class="nav-item">
         <a href="#" class="nav-link">
-          About <span class="arrow">▾</span>
+          About
+          <span class="arrow">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+              <path d="M6 9l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
         </a>
         <div class="dropdown">
           <a href="/israelite-research/israelite-catechism.html">Catechism</a>
@@ -176,7 +188,17 @@
 
       <div class="nav-item">
         <a href="#" class="nav-link">
-          Contact <span class="arrow">▾</span>
+          Contact
+          <span class="arrow">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+              <path d="M6 9l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
         </a>
         <div class="dropdown">
           <a href="/israelite-research/newsletter.html">Newsletter</a>
@@ -185,7 +207,17 @@
 
       <div class="nav-item">
         <a href="#" class="nav-link">
-          Resources <span class="arrow">▾</span>
+          Resources
+          <span class="arrow">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+              <path d="M6 9l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
         </a>
         <div class="dropdown">
           <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">Apple Podcast</a>
@@ -207,9 +239,12 @@
          aria-label="Search">
         <svg width="20" height="20" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="7"
-                  stroke="currentColor" stroke-width="2" fill="none"/>
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"/>
           <line x1="16.5" y1="16.5" x2="21" y2="21"
-                stroke="currentColor" stroke-width="2"
+                stroke="currentColor"
+                stroke-width="2"
                 stroke-linecap="round"/>
         </svg>
       </a>
@@ -218,7 +253,7 @@
       <button class="icon-btn"
               id="theme-toggle"
               aria-label="Toggle Theme">
-        <span id="theme-icon"></span>
+        <svg id="theme-icon" viewBox="0 0 24 24" width="20" height="20"></svg>
       </button>
 
       <!-- Give -->
@@ -241,23 +276,24 @@
       function renderIcon(theme){
         if(theme === 'dark'){
           icon.innerHTML = `
-            <svg viewBox="0 0 24 24" width="20" height="20">
-              <circle cx="12" cy="12" r="5" fill="currentColor"/>
-              <g stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="4"/>
-                <line x1="12" y1="20" x2="12" y2="23"/>
-                <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
-                <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
-                <line x1="1" y1="12" x2="4" y2="12"/>
-                <line x1="20" y1="12" x2="23" y2="12"/>
-              </g>
-            </svg>`;
+            <circle cx="12" cy="12" r="5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"/>
+            <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="12" y1="1" x2="12" y2="4"/>
+              <line x1="12" y1="20" x2="12" y2="23"/>
+              <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
+              <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
+              <line x1="1" y1="12" x2="4" y2="12"/>
+              <line x1="20" y1="12" x2="23" y2="12"/>
+            </g>`;
         } else {
           icon.innerHTML = `
-            <svg viewBox="0 0 24 24" width="20" height="20">
-              <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"
-                    fill="currentColor"/>
-            </svg>`;
+            <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"/>`;
         }
       }
 
