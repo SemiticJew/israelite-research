@@ -3924,3 +3924,205 @@ html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
   background:var(--accent);
   color:#fff;
 }
+
+
+/* === Theme Toggle Polish === */
+\
+.theme-toggle-group{
+\
+  display:flex;
+\
+  gap:6px;
+\
+  border:1px solid var(--border);
+\
+  border-radius:999px;
+\
+  padding:4px;
+\
+  background:var(--surface);
+\
+}
+\
+
+\
+.theme-btn{
+\
+  width:36px;
+\
+  height:36px;
+\
+  border-radius:999px;
+\
+  border:none;
+\
+  background:transparent;
+\
+  display:flex;
+\
+  align-items:center;
+\
+  justify-content:center;
+\
+  cursor:pointer;
+\
+  transition:all .2s ease;
+\
+  opacity:.6;
+\
+}
+\
+
+\
+.theme-btn svg{
+\
+  stroke:currentColor;
+\
+}
+\
+
+\
+/* Light Mode Icon Color */
+\
+html[data-theme=\"light\"] .theme-btn{
+\
+  color:#0b2340;
+\
+}
+\
+
+\
+/* Dark Mode Icon Color */
+\
+html[data-theme=\"dark\"] .theme-btn{
+\
+  color:#f1f5f9;
+\
+}
+\
+
+\
+/* Active Button Highlight */
+\
+html[data-theme=\"light\"] .theme-btn[data-theme=\"light\"],
+\
+html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
+\
+  background:var(--accent);
+\
+  color:#ffffff;
+\
+  opacity:1;
+\
+}
+\
+
+\
+.theme-btn:hover{
+\
+  opacity:1;
+\
+  transform:translateY(-1px);
+\
+}
+
+
+/* === Theme Toggle Polish === */
+\
+.theme-toggle-group{
+\
+  display:flex;
+\
+  gap:6px;
+\
+  border:1px solid var(--border);
+\
+  border-radius:999px;
+\
+  padding:4px;
+\
+  background:var(--surface);
+\
+}
+\
+
+\
+.theme-btn{
+\
+  width:36px;
+\
+  height:36px;
+\
+  border-radius:999px;
+\
+  border:none;
+\
+  background:transparent;
+\
+  display:flex;
+\
+  align-items:center;
+\
+  justify-content:center;
+\
+  cursor:pointer;
+\
+  transition:all .2s ease;
+\
+  opacity:.6;
+\
+}
+\
+
+\
+.theme-btn svg{
+\
+  stroke:currentColor;
+\
+}
+\
+
+\
+/* Light Mode Icon Color */
+\
+html[data-theme=\"light\"] .theme-btn{
+\
+  color:#0b2340;
+\
+}
+\
+
+\
+/* Dark Mode Icon Color */
+\
+html[data-theme=\"dark\"] .theme-btn{
+\
+  color:#f1f5f9;
+\
+}
+\
+
+\
+/* Active Button Highlight */
+\
+html[data-theme=\"light\"] .theme-btn[data-theme=\"light\"],
+\
+html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
+\
+  background:var(--accent);
+\
+  color:#ffffff;
+\
+  opacity:1;
+\
+}
+\
+
+\
+.theme-btn:hover{
+\
+  opacity:1;
+\
+  transform:translateY(-1px);
+\
+}
