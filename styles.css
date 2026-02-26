@@ -3881,3 +3881,11 @@ html[data-theme="dark"]{
   --ink:#f1f5f9;
   --border:#1e293b;
 }
+
+
+/* === THEME ICON SWITCHING === */
+.moon-icon { display:block; }
+.sun-icon  { display:none; }
+
+html[data-theme="dark"] .moon-icon { display:none; }
+html[data-theme="dark"] .sun-icon  { display:block; }
