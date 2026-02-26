@@ -4029,3 +4029,29 @@ html[data-theme=\"dark\"] .theme-btn[data-theme=\"dark\"]{
   transform:translateY(-1px);
 \
 }
+
+
+/* === GLOBAL THEME SYSTEM === */
+:root{
+  --surface:#ffffff;
+  --ink:#0b2340;
+  --border:#e6ebf2;
+  --muted:#6b7280;
+  --accent:#F17300;
+  --bg:#ffffff;
+}
+
+html[data-theme=\"dark\"]{
+  --surface:#0f172a;
+  --ink:#f1f5f9;
+  --border:#1e293b;
+  --muted:#94a3b8;
+  --accent:#F17300;
+  --bg:#0b1220;
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  transition:background .3s ease, color .3s ease;
+}
