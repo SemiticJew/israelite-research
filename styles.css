@@ -4055,3 +4055,12 @@ body{
   color:var(--ink);
   transition:background .3s ease, color .3s ease;
 }
+
+
+/* Force moon to be dark in light mode */
+\
+html[data-theme=\"light\"] .theme-btn[data-theme=\"dark\"] svg{
+\
+  stroke:#0b2340 !important;
+\
+}
