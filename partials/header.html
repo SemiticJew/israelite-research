@@ -1,7 +1,8 @@
-<!-- Universal Header Partial (Polished Version) -->
-<header class="site-header-bar">
+<!-- Universal Header Partial (Stabilized Light/Dark Version) -->
+<header id="site-header" class="site-header-bar">
+
   <style>
-    #site-header .site-header-bar{
+    #site-header{
       background: var(--surface, #ffffff);
       color: var(--ink, #0b2340);
       border-bottom: 1px solid var(--border, #e6ebf2);
@@ -21,7 +22,7 @@
 
     /* LOGO */
     #site-header .brand img{
-      height:44px;
+      height:52px;
     }
 
     /* NAVIGATION */
@@ -52,10 +53,9 @@
       opacity:.75;
     }
 
-    /* Modern Chevron */
+    /* Chevron */
     #site-header .arrow{
       display:inline-flex;
-      align-items:center;
       transition:transform .25s ease;
     }
 
@@ -124,6 +124,11 @@
       border-color:var(--border,#e6ebf2);
     }
 
+    #site-header #theme-icon{
+      stroke:currentColor;
+      color:var(--ink);
+    }
+
     #site-header .give-btn{
       padding:9px 18px;
       border-radius:999px;
@@ -139,7 +144,7 @@
       box-shadow:0 10px 25px rgba(241,115,0,.35);
     }
 
-    /* DARK MODE */
+    /* DARK MODE VARIABLES */
     html[data-theme="dark"]{
       --surface:#0f172a;
       --ink:#f1f5f9;
