@@ -4021,3 +4021,9 @@ html[data-theme=\"light\"] .theme-btn{
   color:#0b2340 !important;
 \
 }
+
+
+/* Ensure theme buttons ignore inherited color overrides */
+.theme-toggle-group .theme-btn{
+  color:var(--ink) !important;
+}
