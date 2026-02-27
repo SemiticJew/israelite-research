@@ -1,243 +1,253 @@
 <!-- Universal Footer Partial -->
-<footer class="site-footer">
+<footer id="site-footer" class="site-footer">
   <style>
-    #site-footer .site-footer{
+    #site-footer{
       background: var(--surface, #ffffff);
       color: var(--ink, #0b2340);
       border-top: 1px solid var(--border, #e6ebf2);
     }
+
     #site-footer .footer-inner{
-      max-width:1200px; margin:0 auto; padding:28px 16px 18px;
-      display:grid; gap:28px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:36px 16px 28px;
+      display:grid;
+      gap:40px;
       grid-template-columns: 1.2fr .8fr .8fr;
-    }
-    @media (max-width: 960px){
-      #site-footer .footer-inner{ grid-template-columns: 1fr; }
+      align-items:start;
     }
 
-    /* Brand / tagline / socials / newsletter */
-    #site-footer .footer-brand h3{
-      margin:0 0 6px; font-size:1.15rem; font-weight:800; color:var(--ink, #0b2340);
-      display:flex; align-items:center; gap:8px;
+    @media (max-width:960px){
+      #site-footer .footer-inner{
+        grid-template-columns:1fr;
+      }
     }
-    #site-footer .footer-brand .mark{
-      width:26px; height:26px; border-radius:7px; border:1px solid var(--border, #e6ebf2);
-      display:inline-flex; align-items:center; justify-content:center;
-      background:var(--surface, #ffffff); box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+
+    /* --- LEFT COLUMN --- */
+    #site-footer .footer-brand{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      text-align:left;
     }
-    #site-footer .footer-tagline{
-      margin:0 0 12px; color:var(--muted, #6b7280);
-      max-width:46ch; text-align:left;
+
+    /* Logo */
+    #site-footer .footer-logo{
+      margin-bottom:18px;
     }
-    #site-footer .footer-social{ display:flex; gap:10px; margin:10px 0 14px; }
+
+    #site-footer .footer-logo img{
+      width:170px;
+      height:auto;
+      display:block;
+    }
+
+    /* Light/Dark Logo Switching */
+    #site-footer .logo-light{ display:block; }
+    #site-footer .logo-dark{ display:none; }
+
+    html[data-theme="dark"] #site-footer .logo-light{ display:none; }
+    html[data-theme="dark"] #site-footer .logo-dark{ display:block; }
+
+    /* Verse */
+    #site-footer .footer-verse{
+      margin:0 0 20px;
+      font-size:.95rem;
+      line-height:1.6;
+      max-width:42ch;
+      color:var(--muted);
+    }
+
+    #site-footer .footer-verse-ref{
+      display:block;
+      margin-top:6px;
+      font-weight:700;
+      color:var(--accent);
+    }
+
+    /* Socials */
+    #site-footer .footer-social{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+    }
+
     #site-footer .footer-social .icon{
-      width:40px; height:40px; border-radius:10px;
-      border:1px solid var(--border, #e6ebf2);
-      background:var(--surface, #ffffff); color:var(--ink, #0b2340);
-      display:inline-flex; align-items:center; justify-content:center;
-      text-decoration:none; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-      transition:transform .15s, box-shadow .15s, border-color .15s, background-color .15s;
+      width:40px;
+      height:40px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all .2s ease;
+      text-decoration:none;
     }
+
     #site-footer .footer-social .icon:hover{
-      transform:translateY(-1px);
-      box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-      border-color:#cdd8e6;
+      transform:translateY(-2px);
+      border-color:var(--accent);
+      box-shadow:0 8px 18px rgba(0,0,0,.15);
     }
 
-    /* Newsletter */
-    #site-footer .footer-newsletter .newsletter-row{
-      display:flex; gap:8px; align-items:center;
+    #site-footer .footer-social svg{
+      width:18px;
+      height:18px;
     }
-    #site-footer .footer-newsletter input[type="email"]{
-      flex:1; padding:10px 12px; border:1px solid var(--border, #e6ebf2); border-radius:10px;
-      background:var(--bg, #ffffff); color:var(--ink, #0b2340);
-    }
-    #site-footer .footer-newsletter input::placeholder{ color:var(--muted, #6b7280); }
-    #site-footer .footer-newsletter button{
-      padding:10px 12px; border-radius:10px; border:1px solid var(--border, #e6ebf2);
-      background:var(--surface, #ffffff); color:var(--ink, #0b2340); cursor:pointer; box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
-      transition:transform .15s, box-shadow .15s, border-color .15s;
-    }
-    #site-footer .footer-newsletter button:hover{
-      transform:translateY(-1px);
-      box-shadow:var(--shadow-hover, 0 10px 20px rgba(0,0,0,.12));
-      border-color:#cdd8e6;
-    }
-    #site-footer .newsletter-note{ display:block; margin-top:6px; color:var(--muted, #6b7280); }
 
-    /* Column headings + nav */
+    /* --- COLUMN HEADINGS --- */
     #site-footer .footer-heading{
-      margin:0 0 8px; font-size:.95rem; font-weight:800; letter-spacing:.06em;
-      text-transform:uppercase; color:var(--ink, #0b2340);
+      margin:0 0 12px;
+      font-size:.9rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--ink);
     }
-    #site-footer .footer-col--explore .footer-heading,
-    #site-footer .footer-col--texts .footer-heading{
-      font-style: normal; font-weight: 800; letter-spacing: .06em;
+
+    #site-footer .footer-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:8px;
     }
-    #site-footer .footer-nav{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+
     #site-footer .footer-nav a{
-      color:var(--ink, #0b2340); text-decoration:none; padding:6px 8px; border-radius:8px;
-      border:1px solid transparent;
-      transition:border-color .15s ease, background-color .15s ease;
+      color:var(--ink);
+      text-decoration:none;
+      padding:6px 0;
+      opacity:.85;
+      transition:opacity .15s ease;
     }
+
     #site-footer .footer-nav a:hover{
-      border-color:var(--border, #e6ebf2);
-      background:rgba(0,0,0,.02);
+      opacity:1;
     }
-/* Footer color tweaks */
-#site-footer .footer-tagline { color: #F17300; }
 
-#site-footer .newsletter-note {
-  color: #F17300;
-  text-align: left; /* ensure left aligned */
-}
-
-#site-footer .footer-bottom p {
-  color: #F17300; /* © 2025 Semitic Jew. All rights reserved. */
-}
-    /* Bottom bar */
+    /* --- Bottom Bar --- */
     #site-footer .footer-bottom{
-      max-width:1200px; margin:0 auto; padding:10px 16px 24px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      color:var(--muted, #6b7280);
-      border-top:1px solid var(--border, #e6ebf2);
+      max-width:1200px;
+      margin:0 auto;
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-top:1px solid var(--border);
+      font-size:.9rem;
+      color:var(--muted);
     }
-    @media (max-width: 720px){
-      #site-footer .footer-bottom{ flex-direction:column; align-items:flex-start; gap:6px; }
+
+    @media (max-width:720px){
+      #site-footer .footer-bottom{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+      }
     }
-    #site-footer .legal-links{ display:flex; gap:12px; flex-wrap:wrap; }
-    #site-footer .legal-links a{ color:var(--ink, #0b2340); text-decoration:none; opacity:.85; }
-    #site-footer .legal-links a:hover{ opacity:1; }
-/* Footer Logo */
-#site-footer .footer-logo{
-  margin-bottom:14px;
-}
 
-#site-footer .footer-logo-img{
-  width:160px;
-  height:auto;
-  display:block;
-}
+    #site-footer .legal-links{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
 
-/* Verse */
-#site-footer .footer-verse{
-  margin:0 0 16px;
-  font-size:.95rem;
-  line-height:1.6;
-  color:var(--muted);
-}
+    #site-footer .legal-links a{
+      color:var(--ink);
+      text-decoration:none;
+      opacity:.8;
+    }
 
-#site-footer .footer-verse-ref{
-  display:block;
-  margin-top:6px;
-  font-weight:700;
-  color:var(--accent);
-}
+    #site-footer .legal-links a:hover{
+      opacity:1;
+    }
   </style>
 
-  <div class="footer-inner container">
-    <!-- Left: Brand + description + socials + newsletter -->
-    <div class="footer-col footer-brand">
+  <div class="footer-inner">
 
-  <!-- Logo -->
-  <div class="footer-logo">
-    <img src="/israelite-research/images/black-logo-letters.png"
-         alt="Semitic Jew Logo"
-         class="footer-logo-img">
-  </div>
+    <!-- LEFT COLUMN -->
+    <div class="footer-brand">
 
-  <!-- Verse -->
-  <p class="footer-verse">
-    “For she is a breath of the power of God,
-    and a pure emanation of the glory of the Almighty.”
-    <span class="footer-verse-ref">— Wisdom 7:25–26</span>
-  </p>
+      <div class="footer-logo">
+        <img src="/israelite-research/images/black-logo-letters.png"
+             alt="Semitic Jew Logo"
+             class="logo-light">
 
-  <!-- Social Icons -->
-  <div class="footer-social" aria-label="Social media">
+        <img src="/israelite-research/images/white-logo-letters.png"
+             alt="Semitic Jew Logo"
+             class="logo-dark">
+      </div>
 
-    <!-- YouTube -->
-    <a class="icon" href="https://www.youtube.com/@blksemitic" target="_blank" aria-label="YouTube">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M22 12s0-3-.4-4.4a2 2 0 0 0-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 .5A2 2 0 0 0 2.4 7.6C2 9 2 12 2 12s0 3 .4 4.4a2 2 0 0 0 1.6 1.6c1.4.5 8 .5 8 .5s6.6 0 8-.5a2 2 0 0 0 1.6-1.6C22 15 22 12 22 12z"/>
-        <path d="M10 9l5 3-5 3z" fill="#fff"/>
-      </svg>
-    </a>
+      <p class="footer-verse">
+        “For she is a breath of the power of God,
+        and a pure emanation of the glory of the Almighty.”
+        <span class="footer-verse-ref">— Wisdom 7:25–26</span>
+      </p>
 
-    <!-- X -->
-    <a class="icon" href="https://x.com/semitic_jew" target="_blank" aria-label="X">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </a>
+      <div class="footer-social">
+        <a class="icon" href="https://www.youtube.com/@blksemitic" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22 12s0-3-.4-4.4a2 2 0 0 0-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 .5A2 2 0 0 0 2.4 7.6C2 9 2 12 2 12s0 3 .4 4.4a2 2 0 0 0 1.6 1.6c1.4.5 8 .5 8 .5s6.6 0 8-.5a2 2 0 0 0 1.6-1.6C22 15 22 12 22 12z"/>
+            <path d="M10 9l5 3-5 3z" fill="#fff"/>
+          </svg>
+        </a>
 
-    <!-- Instagram -->
-    <a class="icon" href="https://www.instagram.com/semiticjew/" target="_blank" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <rect x="3" y="3" width="18" height="18" rx="5"/>
-        <circle cx="12" cy="12" r="4" fill="#fff"/>
-      </svg>
-    </a>
+        <a class="icon" href="https://x.com/semitic_jew" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </a>
 
-    <!-- Facebook -->
-    <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3z"/>
-      </svg>
-    </a>
+        <a class="icon" href="https://www.instagram.com/semiticjew/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4" fill="#fff"/>
+          </svg>
+        </a>
 
-    <!-- TikTok -->
-    <a class="icon" href="https://www.tiktok.com/@semitic_jew" target="_blank" aria-label="TikTok">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21 8.2a7.3 7.3 0 0 1-4.2-1.3v6.7a5.5 5.5 0 1 1-4.7-5.4v2.8a2.7 2.7 0 1 0 1.9 2.6V2h3a4.3 4.3 0 0 0 4 4v2.2z"/>
-      </svg>
-    </a>
+        <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3z"/>
+          </svg>
+        </a>
 
-  </div>
-
-  <!-- Newsletter stays unchanged below -->
-
-  <form class="footer-newsletter" action="https://formspree.io/f/your-id" method="POST" novalidate>
-    <label for="nl-email" class="sr-only">Email address</label>
-    <div class="newsletter-row">
-      <input id="nl-email" name="email" type="email" placeholder="Your email" required>
-      <button type="submit">Subscribe</button>
+        <a class="icon" href="https://www.tiktok.com/@semitic_jew" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 8.2a7.3 7.3 0 0 1-4.2-1.3v6.7a5.5 5.5 0 1 1-4.7-5.4v2.8a2.7 2.7 0 1 0 1.9 2.6V2h3a4.3 4.3 0 0 0 4 4v2.2z"/>
+          </svg>
+        </a>
+      </div>
     </div>
-    <small class="newsletter-note">
-      Occasional updates. No spam. Unsubscribe any time.
-    </small>
-  </form>
 
-</div>
-
-    <!-- Middle column: Resources -->
-    <div class="footer-col footer-col--explore">
+    <!-- RESOURCES -->
+    <div>
       <h4 class="footer-heading">Resources</h4>
       <ul class="footer-nav">
         <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
         <li><a href="/israelite-research/articles.html">Articles</a></li>
         <li><a href="/israelite-research/biblia.html">Biblia</a></li>
-        <li><a href="/israelite-research/donate.html">Donations</a></li>
         <li><a href="/israelite-research/events.html">Events</a></li>
         <li><a href="/israelite-research/media.html">Media</a></li>
       </ul>
     </div>
 
-    <!-- Right column: The Writings -->
-    <div class="footer-col footer-col--texts">
+    <!-- WRITINGS -->
+    <div>
       <h4 class="footer-heading">The Writings</h4>
       <ul class="footer-nav">
         <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
         <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
         <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
         <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-        <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
       </ul>
     </div>
+
   </div>
 
-  <div class="footer-bottom container">
-    <p>&copy; 2025 Semitic Jew Inc. All rights reserved.</p>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
     <div class="legal-links">
       <a href="/israelite-research/terms.html">Terms</a>
       <a href="/israelite-research/privacy.html">Privacy</a>
