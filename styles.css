@@ -4032,3 +4032,15 @@ html[data-theme=\"light\"] .theme-btn{
 html[data-theme="light"]{
   --ink:#0b2340;
 }
+
+
+/* Explicit theme button color binding */
+.theme-toggle-group .theme-btn{
+  color:var(--ink) !important;
+}
+html[data-theme=\"light\"] .theme-toggle-group .theme-btn{
+  color:#0b2340 !important;
+}
+html[data-theme=\"dark\"] .theme-toggle-group .theme-btn{
+  color:#FFFFFF !important;
+}
