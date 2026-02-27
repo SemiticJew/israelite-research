@@ -4099,3 +4099,22 @@ html, body {
   font-style: normal;
   font-display: swap;
 }
+
+
+/* === HERO FONT PAIRING === */
+.hero h1 {
+  font-size: clamp(70px, 9vw, 120px);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.hero h1 .script-word {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.hero h1 .strong-word {
+  font-family: "League Spartan", sans-serif;
+  font-weight: 900;
+}
