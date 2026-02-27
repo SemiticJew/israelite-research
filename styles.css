@@ -4051,3 +4051,17 @@ html[data-theme=\"light\"] .theme-btn[data-theme=\"dark\"] svg{
   color:#0b2340 !important;
   fill:#0b2340 !important;
 }
+
+
+/* Moon icon control */
+.moon-svg path {
+  fill: var(--ink);
+}
+
+html[data-theme="light"] .moon-svg path {
+  fill: #0b2340;
+}
+
+html[data-theme="dark"] .moon-svg path {
+  fill: #FFFFFF;
+}
