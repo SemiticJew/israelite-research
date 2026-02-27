@@ -2,10 +2,11 @@
 <footer id="site-footer" class="site-footer">
   <style>
     #site-footer{
-      background: var(--surface, #ffffff);
-      color: var(--ink, #0b2340);
-      border-top: 1px solid var(--border, #e6ebf2);
-    }
+  background: var(--surface, #ffffff);
+  color: var(--ink, #0b2340);
+  border-top: 1px solid var(--border, #e6ebf2);
+  font-family: Georgia, serif;
+}
 
     #site-footer .footer-inner{
       max-width:1200px;
@@ -43,11 +44,21 @@
     }
 
     /* Light/Dark Logo Switching */
-    #site-footer .logo-light{ display:block; }
-    #site-footer .logo-dark{ display:none; }
+    #site-footer .footer-logo img{
+  width:170px;
+  height:auto;
+  display:block;
+}
 
-    html[data-theme="dark"] #site-footer .logo-light{ display:none; }
-    html[data-theme="dark"] #site-footer .logo-dark{ display:block; }
+#site-footer .logo-light,
+#site-footer .logo-dark{
+  position:relative;
+}
+
+#site-footer .logo-dark{ display:none; }
+
+html[data-theme="dark"] #site-footer .logo-light{ display:none; }
+html[data-theme="dark"] #site-footer .logo-dark{ display:block; }
 
     /* Verse */
     #site-footer .footer-verse{
@@ -163,6 +174,10 @@
     #site-footer .legal-links a:hover{
       opacity:1;
     }
+/* Remove any old crown styling */
+#site-footer .mark{
+  display:none !important;
+}
   </style>
 
   <div class="footer-inner">
