@@ -5,85 +5,257 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Semitic Jew | Scripture. Logic. Truth.</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
+
+<style>
+
+/* ============================= */
+/* PREMIUM EDITORIAL HOMEPAGE   */
+/* ============================= */
+
+.home-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+/* HERO */
+
+.hero{
+  padding:120px 0 80px;
+  text-align:center;
+}
+
+.hero h1{
+  font-weight:900;
+  font-size:clamp(48px, 6vw, 84px);
+  line-height:1.05;
+  letter-spacing:-1px;
+  margin:0;
+}
+
+.hero h1 span{
+  display:inline-block;
+}
+
+.hero .hero-sub{
+  margin-top:28px;
+  font-size:1.05rem;
+  color:var(--muted);
+  max-width:700px;
+  margin-left:auto;
+  margin-right:auto;
+  line-height:1.6;
+}
+
+/* TOPICS */
+
+.topic-bar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:28px;
+  padding:40px 0 70px;
+  font-size:.85rem;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+}
+
+.topic-bar a{
+  text-decoration:none;
+  color:var(--ink);
+  position:relative;
+  font-weight:600;
+}
+
+.topic-bar a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:2px;
+  background:var(--ink);
+  transition:width .25s ease;
+}
+
+.topic-bar a:hover::after{
+  width:100%;
+}
+
+/* MAIN GRID */
+
+.main-grid{
+  display:grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap:80px;
+  padding-bottom:100px;
+}
+
+@media(max-width:900px){
+  .main-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ARTICLES */
+
+.section-title{
+  font-size:1rem;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:40px;
+  font-weight:800;
+}
+
+.article{
+  margin-bottom:60px;
+  padding-bottom:40px;
+  border-bottom:1px solid #eee;
+}
+
+.article h2{
+  font-size:1.8rem;
+  margin:0 0 12px;
+  font-weight:800;
+  line-height:1.25;
+}
+
+.article p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* AUTHOR SIDEBAR */
+
+.author{
+  position:sticky;
+  top:120px;
+}
+
+.author img{
+  width:100%;
+  border-radius:12px;
+  margin-bottom:24px;
+}
+
+.author h3{
+  margin:0;
+  font-size:1.4rem;
+  font-weight:900;
+}
+
+.author .role{
+  font-size:.85rem;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin:6px 0 18px;
+  color:var(--muted);
+}
+
+.author p{
+  font-size:.95rem;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+.author blockquote{
+  font-size:.9rem;
+  line-height:1.6;
+  margin:0 0 20px;
+  padding-left:16px;
+  border-left:3px solid var(--ink);
+}
+
+.author .location{
+  font-size:.85rem;
+  margin-bottom:20px;
+}
+
+.author .socials{
+  display:flex;
+  gap:16px;
+  font-size:.85rem;
+}
+
+.author .socials a{
+  text-decoration:none;
+  color:var(--ink);
+  font-weight:600;
+}
+
+.author .socials a:hover{
+  text-decoration:underline;
+}
+
+</style>
 </head>
 
 <body>
 
 <div id="site-header"></div>
 
-<main class="container homepage">
+<main class="home-container">
 
   <!-- HERO -->
-  <section class="hero-wrap">
-    <div class="hero-inner">
+  <section class="hero">
+    <h1>
+      <span>Scripture.</span>
+      <span>Logic.</span>
+      <span>Truth.</span>
+    </h1>
 
-      <h1 class="hero-title">
-        <span class="word-1">Scripture.</span>
-        <span class="word-2">Logic.</span>
-        <span class="word-3">Truth.</span>
-      </h1>
-
-      <p class="hero-sub">
-        “So they read in the book in the law of God distinctly,
-        and gave the sense, and caused them to understand the reading.”
-        <span class="hero-ref">— Nehemiah 8:8</span>
-      </p>
-
+    <div class="hero-sub">
+      “So they read in the book in the law of God distinctly,
+      and gave the sense, and caused them to understand the reading.”
+      — Nehemiah 8:8
     </div>
   </section>
 
-  <!-- EXPLORE TOPICS -->
-  <section class="topics">
-    <div class="topics-inner">
-      <a href="/israelite-research/articles.html" class="topic-pill">Biblical Exegesis</a>
-      <a href="/israelite-research/articles.html" class="topic-pill">Hebrew Linguistics</a>
-      <a href="/israelite-research/articles.html" class="topic-pill">Historical Context</a>
-      <a href="/israelite-research/articles.html" class="topic-pill">Theological Critique</a>
-    </div>
+  <!-- TOPICS -->
+  <section class="topic-bar">
+    <a href="#">Logic</a>
+    <a href="#">Sex</a>
+    <a href="#">Marriage</a>
+    <a href="#">Rearing Children</a>
+    <a href="#">Satan</a>
+    <a href="#">Jewish</a>
+    <a href="#">Zionism</a>
+    <a href="#">Last Days</a>
   </section>
 
-  <!-- MAIN GRID -->
-  <section class="content-grid">
+  <!-- MAIN CONTENT -->
+  <section class="main-grid">
 
     <!-- LEFT COLUMN -->
-    <div class="content-main">
+    <div>
 
-      <h2 class="section-title">Latest Articles</h2>
+      <div class="section-title">Latest Articles</div>
 
-      <div class="article-list">
-
-        <a href="#" class="article-item">
-          <h3>Should Christians Support Zionism?</h3>
-          <p>A biblical and historical examination of modern political theology.</p>
-        </a>
-
-        <a href="#" class="article-item">
-          <h3>Reading the Law Distinctly</h3>
-          <p>Recovering textual precision through Hebrew grammar.</p>
-        </a>
-
+      <div class="article">
+        <h2>Should Christians Support Zionism?</h2>
+        <p>A biblical and historical analysis of modern political theology and covenant identity.</p>
       </div>
 
-      <h2 class="section-title" style="margin-top:40px;">Latest YouTube</h2>
+      <div class="article">
+        <h2>Reading Scripture Distinctly</h2>
+        <p>Recovering textual clarity through Hebrew grammar and logical precision.</p>
+      </div>
 
-      <div class="youtube-list">
-        <a href="https://www.youtube.com/@blksemitic" target="_blank">
-          Logic vs Emotional Theology
-        </a><br/>
-        <a href="https://www.youtube.com/@blksemitic" target="_blank">
-          The Problem with Replacement Theology
-        </a>
+      <div class="article">
+        <h2>The Nature of Satan in Biblical Theology</h2>
+        <p>Examining adversarial language, covenant context, and prophetic symbolism.</p>
       </div>
 
     </div>
 
     <!-- RIGHT COLUMN -->
-    <aside class="author-card">
+    <aside class="author">
 
       <img src="/israelite-research/images/author.jpg" alt="Semitic Jew">
 
       <h3>Semitic Jew</h3>
-      <div class="author-role">Director & Founder</div>
+      <div class="role">Director & Founder</div>
 
       <p>
         I am dedicated to restoring the dignity to all ethnicities,
@@ -95,19 +267,18 @@
       <blockquote>
         “It is the glory of God to conceal a matter,
         and the glory of kings is to search it out.”
-        <span>— Proverbs 25:2</span>
+        — Proverbs 25:2
       </blockquote>
 
-      <div class="author-location">
+      <div class="location">
         📍 Chapin, South Carolina
       </div>
 
-      <div class="author-socials">
+      <div class="socials">
         <a href="https://www.youtube.com/channel/UC6ukYTYZ8YqsSYq4-nl11gA" target="_blank">YouTube</a>
         <a href="https://x.com/semitic_jew" target="_blank">X</a>
         <a href="https://www.facebook.com/semiticjew/" target="_blank">Facebook</a>
         <a href="https://www.instagram.com/semiticjew/" target="_blank">Instagram</a>
-        <a href="#" target="_blank">TikTok</a>
       </div>
 
     </aside>
