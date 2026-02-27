@@ -4074,3 +4074,18 @@ html[data-theme="dark"] .moon-svg path {
   display:block;
   margin:auto;
 }
+
+
+/* Roobert Font */
+@font-face {
+  font-family: \"Roobert\";
+  src: url(\"/israelite-research/fonts/Roobert-Regular.woff2\") format(\"woff2\"),
+       url(\"/israelite-research/fonts/RoobertRegular.woff\") format(\"woff\");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body {
+  font-family: \"Roobert\", \"Helvetica Neue\", Arial, Helvetica, sans-serif;
+}
