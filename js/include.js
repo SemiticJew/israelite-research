@@ -57,3 +57,13 @@
     })
     .catch(function(){});
 })();
+// Load Theme Toggle Globally
+(function(){
+  if (document.getElementById("theme-toggle-loader")) return;
+
+  const s = document.createElement("script");
+  s.src = "/israelite-research/js/theme-toggle.js";
+  s.defer = true;
+  s.id = "theme-toggle-loader";
+  document.head.appendChild(s);
+})();
