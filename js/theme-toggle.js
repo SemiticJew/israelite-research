@@ -1,39 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
+// Stable Theme Toggle
 
-  function initializeThemeToggle() {
-    const html = document.documentElement;
+(function(){
+
+  function applyTheme(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+
+    const logoSrc = theme === "dark"
+      ? "/israelite-research/images/white-logo-letters.png"
+      : "/israelite-research/images/black-logo-letters.png";
+
     const headerLogo = document.getElementById("site-logo");
     const footerLogo = document.getElementById("footer-logo");
-    const buttons = document.querySelectorAll(".theme-btn");
 
-    if (!buttons.length) return;
+    if (headerLogo) headerLogo.src = logoSrc;
+    if (footerLogo) footerLogo.src = logoSrc;
+  }
 
-    function applyTheme(theme) {
-      html.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
+  // Wait until DOM is ready
+  document.addEventListener("DOMContentLoaded", function(){
 
-      const logoSrc = theme === "dark"
-        ? "/israelite-research/images/white-logo-letters.png"
-        : "/israelite-research/images/black-logo-letters.png";
-
-      if (headerLogo) headerLogo.src = logoSrc;
-      if (footerLogo) footerLogo.src = logoSrc;
-    }
-
-    // Load saved theme (default = light)
     const savedTheme = localStorage.getItem("theme") || "light";
     applyTheme(savedTheme);
 
-    // Button click listeners
-    buttons.forEach(btn => {
-      btn.addEventListener("click", function () {
-        const selectedTheme = btn.dataset.theme;
-        applyTheme(selectedTheme);
-      });
+    document.addEventListener("click", function(e){
+      const btn = e.target.closest(".theme-btn");
+      if (!btn) return;
+      applyTheme(btn.dataset.theme);
     });
-  }
 
-  // Slight delay to ensure header/footer includes finish loading
-  setTimeout(initializeThemeToggle, 200);
+  });
 
-});
+})();
