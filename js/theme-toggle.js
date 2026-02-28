@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   function initializeThemeToggle(){
     const html = document.documentElement;
-    const logo = document.getElementById("site-logo");
+    const headerLogo = document.getElementById('site-logo');
+const footerLogo = document.getElementById('footer-logo');
     const buttons = document.querySelectorAll(".theme-btn");
 
     if(buttons.length === 0) return;
@@ -12,9 +13,12 @@ document.addEventListener("DOMContentLoaded", function(){
       localStorage.setItem("theme", theme);
 
       if(logo){
-        logo.src = theme === "dark"
-          ? "/israelite-research/images/white-logo-letters.png"
-          : "/israelite-research/images/black-logo-letters.png";
+        const logoSrc = theme === 'dark'
+  ? '/israelite-research/images/white-logo-letters.png'
+  : '/israelite-research/images/black-logo-letters.png';
+
+if (headerLogo) headerLogo.src = logoSrc;
+if (footerLogo) footerLogo.src = logoSrc;
       }
     }
 
