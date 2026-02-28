@@ -102,18 +102,19 @@
     }
 
     /* Column Headings */
-    #site-footer .footer-heading{
-      margin:0 0 12px;
-      font-size:.9rem;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:var(--ink);
-    }
+#site-footer h4.footer-heading{
+  margin:0 0 12px;
+  font-size:.9rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
 
-    html[data-theme="dark"] #site-footer .footer-heading{
-      color:#ffffff;
-    }
+/* FORCE white in dark mode */
+html[data-theme="dark"] #site-footer h4.footer-heading{
+  color:#ffffff !important;
+}
 
     #site-footer .footer-nav{
       list-style:none;
@@ -132,7 +133,7 @@
     }
 
     html[data-theme="dark"] #site-footer .footer-nav a{
-      color:#ffffff;
+      color:#ffffff; !important;
     }
 
     #site-footer .footer-nav a:hover{
