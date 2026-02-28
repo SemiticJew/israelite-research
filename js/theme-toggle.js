@@ -1,8 +1,8 @@
-// Stable Theme Toggle (Works Across Injected Header/Footer)
+// Global Theme Toggle (Site-Wide Stable Version)
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
-  function applyTheme(theme){
+  function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
 
@@ -17,12 +17,12 @@ document.addEventListener("DOMContentLoaded", function(){
     if (footerLogo) footerLogo.src = logoSrc;
   }
 
-  // Load saved theme
+  // Apply saved theme on load
   const savedTheme = localStorage.getItem("theme") || "light";
   applyTheme(savedTheme);
 
-  // Toggle handler
-  document.addEventListener("click", function(e){
+  // Handle toggle clicks (works with injected header)
+  document.addEventListener("click", function (e) {
     const btn = e.target.closest(".theme-btn");
     if (!btn) return;
     applyTheme(btn.dataset.theme);
