@@ -1,38 +1,39 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
-  function initializeThemeToggle(){
+  function initializeThemeToggle() {
     const html = document.documentElement;
-    const headerLogo = document.getElementById('site-logo');
-const footerLogo = document.getElementById('footer-logo');
+    const headerLogo = document.getElementById("site-logo");
+    const footerLogo = document.getElementById("footer-logo");
     const buttons = document.querySelectorAll(".theme-btn");
 
-    if(buttons.length === 0) return;
+    if (!buttons.length) return;
 
-    function applyTheme(theme){
+    function applyTheme(theme) {
       html.setAttribute("data-theme", theme);
       localStorage.setItem("theme", theme);
 
-      if(logo){
-        const logoSrc = theme === 'dark'
-  ? '/israelite-research/images/white-logo-letters.png'
-  : '/israelite-research/images/black-logo-letters.png';
+      const logoSrc = theme === "dark"
+        ? "/israelite-research/images/white-logo-letters.png"
+        : "/israelite-research/images/black-logo-letters.png";
 
-if (headerLogo) headerLogo.src = logoSrc;
-if (footerLogo) footerLogo.src = logoSrc;
-      }
+      if (headerLogo) headerLogo.src = logoSrc;
+      if (footerLogo) footerLogo.src = logoSrc;
     }
 
-    const saved = localStorage.getItem("theme") || "light";
-    applyTheme(saved);
+    // Load saved theme (default = light)
+    const savedTheme = localStorage.getItem("theme") || "light";
+    applyTheme(savedTheme);
 
-    buttons.forEach(btn=>{
-      btn.addEventListener("click", function(){
-        applyTheme(btn.dataset.theme);
+    // Button click listeners
+    buttons.forEach(btn => {
+      btn.addEventListener("click", function () {
+        const selectedTheme = btn.dataset.theme;
+        applyTheme(selectedTheme);
       });
     });
   }
 
-  // Delay slightly to allow header include to finish
+  // Slight delay to ensure header/footer includes finish loading
   setTimeout(initializeThemeToggle, 200);
 
 });
