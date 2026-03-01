@@ -9,34 +9,172 @@
 
 <style>
   .container{max-width:1400px;margin:0 auto;padding:0 16px}
-  .topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--sky)}
-  .topbar-inner{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+
+  .topbar-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 16px
+  }
+
   .title{font-size:1.2rem;font-weight:800;margin:0}
-  .layout{display:grid;grid-template-columns:380px 1fr;gap:16px;margin:14px 0 32px}
-  @media (max-width:980px){.layout{grid-template-columns:1fr}.panel-right{order:-1}}
-  .panel{background:#fff;border:1px solid var(--sky);border-radius:10px}
-  .panel h3{margin:10px 14px;font-size:1rem;color:var(--brand)}
-  .facets{border-bottom:1px solid var(--sky);padding:10px 12px}
-  .az{display:grid;grid-template-columns:repeat(13,1fr);gap:4px}
-  .az button{border:1px solid var(--sky);background:#fff;border-radius:6px;padding:.3rem 0;font:inherit;cursor:pointer}
-  .az button:hover{background:#f8fafc}
-  .results{max-height:calc(100vh - 260px);overflow:auto;padding:8px 8px 12px}
-  .card{border:1px solid var(--sky);border-radius:10px;padding:10px;margin:8px 4px;cursor:pointer;background:#fff}
-  .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
-  .card .line1{display:flex;align-items:baseline;gap:.5rem}
-  .card .term{font-weight:800}
-  .card .abstract{margin-top:.25rem;font-size:.9rem;color:#374151}
-  .reader{padding:10px 14px}
-  .reader .head{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--sky);padding-bottom:8px}
-  .reader .r-title{margin:0;font-size:1.4rem;font-weight:800}
-  .reader article{line-height:1.55;margin-top:10px}
-  .empty{padding:22px;color:var(--muted)}
-  .r-toolbar{display:flex;gap:.5rem;align-items:center;margin-top:8px}
-  .r-toolbar input[type="search"]{flex:1;border:1px solid #e6ebf2;border-radius:8px;padding:.55rem .7rem;font:inherit}
-  .r-toolbar .btn{border:1px solid #e6ebf2;background:#fff;border-radius:8px;padding:.5rem .7rem;cursor:pointer}
+
+  .layout{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:16px;
+    margin:14px 0 32px
+  }
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr}
+    .panel-right{order:-1}
+  }
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px
+  }
+
+  .panel h3{
+    margin:10px 14px;
+    font-size:1rem;
+    color:var(--brand)
+  }
+
+  .facets{
+    border-bottom:1px solid var(--border);
+    padding:10px 12px
+  }
+
+  .az{
+    display:grid;
+    grid-template-columns:repeat(13,1fr);
+    gap:4px
+  }
+
+  .az button{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:6px;
+    padding:.3rem 0;
+    font:inherit;
+    cursor:pointer
+  }
+
+  .az button:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  .results{
+    max-height:calc(100vh - 260px);
+    overflow:auto;
+    padding:8px 8px 12px
+  }
+
+  .card{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    margin:8px 4px;
+    cursor:pointer;
+    background:var(--surface);
+  }
+
+  .card:hover{
+    box-shadow:0 4px 12px rgba(0,0,0,.08)
+  }
+
+  .card .line1{
+    display:flex;
+    align-items:baseline;
+    gap:.5rem
+  }
+
+  .card .term{
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .card .abstract{
+    margin-top:.25rem;
+    font-size:.9rem;
+    color:var(--muted)
+  }
+
+  .reader{
+    padding:10px 14px
+  }
+
+  .reader .head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:8px
+  }
+
+  .reader .r-title{
+    margin:0;
+    font-size:1.4rem;
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .reader article{
+    line-height:1.55;
+    margin-top:10px
+  }
+
+  .empty{
+    padding:22px;
+    color:var(--muted)
+  }
+
+  .r-toolbar{
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    margin-top:8px
+  }
+
+  .r-toolbar input[type="search"]{
+    flex:1;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:.55rem .7rem;
+    font:inherit;
+    background:var(--surface);
+    color:var(--ink);
+  }
+
+  .r-toolbar .btn{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:8px;
+    padding:.5rem .7rem;
+    cursor:pointer;
+    color:var(--ink);
+  }
+
+  .r-toolbar .btn:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
 </style>
 </head>
+
 <body class="bib-refs" data-page="encyclopedia">
+
 <div id="site-header"></div>
 
 <div class="topbar">
@@ -61,13 +199,17 @@
       <div class="head">
         <h2 class="r-title">Select an entry</h2>
         <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
-          <input aria-label="Search encyclopedia" id="q" name="q_ency" placeholder="Search (e.g., Judeans, Gentiles, Kushites)…" spellcheck="false" type="search"/>
+          <input aria-label="Search encyclopedia" id="q" name="q_ency"
+                 placeholder="Search (e.g., Judeans, Gentiles, Kushites)…"
+                 spellcheck="false" type="search"/>
           <button class="btn" id="clearQ" type="button">Clear</button>
         </form>
       </div>
-      <!-- article-content is required for xref-hover targeting -->
+
       <article class="article-content">
-        <div class="empty">Definitions will appear here when you select a result.</div>
+        <div class="empty">
+          Definitions will appear here when you select a result.
+        </div>
       </article>
     </div>
   </aside>
@@ -75,20 +217,17 @@
 
 <div id="site-footer"></div>
 
-<!-- Includes -->
+<!-- Scripts -->
 <script src="/israelite-research/js/include.js" defer></script>
 <script src="/israelite-research/js/citations.js" defer></script>
 <script src="/israelite-research/js/xref-hover.js" defer></script>
 <script src="/israelite-research/js/encyclopedia.seealso.js" defer></script>
 <script src="/israelite-research/js/encyclopedia.seealso.autolink.js" defer></script>
-
-<!-- App that loads /data/israelite_dictionary.json with robust path fallbacks -->
 <script src="/israelite-research/js/encyclopedia.app.js" defer></script>
 <script src="/israelite-research/js/encyclopedia.seealso.render.js" defer></script>
 <script src="js/encyclopedia.linkify.js"></script>
 <script src="js/xref-rebind.js"></script>
 <script src="js/xref-url-override.js?v=1762745482"></script>
-<!-- Global Includes -->
-<script src="/israelite-research/js/include.js"></script>
+
 </body>
 </html>
