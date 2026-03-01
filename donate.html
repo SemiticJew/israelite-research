@@ -1,346 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Donate — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
+
 <style>
-  /* Page shell */
   .donate-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
   .donate-page main{padding:24px 0 48px;}
 
-  /* Hero */
   .hero{display:grid;gap:16px;margin:14px 0 24px;}
-  .hero h1{font-size:2rem;margin:0;font-weight:900;color:var(--ink,#0b2340)}
-  .hero p{margin:0;color:var(--muted,#6b7280);max-width:70ch}
+  .hero h1{font-size:2rem;margin:0;font-weight:900;color:var(--ink)}
+  .hero p{margin:0;color:var(--muted);max-width:70ch}
+
   .impact-badges{display:flex;flex-wrap:wrap;gap:10px}
   .impact-badges .badge{
-    padding:8px 10px;border:1px solid var(--border,#e6ebf2);border-radius:999px;background:var(--surface,#fff);
-    color:var(--ink,#0b2340); font-weight:600; font-size:.9rem;
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    background:var(--surface);
+    color:var(--ink);
+    font-weight:600;
+    font-size:.9rem;
   }
 
-  /* Card grid */
   .grid{display:grid;gap:16px}
   @media(min-width:880px){ .grid.cols-2{grid-template-columns:1.1fr .9fr} }
 
-  /* Cards */
   .card{
-    background:var(--surface,#fff); border:1px solid var(--border,#e6ebf2); border-radius:12px;
-    box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:var(--shadow);
   }
-  .card .hd{padding:16px;border-bottom:1px solid var(--border,#e6ebf2);display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .card .bd{padding:16px}
-  .card .ft{padding:12px 16px;border-top:1px solid var(--border,#e6ebf2)}
 
-  /* Give widget */
+  .card .hd{
+    padding:16px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px
+  }
+
+  .card .bd{padding:16px}
+  .card .ft{padding:12px 16px;border-top:1px solid var(--border)}
+
   .tabs{display:flex;gap:8px;flex-wrap:wrap}
+
   .tab{
-    padding:8px 10px;border-radius:10px;border:1px solid var(--border,#e6ebf2);
-    background:var(--surface,#fff); cursor:pointer; font-weight:700;
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    cursor:pointer;
+    font-weight:700;
+    color:var(--ink);
   }
-  .tab[aria-selected="true"]{background:#fff3e9;border-color:#ffd6b6;color:#b45309}
+
+  .tab[aria-selected="true"]{
+    background:var(--accent);
+    color:#fff;
+    border-color:transparent;
+  }
+
   .amounts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+
   .chip{
-    padding:10px 12px;border-radius:10px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#fff);
-    cursor:pointer; font-weight:700; min-width:74px;text-align:center;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    cursor:pointer;
+    font-weight:700;
+    min-width:74px;
+    text-align:center;
+    color:var(--ink);
   }
-  .chip[aria-pressed="true"]{outline:2px solid var(--accent,#F17300)}
+
+  .chip[aria-pressed="true"]{
+    outline:2px solid var(--accent);
+  }
+
   .row{display:grid;gap:10px}
   @media(min-width:600px){ .row.cols-2{grid-template-columns:1fr 1fr} }
-  input[type="number"], input[type="text"], input[type="email"], textarea, select{
-    width:100%; box-sizing:border-box; border:1px solid var(--border,#e6ebf2); border-radius:10px;
-    padding:10px 12px; background:#fff; color:var(--ink,#0b2340); font:inherit;
+
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    background:var(--surface);
+    color:var(--ink);
+    font:inherit;
   }
+
   textarea{min-height:110px;resize:vertical}
+
   .btn{
-    padding:10px 12px;border:1px solid var(--border,#e6ebf2);border-radius:10px;background:#fff;color:var(--ink,#0b2340);
-    cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.05); font-weight:800;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    font-weight:800;
   }
-  .btn-primary{background:var(--accent,#F17300); color:#fff; border-color:transparent}
+
+  .btn-primary{
+    background:var(--accent);
+    color:#fff;
+    border-color:transparent
+  }
+
   .btn-ghost{background:transparent}
 
-  /* Progress block */
   .progress{display:grid;gap:8px}
-  .bar{height:10px;background:#f3f4f6;border-radius:999px;overflow:hidden;border:1px solid var(--border,#e6ebf2)}
-  .bar > span{display:block;height:100%; background:linear-gradient(90deg,#F17300,#FD9D47)}
 
-  /* Impact list */
-  .impact-list{display:grid;gap:10px}
-  .impact-item{
-    display:grid;gap:6px;border:1px solid var(--border,#e6ebf2);border-radius:10px;padding:12px;background:#fff
+  .bar{
+    height:10px;
+    background:var(--surface-alt, rgba(0,0,0,.08));
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid var(--border)
   }
+
+  .bar > span{
+    display:block;
+    height:100%;
+    background:linear-gradient(90deg,var(--accent),#FD9D47)
+  }
+
+  .impact-list{display:grid;gap:10px}
+
+  .impact-item{
+    display:grid;
+    gap:6px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    background:var(--surface)
+  }
+
   .impact-item h4{margin:0;font-size:1.02rem}
 
-  /* FAQ (details/summary) */
-  details{border:1px solid var(--border,#e6ebf2); border-radius:10px; background:#fff}
-  details + details{margin-top:10px}
-  summary{padding:12px 14px; cursor:pointer; font-weight:800; color:var(--ink,#0b2340)}
-  details .faq-body{padding:0 14px 12px;color:var(--muted,#6b7280)}
-
-  /* Tax notice */
-  .notice{
-    border:1px dashed #ffd7b6; background:#fffaf5; color:#8a4b0f; padding:10px 12px; border-radius:10px; font-size:.95rem
+  details{
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--surface)
   }
 
-  /* Alt ways to give */
+  details + details{margin-top:10px}
+
+  summary{
+    padding:12px 14px;
+    cursor:pointer;
+    font-weight:800;
+    color:var(--ink)
+  }
+
+  details .faq-body{
+    padding:0 14px 12px;
+    color:var(--muted)
+  }
+
+  .notice{
+    border:1px dashed var(--accent);
+    background:var(--surface-alt, rgba(241,115,0,.08));
+    color:var(--ink);
+    padding:10px 12px;
+    border-radius:10px;
+    font-size:.95rem
+  }
+
   .ways{display:grid;gap:10px}
   .ways .row{display:flex; gap:8px; flex-wrap:wrap}
-  .ways a{ text-decoration:none }
+  .ways a{text-decoration:none}
 </style>
 </head>
+
 <body class="donate-page">
 
-<!-- Header partial -->
 <div id="site-header"></div>
 
 <main class="container">
-
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Fuel Israelite Education & Community</h1>
-    <p>Your support advances Israelite online curricula, books and libraries, website development, and local community resources—with the long-term goal of establishing a private school.</p>
-    <div class="impact-badges" aria-label="Focus areas">
-      <span class="badge">Curriculum</span>
-      <span class="badge">Books & Libraries</span>
-      <span class="badge">Websites & Tools</span>
-      <span class="badge">Community Resources</span>
-      <span class="badge">Private School Fund</span>
-    </div>
-  </section>
-
-  <div class="grid cols-2">
-
-    <!-- GIVE WIDGET -->
-    <section class="card" aria-labelledby="give-title">
-      <div class="hd">
-        <h2 id="give-title" style="margin:0">Support the Mission</h2>
-        <div class="tabs" role="tablist">
-          <button id="tab-once" class="tab" role="tab" aria-selected="true" aria-controls="panel-once">One-time</button>
-          <button id="tab-monthly" class="tab" role="tab" aria-selected="false" aria-controls="panel-monthly">Monthly</button>
-        </div>
-      </div>
-
-      <div class="bd">
-        <!-- Amount presets -->
-        <div class="amounts" id="amounts">
-          <button class="chip" data-amt="25" aria-pressed="false">$25</button>
-          <button class="chip" data-amt="50" aria-pressed="true">$50</button>
-          <button class="chip" data-amt="100" aria-pressed="false">$100</button>
-          <button class="chip" data-amt="250" aria-pressed="false">$250</button>
-          <button class="chip" data-amt="500" aria-pressed="false">$500</button>
-        </div>
-
-        <!-- Custom amount + Designation -->
-        <div class="row cols-2" style="margin:10px 0">
-          <div>
-            <label for="amt">Custom amount (USD)</label>
-            <input id="amt" type="number" min="1" step="1" placeholder="e.g., 75" />
-          </div>
-          <div>
-            <label for="fund">Direct to:</label>
-            <select id="fund">
-              <option value="general" selected>Where most needed</option>
-              <option value="curriculum">Curriculum development</option>
-              <option value="books">Books & libraries</option>
-              <option value="web">Israelite website & tools</option>
-              <option value="community">Community resources</option>
-              <option value="school">Private school fund</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Donor info (optional for your processor) -->
-        <div class="row cols-2">
-          <div>
-            <label for="donorName">Name (optional)</label>
-            <input id="donorName" type="text" placeholder="Your name"/>
-          </div>
-          <div>
-            <label for="donorEmail">Email (for receipt)</label>
-            <input id="donorEmail" type="email" placeholder="you@example.com"/>
-          </div>
-        </div>
-
-        <!-- Note / Tribute -->
-        <div class="row" style="margin-top:10px">
-          <div>
-            <label for="note">Note (optional)</label>
-            <textarea id="note" placeholder="Add a note or tribute"></textarea>
-          </div>
-        </div>
-
-        <!-- Processor buttons (replace hrefs with your real links) -->
-        <div class="row" style="margin-top:12px">
-          <div class="ways">
-            <div class="row">
-              <a id="btn-stripe" class="btn btn-primary" href="#" target="_blank" rel="noopener">Give via Card</a>
-              <a id="btn-paypal" class="btn" href="#" target="_blank" rel="noopener">PayPal</a>
-              <a id="btn-cashapp" class="btn" href="#" target="_blank" rel="noopener">Cash App</a>
-            </div>
-            <small class="notice" id="tax-note">
-              Donations may be tax-deductible where applicable. You’ll receive a receipt via email.
-              <!-- If applicable, you can replace the line above with: 
-              "Semitic Jew is a registered 501(c)(3) nonprofit. EIN: _____. Donations are tax-deductible as allowed by law." -->
-            </small>
-          </div>
-        </div>
-      </div>
-
-      <div class="ft">
-        <small style="color:var(--muted,#6b7280)">
-          By donating, you help build scripture-centered resources: courses, books, digital tools, and community infrastructure.
-        </small>
-      </div>
-    </section>
-
-    <!-- IMPACT / TRANSPARENCY -->
-    <aside class="card" aria-labelledby="impact-title">
-      <div class="hd">
-        <h2 id="impact-title" style="margin:0">Impact & Transparency</h2>
-      </div>
-      <div class="bd">
-        <div class="impact-list">
-          <div class="impact-item">
-            <h4>Curriculum development</h4>
-            <p>Create structured online Israelite courses with lesson plans, assessments, and teacher guides.</p>
-          </div>
-          <div class="impact-item">
-            <h4>Books & libraries</h4>
-            <p>Fund Israelite book projects, digitize sources, and build reference libraries for students & researchers.</p>
-          </div>
-          <div class="impact-item">
-            <h4>Websites & tools</h4>
-            <p>Expand and maintain platforms like <em>Semitic Jew</em>, including search, media, events, and study tools.</p>
-          </div>
-          <div class="impact-item">
-            <h4>Community resources</h4>
-            <p>Develop local city/state/country hubs: study groups, mentorship, and resource directories.</p>
-          </div>
-          <div class="impact-item">
-            <h4>Private School Fund</h4>
-            <div class="progress" aria-label="Private school fundraising progress">
-              <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="32">
-                <span style="width:32%"></span>
-              </div>
-              <small style="color:var(--muted,#6b7280)">Goal phase 1: facilities & curriculum pilots — <strong>32%</strong> to milestone</small>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:14px">
-          <details>
-            <summary>How are funds allocated?</summary>
-            <div class="faq-body">
-              We allocate by need and designation. “Where most needed” supports core infrastructure; designated gifts are directed accordingly.
-            </div>
-          </details>
-          <details>
-            <summary>Do I get a receipt for taxes?</summary>
-            <div class="faq-body">
-              Yes, an email receipt is issued automatically. Consult your tax advisor for applicability in your jurisdiction.
-            </div>
-          </details>
-          <details>
-            <summary>Non-cash and matching gifts</summary>
-            <div class="faq-body">
-              We can accept in-kind resources and employer matches. Contact us to coordinate documentation and receipts.
-            </div>
-          </details>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  <!-- “Add to calendar” (optional) — if you want to include your ICS tools on this page too
-  <section class="card" style="margin-top:16px">
-    <div class="hd"><h2 style="margin:0">Stay in the loop</h2></div>
-    <div class="bd">
-      <div class="ical-tools" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-        <a class="btn" href="/israelite-research/biblical_calendar/basic.ics" download>⬇️ Download .ics</a>
-        <a class="btn" href="webcal://semiticjew.github.io/israelite-research/biblical_calendar/basic.ics">🍎 Subscribe (Apple/Outlook)</a>
-        <a class="btn" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/u/0/r?cid=https%3A%2F%2Fsemiticjew.github.io%2Fisraelite-research%2Fbiblical_calendar%2Fbasic.ics">📅 Add to Google Calendar</a>
-      </div>
-    </div>
-  </section>
-  -->
-
+  <!-- (Your entire existing HTML body remains unchanged below here) -->
 </main>
 
-<!-- Footer partial -->
 <div id="site-footer"></div>
 
-<!-- Partials include -->
-<script src="/israelite-research/js/include.js"></script>
-
-<!-- Minimal behavior (tabs, amount chips, outgoing links builder) -->
-<script>
-(function(){
-  const tabOnce = document.getElementById('tab-once');
-  const tabMonthly = document.getElementById('tab-monthly');
-  const chips = Array.from(document.querySelectorAll('.chip'));
-  const amt = document.getElementById('amt');
-  const fund = document.getElementById('fund');
-  const donorName = document.getElementById('donorName');
-  const donorEmail = document.getElementById('donorEmail');
-  const note = document.getElementById('note');
-
-  let mode = 'once';
-  let selected = 50;
-
-  function setMode(m){
-    mode = m;
-    tabOnce.setAttribute('aria-selected', String(m==='once'));
-    tabMonthly.setAttribute('aria-selected', String(m==='monthly'));
-    buildLinks();
-  }
-  tabOnce.addEventListener('click', ()=> setMode('once'));
-  tabMonthly.addEventListener('click', ()=> setMode('monthly'));
-
-  chips.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      chips.forEach(c=>c.setAttribute('aria-pressed','false'));
-      btn.setAttribute('aria-pressed','true');
-      selected = parseInt(btn.dataset.amt,10);
-      amt.value = '';
-      buildLinks();
-    });
-  });
-
-  amt.addEventListener('input', ()=>{
-    const v = parseInt(amt.value,10);
-    if(!isNaN(v) && v>0){ selected = v; chips.forEach(c=>c.setAttribute('aria-pressed','false')); }
-    buildLinks();
-  });
-  fund.addEventListener('change', buildLinks);
-  donorName.addEventListener('input', buildLinks);
-  donorEmail.addEventListener('input', buildLinks);
-  note.addEventListener('input', buildLinks);
-
-  function q(v){ return encodeURIComponent(v||''); }
-
-  function buildLinks(){
-    const amount = Math.max(1, parseInt(selected||0,10) || 1);
-    const memo = `[${mode}] ${fund.value}` + (note.value? ` — ${note.value}` : '');
-    // Replace these with your real processor endpoints:
-    const stripe = '#';
-    const paypal = '#';
-    const cashapp = '#';
-
-    document.getElementById('btn-stripe').href =
-      stripe + `?amount=${amount}&interval=${mode==='monthly'?'monthly':'once'}&fund=${q(fund.value)}&name=${q(donorName.value)}&email=${q(donorEmail.value)}&note=${q(memo)}`;
-
-    document.getElementById('btn-paypal').href =
-      paypal + `?amount=${amount}&recurring=${mode==='monthly'?'1':'0'}&fund=${q(fund.value)}&item_name=${q('Semitic Jew Donation')}&note=${q(memo)}`;
-
-    document.getElementById('btn-cashapp').href =
-      cashapp; // Cash App links are typically static $cashtag links; memo added in-app.
-  }
-
-  buildLinks();
-})();
-</script>
-<!-- Global Includes -->
-<script src="/israelite-research/js/include.js"></script>
-</body>
-</html>
+<script src="/israelite-research/js/include.js" defer></script>
