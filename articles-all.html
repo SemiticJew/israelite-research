@@ -7,139 +7,99 @@
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 
 <style>
-.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  padding:0 20px;
+}
 
 /* Hero */
 .page-hero{
-  padding:20px 0 16px;
-  border-bottom:1px solid var(--border);
-  background:var(--surface);
+  padding:60px 0 40px;
+  text-align:center;
 }
-.page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
-.page-subtitle{margin:6px 0 0;color:var(--muted)}
 
-/* Filters */
-.filters{
-  position:sticky;
-  top:0;
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  z-index:5;
+.page-title{
+  margin:0;
+  font-size:2.4rem;
+  font-weight:900;
 }
-.filters .row{
+
+.page-subtitle{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:1rem;
+}
+
+/* Simple Controls */
+.controls{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  padding:12px 0;
+  gap:16px;
+  justify-content:center;
+  margin-bottom:50px;
 }
-.filters .row > *{
-  height:40px;
+
+.controls input,
+.controls select{
+  height:42px;
+  padding:0 14px;
   border:1px solid var(--border);
   border-radius:12px;
   background:var(--surface);
   color:var(--ink);
-  padding:0 12px;
-}
-.filters input[type="search"]{flex:1;min-width:180px}
-.filters .clear{cursor:pointer}
-.filters .count{margin-left:auto;border:none;height:auto;padding:0;color:var(--muted)}
-
-/* Group Header */
-.group{
-  margin:28px 0 10px;
-  font-weight:700;
-  color:var(--muted);
+  font-size:.95rem;
 }
 
-/* Modern Grid */
+/* Clean Grid */
 .cards{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:28px;
-  padding-bottom:60px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:36px;
 }
 
-/* Modern Card */
+/* Minimal Card */
 .card{
-  max-width:260px;
-  height:400px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
   display:flex;
   flex-direction:column;
-  overflow:hidden;
-  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  gap:14px;
+  text-decoration:none;
+  color:inherit;
+  transition:transform .25s ease;
 }
 
 .card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 20px 45px rgba(0,0,0,.12);
-  border-color:var(--brand);
-}
-
-.card a{
-  color:inherit;
-  text-decoration:none;
-  display:flex;
-  flex-direction:column;
-  height:100%;
+  transform:translateY(-4px);
 }
 
 /* Image */
 .card-media{
-  height:150px;
+  border-radius:14px;
   overflow:hidden;
-  position:relative;
-  background:var(--surface-alt);
 }
 
 .card-media img{
   width:100%;
-  height:100%;
+  height:170px;
   object-fit:cover;
+  display:block;
   transition:transform .35s ease;
 }
 
-.card:hover .card-media img{
-  transform:scale(1.06);
+.card:hover img{
+  transform:scale(1.05);
 }
 
-.label-pill{
-  position:absolute;
-  left:10px;
-  top:10px;
-  padding:.25rem .5rem;
-  font-size:.7rem;
-  background:rgba(0,0,0,.6);
-  color:#fff;
-  border-radius:6px;
-}
-
-/* Body */
-.card-body{
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
+/* Text */
 .card-title{
-  font-size:1rem;
+  font-size:1.05rem;
   font-weight:800;
   line-height:1.3;
-  color:var(--ink);
 }
 
 .card-excerpt{
-  font-size:.9rem;
-  line-height:1.45;
+  font-size:.92rem;
   color:var(--muted);
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  line-height:1.5;
 }
 
 .card-date{
@@ -147,76 +107,47 @@
   color:var(--muted);
 }
 
-/* Footer */
-.card-foot{
-  margin-top:auto;
-  padding:14px 16px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  border-top:1px solid var(--border);
-}
-
-.author-avatar{
-  width:26px;
-  height:26px;
-  border-radius:50%;
-}
-
-.author-name{
+/* Author line */
+.card-author{
   font-size:.85rem;
   font-weight:600;
-  color:var(--ink);
+  color:var(--brand);
 }
 
-/* FIX Author Modal Size */
+/* Modal size fix */
 #author-modal .modal-content{
   max-width:420px !important;
   width:92%;
   border-radius:16px;
 }
 
-#author-modal .modal-body{
-  font-size:.95rem;
-  line-height:1.6;
-}
-
-@media (prefers-reduced-motion: reduce){
-  .card{transition:none}
-}
 </style>
 </head>
 
-<body class="articles-all">
+<body>
 
 <div id="site-header"></div>
 
-<main>
+<main class="container">
+
   <section class="page-hero">
-    <div class="container">
-      <h1 class="page-title">All articles</h1>
-      <p class="page-subtitle">Browse by year, month, date, Bible book, chapter, verse, and author.</p>
-    </div>
+    <h1 class="page-title">All Articles</h1>
+    <p class="page-subtitle">
+      Scripture. Logic. Precision.
+    </p>
   </section>
 
-  <section class="filters">
-    <div class="container">
-      <div class="row">
-        <select id="f-year"><option value="">Year</option></select>
-        <select id="f-month"><option value="">Month</option></select>
-        <input id="f-date" type="date"/>
-        <select id="f-book"><option value="">Bible book</option></select>
-        <select id="f-chapter"><option value="">Chapter</option></select>
-        <input id="f-verse" type="text" placeholder="Verse (e.g., 3:16)"/>
-        <select id="f-author"><option value="">Author</option></select>
-        <input id="f-search" type="search" placeholder="Search title/excerpt…"/>
-        <button class="clear" id="f-clear" type="button">Clear</button>
-        <span class="count" id="f-count"></span>
-      </div>
-    </div>
+  <section class="controls">
+    <input type="search" id="search" placeholder="Search articles…">
+    <select id="year">
+      <option value="">All Years</option>
+    </select>
   </section>
 
-  <section class="container" id="results"></section>
+  <section class="cards" id="results">
+    <!-- JS injects cards -->
+  </section>
+
 </main>
 
 <div id="site-footer"></div>
