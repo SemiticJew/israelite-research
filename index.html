@@ -216,7 +216,65 @@
   width:18px;
   height:18px;
 }
+/* ============================= */
+/* FEATURED VIDEO (Modern)      */
+/* ============================= */
 
+.featured-video-block{
+  margin-top:90px;
+  padding-top:60px;
+  border-top:1px solid var(--border);
+}
+
+.video-row{
+  display:grid;
+  gap:28px;
+}
+
+@media(min-width:900px){
+  .video-row{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+.video-row iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:26px;
+  border:none;
+  box-shadow:0 40px 100px rgba(0,0,0,.18);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.video-row iframe:hover{
+  transform:translateY(-6px);
+  box-shadow:0 50px 120px rgba(0,0,0,.22);
+}
+
+/* Modern YouTube Button */
+
+.youtube-cta{
+  margin-top:40px;
+  text-align:center;
+}
+
+.youtube-cta a{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:800;
+  text-decoration:none;
+  letter-spacing:.5px;
+  transition:all .25s ease;
+  box-shadow:0 12px 30px rgba(241,115,0,.35);
+}
+
+.youtube-cta a:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 45px rgba(241,115,0,.45);
+}
 </style>
 </head>
 
@@ -279,34 +337,31 @@
 
   <div class="section-title">Featured Teaching</div>
 
-  <div class="featured-video">
+  <div class="video-row">
     <iframe
-      src="https://www.youtube-nocookie.com/embed/ZYmX1TJ-7u0?rel=0&modestbranding=1&controls=1&showinfo=0"
-      title="Featured Teaching"
+      src="https://www.youtube-nocookie.com/embed/ZYmX1TJ-7u0?rel=0&modestbranding=1"
+      title="Featured Teaching 1"
+      frameborder="0"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/agF5c_n5On0?rel=0&modestbranding=1"
+      title="Featured Teaching 2"
       frameborder="0"
       allowfullscreen
       loading="lazy">
     </iframe>
   </div>
 
-  <div class="secondary-video">
-    <iframe
-      src="https://www.youtube-nocookie.com/embed/agF5c_n5On0?rel=0&modestbranding=1&controls=1&showinfo=0"
-      title="Additional Teaching"
-      frameborder="0"
-      allowfullscreen
-      loading="lazy">
-    </iframe>
-  </div>
-
-  <div class="video-links">
-    <a href="https://www.youtube.com/@semiticjew" target="_blank">
-      View More Teachings →
+  <div class="youtube-cta">
+    <a href="https://www.youtube.com/channel/UC6ukYTYZ8YqsSYq4-nl11gA/" target="_blank">
+      Watch More on YouTube →
     </a>
   </div>
 
 </div>
-
     </div>
 
     <!-- RIGHT COLUMN -->
