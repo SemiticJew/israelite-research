@@ -7,58 +7,103 @@
 <title>Israelite Catechism — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 <style>
-    :root{
-      --ink:#0b2340; --muted:#6b7280; --blue:#054A91; --accent:#F17300;
-      --border:#e6ebf2; --bg:#ffffff; --sky:#DBE4EE;
-    }
+  /* Page layout only — no root overrides */
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .wrap{padding:16px 0 40px}
+  .split{display:grid;grid-template-columns:300px 1fr;gap:16px}
+  @media (max-width:900px){.split{grid-template-columns:1fr}}
 
-    /* Page layout */
-    .container{max-width:1200px;margin:0 auto;padding:0 16px}
-    .wrap{padding:16px 0 40px}
-    .split{display:grid;grid-template-columns:300px 1fr;gap:16px}
-    @media (max-width:900px){.split{grid-template-columns:1fr}}
+  /* Left vertical tabs */
+  .vtabs{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:8px;
+    position:sticky; top:12px;
+  }
 
-    /* Left vertical tabs */
-    .vtabs{
-      background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;
-      position:sticky; top:12px;
-    }
-    .vtabs h2{margin:4px 8px 10px;font-size:.9rem;font-weight:800;color:#7387a6;text-transform:uppercase;letter-spacing:.08em}
-    .vlist{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
-    .vtab{
-      width:100%; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
-      background:#fff; border:1px solid var(--border); border-radius:10px;
-      padding:12px 12px; display:flex; align-items:center; gap:10px;
-      transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease, background-color .15s ease;
-    }
-    .vtab:hover{border-color:#cdd8e6; box-shadow:0 2px 10px rgba(0,0,0,.06); transform:translateY(-1px)}
-    .vtab[aria-selected="true"]{
-      border-color:var(--accent); background:linear-gradient(180deg,#fffaf5,#ffffff);
-      box-shadow:0 0 0 2px rgba(241,115,0,.12) inset;
-    }
-    .vicon{flex:0 0 18px; height:18px}
-    .vlabel{font-weight:800;color:var(--blue)}
-    .vdesc{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
+  .vtabs h2{
+    margin:4px 8px 10px;
+    font-size:.9rem;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em
+  }
 
-    /* Right content pane */
-    .pane{
-      background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;
-      min-height:320px;
-    }
-    .pane .title{margin:0 0 8px;font-size:1.4rem;font-weight:900;color:var(--blue)}
-    .divider{height:1px;background:var(--border);margin:8px 0 14px}
-    .lead{color:var(--ink);line-height:1.7}
-    .cite{color:var(--muted);font-size:.9rem}
-    .block{margin:14px 0}
-    .block h3{margin:0 0 6px;font-size:1.05rem;color:var(--ink)}
-    .block p{margin:.35rem 0;line-height:1.7}
-    .bullets{margin:.25rem 0 0 1.15rem}
-    .bullets li{line-height:1.7}
-    .note{background:#fff7ed;border:1px solid #ffe3c4;border-radius:10px;padding:10px;margin:10px 0}
+  .vlist{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
 
-    /* Accessibility focus */
-    .vtab:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
-  </style>
+  .vtab{
+    width:100%;
+    text-align:left;
+    cursor:pointer;
+    font:inherit;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:all .15s ease;
+  }
+
+  .vtab:hover{
+    border-color:var(--border);
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    transform:translateY(-1px)
+  }
+
+  .vtab[aria-selected="true"]{
+    border-color:var(--accent);
+    background:var(--surface);
+    box-shadow:0 0 0 2px rgba(241,115,0,.12) inset;
+  }
+
+  .vicon{flex:0 0 18px;height:18px}
+  .vlabel{font-weight:800;color:var(--accent)}
+  .vdesc{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
+
+  /* Right pane */
+  .pane{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    min-height:320px;
+  }
+
+  .pane .title{
+    margin:0 0 8px;
+    font-size:1.4rem;
+    font-weight:900;
+    color:var(--accent)
+  }
+
+  .divider{height:1px;background:var(--border);margin:8px 0 14px}
+  .lead{color:var(--ink);line-height:1.7}
+  .cite{color:var(--muted);font-size:.9rem}
+  .block{margin:14px 0}
+  .block h3{margin:0 0 6px;font-size:1.05rem;color:var(--ink)}
+  .block p{margin:.35rem 0;line-height:1.7}
+  .bullets{margin:.25rem 0 0 1.15rem}
+  .bullets li{line-height:1.7}
+
+  .note{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    margin:10px 0
+  }
+
+  .vtab:focus-visible{
+    outline:3px solid var(--accent);
+    outline-offset:2px
+  }
+</style>
+    
 </head>
 <body class="israelite-catechism">
 <!-- Header include -->
