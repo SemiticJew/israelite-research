@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>All Articles — Semitic Jew</title>
+<title>Article Archive — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 
 <style>
@@ -49,15 +49,15 @@
   font-size:.9rem;
 }
 
-/* Archive List */
+/* Archive Layout */
 .archive{
   display:flex;
   flex-direction:column;
-  gap:28px;
+  gap:30px;
 }
 
 .entry{
-  padding-bottom:22px;
+  padding-bottom:24px;
   border-bottom:1px solid var(--border);
 }
 
@@ -65,9 +65,8 @@
   border-bottom:none;
 }
 
-/* Title */
 .entry-title{
-  font-size:1.15rem;
+  font-size:1.2rem;
   font-weight:700;
   margin:0 0 6px;
 }
@@ -81,18 +80,16 @@
   text-decoration:underline;
 }
 
-/* Metadata */
 .meta{
   font-size:.85rem;
   color:var(--muted);
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 .meta span{
   margin-right:14px;
 }
 
-/* Excerpt */
 .entry-excerpt{
   font-size:.95rem;
   line-height:1.6;
@@ -128,13 +125,119 @@
     </select>
   </section>
 
-  <section class="archive" id="results">
-    <!-- JS injects entries -->
-  </section>
+  <section class="archive" id="results"></section>
 
 </main>
 
 <div id="site-footer"></div>
+
+<script>
+(function(){
+
+  const RESULTS = document.getElementById('results');
+  const SEARCH  = document.getElementById('search');
+  const YEARSEL = document.getElementById('year');
+
+  let DATA = [];
+
+  function fmtDate(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined,{
+      year:'numeric',
+      month:'long',
+      day:'numeric'
+    });
+  }
+
+  function render(items){
+    RESULTS.innerHTML = "";
+
+    items.sort((a,b)=> new Date(b.date) - new Date(a.date))
+         .forEach(a=>{
+      const div = document.createElement('div');
+      div.className = 'entry';
+      div.innerHTML = `
+        <h2 class="entry-title">
+          <a href="${a.href}">${a.title}</a>
+        </h2>
+        <div class="meta">
+          <span>${fmtDate(a.date)}</span>
+          <span>• ${a.author}</span>
+          ${a.book ? `<span>• ${a.book} ${a.chapter || ""}</span>` : ""}
+        </div>
+        <p class="entry-excerpt">${a.excerpt || ""}</p>
+      `;
+      RESULTS.appendChild(div);
+    });
+  }
+
+  function applyFilters(){
+    const search = SEARCH.value.toLowerCase();
+    const year = YEARSEL.value;
+
+    const filtered = DATA.filter(a=>{
+      const sOk = !search || (a.title + " " + (a.excerpt||"")).toLowerCase().includes(search);
+      const yOk = !year || new Date(a.date).getFullYear().toString() === year;
+      return sOk && yOk;
+    });
+
+    render(filtered);
+  }
+
+  function populateYears(){
+    const years = [...new Set(DATA.map(a=> new Date(a.date).getFullYear()))]
+      .sort((a,b)=> b-a);
+
+    years.forEach(y=>{
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      YEARSEL.appendChild(opt);
+    });
+  }
+
+  async function boot(){
+    try{
+      const res = await fetch('/israelite-research/data/articles-index.json',{cache:'no-store'});
+      if(res.ok){
+        DATA = await res.json();
+      }
+    }catch{}
+
+    if(!DATA.length){
+      DATA = [
+        {
+          title:"Is Creation Logical?",
+          href:"/israelite-research/articles/is-creation-logical.html",
+          excerpt:"Exploring the rational coherence of creation within a biblical worldview.",
+          date:"2025-08-20",
+          author:"Semitic Jew",
+          book:"Genesis",
+          chapter:1
+        },
+        {
+          title:"Is Scripture & Logic Compatible?",
+          href:"/israelite-research/articles/is-scripture-and-logic-compatible.html",
+          excerpt:"How sound reasoning complements rather than conflicts with Scripture.",
+          date:"2025-07-18",
+          author:"Semitic Jew",
+          book:"Proverbs",
+          chapter:1
+        }
+      ];
+    }
+
+    populateYears();
+    render(DATA);
+  }
+
+  SEARCH.addEventListener('input', applyFilters);
+  YEARSEL.addEventListener('change', applyFilters);
+
+  boot();
+
+})();
+</script>
 
 <script src="/israelite-research/js/include.js"></script>
 
