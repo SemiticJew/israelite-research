@@ -103,7 +103,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
 /* ------------------------------
    Header / Nav
 ------------------------------ */
-.site-header { border-bottom: 1px solid #e6ebf2; background: #fff; }
+.site-header { border-bottom: 1px solid #e6ebf2; background: var(--surface); }
 .site-header .container{ display:flex; align-items:center; justify-content: space-between; min-height: 64px; gap: 16px; }
 
 .site-title{ font-family: var(--ff-serif); font-size: 1.2rem; color: var(--ink); white-space: nowrap; }
@@ -787,7 +787,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   align-items: stretch;
 }
 .texts-grid .card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #e6ebf2;
   border-radius: 12px;
   padding: 1rem;
@@ -831,7 +831,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   border: 1px solid #e6ebf2;
   border-radius: 16px;       /* rounded card corners */
   overflow: hidden;          /* clip child images to rounded corners */
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 2px 10px rgba(0,0,0,.04);
 }
 
@@ -1238,7 +1238,7 @@ a:hover { text-decoration: none; filter: brightness(0.95); }
   border: 1px solid #e6ebf2;
   text-decoration: none;
   color: #0b2340;
-  background: #fff;
+  background: var(--surface);
 }
 
 .chapters-grid a:hover,
@@ -1347,7 +1347,7 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #fff;
+  background: var(--surface);
   border-bottom: 1px solid #e6ebf2;
   padding: var(--header-pad-y) 0;
 }
@@ -1470,7 +1470,7 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   position: fixed;                /* JS controls left/top */
   display: none;                  /* toggled by JS */
   max-width: min(420px, 92vw);
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #e6ebf2;
   border-radius: 10px;
   box-shadow: 0 8px 30px rgba(0,0,0,.12);
@@ -1493,8 +1493,8 @@ main{ padding-top: clamp(8px, 1vw, 12px); }
   z-index: 9999;
   display: none;
   max-width: min(420px, 92vw);
-  background: #fff;
-  border: 1px solid var(--sky);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 8px 30px rgba(0,0,0,.12);
   padding: .6rem .7rem;
@@ -2980,7 +2980,7 @@ html[data-theme="dark"] #chapter-root .btn-ghost{
   position: fixed;                /* JS controls left/top */
   display: none;                  /* toggled by JS */
   max-width: min(420px, 92vw);
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #e6ebf2;
   border-radius: 10px;
   box-shadow: 0 8px 30px rgba(0,0,0,.12);
@@ -3284,11 +3284,11 @@ hr{border:0;border-top:1px solid var(--border)}
   resize: none;
   overflow: auto;
   padding: .65rem .75rem;
-  border: 1px solid var(--sky);
+  border: 1px solid var(--border);
   border-radius: 10px;
   font: inherit;
   line-height: 1.6;
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 1px 2px rgba(0,0,0,.03) inset;
 }
 .v-panel.cm .exposition-text:focus{
