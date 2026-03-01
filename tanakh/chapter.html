@@ -21,13 +21,13 @@
   .verse + .verse{border-top:1px solid var(--sky)}
   .vnum{font-weight:800;color:var(--brand)}
   .vnum::after{content:" —";color:var(--muted);margin-left:.25rem}
-  .vtext{color:#111;line-height:1.6}
+  .vtext{color:var(--ink);line-height:1.6}
 
   /* Verse tools */
   .v-tools{margin-top:6px;display:flex;gap:6px}
   .tool-btn{
     padding:.22rem .55rem;font-size:.8rem;border-radius:8px;
-    border:1px solid #e6ebf2;background:#fff;cursor:pointer
+    border:1px solid #e6ebf2;background:var(--surface);cursor:pointer
   }
   .tool-btn:hover{background:#f8fafc}
 
@@ -40,7 +40,7 @@
   /* Dictionary */
   .dict-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.4rem}
   .dict-title{font-weight:700;color:var(--ink)}
-  .icon-btn{border:1px solid #e6ebf2;background:#fff;border-radius:8px;padding:.35rem;cursor:pointer}
+  .icon-btn{border:1px solid #e6ebf2;background:var(--surface);border-radius:8px;padding:.35rem;cursor:pointer}
   .icon-btn:hover{background:#f8fafc}
   .dict-reveal{overflow:hidden;max-height:0;transition:max-height .2s ease}
   .dict-input{width:100%;border:1px solid var(--sky);border-radius:10px;padding:.5rem .6rem;font:inherit}
@@ -50,12 +50,12 @@
   .reader-toolbar{
     position:sticky;top:0;z-index:50;
     display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;
-    background:#fff;border:1px solid var(--sky);border-radius:10px;
+    background:var(--surface);border:1px solid var(--sky);border-radius:10px;
     padding:.5rem;margin:10px 0 16px;box-shadow:0 1px 6px rgba(0,0,0,.05)
   }
   .reader-toolbar .btn,
   .reader-toolbar select{
-    padding:.45rem .6rem;border:1px solid #e6ebf2;background:#fff;border-radius:10px;font:inherit;cursor:pointer
+    padding:.45rem .6rem;border:1px solid #e6ebf2;background:var(--surface);border-radius:10px;font:inherit;cursor:pointer
   }
   .reader-toolbar .btn:hover{background:#f8fafc}
 </style>
