@@ -4152,3 +4152,11 @@ body {
   background: var(--surface);
   color: var(--ink);
 }
+
+/* Ensure proper light mode defaults */
+html:not([data-theme="dark"]){
+  --ink:#0b2340;
+  --muted:#5b6b7c;
+  --surface:#ffffff;
+  --border:#e6ebf2;
+}
