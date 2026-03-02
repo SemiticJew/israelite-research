@@ -3,72 +3,88 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Article Archive — Semitic Jew</title>
+<title>Collected Writings — Semitic Jew</title>
 <link href="/israelite-research/styles.css" rel="stylesheet"/>
 
 <style>
 .container{
-  max-width:900px;
+  max-width:1000px;
   margin:0 auto;
-  padding:0 20px;
+  padding:0 24px;
 }
 
-/* Header */
+/* HERO */
 .page-hero{
-  padding:60px 0 40px;
+  padding:70px 0 40px;
   border-bottom:1px solid var(--border);
 }
 
 .page-title{
   margin:0;
-  font-size:2.2rem;
-  font-weight:800;
+  font-size:2.4rem;
+  font-weight:900;
 }
 
 .page-subtitle{
-  margin-top:8px;
-  font-size:.95rem;
+  margin-top:10px;
   color:var(--muted);
+  font-size:1rem;
 }
 
-/* Controls */
-.controls{
-  margin:30px 0 40px;
-  display:flex;
-  gap:16px;
-}
-
-.controls input,
-.controls select{
-  height:40px;
-  padding:0 12px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:var(--surface);
-  color:var(--ink);
-  font-size:.9rem;
-}
-
-/* Archive Layout */
-.archive{
-  display:flex;
-  flex-direction:column;
-  gap:30px;
-}
-
-.entry{
-  padding-bottom:24px;
+/* FEATURED */
+.featured{
+  padding:50px 0;
   border-bottom:1px solid var(--border);
 }
 
-.entry:last-child{
-  border-bottom:none;
+.featured-label{
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+.featured-title{
+  font-size:1.6rem;
+  font-weight:800;
+  margin:0 0 12px;
+}
+
+.featured-excerpt{
+  font-size:1rem;
+  line-height:1.6;
+  color:var(--ink);
+  margin-bottom:18px;
+}
+
+.featured a{
+  text-decoration:none;
+  font-weight:700;
+  color:var(--brand);
+}
+
+/* SECTIONS */
+.section{
+  padding:50px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.section-title{
+  font-size:1.2rem;
+  font-weight:800;
+  margin-bottom:24px;
+}
+
+/* ENTRY */
+.entry{
+  margin-bottom:22px;
 }
 
 .entry-title{
-  font-size:1.2rem;
+  font-size:1.05rem;
   font-weight:700;
-  margin:0 0 6px;
+  margin:0 0 4px;
 }
 
 .entry-title a{
@@ -83,25 +99,8 @@
 .meta{
   font-size:.85rem;
   color:var(--muted);
-  margin-bottom:10px;
 }
 
-.meta span{
-  margin-right:14px;
-}
-
-.entry-excerpt{
-  font-size:.95rem;
-  line-height:1.6;
-  color:var(--ink);
-}
-
-/* Author modal constraint */
-#author-modal .modal-content{
-  max-width:420px !important;
-  width:92%;
-  border-radius:12px;
-}
 </style>
 </head>
 
@@ -112,20 +111,52 @@
 <main class="container">
 
   <section class="page-hero">
-    <h1 class="page-title">Article Archive</h1>
+    <h1 class="page-title">Collected Writings</h1>
     <p class="page-subtitle">
-      A chronological record of theological, logical, and exegetical publications.
+      A curated body of theological, logical, and exegetical work.
     </p>
   </section>
 
-  <section class="controls">
-    <input type="search" id="search" placeholder="Search title or excerpt…">
-    <select id="year">
-      <option value="">All Years</option>
-    </select>
+  <!-- FEATURED (MANUAL CONTROL) -->
+  <section class="featured">
+    <div class="featured-label">Featured Work</div>
+    <h2 class="featured-title">
+      <a href="/israelite-research/articles/is-creation-logical.html">
+        Is Creation Logical?
+      </a>
+    </h2>
+    <p class="featured-excerpt">
+      Exploring the rational coherence of creation within a biblical worldview,
+      addressing metaphysics, causality, and the structure of logical necessity.
+    </p>
+    <a href="/israelite-research/articles/is-creation-logical.html">
+      Read Full Article →
+    </a>
   </section>
 
-  <section class="archive" id="results"></section>
+  <!-- LOGIC -->
+  <section class="section">
+    <div class="section-title">Logic</div>
+    <div id="logic-section"></div>
+  </section>
+
+  <!-- THEOLOGY -->
+  <section class="section">
+    <div class="section-title">Theology</div>
+    <div id="theology-section"></div>
+  </section>
+
+  <!-- IDENTITY & HISTORY -->
+  <section class="section">
+    <div class="section-title">Identity & History</div>
+    <div id="identity-section"></div>
+  </section>
+
+  <!-- PROPHECY -->
+  <section class="section">
+    <div class="section-title">Prophecy & Eschatology</div>
+    <div id="prophecy-section"></div>
+  </section>
 
 </main>
 
@@ -134,105 +165,41 @@
 <script>
 (function(){
 
-  const RESULTS = document.getElementById('results');
-  const SEARCH  = document.getElementById('search');
-  const YEARSEL = document.getElementById('year');
-
-  let DATA = [];
-
-  function fmtDate(iso){
-    const d = new Date(iso);
-    return d.toLocaleDateString(undefined,{
-      year:'numeric',
-      month:'long',
-      day:'numeric'
-    });
-  }
-
-  function render(items){
-    RESULTS.innerHTML = "";
-
-    items.sort((a,b)=> new Date(b.date) - new Date(a.date))
-         .forEach(a=>{
-      const div = document.createElement('div');
-      div.className = 'entry';
-      div.innerHTML = `
-        <h2 class="entry-title">
-          <a href="${a.href}">${a.title}</a>
-        </h2>
-        <div class="meta">
-          <span>${fmtDate(a.date)}</span>
-          <span>• ${a.author}</span>
-          ${a.book ? `<span>• ${a.book} ${a.chapter || ""}</span>` : ""}
-        </div>
-        <p class="entry-excerpt">${a.excerpt || ""}</p>
-      `;
-      RESULTS.appendChild(div);
-    });
-  }
-
-  function applyFilters(){
-    const search = SEARCH.value.toLowerCase();
-    const year = YEARSEL.value;
-
-    const filtered = DATA.filter(a=>{
-      const sOk = !search || (a.title + " " + (a.excerpt||"")).toLowerCase().includes(search);
-      const yOk = !year || new Date(a.date).getFullYear().toString() === year;
-      return sOk && yOk;
-    });
-
-    render(filtered);
-  }
-
-  function populateYears(){
-    const years = [...new Set(DATA.map(a=> new Date(a.date).getFullYear()))]
-      .sort((a,b)=> b-a);
-
-    years.forEach(y=>{
-      const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
-      YEARSEL.appendChild(opt);
-    });
-  }
+  const MAP = {
+    "Logic": document.getElementById("logic-section"),
+    "Theology": document.getElementById("theology-section"),
+    "Identity": document.getElementById("identity-section"),
+    "Prophecy": document.getElementById("prophecy-section")
+  };
 
   async function boot(){
+    let data = [];
+
     try{
       const res = await fetch('/israelite-research/data/articles-index.json',{cache:'no-store'});
       if(res.ok){
-        DATA = await res.json();
+        data = await res.json();
       }
     }catch{}
 
-    if(!DATA.length){
-      DATA = [
-        {
-          title:"Is Creation Logical?",
-          href:"/israelite-research/articles/is-creation-logical.html",
-          excerpt:"Exploring the rational coherence of creation within a biblical worldview.",
-          date:"2025-08-20",
-          author:"Semitic Jew",
-          book:"Genesis",
-          chapter:1
-        },
-        {
-          title:"Is Scripture & Logic Compatible?",
-          href:"/israelite-research/articles/is-scripture-and-logic-compatible.html",
-          excerpt:"How sound reasoning complements rather than conflicts with Scripture.",
-          date:"2025-07-18",
-          author:"Semitic Jew",
-          book:"Proverbs",
-          chapter:1
-        }
-      ];
-    }
+    if(!data.length) return;
 
-    populateYears();
-    render(DATA);
+    data.forEach(article=>{
+      if(!article.category || !MAP[article.category]) return;
+
+      const div = document.createElement("div");
+      div.className = "entry";
+      div.innerHTML = `
+        <h3 class="entry-title">
+          <a href="${article.href}">${article.title}</a>
+        </h3>
+        <div class="meta">
+          ${new Date(article.date).toLocaleDateString()} • ${article.author}
+        </div>
+      `;
+      MAP[article.category].appendChild(div);
+    });
   }
-
-  SEARCH.addEventListener('input', applyFilters);
-  YEARSEL.addEventListener('change', applyFilters);
 
   boot();
 
