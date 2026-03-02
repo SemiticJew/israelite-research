@@ -15,7 +15,7 @@
 
 /* HERO */
 .page-hero{
-  padding:50px 0 30px;
+  padding:60px 0 40px;
   border-bottom:1px solid var(--border);
 }
 
@@ -31,110 +31,50 @@
   font-size:1rem;
 }
 
-/* FEATURED */
-.featured{
-  padding:40px 0 60px;
+/* DISCIPLINE */
+.discipline{
+  padding:60px 0;
   border-bottom:1px solid var(--border);
 }
 
-.featured-label{
-  font-size:.8rem;
-  text-transform:uppercase;
-  letter-spacing:1.5px;
-  color:var(--muted);
-  margin-bottom:12px;
-}
-
-.featured-card{
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:30px;
-  background:var(--surface);
-}
-
-.featured-title{
-  font-size:1.5rem;
-  font-weight:800;
-  margin:0 0 12px;
-}
-
-.featured-excerpt{
-  font-size:1rem;
-  line-height:1.6;
-  margin-bottom:18px;
-  color:var(--ink);
-}
-
-.featured a{
-  text-decoration:none;
-  font-weight:700;
-  color:var(--brand);
-}
-
-/* SECTION */
-.section{
-  padding:40px 0 60px;
-  border-bottom:1px solid var(--border);
-}
-
-.section-title{
-  font-size:1.2rem;
+.discipline-title{
+  font-size:1.4rem;
   font-weight:800;
   margin-bottom:30px;
 }
 
-/* CARD GRID */
-.card-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:26px;
+/* SUBDISCIPLINE */
+.subdiscipline{
+  margin-bottom:30px;
 }
 
-/* CARD */
-.card{
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:22px;
-  background:var(--surface);
-  transition:transform .2s ease, border-color .2s ease;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-  border-color:var(--brand);
-}
-
-.card-title{
+.subdiscipline-title{
   font-size:1.05rem;
-  font-weight:800;
-  margin:0 0 6px;
+  font-weight:700;
+  margin-bottom:12px;
+  color:var(--brand);
 }
 
-.card-title a{
+/* ENTRY LIST */
+.entry{
+  margin-bottom:10px;
+  padding-left:10px;
+}
+
+.entry a{
   text-decoration:none;
   color:var(--ink);
+  font-weight:600;
 }
 
-.card-title a:hover{
+.entry a:hover{
   text-decoration:underline;
 }
 
-.card-meta{
+.entry-meta{
   font-size:.8rem;
   color:var(--muted);
-  margin-bottom:10px;
-}
-
-.card-excerpt{
-  font-size:.9rem;
-  line-height:1.5;
-  color:var(--muted);
-}
-
-#author-modal .modal-content{
-  max-width:420px !important;
-  width:92%;
-  border-radius:12px;
+  margin-top:2px;
 }
 </style>
 </head>
@@ -148,52 +88,11 @@
   <section class="page-hero">
     <h1 class="page-title">Collected Writings</h1>
     <p class="page-subtitle">
-      A curated body of theological, logical, and exegetical work.
+      A structured body of theological, logical, and analytical work.
     </p>
   </section>
 
-  <!-- FEATURED -->
-  <section class="featured">
-    <div class="featured-label">Featured Work</div>
-    <div class="featured-card">
-      <h2 class="featured-title">
-        <a href="/israelite-research/articles/is-creation-logical.html">
-          Is Creation Logical?
-        </a>
-      </h2>
-      <p class="featured-excerpt">
-        Exploring the rational coherence of creation within a biblical worldview,
-        addressing metaphysics, causality, and logical necessity.
-      </p>
-      <a href="/israelite-research/articles/is-creation-logical.html">
-        Read Full Article →
-      </a>
-    </div>
-  </section>
-
-  <!-- LOGIC -->
-  <section class="section">
-    <div class="section-title">Logic</div>
-    <div class="card-grid" id="logic-section"></div>
-  </section>
-
-  <!-- THEOLOGY -->
-  <section class="section">
-    <div class="section-title">Theology</div>
-    <div class="card-grid" id="theology-section"></div>
-  </section>
-
-  <!-- IDENTITY -->
-  <section class="section">
-    <div class="section-title">Identity & History</div>
-    <div class="card-grid" id="identity-section"></div>
-  </section>
-
-  <!-- PROPHECY -->
-  <section class="section">
-    <div class="section-title">Prophecy & Eschatology</div>
-    <div class="card-grid" id="prophecy-section"></div>
-  </section>
+  <section id="library"></section>
 
 </main>
 
@@ -202,12 +101,72 @@
 <script>
 (function(){
 
-  const MAP = {
-    "Logic": document.getElementById("logic-section"),
-    "Theology": document.getElementById("theology-section"),
-    "Identity": document.getElementById("identity-section"),
-    "Prophecy": document.getElementById("prophecy-section")
-  };
+  const LIBRARY = document.getElementById("library");
+
+  function fmtDate(iso){
+    return new Date(iso).toLocaleDateString(undefined,{
+      year:'numeric',
+      month:'long',
+      day:'numeric'
+    });
+  }
+
+  function groupData(data){
+    const map = {};
+
+    data.forEach(article=>{
+      const d = article.discipline || "Uncategorized";
+      const s = article.subdiscipline || "General";
+
+      map[d] ??= {};
+      map[d][s] ??= [];
+      map[d][s].push(article);
+    });
+
+    return map;
+  }
+
+  function render(data){
+    const grouped = groupData(data);
+
+    Object.keys(grouped).forEach(discipline=>{
+      const dSection = document.createElement("section");
+      dSection.className = "discipline";
+
+      const dTitle = document.createElement("div");
+      dTitle.className = "discipline-title";
+      dTitle.textContent = discipline;
+      dSection.appendChild(dTitle);
+
+      Object.keys(grouped[discipline]).forEach(sub=>{
+        const subDiv = document.createElement("div");
+        subDiv.className = "subdiscipline";
+
+        const subTitle = document.createElement("div");
+        subTitle.className = "subdiscipline-title";
+        subTitle.textContent = sub;
+        subDiv.appendChild(subTitle);
+
+        grouped[discipline][sub]
+          .sort((a,b)=> new Date(b.date) - new Date(a.date))
+          .forEach(article=>{
+            const entry = document.createElement("div");
+            entry.className = "entry";
+            entry.innerHTML = `
+              <a href="${article.href}">${article.title}</a>
+              <div class="entry-meta">
+                ${fmtDate(article.date)} • ${article.author}
+              </div>
+            `;
+            subDiv.appendChild(entry);
+          });
+
+        dSection.appendChild(subDiv);
+      });
+
+      LIBRARY.appendChild(dSection);
+    });
+  }
 
   async function boot(){
     let data = [];
@@ -219,26 +178,36 @@
       }
     }catch{}
 
-    if(!data.length) return;
+    if(!data.length){
+      data = [
+        {
+          title:"Three Laws of Logic",
+          href:"/israelite-research/articles/three-laws-of-logic.html",
+          date:"2025-04-02",
+          author:"Semitic Jew",
+          discipline:"Logic & Philosophy",
+          subdiscipline:"Laws of Logic"
+        },
+        {
+          title:"Is Creation Logical?",
+          href:"/israelite-research/articles/is-creation-logical.html",
+          date:"2025-08-20",
+          author:"Semitic Jew",
+          discipline:"Logic & Philosophy",
+          subdiscipline:"Metaphysics"
+        },
+        {
+          title:"Who Are the Gentiles?",
+          href:"/israelite-research/articles/gentiles.html",
+          date:"2025-05-28",
+          author:"Semitic Jew",
+          discipline:"Israelite Identity & Anthropology",
+          subdiscipline:"Ethnicity & Genealogy"
+        }
+      ];
+    }
 
-    data.forEach(article=>{
-      if(!article.category || !MAP[article.category]) return;
-
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = `
-        <h3 class="card-title">
-          <a href="${article.href}">${article.title}</a>
-        </h3>
-        <div class="card-meta">
-          ${new Date(article.date).toLocaleDateString()} • ${article.author}
-        </div>
-        <div class="card-excerpt">
-          ${article.excerpt || ""}
-        </div>
-      `;
-      MAP[article.category].appendChild(div);
-    });
+    render(data);
   }
 
   boot();
