@@ -8,7 +8,7 @@
 
 <style>
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:0 auto;
   padding:0 24px;
 }
@@ -33,7 +33,7 @@
 
 /* FEATURED */
 .featured{
-  padding:50px 0;
+  padding:60px 0;
   border-bottom:1px solid var(--border);
 }
 
@@ -45,8 +45,15 @@
   margin-bottom:12px;
 }
 
+.featured-card{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:30px;
+  background:var(--surface);
+}
+
 .featured-title{
-  font-size:1.6rem;
+  font-size:1.5rem;
   font-weight:800;
   margin:0 0 12px;
 }
@@ -54,8 +61,8 @@
 .featured-excerpt{
   font-size:1rem;
   line-height:1.6;
-  color:var(--ink);
   margin-bottom:18px;
+  color:var(--ink);
 }
 
 .featured a{
@@ -64,43 +71,71 @@
   color:var(--brand);
 }
 
-/* SECTIONS */
+/* SECTION */
 .section{
-  padding:50px 0;
+  padding:60px 0;
   border-bottom:1px solid var(--border);
 }
 
 .section-title{
   font-size:1.2rem;
   font-weight:800;
-  margin-bottom:24px;
+  margin-bottom:30px;
 }
 
-/* ENTRY */
-.entry{
-  margin-bottom:22px;
+/* CARD GRID */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:26px;
 }
 
-.entry-title{
+/* CARD */
+.card{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  background:var(--surface);
+  transition:transform .2s ease, border-color .2s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:var(--brand);
+}
+
+.card-title{
   font-size:1.05rem;
-  font-weight:700;
-  margin:0 0 4px;
+  font-weight:800;
+  margin:0 0 6px;
 }
 
-.entry-title a{
+.card-title a{
   text-decoration:none;
   color:var(--ink);
 }
 
-.entry-title a:hover{
+.card-title a:hover{
   text-decoration:underline;
 }
 
-.meta{
-  font-size:.85rem;
+.card-meta{
+  font-size:.8rem;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.card-excerpt{
+  font-size:.9rem;
+  line-height:1.5;
   color:var(--muted);
 }
 
+#author-modal .modal-content{
+  max-width:420px !important;
+  width:92%;
+  border-radius:12px;
+}
 </style>
 </head>
 
@@ -117,45 +152,47 @@
     </p>
   </section>
 
-  <!-- FEATURED (MANUAL CONTROL) -->
+  <!-- FEATURED -->
   <section class="featured">
     <div class="featured-label">Featured Work</div>
-    <h2 class="featured-title">
+    <div class="featured-card">
+      <h2 class="featured-title">
+        <a href="/israelite-research/articles/is-creation-logical.html">
+          Is Creation Logical?
+        </a>
+      </h2>
+      <p class="featured-excerpt">
+        Exploring the rational coherence of creation within a biblical worldview,
+        addressing metaphysics, causality, and logical necessity.
+      </p>
       <a href="/israelite-research/articles/is-creation-logical.html">
-        Is Creation Logical?
+        Read Full Article →
       </a>
-    </h2>
-    <p class="featured-excerpt">
-      Exploring the rational coherence of creation within a biblical worldview,
-      addressing metaphysics, causality, and the structure of logical necessity.
-    </p>
-    <a href="/israelite-research/articles/is-creation-logical.html">
-      Read Full Article →
-    </a>
+    </div>
   </section>
 
   <!-- LOGIC -->
   <section class="section">
     <div class="section-title">Logic</div>
-    <div id="logic-section"></div>
+    <div class="card-grid" id="logic-section"></div>
   </section>
 
   <!-- THEOLOGY -->
   <section class="section">
     <div class="section-title">Theology</div>
-    <div id="theology-section"></div>
+    <div class="card-grid" id="theology-section"></div>
   </section>
 
-  <!-- IDENTITY & HISTORY -->
+  <!-- IDENTITY -->
   <section class="section">
     <div class="section-title">Identity & History</div>
-    <div id="identity-section"></div>
+    <div class="card-grid" id="identity-section"></div>
   </section>
 
   <!-- PROPHECY -->
   <section class="section">
     <div class="section-title">Prophecy & Eschatology</div>
-    <div id="prophecy-section"></div>
+    <div class="card-grid" id="prophecy-section"></div>
   </section>
 
 </main>
@@ -188,13 +225,16 @@
       if(!article.category || !MAP[article.category]) return;
 
       const div = document.createElement("div");
-      div.className = "entry";
+      div.className = "card";
       div.innerHTML = `
-        <h3 class="entry-title">
+        <h3 class="card-title">
           <a href="${article.href}">${article.title}</a>
         </h3>
-        <div class="meta">
+        <div class="card-meta">
           ${new Date(article.date).toLocaleDateString()} • ${article.author}
+        </div>
+        <div class="card-excerpt">
+          ${article.excerpt || ""}
         </div>
       `;
       MAP[article.category].appendChild(div);
