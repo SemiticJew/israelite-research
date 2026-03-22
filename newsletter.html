@@ -46,6 +46,7 @@
   border-radius:16px;
   padding:40px;
   box-shadow:var(--shadow);
+  text-align:center;
 }
 
 .newsletter-card h2{
@@ -61,44 +62,40 @@
   line-height:1.6;
 }
 
+/* ConvertKit container */
 .newsletter-form{
   margin-top:24px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
 }
 
-.newsletter-form input{
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--ink);
-  font-size:.95rem;
+/* 🔥 Force form to match your theme */
+.formkit-form{
+  background:transparent !important;
+  box-shadow:none !important;
+  max-width:100% !important;
 }
 
-.newsletter-form button{
-  padding:12px;
-  border:none;
-  border-radius:999px;
-  background:var(--accent);
-  color:#fff;
-  font-weight:700;
-  font-size:.95rem;
-  cursor:pointer;
-  transition:all .2s ease;
+.formkit-input{
+  border-radius:10px !important;
+  border:1px solid var(--border) !important;
+  background:var(--surface) !important;
+  color:var(--ink) !important;
 }
 
-.newsletter-form button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(241,115,0,.35);
+.formkit-submit{
+  border-radius:999px !important;
+  background:var(--accent) !important;
+  font-weight:700 !important;
+}
+
+/* Optional: hide kit branding */
+.formkit-powered-by-convertkit-container{
+  display:none !important;
 }
 
 .newsletter-note{
   margin-top:18px;
   font-size:.85rem;
   color:var(--muted);
-  text-align:center;
 }
 
 </style>
@@ -111,35 +108,33 @@
 <main>
 
   <section class="newsletter-hero">
-    <h1>Newsletter</h1>
+    <h1>Get Biblical Truth Without Religious Bias</h1>
     <p>
-      Receive theological reflections, logical analysis, and structured
-      biblical insights directly to your inbox.
+      Join the newsletter for structured biblical analysis, historical breakdowns,
+      and uncensored research delivered directly to your inbox.
     </p>
-==[
   </section>
 
   <section class="newsletter-container">
     <div class="newsletter-card">
 
-  <h2>Join the Community</h2>
+      <h2>Join the Community</h2>
 
-  <p>
-    Stay informed about new articles, lectures, research releases,
-    and announcements from Semitic Jew. No spam. No noise.
-    Just structured thought and Scripture handled distinctly.
-  </p>
+      <p>
+        Stay informed about new articles, lectures, research releases,
+        and exclusive content from Semitic Jew.
+      </p>
 
-  <!-- 🔥 PUT IT RIGHT HERE -->
-  <div class="newsletter-form">
-    <script async data-uid="47ebc33178" src="https://semitic-jew-inc.kit.com/47ebc33178/index.js"></script>
-  </div>
+      <!-- ✅ ConvertKit Form -->
+      <div class="newsletter-form">
+        <script async data-uid="47ebc33178" src="https://semitic-jew-inc.kit.com/47ebc33178/index.js"></script>
+      </div>
 
-  <div class="newsletter-note">
-    You may unsubscribe at any time.
-  </div>
+      <div class="newsletter-note">
+        No spam. Unsubscribe at any time.
+      </div>
 
-</div>
+    </div>
   </section>
 
 </main>
@@ -147,5 +142,6 @@
 <div id="site-footer"></div>
 
 <script src="/israelite-research/js/include.js"></script>
+
 </body>
 </html>
