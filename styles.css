@@ -4160,3 +4160,43 @@ html:not([data-theme="dark"]){
   --surface:#ffffff;
   --border:#e6ebf2;
 }
+/* ========================= */
+/* DRAWER PANEL FIX         */
+/* ========================= */
+
+.drawer {
+  background: var(--surface) !important;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  border-left: 1px solid var(--border);
+}
+
+.drawer-body {
+  background: var(--surface);
+}
+
+.drawer-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.drawer .section {
+  background: transparent;
+}
+
+/* ========================= */
+/* DRAWER UI ENHANCEMENTS   */
+/* ========================= */
+
+.drawer-title {
+  color: var(--accent);
+}
+
+.drawer .section h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.drawer img {
+  background: var(--surface);
+}
