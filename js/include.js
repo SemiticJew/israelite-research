@@ -37,7 +37,7 @@
   if (!isArticlePage()) return;
   var s = document.createElement('script');
   s.defer = true;
-  s.src = '/israelite-research/js/xref-hover.js';
+  s.src = '/js/xref-hover.js';
   document.head.appendChild(s);
 })();
 
@@ -45,7 +45,7 @@
 (function(){
   if (!isArticlePage()) return;
   if (document.getElementById("author-modal")) return;
-  fetch("/israelite-research/partials/author-modal.html", {cache:"no-store"})
+  fetch("/partials/author-modal.html", {cache:"no-store"})
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(html){
       if (!html) return;
@@ -62,7 +62,7 @@
   if (document.getElementById("theme-toggle-loader")) return;
 
   const s = document.createElement("script");
-  s.src = "/israelite-research/js/theme-toggle.js";
+  s.src = "/js/theme-toggle.js";
   s.defer = true;
   s.id = "theme-toggle-loader";
   document.head.appendChild(s);

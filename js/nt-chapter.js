@@ -4,7 +4,7 @@
    - Cross-references use shared /js/xref-hover.js via .xref-trigger + data-xref
    - Easton dictionary: /data/dictionaries/easton_dictionary.json (sidebar search)
    - Inserts <hr class="scripture-divider"> after each verse block
-   - URL: /israelite-research/<canon>/chapter.html?book=<slug>&ch=<n>
+   - URL: /<canon>/chapter.html?book=<slug>&ch=<n>
 */
 (function(){
   // ---------- Helpers ----------
@@ -54,14 +54,14 @@
   }
   const ctx = getCtx();
 
-  const DATA_ROOT = '/israelite-research/data';
+  const DATA_ROOT = '/data';
   const BOOKS_JSON    = (canon)        => `${DATA_ROOT}/${canon}/books.json`;
   const CHAPTER_JSON  = (canon,b,c)    => `${DATA_ROOT}/${canon}/${b}/${c}.json`;
   const XREF_JSON     = (canon,b,c)    => `${DATA_ROOT}/crossrefs/${canon}/${b}/${c}.json`;
   const EASTON_JSON   = `${DATA_ROOT}/dictionaries/easton_dictionary.json`;
 
   function chapterHref(canon, book, ch){
-    return `/israelite-research/${canon}/chapter.html?book=${book}&ch=${ch}`;
+    return `/${canon}/chapter.html?book=${book}&ch=${ch}`;
   }
 
   // ---------- State ----------
@@ -72,7 +72,7 @@
   const _CHAPTER_CACHE = Object.create(null);
 
   // ---------- Strong’s (lexicon) ----------
-  const LEX_ROOT = '/israelite-research/data/lexicon';
+  const LEX_ROOT = '/data/lexicon';
   let STRONGS_HE = null;
   let STRONGS_GR = null;
 

@@ -14,7 +14,7 @@
     autodetect: true
   }, (window.refTagger && window.refTagger.settings) || {});
 
-  const ROOT = '/israelite-research/data';
+  const ROOT = '/data';
   const PREF_KEYS = [CFG.bibleVersion, 'KJV', 'Text', 'text', 'Darby'];
 
   // --- Basic helpers ---

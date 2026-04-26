@@ -65,7 +65,7 @@ function resolveApocSlug(slug) {
   }
 
   // --- routing ---
-  function getBase(){ return (location.pathname.includes("/israelite-research/") ? "/israelite-research" : BASE_FALLBACK); }
+  function getBase(){ return (location.pathname.includes("/") ? "/israelite-research" : BASE_FALLBACK); }
   function getBookSlug(){
     const qp = new URLSearchParams(location.search);
     return normalizeSlug(qp.get("book") || "");

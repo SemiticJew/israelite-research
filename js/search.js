@@ -1,5 +1,5 @@
 (function(){
-  const idxURL = '/israelite-research/search-index.json';
+  const idxURL = '/search-index.json';
   const qEl = document.getElementById('q');
   const go = document.getElementById('go');
   const out = document.getElementById('results');
@@ -13,7 +13,7 @@
     out.innerHTML = items.map(it => `
       <article class="search-card">
         <div class="media">
-          <img src="${it.image||'/israelite-research/images/articles/logic-compatibility-700x394.jpg'}" alt="">
+          <img src="${it.image||'/images/articles/logic-compatibility-700x394.jpg'}" alt="">
           ${it.type ? `<span class="label-pill">${it.type}</span>` : ''}
         </div>
         <div class="body">

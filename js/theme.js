@@ -1,4 +1,4 @@
-/* /israelite-research/js/theme.js
+/* /js/theme.js
    Make dark/light cooperate with the new palette switcher.
    Source of truth = localStorage "ir-theme" set by the switcher.
 */

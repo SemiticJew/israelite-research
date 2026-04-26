@@ -1,5 +1,5 @@
 (function(){
-  const DATA_URL = '/israelite-research/data/israelite_dictionary.json';
+  const DATA_URL = '/data/israelite_dictionary.json';
   const mount = document.getElementById('enc-entries');
   const azBar = document.getElementById('enc-az');
   const search = document.getElementById('enc-search');

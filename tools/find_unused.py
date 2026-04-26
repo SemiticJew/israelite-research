@@ -1,6 +1,6 @@
 import os, re, subprocess, sys, json
 ROOT = os.getcwd()
-SITE_PREFIXES = ["israelite-research/","/israelite-research/","/"]
+SITE_PREFIXES = ["israelite-research/","/","/"]
 MONITORED_EXT = {".js",".css",".json",".geojson",".png",".jpg",".jpeg",".gif",".svg",".webp",".ico",".pdf",".map",".csv",".tsv",".txt"}
 SKIP_DIRS = {".git","node_modules",".cache",".vite",".next","dist","build","out"}
 

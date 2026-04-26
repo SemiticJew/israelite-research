@@ -1,4 +1,4 @@
-// /israelite-research/js/chapter.js
+// /js/chapter.js
 // Chapter loader for Tanakh/NT pages (GitHub Pages friendly)
 // Order per verse: [Tools] [Copy] [#] [Text]
 // Tabs: Cross-Refs, Commentary, Lexicon, Strong's (compact sentence style)

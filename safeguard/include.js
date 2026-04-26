@@ -22,7 +22,7 @@
 (function () {
   if (!document.querySelector('.article-page')) return;
   var rt = document.createElement('script');
-  rt.src = '/israelite-research/js/reftagger.js';
+  rt.src = '/js/reftagger.js';
   rt.defer = true;
   document.head.appendChild(rt);
 })();

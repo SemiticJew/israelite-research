@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Events — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<link href="/styles.css" rel="stylesheet"/>
 <style>
   /* ===== Scoped calendar styles (stay on this page only) ===== */
   .events-page .container{max-width:1200px;margin:0 auto;padding:0 16px;}
@@ -124,8 +124,8 @@
   <!-- NEW: Tabs row (keeps your calendar toolbar untouched) -->
   <div class="tabs-toolbar">
     <div class="tabs-left"></div>    <div class="tabs-right">
-      <a class="btn" href="/israelite-research/assets/cal/basic.ics" download>Download ICS</a>
-      <a class="btn" href="webcal://semiticjew.github.io/israelite-research/assets/cal/basic.ics">Subscribe (webcal)</a>
+      <a class="btn" href="/assets/cal/basic.ics" download>Download ICS</a>
+      <a class="btn" href="webcal://semiticjew.github.io/assets/cal/basic.ics">Subscribe (webcal)</a>
     </div>
   </div>
 
@@ -257,7 +257,7 @@
 </div>
 
 <!-- Partials include -->
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 
 <!-- Calendar logic -->
 <script>
@@ -614,7 +614,7 @@
   render();
 
   // Load ICS-expanded JSON (read-only)
-  fetch('/israelite-research/assets/cal/basic.events.json', {cache:'no-store'})
+  fetch('/assets/cal/basic.events.json', {cache:'no-store'})
     .then(r => r.ok ? r.json() : [])
     .then(arr => { icsEvents = Array.isArray(arr) ? arr : []; render(); })
     .catch(()=>{ /* quietly ignore if missing */ });
@@ -642,7 +642,7 @@
   tabICS.addEventListener('click',  ()=> { setTab('ics'); ensureICSLoaded(); });
   setTab('site');
 
-  const ICS_URL = '/israelite-research/assets/cal/basic.ics';
+  const ICS_URL = '/assets/cal/basic.ics';
   let icsLoaded = false;
 
   async function ensureICSLoaded(){
@@ -766,6 +766,6 @@
 })();
 </script>
 <!-- Global Includes -->
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Search — Semitic Jew</title>
-  <link href="/israelite-research/styles.css" rel="stylesheet" />
+  <link href="/styles.css" rel="stylesheet" />
   <style>
     .page-shell{max-width:1200px;margin:0 auto;padding:0 16px}
     .breadcrumbs{font-size:.9rem;color:#66708a;margin:16px 0}
@@ -60,7 +60,7 @@
       </style>
 
       <div class="header-inner">
-        <a class="brand" href="/israelite-research/">
+        <a class="brand" href="/">
           <span class="mark" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
@@ -74,16 +74,16 @@
         </a>
 
         <nav class="primary" aria-label="Primary">
-          <a href="/israelite-research/apologetics.html">Apologetics</a>
-          <a href="/israelite-research/articles.html">Articles</a>
-          <a href="/israelite-research/biblia.html">Biblia</a>
-          <a href="/israelite-research/donate.html">Donations</a>
-          <a href="/israelite-research/events.html">Events</a>
-          <a href="/israelite-research/media.html">Media</a>
+          <a href="/apologetics.html">Apologetics</a>
+          <a href="/articles.html">Articles</a>
+          <a href="/biblia.html">Biblia</a>
+          <a href="/donate.html">Donations</a>
+          <a href="/events.html">Events</a>
+          <a href="/media.html">Media</a>
         </nav>
 
         <div class="tools">
-          <a class="icon-btn" href="/israelite-research/search.html" aria-label="Search">
+          <a class="icon-btn" href="/search.html" aria-label="Search">
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -95,7 +95,7 @@
 
   <main class="page-shell">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="/israelite-research/">Home</a> › <span>All Resources</span>
+      <a href="/">Home</a> › <span>All Resources</span>
     </nav>
 
     <form id="searchForm" class="search-bar" role="search">
@@ -249,23 +249,23 @@
         <div class="footer-col footer-col--explore">
           <h4 class="footer-heading">Resources</h4>
           <ul class="footer-nav">
-            <li><a href="/israelite-research/apologetics.html">Apologetics</a></li>
-            <li><a href="/israelite-research/articles.html">Articles</a></li>
-            <li><a href="/israelite-research/biblia.html">Biblia</a></li>
-            <li><a href="/israelite-research/donate.html">Donations</a></li>
-            <li><a href="/israelite-research/events.html">Events</a></li>
-            <li><a href="/israelite-research/media.html">Media</a></li>
+            <li><a href="/apologetics.html">Apologetics</a></li>
+            <li><a href="/articles.html">Articles</a></li>
+            <li><a href="/biblia.html">Biblia</a></li>
+            <li><a href="/donate.html">Donations</a></li>
+            <li><a href="/events.html">Events</a></li>
+            <li><a href="/media.html">Media</a></li>
           </ul>
         </div>
 
         <div class="footer-col footer-col--texts">
           <h4 class="footer-heading">The Writings</h4>
           <ul class="footer-nav">
-            <li><a href="/israelite-research/tanakh.html">Tanakh</a></li>
-            <li><a href="/israelite-research/newtestament.html">New Testament</a></li>
-            <li><a href="/israelite-research/biblical_references.html">Biblical References</a></li>
-            <li><a href="/israelite-research/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-            <li><a href="/israelite-research/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
+            <li><a href="/tanakh.html">Tanakh</a></li>
+            <li><a href="/newtestament.html">New Testament</a></li>
+            <li><a href="/biblical_references.html">Biblical References</a></li>
+            <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+            <li><a href="/historical_textual_variants.html">Historical &amp; Textual Variants</a></li>
           </ul>
         </div>
       </div>
@@ -273,9 +273,9 @@
       <div class="footer-bottom container">
         <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
         <div class="legal-links">
-          <a href="/israelite-research/terms.html">Terms</a>
-          <a href="/israelite-research/privacy.html">Privacy</a>
-          <a href="/israelite-research/contact.html">Contact</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/contact.html">Contact</a>
         </div>
       </div>
     </footer>
@@ -399,7 +399,7 @@
     }
 
     async function loadIndex(){
-      const res=await fetch('/israelite-research/search-index.json?v='+(Date.now()),{cache:'no-store'});
+      const res=await fetch('/search-index.json?v='+(Date.now()),{cache:'no-store'});
       const json=await res.json();
       state.all=json.map(d=>({type:d.type||'Page',title:d.title||'',url:d.url||'#',image:d.image||'',date:d.date||'',excerpt:d.excerpt||'',tags:d.tags||[]}));
       populateFacets(); readURL(); apply();
@@ -417,6 +417,6 @@
     loadIndex();
   </script>
 <!-- Global Includes -->
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// /israelite-research/js/book.js
+// /js/book.js
 (function () {
   const params = new URLSearchParams(location.search);
   const rawBook = params.get('book') || 'Genesis';

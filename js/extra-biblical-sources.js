@@ -1,6 +1,6 @@
 /* extra-biblical-sources.js — loads JSON and renders dot-plot timelines */
 (async function(){
-  const base = '/israelite-research/data/timelines';
+  const base = '/data/timelines';
   const $ = id => document.getElementById(id);
 
   async function loadJSON(path){

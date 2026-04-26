@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Dietary Laws — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<link href="/styles.css" rel="stylesheet"/>
 <style>
   .page-header{padding:24px 0 8px}
   .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
@@ -324,7 +324,7 @@
 
 <div id="site-footer"></div>
 
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 
 <script>
   // --- Book slug map for links (extend anytime) ---
@@ -345,7 +345,7 @@
   function refHref(ref){
     const p = parseRef(ref); if(!p) return '#';
     const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
-    return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
+    return `/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
   }
 
   /* ======================= DATA (labels without emojis) ======================= */
@@ -714,24 +714,24 @@
   clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
 
 // ====== Search My Food configuration (data paths) ======
-const DICT_URL = '/israelite-research/data/dictionaries/dictionary.json';
-const FOODS_URL = '/israelite-research/data/dictionaries/foundation_foods.json';
+const DICT_URL = '/data/dictionaries/dictionary.json';
+const FOODS_URL = '/data/dictionaries/foundation_foods.json';
 
 </script>
 
 <!-- Use the same Scripture hover as articles -->
-<script src="/israelite-research/js/citations.js" defer></script>
-<script src="/israelite-research/js/xref-hover.js" defer></script>
+<script src="/js/citations.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
 <!-- Global Includes -->
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 </body>
 </html>
 // ====== Search My Food configuration (data paths) ======
-const DICT_URL = '/israelite-research/data/dictionaries/dictionary.json';
-const FOODS_URL = '/israelite-research/data/dictionaries/foundation_foods.json';
+const DICT_URL = '/data/dictionaries/dictionary.json';
+const FOODS_URL = '/data/dictionaries/foundation_foods.json';
 // ====== Search My Food configuration (data paths) ======
-if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionaries/dictionary.json'; }
-if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/dictionaries/foundation_foods.json'; }
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/data/dictionaries/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/data/dictionaries/foundation_foods.json'; }
 <script>
 // ======= Search My Food: minimal implementation =======
 const PRECEDENCE = ['forbidden','prohibited','avoid','verify','allowed'];
@@ -807,8 +807,8 @@ function renderCard(hit, extra=''){
 })();
 </script>
 // ====== Search My Food configuration (data paths) ======
-if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionaries/dictionary.json'; }
-if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/dictionaries/foundation_foods.json'; }
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/data/dictionaries/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/data/dictionaries/foundation_foods.json'; }
 // ====== Search My Food configuration (data paths) ======
-if (typeof DICT_URL === 'undefined') { var DICT_URL = '/israelite-research/data/dictionaries/dictionary.json'; }
-if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/israelite-research/data/dictionaries/foundation_foods.json'; }
+if (typeof DICT_URL === 'undefined') { var DICT_URL = '/data/dictionaries/dictionary.json'; }
+if (typeof FOODS_URL === 'undefined') { var FOODS_URL = '/data/dictionaries/foundation_foods.json'; }

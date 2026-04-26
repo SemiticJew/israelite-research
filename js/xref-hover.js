@@ -94,10 +94,10 @@
     }catch{ return ''; }
   }
   function chapterHref(canon, slug, ch){
-    return `/israelite-research/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(ch)}`;
+    return `/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(ch)}`;
   }
 
-  const DATA_ROOT = '/israelite-research/data';
+  const DATA_ROOT = '/data';
   const CHAPTER_JSON  = (canon,b,c) => `${DATA_ROOT}/${canon}/${b}/${c}.json`;
   const _CACHE = Object.create(null);
   async function getChapter(canon, slug, ch){

@@ -8,7 +8,7 @@
       if (!m) return href;
       const slug = m[1], ch = m[2];
       // keep site base if present
-      const base = a.pathname.includes("/israelite-research/") ? "/israelite-research" : "";
+      const base = a.pathname.includes("/") ? "/israelite-research" : "";
       return `${base}/apocrypha/chapter.html?book=${slug}&ch=${ch}`;
     } catch { return href; }
   }

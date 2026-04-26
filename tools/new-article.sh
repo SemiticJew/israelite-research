@@ -28,20 +28,20 @@ cat > "$OUTFILE" <<EOF
 <!-- Open Graph -->
 <meta property="og:title" content="${TITLE} — Semitic Jew"/>
 <meta property="og:description" content="${DESC}"/>
-<meta property="og:image" content="https://semiticjew.github.io/israelite-research/${IMAGE}"/>
+<meta property="og:image" content="https://semiticjew.github.io/${IMAGE}"/>
 <meta property="og:type" content="article"/>
-<meta property="og:url" content="https://semiticjew.github.io/israelite-research/articles/${SLUG}.html"/>
+<meta property="og:url" content="https://semiticjew.github.io/articles/${SLUG}.html"/>
 <meta property="og:site_name" content="Semitic Jew"/>
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${TITLE} — Semitic Jew"/>
 <meta name="twitter:description" content="${DESC}"/>
-<meta name="twitter:image" content="https://semiticjew.github.io/israelite-research/${IMAGE}"/>
+<meta name="twitter:image" content="https://semiticjew.github.io/${IMAGE}"/>
 <meta name="twitter:site" content="@semitic_jew"/>
 <meta name="twitter:creator" content="@semitic_jew"/>
 
-<link rel="stylesheet" href="/israelite-research/styles.css?v=${TIMESTAMP}"/>
+<link rel="stylesheet" href="/styles.css?v=${TIMESTAMP}"/>
 </head>
 
 <body class="article-doc" data-page="article">
@@ -55,13 +55,13 @@ cat > "$OUTFILE" <<EOF
   </header>
 
   <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-    <img alt="${TITLE}" src="/israelite-research/${IMAGE}" width="700"/>
-    <meta content="/israelite-research/${IMAGE}" itemprop="url"/>
+    <img alt="${TITLE}" src="/${IMAGE}" width="700"/>
+    <meta content="/${IMAGE}" itemprop="url"/>
   </figure>
 
   <div class="meta-row">
     <div class="author-inline">
-      <img alt="Semitic Jew" class="author-avatar" height="40" src="/israelite-research/images/authors/semitic-jew.jpg" width="40"/>
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/images/authors/semitic-jew.jpg" width="40"/>
       <span class="byline-name">Semitic Jew</span>
       <span class="byline-meta">• Article</span>
       <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">i</button>
@@ -89,13 +89,13 @@ cat > "$OUTFILE" <<EOF
 <div id="site-footer"></div>
 
 <!-- Scripts -->
-<script src="/israelite-research/js/metadata.js" defer></script>
-<script src="/israelite-research/js/modal.js" defer></script>
-<script src="/israelite-research/js/biblio.js" defer></script>
-<script src="/israelite-research/js/articles.js" defer></script>
-<script src="/israelite-research/js/citations.js?v=${TIMESTAMP}" defer></script>
-<script src="/israelite-research/js/xref-hover.js?v=${TIMESTAMP}" defer></script>
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/metadata.js" defer></script>
+<script src="/js/modal.js" defer></script>
+<script src="/js/biblio.js" defer></script>
+<script src="/js/articles.js" defer></script>
+<script src="/js/citations.js?v=${TIMESTAMP}" defer></script>
+<script src="/js/xref-hover.js?v=${TIMESTAMP}" defer></script>
+<script src="/js/include.js"></script>
 </body>
 </html>
 EOF

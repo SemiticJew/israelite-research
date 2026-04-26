@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
       var slug = normalizeBook(bookName); if(!slug) return;
       var canon = canonFor(slug);
       var firstVerse = String(verse).split(/[–-]/)[0];
-      var href = "/israelite-research/"+canon+"/chapter.html?book=" + encodeURIComponent(slug)
+      var href = "/"+canon+"/chapter.html?book=" + encodeURIComponent(slug)
                + "&ch=" + encodeURIComponent(chap) + "#v" + encodeURIComponent(firstVerse);
       var a = document.createElement('a');
       a.className = 'xref-trigger';

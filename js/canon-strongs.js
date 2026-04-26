@@ -1,8 +1,8 @@
 /* canon-strongs.js — load + look up + render Strong's (HE/GR) */
 (function(){
   const S = {
-    heUrl: "/israelite-research/data/lexicon/strongs-hebrew.json",
-    grUrl: "/israelite-research/data/lexicon/strongs-greek.json",
+    heUrl: "/data/lexicon/strongs-hebrew.json",
+    grUrl: "/data/lexicon/strongs-greek.json",
     he: null, gr: null, idx: new Map(), ready: false
   };
   const loadJSON = (u) => fetch(u, {cache:"force-cache"}).then(r=>r.json());

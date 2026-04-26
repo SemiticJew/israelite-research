@@ -3,7 +3,7 @@
  */
 
 (function () {
-  const LEX_ROOT  = "/israelite-research/data/lexicon";
+  const LEX_ROOT  = "/data/lexicon";
 
   // Routing helpers
   function getBookSlug() {
@@ -34,7 +34,7 @@
       return i > -1 ? p.slice(0, i) : "";
     })() || "/israelite-research";
     const abs1  = `${base}/data/newtestament/${book}/${ch}.json`;
-    const abs2  = `/israelite-research/data/newtestament/${book}/${ch}.json`;
+    const abs2  = `/data/newtestament/${book}/${ch}.json`;
     const abs3  = `/data/newtestament/${book}/${ch}.json`;
 
     const candidates = [rel1, rel2, abs1, abs2, abs3];

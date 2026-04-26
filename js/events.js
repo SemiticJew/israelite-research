@@ -1,4 +1,4 @@
-// /israelite-research/js/events.js
+// /js/events.js
 (function () {
   const state = {
     today: new Date(),

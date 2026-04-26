@@ -75,13 +75,13 @@
     const hit = MAP[book];
     if(!hit) return null;
     if (hit.canon==="apocrypha"){
-      return `/israelite-research/apocrypha/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}`;
+      return `/apocrypha/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}`;
     }
     if (hit.canon==="tanakh"){
-      return `/israelite-research/tanakh/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
+      return `/tanakh/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
     }
     if (hit.canon==="new-testament"){
-      return `/israelite-research/new-testament/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
+      return `/new-testament/chapter.html?book=${encodeURIComponent(hit.slug)}&ch=${encodeURIComponent(ch)}` + (v ? `#v=${encodeURIComponent(v)}` : "");
     }
     return null;
   }

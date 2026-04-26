@@ -1,4 +1,4 @@
-// /israelite-research/js/metadata.js
+// /js/metadata.js
 (function () {
   var doc = document, head = doc.head;
   var html = doc.documentElement;

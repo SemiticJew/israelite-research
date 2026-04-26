@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Article Archive — Semitic Jew</title>
-<link href="/israelite-research/styles.css" rel="stylesheet"/>
+<link href="/styles.css" rel="stylesheet"/>
 
 <style>
 .container{
@@ -174,7 +174,7 @@
     let data = [];
 
     try{
-      const res = await fetch('/israelite-research/data/articles-index.json',{cache:'no-store'});
+      const res = await fetch('/data/articles-index.json',{cache:'no-store'});
       if(res.ok){
         data = await res.json();
       }
@@ -184,7 +184,7 @@
       data = [
         {
           title:"Three Laws of Logic",
-          href:"/israelite-research/articles/three-laws-of-logic.html",
+          href:"/articles/three-laws-of-logic.html",
           date:"2025-04-02",
           author:"Semitic Jew",
           discipline:"Logic & Philosophy",
@@ -192,7 +192,7 @@
         },
         {
           title:"Is Creation Logical?",
-          href:"/israelite-research/articles/is-creation-logical.html",
+          href:"/articles/is-creation-logical.html",
           date:"2025-08-20",
           author:"Semitic Jew",
           discipline:"Logic & Philosophy",
@@ -200,7 +200,7 @@
         },
         {
           title:"Who Are the Gentiles?",
-          href:"/israelite-research/articles/gentiles.html",
+          href:"/articles/gentiles.html",
           date:"2025-05-28",
           author:"Semitic Jew",
           discipline:"Israelite Identity & Anthropology",
@@ -217,7 +217,7 @@
 })();
 </script>
 
-<script src="/israelite-research/js/include.js"></script>
+<script src="/js/include.js"></script>
 
 </body>
 </html>

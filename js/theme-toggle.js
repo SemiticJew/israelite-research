@@ -5,8 +5,8 @@ function applyTheme(theme) {
   localStorage.setItem("theme", theme);
 
   const logoSrc = theme === "dark"
-    ? "/israelite-research/images/white-logo-letters.png"
-    : "/israelite-research/images/black-logo-letters.png";
+    ? "/images/white-logo-letters.png"
+    : "/images/black-logo-letters.png";
 
   const headerLogo = document.getElementById("site-logo");
   const footerLogo = document.getElementById("footer-logo");

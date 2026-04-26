@@ -9,7 +9,7 @@
 
 (() => {
   // ----------------------- CONFIG -----------------------
-  const ROOT = '/israelite-research/data';
+  const ROOT = '/data';
   const TRANSLATION_ORDER = ['KJV','Darby','Text','text'];
   const ENABLE_AUTODECORATE = true; // set false if you only use .verse[data-ref]
 

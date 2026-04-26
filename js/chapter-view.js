@@ -2,7 +2,7 @@
 (function(){
   'use strict';
 
-  const ROOT = '/israelite-research/data';
+  const ROOT = '/data';
   const PREF_KEYS = ['KJV','Text','text','Darby'];
 
   // ---------- Find the correct mount ----------

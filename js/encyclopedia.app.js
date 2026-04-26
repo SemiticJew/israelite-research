@@ -5,9 +5,9 @@
   const Q       = document.getElementById('q');
   const CLEAR   = document.getElementById('clearQ');
 
-  // Try multiple locations so it works on GitHub Pages (/israelite-research/) and locally
+  // Try multiple locations so it works on GitHub Pages (/) and locally
   const CANDIDATE_JSON = [
-    "/israelite-research/data/israelite_dictionary.json",
+    "/data/israelite_dictionary.json",
     "./data/israelite_dictionary.json",
     "../data/israelite_dictionary.json",
     "/data/israelite_dictionary.json"
@@ -102,7 +102,7 @@
 
   function hrefForRef(r){
     // expects: {label:"Isaiah 9:1–2", canon:"tanakh", slug:"isaiah", ch:9, vStart:1, vEnd:2}
-    const base = `/israelite-research/${r.canon}/chapter.html?book=${encodeURIComponent(r.slug)}&ch=${encodeURIComponent(r.ch)}`;
+    const base = `/${r.canon}/chapter.html?book=${encodeURIComponent(r.slug)}&ch=${encodeURIComponent(r.ch)}`;
     const hash = r.vStart ? `#v${r.vStart}` : '';
     return base + hash;
   }
