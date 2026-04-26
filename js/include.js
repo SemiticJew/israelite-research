@@ -1,4 +1,4 @@
-(function(){
+const BASE = '';(function(){
   if (typeof window.isArticlePage === "undefined"){
     window.isArticlePage = function(){ return false; };
   }
