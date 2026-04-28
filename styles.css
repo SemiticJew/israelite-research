@@ -4200,3 +4200,33 @@ html:not([data-theme="dark"]){
 .drawer img {
   background: var(--surface);
 }
+/* ============================= */
+/* CONTACT PAGE STYLING */
+/* ============================= */
+
+.contact-block{
+  padding:28px 0;
+  border-top:1px solid var(--border);
+}
+
+.contact-block:first-of-type{
+  border-top:none;
+}
+
+.contact-block h2{
+  font-size:1.05rem;
+  margin:0 0 6px;
+  font-weight:700;
+  color:var(--ink);
+}
+
+.contact-block p{
+  margin:0 0 12px;
+  line-height:1.65;
+  color:var(--muted);
+}
+
+.contact-block strong{
+  color:var(--ink);
+  font-weight:700;
+}
