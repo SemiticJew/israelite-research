@@ -28,16 +28,16 @@ cat > "$OUTFILE" <<EOF
 <!-- Open Graph -->
 <meta property="og:title" content="${TITLE} — Semitic Jew"/>
 <meta property="og:description" content="${DESC}"/>
-<meta property="og:image" content="https://semiticjew.github.io/${IMAGE}"/>
+<meta property="og:image" content="/${IMAGE}"/>
 <meta property="og:type" content="article"/>
-<meta property="og:url" content="https://semiticjew.github.io/articles/${SLUG}.html"/>
+<meta property="og:url" content="/articles/${SLUG}.html"/>
 <meta property="og:site_name" content="Semitic Jew"/>
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${TITLE} — Semitic Jew"/>
 <meta name="twitter:description" content="${DESC}"/>
-<meta name="twitter:image" content="https://semiticjew.github.io/${IMAGE}"/>
+<meta name="twitter:image" content="/${IMAGE}"/>
 <meta name="twitter:site" content="@semitic_jew"/>
 <meta name="twitter:creator" content="@semitic_jew"/>
 
