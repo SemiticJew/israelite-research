@@ -4343,3 +4343,27 @@ a:hover{
 .article a:hover h2{
   color:#f17300;
 }
+/* BUTTON FIX — OVERRIDE LINK STYLES */
+
+.btn{
+  display:inline-block;
+  padding:12px 20px;
+  border-radius:999px;
+  background:#054a91;
+  color:#ffffff !important;
+  text-decoration:none !important;
+  transition:all .2s ease;
+}
+
+/* Primary button stays same base color */
+.btn-primary{
+  background:#054a91;
+}
+
+/* HOVER — full pill turns orange, text stays white */
+.btn:hover,
+.btn-primary:hover{
+  background:#f17300;
+  color:#ffffff !important;
+  text-decoration:none !important;
+}
