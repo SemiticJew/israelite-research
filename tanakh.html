@@ -197,6 +197,18 @@
   .pt-card.wisdom:hover,.pt-card.cat-letters-israel:hover,.pt-card.wis:hover{background:linear-gradient(180deg,rgba(87,121,158,.55),rgba(87,121,158,.35));border-color:#57799E;box-shadow:0 8px 20px rgba(87,121,158,.4)}
   .pt-card.prophets:hover,.pt-card.cat-testimony:hover,.pt-card.macc:hover{background:linear-gradient(180deg,rgba(169,78,0,.55),rgba(169,78,0,.35));border-color:#A94E00;box-shadow:0 8px 20px rgba(169,78,0,.4)}
   .pt-card.vision:hover,.pt-card.cat-vision:hover,.pt-card.esd:hover{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.35));border-color:#000000;box-shadow:0 8px 20px rgba(0,0,0,.45)}
+
+  /* Remove underline from Tanakh cards on hover/focus */
+  .pt-card,
+  .pt-card:hover,
+  .pt-card:focus,
+  .pt-card:focus-visible,
+  .pt-card .pt-name,
+  .pt-card:hover .pt-name,
+  .pt-card:focus .pt-name,
+  .pt-card:focus-visible .pt-name {
+    text-decoration: none !important;
+  }
   </style>
 
 </head>
