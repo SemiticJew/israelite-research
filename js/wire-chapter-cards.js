@@ -74,6 +74,26 @@
       "3-john": ["3 John", 1],
       "jude": ["Jude", 1],
       "revelation": ["Revelation", 22]
+
+    },
+
+    apocrypha: {
+      "tobit": ["Tobit", 14],
+      "judith": ["Judith", 16],
+      "additions-to-esther": ["Additions to Esther", 6],
+      "wisdom-of-solomon": ["Wisdom of Solomon", 19],
+      "sirach": ["Sirach", 51],
+      "baruch": ["Baruch", 6],
+      "epistle-of-jeremiah": ["Epistle of Jeremiah", 1],
+      "prayer-of-azariah": ["Prayer of Azariah", 1],
+      "susanna": ["Susanna", 1],
+      "bel-and-dragon": ["Bel and the Dragon", 1],
+      "prayer-of-manasseh": ["Prayer of Manasseh", 1],
+      "1-maccabees": ["1 Maccabees", 16],
+      "2-maccabees": ["2 Maccabees", 15],
+      "1-esdras": ["1 Esdras", 9],
+      "2-esdras": ["2 Esdras", 16]
+
     }
   };
 
@@ -83,6 +103,7 @@
 
     const path = location.pathname.toLowerCase();
     if (path.includes("/newtestament/")) return "newtestament";
+    if (path.includes("/apocrypha/")) return "apocrypha";
     if (path.includes("/tanakh/")) return "tanakh";
 
     return "tanakh";
