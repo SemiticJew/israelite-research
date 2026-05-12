@@ -199,6 +199,19 @@
   .pt-card.vision:hover,.pt-card.cat-vision:hover,.pt-card.esd:hover{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.35));border-color:#000000;box-shadow:0 8px 20px rgba(0,0,0,.45)}
   </style>
 
+
+  /* Remove underline from canon cards on hover/focus */
+  .pt-card,
+  .pt-card:hover,
+  .pt-card:focus,
+  .pt-card:focus-visible,
+  .pt-card .pt-name,
+  .pt-card:hover .pt-name,
+  .pt-card:focus .pt-name,
+  .pt-card:focus-visible .pt-name {
+    text-decoration: none !important;
+  }
+
 </head>
 <body class="apocrypha-page">
 <div id="site-header"></div>
