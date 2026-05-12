@@ -288,6 +288,32 @@
   text-decoration: none !important;
 }
 
+
+/* Dark mode fix for Featured Teaching cards */
+html[data-theme="dark"] .featured-video-block {
+  border-top-color: var(--border);
+}
+
+html[data-theme="dark"] .teaching-card,
+html[data-theme="dark"] .teaching-content {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .teaching-title {
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .teaching-desc {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .video-row iframe,
+html[data-theme="dark"] .teaching-card iframe {
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+}
+
 </style>
 </head>
 
