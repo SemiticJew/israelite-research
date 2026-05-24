@@ -82,6 +82,52 @@
   .legend .dot.wisdom{background:var(--wisdom)}
   .legend .dot.prophets{background:var(--prophets)}
   .legend .dot.visions{background:var(--visions)}
+
+  /* Canon hero */
+  .canon-hero{
+    margin:32px auto 30px;
+    padding:46px 28px;
+    border:1px solid var(--border);
+    border-radius:28px;
+    text-align:center;
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
+    box-shadow:var(--shadow);
+  }
+
+  .canon-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
+
+  .canon-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.4rem, 6vw, 4.8rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+
+  .canon-subtitle{
+    margin:18px auto 0;
+    max-width:760px;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  html[data-theme="dark"] .canon-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
+  }
+
 </style>
   <style>
   /* Override: center date header over abbreviation */
@@ -216,9 +262,10 @@
 <div id="site-header"></div>
 
 <main class="container">
-  <header class="page-header">
-    <h1 class="page-title">Tanakh</h1>
-    <p class="page-sub">A compact, periodic-style layout of the Law, History, Wisdom, Prophets, and Visions.</p>
+  <header class="canon-hero">
+    <div class="canon-kicker">The Hebrew Scriptures</div>
+    <h1 class="canon-title">Tanakh</h1>
+    <p class="canon-subtitle">Explore the Law, historical writings, wisdom literature, prophets, and visions of restoration in a structured canon layout.</p>
   </header>
 
   <!-- Periodic-style columns -->
