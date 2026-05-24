@@ -12,6 +12,43 @@
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:12px;margin:18px 0 36px}
   .ch{display:flex;align-items:center;justify-content:center;padding:14px;border:1px solid var(--sky);border-radius:12px;background:var(--surface);text-decoration:none;color:var(--ink);font-weight:700}
   .ch:hover{background:#fbfdff;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+
+  /* Breadcrumbs */
+  .breadcrumbs{
+    max-width:1200px;
+    margin:18px auto 0;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  .breadcrumbs a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:700;
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus,
+  .breadcrumbs a:focus-visible{
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  .breadcrumbs .sep{
+    color:var(--muted);
+    opacity:.75;
+  }
+
+  .breadcrumbs .current{
+    color:var(--ink);
+    font-weight:800;
+  }
+
 </style>
 </head>
 <body>
@@ -104,6 +141,16 @@
   </div>
 </header>
 </div>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="/biblia.html">Biblia</a>
+  <span class="sep">›</span>
+  <a href="/tanakh.html">Tanakh</a>
+  <span class="sep">›</span>
+  <span class="current">2 Chronicles</span>
+</nav>
+
 <main class="container">
   <header class="page-header">
     <h1 class="page-title">2 Chronicles</h1>
