@@ -123,12 +123,57 @@
     opacity:1;
     visibility:visible
   }
+
+  /* Breadcrumbs */
+  .breadcrumbs{
+    max-width:1200px;
+    margin:18px auto 0;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  .breadcrumbs a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:700;
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus,
+  .breadcrumbs a:focus-visible{
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  .breadcrumbs .sep{
+    color:var(--muted);
+    opacity:.75;
+  }
+
+  .breadcrumbs .current{
+    color:var(--ink);
+    font-weight:800;
+  }
+
 </style>
 </head>
 
 <body>
 
 <div id="site-header"></div>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb" id="readerBreadcrumbs">
+  <a href="/index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="/biblia.html">Biblia</a>
+  <span class="sep">›</span>
+  <span class="current">Loading…</span>
+</nav>
 
 <main class="container">
   <header class="page-header">

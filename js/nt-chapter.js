@@ -60,6 +60,49 @@
   const XREF_JSON     = (canon,b,c)    => `${DATA_ROOT}/crossrefs/${canon}/${b}/${c}.json`;
   const EASTON_JSON   = `${DATA_ROOT}/dictionaries/easton_dictionary.json`;
 
+
+  function canonLabel(canon){
+    return {
+      tanakh: "Tanakh",
+      newtestament: "New Testament",
+      apocrypha: "Apocrypha"
+    }[canon] || prettyBook(canon);
+  }
+
+  function canonLanding(canon){
+    return {
+      tanakh: "/tanakh.html",
+      newtestament: "/newtestament.html",
+      apocrypha: "/apocrypha.html"
+    }[canon] || "/biblia.html";
+  }
+
+  function bookLanding(canon, book){
+    return `/${canon}/${book}.html`;
+  }
+
+  function updateBreadcrumbs(){
+    const bc = document.getElementById("readerBreadcrumbs");
+    if (!bc) return;
+
+    const bookName = prettyBook(ctx.book);
+    const label = canonLabel(ctx.canon);
+    const landing = canonLanding(ctx.canon);
+    const bookUrl = bookLanding(ctx.canon, ctx.book);
+
+    bc.innerHTML = `
+      <a href="/index.html">Home</a>
+      <span class="sep">›</span>
+      <a href="/biblia.html">Biblia</a>
+      <span class="sep">›</span>
+      <a href="${landing}">${label}</a>
+      <span class="sep">›</span>
+      <a href="${bookUrl}">${bookName}</a>
+      <span class="sep">›</span>
+      <span class="current">Chapter ${ctx.chapter}</span>
+    `;
+  }
+
   function chapterHref(canon, book, ch){
     return `/${canon}/chapter.html?book=${book}&ch=${ch}`;
   }
@@ -464,6 +507,8 @@
 
   // ---------- Init ----------
   (async function init(){
+    updateBreadcrumbs();
+
     const pageTitle = $('#pageTitle'); if (pageTitle) pageTitle.textContent = 'Bible Reader';
     const crumbs = $('#crumbs'); if (crumbs) crumbs.textContent = `${ctx.canon} → ${prettyBook(ctx.book)} → ${ctx.chapter}`;
 
