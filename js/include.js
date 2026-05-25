@@ -106,3 +106,38 @@
   s.id = "breadcrumb-schema-loader";
   document.head.appendChild(s);
 })();
+
+
+// Mobile Ellipsis Navigation
+(function(){
+  function wireMobileNav(){
+    const header = document.getElementById("site-header");
+    if (!header) return;
+
+    const btn = header.querySelector(".mobile-menu-toggle");
+    if (!btn || btn.dataset.wired === "1") return;
+
+    btn.dataset.wired = "1";
+
+    btn.addEventListener("click", function(){
+      const open = header.classList.toggle("mobile-nav-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    document.addEventListener("click", function(e){
+      if (!header.classList.contains("mobile-nav-open")) return;
+      if (header.contains(e.target)) return;
+      header.classList.remove("mobile-nav-open");
+      btn.setAttribute("aria-expanded", "false");
+    });
+
+    document.addEventListener("keydown", function(e){
+      if (e.key !== "Escape") return;
+      header.classList.remove("mobile-nav-open");
+      btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", wireMobileNav);
+  setTimeout(wireMobileNav, 250);
+})();
