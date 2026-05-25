@@ -94,3 +94,15 @@
   s.id = "theme-toggle-loader";
   document.head.appendChild(s);
 })();
+
+
+// Load Breadcrumb Schema Globally
+(function(){
+  if (document.getElementById("breadcrumb-schema-loader")) return;
+
+  const s = document.createElement("script");
+  s.src = "/js/breadcrumb-schema.js";
+  s.defer = true;
+  s.id = "breadcrumb-schema-loader";
+  document.head.appendChild(s);
+})();
