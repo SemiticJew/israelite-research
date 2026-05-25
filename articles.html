@@ -179,7 +179,75 @@
       .boxed, .featured-left .image-block img, .featured-right .image-block img,
       .article-card .image-block img, .more-btn{ transition:none !important; transform:none !important; }
     }
-  </style>
+  
+
+/* Featured cards + editorial article label polish */
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-right.boxed,
+body.articles-page .article-card.boxed{
+  border:1px solid var(--border, #cfd8e3) !important;
+  background:var(--surface, #ffffff) !important;
+  box-shadow:0 8px 24px rgba(11,35,64,.08) !important;
+}
+
+body.articles-page .featured-left.boxed:hover,
+body.articles-page .featured-right.boxed:hover,
+body.articles-page .article-card.boxed:hover{
+  border-color:var(--accent, #F17300) !important;
+  box-shadow:0 14px 34px rgba(11,35,64,.14) !important;
+  text-decoration:none !important;
+}
+
+body.articles-page .featured-left a,
+body.articles-page .featured-right a,
+body.articles-page .article-card a,
+body.articles-page .featured-left a:hover,
+body.articles-page .featured-right a:hover,
+body.articles-page .article-card a:hover{
+  text-decoration:none !important;
+}
+
+/* Muted editorial label, similar to publication-style category text */
+body.articles-page .resource-label{
+  width:auto !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 0 4px !important;
+  background:transparent !important;
+  border:0 !important;
+  color:#8a8f98 !important;
+  font-size:.72rem !important;
+  font-weight:800 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.12em !important;
+  line-height:1.2 !important;
+}
+
+body.articles-page .resource-in-image{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:4px 7px !important;
+  background:rgba(255,255,255,.82) !important;
+  color:#7a808a !important;
+  border-radius:999px !important;
+}
+
+body.articles-page .resource-in-excerpt{
+  position:static !important;
+  display:inline-flex !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-label{
+  color:#aeb6c2 !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-in-image{
+  background:rgba(15,23,42,.82) !important;
+  color:#cbd5e1 !important;
+}
+
+</style>
 </head>
 <body class="articles-page" data-page="articles">
 <div id="site-header"></div>
