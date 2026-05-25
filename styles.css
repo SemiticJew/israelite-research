@@ -4543,3 +4543,110 @@ a:hover{
     margin-left:0;
   }
 }
+
+
+/* Article index card visibility + mobile stability */
+html,
+body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+}
+
+img,
+iframe,
+video,
+svg{
+  max-width:100%;
+}
+
+.articles-page .article-card,
+.articles-page .article,
+.articles-grid a,
+.article-grid a,
+.article-list a,
+.posts-grid a,
+main .article-card{
+  border:1px solid var(--border, #cfd8e3) !important;
+  background:var(--surface, #ffffff) !important;
+  color:var(--ink, #0b2340) !important;
+  box-shadow:0 8px 24px rgba(11,35,64,.08) !important;
+}
+
+.articles-page .article-card:hover,
+.articles-page .article:hover,
+.articles-grid a:hover,
+.article-grid a:hover,
+.article-list a:hover,
+.posts-grid a:hover,
+main .article-card:hover{
+  border-color:var(--accent, #F17300) !important;
+  box-shadow:0 14px 34px rgba(11,35,64,.14) !important;
+  text-decoration:none !important;
+}
+
+.articles-page .article-card a,
+.articles-page .article a,
+.articles-grid a,
+.article-grid a,
+.article-list a,
+.posts-grid a,
+main .article-card a{
+  text-decoration:none !important;
+}
+
+html[data-theme="dark"] .articles-page .article-card,
+html[data-theme="dark"] .articles-page .article,
+html[data-theme="dark"] .articles-grid a,
+html[data-theme="dark"] .article-grid a,
+html[data-theme="dark"] .article-list a,
+html[data-theme="dark"] .posts-grid a,
+html[data-theme="dark"] main .article-card{
+  border-color:var(--border, #1e293b) !important;
+  box-shadow:0 12px 34px rgba(0,0,0,.35) !important;
+}
+
+@media (max-width: 700px){
+  body{
+    position:relative;
+  }
+
+  .container,
+  .home-container,
+  .about-page,
+  .article-page,
+  .articles-page{
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  #site-header,
+  #site-footer{
+    max-width:100vw;
+  }
+
+  #site-header .header-inner,
+  #site-footer .footer-inner,
+  #site-footer .footer-bottom{
+    width:100%;
+    max-width:100%;
+  }
+
+  #site-header .dropdown{
+    max-width:calc(100vw - 32px);
+  }
+
+  .articles-grid,
+  .article-grid,
+  .article-list,
+  .posts-grid{
+    grid-template-columns:1fr !important;
+    width:100%;
+  }
+}
+
