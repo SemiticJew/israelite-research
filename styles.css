@@ -4367,3 +4367,179 @@ a:hover{
   color:#ffffff !important;
   text-decoration:none !important;
 }
+@media (max-width: 900px){
+  #site-header .header-inner{
+    padding:14px 18px;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+  }
+
+  #site-header .brand{
+    width:100%;
+    justify-content:center;
+  }
+
+  #site-header .brand img{
+    height:46px;
+  }
+
+  #site-header nav.primary{
+    width:100%;
+    margin-left:0;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:18px;
+    font-size:1rem;
+  }
+
+  #site-header .tools{
+    width:100%;
+    justify-content:center;
+  }
+
+  .breadcrumbs{
+    margin-top:14px;
+    padding:0 18px;
+    justify-content:center;
+    text-align:center;
+    font-size:.86rem;
+  }
+
+  .canon-hero{
+    margin:22px 16px 24px;
+    padding:34px 20px;
+    border-radius:22px;
+  }
+
+  .canon-title{
+    font-size:clamp(2.2rem, 12vw, 3.6rem);
+  }
+
+  .canon-subtitle{
+    font-size:1rem;
+    line-height:1.6;
+  }
+
+  .pt-columns{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+  }
+
+  .pt-col,
+  .pt-col--narrow,
+  .pt-col--wide{
+    width:auto;
+    display:grid;
+    grid-template-columns:repeat(2, minmax(140px, 1fr));
+    gap:14px;
+  }
+
+  .pt-card{
+    width:auto;
+    min-width:0;
+  }
+
+  .reader-toolbar{
+    position:static;
+    margin:12px 0 18px;
+    padding:12px;
+    gap:8px;
+  }
+
+  .reader-toolbar .btn,
+  .reader-toolbar select{
+    width:100%;
+    max-width:420px;
+  }
+}
+
+@media (max-width: 560px){
+  .home-container,
+  .container,
+  .about-page{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  #site-header nav.primary{
+    gap:10px;
+    font-size:.95rem;
+  }
+
+  #site-header .nav-link{
+    padding:6px 4px;
+  }
+
+  #site-header .dropdown{
+    left:50%;
+    transform:translate(-50%, 8px);
+  }
+
+  #site-header .nav-item:hover .dropdown{
+    transform:translate(-50%, 0);
+  }
+
+  .breadcrumbs{
+    justify-content:flex-start;
+    text-align:left;
+    font-size:.82rem;
+    gap:6px;
+  }
+
+  .canon-hero{
+    margin:18px 0 22px;
+    padding:30px 18px;
+    border-radius:20px;
+  }
+
+  .canon-kicker{
+    font-size:.72rem;
+    letter-spacing:.13em;
+  }
+
+  .canon-subtitle{
+    font-size:.96rem;
+  }
+
+  .pt-col,
+  .pt-col--narrow,
+  .pt-col--wide{
+    width:100%;
+    grid-template-columns:1fr;
+  }
+
+  .pt-card{
+    width:100%;
+    height:auto;
+    min-height:150px;
+  }
+
+  .legend{
+    justify-content:flex-start;
+  }
+
+  .legend .chip{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .article-shell,
+  .article-page{
+    width:100%;
+  }
+
+  .meta-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .share-min{
+    margin-left:0;
+  }
+}
