@@ -88,11 +88,56 @@
 
   /* Inline footnote refs */
   .footnote-ref a{ text-decoration:none; border-bottom:0; vertical-align:super; font-size:.75em; }
+
+  /* Breadcrumbs */
+  .breadcrumbs{
+    max-width:1200px;
+    margin:18px auto 0;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  .breadcrumbs a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:700;
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus,
+  .breadcrumbs a:focus-visible{
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  .breadcrumbs .sep{
+    color:var(--muted);
+    opacity:.75;
+  }
+
+  .breadcrumbs .current{
+    color:var(--ink);
+    font-weight:800;
+  }
+
 </style>
 </head>
 
 <body class="article-doc" data-page="article">
 <div id="site-header"></div>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="/articles.html">Articles</a>
+  <span class="sep">›</span>
+  <span class="current">Israelites and Hamites: Recovering a Dark-Skinned Legacy</span>
+</nav>
 
 <main class="article-page">
 <article class="article-shell" itemscope itemtype="https://schema.org/Article">
