@@ -4762,3 +4762,34 @@ html[data-theme="dark"] main .article-card{
   }
 }
 
+
+/* Force mobile ellipsis visibility */
+@media (max-width: 900px){
+  #site-header .mobile-menu-toggle{
+    display:inline-flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    flex:0 0 auto !important;
+    position:relative !important;
+    z-index:1002 !important;
+  }
+
+  #site-header .mobile-menu-toggle span{
+    display:block !important;
+    color:var(--ink) !important;
+  }
+
+  html[data-theme="dark"] #site-header .mobile-menu-toggle span{
+    color:#ffffff !important;
+  }
+
+  #site-header .header-inner{
+    justify-content:space-between !important;
+  }
+
+  #site-header .brand{
+    width:auto !important;
+    flex:1 1 auto !important;
+    justify-content:flex-start !important;
+  }
+}
