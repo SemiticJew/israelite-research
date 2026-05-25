@@ -264,6 +264,37 @@ body.articles-page .resource-in-image{
   border-radius:0 !important;
 }
 
+
+
+/* Dark mode cleanup: remove outer enclosure around article sections */
+html[data-theme="dark"] body.articles-page main.articles,
+html[data-theme="dark"] body.articles-page .container,
+html[data-theme="dark"] body.articles-page .section,
+html[data-theme="dark"] body.articles-page .featured-split,
+html[data-theme="dark"] body.articles-page .recent-grid{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  outline:0 !important;
+}
+
+/* Keep only the individual cards visually boxed */
+body.articles-page .boxed,
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-right.boxed,
+body.articles-page .article-card.boxed{
+  border-radius:0 !important;
+}
+
+/* Prevent nested rounded panels inside featured cards */
+body.articles-page .card-body,
+body.articles-page .excerpt-wrap,
+body.articles-page .excerpt-block,
+body.articles-page .card-footer{
+  border-radius:0 !important;
+}
+
 </style>
 </head>
 <body class="articles-page" data-page="articles">
