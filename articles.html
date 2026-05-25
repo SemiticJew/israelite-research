@@ -295,6 +295,141 @@ body.articles-page .card-footer{
   border-radius:0 !important;
 }
 
+
+.discovery-region{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  margin:34px 0 42px;
+  padding:26px 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.discovery-card{
+  min-height:220px;
+}
+
+.discovery-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+  color:#8a8f98;
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.discovery-card h3{
+  margin:0 0 14px;
+  color:var(--ink);
+  font-size:1.08rem;
+  font-weight:900;
+}
+
+.discovery-card ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:9px;
+}
+
+.discovery-card a{
+  color:var(--ink);
+  text-decoration:none !important;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.discovery-card a:hover,
+.discovery-card a:focus,
+.discovery-card a:focus-visible{
+  color:var(--accent);
+  text-decoration:none !important;
+}
+
+body.articles-page .recent-grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:24px !important;
+  align-items:stretch;
+}
+
+body.articles-page .article-card{
+  width:100% !important;
+  height:auto !important;
+  min-height:450px;
+}
+
+body.articles-page .article-card .image-block,
+body.articles-page .article-card .image-block img{
+  width:100% !important;
+}
+
+body.articles-page .more-btn{
+  border-radius:0 !important;
+  padding:13px 22px !important;
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+  box-shadow:none !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.82rem;
+  font-weight:900;
+}
+
+body.articles-page .more-btn:hover{
+  background:var(--accent) !important;
+  color:#ffffff !important;
+  border-color:var(--accent) !important;
+  transform:translateY(-1px);
+}
+
+html[data-theme="dark"] body.articles-page .discovery-region{
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.articles-page .discovery-kicker{
+  color:#aeb6c2;
+}
+
+html[data-theme="dark"] body.articles-page .discovery-card h3,
+html[data-theme="dark"] body.articles-page .discovery-card a{
+  color:#ffffff;
+}
+
+html[data-theme="dark"] body.articles-page .discovery-card a:hover{
+  color:var(--accent);
+}
+
+@media(max-width:1000px){
+  .discovery-region{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  body.articles-page .recent-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:620px){
+  .discovery-region{
+    grid-template-columns:1fr;
+    gap:26px;
+  }
+
+  body.articles-page .recent-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  body.articles-page .article-card{
+    min-height:0;
+  }
+}
+
 </style>
 </head>
 <body class="articles-page" data-page="articles">
@@ -347,6 +482,53 @@ body.articles-page .card-footer{
 </article>
 </div>
 </section>
+
+<section class="section discovery-region" id="article-discovery">
+  <div class="discovery-card">
+    <div class="discovery-kicker">Writers</div>
+    <h3>Semitic Jew Writers</h3>
+    <ul>
+      <li><a href="/authors/semitic-jew.html">Semitic Jew</a></li>
+      <li><a href="/articles.html">Latest Articles</a></li>
+      <li><a href="/articles-all.html">All Articles</a></li>
+      <li><a href="/about.html">About Semitic Jew Inc</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Books</div>
+    <h3>Bible Books</h3>
+    <ul>
+      <li><a href="/tanakh.html">Tanakh</a></li>
+      <li><a href="/newtestament.html">New Testament</a></li>
+      <li><a href="/apocrypha.html">Apocrypha</a></li>
+      <li><a href="/biblia.html">Biblia Library</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Themes</div>
+    <h3>Bible Themes</h3>
+    <ul>
+      <li><a href="/articles/three-laws-of-logic.html">Logic</a></li>
+      <li><a href="/articles/is-truth-reliable.html">Truth</a></li>
+      <li><a href="/articles/is-creation-logical.html">Creation</a></li>
+      <li><a href="/articles/gentiles.html">Nations</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Persons</div>
+    <h3>Bible Persons</h3>
+    <ul>
+      <li><a href="/tanakh/genesis.html">Adam</a></li>
+      <li><a href="/tanakh/exodus.html">Moses</a></li>
+      <li><a href="/newtestament/matthew.html">Jesus Christ</a></li>
+      <li><a href="/tanakh/daniel.html">Daniel</a></li>
+    </ul>
+  </div>
+</section>
+
 <!-- Recent -->
 <section class="section" id="recent-articles">
 <h2>Recent Articles</h2>
