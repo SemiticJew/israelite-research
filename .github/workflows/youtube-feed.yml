@@ -20,12 +20,13 @@ jobs:
           python-version: "3.x"
 
       - run: python scripts/fetch_youtube_feed.py
+      - run: python scripts/fetch_youtube_podcast_playlist.py
 
       - name: Commit updated feed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/youtube-videos.json
+          git add data/youtube-videos.json data/youtube-podcast-videos.json
           if git diff --cached --quiet; then
             echo "No YouTube feed changes."
           else

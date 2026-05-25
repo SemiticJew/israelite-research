@@ -35,13 +35,13 @@
     if (!grid) return;
 
     try{
-      const response = await fetch("/data/youtube-videos.json", { cache: "no-store" });
+      const response = await fetch("/data/youtube-podcast-videos.json", { cache: "no-store" });
       if (!response.ok) return;
 
       const data = await response.json();
       const videos = Array.isArray(data.videos) ? data.videos : [];
 
-      const podcastVideos = videos.filter(isPodcastVideo).slice(0, 2);
+      const podcastVideos = videos.slice(0, 2);
 
       if (!podcastVideos.length) return;
 
