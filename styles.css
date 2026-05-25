@@ -5356,3 +5356,61 @@ html[data-theme="dark"] main .article-card{
     gap:24px !important;
   }
 }
+
+/* Equalize Featured Teaching video cards */
+@media (min-width: 1000px){
+  .featured-video-block .teaching-grid{
+    align-items:stretch !important;
+  }
+
+  .featured-video-block .teaching-card{
+    display:flex !important;
+    flex-direction:column !important;
+    height:100% !important;
+    min-height:420px !important;
+    background:var(--surface) !important;
+    border:1px solid var(--border) !important;
+    box-shadow:var(--shadow) !important;
+  }
+
+  .featured-video-block .teaching-card iframe{
+    flex:0 0 auto !important;
+    width:100% !important;
+    aspect-ratio:16/9 !important;
+    height:auto !important;
+    display:block !important;
+  }
+
+  .featured-video-block .teaching-content{
+    flex:1 1 auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    padding:16px !important;
+    background:var(--surface) !important;
+  }
+
+  .featured-video-block .teaching-title{
+    min-height:3.1em !important;
+    display:block !important;
+  }
+
+  .featured-video-block .teaching-desc{
+    flex:1 1 auto !important;
+    display:block !important;
+  }
+}
+
+@media (max-width: 999px){
+  .featured-video-block .teaching-card{
+    display:flex !important;
+    flex-direction:column !important;
+    background:var(--surface) !important;
+    border:1px solid var(--border) !important;
+  }
+
+  .featured-video-block .teaching-card iframe{
+    width:100% !important;
+    aspect-ratio:16/9 !important;
+    height:auto !important;
+  }
+}
