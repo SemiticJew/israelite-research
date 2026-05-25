@@ -41,7 +41,7 @@
       const data = await response.json();
       const videos = Array.isArray(data.videos) ? data.videos : [];
 
-      const podcastVideos = videos.slice(0, 2);
+      const podcastVideos = videos.slice(0, 3);
 
       if (!podcastVideos.length) return;
 
