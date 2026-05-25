@@ -7,7 +7,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 CHANNEL_ID = "UC6ukYTYZ8YqsSYq4-nl11gA"
-FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
+PLAYLIST_ID = "PLvFSorNtgHVC_PKawdta23O5AfMIEcpd1"
+FEED_URL = f"https://www.youtube.com/feeds/videos.xml?playlist_id={PLAYLIST_ID}"
 OUT_PATH = Path("data/youtube-videos.json")
 
 NS = {
@@ -44,6 +45,7 @@ def main():
         payload = {
             "source": FEED_URL,
             "channel_id": CHANNEL_ID,
+        "playlist_id": PLAYLIST_ID,
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "videos": [],
         }
@@ -87,6 +89,7 @@ def main():
     payload = {
         "source": FEED_URL,
         "channel_id": CHANNEL_ID,
+        "playlist_id": PLAYLIST_ID,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "videos": videos[:12],
     }
