@@ -247,6 +247,23 @@ html[data-theme="dark"] body.articles-page .resource-in-image{
   color:#cbd5e1 !important;
 }
 
+
+
+/* Hide article label on primary featured card only; square labels everywhere else */
+body.articles-page .featured-left .resource-label{
+  display:none !important;
+}
+
+body.articles-page .resource-label,
+body.articles-page .resource-in-image,
+body.articles-page .resource-in-excerpt{
+  border-radius:0 !important;
+}
+
+body.articles-page .resource-in-image{
+  border-radius:0 !important;
+}
+
 </style>
 </head>
 <body class="articles-page" data-page="articles">
