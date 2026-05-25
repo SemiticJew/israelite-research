@@ -5329,3 +5329,30 @@ html[data-theme="dark"] main .article-card{
   }
 }
 
+
+/* Featured Teaching: three videos on one desktop row */
+@media (min-width: 1000px){
+  .featured-video-block .teaching-grid{
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:24px !important;
+    align-items:start;
+  }
+
+  .featured-video-block .teaching-card{
+    width:100% !important;
+  }
+
+  .featured-video-block .teaching-card iframe{
+    width:100% !important;
+    aspect-ratio:16/9;
+  }
+}
+
+@media (max-width: 999px){
+  .featured-video-block .teaching-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:24px !important;
+  }
+}
