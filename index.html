@@ -454,6 +454,35 @@ html[data-theme="dark"] .youtube-card h3{
   }
 }
 
+
+/* Featured Teaching: force 3-video row on homepage desktop */
+@media (min-width: 1000px){
+  .featured-video-block .teaching-grid{
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:24px !important;
+    align-items:start !important;
+  }
+
+  .featured-video-block .teaching-card{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .featured-video-block .teaching-card iframe{
+    width:100% !important;
+    aspect-ratio:16/9 !important;
+  }
+}
+
+@media (max-width: 999px){
+  .featured-video-block .teaching-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:24px !important;
+  }
+}
+
 </style>
 </head>
 
