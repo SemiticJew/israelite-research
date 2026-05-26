@@ -141,3 +141,23 @@
   document.addEventListener("DOMContentLoaded", wireMobileNav);
   setTimeout(wireMobileNav, 250);
 })();
+
+
+// Google Analytics / Google tag
+(function(){
+  if (document.getElementById("google-gtag-loader")) return;
+
+  const gtagScript = document.createElement("script");
+  gtagScript.async = true;
+  gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-32TJCG51NH";
+  gtagScript.id = "google-gtag-loader";
+  document.head.appendChild(gtagScript);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = window.gtag || gtag;
+
+  gtag("js", new Date());
+  gtag("config", "G-32TJCG51NH");
+})();
+
