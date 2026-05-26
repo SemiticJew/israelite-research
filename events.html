@@ -474,6 +474,67 @@ html[data-theme="dark"] main [class*="selected"] *{
   -webkit-text-fill-color:#111827 !important;
 }
 
+
+
+/* FINAL: events dark mode calendar cell text visibility */
+html[data-theme="dark"] main .calendar-grid,
+html[data-theme="dark"] main .calendar,
+html[data-theme="dark"] main .cal,
+html[data-theme="dark"] main [class*="calendar"],
+html[data-theme="dark"] main [class*="cal-grid"]{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] main .calendar-grid *,
+html[data-theme="dark"] main .calendar *,
+html[data-theme="dark"] main .cal *,
+html[data-theme="dark"] main [class*="calendar"] *,
+html[data-theme="dark"] main [class*="cal-grid"] *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] main [class*="day"],
+html[data-theme="dark"] main [class*="cell"],
+html[data-theme="dark"] main [class*="date"]{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] main [class*="day"] *,
+html[data-theme="dark"] main [class*="cell"] *,
+html[data-theme="dark"] main [class*="date"] *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Event pills inside calendar cells */
+html[data-theme="dark"] main [class*="day"] [class*="event"],
+html[data-theme="dark"] main [class*="day"] [class*="pill"],
+html[data-theme="dark"] main [class*="day"] [class*="badge"],
+html[data-theme="dark"] main [class*="day"] [class*="item"],
+html[data-theme="dark"] main [class*="cell"] [class*="event"],
+html[data-theme="dark"] main [class*="cell"] [class*="pill"],
+html[data-theme="dark"] main [class*="cell"] [class*="badge"],
+html[data-theme="dark"] main [class*="cell"] [class*="item"]{
+  background:rgba(241,115,0,.95) !important;
+  border-color:rgba(241,115,0,.95) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] main [class*="day"] [class*="event"] *,
+html[data-theme="dark"] main [class*="day"] [class*="pill"] *,
+html[data-theme="dark"] main [class*="day"] [class*="badge"] *,
+html[data-theme="dark"] main [class*="day"] [class*="item"] *,
+html[data-theme="dark"] main [class*="cell"] [class*="event"] *,
+html[data-theme="dark"] main [class*="cell"] [class*="pill"] *,
+html[data-theme="dark"] main [class*="cell"] [class*="badge"] *,
+html[data-theme="dark"] main [class*="cell"] [class*="item"] *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
 </style>
 </head>
 <body class="events-page">
@@ -1189,6 +1250,77 @@ html[data-theme="dark"] main [class*="selected"] *{
   setTimeout(styleEventControls, 1000);
 
   new MutationObserver(styleEventControls).observe(document.documentElement, {
+    attributes:true,
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  function isDark(){
+    return document.documentElement.getAttribute("data-theme") === "dark";
+  }
+
+  function styleCalendarCellText(){
+    if (!isDark()) return;
+
+    const eventWords = [
+      "sabbath",
+      "new moon",
+      "passover",
+      "purim",
+      "pentecost",
+      "tabernacles",
+      "atonement",
+      "dedication",
+      "trumpets",
+      "nicanor",
+      "simon",
+      "feast"
+    ];
+
+    document.querySelectorAll("main *").forEach(function(el){
+      const text = (el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+      if (!text) return;
+      if (!eventWords.some(function(word){ return text.includes(word); })) return;
+
+      const parentClass = ((el.parentElement && el.parentElement.className) || "").toString().toLowerCase();
+      const ownClass = (el.className || "").toString().toLowerCase();
+
+      const looksCalendarRelated =
+        parentClass.includes("day") ||
+        parentClass.includes("cell") ||
+        parentClass.includes("calendar") ||
+        parentClass.includes("cal") ||
+        ownClass.includes("event") ||
+        ownClass.includes("pill") ||
+        ownClass.includes("badge") ||
+        ownClass.includes("item");
+
+      if (!looksCalendarRelated) return;
+
+      el.style.setProperty("color", "#111827", "important");
+      el.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+      el.style.setProperty("background", "rgba(241,115,0,.95)", "important");
+      el.style.setProperty("border-color", "rgba(241,115,0,.95)", "important");
+
+      el.querySelectorAll("*").forEach(function(child){
+        child.style.setProperty("color", "#111827", "important");
+        child.style.setProperty("-webkit-text-fill-color", "#111827", "important");
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", styleCalendarCellText);
+  window.addEventListener("load", styleCalendarCellText);
+  setTimeout(styleCalendarCellText, 250);
+  setTimeout(styleCalendarCellText, 1000);
+  setTimeout(styleCalendarCellText, 2000);
+
+  new MutationObserver(styleCalendarCellText).observe(document.documentElement, {
     attributes:true,
     childList:true,
     subtree:true
