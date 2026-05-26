@@ -114,6 +114,122 @@
   .card{border:1px solid #e6ebf2;border-radius:12px;background:#fff;padding:.9rem 1rem}
   .card h3{margin:.1rem 0 .25rem 0;font-size:1.05rem}
   .card .when{color:#6b7280;font-size:.95rem}
+
+
+/* Events page dark mode polish */
+html[data-theme="dark"] body{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+}
+
+html[data-theme="dark"] .events-page,
+html[data-theme="dark"] main,
+html[data-theme="dark"] .container,
+html[data-theme="dark"] .wrap{
+  background:transparent !important;
+  color:var(--ink) !important;
+}
+
+html[data-theme="dark"] .event-card,
+html[data-theme="dark"] .calendar-card,
+html[data-theme="dark"] .event-panel,
+html[data-theme="dark"] .agenda-card,
+html[data-theme="dark"] .ics-panel,
+html[data-theme="dark"] .calendar-shell,
+html[data-theme="dark"] .month-card,
+html[data-theme="dark"] .day-card,
+html[data-theme="dark"] .event-list,
+html[data-theme="dark"] .events-box{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  border-color:var(--border) !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .event-card h1,
+html[data-theme="dark"] .event-card h2,
+html[data-theme="dark"] .event-card h3,
+html[data-theme="dark"] .calendar-card h1,
+html[data-theme="dark"] .calendar-card h2,
+html[data-theme="dark"] .calendar-card h3,
+html[data-theme="dark"] .event-panel h1,
+html[data-theme="dark"] .event-panel h2,
+html[data-theme="dark"] .event-panel h3,
+html[data-theme="dark"] .agenda-card h1,
+html[data-theme="dark"] .agenda-card h2,
+html[data-theme="dark"] .agenda-card h3,
+html[data-theme="dark"] .ics-panel h1,
+html[data-theme="dark"] .ics-panel h2,
+html[data-theme="dark"] .ics-panel h3{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .muted,
+html[data-theme="dark"] .event-meta,
+html[data-theme="dark"] .calendar-meta,
+html[data-theme="dark"] .agenda-meta,
+html[data-theme="dark"] .event-desc,
+html[data-theme="dark"] .ics-desc{
+  color:var(--muted) !important;
+}
+
+html[data-theme="dark"] button,
+html[data-theme="dark"] .btn,
+html[data-theme="dark"] .chip,
+html[data-theme="dark"] .tab,
+html[data-theme="dark"] .legend-chip{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] button:hover,
+html[data-theme="dark"] .btn:hover,
+html[data-theme="dark"] .chip:hover,
+html[data-theme="dark"] .tab:hover,
+html[data-theme="dark"] .legend-chip:hover{
+  border-color:var(--accent) !important;
+  color:var(--accent) !important;
+}
+
+html[data-theme="dark"] .active,
+html[data-theme="dark"] .selected,
+html[data-theme="dark"] .tab.active,
+html[data-theme="dark"] .chip.active,
+html[data-theme="dark"] .legend-chip.active{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] table,
+html[data-theme="dark"] th,
+html[data-theme="dark"] td{
+  border-color:var(--border) !important;
+  color:var(--ink) !important;
+}
+
+html[data-theme="dark"] th{
+  background:rgba(255,255,255,.04) !important;
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] a{
+  color:var(--accent) !important;
+}
+
+html[data-theme="dark"] a:hover{
+  color:#ffffff !important;
+}
+
 </style>
 </head>
 <body class="events-page">
