@@ -5529,3 +5529,19 @@ html[data-theme="dark"] main .article-card{
   }
 }
 
+
+/* Modern rotating dropdown triangle */
+#site-header .nav-link .arrow{
+  display:inline-block;
+  margin-left:6px;
+  font-size:.72em;
+  line-height:1;
+  transition:transform .18s ease;
+  transform-origin:center;
+}
+
+#site-header .nav-item:hover > .nav-link .arrow,
+#site-header .nav-item:focus-within > .nav-link .arrow{
+  transform:rotate(180deg);
+}
+
