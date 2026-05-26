@@ -398,6 +398,82 @@ html[data-theme="dark"] .active *{
   color:#111827 !important;
 }
 
+
+
+/* FINAL override: events dark mode filter pills and date controls */
+html[data-theme="dark"] main button,
+html[data-theme="dark"] main .chip,
+html[data-theme="dark"] main .pill,
+html[data-theme="dark"] main .filter,
+html[data-theme="dark"] main .filter-chip,
+html[data-theme="dark"] main .legend-chip,
+html[data-theme="dark"] main [class*="chip"],
+html[data-theme="dark"] main [class*="pill"],
+html[data-theme="dark"] main [class*="filter"],
+html[data-theme="dark"] main [class*="legend"]{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border-color:rgba(255,255,255,.22) !important;
+}
+
+html[data-theme="dark"] main button *,
+html[data-theme="dark"] main .chip *,
+html[data-theme="dark"] main .pill *,
+html[data-theme="dark"] main .filter *,
+html[data-theme="dark"] main .filter-chip *,
+html[data-theme="dark"] main .legend-chip *,
+html[data-theme="dark"] main [class*="chip"] *,
+html[data-theme="dark"] main [class*="pill"] *,
+html[data-theme="dark"] main [class*="filter"] *,
+html[data-theme="dark"] main [class*="legend"] *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] main select,
+html[data-theme="dark"] main input,
+html[data-theme="dark"] main textarea,
+html[data-theme="dark"] main .select,
+html[data-theme="dark"] main [class*="select"],
+html[data-theme="dark"] main [class*="month"],
+html[data-theme="dark"] main [class*="date"],
+html[data-theme="dark"] main [class*="year"]{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border-color:rgba(255,255,255,.22) !important;
+}
+
+html[data-theme="dark"] main select option{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Orange selected regions need dark text */
+html[data-theme="dark"] main .active,
+html[data-theme="dark"] main .selected,
+html[data-theme="dark"] main [aria-pressed="true"],
+html[data-theme="dark"] main [aria-selected="true"],
+html[data-theme="dark"] main [class*="active"],
+html[data-theme="dark"] main [class*="selected"]{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] main .active *,
+html[data-theme="dark"] main .selected *,
+html[data-theme="dark"] main [aria-pressed="true"] *,
+html[data-theme="dark"] main [aria-selected="true"] *,
+html[data-theme="dark"] main [class*="active"] *,
+html[data-theme="dark"] main [class*="selected"] *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
 </style>
 </head>
 <body class="events-page">
