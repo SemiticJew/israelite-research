@@ -5618,3 +5618,23 @@ html[data-theme="dark"] main .article-card{
   transform:rotate(225deg) !important;
 }
 
+
+/* Dark mode nav Give button */
+html[data-theme="dark"] #site-header .give-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+  color:#ffffff !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] #site-header .give-btn:hover,
+html[data-theme="dark"] #site-header .give-btn:focus,
+html[data-theme="dark"] #site-header .give-btn:focus-visible{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#111827 !important;
+}
+
+html[data-theme="dark"] #site-header .give-btn *{
+  color:inherit !important;
+}
