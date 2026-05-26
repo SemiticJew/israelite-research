@@ -1,70 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Contact | Semitic Jew Inc</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/js/include.js" defer></script>
-</head>
-<body>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Contact — Semitic Jew</title>
+<meta name="description" content="Contact Semitic Jew Inc for questions, media inquiries, speaking requests, collaboration, and organization matters."/>
 
+<!-- Open Graph -->
+<meta property="og:title" content="Contact — Semitic Jew"/>
+<meta property="og:description" content="Contact Semitic Jew Inc for questions, media inquiries, speaking requests, collaboration, and organization matters."/>
+<meta property="og:image" content="https://semiticjew.org/images/black-logo-letters.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/contact.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Contact — Semitic Jew"/>
+<meta name="twitter:description" content="Contact Semitic Jew Inc for questions, media inquiries, speaking requests, collaboration, and organization matters."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/black-logo-letters.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .contact-page{
+    max-width:1200px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  .contact-hero{
+    margin:24px 0 42px;
+    padding:58px 30px;
+    text-align:center;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+  }
+
+  .contact-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
+
+  .contact-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.5rem, 6vw, 5rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .contact-subtitle{
+    max-width:780px;
+    margin:18px auto 0;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  .contact-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+    gap:30px;
+    align-items:start;
+  }
+
+  .contact-panel,
+  .contact-card{
+    border:1px solid var(--border);
+    background:var(--surface);
+    padding:28px;
+  }
+
+  .contact-panel h2,
+  .contact-card h2,
+  .contact-card h3{
+    margin:0 0 12px;
+    color:var(--ink);
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .contact-panel p,
+  .contact-card p{
+    margin:0 0 16px;
+    color:var(--muted);
+    line-height:1.72;
+  }
+
+  .contact-list{
+    display:grid;
+    gap:14px;
+    margin:20px 0 0;
+    padding:0;
+    list-style:none;
+  }
+
+  .contact-list li{
+    border:1px solid var(--border);
+    padding:16px;
+    background:rgba(5,74,145,.035);
+  }
+
+  .contact-list strong{
+    display:block;
+    margin-bottom:4px;
+    color:var(--ink);
+    font-weight:900;
+  }
+
+  .contact-list span{
+    display:block;
+    color:var(--muted);
+    line-height:1.55;
+  }
+
+  .contact-actions{
+    display:grid;
+    gap:12px;
+    margin-top:20px;
+  }
+
+  .contact-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 18px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.85rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .contact-btn:hover,
+  .contact-btn:focus,
+  .contact-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  .contact-btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--border);
+  }
+
+  .contact-btn.secondary:hover{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+
+  .contact-detail{
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:.95rem;
+    line-height:1.65;
+  }
+
+  .contact-detail strong{
+    color:var(--ink);
+  }
+
+  .contact-note{
+    margin-top:22px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:rgba(241,115,0,.06);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:.95rem;
+  }
+
+  html[data-theme="dark"] .contact-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .contact-panel h2,
+  html[data-theme="dark"] .contact-card h2,
+  html[data-theme="dark"] .contact-card h3,
+  html[data-theme="dark"] .contact-list strong,
+  html[data-theme="dark"] .contact-detail strong{
+    color:#fff;
+  }
+
+  html[data-theme="dark"] .contact-list{
+    color:#fff;
+  }
+
+  html[data-theme="dark"] .contact-list li{
+    background:rgba(255,255,255,.035);
+  }
+
+  @media(max-width:900px){
+    .contact-layout{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media(max-width:700px){
+    .contact-page{
+      padding:22px 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .contact-hero{
+      margin:18px 0 32px;
+      padding:42px 20px;
+    }
+
+    .contact-panel,
+    .contact-card{
+      padding:22px 18px;
+    }
+  }
+</style>
+</head>
+
+<body>
 <div id="site-header"></div>
 
-<section class="section contact-section">
-  <div class="container" style="max-width: 780px;">
+<main class="contact-page">
 
-    <p style="color:var(--muted); margin-bottom:32px;">
-<h1 class="page-title contact-title">Contact</h1>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Contact</span>
+  </nav>
 
-<p class="contact-intro">
-  Semitic Jew Inc maintains structured communication channels to ensure
-  clarity, professionalism, and timely response. Please use the appropriate
-  email below based on the nature of your inquiry.
-</p>
+  <section class="contact-hero">
+    <div class="contact-kicker">Contact Semitic Jew Inc</div>
+    <h1 class="contact-title">Contact</h1>
+    <p class="contact-subtitle">
+      Reach out for questions, media inquiries, speaking requests, collaboration, organization matters, and general communication.
+    </p>
+  </section>
 
-    <div class="contact-block">
-      <h2>General & Institutional Inquiries</h2>
-      <p><strong>contact@semiticjew.org</strong></p>
+  <section class="contact-layout">
+
+    <div class="contact-panel">
+      <h2>How to Reach Us</h2>
       <p>
-        Use for website inquiries, donor questions, organizational matters,
-        vendor communication, platform correspondence (Google, Stripe, Canva),
-        and general public contact.
+        Use the proper contact channel so your message reaches the right place. Semitic Jew Inc receives inquiries related to biblical education, research, media, events, collaboration, and organizational matters.
       </p>
+
+      <ul class="contact-list">
+        <li>
+          <strong>General Questions</strong>
+          <span>For general questions about Semitic Jew Inc, the website, articles, resources, or public educational work.</span>
+        </li>
+        <li>
+          <strong>Media / Interviews</strong>
+          <span>For interview requests, media appearances, collaboration, podcast matters, or speaking invitations.</span>
+        </li>
+        <li>
+          <strong>Organization / Administrative</strong>
+          <span>For official organization matters, nonprofit verification, partnership inquiries, or administrative communication.</span>
+        </li>
+      </ul>
+
+      <div class="contact-note">
+        For donation-related matters, visit the Support page first. For verification, use the Organization Verification section on the About page.
+      </div>
     </div>
 
-    <div class="contact-block">
-      <h2>Community & Catechism Submissions</h2>
-      <p><strong>shalom@semiticjew.org</strong></p>
+    <aside class="contact-card">
+      <h2>Contact Channels</h2>
       <p>
-        Use for theological dialogue, catechism submissions,
-        midweek Q&A podcast questions, and community interaction.
+        Choose the most relevant option below.
       </p>
-    </div>
 
-    <div class="contact-block">
-      <h2>Media & Partnerships</h2>
-      <p><strong>media@semiticjew.org</strong></p>
-      <p>
-        Use for interview requests, speaking invitations, conference invitations,
-        collaboration proposals, and press inquiries.
-      </p>
-    </div>
+      <div class="contact-actions">
+        <a class="contact-btn" href="mailto:contact@semiticjew.org">Email Contact</a>
+        <a class="contact-btn secondary" href="mailto:media@semiticjew.org">Media Inquiries</a>
+        <a class="contact-btn secondary" href="mailto:admin@semiticjew.org">Administrative Matters</a>
+        <a class="contact-btn secondary" href="/about.html#organization-verification">Verify Organization</a>
+        <a class="contact-btn secondary" href="/donate.html">Support the Work</a>
+      </div>
 
-    <div class="contact-block">
-      <h2>Administrative & Compliance</h2>
-      <p><strong>admin@semiticjew.org</strong></p>
-      <p>
-        Use for bookkeeping documentation, financial records,
-        board communication, contracts, compliance matters,
-        and official regulatory correspondence.
-      </p>
-    </div>
+      <div class="contact-detail">
+        <strong>Legal Name:</strong> Semitic Jew Inc<br>
+        <strong>Primary Domain:</strong> semiticjew.org<br>
+        <strong>Email:</strong> contact@semiticjew.org
+      </div>
+    </aside>
 
-  </div>
-</section>
+  </section>
+
+</main>
 
 <div id="site-footer"></div>
 
+<script src="/js/include.js"></script>
 </body>
 </html>
