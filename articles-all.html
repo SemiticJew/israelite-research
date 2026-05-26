@@ -2,225 +2,366 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Article Archive — Semitic Jew</title>
-<link href="/styles.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>All Articles — Semitic Jew</title>
+<meta name="description" content="Browse all Semitic Jew articles by topic, theme, and biblical research focus."/>
+
+<link rel="stylesheet" href="/styles.css"/>
 
 <style>
-.container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:0 24px;
-}
+  .archive-page{
+    max-width:1200px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
 
-/* HERO */
-.page-hero{
-  padding:40px 0 20px;
-  border-bottom:1px solid var(--border);
-  background:var(--surface);
-}
+  .archive-hero{
+    margin:24px 0 38px;
+    padding:52px 28px;
+    text-align:center;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+  }
 
-.page-title{
-  margin:0;
-  font-size:2.2rem;
-  font-weight:900;
-  color:var(--ink);
-}
+  .archive-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
 
-.page-subtitle{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:.95rem;
-}
+  .archive-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.5rem, 6vw, 5rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
 
-/* DISCIPLINE */
-.discipline{
-  padding:40px 0;
-  border-bottom:1px solid var(--border);
-}
+  .archive-subtitle{
+    max-width:760px;
+    margin:18px auto 0;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
 
-.discipline-title{
-  font-size:1.4rem;
-  font-weight:800;
-  margin-bottom:30px;
-}
+  .archive-controls{
+    display:grid;
+    grid-template-columns:1fr 260px;
+    gap:16px;
+    margin:0 0 32px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:var(--surface);
+  }
 
-/* SUBDISCIPLINE */
-.subdiscipline{
-  margin-bottom:30px;
-}
+  .archive-search,
+  .archive-filter{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--ink);
+    font:inherit;
+  }
 
-.subdiscipline-title{
-  font-size:1.05rem;
-  font-weight:700;
-  margin-bottom:12px;
-  color:var(--brand);
-}
+  .archive-search:focus,
+  .archive-filter:focus{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
 
-/* ENTRY LIST */
-.entry{
-  margin-bottom:10px;
-  padding-left:10px;
-}
+  .archive-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:26px;
+  }
 
-.entry a{
-  text-decoration:none;
-  color:var(--ink);
-  font-weight:600;
-}
+  .archive-card{
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:inherit;
+    text-decoration:none;
+    min-height:100%;
+  }
 
-.entry a:hover{
-  text-decoration:underline;
-}
+  .archive-card:hover{
+    border-color:var(--accent);
+    text-decoration:none;
+  }
 
-.entry-meta{
-  font-size:.8rem;
-  color:var(--muted);
-  margin-top:2px;
-}
+  .archive-thumb{
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#000;
+  }
+
+  .archive-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .25s ease;
+  }
+
+  .archive-card:hover .archive-thumb img{
+    transform:scale(1.025);
+  }
+
+  .archive-body{
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+
+  .archive-label{
+    margin-bottom:8px;
+    color:#8a8f98;
+    font-size:.72rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+  }
+
+  .archive-card h2{
+    margin:0 0 10px;
+    color:var(--ink);
+    font-size:1.22rem;
+    line-height:1.25;
+    font-weight:900;
+  }
+
+  .archive-card p{
+    margin:0 0 14px;
+    color:var(--muted);
+    font-size:.95rem;
+    line-height:1.55;
+  }
+
+  .archive-meta{
+    margin-top:auto;
+    color:var(--muted);
+    font-size:.84rem;
+    font-weight:700;
+  }
+
+  .archive-empty{
+    display:none;
+    margin:30px 0;
+    padding:22px;
+    border:1px solid var(--border);
+    color:var(--muted);
+    text-align:center;
+  }
+
+  html[data-theme="dark"] .archive-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .archive-card h2{
+    color:#fff;
+  }
+
+  @media(max-width:1000px){
+    .archive-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+  }
+
+  @media(max-width:700px){
+    .archive-page{
+      padding:22px 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .archive-hero{
+      margin:18px 0 30px;
+      padding:42px 20px;
+    }
+
+    .archive-controls{
+      grid-template-columns:1fr;
+      padding:14px;
+    }
+
+    .archive-grid{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
 </head>
 
 <body>
-
 <div id="site-header"></div>
 
-<main class="container">
+<main class="archive-page">
 
-  <section class="page-hero">
-    <h1 class="page-title">Article Archive</h1>
-    <p class="page-subtitle">
-      A structured body of theological, logical, and analytical work.
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/articles.html">Articles</a>
+    <span class="sep">›</span>
+    <span class="current">All Articles</span>
+  </nav>
+
+  <section class="archive-hero">
+    <div class="archive-kicker">Article Library</div>
+    <h1 class="archive-title">All Articles</h1>
+    <p class="archive-subtitle">
+      Browse Semitic Jew articles on Scripture, logic, biblical identity, history, truth, and interpretation.
     </p>
   </section>
 
-  <section id="library"></section>
+  <section class="archive-controls" aria-label="Article filters">
+    <input class="archive-search" id="articleSearch" type="search" placeholder="Search articles..." aria-label="Search articles"/>
+
+    <select class="archive-filter" id="themeFilter" aria-label="Filter by theme">
+      <option value="all">All Themes</option>
+      <option value="logic">Logic</option>
+      <option value="truth">Truth</option>
+      <option value="creation">Creation</option>
+      <option value="identity">Identity</option>
+      <option value="nations">Nations</option>
+      <option value="history">History</option>
+    </select>
+  </section>
+
+  <section class="archive-grid" id="articleArchiveGrid" aria-label="All articles">
+
+    <a class="archive-card" href="/articles/is-creation-logical.html" data-theme="creation logic truth" data-title="Is Creation Logical?">
+      <div class="archive-thumb">
+        <img src="/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>Is Creation Logical?</h2>
+        <p>Exploring the rational coherence of creation within a biblical worldview.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+    <a class="archive-card" href="/articles/is-scripture-and-logic-compatible.html" data-theme="logic truth scripture" data-title="Is Scripture and Logic Compatible?">
+      <div class="archive-thumb">
+        <img src="/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture and Logic Compatible?" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>Is Scripture &amp; Logic Compatible?</h2>
+        <p>How sound reasoning complements rather than conflicts with Scripture.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+    <a class="archive-card" href="/articles/hamites-historicity.html" data-theme="history identity nations" data-title="The Historicity of the Hamites">
+      <div class="archive-thumb">
+        <img src="/images/articles/hamites-historicity-700x394.jpg" alt="The Historicity of the Hamites" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>The Historicity of the Hamites</h2>
+        <p>Surveying historical claims around the descendants of Ham.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+    <a class="archive-card" href="/articles/gentiles.html" data-theme="identity nations scripture" data-title="Who Are the Gentiles?">
+      <div class="archive-thumb">
+        <img src="/images/articles/gentiles-meaning-700x394.jpg" alt="Who Are the Gentiles?" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>Who Are the “Gentiles”?</h2>
+        <p>A study on terminology, context, and people groups.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+    <a class="archive-card" href="/articles/three-laws-of-logic.html" data-theme="logic truth" data-title="Three Laws of Logic">
+      <div class="archive-thumb">
+        <img src="/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>Three Laws of Logic</h2>
+        <p>Identity, non-contradiction, and excluded middle explained.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+    <a class="archive-card" href="/articles/is-truth-reliable.html" data-theme="truth logic scripture" data-title="Is Truth Reliable?">
+      <div class="archive-thumb">
+        <img src="/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?" loading="lazy"/>
+      </div>
+      <div class="archive-body">
+        <div class="archive-label">Article</div>
+        <h2>Is Truth Reliable?</h2>
+        <p>Reliability, revelation, and reason.</p>
+        <div class="archive-meta">Semitic Jew</div>
+      </div>
+    </a>
+
+  </section>
+
+  <div class="archive-empty" id="archiveEmpty">
+    No articles match that search or theme.
+  </div>
+
+  <section class="support-callout" aria-label="Support the Work">
+    <h2>Support the Work</h2>
+    <p>
+      Semitic Jew Inc is a 501(c)(3) educational nonprofit. Your support helps us produce biblical research,
+      articles, media, and teaching resources rooted in Scripture, logic, and truth.
+    </p>
+    <a class="support-btn" href="/donate.html">Give / Support</a>
+  </section>
 
 </main>
 
 <div id="site-footer"></div>
 
+<script src="/js/include.js"></script>
 <script>
 (function(){
+  const search = document.getElementById("articleSearch");
+  const filter = document.getElementById("themeFilter");
+  const cards = Array.from(document.querySelectorAll(".archive-card"));
+  const empty = document.getElementById("archiveEmpty");
 
-  const LIBRARY = document.getElementById("library");
+  function applyFilters(){
+    const q = (search.value || "").toLowerCase().trim();
+    const theme = filter.value;
+    let visible = 0;
 
-  function fmtDate(iso){
-    return new Date(iso).toLocaleDateString(undefined,{
-      year:'numeric',
-      month:'long',
-      day:'numeric'
+    cards.forEach(card => {
+      const title = (card.dataset.title || "").toLowerCase();
+      const text = card.textContent.toLowerCase();
+      const themes = (card.dataset.theme || "").toLowerCase();
+
+      const matchesSearch = !q || title.includes(q) || text.includes(q);
+      const matchesTheme = theme === "all" || themes.includes(theme);
+
+      const show = matchesSearch && matchesTheme;
+      card.style.display = show ? "" : "none";
+      if (show) visible++;
     });
+
+    empty.style.display = visible ? "none" : "block";
   }
 
-  function groupData(data){
-    const map = {};
-
-    data.forEach(article=>{
-      const d = article.discipline || "Uncategorized";
-      const s = article.subdiscipline || "General";
-
-      map[d] ??= {};
-      map[d][s] ??= [];
-      map[d][s].push(article);
-    });
-
-    return map;
-  }
-
-  function render(data){
-    const grouped = groupData(data);
-
-    Object.keys(grouped).forEach(discipline=>{
-      const dSection = document.createElement("section");
-      dSection.className = "discipline";
-
-      const dTitle = document.createElement("div");
-      dTitle.className = "discipline-title";
-      dTitle.textContent = discipline;
-      dSection.appendChild(dTitle);
-
-      Object.keys(grouped[discipline]).forEach(sub=>{
-        const subDiv = document.createElement("div");
-        subDiv.className = "subdiscipline";
-
-        const subTitle = document.createElement("div");
-        subTitle.className = "subdiscipline-title";
-        subTitle.textContent = sub;
-        subDiv.appendChild(subTitle);
-
-        grouped[discipline][sub]
-          .sort((a,b)=> new Date(b.date) - new Date(a.date))
-          .forEach(article=>{
-            const entry = document.createElement("div");
-            entry.className = "entry";
-            entry.innerHTML = `
-              <a href="${article.href}">${article.title}</a>
-              <div class="entry-meta">
-                ${fmtDate(article.date)} • ${article.author}
-              </div>
-            `;
-            subDiv.appendChild(entry);
-          });
-
-        dSection.appendChild(subDiv);
-      });
-
-      LIBRARY.appendChild(dSection);
-    });
-  }
-
-  async function boot(){
-    let data = [];
-
-    try{
-      const res = await fetch('/data/articles-index.json',{cache:'no-store'});
-      if(res.ok){
-        data = await res.json();
-      }
-    }catch{}
-
-    if(!data.length){
-      data = [
-        {
-          title:"Three Laws of Logic",
-          href:"/articles/three-laws-of-logic.html",
-          date:"2025-04-02",
-          author:"Semitic Jew",
-          discipline:"Logic & Philosophy",
-          subdiscipline:"Laws of Logic"
-        },
-        {
-          title:"Is Creation Logical?",
-          href:"/articles/is-creation-logical.html",
-          date:"2025-08-20",
-          author:"Semitic Jew",
-          discipline:"Logic & Philosophy",
-          subdiscipline:"Metaphysics"
-        },
-        {
-          title:"Who Are the Gentiles?",
-          href:"/articles/gentiles.html",
-          date:"2025-05-28",
-          author:"Semitic Jew",
-          discipline:"Israelite Identity & Anthropology",
-          subdiscipline:"Ethnicity & Genealogy"
-        }
-      ];
-    }
-
-    render(data);
-  }
-
-  boot();
-
+  search.addEventListener("input", applyFilters);
+  filter.addEventListener("change", applyFilters);
 })();
 </script>
-
-<script src="/js/include.js"></script>
-
 </body>
 </html>
-/* Force title color for both themes */
-.page-title{color:var(--ink)!important;}
-.page-subtitle{color:var(--muted)!important;}
