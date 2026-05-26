@@ -116,267 +116,6 @@
   .card .when{color:#6b7280;font-size:.95rem}
 
 
-/* Events page dark mode polish */
-html[data-theme="dark"] body{
-  background:var(--surface) !important;
-  color:var(--ink) !important;
-}
-
-html[data-theme="dark"] .events-page,
-html[data-theme="dark"] main,
-html[data-theme="dark"] .container,
-html[data-theme="dark"] .wrap{
-  background:transparent !important;
-  color:var(--ink) !important;
-}
-
-html[data-theme="dark"] .event-card,
-html[data-theme="dark"] .calendar-card,
-html[data-theme="dark"] .event-panel,
-html[data-theme="dark"] .agenda-card,
-html[data-theme="dark"] .ics-panel,
-html[data-theme="dark"] .calendar-shell,
-html[data-theme="dark"] .month-card,
-html[data-theme="dark"] .day-card,
-html[data-theme="dark"] .event-list,
-html[data-theme="dark"] .events-box{
-  background:var(--surface) !important;
-  color:var(--ink) !important;
-  border-color:var(--border) !important;
-  box-shadow:none !important;
-}
-
-html[data-theme="dark"] .event-card h1,
-html[data-theme="dark"] .event-card h2,
-html[data-theme="dark"] .event-card h3,
-html[data-theme="dark"] .calendar-card h1,
-html[data-theme="dark"] .calendar-card h2,
-html[data-theme="dark"] .calendar-card h3,
-html[data-theme="dark"] .event-panel h1,
-html[data-theme="dark"] .event-panel h2,
-html[data-theme="dark"] .event-panel h3,
-html[data-theme="dark"] .agenda-card h1,
-html[data-theme="dark"] .agenda-card h2,
-html[data-theme="dark"] .agenda-card h3,
-html[data-theme="dark"] .ics-panel h1,
-html[data-theme="dark"] .ics-panel h2,
-html[data-theme="dark"] .ics-panel h3{
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] .muted,
-html[data-theme="dark"] .event-meta,
-html[data-theme="dark"] .calendar-meta,
-html[data-theme="dark"] .agenda-meta,
-html[data-theme="dark"] .event-desc,
-html[data-theme="dark"] .ics-desc{
-  color:var(--muted) !important;
-}
-
-html[data-theme="dark"] button,
-html[data-theme="dark"] .btn,
-html[data-theme="dark"] .chip,
-html[data-theme="dark"] .tab,
-html[data-theme="dark"] .legend-chip{
-  background:var(--surface) !important;
-  color:var(--ink) !important;
-  border-color:var(--border) !important;
-}
-
-html[data-theme="dark"] button:hover,
-html[data-theme="dark"] .btn:hover,
-html[data-theme="dark"] .chip:hover,
-html[data-theme="dark"] .tab:hover,
-html[data-theme="dark"] .legend-chip:hover{
-  border-color:var(--accent) !important;
-  color:var(--accent) !important;
-}
-
-html[data-theme="dark"] .active,
-html[data-theme="dark"] .selected,
-html[data-theme="dark"] .tab.active,
-html[data-theme="dark"] .chip.active,
-html[data-theme="dark"] .legend-chip.active{
-  background:var(--accent) !important;
-  border-color:var(--accent) !important;
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] input,
-html[data-theme="dark"] select,
-html[data-theme="dark"] textarea{
-  background:var(--surface) !important;
-  color:var(--ink) !important;
-  border-color:var(--border) !important;
-}
-
-html[data-theme="dark"] table,
-html[data-theme="dark"] th,
-html[data-theme="dark"] td{
-  border-color:var(--border) !important;
-  color:var(--ink) !important;
-}
-
-html[data-theme="dark"] th{
-  background:rgba(255,255,255,.04) !important;
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] a{
-  color:var(--accent) !important;
-}
-
-html[data-theme="dark"] a:hover{
-  color:#ffffff !important;
-}
-
-
-
-/* Events page orange active/hover state */
-html[data-theme="dark"] button:hover,
-html[data-theme="dark"] .btn:hover,
-html[data-theme="dark"] .chip:hover,
-html[data-theme="dark"] .tab:hover,
-html[data-theme="dark"] .legend-chip:hover,
-html[data-theme="dark"] button:focus,
-html[data-theme="dark"] .btn:focus,
-html[data-theme="dark"] .chip:focus,
-html[data-theme="dark"] .tab:focus,
-html[data-theme="dark"] .legend-chip:focus,
-html[data-theme="dark"] .active,
-html[data-theme="dark"] .selected,
-html[data-theme="dark"] .tab.active,
-html[data-theme="dark"] .chip.active,
-html[data-theme="dark"] .legend-chip.active{
-  background:var(--accent) !important;
-  border-color:var(--accent) !important;
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] button:hover *,
-html[data-theme="dark"] .btn:hover *,
-html[data-theme="dark"] .chip:hover *,
-html[data-theme="dark"] .tab:hover *,
-html[data-theme="dark"] .legend-chip:hover *,
-html[data-theme="dark"] .active *,
-html[data-theme="dark"] .selected *,
-html[data-theme="dark"] .tab.active *,
-html[data-theme="dark"] .chip.active *,
-html[data-theme="dark"] .legend-chip.active *{
-  color:#ffffff !important;
-}
-
-
-
-/* Events page dark mode orange calendar regions need dark text */
-html[data-theme="dark"] .active,
-html[data-theme="dark"] .selected,
-html[data-theme="dark"] .tab.active,
-html[data-theme="dark"] .chip.active,
-html[data-theme="dark"] .legend-chip.active,
-html[data-theme="dark"] .calendar .active,
-html[data-theme="dark"] .calendar .selected,
-html[data-theme="dark"] .calendar .event,
-html[data-theme="dark"] .calendar .event-pill,
-html[data-theme="dark"] .calendar .event-chip,
-html[data-theme="dark"] .calendar .badge,
-html[data-theme="dark"] .cal .active,
-html[data-theme="dark"] .cal .selected,
-html[data-theme="dark"] .cal .event,
-html[data-theme="dark"] .cal .event-pill,
-html[data-theme="dark"] .cal .event-chip,
-html[data-theme="dark"] .cal .badge{
-  background:var(--accent) !important;
-  border-color:var(--accent) !important;
-  color:#111827 !important;
-}
-
-html[data-theme="dark"] .active *,
-html[data-theme="dark"] .selected *,
-html[data-theme="dark"] .tab.active *,
-html[data-theme="dark"] .chip.active *,
-html[data-theme="dark"] .legend-chip.active *,
-html[data-theme="dark"] .calendar .active *,
-html[data-theme="dark"] .calendar .selected *,
-html[data-theme="dark"] .calendar .event *,
-html[data-theme="dark"] .calendar .event-pill *,
-html[data-theme="dark"] .calendar .event-chip *,
-html[data-theme="dark"] .calendar .badge *,
-html[data-theme="dark"] .cal .active *,
-html[data-theme="dark"] .cal .selected *,
-html[data-theme="dark"] .cal .event *,
-html[data-theme="dark"] .cal .event-pill *,
-html[data-theme="dark"] .cal .event-chip *,
-html[data-theme="dark"] .cal .badge *{
-  color:#111827 !important;
-}
-
-html[data-theme="dark"] button:hover,
-html[data-theme="dark"] .btn:hover,
-html[data-theme="dark"] .chip:hover,
-html[data-theme="dark"] .tab:hover,
-html[data-theme="dark"] .legend-chip:hover{
-  background:var(--accent) !important;
-  border-color:var(--accent) !important;
-  color:#111827 !important;
-}
-
-html[data-theme="dark"] button:hover *,
-html[data-theme="dark"] .btn:hover *,
-html[data-theme="dark"] .chip:hover *,
-html[data-theme="dark"] .tab:hover *,
-html[data-theme="dark"] .legend-chip:hover *{
-  color:#111827 !important;
-}
-
-
-
-/* Events page dark mode visible filters and selects */
-html[data-theme="dark"] .legend-chip,
-html[data-theme="dark"] .chip,
-html[data-theme="dark"] .tab,
-html[data-theme="dark"] .btn,
-html[data-theme="dark"] button{
-  background:var(--surface) !important;
-  color:#ffffff !important;
-  border-color:var(--border) !important;
-}
-
-html[data-theme="dark"] .legend-chip span,
-html[data-theme="dark"] .legend-chip strong,
-html[data-theme="dark"] .chip span,
-html[data-theme="dark"] .chip strong,
-html[data-theme="dark"] .tab span,
-html[data-theme="dark"] .tab strong,
-html[data-theme="dark"] .btn span,
-html[data-theme="dark"] .btn strong,
-html[data-theme="dark"] button span,
-html[data-theme="dark"] button strong{
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] select,
-html[data-theme="dark"] option,
-html[data-theme="dark"] input[type="date"],
-html[data-theme="dark"] input[type="month"],
-html[data-theme="dark"] input[type="number"],
-html[data-theme="dark"] input[type="text"]{
-  background:var(--surface) !important;
-  color:#ffffff !important;
-  border-color:var(--border) !important;
-}
-
-html[data-theme="dark"] select option{
-  background:#0f172a !important;
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] select:focus,
-html[data-theme="dark"] input:focus{
-  outline:2px solid var(--accent) !important;
-  outline-offset:2px !important;
-}
-
 /* Keep active orange calendar/filter regions readable */
 html[data-theme="dark"] .legend-chip.active,
 html[data-theme="dark"] .chip.active,
@@ -398,58 +137,6 @@ html[data-theme="dark"] .active *{
   color:#111827 !important;
 }
 
-
-
-/* FINAL override: events dark mode filter pills and date controls */
-html[data-theme="dark"] main button,
-html[data-theme="dark"] main .chip,
-html[data-theme="dark"] main .pill,
-html[data-theme="dark"] main .filter,
-html[data-theme="dark"] main .filter-chip,
-html[data-theme="dark"] main .legend-chip,
-html[data-theme="dark"] main [class*="chip"],
-html[data-theme="dark"] main [class*="pill"],
-html[data-theme="dark"] main [class*="filter"],
-html[data-theme="dark"] main [class*="legend"]{
-  background:#0f172a !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-  border-color:rgba(255,255,255,.22) !important;
-}
-
-html[data-theme="dark"] main button *,
-html[data-theme="dark"] main .chip *,
-html[data-theme="dark"] main .pill *,
-html[data-theme="dark"] main .filter *,
-html[data-theme="dark"] main .filter-chip *,
-html[data-theme="dark"] main .legend-chip *,
-html[data-theme="dark"] main [class*="chip"] *,
-html[data-theme="dark"] main [class*="pill"] *,
-html[data-theme="dark"] main [class*="filter"] *,
-html[data-theme="dark"] main [class*="legend"] *{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
-
-html[data-theme="dark"] main select,
-html[data-theme="dark"] main input,
-html[data-theme="dark"] main textarea,
-html[data-theme="dark"] main .select,
-html[data-theme="dark"] main [class*="select"],
-html[data-theme="dark"] main [class*="month"],
-html[data-theme="dark"] main [class*="date"],
-html[data-theme="dark"] main [class*="year"]{
-  background:#0f172a !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-  border-color:rgba(255,255,255,.22) !important;
-}
-
-html[data-theme="dark"] main select option{
-  background:#0f172a !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
 
 /* Orange selected regions need dark text */
 html[data-theme="dark"] main .active,
@@ -474,39 +161,6 @@ html[data-theme="dark"] main [class*="selected"] *{
   -webkit-text-fill-color:#111827 !important;
 }
 
-
-
-/* FINAL: events dark mode calendar cell text visibility */
-html[data-theme="dark"] main .calendar-grid,
-html[data-theme="dark"] main .calendar,
-html[data-theme="dark"] main .cal,
-html[data-theme="dark"] main [class*="calendar"],
-html[data-theme="dark"] main [class*="cal-grid"]{
-  color:#ffffff !important;
-}
-
-html[data-theme="dark"] main .calendar-grid *,
-html[data-theme="dark"] main .calendar *,
-html[data-theme="dark"] main .cal *,
-html[data-theme="dark"] main [class*="calendar"] *,
-html[data-theme="dark"] main [class*="cal-grid"] *{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
-
-html[data-theme="dark"] main [class*="day"],
-html[data-theme="dark"] main [class*="cell"],
-html[data-theme="dark"] main [class*="date"]{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
-
-html[data-theme="dark"] main [class*="day"] *,
-html[data-theme="dark"] main [class*="cell"] *,
-html[data-theme="dark"] main [class*="date"] *{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
 
 /* Event pills inside calendar cells */
 html[data-theme="dark"] main [class*="day"] [class*="event"],
@@ -533,6 +187,125 @@ html[data-theme="dark"] main [class*="cell"] [class*="badge"] *,
 html[data-theme="dark"] main [class*="cell"] [class*="item"] *{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
+}
+
+
+
+/* Events page dark mode clean reset */
+html[data-theme="dark"] body{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+}
+
+html[data-theme="dark"] main,
+html[data-theme="dark"] .container,
+html[data-theme="dark"] .wrap{
+  background:transparent !important;
+  color:var(--ink) !important;
+}
+
+/* Keep calendar shells/cards dark, but stop inner navy bleed */
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .calendar,
+html[data-theme="dark"] .calendar-card,
+html[data-theme="dark"] .calendar-shell,
+html[data-theme="dark"] .agenda,
+html[data-theme="dark"] .agenda-card,
+html[data-theme="dark"] .ics,
+html[data-theme="dark"] .ics-panel{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+  color:var(--ink) !important;
+  box-shadow:none !important;
+}
+
+/* Calendar cell text and day numbers */
+html[data-theme="dark"] main [class*="day"],
+html[data-theme="dark"] main [class*="cell"],
+html[data-theme="dark"] main [class*="date"]{
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+}
+
+html[data-theme="dark"] main [class*="day"] *,
+html[data-theme="dark"] main [class*="cell"] *,
+html[data-theme="dark"] main [class*="date"] *{
+  color:inherit !important;
+  -webkit-text-fill-color:inherit !important;
+}
+
+/* Remove unwanted dark navy blocks behind event text inside cells */
+html[data-theme="dark"] main [class*="day"] [class*="event"],
+html[data-theme="dark"] main [class*="day"] [class*="pill"],
+html[data-theme="dark"] main [class*="day"] [class*="badge"],
+html[data-theme="dark"] main [class*="day"] [class*="item"],
+html[data-theme="dark"] main [class*="cell"] [class*="event"],
+html[data-theme="dark"] main [class*="cell"] [class*="pill"],
+html[data-theme="dark"] main [class*="cell"] [class*="badge"],
+html[data-theme="dark"] main [class*="cell"] [class*="item"]{
+  background:transparent !important;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+  border-color:transparent !important;
+}
+
+/* Event type filter pills: clean outlined style */
+html[data-theme="dark"] main button,
+html[data-theme="dark"] main .chip,
+html[data-theme="dark"] main .legend-chip,
+html[data-theme="dark"] main [class*="chip"],
+html[data-theme="dark"] main [class*="legend"]{
+  background:transparent !important;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+  border-color:var(--border) !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] main button *,
+html[data-theme="dark"] main .chip *,
+html[data-theme="dark"] main .legend-chip *,
+html[data-theme="dark"] main [class*="chip"] *,
+html[data-theme="dark"] main [class*="legend"] *{
+  color:inherit !important;
+  -webkit-text-fill-color:inherit !important;
+}
+
+/* Hover and active states */
+html[data-theme="dark"] main button:hover,
+html[data-theme="dark"] main .chip:hover,
+html[data-theme="dark"] main .legend-chip:hover,
+html[data-theme="dark"] main [class*="chip"]:hover,
+html[data-theme="dark"] main [class*="legend"]:hover{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] main .active,
+html[data-theme="dark"] main .selected,
+html[data-theme="dark"] main [aria-pressed="true"],
+html[data-theme="dark"] main [aria-selected="true"]{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+/* Month / date / year controls */
+html[data-theme="dark"] main select,
+html[data-theme="dark"] main input,
+html[data-theme="dark"] main textarea{
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:var(--ink) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] main select option{
+  background:#111827 !important;
+  color:#ffffff !important;
 }
 
 </style>
