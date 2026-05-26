@@ -291,6 +291,78 @@
       font-size:1.2rem;
     }
   }
+
+
+/* Support the Work callouts */
+.support-callout{
+  margin:56px auto;
+  padding:28px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
+    var(--surface);
+  color:var(--ink);
+  text-align:center;
+}
+
+.support-callout h2,
+.support-callout h3{
+  margin:0 0 10px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.support-callout p{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.support-callout .support-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 22px;
+  border:1px solid var(--accent);
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.support-callout .support-btn:hover,
+.support-callout .support-btn:focus,
+.support-callout .support-btn:focus-visible{
+  background:var(--ink);
+  border-color:var(--ink);
+  color:#fff;
+  text-decoration:none;
+}
+
+html[data-theme="dark"] .support-callout{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    var(--surface);
+}
+
+@media(max-width:760px){
+  .support-callout{
+    margin:42px auto;
+    padding:24px 18px;
+  }
+
+  .support-callout h2,
+  .support-callout h3{
+    font-size:1.25rem;
+  }
+}
+
 </style>
 </head>
 
@@ -364,6 +436,16 @@
       </a>
     </div>
   </section>
+
+
+<section class="support-callout" aria-label="Support the Work">
+  <h2>Support the Work</h2>
+  <p>
+    Semitic Jew Inc is a 501(c)(3) educational nonprofit. Your support helps us produce biblical research,
+    articles, media, and teaching resources rooted in Scripture, logic, and truth.
+  </p>
+  <a class="support-btn" href="/donate.html">Give / Support</a>
+</section>
 
 </main>
 
