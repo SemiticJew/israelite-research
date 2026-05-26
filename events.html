@@ -376,6 +376,31 @@ html[data-theme="dark"] main [aria-pressed="true"] *{
   -webkit-text-fill-color:#111827 !important;
 }
 
+
+
+/* Remove orange border around events calendar shell in dark mode */
+html[data-theme="dark"] main .calendar,
+html[data-theme="dark"] main .calendar-card,
+html[data-theme="dark"] main .calendar-shell,
+html[data-theme="dark"] main .calendar-grid,
+html[data-theme="dark"] main [class*="calendar"],
+html[data-theme="dark"] main [class*="cal-grid"]{
+  border-color:rgba(255,255,255,.16) !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] main .calendar:focus,
+html[data-theme="dark"] main .calendar-card:focus,
+html[data-theme="dark"] main .calendar-shell:focus,
+html[data-theme="dark"] main .calendar-grid:focus,
+html[data-theme="dark"] main [class*="calendar"]:focus,
+html[data-theme="dark"] main [class*="cal-grid"]:focus{
+  border-color:rgba(255,255,255,.16) !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
 </style>
 </head>
 <body class="events-page">
