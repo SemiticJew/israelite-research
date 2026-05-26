@@ -308,6 +308,74 @@ html[data-theme="dark"] main select option{
   color:#ffffff !important;
 }
 
+
+
+/* Events calendar dark navy interior */
+html[data-theme="dark"] main .calendar,
+html[data-theme="dark"] main .calendar-card,
+html[data-theme="dark"] main .calendar-shell,
+html[data-theme="dark"] main .calendar-grid,
+html[data-theme="dark"] main [class*="calendar"],
+html[data-theme="dark"] main [class*="cal-grid"]{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+
+html[data-theme="dark"] main [class*="day"],
+html[data-theme="dark"] main [class*="cell"],
+html[data-theme="dark"] main [class*="date"]{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border-color:rgba(255,255,255,.12) !important;
+}
+
+html[data-theme="dark"] main [class*="day"] *,
+html[data-theme="dark"] main [class*="cell"] *,
+html[data-theme="dark"] main [class*="date"] *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Event text/pills inside dark navy cells */
+html[data-theme="dark"] main [class*="day"] [class*="event"],
+html[data-theme="dark"] main [class*="day"] [class*="pill"],
+html[data-theme="dark"] main [class*="day"] [class*="badge"],
+html[data-theme="dark"] main [class*="day"] [class*="item"],
+html[data-theme="dark"] main [class*="cell"] [class*="event"],
+html[data-theme="dark"] main [class*="cell"] [class*="pill"],
+html[data-theme="dark"] main [class*="cell"] [class*="badge"],
+html[data-theme="dark"] main [class*="cell"] [class*="item"]{
+  background:transparent !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border-color:transparent !important;
+}
+
+/* Selected/active calendar regions stay orange with dark readable text */
+html[data-theme="dark"] main [class*="day"].active,
+html[data-theme="dark"] main [class*="day"].selected,
+html[data-theme="dark"] main [class*="cell"].active,
+html[data-theme="dark"] main [class*="cell"].selected,
+html[data-theme="dark"] main [aria-selected="true"],
+html[data-theme="dark"] main [aria-pressed="true"]{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] main [class*="day"].active *,
+html[data-theme="dark"] main [class*="day"].selected *,
+html[data-theme="dark"] main [class*="cell"].active *,
+html[data-theme="dark"] main [class*="cell"].selected *,
+html[data-theme="dark"] main [aria-selected="true"] *,
+html[data-theme="dark"] main [aria-pressed="true"] *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
 </style>
 </head>
 <body class="events-page">
