@@ -401,6 +401,77 @@ html[data-theme="dark"] main [class*="cal-grid"]:focus{
   box-shadow:none !important;
 }
 
+
+
+/* FINAL: keep events legend and calendar controls dark in dark mode */
+html[data-theme="dark"] #calLegend button,
+html[data-theme="dark"] #calLegend button[aria-pressed="true"],
+html[data-theme="dark"] #calLegend button[aria-pressed="false"]{
+  background:#0f172a !important;
+  border-color:rgba(255,255,255,.20) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  box-shadow:none !important;
+  outline:none !important;
+}
+
+html[data-theme="dark"] #calLegend button *,
+html[data-theme="dark"] #calLegend button[aria-pressed="true"] *,
+html[data-theme="dark"] #calLegend button[aria-pressed="false"] *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] #calLegend button:hover,
+html[data-theme="dark"] #calLegend button:focus,
+html[data-theme="dark"] #calLegend button:focus-visible{
+  background:#111827 !important;
+  border-color:var(--accent) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Month / Day / Year controls */
+html[data-theme="dark"] #selMonth,
+html[data-theme="dark"] #selDay,
+html[data-theme="dark"] #selYear{
+  background:#0f172a !important;
+  border-color:rgba(255,255,255,.20) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Calendar cells and event chips */
+html[data-theme="dark"] #calGrid .cal-cell{
+  background:#0f172a !important;
+  border-color:rgba(255,255,255,.12) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] #calGrid .cal-date{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] #calGrid .evt-chip{
+  background:rgba(255,255,255,.06) !important;
+  border-color:rgba(255,255,255,.12) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+html[data-theme="dark"] #calGrid .evt-chip span{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Today cell can keep a subtle accent without becoming orange */
+html[data-theme="dark"] #calGrid .cal-cell.is-today{
+  box-shadow:inset 0 0 0 2px var(--accent) !important;
+  border-color:var(--accent) !important;
+}
+
 </style>
 </head>
 <body class="events-page">
