@@ -5498,3 +5498,34 @@ html[data-theme="dark"] main .article-card{
     min-height:0 !important;
   }
 }
+
+
+/* Show dropdown links inside mobile hamburger menu */
+@media (max-width: 760px){
+  #site-header.mobile-nav-open .nav-item .dropdown{
+    position:static !important;
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 0 6px 14px !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+
+  #site-header.mobile-nav-open .nav-item .dropdown a{
+    padding:10px 0 !important;
+    border-bottom:0 !important;
+    font-size:.92rem !important;
+    font-weight:700 !important;
+    color:var(--muted) !important;
+  }
+
+  #site-header.mobile-nav-open .nav-item .dropdown a:hover,
+  #site-header.mobile-nav-open .nav-item .dropdown a:focus,
+  #site-header.mobile-nav-open .nav-item .dropdown a:focus-visible{
+    color:var(--accent) !important;
+  }
+}
+
