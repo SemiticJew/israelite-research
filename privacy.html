@@ -1,120 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Privacy Policy | Semitic Jew Inc</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/js/include.js" defer></script>
-</head>
-<body>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Privacy Policy — Semitic Jew</title>
+<meta name="description" content="Privacy Policy for Semitic Jew Inc, including website data, analytics, contact communication, donations, and third-party services."/>
 
+<!-- Open Graph -->
+<meta property="og:title" content="Privacy Policy — Semitic Jew"/>
+<meta property="og:description" content="Privacy Policy for Semitic Jew Inc, including website data, analytics, contact communication, donations, and third-party services."/>
+<meta property="og:image" content="https://semiticjew.org/images/black-logo-letters.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/privacy.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Privacy Policy — Semitic Jew"/>
+<meta name="twitter:description" content="Privacy Policy for Semitic Jew Inc, including website data, analytics, contact communication, donations, and third-party services."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/black-logo-letters.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .legal-page{
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  .legal-hero{
+    margin:24px 0 42px;
+    padding:58px 30px;
+    text-align:center;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+  }
+
+  .legal-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
+
+  .legal-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.35rem, 6vw, 4.7rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .legal-subtitle{
+    max-width:780px;
+    margin:18px auto 0;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  .legal-content{
+    border:1px solid var(--border);
+    background:var(--surface);
+    padding:34px;
+  }
+
+  .legal-content h2{
+    margin:34px 0 12px;
+    color:var(--ink);
+    font-size:1.35rem;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .legal-content h2:first-child{
+    margin-top:0;
+  }
+
+  .legal-content p,
+  .legal-content li{
+    color:var(--muted);
+    line-height:1.72;
+  }
+
+  .legal-content ul{
+    padding-left:1.25rem;
+  }
+
+  .legal-note{
+    margin-top:24px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:rgba(241,115,0,.06);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:.95rem;
+  }
+
+  .legal-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:28px;
+  }
+
+  .legal-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:13px 18px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.82rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .legal-btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--border);
+  }
+
+  .legal-btn:hover,
+  .legal-btn:focus,
+  .legal-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  html[data-theme="dark"] .legal-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .legal-content h2{
+    color:#fff;
+  }
+
+  @media(max-width:700px){
+    .legal-page{
+      padding:22px 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .legal-hero{
+      margin:18px 0 32px;
+      padding:42px 20px;
+    }
+
+    .legal-content{
+      padding:24px 18px;
+    }
+  }
+</style>
+</head>
+
+<body>
 <div id="site-header"></div>
 
-<section class="section">
-  <div class="container" style="max-width: 780px;">
+<main class="legal-page">
 
-    <h1 class="page-title">Privacy Policy</h1>
-    <p class="legal-updated">Last Updated: April 28, 2026</p>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Privacy Policy</span>
+  </nav>
 
-    <nav class="legal-toc">
-      <a href="#our-commitment">Our Commitment</a>
-      <a href="#information-collected">Information We Collect</a>
-      <a href="#use-of-information">How We Use Information</a>
-      <a href="#donation-processing">Donation Processing</a>
-      <a href="#email-communications">Email Communications</a>
-      <a href="#data-security">Data Security</a>
-      <a href="#third-party-services">Third-Party Services</a>
-      <a href="#cookies">Cookies</a>
-      <a href="#your-rights">Your Rights</a>
-      <a href="#policy-updates">Policy Updates</a>
-      <a href="#contact-us">Contact Us</a>
-    </nav>
+  <section class="legal-hero">
+    <div class="legal-kicker">Legal</div>
+    <h1 class="legal-title">Privacy Policy</h1>
+    <p class="legal-subtitle">
+      This page explains how Semitic Jew Inc handles website information, contact communication, analytics, donations, and third-party services.
+    </p>
+  </section>
 
-    <hr class="legal-divider">
+  <section class="legal-content">
+    <h2>Overview</h2>
+    <p>
+      Semitic Jew Inc respects the privacy of visitors who use semiticjew.org. This policy explains what information may be collected, how it may be used, and how third-party tools may interact with the website.
+    </p>
 
-    <section id="our-commitment">
-      <h2>Our Commitment</h2>
-      <p>
-        Semitic Jew Inc is a federally recognized 501(c)(3) nonprofit corporation organized in the United States. We are committed to safeguarding the privacy and personal information of our supporters, readers, donors, and community members. This Privacy Policy explains how information is collected, used, and protected when you interact with our website or services.
-      </p>
-    </section>
+    <h2>Information You Provide</h2>
+    <p>
+      If you contact Semitic Jew Inc by email or through linked services, you may voluntarily provide information such as your name, email address, organization, message content, or inquiry details.
+    </p>
 
-    <section id="information-collected">
-      <h2>Information We Collect</h2>
-      <p>
-        We may collect personal information that you voluntarily provide, including your name, email address, mailing address, and donation-related information. We may also collect limited technical information such as browser type, device type, and usage data to improve website functionality and user experience.
-      </p>
-    </section>
+    <h2>Website Analytics</h2>
+    <p>
+      This site may use Google Analytics or related Google tools to understand general website activity, such as pages visited, approximate traffic patterns, device/browser information, and engagement trends. This information helps improve the website and educational content.
+    </p>
 
-    <section id="use-of-information">
-      <h2>How We Use Information</h2>
-      <p>
-        Information collected is used to respond to inquiries, process donations, provide updates regarding our mission, maintain organizational records, and improve the quality of our educational and research services. We do not sell, rent, or trade personal information to third parties.
-      </p>
-    </section>
+    <h2>Donations and Third-Party Services</h2>
+    <p>
+      Donations may be processed through third-party platforms such as Zeffy. Payment and donation information submitted through those platforms is governed by the privacy policies and terms of the third-party provider.
+    </p>
 
-    <section id="donation-processing">
-      <h2>Donation Processing</h2>
-      <p>
-        Donations to Semitic Jew Inc may be processed through secure third-party payment processors, including Stripe and Zeffy. These processors maintain their own privacy and security policies. Semitic Jew Inc does not store full credit card information on its servers.
-      </p>
-    </section>
+    <h2>Cookies and Tracking</h2>
+    <p>
+      The website or third-party services may use cookies or similar technologies to operate, measure traffic, improve performance, and support analytics.
+    </p>
 
-    <section id="email-communications">
-      <h2>Email Communications</h2>
-      <p>
-        If you contact us through our official email channels or subscribe to updates, your information may be used to respond to inquiries or send organizational communications. You may opt out of non-essential communications at any time.
-      </p>
-    </section>
+    <h2>Email Communication</h2>
+    <p>
+      If you email Semitic Jew Inc, your message may be retained for communication, recordkeeping, administrative response, media inquiry handling, or organization-related follow-up.
+    </p>
 
-    <section id="data-security">
-      <h2>Data Security</h2>
-      <p>
-        We implement reasonable administrative, technical, and organizational safeguards to protect personal information from unauthorized access, misuse, alteration, or disclosure. However, no system can guarantee absolute security.
-      </p>
-    </section>
+    <h2>Information Sharing</h2>
+    <p>
+      Semitic Jew Inc does not sell personal information. Information may be shared only when necessary to operate the organization, respond to inquiries, comply with legal obligations, protect the website, or use trusted service providers.
+    </p>
 
-    <section id="third-party-services">
-      <h2>Third-Party Services</h2>
-      <p>
-        Our Website may link to third-party websites or integrate services provided by external platforms. These services operate under their own privacy policies. Semitic Jew Inc is not responsible for the privacy practices of external websites or services.
-      </p>
-    </section>
+    <h2>External Links</h2>
+    <p>
+      This website may link to YouTube, Spotify, Apple Podcasts, Zeffy, Google services, social media platforms, or other third-party websites. Semitic Jew Inc is not responsible for the privacy practices of external websites.
+    </p>
 
-    <section id="cookies">
-      <h2>Cookies</h2>
-      <p>
-        The Website may use cookies or similar technologies to enhance user experience and gather limited analytics information. Users may adjust browser settings to disable cookies if desired.
-      </p>
-    </section>
+    <h2>Contact</h2>
+    <p>
+      Questions about this Privacy Policy may be sent to contact@semiticjew.org.
+    </p>
 
-    <section id="your-rights">
-      <h2>Your Rights</h2>
-      <p>
-        You may request access to, correction of, or deletion of personal information we maintain about you, subject to applicable legal requirements. Requests may be submitted through our official contact channels.
-      </p>
-    </section>
+    <div class="legal-note">
+      This Privacy Policy may be updated as the website, tools, and organization services develop.
+    </div>
 
-    <section id="policy-updates">
-      <h2>Policy Updates</h2>
-      <p>
-        This Privacy Policy may be updated periodically to reflect organizational changes or legal developments. Updates will be posted on this page with a revised effective date.
-      </p>
-    </section>
+    <div class="legal-actions">
+      <a class="legal-btn" href="/contact.html">Contact</a>
+      <a class="legal-btn secondary" href="/terms.html">Terms of Use</a>
+    </div>
+  </section>
 
-    <section id="contact-us">
-      <h2>Contact Us</h2>
-      <p>
-        Questions regarding this Privacy Policy may be directed through our official contact page at
-        <a href="/contact.html">semiticJew.org/contact.html</a>.
-      </p>
-    </section>
-
-  </div>
-</section>
+</main>
 
 <div id="site-footer"></div>
 
+<script src="/js/include.js"></script>
 </body>
 </html>
