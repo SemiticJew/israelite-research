@@ -338,19 +338,226 @@
     border-color:var(--border) !important;
   }
 
+
+
+/* Dietary Laws modern page polish */
+.dietary-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.dietary-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.dietary-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.dietary-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.dietary-subtitle{
+  max-width:820px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.dietary-intro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.dietary-info-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+}
+
+.dietary-info-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.dietary-info-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.dietary-tool-shell,
+.dietary-tree-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.dietary-section-head{
+  margin:0 0 16px;
+}
+
+.dietary-section-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.dietary-section-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.dietary-page .searchbar{
+  margin:0 0 16px;
+}
+
+.dietary-page #foodCheck{
+  margin:0 !important;
+}
+
+.dietary-page .tree{
+  margin:0;
+}
+
+.dietary-page .tree details{
+  border-radius:0;
+}
+
+.dietary-page .example-card{
+  border-radius:0;
+}
+
+.dietary-page .example-card .card-head{
+  border-radius:0;
+}
+
+.dietary-page .note{
+  border:1px solid var(--border);
+  background:rgba(241,115,0,.06);
+  padding:18px;
+  margin:24px 0 0;
+  line-height:1.65;
+}
+
+html[data-theme="dark"] .dietary-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .dietary-title,
+html[data-theme="dark"] .dietary-info-card h2,
+html[data-theme="dark"] .dietary-section-head h2{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .dietary-tool-shell,
+html[data-theme="dark"] .dietary-tree-shell,
+html[data-theme="dark"] .dietary-info-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:900px){
+  .dietary-intro-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .dietary-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .dietary-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .dietary-tool-shell,
+  .dietary-tree-shell{
+    padding:20px 16px;
+  }
+
+  .searchbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
 </style>
 </head>
 <body class="dietary-page">
 <div id="site-header"></div>
 
 <main class="container">
-  <section class="page-header">
-    <div class="breadcrumb">Home › Biblia › Dietary Laws</div>
-    <h1 class="page-title">Dietary Laws</h1>
-    <p class="page-subtitle">
-      Search clean and unclean foods, hidden ingredients, biblical categories, and Scripture references.
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Dietary Laws</span>
+  </nav>
+
+  <section class="dietary-hero">
+    <div class="dietary-kicker">Torah Focus</div>
+    <h1 class="dietary-title">Dietary Laws</h1>
+    <p class="dietary-subtitle">
+      Search clean and unclean foods, hidden ingredients, biblical categories, and Scripture references from the Law.
     </p>
   </section>
+
+  <section class="dietary-intro-grid" aria-label="Dietary law overview">
+    <article class="dietary-info-card">
+      <h2>Clean & Unclean</h2>
+      <p>Study biblical categories for mammals, fish, birds, insects, blood, carcasses, and prohibited practices.</p>
+    </article>
+    <article class="dietary-info-card">
+      <h2>Hidden Ingredients</h2>
+      <p>Check common modern ingredients such as gelatin, lard, shellfish derivatives, carmine, enzymes, and flavor bases.</p>
+    </article>
+    <article class="dietary-info-card">
+      <h2>Scripture References</h2>
+      <p>Use linked references to move from practical examples back to the biblical text.</p>
+    </article>
+  </section>
+
+  <section class="dietary-tool-shell" aria-label="Dietary search tools">
+    <div class="dietary-section-head">
+      <h2>Search the Dietary Guide</h2>
+      <p>Filter the guide or paste ingredients to flag forbidden, avoid, verify, or allowed items.</p>
+    </div>
 
   <!-- Search / Filter -->
   <div class="searchbar" role="search">
@@ -371,8 +578,16 @@
     <div id="foodResults" class="example-cards" aria-live="polite"></div>
   </div>
 </section>
+  </section>
 
-  <section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
+  <section class="dietary-tree-shell" aria-label="Dietary law categories">
+    <div class="dietary-section-head">
+      <h2>Dietary Categories</h2>
+      <p>Open each category to study the biblical references and modern examples.</p>
+    </div>
+
+    <section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
+  </section>
 
   <p class="note">
     <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
