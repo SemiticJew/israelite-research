@@ -265,6 +265,73 @@ html[data-theme="dark"] .events-page .muted{
   color:rgba(255,255,255,.72) !important;
 }
 
+
+
+/* Events page modern hero */
+.events-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.events-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.events-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.events-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.events-subtitle{
+  max-width:820px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+html[data-theme="dark"] .events-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .events-title{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .events-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .events-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+}
+
 </style>
 </head>
 <body class="events-page">
@@ -272,6 +339,20 @@ html[data-theme="dark"] .events-page .muted{
 <div id="site-header"></div>
 
 <main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Events</span>
+  </nav>
+
+  <section class="events-hero">
+    <div class="events-kicker">Calendar & Gatherings</div>
+    <h1 class="events-title">Events</h1>
+    <p class="events-subtitle">
+      Track Sabbath, New Moon, feast days, teachings, live sessions, and community events in one organized calendar.
+    </p>
+  </section>
+
   <!-- NEW: Tabs row (keeps your calendar toolbar untouched) -->
   <div class="tabs-toolbar">
     <div class="tabs-left"></div>    <div class="tabs-right">
