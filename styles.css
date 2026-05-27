@@ -5651,3 +5651,51 @@ html[data-theme="dark"] #site-header .give-btn *{
     margin:18px auto 28px !important;
   }
 }
+
+/* Standard breadcrumb appearance sitewide */
+.breadcrumbs{
+  max-width:1200px !important;
+  margin:18px auto 0 !important;
+  padding:0 16px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+  font-size:.9rem !important;
+  color:var(--muted) !important;
+}
+
+.breadcrumbs a{
+  color:var(--muted) !important;
+  text-decoration:none !important;
+  font-weight:700 !important;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus,
+.breadcrumbs a:focus-visible{
+  color:var(--accent) !important;
+  text-decoration:none !important;
+}
+
+.breadcrumbs .sep{
+  color:var(--muted) !important;
+  opacity:.75 !important;
+}
+
+.breadcrumbs .current{
+  color:var(--ink) !important;
+  font-weight:800 !important;
+}
+
+html[data-theme="dark"] .breadcrumbs .current{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .breadcrumbs{
+    margin:14px auto 0 !important;
+    padding:0 4px !important;
+    font-size:.85rem !important;
+  }
+}
