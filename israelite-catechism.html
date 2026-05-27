@@ -204,6 +204,37 @@ html[data-theme="dark"] .catechism-title{
   }
 }
 
+
+
+/* Hard fix: contain catechism hero by actual page structure */
+main.wrap > .catechism-hero,
+.wrap > .catechism-hero{
+  width:auto !important;
+  max-width:1000px !important;
+  margin:24px auto 34px !important;
+  box-sizing:border-box !important;
+}
+
+main.wrap > .breadcrumbs,
+.wrap > .breadcrumbs{
+  max-width:1000px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+@media(max-width:700px){
+  main.wrap > .catechism-hero,
+  .wrap > .catechism-hero{
+    max-width:100% !important;
+    margin:18px auto 28px !important;
+  }
+
+  main.wrap > .breadcrumbs,
+  .wrap > .breadcrumbs{
+    max-width:100% !important;
+  }
+}
+
 </style>
     
 </head>
