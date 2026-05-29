@@ -5765,3 +5765,30 @@ html[data-theme="dark"] .hero-image img{
   box-shadow:0 22px 70px rgba(0,0,0,.45) !important;
 }
 
+
+/* Standard bottom breathing room for article pages */
+.article-doc .article-page{
+  padding-bottom:72px !important;
+}
+
+.article-doc .article-shell{
+  margin-bottom:48px !important;
+}
+
+.article-doc .footnotes{
+  margin-bottom:32px !important;
+}
+
+@media(max-width:700px){
+  .article-doc .article-page{
+    padding-bottom:56px !important;
+  }
+
+  .article-doc .article-shell{
+    margin-bottom:36px !important;
+  }
+
+  .article-doc .footnotes{
+    margin-bottom:28px !important;
+  }
+}
