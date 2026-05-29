@@ -5792,3 +5792,49 @@ html[data-theme="dark"] .hero-image img{
     margin-bottom:28px !important;
   }
 }
+
+/* Standard article typography and paragraph indentation */
+.article-doc .article-content{
+  font-size:1.05rem !important;
+  line-height:1.82 !important;
+}
+
+.article-doc .article-content p{
+  margin:0 0 1.15rem !important;
+}
+
+.article-doc .article-content p + p{
+  text-indent:1.6em !important;
+}
+
+.article-doc .article-content h2,
+.article-doc .article-content h3{
+  margin-top:2.2rem !important;
+  margin-bottom:.85rem !important;
+  line-height:1.25 !important;
+}
+
+.article-doc .article-content h2 + p,
+.article-doc .article-content h3 + p{
+  text-indent:0 !important;
+}
+
+.article-doc .footnotes{
+  line-height:1.65 !important;
+}
+
+.article-doc .biblio-list p{
+  margin:.65rem 0 !important;
+  text-indent:0 !important;
+}
+
+@media(max-width:700px){
+  .article-doc .article-content{
+    font-size:1rem !important;
+    line-height:1.76 !important;
+  }
+
+  .article-doc .article-content p + p{
+    text-indent:1.25em !important;
+  }
+}
