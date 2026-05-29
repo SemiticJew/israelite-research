@@ -161,3 +161,51 @@
   gtag("config", "G-32TJCG51NH");
 })();
 
+
+// Sync header/footer logos with saved theme on page load
+(function(){
+  const DARK_LOGO = "/images/white-logo-letters.png";
+  const LIGHT_LOGO = "/images/black-logo-letters.png";
+
+  function currentTheme(){
+    return document.documentElement.getAttribute("data-theme")
+      || localStorage.getItem("theme")
+      || localStorage.getItem("site-theme")
+      || "light";
+  }
+
+  function syncLogos(){
+    const theme = currentTheme();
+    const logoSrc = theme === "dark" ? DARK_LOGO : LIGHT_LOGO;
+
+    document.querySelectorAll(
+      'img[src*="black-logo-letters"], img[src*="white-logo-letters"], img[data-logo], .site-logo img, .footer-logo img, .brand img'
+    ).forEach(function(img){
+      img.setAttribute("src", logoSrc);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    syncLogos();
+    setTimeout(syncLogos, 100);
+    setTimeout(syncLogos, 300);
+    setTimeout(syncLogos, 700);
+  });
+
+  window.addEventListener("load", syncLogos);
+
+  const observer = new MutationObserver(syncLogos);
+  observer.observe(document.documentElement, {
+    attributes:true,
+    attributeFilter:["data-theme", "class"]
+  });
+
+  window.addEventListener("storage", function(e){
+    if(e.key === "theme" || e.key === "site-theme"){
+      syncLogos();
+    }
+  });
+
+  window.syncThemeLogos = syncLogos;
+})();
+
