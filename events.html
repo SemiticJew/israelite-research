@@ -423,17 +423,6 @@ html[data-theme="dark"] .events-title{
       </aside>
     </div>
   </section>
-
-    <!-- Removed redundant ICS and Google panels after JSON integration -->  <section id="gcalPanel" class="panel" aria-labelledby="tabGoogle">
-    <div style="position:relative;padding-top:56.25%;border:1px solid #e6ebf2;border-radius:12px;overflow:hidden">
-      <iframe
-        title="Semitic Jew — Google Calendar"
-        style="position:absolute;inset:0;width:100%;height:100%;border:0"
-        src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID%40group.calendar.google.com&ctz=America%2FNew_York&mode=AGENDA&showPrint=0&showTabs=0&showCalendars=0&wkst=1&showTitle=0">
-      </iframe>
-    </div>
-  </section>
-  -->
 </main>
 
 <!-- Footer partial -->
@@ -493,9 +482,6 @@ html[data-theme="dark"] .events-title{
     </div>
   </div>
 </div>
-
-<!-- Partials include -->
-<script src="/js/include.js"></script>
 
 <!-- Calendar logic -->
 <script>
@@ -848,7 +834,6 @@ html[data-theme="dark"] .events-title{
   ddClose.addEventListener('click', ()=>{ dd.hidden = true; });
 
   // Initial paint
-    // Initial paint
   render();
 
   // Load ICS-expanded JSON (read-only)
@@ -856,151 +841,6 @@ html[data-theme="dark"] .events-title{
     .then(r => r.ok ? r.json() : [])
     .then(arr => { icsEvents = Array.isArray(arr) ? arr : []; render(); })
     .catch(()=>{ /* quietly ignore if missing */ });
-
-
-  /* ===================== NEW: Tabs & ICS renderer ===================== */
-  const tabSite = document.getElementById('tabSite');
-  const tabICS  = document.getElementById('tabICS');
-  const sitePanel = document.getElementById('siteCalPanel');
-  const icsPanel  = document.getElementById('icsPanel');
-  // const tabGoogle = document.getElementById('tabGoogle');
-  // const gcalPanel  = document.getElementById('gcalPanel');
-
-  function setTab(which){
-    const siteOn = which==='site';
-    const icsOn  = which==='ics';
-    tabSite.setAttribute('aria-pressed', siteOn ? 'true':'false');
-    tabICS.setAttribute('aria-pressed',  icsOn  ? 'true':'false');
-    sitePanel.classList.toggle('active', siteOn);
-    icsPanel.classList.toggle('active',  icsOn);
-    // if (tabGoogle) tabGoogle.setAttribute('aria-pressed', which==='gcal'?'true':'false');
-    // if (gcalPanel)  gcalPanel.classList.toggle('active', which==='gcal');
-  }
-  tabSite.addEventListener('click', ()=> setTab('site'));
-  tabICS.addEventListener('click',  ()=> { setTab('ics'); ensureICSLoaded(); });
-  setTab('site');
-
-  const ICS_URL = '/assets/cal/basic.ics';
-  let icsLoaded = false;
-
-  async function ensureICSLoaded(){
-    if (icsLoaded) return;
-    try{
-      const txt = await fetch(ICS_URL, {cache:'no-store'}).then(r=>r.text());
-      const events = parseICS(txt);
-      const upcoming = expandAndFilter(events, 210); // ~7 months
-      renderAgenda(upcoming);
-      icsLoaded = true;
-    }catch(e){
-      document.getElementById('icsAgenda').innerHTML =
-        '<div class="card"><div class="when" style="color:#b91c1c">Unable to load ICS file.</div></div>';
-    }
-  }
-
-  function parseICS(text){
-    const lines = text.replace(/\r\n/g,'\n').split('\n');
-    const out = [];
-    let cur = null;
-    const flush = ()=>{ if(cur){ out.push(cur); cur=null; } };
-
-    for (const raw of lines){
-      if (raw==='BEGIN:VEVENT'){ cur={}; continue; }
-      if (raw==='END:VEVENT'){ flush(); continue; }
-      if (!cur) continue;
-      const idx = raw.indexOf(':');
-      if (idx<0) continue;
-      const head = raw.slice(0,idx);
-      const val  = raw.slice(idx+1);
-
-      const key = head.split(';')[0].toUpperCase();
-      if (key==='SUMMARY') cur.summary = val.trim();
-      if (key==='UID')     cur.uid = val.trim();
-      if (key==='DTSTART') cur.dtstart_raw = val.trim();
-      if (key==='DTEND')   cur.dtend_raw   = val.trim();
-      if (key==='RRULE'){
-        const obj={}; val.split(';').forEach(p=>{ const [k,v]=p.split('='); obj[k]=v; });
-        cur.rrule = obj;
-      }
-    }
-    return out.map(normalizeEvent);
-  }
-
-  function parseDateYYYYMMDD(s){
-    const y=+s.slice(0,4), m=+s.slice(4,6)-1, d=+s.slice(6,8);
-    return new Date(Date.UTC(y,m,d));
-  }
-
-  function normalizeEvent(e){
-    const start = parseDateYYYYMMDD(e.dtstart_raw);
-    const end   = e.dtend_raw ? parseDateYYYYMMDD(e.dtend_raw) : new Date(start.getTime()+86400000);
-    return {
-      uid: e.uid || (e.summary||'')+(e.dtstart_raw||''),
-      summary: e.summary || '(untitled)',
-      start, end, allDay:true,
-      rrule: e.rrule || null
-    };
-  }
-
-  function expandAndFilter(events, horizonDays){
-    const now = stripTime(new Date());
-    const horizon = new Date(now.getTime()+horizonDays*86400000);
-    const out = [];
-    for (const ev of events){
-      if (ev.rrule && ev.rrule.FREQ==='WEEKLY'){
-        const days = (ev.rrule.BYDAY||'').split(',').filter(Boolean);
-        const max = 40;
-        for (const code of days){
-          let cursor = nextWeekdayFrom(now, code);
-          let n=0;
-          while (cursor <= horizon && n<max){
-            out.push({...ev, start:cursor, end:new Date(cursor.getTime()+86400000)});
-            cursor = new Date(cursor.getTime()+7*86400000);
-            n++;
-          }
-        }
-      } else {
-        if (ev.end > now) out.push(ev);
-      }
-    }
-    out.sort((a,b)=> a.start - b.start);
-    return out;
-  }
-
-  function stripTime(d){ return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); }
-  function weekdayCodeToNum(code){ return {SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6}[code] ?? 0; }
-  function nextWeekdayFrom(base, code){
-    const target = weekdayCodeToNum(code);
-    const d = stripTime(base);
-    const delta = (target - d.getUTCDay() + 7) % 7;
-    d.setUTCDate(d.getUTCDate()+delta);
-    return d;
-  }
-
-  function fmtRange(ev){
-    const opts={month:'short',day:'numeric',timeZone:'UTC'};
-    const oneDay=86400000;
-    const same=(ev.end-ev.start)<=oneDay;
-    if(same) return ev.start.toLocaleDateString(undefined,{...opts,year:'numeric'});
-    const left  = ev.start.toLocaleDateString(undefined,{...opts,year:'numeric'});
-    const right = new Date(ev.end-oneDay).toLocaleDateString(undefined,{...opts,year:'numeric'});
-    return `${left} – ${right}`;
-  }
-
-  function renderAgenda(events){
-    const host = document.getElementById('icsAgenda');
-    host.innerHTML='';
-    if (!events.length){
-      host.innerHTML = '<div class="card"><div class="when">No upcoming events.</div></div>';
-      return;
-    }
-    for (const ev of events.slice(0,100)){
-      const el = document.createElement('div'); el.className='card';
-      el.innerHTML = `<h3>${escapeHTML(ev.summary)}</h3><div class="when">${fmtRange(ev)}</div>`;
-      host.appendChild(el);
-    }
-  }
-
-  function escapeHTML(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 })();
 </script>
 <!-- Global Includes -->
