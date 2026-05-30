@@ -36,20 +36,6 @@
 // Load Reftagger on articles only
 (function(){
   if (!window.isArticlePage()) return;
-  if (document.getElementById("reftagger-loader")) return;
-
-  window.refTagger = {
-    settings: {
-      bibleVersion: "KJV",
-      autodetect: true
-    }
-  };
-
-  const rt = document.createElement("script");
-  rt.defer = true;
-  rt.id = "reftagger-loader";
-  rt.src = "https://api.reftagger.com/v2/RefTagger.js";
-  document.head.appendChild(rt);
 })();
 
 // Load Bible HoverCard on articles only
