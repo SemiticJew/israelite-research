@@ -332,6 +332,148 @@ html[data-theme="dark"] .events-title{
   }
 }
 
+
+
+/* Events calendar modern visual shell */
+.events-page .calendar-wrap{
+  max-width:1120px !important;
+  margin:0 auto 52px !important;
+  padding:26px !important;
+  border:1px solid var(--border) !important;
+  background:var(--surface) !important;
+  box-shadow:var(--shadow) !important;
+}
+
+.events-page .cal-toolbar{
+  margin:0 0 22px !important;
+  padding-bottom:18px !important;
+  border-bottom:1px solid var(--border) !important;
+}
+
+.events-page .cal-title{
+  font-size:1.6rem !important;
+  font-weight:900 !important;
+  letter-spacing:-.03em !important;
+  color:var(--ink) !important;
+}
+
+.events-page .cal-nav select{
+  min-width:92px !important;
+  border-color:var(--border) !important;
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+}
+
+.events-page #addEventBtn{
+  padding:.65rem 1rem !important;
+  border-radius:999px !important;
+  font-weight:900 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.06em !important;
+}
+
+.events-page .cal-grid{
+  gap:8px !important;
+}
+
+.events-page .cal-dow{
+  border-radius:0 !important;
+  padding:.65rem .25rem !important;
+  background:rgba(5,74,145,.045) !important;
+  border-color:var(--border) !important;
+}
+
+.events-page .cal-cell{
+  min-height:122px !important;
+  height:auto !important;
+  border-radius:0 !important;
+  border-color:var(--border) !important;
+  background:var(--surface) !important;
+}
+
+.events-page .cal-date{
+  font-weight:900 !important;
+  color:var(--ink) !important;
+}
+
+.events-page .evt-chip{
+  border-radius:999px !important;
+  padding:.32rem .45rem !important;
+  border-color:var(--border) !important;
+}
+
+.events-page .cal-legend{
+  margin-top:18px !important;
+  padding-top:18px !important;
+  border-top:1px solid var(--border) !important;
+}
+
+.events-page .cal-legend button{
+  border-color:var(--border) !important;
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+}
+
+.events-page .day-details{
+  margin-top:18px !important;
+  border-radius:0 !important;
+  border-color:var(--border) !important;
+  background:var(--surface) !important;
+}
+
+html[data-theme="dark"] .events-page .calendar-wrap{
+  background:#0f172a !important;
+  border-color:rgba(255,255,255,.16) !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .events-page .cal-toolbar,
+html[data-theme="dark"] .events-page .cal-legend{
+  border-color:rgba(255,255,255,.16) !important;
+}
+
+html[data-theme="dark"] .events-page .cal-dow,
+html[data-theme="dark"] .events-page .cal-cell,
+html[data-theme="dark"] .events-page .cal-nav select,
+html[data-theme="dark"] .events-page .cal-legend button{
+  background:#0f172a !important;
+  border-color:rgba(255,255,255,.16) !important;
+  color:#ffffff !important;
+}
+
+@media(max-width:760px){
+  .events-page .calendar-wrap{
+    padding:18px 14px !important;
+  }
+
+  .events-page .cal-toolbar{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+
+  .events-page .cal-nav{
+    width:100% !important;
+  }
+
+  .events-page .cal-nav select{
+    flex:1 1 auto !important;
+    min-width:0 !important;
+  }
+
+  .events-page #addEventBtn{
+    width:100% !important;
+  }
+
+  .events-page .cal-cell{
+    min-height:96px !important;
+    padding:.4rem !important;
+  }
+
+  .events-page .evt-chip{
+    font-size:.72rem !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
