@@ -120,3 +120,70 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   })();
 });
+
+
+(function articleFootnoteXrefs(){
+  if(!document.body || !document.body.classList.contains("article-doc")) return;
+
+  const scopes = document.querySelectorAll(".footnotes, .biblio-list");
+  if(!scopes.length) return;
+
+  const books = [
+    "Gen(?:esis)?","Ex(?:od(?:us)?)?","Lev","Num","Deut","Josh","Judg","Ruth",
+    "1\\s*Sam","2\\s*Sam","1\\s*Kgs","2\\s*Kgs","1\\s*Chr","2\\s*Chr",
+    "Ezra","Neh","Esth","Job","Ps(?:alm|s)?","Prov","Eccl","Song","Isa",
+    "Jer","Lam","Ezek","Dan","Hos","Joel","Amos","Obad","Jonah","Mic","Nah",
+    "Hab","Zeph","Hag","Zech","Mal","Matt","Mark","Luke","Lk","John","Jn",
+    "Acts","Ac","Rom","Ro","1\\s*Cor","2\\s*Cor","Gal","Ga","Eph","Phil",
+    "Col","1\\s*Thess","2\\s*Thess","1\\s*Tim","2\\s*Tim","Titus","Tit",
+    "Phlm","Heb","Jas","James","1\\s*Pet","2\\s*Pet","1\\s*Pe","2\\s*Pe",
+    "1\\s*Jn","2\\s*Jn","3\\s*Jn","Jude","Rev","Re",
+    "1\\s*Macc","2\\s*Macc","Sir","Wis","Tob","Jdt","Bar"
+  ].join("|");
+
+  const re = new RegExp("\\b(" + books + ")[\\s\\u00a0]+\\d{1,3}:\\d{1,3}(?:[–-]\\d{1,3}(?::\\d{1,3})?)?", "g");
+
+  function eligible(node){
+    const parent = node.parentElement;
+    if(!parent) return false;
+    if(parent.closest("a, script, style, textarea, .xref")) return false;
+    re.lastIndex = 0;
+    return re.test(node.nodeValue || "");
+  }
+
+  function wrapNode(node){
+    const text = node.nodeValue;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    re.lastIndex = 0;
+
+    text.replace(re, function(match, _book, offset){
+      frag.appendChild(document.createTextNode(text.slice(last, offset)));
+
+      const span = document.createElement("span");
+      span.className = "xref";
+      span.dataset.ref = match.replace(/\u00a0/g, " ");
+      span.textContent = match;
+      frag.appendChild(span);
+
+      last = offset + match.length;
+      return match;
+    });
+
+    frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  scopes.forEach(function(scope){
+    const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node){
+        return eligible(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+
+    const nodes = [];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(wrapNode);
+  });
+})();
+
