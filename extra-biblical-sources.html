@@ -254,6 +254,66 @@ html[data-theme="dark"] .extra-sources-page .hist{
   }
 }
 
+
+
+/* Extra-Biblical drawer header polish */
+.extra-sources-page .drawer-header{
+  align-items:flex-start;
+  gap:16px;
+  padding:18px 18px 16px;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.14), transparent 40%),
+    linear-gradient(135deg, rgba(5,74,145,.08), transparent);
+}
+
+.drawer-heading{
+  min-width:0;
+}
+
+.drawer-kicker{
+  margin:0 0 7px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+
+.drawer-subtitle{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+
+.extra-sources-page .drawer-header .row{
+  flex:0 0 auto;
+}
+
+.extra-sources-page #copy-link{
+  border-radius:999px;
+  padding:.5rem .75rem;
+  font-weight:800;
+}
+
+.extra-sources-page #drawer-close{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  padding:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.35rem;
+  line-height:1;
+}
+
+html[data-theme="dark"] .extra-sources-page .drawer-header{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 40%),
+    linear-gradient(135deg, rgba(5,74,145,.22), rgba(15,23,42,.92));
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -306,10 +366,14 @@ html[data-theme="dark"] .extra-sources-page .hist{
 
 <aside id="drawer" class="drawer" aria-hidden="true" aria-labelledby="drawer-title" role="dialog">
   <div class="drawer-header">
-    <h2 id="drawer-title" class="drawer-title">Region</h2>
+    <div class="drawer-heading">
+      <div class="drawer-kicker">Region Evidence Panel</div>
+      <h2 id="drawer-title" class="drawer-title">Region</h2>
+      <p class="drawer-subtitle">Biblical, historical, and regional references.</p>
+    </div>
     <div class="row">
-      <button id="copy-link" class="btn" title="Copy shareable link">Copy link</button>
-      <button id="drawer-close" class="btn primary" aria-label="Close panel">Close</button>
+      <button id="copy-link" class="btn" title="Copy shareable link" type="button">Copy Link</button>
+      <button id="drawer-close" class="btn primary" aria-label="Close panel" type="button">×</button>
     </div>
   </div>
   <div id="drawer-body" class="drawer-body"></div>
@@ -329,7 +393,7 @@ html[data-theme="dark"] .extra-sources-page .hist{
 const $ = id => document.getElementById(id);
 const noteStatusEl = $("note-status"), noteKeysEl = $("note-keys"),
       noteMatchEl = $("note-matched"), totalRegionsEl = $("total-regions");
-let NOTES={}, NAME_INDEX={};
+let NOTES={}, NAME_INDEX={}, CURRENT_REGION=null;
 
 async function loadNotes(){
   try{
@@ -348,8 +412,15 @@ function polyCode(mp){const di=mp?.dataItem;const ctx=di?.dataContext||{};const 
 function polyName(mp){const ctx=mp?.dataItem?.dataContext||{};return(ctx.name||"").toString().trim();}
 
 function openDrawer(payload){
+  CURRENT_REGION = payload || {};
   const drawer=$("drawer"),body=$("drawer-body"),title=$("drawer-title"),tag=$("drawer-region-id");
-  title.textContent=payload.title||payload.name||"Region"; tag.textContent=payload.id||"—"; body.innerHTML="";
+  const regionTitle = payload.title||payload.name||"Region";
+  const regionId = payload.id||payload.code||"";
+  title.textContent=regionTitle;
+  tag.textContent=regionId||"—";
+  drawer.dataset.regionId = regionId;
+  drawer.dataset.regionTitle = regionTitle;
+  body.innerHTML="";
   if(payload.summary){const s=document.createElement("div");s.className="section";s.innerHTML=`<h3>Summary</h3><p>${payload.summary}</p>`;body.appendChild(s);}
   const bib=Array.isArray(payload.biblical_refs)?payload.biblical_refs:[]; if(bib.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Biblical References</h3>";bib.forEach(r=>{const div=document.createElement("div");div.className="ref";div.innerHTML=`<b>${r.verse||""}</b><p>${r.note||""}</p>`;sec.appendChild(div)});body.appendChild(sec);}
   const hist=Array.isArray(payload.historical_refs)?payload.historical_refs:[]; if(hist.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Historical & Scholarly Notes</h3>";
@@ -382,8 +453,33 @@ am5.ready(async function(){
   const matchNote=mp=>{const code=polyCode(mp),name=polyName(mp);return(NOTES[code])||(NAME_INDEX[name.toUpperCase()])||null;}
   world.events.on("datavalidated",()=>{let total=0,matched=0;world.mapPolygons.each(mp=>{total++;const hit=matchNote(mp);if(hit){matched++;mp.setAll({stroke:am5.color("#0b2340"),strokeWidth:1.2});}});totalRegionsEl.textContent=String(total);noteMatchEl.textContent=String(matched);});
   world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{const h=matchNote(t);if(h){const name=h.title||polyName(t)||"{name}";const line=(h.summary||(h.biblical_refs&&h.biblical_refs[0]?.note)||"").slice(0,140);return line?`${name}\n• ${line}`:name;}return"{name}";});
-  world.mapPolygons.template.events.on("click",ev=>{const mp=ev.target;const hit=matchNote(mp)||{};world.mapPolygons.each(p=>p.set("active",p===mp));openDrawer(hit);});
+  world.mapPolygons.template.events.on("click",ev=>{
+    const mp=ev.target;
+    const hit=matchNote(mp)||{};
+    const payload=Object.assign({},hit,{id:polyCode(mp),name:polyName(mp)});
+    world.mapPolygons.each(p=>p.set("active",p===mp));
+    openDrawer(payload);
+  });
+
   $("drawer-close").addEventListener("click",()=>{world.mapPolygons.each(p=>p.set("active",false));closeDrawer();});
+
+  $("copy-link").addEventListener("click",async()=>{
+    const btn=$("copy-link");
+    const regionId=(CURRENT_REGION&&CURRENT_REGION.id)||$("drawer").dataset.regionId||"";
+    const regionTitle=(CURRENT_REGION&&CURRENT_REGION.title)||$("drawer").dataset.regionTitle||"Region";
+    const url=new URL(window.location.href);
+    if(regionId) url.hash="region="+encodeURIComponent(regionId);
+    const text=url.toString();
+
+    try{
+      await navigator.clipboard.writeText(text);
+      btn.textContent="Copied";
+      setTimeout(()=>btn.textContent="Copy Link",1400);
+    }catch(e){
+      window.prompt("Copy this link:",text);
+      btn.textContent="Copy Link";
+    }
+  });
 });
 </script>
   <script src="/js/globe/all-outline.js?v=1761428678"></script>
