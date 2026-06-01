@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Extra-Biblical Sources — Global Map</title>
+<title>Extra-Biblical Sources — Semitic Jew</title>
+<meta name="description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Extra-Biblical Sources — Semitic Jew"/>
+<meta property="og:description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/extra-biblical-sources.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Extra-Biblical Sources — Semitic Jew"/>
+<meta name="twitter:description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
 <link rel="stylesheet" href="/styles.css"/>
 <style>
   .container{max-width:1200px;margin:0 auto;padding:18px}
@@ -35,6 +51,209 @@
   .btn.primary{background:#0b2340;color:#fff;border-color:#0b2340}
   .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .tag{font-size:.78rem;background:#eef2f7;border:1px solid #e5e7eb;border-radius:999px;padding:2px 8px}
+
+
+/* Extra-Biblical Sources modern page polish */
+body.extra-sources-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.extra-sources-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.extra-sources-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.extra-sources-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.extra-sources-subtitle{
+  max-width:860px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.extra-map-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.extra-map-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+}
+
+.extra-map-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.extra-map-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.extra-map-hint{
+  color:var(--muted);
+  font-size:.92rem;
+  font-weight:700;
+}
+
+.extra-sources-page .card{
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--border);
+  box-shadow:var(--shadow);
+}
+
+.extra-sources-page .status{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  align-items:center;
+  margin:16px 0 0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:rgba(5,74,145,.035);
+  color:var(--muted);
+}
+
+.extra-sources-page .status b{
+  color:var(--ink);
+}
+
+.extra-sources-page .drawer{
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  box-shadow:-18px 0 50px rgba(0,0,0,.24);
+}
+
+.extra-sources-page .drawer-header,
+.extra-sources-page .drawer-actions{
+  border-color:var(--border);
+}
+
+.extra-sources-page .drawer-title,
+.extra-sources-page .section h3{
+  color:var(--ink);
+}
+
+.extra-sources-page .ref,
+.extra-sources-page .hist{
+  border-radius:0;
+  border-color:var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page .hist .meta,
+.extra-sources-page .muted{
+  color:var(--muted);
+}
+
+.extra-sources-page .badge,
+.extra-sources-page .tag{
+  border-color:var(--border);
+  background:rgba(5,74,145,.06);
+  color:var(--ink);
+}
+
+.extra-sources-page .btn{
+  border-color:var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page .btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#111827;
+  font-weight:900;
+}
+
+html[data-theme="dark"] .extra-sources-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .extra-sources-title,
+html[data-theme="dark"] .extra-map-head h2,
+html[data-theme="dark"] .extra-sources-page .drawer-title,
+html[data-theme="dark"] .extra-sources-page .section h3,
+html[data-theme="dark"] .extra-sources-page .status b{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .extra-sources-page .card,
+html[data-theme="dark"] .extra-map-shell,
+html[data-theme="dark"] .extra-sources-page .status,
+html[data-theme="dark"] .extra-sources-page .drawer,
+html[data-theme="dark"] .extra-sources-page .ref,
+html[data-theme="dark"] .extra-sources-page .hist{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:700px){
+  .extra-sources-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .extra-sources-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .extra-map-shell{
+    padding:18px 14px;
+  }
+
+  .mapwrap{
+    min-height:460px;
+    height:68vh;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -43,19 +262,44 @@
 <link rel="manifest" href="/site.webmanifest"/>
 
 </head>
-<body>
+<body class="extra-sources-page">
 <div id="site-header"></div>
 
 <main class="container">
-  <h1 class="page-title">Interactive Global Map</h1>
-  <div class="card"><div id="chart-globe" class="mapwrap" aria-label="Interactive global map"></div></div>
-  <div class="status">
-    <b>Notes:</b> <span id="note-status">loading…</span> ·
-    <b>Keys:</b> <span id="note-keys">0</span> ·
-    <b>Matched Regions:</b> <span id="note-matched">0</span> ·
-    <b>Total Regions:</b> <span id="total-regions">0</span>
-  </div>
-  <p class="muted" style="margin:.6rem 0 0">Hover a country for a quick note. Click to open detailed information.</p>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Extra-Biblical Sources</span>
+  </nav>
+
+  <section class="extra-sources-hero">
+    <div class="extra-sources-kicker">History & Regional Evidence</div>
+    <h1 class="extra-sources-title">Extra-Biblical Sources</h1>
+    <p class="extra-sources-subtitle">
+      Explore regional notes, historical references, scholarly claims, and biblical connections through an interactive global map.
+    </p>
+  </section>
+
+  <section class="extra-map-shell" aria-label="Interactive extra-biblical sources map">
+    <div class="extra-map-head">
+      <div>
+        <h2>Interactive Global Map</h2>
+        <p>Hover a country for a quick note. Click a highlighted region to open detailed information.</p>
+      </div>
+      <div class="extra-map-hint">Drag to rotate · Scroll to zoom</div>
+    </div>
+
+    <div class="card"><div id="chart-globe" class="mapwrap" aria-label="Interactive global map"></div></div>
+
+    <div class="status">
+      <span><b>Notes:</b> <span id="note-status">loading…</span></span>
+      <span><b>Keys:</b> <span id="note-keys">0</span></span>
+      <span><b>Matched Regions:</b> <span id="note-matched">0</span></span>
+      <span><b>Total Regions:</b> <span id="total-regions">0</span></span>
+    </div>
+  </section>
 </main>
 
 <div id="site-footer"></div>
@@ -142,7 +386,6 @@ am5.ready(async function(){
   $("drawer-close").addEventListener("click",()=>{world.mapPolygons.each(p=>p.set("active",false));closeDrawer();});
 });
 </script>
-  <script src="js/globe/all-outline.js?v=1761428678"></script>\
-\1
+  <script src="/js/globe/all-outline.js?v=1761428678"></script>
+</body>
 </html>
-HTML
