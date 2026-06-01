@@ -516,6 +516,107 @@ html[data-theme="dark"] .dietary-info-card{
   }
 }
 
+
+
+/* Dietary guide quick controls */
+.dietary-quick-tools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.dietary-chip-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-chip-label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.dietary-chip,
+.dietary-tree-btn{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  border-radius:999px;
+  padding:.45rem .72rem;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.dietary-chip:hover,
+.dietary-tree-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.dietary-tree-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-search-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.45;
+}
+
+#dietCount{
+  font-weight:800;
+  color:var(--ink);
+}
+
+html[data-theme="dark"] .dietary-quick-tools{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] #dietCount{
+  color:#ffffff;
+}
+
+@media(max-width:700px){
+  .dietary-quick-tools{
+    align-items:stretch;
+  }
+
+  .dietary-chip-row,
+  .dietary-tree-actions{
+    width:100%;
+  }
+
+  .dietary-chip,
+  .dietary-tree-btn{
+    flex:1 1 auto;
+  }
+
+  .dietary-search-meta{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -565,10 +666,32 @@ html[data-theme="dark"] .dietary-info-card{
       <p>Filter the guide or paste ingredients to flag forbidden, avoid, verify, or allowed items.</p>
     </div>
 
+  <div class="dietary-quick-tools" aria-label="Dietary quick tools">
+    <div class="dietary-chip-row" aria-label="Quick searches">
+      <span class="dietary-chip-label">Quick Search</span>
+      <button class="dietary-chip" type="button" data-diet-query="pork">Pork</button>
+      <button class="dietary-chip" type="button" data-diet-query="gelatin">Gelatin</button>
+      <button class="dietary-chip" type="button" data-diet-query="shellfish">Shellfish</button>
+      <button class="dietary-chip" type="button" data-diet-query="blood">Blood</button>
+      <button class="dietary-chip" type="button" data-diet-query="carmine">Carmine</button>
+      <button class="dietary-chip" type="button" data-diet-query="rennet">Rennet</button>
+    </div>
+
+    <div class="dietary-tree-actions" aria-label="Tree controls">
+      <button class="dietary-tree-btn" type="button" id="dietExpandAll">Expand All</button>
+      <button class="dietary-tree-btn" type="button" id="dietCollapseAll">Collapse All</button>
+    </div>
+  </div>
+
   <!-- Search / Filter -->
   <div class="searchbar" role="search">
     <input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
     <button class="btn" id="dietClear" type="button">Clear</button>
+  </div>
+
+  <div class="dietary-search-meta" aria-live="polite">
+    <span id="dietCount">Showing full guide</span>
+    <span>Tip: search an animal, ingredient, source, or biblical category.</span>
   </div>
 <section id="foodCheck" aria-label="Search My Food" style="margin:18px 0 28px">
   <div class="foodcheck-wrap">
@@ -927,6 +1050,22 @@ html[data-theme="dark"] .dietary-info-card{
 
   function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
 
+  function updateDietCount(query){
+    const count = document.getElementById('dietCount');
+    if(!count) return;
+
+    if(!query){
+      count.textContent = 'Showing full guide';
+      return;
+    }
+
+    const visibleGroups = tree.querySelectorAll('.grp:not(.hide)').length;
+    const visibleCards = tree.querySelectorAll('.example-card.hl').length;
+    const visibleRefs = tree.querySelectorAll('.law-link.hl').length;
+
+    count.textContent = `${visibleGroups} categories matched · ${visibleCards} examples · ${visibleRefs} references`;
+  }
+
   function applyFilter(q){
     const query = (q||'').trim().toLowerCase();
     const groups = Array.from(tree.querySelectorAll('.grp'));
@@ -937,7 +1076,10 @@ html[data-theme="dark"] .dietary-info-card{
     groups.forEach(g => { g.classList.remove('hide'); g.open = false; });
     sections.forEach(s => { s.classList.remove('hide'); s.open = true; });
 
-    if (!query) return;
+    if (!query) {
+      updateDietCount('');
+      return;
+    }
 
     groups.forEach(grp => {
       const links = Array.from(grp.querySelectorAll('.law-link'));
@@ -973,6 +1115,8 @@ html[data-theme="dark"] .dietary-info-card{
       sec.classList.toggle('hide', !visible);
       sec.open = !!visible;
     });
+
+    updateDietCount(query);
   }
 
   // Bootstrap render + search
@@ -990,6 +1134,31 @@ html[data-theme="dark"] .dietary-info-card{
   const doFilter = debounce(applyFilter, 120);
   search.addEventListener('input', e => doFilter(e.target.value));
   clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+
+  document.querySelectorAll('[data-diet-query]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      search.value = btn.dataset.dietQuery || '';
+      applyFilter(search.value);
+      search.focus();
+    });
+  });
+
+  const expandAll = document.getElementById('dietExpandAll');
+  const collapseAll = document.getElementById('dietCollapseAll');
+
+  if(expandAll){
+    expandAll.addEventListener('click', () => {
+      tree.querySelectorAll('details').forEach(d => d.open = true);
+    });
+  }
+
+  if(collapseAll){
+    collapseAll.addEventListener('click', () => {
+      tree.querySelectorAll('.grp').forEach(d => d.open = false);
+    });
+  }
+
+  updateDietCount('');
 
 // ====== Search My Food configuration (data paths) ======
 const DICT_URL = '/data/dictionaries/dictionary.json';
