@@ -314,6 +314,128 @@ html[data-theme="dark"] .extra-sources-page .drawer-header{
     linear-gradient(135deg, rgba(5,74,145,.22), rgba(15,23,42,.92));
 }
 
+
+
+/* Extra-Biblical map controls and legend */
+.extra-map-controls{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.extra-region-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1 1 360px;
+}
+
+.extra-region-search label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+
+#regionSearch{
+  flex:1;
+  min-width:220px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:.62rem .75rem;
+  font:inherit;
+}
+
+.extra-map-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.extra-map-btn{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:.58rem .85rem;
+  font:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.extra-map-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.extra-map-legend{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+}
+
+.extra-map-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.legend-dot{
+  width:12px;
+  height:12px;
+  border:1px solid var(--border);
+  display:inline-block;
+}
+
+.legend-dot.matched{ background:#F17300; }
+.legend-dot.selected{ background:#0b2340; }
+.legend-dot.unmatched{ background:#d8dee8; }
+
+html[data-theme="dark"] .extra-map-controls{
+  background:rgba(255,255,255,.035);
+}
+
+html[data-theme="dark"] #regionSearch,
+html[data-theme="dark"] .extra-map-btn{
+  background:var(--surface);
+  color:#ffffff;
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] .legend-dot.unmatched{
+  background:#243044;
+}
+
+@media(max-width:700px){
+  .extra-region-search,
+  .extra-map-actions{
+    width:100%;
+  }
+
+  .extra-region-search{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  #regionSearch,
+  .extra-map-btn{
+    width:100%;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -351,7 +473,25 @@ html[data-theme="dark"] .extra-sources-page .drawer-header{
       <div class="extra-map-hint">Drag to rotate · Scroll to zoom</div>
     </div>
 
+    <div class="extra-map-controls" aria-label="Map controls">
+      <div class="extra-region-search">
+        <label for="regionSearch">Find Region</label>
+        <select id="regionSearch" aria-label="Find a highlighted region">
+          <option value="">Select a highlighted region…</option>
+        </select>
+      </div>
+      <div class="extra-map-actions">
+        <button class="extra-map-btn" type="button" id="resetGlobe">Reset Globe</button>
+      </div>
+    </div>
+
     <div class="card"><div id="chart-globe" class="mapwrap" aria-label="Interactive global map"></div></div>
+
+    <div class="extra-map-legend" aria-label="Map legend">
+      <span><i class="legend-dot matched"></i>Highlighted region</span>
+      <span><i class="legend-dot selected"></i>Selected region</span>
+      <span><i class="legend-dot unmatched"></i>Unmatched region</span>
+    </div>
 
     <div class="status">
       <span><b>Notes:</b> <span id="note-status">loading…</span></span>
@@ -445,13 +585,107 @@ am5.ready(async function(){
   await loadNotes();
   const root=am5.Root.new("chart-globe");root.setThemes([am5themes_Animated.new(root)]);
   const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"rotateY",projection:am5map.geoOrthographic()}));
-  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#e0f2ff")}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#eef6ff")}));
+
+  try{
+    const graticule=chart.series.unshift(am5map.GraticuleSeries.new(root,{}));
+    graticule.mapLines.template.setAll({stroke:am5.color("#b9c7d8"),strokeOpacity:.32,strokeWidth:.6});
+  }catch(e){}
+
   const world=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_worldLow,exclude:["AQ"]}));
-  world.mapPolygons.template.setAll({tooltipText:"{name}",interactive:true,toggleKey:"active",fill:root.interfaceColors.get("background"),stroke:am5.color("#c4b79c"),strokeWidth:0.8});
-  world.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});world.mapPolygons.template.states.create("active",{fill:am5.color("#b45309")});
-  const zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));zoom.homeButton.set("visible",true);zoom.homeButton.events.on("click",()=>chart.goHome());
+  world.mapPolygons.template.setAll({
+    tooltipText:"{name}",
+    interactive:true,
+    toggleKey:"active",
+    fill:am5.color("#d8dee8"),
+    stroke:am5.color("#9ca8ba"),
+    strokeWidth:0.65,
+    cursorOverStyle:"pointer"
+  });
+
+  world.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});
+  world.mapPolygons.template.states.create("active",{fill:am5.color("#0b2340")});
+
+  const zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
+  zoom.homeButton.set("visible",true);
+  zoom.homeButton.events.on("click",()=>chart.goHome());
+
+  const resetBtn=$("resetGlobe");
+  if(resetBtn) resetBtn.addEventListener("click",()=>chart.goHome());
+
+  const regionSearch=$("regionSearch");
   const matchNote=mp=>{const code=polyCode(mp),name=polyName(mp);return(NOTES[code])||(NAME_INDEX[name.toUpperCase()])||null;}
-  world.events.on("datavalidated",()=>{let total=0,matched=0;world.mapPolygons.each(mp=>{total++;const hit=matchNote(mp);if(hit){matched++;mp.setAll({stroke:am5.color("#0b2340"),strokeWidth:1.2});}});totalRegionsEl.textContent=String(total);noteMatchEl.textContent=String(matched);});
+
+  function populateRegionSearch(){
+    if(!regionSearch) return;
+    const items=[];
+    world.mapPolygons.each(mp=>{
+      const hit=matchNote(mp);
+      if(hit){
+        items.push({
+          id:polyCode(mp),
+          name:hit.title||polyName(mp),
+          polygon:mp
+        });
+      }
+    });
+
+    items.sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    regionSearch.innerHTML='<option value="">Select a highlighted region…</option>';
+    items.forEach(item=>{
+      const opt=document.createElement("option");
+      opt.value=item.id;
+      opt.textContent=item.name;
+      regionSearch.appendChild(opt);
+    });
+  }
+
+  function openRegionById(id){
+    if(!id) return false;
+    let found=null;
+    world.mapPolygons.each(mp=>{
+      if(polyCode(mp)===String(id).toUpperCase()) found=mp;
+    });
+    if(!found) return false;
+
+    const hit=matchNote(found)||{};
+    const payload=Object.assign({},hit,{id:polyCode(found),name:polyName(found)});
+    world.mapPolygons.each(p=>p.set("active",p===found));
+    openDrawer(payload);
+    try{
+      chart.zoomToDataItem(found.dataItem);
+    }catch(e){}
+    return true;
+  }
+
+  if(regionSearch){
+    regionSearch.addEventListener("change",()=>{
+      openRegionById(regionSearch.value);
+    });
+  }
+
+  world.events.on("datavalidated",()=>{
+    let total=0,matched=0;
+    world.mapPolygons.each(mp=>{
+      total++;
+      const hit=matchNote(mp);
+      if(hit){
+        matched++;
+        mp.setAll({
+          fill:am5.color("#F17300"),
+          stroke:am5.color("#0b2340"),
+          strokeWidth:1.2
+        });
+      }
+    });
+    totalRegionsEl.textContent=String(total);
+    noteMatchEl.textContent=String(matched);
+    populateRegionSearch();
+
+    const hash=decodeURIComponent((location.hash||"").replace(/^#/,""));
+    const m=/^region=(.+)$/i.exec(hash);
+    if(m) setTimeout(()=>openRegionById(m[1]),450);
+  });
   world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{const h=matchNote(t);if(h){const name=h.title||polyName(t)||"{name}";const line=(h.summary||(h.biblical_refs&&h.biblical_refs[0]?.note)||"").slice(0,140);return line?`${name}\n• ${line}`:name;}return"{name}";});
   world.mapPolygons.template.events.on("click",ev=>{
     const mp=ev.target;
