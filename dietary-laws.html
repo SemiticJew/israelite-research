@@ -958,8 +958,7 @@ html[data-theme="dark"] #dietCount{
           refs = Array.isArray(payload.refs) ? payload.refs : [];
           examples = Array.isArray(payload.examples) ? payload.examples : [];
         }
-        const icon = iconFor(label);
-        gsum.innerHTML = `<span class="sumline">${icon}${label}</span> <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
+        gsum.innerHTML = `<span class="sumline">${label}</span> <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
         grp.appendChild(gsum);
 
         // Refs list
