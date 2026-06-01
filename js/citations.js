@@ -128,25 +128,97 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
   const scopes = document.querySelectorAll(".footnotes, .biblio-list");
   if(!scopes.length) return;
 
-  const books = [
-    "Gen(?:esis)?","Ex(?:od(?:us)?)?","Lev","Num","Deut","Josh","Judg","Ruth",
-    "1\\s*Sam","2\\s*Sam","1\\s*Kgs","2\\s*Kgs","1\\s*Chr","2\\s*Chr",
-    "Ezra","Neh","Esth","Job","Ps(?:alm|s)?","Prov","Eccl","Song","Isa",
-    "Jer","Lam","Ezek","Dan","Hos","Joel","Amos","Obad","Jonah","Mic","Nah",
-    "Hab","Zeph","Hag","Zech","Mal","Matt","Mark","Luke","Lk","John","Jn",
-    "Acts","Ac","Rom","Ro","1\\s*Cor","2\\s*Cor","Gal","Ga","Eph","Phil",
-    "Col","1\\s*Thess","2\\s*Thess","1\\s*Tim","2\\s*Tim","Titus","Tit",
-    "Phlm","Heb","Jas","James","1\\s*Pet","2\\s*Pet","1\\s*Pe","2\\s*Pe",
-    "1\\s*Jn","2\\s*Jn","3\\s*Jn","Jude","Rev","Re",
-    "1\\s*Macc","2\\s*Macc","Sir","Wis","Tob","Jdt","Bar"
-  ].join("|");
+  const bookMap = {
+    "gen":"genesis","genesis":"genesis",
+    "ex":"exodus","exo":"exodus","exod":"exodus","exodus":"exodus",
+    "lev":"leviticus","leviticus":"leviticus",
+    "num":"numbers","numbers":"numbers",
+    "deut":"deuteronomy","deuteronomy":"deuteronomy",
+    "josh":"joshua","joshua":"joshua",
+    "judg":"judges","judges":"judges",
+    "ruth":"ruth",
+    "1 sam":"1-samuel","1 samuel":"1-samuel",
+    "2 sam":"2-samuel","2 samuel":"2-samuel",
+    "1 kgs":"1-kings","1 kings":"1-kings",
+    "2 kgs":"2-kings","2 kings":"2-kings",
+    "1 chr":"1-chronicles","1 chronicles":"1-chronicles",
+    "2 chr":"2-chronicles","2 chronicles":"2-chronicles",
+    "ezra":"ezra","neh":"nehemiah","nehemiah":"nehemiah",
+    "esth":"esther","esther":"esther",
+    "job":"job",
+    "ps":"psalms","psalm":"psalms","psalms":"psalms",
+    "prov":"proverbs","proverbs":"proverbs",
+    "eccl":"ecclesiastes","ecclesiastes":"ecclesiastes",
+    "song":"song-of-songs",
+    "isa":"isaiah","isaiah":"isaiah",
+    "jer":"jeremiah","jeremiah":"jeremiah",
+    "lam":"lamentations","lamentations":"lamentations",
+    "ezek":"ezekiel","ezekiel":"ezekiel",
+    "dan":"daniel","daniel":"daniel",
+    "hos":"hosea","hosea":"hosea",
+    "joel":"joel","amos":"amos","obad":"obadiah","obadiah":"obadiah",
+    "jonah":"jonah","mic":"micah","micah":"micah","nah":"nahum","nahum":"nahum",
+    "hab":"habakkuk","habakkuk":"habakkuk","zeph":"zephaniah","zephaniah":"zephaniah",
+    "hag":"haggai","haggai":"haggai","zech":"zechariah","zechariah":"zechariah",
+    "mal":"malachi","malachi":"malachi",
 
-  const re = new RegExp("\\b(" + books + ")[\\s\\u00a0]+\\d{1,3}:\\d{1,3}(?:[–-]\\d{1,3}(?::\\d{1,3})?)?", "g");
+    "matt":"matthew","matthew":"matthew",
+    "mark":"mark",
+    "luke":"luke","lk":"luke",
+    "john":"john","jn":"john",
+    "acts":"acts","ac":"acts",
+    "rom":"romans","ro":"romans","romans":"romans",
+    "1 cor":"1-corinthians","1 corinthians":"1-corinthians",
+    "2 cor":"2-corinthians","2 corinthians":"2-corinthians",
+    "gal":"galatians","ga":"galatians","galatians":"galatians",
+    "eph":"ephesians","ephesians":"ephesians",
+    "phil":"philippians","philippians":"philippians",
+    "col":"colossians","colossians":"colossians",
+    "1 thess":"1-thessalonians","1 thessalonians":"1-thessalonians",
+    "2 thess":"2-thessalonians","2 thessalonians":"2-thessalonians",
+    "1 tim":"1-timothy","1 timothy":"1-timothy",
+    "2 tim":"2-timothy","2 timothy":"2-timothy",
+    "titus":"titus","tit":"titus",
+    "phlm":"philemon","philemon":"philemon",
+    "heb":"hebrews","hebrews":"hebrews",
+    "jas":"james","james":"james",
+    "1 pet":"1-peter","1 pe":"1-peter","1 peter":"1-peter",
+    "2 pet":"2-peter","2 pe":"2-peter","2 peter":"2-peter",
+    "1 jn":"1-john","1 john":"1-john",
+    "2 jn":"2-john","2 john":"2-john",
+    "3 jn":"3-john","3 john":"3-john",
+    "jude":"jude",
+    "rev":"revelation","re":"revelation","revelation":"revelation"
+  };
+
+  const tanakh = new Set([
+    "genesis","exodus","leviticus","numbers","deuteronomy","joshua","judges","ruth",
+    "1-samuel","2-samuel","1-kings","2-kings","1-chronicles","2-chronicles",
+    "ezra","nehemiah","esther","job","psalms","proverbs","ecclesiastes","song-of-songs",
+    "isaiah","jeremiah","lamentations","ezekiel","daniel","hosea","joel","amos","obadiah",
+    "jonah","micah","nahum","habakkuk","zephaniah","haggai","zechariah","malachi"
+  ]);
+
+  const books = Object.keys(bookMap)
+    .sort((a,b)=>b.length-a.length)
+    .map(x=>x.replace(/\s+/g,"\\s+"))
+    .join("|");
+
+  const re = new RegExp("\\b(" + books + ")[\\s\\u00a0]+(\\d{1,3}):(\\d{1,3})(?:[–-](\\d{1,3})(?::\\d{1,3})?)?", "gi");
+
+  function normalizeBook(book){
+    return String(book || "").toLowerCase().replace(/\s+/g," ").trim();
+  }
+
+  function hrefFor(slug, chapter, verse){
+    const canon = tanakh.has(slug) ? "tanakh" : "newtestament";
+    return "/" + canon + "/chapter.html?book=" + encodeURIComponent(slug) + "&ch=" + encodeURIComponent(chapter) + "#v" + encodeURIComponent(verse);
+  }
 
   function eligible(node){
     const parent = node.parentElement;
     if(!parent) return false;
-    if(parent.closest("a, script, style, textarea, .xref")) return false;
+    if(parent.closest("a, script, style, textarea, .xref, .xref-trigger")) return false;
     re.lastIndex = 0;
     return re.test(node.nodeValue || "");
   }
@@ -157,14 +229,20 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
     let last = 0;
     re.lastIndex = 0;
 
-    text.replace(re, function(match, _book, offset){
+    text.replace(re, function(match, book, chapter, verse, endVerse, offset){
       frag.appendChild(document.createTextNode(text.slice(last, offset)));
 
-      const span = document.createElement("span");
-      span.className = "xref";
-      span.dataset.ref = match.replace(/\u00a0/g, " ");
-      span.textContent = match;
-      frag.appendChild(span);
+      const slug = bookMap[normalizeBook(book)];
+      if(!slug){
+        frag.appendChild(document.createTextNode(match));
+      }else{
+        const a = document.createElement("a");
+        a.className = "xref-trigger";
+        a.href = hrefFor(slug, chapter, verse);
+        a.dataset.xref = match.replace(/\u00a0/g, " ");
+        a.textContent = match;
+        frag.appendChild(a);
+      }
 
       last = offset + match.length;
       return match;
@@ -185,7 +263,5 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
     while(walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(wrapNode);
   });
-
-  document.dispatchEvent(new CustomEvent("xref:refresh"));
 });
 
