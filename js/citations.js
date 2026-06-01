@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 
-(function articleFootnoteXrefs(){
+document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
   if(!document.body || !document.body.classList.contains("article-doc")) return;
 
   const scopes = document.querySelectorAll(".footnotes, .biblio-list");
@@ -185,5 +185,7 @@ document.addEventListener('DOMContentLoaded', function(){
     while(walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(wrapNode);
   });
-})();
+
+  document.dispatchEvent(new CustomEvent("xref:refresh"));
+});
 
