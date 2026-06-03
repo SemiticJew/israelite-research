@@ -254,6 +254,125 @@ html[data-theme="dark"] body.ology-detail-page .card:hover .card-body::after{
   }
 }
 
+
+
+/* Ologies detail cards: modern doctrine-card system */
+body.ology-detail-page .grid-3{
+  gap:22px;
+}
+
+body.ology-detail-page .card{
+  min-height:100%;
+  border:1px solid var(--border) !important;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.055), transparent 38%),
+    var(--surface) !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+body.ology-detail-page .card:hover,
+body.ology-detail-page .card:focus-visible{
+  transform:translateY(-5px);
+  border-color:var(--accent) !important;
+  box-shadow:0 22px 48px rgba(0,0,0,.13);
+}
+
+body.ology-detail-page .card-top{
+  padding:18px 18px 15px;
+  align-items:flex-start;
+  gap:13px;
+  border-bottom:1px solid var(--border) !important;
+  background:transparent !important;
+}
+
+body.ology-detail-page .icon{
+  flex:0 0 auto;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid rgba(241,115,0,.35) !important;
+  background:rgba(241,115,0,.085) !important;
+  color:var(--accent) !important;
+}
+
+body.ology-detail-page .icon svg{
+  width:21px;
+  height:21px;
+}
+
+body.ology-detail-page .card-title{
+  padding-top:2px;
+  font-size:1.08rem;
+  line-height:1.25;
+  font-weight:900;
+  letter-spacing:-.025em;
+}
+
+body.ology-detail-page .card-body{
+  padding:16px 18px 20px;
+  color:var(--muted) !important;
+  font-size:.96rem;
+  line-height:1.68;
+}
+
+body.ology-detail-page .card-body .meta{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.86rem;
+  font-weight:800;
+}
+
+body.ology-detail-page .card-body::after{
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  width:100%;
+}
+
+body.ology-detail-page .card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(241,115,0,.08), transparent 42%);
+  opacity:0;
+  transition:opacity .18s ease;
+  pointer-events:none;
+}
+
+body.ology-detail-page .card:hover::before,
+body.ology-detail-page .card:focus-visible::before{
+  opacity:1;
+}
+
+body.ology-detail-page .card:hover .icon,
+body.ology-detail-page .card:focus-visible .icon{
+  background:var(--accent) !important;
+  color:#ffffff !important;
+  border-color:var(--accent) !important;
+  box-shadow:0 10px 22px rgba(241,115,0,.28);
+}
+
+html[data-theme="dark"] body.ology-detail-page .card{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 38%),
+    var(--surface) !important;
+  box-shadow:0 18px 42px rgba(0,0,0,.35);
+}
+
+html[data-theme="dark"] body.ology-detail-page .card:hover,
+html[data-theme="dark"] body.ology-detail-page .card:focus-visible{
+  box-shadow:0 26px 58px rgba(0,0,0,.55);
+}
+
+html[data-theme="dark"] body.ology-detail-page .card-body::after{
+  border-color:var(--border);
+}
+
 </style>
 </head>
 <body class="elology-page ology-detail-page">
