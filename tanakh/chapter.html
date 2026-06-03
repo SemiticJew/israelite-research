@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Chapter</title>
+<title>Scripture Reader — Semitic Jew</title>
 <link rel="stylesheet" href="/styles.css"/>
 <style>
   .page-header{padding:24px 0 8px}
@@ -95,9 +95,276 @@
     font-weight:800;
   }
 
+
+
+/* Modern shared Bible reader shell */
+body.reader-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+body.reader-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 24px 80px;
+}
+
+body.reader-page .page-header{
+  margin:18px 0 20px;
+  padding:46px 28px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+body.reader-page .page-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2rem, 5vw, 4rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+body.reader-page .crumbs{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:1rem;
+  font-weight:700;
+}
+
+body.reader-page .reader-toolbar{
+  top:12px;
+  z-index:80;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 0 20px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .reader-toolbar .btn,
+body.reader-page .reader-toolbar select{
+  min-height:42px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:800;
+}
+
+body.reader-page .reader-toolbar .btn:hover,
+body.reader-page .reader-toolbar select:hover{
+  border-color:var(--accent);
+}
+
+body.reader-page .layout{
+  grid-template-columns:minmax(0, 2fr) 360px;
+  gap:22px;
+  margin:18px 0 40px;
+  align-items:start;
+}
+
+body.reader-page .panel{
+  border:1px solid var(--border);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:0;
+  overflow:hidden;
+}
+
+body.reader-page .panel h3{
+  margin:0;
+  padding:16px 18px;
+  color:var(--ink);
+  font-size:.9rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+}
+
+body.reader-page #verses{
+  padding:6px 20px 20px;
+}
+
+body.reader-page .verse{
+  padding:18px 0;
+}
+
+body.reader-page .verse + .verse{
+  border-top:1px solid var(--border);
+}
+
+body.reader-page .vnum{
+  display:inline-flex;
+  align-self:flex-start;
+  margin-bottom:7px;
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+
+body.reader-page .vnum::after{
+  content:"";
+}
+
+body.reader-page .vtext{
+  color:var(--ink);
+  font-size:1.08rem;
+  line-height:1.82;
+}
+
+body.reader-page .v-tools{
+  margin-top:10px;
+}
+
+body.reader-page .tool-btn,
+body.reader-page .icon-btn{
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:800;
+}
+
+body.reader-page .tool-btn:hover,
+body.reader-page .icon-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--surface);
+}
+
+body.reader-page .v-panel{
+  border-radius:0;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+  color:var(--ink);
+}
+
+body.reader-page aside.panel{
+  position:sticky;
+  top:94px;
+}
+
+body.reader-page .dict-head{
+  margin:0;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+}
+
+body.reader-page .dict-title{
+  color:var(--ink);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:.9rem;
+}
+
+body.reader-page .dict-reveal{
+  padding:0 18px;
+}
+
+body.reader-page .dict-input{
+  margin-top:14px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+body.reader-page .dict-body{
+  padding:16px 18px 20px;
+  margin:0;
+  color:var(--muted);
+}
+
+html[data-theme="dark"] body.reader-page .page-header{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] body.reader-page .reader-toolbar{
+  background:rgba(15,23,42,.88);
+}
+
+html[data-theme="dark"] body.reader-page .page-title,
+html[data-theme="dark"] body.reader-page .panel h3,
+html[data-theme="dark"] body.reader-page .dict-title,
+html[data-theme="dark"] body.reader-page .vtext{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] body.reader-page .panel,
+html[data-theme="dark"] body.reader-page .reader-toolbar,
+html[data-theme="dark"] body.reader-page .reader-toolbar .btn,
+html[data-theme="dark"] body.reader-page .reader-toolbar select,
+html[data-theme="dark"] body.reader-page .dict-head,
+html[data-theme="dark"] body.reader-page .panel h3,
+html[data-theme="dark"] body.reader-page .dict-input{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:900px){
+  body.reader-page .layout{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page aside.panel{
+    position:relative;
+    top:auto;
+  }
+}
+
+@media(max-width:700px){
+  body.reader-page main.container{
+    padding:18px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  body.reader-page .page-header{
+    padding:38px 20px;
+  }
+
+  body.reader-page .reader-toolbar{
+    position:relative;
+    top:auto;
+    align-items:stretch;
+  }
+
+  body.reader-page .reader-toolbar .btn,
+  body.reader-page .reader-toolbar select{
+    flex:1 1 100%;
+    width:100%;
+  }
+
+  body.reader-page #verses{
+    padding:4px 16px 18px;
+  }
+}
+
+
+#author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
+#author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}
 </style>
 </head>
-<body>
+<body class="reader-page">
 <div id="site-header"></div>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb" id="readerBreadcrumbs">
@@ -161,5 +428,4 @@
 <script src="/js/include.js" defer></script>
 </body>
 </html>
-<style>#author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
-#author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}</style>
+
