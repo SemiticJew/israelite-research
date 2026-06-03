@@ -490,14 +490,15 @@ html[data-theme="dark"] body.reader-page .dict-input{
 (function(){
   const params = new URLSearchParams(window.location.search);
   const raw = (params.get("book") || "").trim().toLowerCase();
+
   const aliases = {
-    "ps": "psalms",
-    "psalm": "psalms",
-    "psalms": "psalms",
-    "psa": "psalms",
-    "psal": "psalms",
-    "book-of-psalms": "psalms",
-    "the-psalms": "psalms"
+    "ps": "psalm",
+    "psa": "psalm",
+    "psal": "psalm",
+    "psalm": "psalm",
+    "psalms": "psalm",
+    "book-of-psalms": "psalm",
+    "the-psalms": "psalm"
   };
 
   if (aliases[raw] && raw !== aliases[raw]) {
