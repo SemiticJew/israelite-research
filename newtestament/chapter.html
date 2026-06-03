@@ -420,6 +420,28 @@ html[data-theme="dark"] body.reader-page .dict-input{
 <div id="site-footer"></div>
 <div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
 
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const raw = (params.get("book") || "").trim().toLowerCase();
+  const aliases = {
+    "ps": "psalms",
+    "psalm": "psalms",
+    "psalms": "psalms",
+    "psa": "psalms",
+    "psal": "psalms",
+    "book-of-psalms": "psalms",
+    "the-psalms": "psalms"
+  };
+
+  if (aliases[raw] && raw !== aliases[raw]) {
+    params.set("book", aliases[raw]);
+    const next = window.location.pathname + "?" + params.toString() + window.location.hash;
+    window.history.replaceState(null, "", next);
+  }
+})();
+</script>
+
 <script src="/js/shims.js" defer></script>
 <script src="/js/canon-strongs.js" defer></script>
 <script src="/js/nt-chapter.js" defer></script>
