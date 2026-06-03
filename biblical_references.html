@@ -4,7 +4,23 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Bible References — Semitic Jew</title>
+<title>Biblical References — Semitic Jew</title>
+<meta name="description" content="Search biblical reference entries, dictionary definitions, study terms, covenant language, and Scripture-related concepts."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Biblical References — Semitic Jew"/>
+<meta property="og:description" content="Search biblical reference entries, dictionary definitions, study terms, covenant language, and Scripture-related concepts."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/biblical_references.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Biblical References — Semitic Jew"/>
+<meta name="twitter:description" content="Search biblical reference entries, dictionary definitions, study terms, covenant language, and Scripture-related concepts."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
 <link href="/styles.css" rel="stylesheet"/>
 <style>
   .container{max-width:1400px;margin:0 auto;padding:0 16px}
@@ -176,6 +192,331 @@
   .r-toolbar .btn:hover{
     background:var(--surface-alt, rgba(0,0,0,.04));
   }
+
+
+/* Biblical References modern page polish */
+body.bib-refs-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.bib-refs-page .container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+.bibrefs-main{
+  padding:40px 24px 80px !important;
+}
+
+.bibrefs-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.bibrefs-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.bibrefs-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.bibrefs-subtitle{
+  max-width:860px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.bibrefs-intro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.bibrefs-info-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+}
+
+.bibrefs-info-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.bibrefs-info-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.bibrefs-tool-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.bibrefs-section-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+
+.bibrefs-section-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.bibrefs-section-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+#bibRefCount{
+  color:var(--muted);
+  font-size:.9rem;
+  font-weight:800;
+}
+
+.bibrefs-quick-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.bibrefs-chip-label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.bibrefs-chip{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  border-radius:999px;
+  padding:.45rem .72rem;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.bibrefs-chip:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.bib-refs-page .topbar{
+  display:none !important;
+}
+
+.bib-refs-page .layout{
+  grid-template-columns:360px 1fr;
+  gap:18px;
+  margin:0;
+}
+
+.bib-refs-page .panel{
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--border);
+  box-shadow:var(--shadow);
+}
+
+.bib-refs-page .panel h3{
+  margin:0;
+  padding:16px 16px 12px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+  border-bottom:1px solid var(--border);
+}
+
+.bib-refs-page .facets{
+  padding:14px;
+}
+
+.bib-refs-page .az{
+  gap:6px;
+}
+
+.bib-refs-page .az button{
+  border-radius:0;
+  font-weight:800;
+}
+
+.bib-refs-page .az button.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#111827;
+}
+
+.bib-refs-page .results{
+  max-height:calc(100vh - 340px);
+  padding:10px;
+}
+
+.bib-refs-page .card{
+  border-radius:0;
+  margin:8px 0;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+.bib-refs-page .card:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow-hover, 0 8px 20px rgba(0,0,0,.12));
+}
+
+.bib-refs-page .card.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent) inset;
+}
+
+.bib-refs-page .reader{
+  padding:18px;
+}
+
+.bib-refs-page .reader .head{
+  align-items:flex-start;
+  flex-direction:column;
+  gap:12px;
+}
+
+.bib-refs-page .reader .r-title{
+  font-size:clamp(1.6rem, 3vw, 2.25rem);
+  letter-spacing:-.04em;
+}
+
+.bib-refs-page .r-toolbar{
+  width:100%;
+  margin:0;
+}
+
+.bib-refs-page .r-toolbar input[type="search"],
+.bib-refs-page .r-toolbar .btn{
+  border-radius:0;
+}
+
+.bib-refs-page .reader article{
+  margin-top:16px;
+  color:var(--ink);
+  font-size:1.02rem;
+  line-height:1.75;
+}
+
+.bib-refs-page .reader article p{
+  margin:0 0 1rem;
+}
+
+html[data-theme="dark"] .bibrefs-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .bibrefs-title,
+html[data-theme="dark"] .bibrefs-info-card h2,
+html[data-theme="dark"] .bibrefs-section-head h2,
+html[data-theme="dark"] .bib-refs-page .panel h3,
+html[data-theme="dark"] .bib-refs-page .reader .r-title{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .bibrefs-info-card,
+html[data-theme="dark"] .bibrefs-tool-shell,
+html[data-theme="dark"] .bib-refs-page .panel,
+html[data-theme="dark"] .bib-refs-page .card,
+html[data-theme="dark"] .bibrefs-quick-row{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:980px){
+  .bib-refs-page .layout{
+    grid-template-columns:1fr;
+  }
+
+  .bib-refs-page .panel-right{
+    order:-1;
+  }
+
+  .bib-refs-page .results{
+    max-height:none;
+  }
+
+  .bibrefs-intro-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .bibrefs-main{
+    padding:22px 20px 64px !important;
+    overflow-x:hidden;
+  }
+
+  .bibrefs-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .bibrefs-tool-shell{
+    padding:20px 16px;
+  }
+
+  .bib-refs-page .az{
+    grid-template-columns:repeat(9,1fr);
+  }
+
+  .bib-refs-page .r-toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -184,15 +525,61 @@
 <link rel="manifest" href="/site.webmanifest"/>
 
 </head>
-<body class="bib-refs bib-refs">
+<body class="bib-refs-page bib-refs">
 <!-- Header include -->
 <div data-include="partials/header.html" id="site-header"></div>
-<div class="topbar">
-<div class="topbar-inner container">
-<h1 class="title">Bible References</h1>
-</div>
-</div>
-<main class="container layout">
+<main class="container bibrefs-main">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="/biblia.html">Biblia</a>
+  <span class="sep">›</span>
+  <span class="current">Biblical References</span>
+</nav>
+
+<section class="bibrefs-hero">
+  <div class="bibrefs-kicker">Reference Library</div>
+  <h1 class="bibrefs-title">Biblical References</h1>
+  <p class="bibrefs-subtitle">
+    Search study terms, dictionary entries, covenant language, and Scripture-related concepts for quick reference and deeper study.
+  </p>
+</section>
+
+<section class="bibrefs-intro-grid" aria-label="Biblical references overview">
+  <article class="bibrefs-info-card">
+    <h2>Study Terms</h2>
+    <p>Browse biblical concepts, names, themes, and theological vocabulary from the reference database.</p>
+  </article>
+  <article class="bibrefs-info-card">
+    <h2>Fast Lookup</h2>
+    <p>Search by term or use the A–Z index to quickly locate entries and definitions.</p>
+  </article>
+  <article class="bibrefs-info-card">
+    <h2>Plain Reading</h2>
+    <p>Use the reader panel to study entries in a clean format without leaving the page.</p>
+  </article>
+</section>
+
+<section class="bibrefs-tool-shell" aria-label="Biblical reference search tool">
+  <div class="bibrefs-section-head">
+    <div>
+      <h2>Reference Search</h2>
+      <p>Search the reference library or browse alphabetically.</p>
+    </div>
+    <div id="bibRefCount">Loading entries…</div>
+  </div>
+
+  <div class="bibrefs-quick-row" aria-label="Quick reference searches">
+    <span class="bibrefs-chip-label">Quick Search</span>
+    <button class="bibrefs-chip" type="button" data-ref-query="sabbath">Sabbath</button>
+    <button class="bibrefs-chip" type="button" data-ref-query="covenant">Covenant</button>
+    <button class="bibrefs-chip" type="button" data-ref-query="zion">Zion</button>
+    <button class="bibrefs-chip" type="button" data-ref-query="israel">Israel</button>
+    <button class="bibrefs-chip" type="button" data-ref-query="law">Law</button>
+    <button class="bibrefs-chip" type="button" data-ref-query="kingdom">Kingdom</button>
+  </div>
+
+  <div class="layout">
 <!-- Left: results + facets -->
 <section aria-label="Results and facets" class="panel panel-left">
 <h3>Browse</h3>
@@ -220,6 +607,8 @@
 </article>
 </div>
 </aside>
+  </div>
+</section>
 </main>
 <!-- Footer include -->
 <div data-include="partials/footer.html" id="site-footer"></div>
@@ -268,6 +657,20 @@
     const q=document.getElementById('q');
     const clearQ=document.getElementById('clearQ');
 
+    function updateCount(hits, query){
+      const count=document.getElementById('bibRefCount');
+      if(!count) return;
+      if(!DB.length){
+        count.textContent='No entries loaded';
+        return;
+      }
+      if(query || activeLetter){
+        count.textContent=`${hits.length} shown · ${DB.length} total entries`;
+      }else{
+        count.textContent=`${DB.length} total entries`;
+      }
+    }
+
     function renderResults(){
       const query=q.value.trim().toLowerCase();
       const hits=DB.filter(e=>{
@@ -276,6 +679,8 @@
         return true;
       }).slice(0,400);
 
+      updateCount(hits, query);
+
       if(!hits.length){ resultsEl.innerHTML='<div class="empty">No results.</div>'; return; }
       const frag=document.createDocumentFragment();
       hits.forEach(e=>{
@@ -283,7 +688,11 @@
         card.className='card';
         card.innerHTML=`<div class="line1"><div class="term">${escapeHtml(e.term)}</div></div>
                         <div class="abstract">${escapeHtml(e.abstract)}</div>`;
-        card.addEventListener('click',()=>openEntry(e));
+        card.addEventListener('click',()=>{
+          document.querySelectorAll('.results .card.active').forEach(c=>c.classList.remove('active'));
+          card.classList.add('active');
+          openEntry(e);
+        });
         frag.appendChild(card);
       });
       resultsEl.innerHTML='';
@@ -311,12 +720,27 @@
         const b=document.createElement('button');
         b.textContent=ch;
         b.title="Jump to "+ch;
-        b.addEventListener('click',()=>{ activeLetter=(ch==="#"?null:ch); renderResults(); });
+        b.addEventListener('click',()=>{
+          activeLetter=(ch==="#"?null:ch);
+          document.querySelectorAll('.az button').forEach(btn=>btn.classList.remove('active'));
+          if(activeLetter) b.classList.add('active');
+          renderResults();
+        });
         frag.appendChild(b);
       });
       azRoot.appendChild(frag);
     })();
 
+    document.querySelectorAll('[data-ref-query]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        q.value=btn.dataset.refQuery||'';
+        activeLetter=null;
+        document.querySelectorAll('.az button').forEach(b=>b.classList.remove('active'));
+        renderResults();
+        q.focus();
+      });
+    });
+
     (async function(){ await loadCombined(); renderResults(); })();
   </script>
-</html>
+</body>\n</html>
