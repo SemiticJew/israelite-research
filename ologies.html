@@ -351,6 +351,86 @@ html[data-theme="dark"] .ologies-page .chip{
   }
 }
 
+
+
+/* Ologies card hover modernization */
+.ologies-page .card,
+.ologies-page .card:hover,
+.ologies-page .card:focus,
+.ologies-page .card:focus-visible,
+.ologies-page .card *,
+.ologies-page .card:hover *,
+.ologies-page .card:focus *,
+.ologies-page .card:focus-visible *{
+  text-decoration:none !important;
+}
+
+.ologies-page .card{
+  position:relative;
+  overflow:hidden;
+}
+
+.ologies-page .card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .2s ease;
+}
+
+.ologies-page .card:hover::after,
+.ologies-page .card:focus-visible::after{
+  transform:scaleY(1);
+}
+
+.ologies-page .card:hover .card-title,
+.ologies-page .card:hover .arg h3{
+  color:var(--accent) !important;
+}
+
+.ologies-page .card-top,
+.ologies-page .card-body,
+.ologies-page .arg{
+  position:relative;
+  z-index:1;
+}
+
+.ologies-page .card-body::after,
+.ologies-page .arg::after{
+  content:"Open study →";
+  display:inline-flex;
+  margin-top:14px;
+  color:var(--ink);
+  font-size:.76rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  opacity:.72;
+  transition:color .18s ease, opacity .18s ease, transform .18s ease;
+}
+
+.ologies-page .card:hover .card-body::after,
+.ologies-page .card:hover .arg::after{
+  color:var(--accent);
+  opacity:1;
+  transform:translateX(3px);
+}
+
+html[data-theme="dark"] .ologies-page .card-body::after,
+html[data-theme="dark"] .ologies-page .arg::after{
+  color:#ffffff;
+}
+
+html[data-theme="dark"] .ologies-page .card:hover .card-body::after,
+html[data-theme="dark"] .ologies-page .card:hover .arg::after{
+  color:var(--accent);
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
