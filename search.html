@@ -4,6 +4,22 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Search — Semitic Jew</title>
+  <meta name="description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Search — Semitic Jew" />
+  <meta property="og:description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+  <meta property="og:image" content="https://semiticjew.org/images/social-preview.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://semiticjew.org/search.html" />
+  <meta property="og:site_name" content="Semitic Jew" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Search — Semitic Jew" />
+  <meta name="twitter:description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+  <meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png" />
+
   <link href="/styles.css" rel="stylesheet" />
   <style>
     .page-shell{max-width:1200px;margin:0 auto;padding:0 16px}
@@ -39,6 +55,297 @@
     .search-bar{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:10px 0 6px}
     .search-input{padding:.75rem .9rem;border:1px solid #e1e6ef;border-radius:10px;font-size:1rem}
     .search-btn{padding:.75rem 1rem;border:1px solid #054A91;background:#054A91;color:#fff;border-radius:10px;cursor:pointer}
+
+
+    /* Modern Search Page */
+    body.search-page{
+      background:var(--surface);
+      color:var(--ink);
+    }
+
+    .search-page .page-shell{
+      max-width:1200px;
+      margin:0 auto;
+      padding:40px 24px 80px;
+    }
+
+    .search-hero{
+      margin:24px 0 30px;
+      padding:58px 30px;
+      text-align:center;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+        linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+    }
+
+    .search-kicker{
+      margin:0 0 12px;
+      color:var(--accent);
+      font-size:.78rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+
+    .search-title{
+      margin:0;
+      color:var(--ink);
+      font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.05em;
+    }
+
+    .search-subtitle{
+      max-width:860px;
+      margin:18px auto 0;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.7;
+    }
+
+    .search-page .search-bar{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      margin:0 0 18px;
+      padding:18px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+
+    .search-page .search-input{
+      min-height:48px;
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-size:1rem;
+    }
+
+    .search-page .search-btn{
+      min-height:48px;
+      border-radius:0;
+      border:1px solid var(--accent);
+      background:var(--accent);
+      color:#ffffff;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .search-page .tabs{
+      padding:14px;
+      border:1px solid var(--border);
+      background:rgba(5,74,145,.035);
+      margin:0 0 20px;
+    }
+
+    .search-page .tab{
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-weight:900;
+    }
+
+    .search-page .tab[aria-selected="true"]{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#ffffff;
+    }
+
+    .search-page .layout{
+      grid-template-columns:300px 1fr;
+      gap:24px;
+      margin:24px 0 28px;
+      align-items:start;
+    }
+
+    .search-page aside{
+      position:sticky;
+      top:92px;
+    }
+
+    .search-page .facet{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+
+    .search-page .facet h3{
+      color:var(--ink);
+      border-bottom:1px solid var(--border);
+      font-size:.9rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+        var(--surface);
+    }
+
+    .search-page .facet .check{
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .search-page .facet .range input,
+    .search-page .sorter select{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+    }
+
+    .search-page .toolbar{
+      padding:0 0 14px;
+      border-bottom:1px solid var(--border);
+      margin:0 0 16px;
+    }
+
+    .search-page .results-meta{
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .search-page .result-list{
+      gap:18px;
+    }
+
+    .search-page .result-item{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+      padding:14px;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .search-page .result-item:hover{
+      transform:translateY(-3px);
+      border-color:var(--accent);
+      box-shadow:var(--shadow-hover, 0 10px 28px rgba(0,0,0,.12));
+    }
+
+    .search-page .thumb{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 40%),
+        linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+    }
+
+    .search-page .r-type{
+      background:rgba(241,115,0,.10);
+      color:var(--accent);
+      border:1px solid rgba(241,115,0,.25);
+      font-weight:900;
+    }
+
+    .search-page .r-title a{
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:900;
+    }
+
+    .search-page .r-title a:hover{
+      color:var(--accent);
+      text-decoration:none;
+    }
+
+    .search-page .r-excerpt,
+    .search-page .r-meta{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .search-page .empty{
+      border-radius:0;
+      border:1px dashed var(--border);
+      background:rgba(5,74,145,.035);
+      color:var(--muted);
+    }
+
+    .search-page .page-btn{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-weight:800;
+    }
+
+    .search-page .page-btn[aria-current="page"]{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#ffffff;
+    }
+
+    html[data-theme="dark"] .search-hero{
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+        linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+    }
+
+    html[data-theme="dark"] .search-title,
+    html[data-theme="dark"] .search-page .facet h3,
+    html[data-theme="dark"] .search-page .r-title a{
+      color:#ffffff !important;
+    }
+
+    html[data-theme="dark"] .search-page .search-bar,
+    html[data-theme="dark"] .search-page .search-input,
+    html[data-theme="dark"] .search-page .tabs,
+    html[data-theme="dark"] .search-page .tab,
+    html[data-theme="dark"] .search-page .facet,
+    html[data-theme="dark"] .search-page .facet h3,
+    html[data-theme="dark"] .search-page .facet .range input,
+    html[data-theme="dark"] .search-page .sorter select,
+    html[data-theme="dark"] .search-page .result-item,
+    html[data-theme="dark"] .search-page .page-btn{
+      background:var(--surface) !important;
+      border-color:var(--border) !important;
+    }
+
+    @media(max-width:960px){
+      .search-page .layout{
+        grid-template-columns:1fr;
+      }
+
+      .search-page aside{
+        position:relative;
+        top:auto;
+      }
+    }
+
+    @media(max-width:700px){
+      .search-page .page-shell{
+        padding:22px 20px 64px;
+        overflow-x:hidden;
+      }
+
+      .search-hero{
+        margin:18px 0 28px;
+        padding:42px 20px;
+      }
+
+      .search-page .search-bar{
+        grid-template-columns:1fr;
+      }
+
+      .search-page .result-item{
+        grid-template-columns:1fr;
+      }
+
+      .search-page .thumb{
+        width:100%;
+        height:150px;
+      }
+    }
+
   </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -47,65 +354,27 @@
 <link rel="manifest" href="/site.webmanifest"/>
 
 </head>
-<body>
+<body class="search-page">
 
-  <div id="site-header">
-    <!-- Universal Header Partial -->
-    <header class="site-header-bar">
-      <style>
-        #site-header .site-header-bar{background:var(--surface,#ffffff);color:var(--ink,#0b2340);border-bottom:1px solid var(--border,#e6ebf2)}
-        #site-header .header-inner{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-        #site-header .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink,#0b2340);font-weight:900;font-size:1.05rem}
-        #site-header .brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border,#e6ebf2);display:inline-flex;align-items:center;justify-content:center;background:var(--surface,#ffffff);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
-        #site-header nav.primary{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-        #site-header nav.primary a{text-decoration:none;color:var(--ink,#0b2340);opacity:.95;padding:8px 10px;border-radius:8px;border:1px solid transparent;transition:border-color .15s ease,box-shadow .15s ease}
-        #site-header nav.primary a:hover{border-color:var(--border,#e6ebf2);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
-        #site-header .tools{display:flex;align-items:center;gap:10px}
-        #site-header .icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s,background-color .15s}
-        #site-header .icon-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
-      </style>
-
-      <div class="header-inner">
-        <a class="brand" href="/">
-          <span class="mark" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-              <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-              <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-              <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span>Semitic&nbsp;Jew</span>
-        </a>
-
-        <nav class="primary" aria-label="Primary">
-          <a href="/ologies.html">Ologies</a>
-          <a href="/articles.html">Articles</a>
-          <a href="/biblia.html">Biblia</a>
-          <a href="/donate.html">Donations</a>
-          <a href="/events.html">Events</a>
-          <a href="/media.html">Media</a>
-        </nav>
-
-        <div class="tools">
-          <a class="icon-btn" href="/search.html" aria-label="Search">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </header>
-  </div>
+  <div id="site-header"></div>
 
   <main class="page-shell">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="/">Home</a> › <span>All Resources</span>
+      <a href="/index.html">Home</a>
+      <span class="sep">›</span>
+      <span class="current">Search</span>
     </nav>
 
+    <section class="search-hero">
+      <div class="search-kicker">Site Search</div>
+      <h1 class="search-title">Search Resources</h1>
+      <p class="search-subtitle">
+        Search articles, biblical references, encyclopedia entries, study pages, map regions, and Scripture-connected resources across Semitic Jew.
+      </p>
+    </section>
+
     <form id="searchForm" class="search-bar" role="search">
-      <input id="q" name="q" class="search-input" type="search" placeholder="Search resources…" autocomplete="off" />
+      <input id="q" name="q" class="search-input" type="search" placeholder="Search articles, Bible tools, encyclopedia entries, regions…" autocomplete="off" />
       <button class="search-btn" type="submit">Search</button>
     </form>
 
@@ -163,129 +432,7 @@
     </div>
   </main>
 
-  <div id="site-footer">
-    <!-- Universal Footer Partial -->
-    <footer class="site-footer">
-      <style>
-        #site-footer .site-footer{background:var(--surface,#ffffff);color:var(--ink,#0b2340);border-top:1px solid var(--border,#e6ebf2)}
-        #site-footer .footer-inner{max-width:1200px;margin:0 auto;padding:28px 16px 18px;display:grid;gap:28px;grid-template-columns:1.2fr .8fr .8fr}
-        @media (max-width:960px){#site-footer .footer-inner{grid-template-columns:1fr}}
-        #site-footer .footer-brand h3{margin:0 0 6px;font-size:1.15rem;font-weight:800;color:var(--ink,#0b2340);display:flex;align-items:center;gap:8px}
-        #site-footer .footer-brand .mark{width:26px;height:26px;border-radius:7px;border:1px solid var(--border,#e6ebf2);display:inline-flex;align-items:center;justify-content:center;background:var(--surface,#ffffff);box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05))}
-        #site-footer .footer-tagline{margin:0 0 12px;color:var(--muted,#6b7280);max-width:46ch;text-align:left}
-        #site-footer .footer-social{display:flex;gap:10px;margin:10px 0 14px}
-        #site-footer .footer-social .icon{width:40px;height:40px;border-radius:10px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s,background-color .15s}
-        #site-footer .footer-social .icon:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
-        #site-footer .footer-newsletter .newsletter-row{display:flex;gap:8px;align-items:center}
-        #site-footer .footer-newsletter input[type="email"]{flex:1;padding:10px 12px;border:1px solid var(--border,#e6ebf2);border-radius:10px;background:var(--bg,#ffffff);color:var(--ink,#0b2340)}
-        #site-footer .footer-newsletter input::placeholder{color:var(--muted,#6b7280)}
-        #site-footer .footer-newsletter button{padding:10px 12px;border-radius:10px;border:1px solid var(--border,#e6ebf2);background:var(--surface,#ffffff);color:var(--ink,#0b2340);cursor:pointer;box-shadow:var(--shadow,0 1px 2px rgba(0,0,0,.05));transition:transform .15s,box-shadow .15s,border-color .15s}
-        #site-footer .footer-newsletter button:hover{transform:translateY(-1px);box-shadow:var(--shadow-hover,0 10px 20px rgba(0,0,0,.12));border-color:#cdd8e6}
-        #site-footer .newsletter-note{display:block;margin-top:6px;color:#F17300}
-        #site-footer .footer-heading{margin:0 0 8px;font-size:.95rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink,#0b2340)}
-        #site-footer .footer-nav{list-style:none;padding:0;margin:0;display:grid;gap:6px}
-        #site-footer .footer-nav a{color:var(--ink,#0b2340);text-decoration:none;padding:6px 8px;border-radius:8px;border:1px solid transparent;transition:border-color .15s ease,background-color .15s ease}
-        #site-footer .footer-nav a:hover{border-color:var(--border,#e6ebf2);background:rgba(0,0,0,.02)}
-        #site-footer .footer-bottom p{color:#F17300}
-        #site-footer .footer-bottom{max-width:1200px;margin:0 auto;padding:10px 16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted,#6b7280);border-top:1px solid var(--border,#e6ebf2)}
-        @media (max-width:720px){#site-footer .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}}
-        #site-footer .legal-links{display:flex;gap:12px;flex-wrap:wrap}
-        #site-footer .legal-links a{color:var(--ink,#0b2340);text-decoration:none;opacity:.85}
-        #site-footer .legal-links a:hover{opacity:1}
-      </style>
-
-      <div class="footer-inner container">
-        <div class="footer-col footer-brand">
-          <h3 class="footer-heading footer-brandname">
-            <span class="mark" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-                <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-                <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-            <strong>Semitic Jew</strong>
-          </h3>
-
-          <p class="footer-tagline">Research-driven resources to help you read Scripture with logic, consistency, and context.</p>
-
-          <div class="footer-social" aria-label="Social media">
-            <a class="icon" href="https://www.instagram.com/semiticjew?igsh=OXl4czBhYWIydW1v&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-              </svg>
-            </a>
-            <a class="icon" href="https://x.com/semitic_jew?s=21" target="_blank" rel="noopener" aria-label="X">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-            <a class="icon" href="https://www.threads.com/@semiticjew?invite=0" target="_blank" rel="noopener" aria-label="Threads">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M12 3c5.5 0 9 3.1 9 9s-3.5 9-9 9-9-3.1-9-9 3.5-9 9-9zm3 8c-.2-1.5-1.3-2.5-3-2.5-2.1 0-3.5 1.3-3.5 3.3s1.3 3.3 3.4 3.3c1.5 0 2.6-.6 3-1.8l-1.2-.5c-.3.7-1 .9-1.8.9-1.3 0-2.1-.7-2.2-1.9h4.9c.1-.3.1-.7 0-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-            <a class="icon" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener" aria-label="YouTube">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M22 12s0-3-0.4-4.4c-.2-.8-.8-1.4-1.6-1.6C18.6 5.5 12 5.5 12 5.5s-6.6 0-8 0.5c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 0.4 4.4c.2.8.8 1.4 1.6 1.6 1.4.5 8 .5 8 .5s6.6 0 8-0.5c.8-.2 1.4-.8 1.6-1.6C22 15 22 12 22 12z" fill="none" stroke="currentColor" stroke-width="2"/>
-                <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
-              </svg>
-            </a>
-            <a class="icon" href="https://www.facebook.com/semiticjew" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"/>
-              </svg>
-            </a>
-          </div>
-
-          <form class="footer-newsletter" action="https://formspree.io/f/your-id" method="POST" novalidate>
-            <label for="nl-email" class="sr-only">Email address</label>
-            <div class="newsletter-row">
-              <input id="nl-email" name="email" type="email" placeholder="Your email" required>
-              <button type="submit">Subscribe</button>
-            </div>
-            <small class="newsletter-note">Occasional updates. No spam. Unsubscribe any time.</small>
-          </form>
-        </div>
-
-        <div class="footer-col footer-col--explore">
-          <h4 class="footer-heading">Resources</h4>
-          <ul class="footer-nav">
-            <li><a href="/ologies.html">Ologies</a></li>
-            <li><a href="/articles.html">Articles</a></li>
-            <li><a href="/biblia.html">Biblia</a></li>
-            <li><a href="/donate.html">Donations</a></li>
-            <li><a href="/events.html">Events</a></li>
-            <li><a href="/media.html">Media</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col footer-col--texts">
-          <h4 class="footer-heading">The Writings</h4>
-          <ul class="footer-nav">
-            <li><a href="/tanakh.html">Tanakh</a></li>
-            <li><a href="/newtestament.html">New Testament</a></li>
-            <li><a href="/biblical_references.html">Biblical References</a></li>
-            <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
-            <li><a href="/black-history-biblical-identity.html">Historical &amp; Textual Variants</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom container">
-        <p>&copy; 2025 Semitic Jew. All rights reserved.</p>
-        <div class="legal-links">
-          <a href="/terms.html">Terms</a>
-          <a href="/privacy.html">Privacy</a>
-          <a href="/contact.html">Contact</a>
-        </div>
-      </div>
-    </footer>
-  </div>
+  <div id="site-footer"></div>
 
   <script>
     const state={all:[],filtered:[],page:1,perPage:20,query:'',type:'',sort:'newest',tags:new Set(),active:{types:new Set(),tags:new Set()},dateFrom:'',dateTo:''};
@@ -422,7 +569,6 @@
 
     loadIndex();
   </script>
-<!-- Global Includes -->
 <script src="/js/include.js"></script>
 </body>
 </html>
