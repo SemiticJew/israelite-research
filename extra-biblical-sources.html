@@ -436,6 +436,71 @@ html[data-theme="dark"] .legend-dot.unmatched{
   }
 }
 
+
+
+/* Extra-Biblical map usage guide */
+.extra-map-guide{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin:0 0 28px;
+}
+
+.extra-guide-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:18px;
+}
+
+.extra-guide-num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  margin:0 0 12px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#111827;
+  font-weight:900;
+}
+
+.extra-guide-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.extra-guide-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.93rem;
+}
+
+html[data-theme="dark"] .extra-guide-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .extra-guide-card h2{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  .extra-map-guide{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:620px){
+  .extra-map-guide{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -462,6 +527,32 @@ html[data-theme="dark"] .legend-dot.unmatched{
     <p class="extra-sources-subtitle">
       Explore regional notes, historical references, scholarly claims, and biblical connections through an interactive global map.
     </p>
+  </section>
+
+  <section class="extra-map-guide" aria-label="How to use this map">
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">1</div>
+      <h2>Select a Region</h2>
+      <p>Use the dropdown or click a highlighted country on the globe.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">2</div>
+      <h2>Read the References</h2>
+      <p>Review biblical references connected to that region.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">3</div>
+      <h2>Compare the Sources</h2>
+      <p>Study historical notes, claims, books, and scholarly references.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">4</div>
+      <h2>Share the Evidence</h2>
+      <p>Use Copy Link to share a direct region panel with others.</p>
+    </article>
   </section>
 
   <section class="extra-map-shell" aria-label="Interactive extra-biblical sources map">
@@ -686,7 +777,16 @@ am5.ready(async function(){
     const m=/^region=(.+)$/i.exec(hash);
     if(m) setTimeout(()=>openRegionById(m[1]),450);
   });
-  world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{const h=matchNote(t);if(h){const name=h.title||polyName(t)||"{name}";const line=(h.summary||(h.biblical_refs&&h.biblical_refs[0]?.note)||"").slice(0,140);return line?`${name}\n• ${line}`:name;}return"{name}";});
+  world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{
+    const h=matchNote(t);
+    if(h){
+      const name=h.title||polyName(t)||"{name}";
+      const bibCount=Array.isArray(h.biblical_refs)?h.biblical_refs.length:0;
+      const histCount=Array.isArray(h.historical_refs)?h.historical_refs.length:0;
+      return `${name}\nBiblical refs: ${bibCount} · Historical notes: ${histCount}\nClick to open evidence panel`;
+    }
+    return "{name}\nNo regional note loaded";
+  });
   world.mapPolygons.template.events.on("click",ev=>{
     const mp=ev.target;
     const hit=matchNote(mp)||{};
