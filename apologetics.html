@@ -3,7 +3,23 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>-ologies — Semitic Jew</title>
+<title>Apologetics — Semitic Jew</title>
+<meta name="description" content="Study biblical apologetics, core doctrines, argument paths, Scripture-first reasoning, logic, theology, and Israelite doctrinal teaching."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Apologetics — Semitic Jew"/>
+<meta property="og:description" content="Study biblical apologetics, core doctrines, argument paths, Scripture-first reasoning, logic, theology, and Israelite doctrinal teaching."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/apologetics.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Apologetics — Semitic Jew"/>
+<meta name="twitter:description" content="Study biblical apologetics, core doctrines, argument paths, Scripture-first reasoning, logic, theology, and Israelite doctrinal teaching."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
 <link href="/styles.css" rel="stylesheet"/>
 
 <style>
@@ -84,6 +100,257 @@
   /* Quiet divider */
   .rule{ height:1px; background:var(--sky); margin:8px 0 0; }
 
+
+
+/* Apologetics modern page polish */
+.ologies-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.ologies-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.apol-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.apol-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.apol-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.apol-subtitle{
+  max-width:900px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.apol-intro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.apol-info-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+}
+
+.apol-info-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.apol-info-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.apol-tools-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+  margin:24px 0 30px;
+}
+
+.apol-tools-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  padding-bottom:16px;
+  margin-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+
+.apol-tools-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.35rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.apol-tools-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.ologies-page .tools{
+  padding:0;
+}
+
+.ologies-page .input,
+.ologies-page .select,
+.ologies-page .chip{
+  border-color:var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.ologies-page .chip:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.ologies-page .section{
+  padding:28px 0;
+}
+
+.ologies-page .sec-head{
+  padding-bottom:14px;
+  margin-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+
+.ologies-page .sec-title{
+  font-size:1.45rem;
+  letter-spacing:-.03em;
+}
+
+.ologies-page .link{
+  color:var(--accent);
+}
+
+.ologies-page .grid-3,
+.ologies-page .grid-2{
+  gap:18px;
+}
+
+.ologies-page .card{
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--border);
+  box-shadow:var(--shadow);
+}
+
+.ologies-page .card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow-hover, 0 10px 28px rgba(0,0,0,.12));
+}
+
+.ologies-page .card-top{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+  border-color:var(--border);
+}
+
+.ologies-page .icon{
+  border-radius:999px;
+  border-color:var(--border);
+  color:var(--accent);
+  background:rgba(241,115,0,.06);
+}
+
+.ologies-page .card-title,
+.ologies-page .arg h3{
+  color:var(--ink);
+}
+
+.ologies-page .card-body,
+.ologies-page .arg p{
+  color:var(--muted);
+}
+
+.ologies-page .meta{
+  margin-top:10px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+html[data-theme="dark"] .apol-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .apol-title,
+html[data-theme="dark"] .apol-info-card h2,
+html[data-theme="dark"] .apol-tools-head h2,
+html[data-theme="dark"] .ologies-page .sec-title,
+html[data-theme="dark"] .ologies-page .card-title,
+html[data-theme="dark"] .ologies-page .arg h3{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .apol-info-card,
+html[data-theme="dark"] .apol-tools-shell,
+html[data-theme="dark"] .ologies-page .card,
+html[data-theme="dark"] .ologies-page .card-top,
+html[data-theme="dark"] .ologies-page .input,
+html[data-theme="dark"] .ologies-page .select,
+html[data-theme="dark"] .ologies-page .chip{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:900px){
+  .apol-intro-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .ologies-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .apol-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .apol-tools-shell{
+    padding:20px 16px;
+  }
+
+  .ologies-page .tools{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .ologies-page .input{
+    min-width:0;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -96,13 +363,43 @@
 <div id="site-header"></div>
 
 <main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Apologetics</span>
+  </nav>
+
   <!-- HERO -->
-  <header class="hero">
-    <h1 class="title">-ologies</h1>
-    <p class="sub">
-      A systematic, text-first index of the Bible’s core doctrines—organized for clarity, logic, and primary sources.
-      Each section gives you a crisp overview, key passages, and argument paths you can verify.
+  <section class="apol-hero">
+    <div class="apol-kicker">Doctrine, Logic & Defense</div>
+    <h1 class="apol-title">Apologetics</h1>
+    <p class="apol-subtitle">
+      A Scripture-first index of core doctrines, argument paths, and theological categories organized for clarity, logic, and primary-source study.
     </p>
+  </section>
+
+  <section class="apol-intro-grid" aria-label="Apologetics overview">
+    <article class="apol-info-card">
+      <h2>Text-First Reasoning</h2>
+      <p>Begin with the written text, define terms carefully, and test claims by Scripture rather than tradition.</p>
+    </article>
+    <article class="apol-info-card">
+      <h2>Doctrine With Structure</h2>
+      <p>Study major doctrinal categories without confusion, contradiction, or inherited theological fog.</p>
+    </article>
+    <article class="apol-info-card">
+      <h2>Arguments You Can Verify</h2>
+      <p>Use logic, cross-references, and source-based reasoning to examine claims clearly and consistently.</p>
+    </article>
+  </section>
+
+  <section class="apol-tools-shell" aria-label="Search and filters">
+    <div class="apol-tools-head">
+      <div>
+        <h2>Search Apologetics</h2>
+        <p>Filter doctrines, arguments, and study paths.</p>
+      </div>
+    </div>
 
     <div class="tools" role="region" aria-label="Search and filters">
       <input class="input" type="search" placeholder="Search doctrines, arguments, passages…" aria-label="Search"/>
@@ -116,7 +413,7 @@
       <a class="chip" href="#israelology">Israelology</a>
       <a class="chip" href="#soteriology">Soteriology</a>
     </div>
-  </header>
+  </section>
 
   <!-- CORE OLOGIES -->
   <section class="section" id="core">
@@ -384,10 +681,6 @@
 
 <div id="site-footer"></div>
 <script src="/js/include.js"></script>
-<!-- Global Includes -->
-<script src="/js/include.js"></script>
-</body>
-</html>
 <script>
 (function(){
   const input = document.querySelector(".tools .input");
@@ -434,3 +727,5 @@
   applyFilter("");
 })();
 </script>
+</body>
+</html>
