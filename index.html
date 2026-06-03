@@ -743,6 +743,28 @@ html[data-theme="dark"] .teaching-title{
   }
 }
 
+
+
+/* Homepage standalone featured teaching section */
+.featured-video-standalone{
+  max-width:1200px;
+  margin:72px auto;
+}
+
+.featured-video-standalone .teaching-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+@media(max-width:820px){
+  .featured-video-standalone{
+    margin:54px auto;
+  }
+
+  .featured-video-standalone .teaching-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -831,65 +853,9 @@ html[data-theme="dark"] .teaching-title{
 </div>
 
 <!-- FEATURED TEACHING -->
-<div class="featured-video-block">
 
-  <div class="featured-video-head">
-    <div>
-      <div class="section-title">Featured Teaching</div>
-      <p>Selected teachings that connect Scripture, prophecy, history, law, and logic for deeper study.</p>
-    </div>
-    <div class="youtube-archive-link" style="margin-top:0">
-      <a href="/media.html">View Media</a>
-    </div>
-  </div>
 
-  <div class="teaching-grid">
-
-    <!-- Video 1 -->
-    <div class="teaching-card">
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/ZYmX1TJ-7u0?rel=0&modestbranding=1"
-        title="Rome Never Fell: Daniel 2, Revelation & The Fourth Beast Explained"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-
-      <div class="teaching-content">
-        <div class="teaching-label">Prophecy & Empire</div>
-        <div class="teaching-title">
-          Rome Never Fell: Daniel 2 & The Fourth Beast
-        </div>
-        <div class="teaching-desc">
-          A scriptural analysis of Daniel and Revelation examining whether the Roman Empire truly fell or continues in prophetic form.
-        </div>
-        <a class="teaching-link" href="https://www.youtube.com/watch?v=ZYmX1TJ-7u0" target="_blank" rel="noopener">Watch Teaching →</a>
-      </div>
-    </div>
-
-    <!-- Video 2 -->
-    <div class="teaching-card">
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/agF5c_n5On0?rel=0&modestbranding=1"
-        title="Refutting Rebuttals For European American Chattel Slavery"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-
-      <div class="teaching-content">
-        <div class="teaching-label">Law & Captivity</div>
-        <div class="teaching-title">
-          Refuting Rebuttals For Chattel Slavery
-        </div>
-        <div class="teaching-desc">
-          A covenant-based examination of common defenses of chattel slavery, tested against Hebrew law, biblical logic, and historical record.
-        </div>
-        <a class="teaching-link" href="https://www.youtube.com/watch?v=agF5c_n5On0" target="_blank" rel="noopener">Watch Teaching →</a>
-      </div>
-    </div>
-
-  </div> <!-- CLOSE teaching-grid -->
-
-</div> <!-- CLOSE featured-video-block -->
+ <!-- CLOSE featured-video-block -->
 
 </div> <!-- ✅ CLOSE LEFT COLUMN -->
 
@@ -979,6 +945,66 @@ html[data-theme="dark"] .teaching-title{
 
 </div>
 
+
+<section class="featured-video-block featured-video-standalone" aria-labelledby="featuredTeachingTitle">
+
+  <div class="featured-video-head">
+    <div>
+      <div class="section-title" id="featuredTeachingTitle">Featured Teaching</div>
+      <p>Selected teachings that connect Scripture, prophecy, history, law, and logic for deeper study.</p>
+    </div>
+    <div class="youtube-archive-link" style="margin-top:0">
+      <a href="/media.html">View Media</a>
+    </div>
+  </div>
+
+  <div class="teaching-grid">
+
+    <!-- Video 1 -->
+    <div class="teaching-card">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/ZYmX1TJ-7u0?rel=0&modestbranding=1"
+        title="Rome Never Fell: Daniel 2, Revelation & The Fourth Beast Explained"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+
+      <div class="teaching-content">
+        <div class="teaching-label">Prophecy & Empire</div>
+        <div class="teaching-title">
+          Rome Never Fell: Daniel 2 & The Fourth Beast
+        </div>
+        <div class="teaching-desc">
+          A scriptural analysis of Daniel and Revelation examining whether the Roman Empire truly fell or continues in prophetic form.
+        </div>
+        <a class="teaching-link" href="https://www.youtube.com/watch?v=ZYmX1TJ-7u0" target="_blank" rel="noopener">Watch Teaching →</a>
+      </div>
+    </div>
+
+    <!-- Video 2 -->
+    <div class="teaching-card">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/agF5c_n5On0?rel=0&modestbranding=1"
+        title="Refutting Rebuttals For European American Chattel Slavery"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+
+      <div class="teaching-content">
+        <div class="teaching-label">Law & Captivity</div>
+        <div class="teaching-title">
+          Refuting Rebuttals For Chattel Slavery
+        </div>
+        <div class="teaching-desc">
+          A covenant-based examination of common defenses of chattel slavery, tested against Hebrew law, biblical logic, and historical record.
+        </div>
+        <a class="teaching-link" href="https://www.youtube.com/watch?v=agF5c_n5On0" target="_blank" rel="noopener">Watch Teaching →</a>
+      </div>
+    </div>
+
+  </div> <!-- CLOSE teaching-grid -->
+
+</section>
 
 <section class="support-callout" aria-label="Support the Work">
   <h2>Support the Work</h2>
