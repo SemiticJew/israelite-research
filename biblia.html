@@ -147,6 +147,222 @@ html[data-theme="dark"] .biblia-title{
   }
 }
 
+
+
+/* Biblia hub refinement */
+.biblia-page .hub-intro{
+  margin:-10px 0 28px;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px;
+  align-items:stretch;
+}
+
+.biblia-page .hub-note{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:20px;
+}
+
+.biblia-page .hub-note .label{
+  display:block;
+  margin-bottom:10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+}
+
+.biblia-page .hub-note h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.25rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.biblia-page .hub-note p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.biblia-page .hub-stats{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.biblia-page .hub-stat{
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 42%),
+    var(--surface);
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+
+.biblia-page .hub-stat strong{
+  display:block;
+  color:var(--ink);
+  font-size:1.55rem;
+  font-weight:900;
+  line-height:1;
+}
+
+.biblia-page .hub-stat span{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.biblia-page .container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0;
+}
+
+.biblia-page .grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:18px;
+  margin:0 0 40px;
+}
+
+.biblia-page .card{
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.biblia-page .card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .2s ease;
+  z-index:2;
+}
+
+.biblia-page .card:hover,
+.biblia-page .card:focus-within{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow-hover, 0 16px 34px rgba(0,0,0,.14));
+}
+
+.biblia-page .card:hover::after,
+.biblia-page .card:focus-within::after{
+  transform:scaleY(1);
+}
+
+.biblia-page .card a{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  color:inherit;
+  text-decoration:none;
+}
+
+.biblia-page .thumb{
+  height:132px;
+  border-bottom:1px solid rgba(255,255,255,.22);
+}
+
+.biblia-page .thumb span{
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(0,0,0,.18);
+  color:#ffffff;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.biblia-page .body{
+  flex:1;
+  padding:18px;
+  gap:9px;
+}
+
+.biblia-page .kicker{
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+
+.biblia-page .title{
+  color:var(--ink);
+  font-size:1.08rem;
+  font-weight:900;
+  letter-spacing:-.025em;
+}
+
+.biblia-page .desc{
+  color:var(--muted);
+  font-size:.94rem;
+  line-height:1.6;
+}
+
+.biblia-page .card a::after{
+  content:"Open Resource →";
+  margin:4px 18px 18px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+html[data-theme="dark"] .biblia-page .hub-note,
+html[data-theme="dark"] .biblia-page .hub-stat,
+html[data-theme="dark"] .biblia-page .card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .biblia-page .hub-note h2,
+html[data-theme="dark"] .biblia-page .hub-stat strong,
+html[data-theme="dark"] .biblia-page .title{
+  color:#ffffff !important;
+}
+
+@media(max-width:1050px){
+  .biblia-page .grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .biblia-page .hub-intro{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .biblia-page .grid{
+    grid-template-columns:1fr;
+  }
+
+  .biblia-page .hub-stats{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -168,8 +384,33 @@ html[data-theme="dark"] .biblia-title{
   <div class="biblia-kicker">Scripture & Study Tools</div>
   <h1 class="biblia-title">Biblia</h1>
   <p class="biblia-subtitle">
-    Explore the Tanakh, Apocrypha, New Testament, dietary laws, reference tools, textual variants, and historical sources.
+    Explore the Tanakh, Apocrypha, New Testament, dietary laws, reference tools, extra-biblical sources, and Black history through Scripture, history, and logic.
   </p>
+</section>
+
+<section class="hub-intro" aria-label="Biblia overview">
+  <article class="hub-note">
+    <span class="label">Study Hub</span>
+    <h2>Scripture, history, law, and identity in one place.</h2>
+    <p>
+      This hub organizes the core reading tools and study resources for biblical literacy, Israelite identity, historical context, and disciplined research.
+    </p>
+  </article>
+
+  <div class="hub-stats" aria-label="Biblia quick stats">
+    <div class="hub-stat">
+      <strong>3</strong>
+      <span>Canon Sections</span>
+    </div>
+    <div class="hub-stat">
+      <strong>81</strong>
+      <span>Book Pages</span>
+    </div>
+    <div class="hub-stat">
+      <strong>Tools</strong>
+      <span>Study Resources</span>
+    </div>
+  </div>
 </section>
 
 <section class="container">
@@ -180,7 +421,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">Canon</div>
 <h3 class="title">The Tanakh</h3>
-<p class="desc">Torah, Prophets, and Writings with periodic-style book cards.</p>
+<p class="desc">Law, historical writings, wisdom, prophets, and restoration hope organized for reading and study.</p>
 </div>
 </a>
 </article>
@@ -191,7 +432,7 @@ html[data-theme="dark"] .biblia-title{
     <div class="body">
       <div class="kicker">Second Temple</div>
       <h3 class="title">The Apocrypha</h3>
-      <p class="desc">Explore Tobit, Judith, Sirach, Wisdom, Maccabees, and more.</p>
+      <p class="desc">Second Temple history, wisdom, resistance, restoration, and Israelite writings with chapter access.</p>
     </div>
   </a>
 </article>
@@ -201,7 +442,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">Canon</div>
 <h3 class="title">New Testament</h3>
-<p class="desc">Gospels, Acts, Epistles, and Revelation organized in rows.</p>
+<p class="desc">The testimony of Christ, apostolic history, letters, and Revelation in Israelite context.</p>
 </div>
 </a>
 </article>
@@ -211,7 +452,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">Torah Focus</div>
 <h3 class="title">Dietary Laws</h3>
-<p class="desc">Clean and unclean foods in a collapsible tree, drawn from the Law.</p>
+<p class="desc">Clean and unclean categories from the Law presented for practical study.</p>
 </div>
 </a>
 </article>
@@ -221,7 +462,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">History</div>
 <h3 class="title">Extra-Biblical Sources</h3>
-<p class="desc">Timeline and references that illuminate the biblical world.</p>
+<p class="desc">Historical witnesses, regions, maps, and sources connected to the biblical world.</p>
 </div>
 </a>
 </article>
@@ -231,7 +472,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">Study Tools</div>
 <h3 class="title">Bible References</h3>
-<p class="desc">Dictionary and encyclopedia entries for quick lookup.</p>
+<p class="desc">Reference tools for terms, themes, people, and Scripture-connected study.</p>
 </div>
 </a>
 </article>
@@ -241,7 +482,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">Reference</div>
 <h3 class="title">Israelite Encyclopedia</h3>
-<p class="desc">People &amp; ethnonym profiles highlighting Semitic–African links, complexion context, and sources.</p>
+<p class="desc">People, terms, ethnonyms, and source-linked entries for deeper research.</p>
 </div>
 </a>
 </article>
@@ -251,7 +492,7 @@ html[data-theme="dark"] .biblia-title{
 <div class="body">
 <div class="kicker">History &amp; Identity</div>
 <h3 class="title">Black History &amp; Biblical Identity</h3>
-<p class="desc">Trace ancient Black presence, Israelite scattering, captivity, colonization, resistance, myths, and study sources through Scripture, history, and logic.</p>
+<p class="desc">Ancient Black presence, Israelite scattering, captivity, colonization, resistance, myths, and study paths.</p>
 </div>
 </a>
 </article>
@@ -260,4 +501,5 @@ html[data-theme="dark"] .biblia-title{
 </main>
 <div data-include="partials/footer.html" id="site-footer"></div>
 <script src="/js/include.js"></script>
+</body>
 </html>
