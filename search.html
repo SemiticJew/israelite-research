@@ -346,7 +346,179 @@
       }
     }
 
-  </style>
+  
+
+/* Search page refinement: quick actions and clearer filters */
+.search-page .search-assist{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:center;
+  margin:-4px 0 22px;
+  padding:16px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 42%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.search-page .search-assist-text{
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.55;
+  font-weight:700;
+}
+
+.search-page .search-assist-text strong{
+  color:var(--ink);
+  font-weight:900;
+}
+
+.search-page .quick-searches{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.search-page .quick-chip{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  min-height:34px;
+  padding:0 11px;
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  cursor:pointer;
+  transition:transform .16s ease, border-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.search-page .quick-chip:hover,
+.search-page .quick-chip:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+.search-page .filter-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 12px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.search-page .filter-head strong{
+  color:var(--ink);
+  font-size:.85rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.search-page .clear-filters{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  min-height:34px;
+  padding:0 10px;
+  font-size:.75rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+
+.search-page .clear-filters:hover,
+.search-page .clear-filters:focus-visible{
+  color:var(--accent);
+  border-color:var(--accent);
+  outline:none;
+}
+
+.search-page .facet .facet-body::-webkit-scrollbar{
+  width:8px;
+}
+
+.search-page .facet .facet-body::-webkit-scrollbar-thumb{
+  background:rgba(241,115,0,.35);
+}
+
+.search-page .facet .check{
+  padding:6px 0;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+
+.search-page .facet .check:last-child{
+  border-bottom:0;
+}
+
+.search-page .facet .check span{
+  line-height:1.35;
+}
+
+.search-page .result-item{
+  position:relative;
+  overflow:hidden;
+}
+
+.search-page .result-item::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .2s ease;
+}
+
+.search-page .result-item:hover::after{
+  transform:scaleY(1);
+}
+
+.search-page .empty p{
+  margin:0;
+  line-height:1.6;
+  font-weight:800;
+}
+
+html[data-theme="dark"] .search-page .search-assist,
+html[data-theme="dark"] .search-page .filter-head,
+html[data-theme="dark"] .search-page .quick-chip,
+html[data-theme="dark"] .search-page .clear-filters{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .search-page .search-assist-text strong,
+html[data-theme="dark"] .search-page .filter-head strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:820px){
+  .search-page .search-assist{
+    grid-template-columns:1fr;
+  }
+
+  .search-page .quick-searches{
+    justify-content:flex-start;
+  }
+}
+
+</style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -378,6 +550,18 @@
       <button class="search-btn" type="submit">Search</button>
     </form>
 
+    <section class="search-assist" aria-label="Search help and quick searches">
+      <div class="search-assist-text">
+        <strong>Tip:</strong> Use quotes for exact phrases, use the tabs to narrow by resource type, or select a quick search below.
+      </div>
+      <div class="quick-searches">
+        <button class="quick-chip" type="button" data-query="dietary laws">Dietary Laws</button>
+        <button class="quick-chip" type="button" data-query="black history">Black History</button>
+        <button class="quick-chip" type="button" data-query="maccabees">Maccabees</button>
+        <button class="quick-chip" type="button" data-query="deuteronomy 28">Deuteronomy 28</button>
+      </div>
+    </section>
+
     <div class="tabs" role="tablist" aria-label="Resource Types">
       <button class="tab" role="tab" data-type="" aria-selected="true">All</button>
       <button class="tab" role="tab" data-type="Article">Articles</button>
@@ -388,6 +572,11 @@
 
     <div class="layout">
       <aside>
+        <div class="filter-head">
+          <strong>Refine Results</strong>
+          <button id="clearFilters" class="clear-filters" type="button">Clear</button>
+        </div>
+
         <section class="facet" aria-labelledby="facet-type">
           <h3 id="facet-type">Type</h3>
           <div class="facet-body" id="facetType"></div>
@@ -559,6 +748,38 @@
     }
 
     document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();state.page=1;syncURL();apply()});
+    document.querySelectorAll('.quick-chip').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.query=btn.dataset.query||'';
+        inputEl.value=state.query;
+        state.page=1;
+        syncURL();
+        apply();
+      });
+    });
+
+    const clearFiltersBtn=document.getElementById('clearFilters');
+    if(clearFiltersBtn){
+      clearFiltersBtn.addEventListener('click',()=>{
+        state.query='';
+        state.type='';
+        state.sort='newest';
+        state.page=1;
+        state.dateFrom='';
+        state.dateTo='';
+        state.active.types.clear();
+        state.active.tags.clear();
+        inputEl.value='';
+        sortEl.value='newest';
+        dateFromEl.value='';
+        dateToEl.value='';
+        $$('.tabs .tab').forEach(btn=>btn.setAttribute('aria-selected', String((btn.dataset.type||'')==='')));
+        populateFacets();
+        syncURL();
+        apply();
+      });
+    }
+
     sortEl.addEventListener('change',()=>{state.sort=sortEl.value;state.page=1;syncURL();apply()});
     document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;state.type=b.dataset.type||'';$$('.tabs .tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');state.page=1;syncURL();apply()});
     facetTypeEl.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')){const v=e.target.value;if(e.target.checked)state.active.types.add(v);else state.active.types.delete(v);state.page=1;syncURL();apply()}});
