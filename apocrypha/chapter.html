@@ -723,6 +723,193 @@ html[data-theme="dark"] body.reader-page .v-panel{
   }
 }
 
+
+
+/* Lexicon refinement: clearer word-study cards */
+body.reader-page aside.panel{
+  overflow:hidden;
+}
+
+body.reader-page .dict-head{
+  align-items:flex-start;
+  gap:14px;
+  padding:18px;
+  margin:0;
+}
+
+body.reader-page .dict-title{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+body.reader-page .dict-title::after{
+  content:"Search words, meanings, and Strong’s entries.";
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  line-height:1.35;
+}
+
+body.reader-page .dict-reveal{
+  padding:0 18px;
+}
+
+body.reader-page .dict-input{
+  margin-top:14px;
+  min-height:46px;
+  padding:0 13px;
+  font-size:.95rem;
+}
+
+body.reader-page .dict-body{
+  padding:16px 18px 20px;
+  margin:0;
+}
+
+body.reader-page .dict-body .muted{
+  margin:0;
+  padding:14px;
+  border:1px dashed var(--border);
+  background:rgba(5,74,145,.035);
+  color:var(--muted);
+  line-height:1.55;
+}
+
+body.reader-page .v-panel.st{
+  padding:14px;
+}
+
+body.reader-page .v-panel.st .strongs-list{
+  display:grid;
+  gap:12px;
+}
+
+body.reader-page .v-panel.st .strongs-item,
+body.reader-page .lex-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:14px;
+}
+
+body.reader-page .v-panel.st .strongs-item .head,
+body.reader-page .lex-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+
+body.reader-page .v-panel.st .strongs-item .code,
+body.reader-page .lex-code{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 8px;
+  border:1px solid rgba(241,115,0,.30);
+  background:rgba(241,115,0,.09);
+  color:var(--accent);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+body.reader-page .v-panel.st .strongs-item .lemma,
+body.reader-page .lex-lemma{
+  color:var(--ink);
+  font-size:1.15rem;
+  font-weight:900;
+  line-height:1.2;
+}
+
+body.reader-page .v-panel.st .strongs-item .tr,
+body.reader-page .v-panel.st .strongs-item .pos,
+body.reader-page .lex-meta{
+  color:var(--muted);
+  font-size:.86rem;
+  font-weight:800;
+  line-height:1.45;
+}
+
+body.reader-page .v-panel.st .strongs-item .gloss,
+body.reader-page .lex-gloss{
+  margin-top:10px;
+  color:var(--ink);
+  font-weight:800;
+  line-height:1.55;
+}
+
+body.reader-page .lex-fields{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+
+body.reader-page .lex-field{
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.025);
+  padding:11px 12px;
+}
+
+body.reader-page .lex-label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.10em;
+}
+
+body.reader-page .lex-value{
+  color:var(--ink);
+  line-height:1.58;
+}
+
+body.reader-page .v-panel.st details.more{
+  margin-top:12px;
+}
+
+body.reader-page .v-panel.st details.more summary{
+  cursor:pointer;
+  color:var(--accent);
+  font-weight:900;
+}
+
+body.reader-page .v-panel.st .defs{
+  margin:10px 0 0 18px;
+  color:var(--ink);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] body.reader-page .dict-body .muted,
+html[data-theme="dark"] body.reader-page .lex-field{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item,
+html[data-theme="dark"] body.reader-page .lex-card{
+  background:var(--surface);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item .lemma,
+html[data-theme="dark"] body.reader-page .lex-lemma,
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item .gloss,
+html[data-theme="dark"] body.reader-page .lex-gloss,
+html[data-theme="dark"] body.reader-page .lex-value,
+html[data-theme="dark"] body.reader-page .v-panel.st .defs{
+  color:#ffffff !important;
+}
+
 </style>
 </head>
 
@@ -767,17 +954,15 @@ html[data-theme="dark"] body.reader-page .v-panel{
 
     <aside class="panel">
       <div class="dict-head">
-        <div class="dict-title">Bible Dictionary</div>
+        <div class="dict-title">Word Study / Lexicon</div>
         <button class="icon-btn" id="dictToggle">
           🔍
         </button>
       </div>
       <div class="dict-reveal" id="dictReveal">
-        <input class="dict-input" id="dictQuery" type="search" placeholder="Type a word, then press Enter">
+        <input class="dict-input" id="dictQuery" type="search" placeholder="Search a word or Strong’s number">
       </div>
-      <div class="dict-body" id="dictBody">
-        <p class="muted">Open the search to look up a term.</p>
-      </div>
+      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Search a word or open a verse lexicon entry.</p></div>
     </aside>
   </section>
 </main>

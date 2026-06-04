@@ -157,29 +157,30 @@
   }
 
   function strongsDetailHTML(entry){
-    if (!entry) return '<div class="muted">No entry.</div>';
-    const { code, lemma='', translit='', pos='', gloss='', defs=[], derivation='', strongs_def='', kjv_def='' } = entry;
-    const defsHtml = Array.isArray(defs) && defs.length
-      ? `<ul style="margin:.35rem 0 .2rem .95rem">${defs.slice(0,7).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`
-      : '';
-    const glossLine = gloss ? `<div style="margin-top:.1rem"><em>${esc(gloss)}</em></div>` : '';
-    const posLine = pos ? `<span class="badge" style="margin-left:.4rem">${esc(pos)}</span>` : '';
-    const extra = `
-      ${derivation ? `<div style="margin-top:.35rem"><b>Derivation:</b> ${esc(derivation)}</div>`:''}
-      ${strongs_def ? `<div style="margin-top:.35rem"><b>Strong’s:</b> ${esc(strongs_def)}</div>`:''}
-      ${kjv_def ? `<div style="margin-top:.35rem"><b>KJV:</b> ${esc(kjv_def)}</div>`:''}
-    `;
+    if (!entry) return '<div class="muted">No lexicon entry found.</div>';
+    const { code='', lemma='', translit='', xlit='', pron='', pos='', gloss='', defs=[], derivation='', strongs_def='', kjv_def='' } = entry;
+    const tr = translit || xlit || '';
+    const meta = [tr, pron, pos].filter(Boolean).join(' · ');
+    const defItems = Array.isArray(defs) && defs.length ? defs.map(d => `<li>${esc(d)}</li>`).join('') : '';
     return `
-      <div class="lx-details" data-code="${esc(code)}" style="margin:.45rem 0 .15rem;padding:.6rem;border:1px solid var(--sky);border-radius:8px;background:#f9fafb">
-        <div style="font-weight:800;color:var(--brand)">${esc(code)}${posLine}</div>
-        <div style="margin:.2rem 0 .1rem">
-          <span dir="auto" style="font-weight:700">${esc(lemma)}</span>
-          ${translit ? `<span class="muted" style="margin-left:.4rem">${esc(translit)}</span>` : ''}
+      <article class="lex-card">
+        <div class="lex-card-head">
+          <div>
+            <div class="lex-lemma" dir="auto">${esc(lemma || code)}</div>
+            ${meta ? `<div class="lex-meta">${esc(meta)}</div>` : ''}
+          </div>
+          ${code ? `<span class="lex-code">${esc(code)}</span>` : ''}
         </div>
-        ${glossLine}
-        ${defsHtml}
-        ${extra}
-      </div>
+
+        ${gloss ? `<div class="lex-gloss">${esc(gloss)}</div>` : ''}
+
+        <div class="lex-fields">
+          ${strongs_def ? `<div class="lex-field"><span class="lex-label">Strong’s Definition</span><div class="lex-value">${esc(strongs_def)}</div></div>` : ''}
+          ${kjv_def ? `<div class="lex-field"><span class="lex-label">KJV Usage</span><div class="lex-value">${esc(kjv_def)}</div></div>` : ''}
+          ${derivation ? `<div class="lex-field"><span class="lex-label">Root / Derivation</span><div class="lex-value">${esc(derivation)}</div></div>` : ''}
+          ${defItems ? `<div class="lex-field"><span class="lex-label">Definitions</span><ul class="defs">${defItems}</ul></div>` : ''}
+        </div>
+      </article>
     `;
   }
 
@@ -191,7 +192,7 @@
       <div>
         <div style="font-weight:800;margin:0 0 .35rem">Lexicon</div>
         ${rows}
-        <div class="muted" style="margin-top:.5rem;font-size:.85rem">Click a code to expand details. Click the “lexicon” pill again to collapse.</div>
+        <div class="muted" style="margin-top:.75rem;font-size:.9rem">Select a Strong’s code below to open the word study details.</div>
       </div>`;
   }
 
@@ -361,8 +362,8 @@
       const bLX = document.createElement('button');
       bLX.type = 'button';
       bLX.className = 'tool-btn';
-      bLX.textContent = 'lexicon';
-      bLX.title = 'Show Strong’s entries for this verse';
+      bLX.textContent = 'word study';
+      bLX.title = 'Show word study and Strong’s entries for this verse';
 
       tools.appendChild(bCP);
       tools.appendChild(bXR);
