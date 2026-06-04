@@ -911,6 +911,124 @@ html[data-theme="dark"] .dietary-page .example-card .card-title{
   }
 }
 
+
+
+/* Dietary Categories: compact example list cards */
+.dietary-page .dietary-tree-shell .example-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:8px;
+  padding:0 16px 16px 42px;
+}
+
+.dietary-page .dietary-tree-shell .example-card{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
+  column-gap:10px;
+  row-gap:3px;
+  min-height:auto;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:none;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.dietary-page .dietary-tree-shell .example-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow);
+}
+
+.dietary-page .dietary-tree-shell .example-card::after{
+  display:none;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-head{
+  grid-row:1 / span 2;
+  align-self:start;
+  min-width:74px;
+  padding:5px 7px;
+  border-radius:999px;
+  text-align:center;
+  font-size:.62rem;
+  line-height:1;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-title{
+  padding:0;
+  color:var(--ink);
+  font-size:.92rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-foot{
+  grid-column:2;
+  padding:0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.35;
+}
+
+.dietary-page .dietary-tree-shell .example-card.allowed .card-head{
+  background:rgba(5,74,145,.10);
+  color:#054A91;
+  border:1px solid rgba(5,74,145,.22);
+}
+
+.dietary-page .dietary-tree-shell .example-card.forbidden .card-head,
+.dietary-page .dietary-tree-shell .example-card.prohibited .card-head,
+.dietary-page .dietary-tree-shell .example-card.avoid .card-head{
+  background:rgba(241,115,0,.12);
+  color:#F17300;
+  border:1px solid rgba(241,115,0,.28);
+}
+
+.dietary-page .dietary-tree-shell .example-card.verify .card-head{
+  background:rgba(129,164,205,.20);
+  color:var(--ink);
+  border:1px solid rgba(129,164,205,.42);
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card .card-title{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .card-head{
+  color:#ffffff;
+}
+
+@media(max-width:700px){
+  .dietary-page .dietary-tree-shell .example-cards{
+    grid-template-columns:1fr;
+    padding-left:14px !important;
+    padding-right:14px;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card{
+    grid-template-columns:1fr;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card .card-head{
+    grid-row:auto;
+    width:max-content;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card .card-foot{
+    grid-column:1;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
