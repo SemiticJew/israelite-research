@@ -356,7 +356,7 @@
       bXR.type = 'button'; bXR.className = 'tool-btn'; bXR.textContent = 'e.g.'; bXR.title = 'e.g. — cross references';
 
       const bCM = document.createElement('button');
-      bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'exposition'; bCM.title = 'Exposition — your notes';
+      bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'study notes'; bCM.title = 'Open personal exposition notes for this verse';
 
       // Lexicon button
       const bLX = document.createElement('button');
@@ -390,7 +390,7 @@
       const ta = document.createElement('textarea');
       ta.className = 'exposition-text';
       ta.setAttribute('rows','8');
-      ta.placeholder = 'Personal exposition for this verse…';
+      ta.placeholder = 'Write your personal exposition, observations, or study notes for this verse…';
       ta.value = notes[v.v] || '';
       ta.addEventListener('input', ()=>{
         clearTimeout(saveTimer);

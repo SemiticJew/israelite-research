@@ -910,6 +910,74 @@ html[data-theme="dark"] body.reader-page .v-panel.st .defs{
   color:#ffffff !important;
 }
 
+
+
+/* Exposition refinement: clearer personal study notes */
+body.reader-page .v-panel.cm{
+  padding:14px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.06), transparent 40%),
+    rgba(5,74,145,.035);
+}
+
+body.reader-page .v-panel.cm::before{
+  content:"Personal Exposition";
+  display:block;
+  margin:0 0 6px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+body.reader-page .v-panel.cm::after{
+  content:"Write your own verse notes, observations, or study thoughts. Notes are saved locally on this device.";
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:700;
+  line-height:1.45;
+}
+
+body.reader-page .exposition-text{
+  width:100%;
+  min-height:130px;
+  resize:vertical;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:13px 14px;
+  font:inherit;
+  font-size:.96rem;
+  line-height:1.65;
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .exposition-text:focus{
+  border-color:var(--accent);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(241,115,0,.14);
+}
+
+body.reader-page .exposition-text::placeholder{
+  color:var(--muted);
+  opacity:.85;
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.cm{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .exposition-text{
+  background:var(--surface);
+  color:#ffffff;
+  border-color:var(--border);
+}
+
 </style>
 </head>
 
