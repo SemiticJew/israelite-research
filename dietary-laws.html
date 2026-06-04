@@ -617,6 +617,300 @@ html[data-theme="dark"] #dietCount{
   }
 }
 
+
+
+/* Dietary Categories modernization */
+.dietary-page .dietary-tree-shell{
+  position:relative;
+  overflow:hidden;
+}
+
+.dietary-page .dietary-tree-shell::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:4px;
+  background:linear-gradient(90deg, var(--accent), var(--blue, #054A91));
+}
+
+.dietary-page .tree{
+  display:grid;
+  gap:16px;
+}
+
+.dietary-page .tree details.sec{
+  position:relative;
+  margin:0;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.dietary-page .tree details.sec[open]{
+  box-shadow:var(--shadow-hover, 0 16px 34px rgba(0,0,0,.12));
+}
+
+.dietary-page .tree details.sec > summary{
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 20px 18px 48px;
+  border-radius:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+  border-bottom:1px solid transparent;
+}
+
+.dietary-page .tree details.sec[open] > summary{
+  border-bottom-color:var(--border);
+}
+
+.dietary-page .tree details.sec > summary::before{
+  left:20px;
+  border-color:var(--accent);
+}
+
+.dietary-page .diet-sec-main{
+  display:grid;
+  gap:5px;
+}
+
+.dietary-page .diet-sec-title{
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.dietary-page .diet-sec-sub{
+  color:var(--muted);
+  font-size:.9rem;
+  font-weight:700;
+  line-height:1.45;
+}
+
+.dietary-page .diet-sec-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  padding:7px 10px;
+  border:1px solid rgba(241,115,0,.28);
+  background:rgba(241,115,0,.08);
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+
+.dietary-page .tree .group{
+  display:grid;
+  gap:12px;
+  margin:0;
+  padding:16px;
+}
+
+.dietary-page .tree .group details.grp{
+  margin:0;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:
+    radial-gradient(circle at top left, rgba(5,74,145,.045), transparent 38%),
+    var(--surface);
+  box-shadow:none;
+  overflow:hidden;
+}
+
+.dietary-page .tree .group details.grp[open]{
+  border-color:rgba(241,115,0,.45);
+}
+
+.dietary-page .tree .group details.grp > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px 14px 42px;
+  border-radius:0;
+  color:var(--ink);
+  background:transparent;
+}
+
+.dietary-page .tree .group details.grp > summary::before{
+  left:17px;
+}
+
+.dietary-page .diet-grp-title{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--ink);
+  font-weight:900;
+  line-height:1.35;
+}
+
+.dietary-page .diet-grp-meta{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-page .tree .tag{
+  border-radius:999px;
+  background:rgba(5,74,145,.055);
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.dietary-page .tree .grp > ul{
+  margin:0 !important;
+  padding:0 16px 14px 42px !important;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.dietary-page .tree .leaf{
+  margin:0;
+}
+
+.dietary-page .law-link{
+  display:inline-flex;
+  align-items:center;
+  min-height:32px;
+  padding:0 10px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.dietary-page .law-link:hover,
+.dietary-page .law-link:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  text-decoration:none;
+  outline:none;
+}
+
+.dietary-page .example-cards{
+  padding:0 16px 16px 42px;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+}
+
+.dietary-page .example-card{
+  position:relative;
+  padding:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.dietary-page .example-card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .18s ease;
+}
+
+.dietary-page .example-card:hover::after{
+  transform:scaleY(1);
+}
+
+.dietary-page .example-card .card-head{
+  padding:9px 12px;
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.dietary-page .example-card .card-title{
+  padding:13px 14px 3px;
+  color:var(--ink);
+  font-size:.98rem;
+  font-weight:900;
+  line-height:1.35;
+}
+
+.dietary-page .example-card .card-foot{
+  padding:0 14px 14px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+html[data-theme="dark"] .dietary-page .tree details.sec,
+html[data-theme="dark"] .dietary-page .tree details.sec > summary,
+html[data-theme="dark"] .dietary-page .tree .group details.grp,
+html[data-theme="dark"] .dietary-page .law-link,
+html[data-theme="dark"] .dietary-page .example-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .dietary-page .diet-sec-title,
+html[data-theme="dark"] .dietary-page .diet-grp-title,
+html[data-theme="dark"] .dietary-page .example-card .card-title{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .dietary-page .tree details.sec > summary{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:18px 18px 18px 46px;
+  }
+
+  .dietary-page .diet-sec-count{
+    align-self:flex-start;
+  }
+
+  .dietary-page .tree .group{
+    padding:12px;
+  }
+
+  .dietary-page .tree .group details.grp > summary{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:14px 14px 14px 40px;
+  }
+
+  .dietary-page .diet-grp-meta{
+    justify-content:flex-start;
+  }
+
+  .dietary-page .tree .grp > ul,
+  .dietary-page .example-cards{
+    padding-left:14px !important;
+    padding-right:14px;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -933,15 +1227,48 @@ html[data-theme="dark"] #dietCount{
   /* ======================= Render & Search ======================= */
   const tree = document.getElementById('dietTree');
 
+
+  const SECTION_META = {
+    "Clean": {
+      sub: "Foods permitted by biblical signs and category markers."
+    },
+    "Unclean": {
+      sub: "Foods forbidden by category, sign, or explicit prohibition."
+    },
+    "Prohibited Practices": {
+      sub: "Practices forbidden even when the animal itself may otherwise be clean."
+    },
+    "Everyday Foods & Hidden Ingredients (Check Labels)": {
+      sub: "Modern ingredients and processed-food issues that require checking labels."
+    }
+  };
+
+  function sectionClass(label){
+    return "sec-" + String(label || "")
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+
   function renderTree(){
     const frag = document.createDocumentFragment();
 
     Object.entries(DATA).forEach(([section, groups]) => {
       const sec = document.createElement('details');
       sec.open = true;
-      sec.className = 'sec';
+      sec.className = 'sec ' + sectionClass(section);
       const sum = document.createElement('summary');
-      sum.innerHTML = `<span class="sumline">${section}</span>`;
+      const secMeta = SECTION_META[section] || {};
+      const groupCount = Object.keys(groups || {}).length;
+      sum.innerHTML = `
+        <span class="diet-sec-main">
+          <span class="diet-sec-title">${section}</span>
+          <span class="diet-sec-sub">${secMeta.sub || 'Open this category to study references and examples.'}</span>
+        </span>
+        <span class="diet-sec-count">${groupCount} ${groupCount === 1 ? 'group' : 'groups'}</span>
+      `;
       sec.appendChild(sum);
 
       const wrap = document.createElement('div');
@@ -958,7 +1285,13 @@ html[data-theme="dark"] #dietCount{
           refs = Array.isArray(payload.refs) ? payload.refs : [];
           examples = Array.isArray(payload.examples) ? payload.examples : [];
         }
-        gsum.innerHTML = `<span class="sumline">${label}</span> <span class="tag">${refs.length} refs</span>${examples.length ? ' <span class="tag">'+examples.length+' examples</span>' : ''}`;
+        gsum.innerHTML = `
+          <span class="diet-grp-title">${iconFor(label)} ${label}</span>
+          <span class="diet-grp-meta">
+            <span class="tag">${refs.length} refs</span>
+            ${examples.length ? '<span class="tag">'+examples.length+' examples</span>' : ''}
+          </span>
+        `;
         grp.appendChild(gsum);
 
         // Refs list
