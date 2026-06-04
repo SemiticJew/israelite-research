@@ -5838,3 +5838,49 @@ html[data-theme="dark"] .hero-image img{
     text-indent:1.25em !important;
   }
 }
+
+
+/* Article standard: author-highlight pull quote */
+.article-doc .article-pullquote{
+  margin:2rem auto;
+  padding:1.4rem 1.5rem 1.35rem;
+  border-left:5px solid var(--accent);
+  border-top:1px solid var(--border);
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 38%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.article-doc .article-pullquote p{
+  margin:0;
+  color:var(--ink);
+  font-family:Spectral, Georgia, serif;
+  font-size:clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight:800;
+  line-height:1.35;
+  letter-spacing:-.02em;
+}
+
+.article-doc .article-pullquote span{
+  display:block;
+  margin-top:.85rem;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+html[data-theme="dark"] .article-doc .article-pullquote{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 38%),
+    var(--surface);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] .article-doc .article-pullquote p{
+  color:#ffffff;
+}
