@@ -308,43 +308,7 @@
     background:linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,.84));
     box-shadow:0 16px 34px rgba(0,0,0,.38);
   }
-
-  /* Legend */
-  .legend{
-    margin:22px 0 0;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-  }
-
-  .legend .chip{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:9px 12px;
-    border:1px solid var(--border);
-    border-radius:999px;
-    background:var(--surface);
-    color:var(--ink);
-    font-size:.88rem;
-    font-weight:900;
-    box-shadow:var(--shadow);
-  }
-
-  .legend .dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-  }
-
-  .legend .dot.law{background:#03264E}
-  .legend .dot.acts{background:#214C72}
-  .legend .dot.wisdom{background:#57799E}
-  .legend .dot.prophets{background:#A94E00}
-  .legend .dot.visions{background:#000000}
-
-  html[data-theme="dark"] .canon-hero{
+html[data-theme="dark"] .canon-hero{
     background:
       radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
       linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
@@ -551,14 +515,6 @@
         <a class="pt-card prophets" href="/tanakh/zechariah.html"><div class="pt-era">c. 6th–5th c. BCE</div><div class="pt-abbr">Zec</div><div class="pt-name">Zechariah</div></a>
         <a class="pt-card prophets" href="/tanakh/malachi.html"><div class="pt-era">c. 5th c. BCE</div><div class="pt-abbr">Mal</div><div class="pt-name">Malachi</div></a>
       </div>
-<!-- Legend BELOW the grid -->
-  <div class="legend" aria-label="Color legend">
-    <span class="chip"><span class="dot law"></span> Law of the Covenant</span>
-    <span class="chip"><span class="dot acts"></span> Acts of Israelites in the Land</span>
-    <span class="chip"><span class="dot wisdom"></span> Songs and Wisdom of Israelites</span>
-    <span class="chip"><span class="dot prophets"></span> Voices of the Prophets</span>
-    <span class="chip"><span class="dot visions"></span> Visions and Restoration</span>
-  </div>
 </main>
 
 <div id="site-footer"></div>
