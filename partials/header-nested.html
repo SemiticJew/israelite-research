@@ -352,6 +352,49 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   border-color:var(--border, #1e293b) !important;
 }
 
+
+
+/* Mobile header visibility fix */
+@media(max-width:920px){
+  #site-header .header-inner{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:10px !important;
+    flex-wrap:wrap !important;
+  }
+
+  #site-header .brand{
+    flex:1 1 auto !important;
+    min-width:0 !important;
+  }
+
+  #site-header .tools{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:8px !important;
+    margin-left:auto !important;
+    flex:0 0 auto !important;
+  }
+
+  #site-header .mobile-menu-toggle{
+    display:inline-flex !important;
+    order:-1;
+  }
+
+  #site-header .tools .icon-btn,
+  #site-header .tools .give-btn,
+  #site-header .tools a[href="/donate.html"],
+  #site-header .tools a[href="/search.html"]{
+    display:inline-flex !important;
+  }
+
+  #site-header nav.primary{
+    flex:1 0 100% !important;
+  }
+}
+
 </style>
 
   <div class="header-inner">
