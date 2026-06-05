@@ -249,6 +249,109 @@
 #site-header .tools{
   margin-left:8px;
 }
+
+/* Mobile hamburger navigation */
+#site-header .mobile-menu-toggle{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--surface, #ffffff);
+  color:var(--ink, #0b2340);
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+}
+
+#site-header .mobile-menu-toggle svg{
+  width:22px;
+  height:22px;
+}
+
+#site-header .mobile-menu-toggle:hover,
+#site-header .mobile-menu-toggle:focus-visible{
+  border-color:var(--accent, #F17300);
+  color:var(--accent, #F17300);
+  outline:none;
+}
+
+@media(max-width:920px){
+  #site-header .header-inner{
+    position:relative;
+    flex-wrap:wrap;
+  }
+
+  #site-header .mobile-menu-toggle{
+    display:inline-flex;
+  }
+
+  #site-header nav.primary{
+    display:none;
+    order:10;
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:1px solid var(--border, #e6ebf2);
+    background:var(--surface, #ffffff);
+    box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+  }
+
+  #site-header.mobile-open nav.primary{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd,
+  #site-header .nav-dd-toggle{
+    width:100%;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    justify-content:space-between;
+    padding:12px 13px;
+    border:1px solid var(--border, #e6ebf2);
+    background:rgba(5,74,145,.025);
+  }
+
+  #site-header .nav-dd{
+    display:grid;
+  }
+
+  #site-header .nav-dd-menu{
+    position:static;
+    display:grid;
+    width:100%;
+    min-width:0;
+    margin-top:6px;
+    padding:8px;
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    box-shadow:none;
+    border:1px solid var(--border, #e6ebf2);
+    background:rgba(241,115,0,.035);
+  }
+
+  #site-header .nav-dd-menu a{
+    padding:10px 12px;
+  }
+
+  #site-header .tools{
+    margin-left:auto;
+  }
+}
+
+html[data-theme="dark"] #site-header .mobile-menu-toggle,
+html[data-theme="dark"] #site-header nav.primary,
+html[data-theme="dark"] #site-header .nav-dd-menu{
+  background:var(--surface, #0f172a) !important;
+  border-color:var(--border, #1e293b) !important;
+}
+
 </style>
 
   <div class="header-inner">
@@ -261,7 +364,7 @@
     </a>
 
     <!-- NAV -->
-    <nav class="primary" aria-label="Primary">
+    <nav class="primary" id="site-primary-nav" aria-label="Primary">
   <a href="/index.html">Home</a>
 
   <div class="nav-dd">
@@ -312,6 +415,11 @@
 
     <!-- TOOLS -->
     <div class="tools">
+          <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-primary-nav">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
 
       <!-- Search -->
       <a class="icon-btn" href="/search.html" aria-label="Search">
