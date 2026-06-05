@@ -150,7 +150,110 @@
       --ink:#f1f5f9;
       --border:#1e293b;
     }
-  </style>
+  
+/* Final global navigation boost */
+#site-header nav.primary{
+  gap:6px;
+}
+
+#site-header nav.primary > a,
+#site-header .nav-dd-toggle{
+  display:inline-flex;
+  align-items:center;
+  min-height:38px;
+  text-decoration:none;
+}
+
+#site-header .nav-dd{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+}
+
+#site-header .nav-dd-toggle::after{
+  content:"";
+  width:7px;
+  height:7px;
+  margin-left:7px;
+  border-right:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);
+  opacity:.65;
+}
+
+#site-header .nav-dd-menu{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
+  z-index:999;
+  min-width:260px;
+  padding:8px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--surface, #ffffff);
+  box-shadow:0 18px 40px rgba(0,0,0,.14);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px);
+  transition:opacity .16s ease, transform .16s ease, visibility .16s ease;
+}
+
+#site-header .nav-dd:hover .nav-dd-menu,
+#site-header .nav-dd:focus-within .nav-dd-menu{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+#site-header .nav-dd-menu a{
+  display:block;
+  padding:10px 11px;
+  border:1px solid transparent;
+  color:var(--ink, #0b2340);
+  text-decoration:none;
+  font-weight:800;
+  border-radius:0;
+}
+
+#site-header .nav-dd-menu a:hover,
+#site-header .nav-dd-menu a:focus-visible{
+  border-color:var(--border, #e6ebf2);
+  color:var(--accent, #F17300);
+  background:rgba(241,115,0,.06);
+  outline:none;
+}
+
+#site-header .give-link{
+  color:var(--accent, #F17300) !important;
+  font-weight:900;
+  border-color:rgba(241,115,0,.30) !important;
+  background:rgba(241,115,0,.07);
+}
+
+#site-header .give-link:hover,
+#site-header .give-link:focus-visible{
+  border-color:var(--accent, #F17300) !important;
+  color:var(--accent, #F17300) !important;
+}
+
+@media(max-width:920px){
+  #site-header nav.primary{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  #site-header .nav-dd{
+    position:static;
+  }
+
+  #site-header .nav-dd-menu{
+    left:16px;
+    right:16px;
+    width:auto;
+    min-width:0;
+  }
+}
+
+</style>
 
   <div class="header-inner">
 
@@ -163,90 +266,55 @@
 
     <!-- NAV -->
     <nav class="primary" aria-label="Primary">
+  <a href="/index.html">Home</a>
 
-      <div class="nav-item">
-        <a href="/index.html" class="nav-link">Home</a>
-      </div>
-
-      <div class="nav-item">
-        <a href="/articles.html" class="nav-link">
-          Articles
-          <span class="arrow" aria-hidden="true"></span>
-        </a>
-        <div class="dropdown">
-          <a href="/articles.html">Featured Articles</a>
-          <a href="/articles-all.html">Archive</a>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <a href="/about.html" class="nav-link">About</a>
-      </div>
-
-      <div class="nav-item">
-        <a href="#" class="nav-link">
-          Organization
-          <span class="arrow">
-            <svg viewBox="0 0 24 24" width="14" height="14">
-              <path d="M6 9l6 6 6-6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-          </span>
-        </a>
-        <div class="dropdown">
-          <a href="/israelite-catechism.html">Catechism</a>
-        </div>
-      </div>
-
-      <div class="nav-item">
-  <a href="#" class="nav-link">
-    Contact
-    <span class="arrow">
-      <svg viewBox="0 0 24 24" width="14" height="14">
-        <path d="M6 9l6 6 6-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"/>
-      </svg>
-    </span>
-  </a>
-  <div class="dropdown">
-    <a href="/contact.html">Contact Page</a>
-    <a href="/events.html">Events</a>
-    <a href="/newsletter.html">Newsletter</a>
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/ologies.html" aria-haspopup="true">Ologies</a>
+    <div class="nav-dd-menu" aria-label="Ologies submenu">
+      <a href="/ologies.html">Ologies Hub</a>
+      <a href="/ologies/bibliology.html">Bibliology</a>
+      <a href="/ologies/elology.html">Elology</a>
+      <a href="/ologies/christology.html">Christology</a>
+      <a href="/ologies/pneumatology.html">Pneumatology</a>
+      <a href="/ologies/anthropology.html">Anthropology</a>
+      <a href="/ologies/hamartiology.html">Hamartiology</a>
+      <a href="/ologies/soteriology.html">Soteriology</a>
+      <a href="/ologies/israelology.html">Israelology</a>
+      <a href="/ologies/ecclesiology.html">Ecclesiology</a>
+      <a href="/ologies/eschatology.html">Eschatology</a>
+    </div>
   </div>
-</div>
 
-      <div class="nav-item">
-        <a href="#" class="nav-link">
-          Resources
-          <span class="arrow">
-            <svg viewBox="0 0 24 24" width="14" height="14">
-              <path d="M6 9l6 6 6-6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-          </span>
-        </a>
-        <div class="dropdown">
-          <a href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank">Apple Podcast</a>
-          <a href="/biblia.html">Biblia</a>
-          <a href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi?si=0264d1aebb8d4db3" target="_blank">Spotify Podcast</a>
-          <a href="https://www.youtube.com/channel/UC6ukYTYZ8YqsSYq4-nl11gA" target="_blank">YouTube Page</a>
-          <a href="/media.html">Media</a>
-        </div>
-      </div>
+  <a href="/articles.html">Articles</a>
 
-    </nav>
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/biblia.html" aria-haspopup="true">Biblia</a>
+    <div class="nav-dd-menu" aria-label="Biblia submenu">
+      <a href="/biblia.html">Biblia Hub</a>
+      <a href="/tanakh.html">Tanakh</a>
+      <a href="/newtestament.html">New Testament</a>
+      <a href="/apocrypha.html">Apocrypha</a>
+      <a href="/dietary-laws.html">Dietary Laws</a>
+      <a href="/biblical_references.html">Biblical References</a>
+      <a href="/extra-biblical-sources.html">Extra-Biblical Sources</a>
+      <a href="/black-history-biblical-identity.html">Black History &amp; Biblical Identity</a>
+    </div>
+  </div>
+
+  <a href="/media.html">Media</a>
+
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/about.html" aria-haspopup="true">Organization</a>
+    <div class="nav-dd-menu" aria-label="Organization submenu">
+      <a href="/about.html">About</a>
+      <a href="/website-app.html">App</a>
+      <a href="/events.html">Events</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+
+  <a class="give-link" href="/donate.html">Give</a>
+</nav>
 
     <!-- TOOLS -->
     <div class="tools">
