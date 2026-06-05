@@ -491,6 +491,147 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   }
 }
 
+
+
+/* Mobile no-wrap header correction */
+@media(max-width:920px){
+  #site-header .header-inner{
+    display:grid !important;
+    grid-template-columns:minmax(92px, 1fr) auto !important;
+    align-items:center !important;
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+  }
+
+  #site-header .brand{
+    grid-column:1 !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow:visible !important;
+  }
+
+  #site-header .brand .mark{
+    flex:0 0 auto !important;
+  }
+
+  #site-header .brand span:last-child{
+    display:inline !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    white-space:nowrap !important;
+    min-width:0 !important;
+  }
+
+  #site-header .tools{
+    grid-column:2 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:5px !important;
+    margin-left:0 !important;
+    min-width:max-content !important;
+    flex-wrap:nowrap !important;
+  }
+
+  #site-header .mobile-menu-toggle,
+  #site-header .tools .icon-btn{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    padding:0 !important;
+  }
+
+  #site-header .mobile-menu-toggle svg,
+  #site-header .tools .icon-btn svg{
+    width:18px !important;
+    height:18px !important;
+  }
+
+  #site-header .tools .give-btn,
+  #site-header .tools a[href="/donate.html"],
+  #site-header .tools a[href="/donations.html"]{
+    min-height:34px !important;
+    height:34px !important;
+    padding:0 8px !important;
+    font-size:.74rem !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+  }
+
+  #site-header nav.primary{
+    grid-column:1 / -1 !important;
+    order:unset !important;
+    width:100% !important;
+    margin-top:8px !important;
+  }
+}
+
+@media(max-width:430px){
+  #site-header .header-inner{
+    grid-template-columns:minmax(72px, 1fr) auto !important;
+    gap:6px !important;
+  }
+
+  #site-header .brand{
+    gap:6px !important;
+  }
+
+  #site-header .brand .mark{
+    width:24px !important;
+    height:24px !important;
+  }
+
+  #site-header .brand span:last-child{
+    display:inline !important;
+    max-width:78px !important;
+    font-size:.92rem !important;
+  }
+
+  #site-header .tools{
+    gap:4px !important;
+  }
+
+  #site-header .mobile-menu-toggle,
+  #site-header .tools .icon-btn{
+    width:32px !important;
+    height:32px !important;
+    min-width:32px !important;
+  }
+
+  #site-header .tools .give-btn,
+  #site-header .tools a[href="/donate.html"],
+  #site-header .tools a[href="/donations.html"]{
+    min-height:32px !important;
+    height:32px !important;
+    padding:0 7px !important;
+    font-size:.7rem !important;
+  }
+}
+
+@media(max-width:360px){
+  #site-header .brand span:last-child{
+    max-width:58px !important;
+  }
+
+  #site-header .mobile-menu-toggle,
+  #site-header .tools .icon-btn{
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+  }
+
+  #site-header .tools .give-btn,
+  #site-header .tools a[href="/donate.html"],
+  #site-header .tools a[href="/donations.html"]{
+    height:30px !important;
+    min-height:30px !important;
+    padding:0 6px !important;
+    font-size:.68rem !important;
+  }
+}
+
 </style>
 
   <div class="header-inner">
