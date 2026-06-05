@@ -1,25 +1,471 @@
-<!-- partials/header-nested.html -->
-<header class="site-header">
-  <div class="container header-bar">
-    <a href="/index.html" class="site-title">Semitic Jew</a>
+<!-- Universal Header Partial (Stabilized Light/Dark Version) -->
+<header id="site-header" class="site-header-bar">
 
-    <nav class="main-nav" aria-label="Primary">
-      <ul class="nav-list">
-        <li><a href="/articles.html">Articles</a></li>
-        <li><a href="/texts.html">Texts</a></li>
-        <li><a href="/ologies.html">Ologies</a></li>
-        <li><a href="/events.html">Events</a></li>
-        <li><a href="/podcast.html">Podcast</a></li>
-        <li><a href="/donate.html">Donations</a></li>
-      </ul>
-    </nav>
+  <style>
+    #site-header{
+      background: var(--surface, #ffffff);
+      color: var(--ink, #0b2340);
+      border-bottom: 1px solid var(--border, #e6ebf2);
+      position:relative;
+      z-index:1000;
+    }
 
-    <a class="nav-icon" href="/search.html" aria-label="Search">
-      <!-- magnifying glass icon -->
-      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-        <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+    #site-header .header-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:16px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    /* LOGO */
+    #site-header .brand img{
+      height:52px;
+    }
+
+    /* NAVIGATION */
+    #site-header nav.primary{
+      display:flex;
+      gap:36px;
+      margin-left:40px;
+      font-family: Georgia, serif;
+      font-size:1.05rem;
+      align-items:center;
+    }
+
+    #site-header .nav-item{
+      position:relative;
+    }
+
+    #site-header .nav-link{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      color:var(--ink,#0b2340);
+      padding:6px 0;
+      transition:opacity .2s ease;
+    }
+
+    #site-header .nav-link:hover{
+      opacity:.75;
+    }
+
+    /* Chevron */
+    #site-header .arrow{
+      display:inline-flex;
+      transition:transform .25s ease;
+    }
+
+    #site-header .nav-item:hover .arrow{
+      transform:rotate(180deg);
+    }
+
+    /* DROPDOWN */
+    #site-header .dropdown{
+      position:absolute;
+      top:100%;
+      left:0;
+      background:var(--surface,#fff);
+      border:1px solid var(--border,#e6ebf2);
+      border-radius:14px;
+      box-shadow:0 20px 40px rgba(0,0,0,.12);
+      padding:12px 0;
+      min-width:220px;
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(8px);
+      transition:all .2s ease;
+    }
+
+    #site-header .dropdown a{
+      display:block;
+      padding:10px 18px;
+      font-size:.95rem;
+      text-decoration:none;
+      color:var(--ink,#0b2340);
+    }
+
+    #site-header .dropdown a:hover{
+      background:rgba(0,0,0,.04);
+    }
+
+    #site-header .nav-item:hover .dropdown{
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0);
+    }
+
+    /* RIGHT TOOLS */
+    #site-header .tools{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    #site-header .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--ink,#0b2340);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+
+    #site-header .icon-btn:hover{
+      background:var(--surface-alt);
+      border-color:var(--border,#e6ebf2);
+    }
+
+    #site-header #theme-icon{
+      stroke:currentColor;
+      color:var(--ink);
+    }
+
+    #site-header .give-btn{
+      padding:9px 18px;
+      border-radius:999px;
+      background:var(--accent,#F17300);
+      color:#fff;
+      font-weight:700;
+      text-decoration:none;
+      transition:all .2s ease;
+    }
+
+    #site-header .give-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 25px rgba(241,115,0,.35);
+    }
+
+    /* DARK MODE VARIABLES */
+    html[data-theme="dark"]{
+      --surface:#0f172a;
+      --ink:#f1f5f9;
+      --border:#1e293b;
+    }
+  
+/* Final global navigation boost */
+#site-header nav.primary{
+  gap:14px;
+  align-items:center;
+}
+
+#site-header nav.primary > a,
+#site-header .nav-dd-toggle{
+  display:inline-flex;
+  align-items:center;
+  min-height:38px;
+  text-decoration:none;
+
+  padding:8px 11px;
+  line-height:1;
+}
+
+#site-header .nav-dd{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+}
+
+#site-header .nav-dd-toggle::after{
+  content:"";
+  width:7px;
+  height:7px;
+  margin-left:7px;
+  border-right:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);
+  opacity:.65;
+}
+
+#site-header .nav-dd-menu{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;
+  z-index:999;
+  min-width:260px;
+  padding:8px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--surface, #ffffff);
+  box-shadow:0 18px 40px rgba(0,0,0,.14);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px);
+  transition:opacity .16s ease, transform .16s ease, visibility .16s ease;
+}
+
+#site-header .nav-dd:hover .nav-dd-menu,
+#site-header .nav-dd:focus-within .nav-dd-menu{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+#site-header .nav-dd-menu a{
+  display:block;
+  padding:10px 11px;
+  border:1px solid transparent;
+  color:var(--ink, #0b2340);
+  text-decoration:none;
+  font-weight:800;
+  border-radius:0;
+}
+
+#site-header .nav-dd-menu a:hover,
+#site-header .nav-dd-menu a:focus-visible{
+  border-color:var(--border, #e6ebf2);
+  color:var(--accent, #F17300);
+  background:rgba(241,115,0,.06);
+  outline:none;
+}
+
+@media(max-width:920px){
+  #site-header nav.primary{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  #site-header .nav-dd{
+    position:static;
+  }
+
+  #site-header .nav-dd-menu{
+    left:16px;
+    right:16px;
+    width:auto;
+    min-width:0;
+  }
+}
+
+
+/* Header tools spacing after nav boost */
+#site-header .tools{
+  margin-left:8px;
+}
+
+/* Mobile hamburger navigation */
+#site-header .mobile-menu-toggle{
+  display:none;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--surface, #ffffff);
+  color:var(--ink, #0b2340);
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+}
+
+#site-header .mobile-menu-toggle svg{
+  width:22px;
+  height:22px;
+}
+
+#site-header .mobile-menu-toggle:hover,
+#site-header .mobile-menu-toggle:focus-visible{
+  border-color:var(--accent, #F17300);
+  color:var(--accent, #F17300);
+  outline:none;
+}
+
+@media(max-width:920px){
+  #site-header .header-inner{
+    position:relative;
+    flex-wrap:wrap;
+  }
+
+  #site-header .mobile-menu-toggle{
+    display:inline-flex;
+  }
+
+  #site-header nav.primary{
+    display:none;
+    order:10;
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:1px solid var(--border, #e6ebf2);
+    background:var(--surface, #ffffff);
+    box-shadow:var(--shadow, 0 1px 2px rgba(0,0,0,.05));
+  }
+
+  #site-header.mobile-open nav.primary{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd,
+  #site-header .nav-dd-toggle{
+    width:100%;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    justify-content:space-between;
+    padding:12px 13px;
+    border:1px solid var(--border, #e6ebf2);
+    background:rgba(5,74,145,.025);
+  }
+
+  #site-header .nav-dd{
+    display:grid;
+  }
+
+  #site-header .nav-dd-menu{
+    position:static;
+    display:grid;
+    width:100%;
+    min-width:0;
+    margin-top:6px;
+    padding:8px;
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    box-shadow:none;
+    border:1px solid var(--border, #e6ebf2);
+    background:rgba(241,115,0,.035);
+  }
+
+  #site-header .nav-dd-menu a{
+    padding:10px 12px;
+  }
+
+  #site-header .tools{
+    margin-left:auto;
+  }
+}
+
+html[data-theme="dark"] #site-header .mobile-menu-toggle,
+html[data-theme="dark"] #site-header nav.primary,
+html[data-theme="dark"] #site-header .nav-dd-menu{
+  background:var(--surface, #0f172a) !important;
+  border-color:var(--border, #1e293b) !important;
+}
+
+</style>
+
+  <div class="header-inner">
+
+    <!-- LOGO -->
+    <a class="brand" href="/index.html">
+      <img id="site-logo"
+           src="/images/black-logo-letters.png"
+           alt="Semitic Jew Logo">
     </a>
+
+    <!-- NAV -->
+    <nav class="primary" id="site-primary-nav" aria-label="Primary">
+  <a href="/index.html">Home</a>
+
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/ologies.html" aria-haspopup="true">Ologies</a>
+    <div class="nav-dd-menu" aria-label="Ologies submenu">
+      <a href="/ologies.html">Ologies Hub</a>
+      <a href="/ologies/bibliology.html">Bibliology</a>
+      <a href="/ologies/elology.html">Elology</a>
+      <a href="/ologies/christology.html">Christology</a>
+      <a href="/ologies/pneumatology.html">Pneumatology</a>
+      <a href="/ologies/anthropology.html">Anthropology</a>
+      <a href="/ologies/hamartiology.html">Hamartiology</a>
+      <a href="/ologies/soteriology.html">Soteriology</a>
+      <a href="/ologies/israelology.html">Israelology</a>
+      <a href="/ologies/ecclesiology.html">Ecclesiology</a>
+      <a href="/ologies/eschatology.html">Eschatology</a>
+    </div>
+  </div>
+
+  <a href="/articles.html">Articles</a>
+
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/biblia.html" aria-haspopup="true">Biblia</a>
+    <div class="nav-dd-menu" aria-label="Biblia submenu">
+      <a href="/biblia.html">Biblia Hub</a>
+      <a href="/tanakh.html">Tanakh</a>
+      <a href="/newtestament.html">New Testament</a>
+      <a href="/apocrypha.html">Apocrypha</a>
+      <a href="/dietary-laws.html">Dietary Laws</a>
+      <a href="/biblical_references.html">Biblical References</a>
+      <a href="/extra-biblical-sources.html">Extra-Biblical Sources</a>
+      <a href="/black-history-biblical-identity.html">Black History &amp; Biblical Identity</a>
+    </div>
+  </div>
+
+  <a href="/media.html">Media</a>
+
+  <div class="nav-dd">
+    <a class="nav-dd-toggle" href="/about.html" aria-haspopup="true">Organization</a>
+    <div class="nav-dd-menu" aria-label="Organization submenu">
+      <a href="/about.html">About</a>
+      <a href="/website-app.html">App</a>
+      <a href="/events.html">Events</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+    <!-- TOOLS -->
+    <div class="tools">
+          <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-primary-nav">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+      <!-- Search -->
+      <a class="icon-btn" href="/search.html" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+<div class="theme-toggle-group">
+
+  <!-- Light Mode (Sun) -->
+  <button class="theme-btn" data-theme="light" aria-label="Light Mode">
+    <svg viewBox="0 0 24 24"
+         width="18"
+         height="18"
+         stroke="currentColor"
+         fill="none"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="1" x2="12" y2="4"/>
+      <line x1="12" y1="20" x2="12" y2="23"/>
+      <line x1="1" y1="12" x2="4" y2="12"/>
+      <line x1="20" y1="12" x2="23" y2="12"/>
+      <line x1="4.2" y1="4.2" x2="6.5" y2="6.5"/>
+      <line x1="17.5" y1="17.5" x2="19.8" y2="19.8"/>
+      <line x1="4.2" y1="19.8" x2="6.5" y2="17.5"/>
+      <line x1="17.5" y1="6.5" x2="19.8" y2="4.2"/>
+    </svg>
+  </button>
+
+  <!-- Dark Mode (Moon) -->
+<button class="theme-btn" data-theme="dark" aria-label="Dark Mode">
+  <svg class="moon-svg" viewBox="0 0 24 24" width="22" height="22">
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  </svg>
+</button>
+
+</div>
+            <a class="give-btn" href="/donate.html">
+        Give
+      </a>
+
+    </div>
+
   </div>
 </header>
