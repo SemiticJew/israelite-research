@@ -632,6 +632,62 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   }
 }
 
+
+
+/* Mobile menu simplification: collapsed submenus */
+@media(max-width:920px){
+  #site-header.mobile-open nav.primary{
+    max-height:calc(100vh - 78px);
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    min-height:46px !important;
+    font-size:.95rem;
+  }
+
+  #site-header .nav-dd-menu{
+    display:none !important;
+    margin:6px 0 4px;
+    padding:6px;
+  }
+
+  #site-header .nav-dd.mobile-subopen .nav-dd-menu{
+    display:grid !important;
+  }
+
+  #site-header .nav-dd.mobile-subopen .nav-dd-toggle::after{
+    transform:rotate(225deg) translate(-2px,-1px);
+  }
+
+  #site-header .nav-dd-menu a{
+    min-height:40px;
+    display:flex;
+    align-items:center;
+    padding:9px 12px;
+    font-size:.9rem;
+    border-left:3px solid transparent;
+  }
+
+  #site-header .nav-dd-menu a:hover,
+  #site-header .nav-dd-menu a:focus-visible{
+    border-left-color:var(--accent, #F17300);
+  }
+
+  #site-header nav.primary::before{
+    content:"Menu";
+    display:block;
+    padding:2px 2px 8px;
+    color:var(--accent, #F17300);
+    font-size:.74rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+  }
+}
+
 </style>
 
   <div class="header-inner">
