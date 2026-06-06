@@ -688,6 +688,69 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   }
 }
 
+
+
+/* Mobile nav alignment fix: prevent submenu shifting */
+@media(max-width:920px){
+  #site-header.mobile-open nav.primary{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    overflow-x:hidden !important;
+    justify-items:stretch !important;
+    align-items:stretch !important;
+  }
+
+  #site-header nav.primary,
+  #site-header nav.primary *,
+  #site-header .nav-dd,
+  #site-header .nav-dd-menu{
+    box-sizing:border-box !important;
+  }
+
+  #site-header .nav-dd{
+    width:100% !important;
+    max-width:100% !important;
+    display:block !important;
+    position:relative !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 !important;
+    transform:none !important;
+  }
+
+  #site-header .nav-dd-menu{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    left:auto !important;
+    right:auto !important;
+    margin:6px 0 4px 0 !important;
+    transform:none !important;
+  }
+
+  #site-header .nav-dd.mobile-subopen{
+    transform:none !important;
+  }
+
+  #site-header .nav-dd.mobile-subopen .nav-dd-menu{
+    transform:none !important;
+  }
+
+  #site-header .nav-dd-menu a{
+    width:100% !important;
+    margin:0 !important;
+    transform:none !important;
+  }
+}
+
 </style>
 
   <div class="header-inner">
