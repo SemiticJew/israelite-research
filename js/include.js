@@ -287,3 +287,15 @@
   const mo = new MutationObserver(setupMobileSubmenus);
   mo.observe(document.documentElement, {childList:true, subtree:true});
 })();
+
+
+/* PWA service worker registration */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/sw.js').catch(function(err){
+      console.warn('Semitic Jew service worker registration failed:', err);
+    });
+  });
+})();

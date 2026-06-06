@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Offline — Semitic Jew</title>
+<meta name="description" content="You are offline. Some Semitic Jew resources may still be available if previously loaded."/>
+<link rel="stylesheet" href="/styles.css"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+<style>
+body.offline-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.offline-page main{
+  max-width:900px;
+  margin:0 auto;
+  padding:70px 24px;
+}
+
+.offline-card{
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    var(--surface);
+  box-shadow:var(--shadow);
+  padding:34px;
+}
+
+.offline-kicker{
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.offline-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2rem, 5vw, 4rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.offline-text{
+  margin:18px 0 0;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:1.05rem;
+}
+
+.offline-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+
+.offline-actions a,
+.offline-actions button{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.offline-actions a:hover,
+.offline-actions button:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .offline-title{
+  color:#ffffff;
+}
+
+@media(max-width:700px){
+  .offline-page main{
+    padding:38px 20px;
+  }
+
+  .offline-card{
+    padding:26px 20px;
+  }
+
+  .offline-actions a,
+  .offline-actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+<body class="offline-page">
+<div id="site-header"></div>
+
+<main>
+  <section class="offline-card">
+    <p class="offline-kicker">Offline Mode</p>
+    <h1 class="offline-title">You are offline.</h1>
+    <p class="offline-text">
+      Semitic Jew could not load this page because the connection is unavailable. Previously visited pages may still work from your device cache.
+    </p>
+    <div class="offline-actions">
+      <button type="button" onclick="window.location.reload()">Try Again</button>
+      <a href="/app.html">Open App Hub</a>
+      <a href="/biblia.html">Open Biblia</a>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/js/include.js"></script>
+</body>
+</html>
