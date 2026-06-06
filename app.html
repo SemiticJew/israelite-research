@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Semitic Jew App — Semitic Jew</title>
+<meta name="description" content="Install the Semitic Jew app experience for quick access to Scripture, articles, study tools, media, dietary laws, and future Bible app features."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Semitic Jew App — Semitic Jew"/>
+<meta property="og:description" content="Install the Semitic Jew app experience for quick access to Scripture, articles, study tools, media, dietary laws, and future Bible app features."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/app.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Semitic Jew App — Semitic Jew"/>
+<meta name="twitter:description" content="Install the Semitic Jew app experience for quick access to Scripture, articles, study tools, media, dietary laws, and future Bible app features."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+<style>
+body.app-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.app-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.app-hero{
+  margin:24px 0 34px;
+  padding:64px 30px;
+  border:1px solid var(--border);
+  text-align:center;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
+  box-shadow:var(--shadow);
+}
+
+.app-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.app-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.6rem, 6vw, 5.2rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.055em;
+}
+
+.app-subtitle{
+  max-width:850px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.08rem;
+  line-height:1.7;
+}
+
+.app-actions{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:26px;
+}
+
+.app-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:var(--shadow);
+  transition:transform .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.app-btn.primary{
+  color:#fff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+.app-btn:hover,
+.app-btn:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:var(--shadow-hover, 0 14px 30px rgba(0,0,0,.14));
+  outline:none;
+}
+
+.app-btn.primary:hover,
+.app-btn.primary:focus-visible{
+  color:#fff;
+}
+
+.app-overview{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+  margin:0 0 28px;
+}
+
+.app-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+
+.app-card .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-card h2,
+.app-card h3{
+  margin:0 0 10px;
+  color:var(--ink);
+  font-size:1.35rem;
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+
+.app-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.app-feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin:28px 0;
+}
+
+.app-feature{
+  position:relative;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:18px;
+  overflow:hidden;
+}
+
+.app-feature::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .18s ease;
+}
+
+.app-feature:hover::before{
+  transform:scaleY(1);
+}
+
+.app-feature h3{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+}
+
+.app-feature p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.58;
+  font-size:.94rem;
+}
+
+.app-roadmap{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:24px;
+  margin-top:28px;
+}
+
+.app-roadmap h2{
+  margin:0 0 14px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+
+.roadmap-list{
+  display:grid;
+  gap:12px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.roadmap-list li{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:start;
+  padding:12px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.025);
+}
+
+.roadmap-list strong{
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.roadmap-list span{
+  color:var(--muted);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] .app-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.24), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .app-title,
+html[data-theme="dark"] .app-card h2,
+html[data-theme="dark"] .app-card h3,
+html[data-theme="dark"] .app-feature h3,
+html[data-theme="dark"] .app-roadmap h2{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .app-card,
+html[data-theme="dark"] .app-feature,
+html[data-theme="dark"] .app-roadmap,
+html[data-theme="dark"] .roadmap-list li,
+html[data-theme="dark"] .app-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:920px){
+  .app-overview,
+  .app-feature-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .app-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .app-hero{
+    margin:18px 0 28px;
+    padding:46px 20px;
+  }
+
+  .app-actions{
+    align-items:stretch;
+  }
+
+  .app-btn{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body class="app-page">
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/about.html">Organization</a>
+    <span class="sep">›</span>
+    <span class="current">App</span>
+  </nav>
+
+  <section class="app-hero">
+    <div class="app-kicker">Semitic Jew App</div>
+    <h1 class="app-title">Study Scripture Anywhere</h1>
+    <p class="app-subtitle">
+      The Semitic Jew app experience begins as an installable website app and grows into a full study platform for Scripture, articles, media, dietary laws, notes, bookmarks, and future Bible app tools.
+    </p>
+
+    <div class="app-actions">
+      <a class="app-btn primary" href="/website-app.html">Install Website App</a>
+      <a class="app-btn" href="/bible-app.html">View Bible App Preview</a>
+      <a class="app-btn" href="/biblia.html">Open Biblia</a>
+    </div>
+  </section>
+
+  <section class="app-overview" aria-label="App overview">
+    <article class="app-card">
+      <span class="label">PWA First</span>
+      <h2>Install the site now. Build the full app next.</h2>
+      <p>
+        This approach lets the brand move now without waiting on App Store approval. Readers can install the website app, access major study areas quickly, and use the same content system already powering the site.
+      </p>
+    </article>
+
+    <article class="app-card">
+      <span class="label">Future Bible App</span>
+      <h2>Scripture tools are already the foundation.</h2>
+      <p>
+        The Tanakh, New Testament, Apocrypha, chapter readers, word study tools, cross references, and article system give the brand a strong foundation for a full Bible app experience.
+      </p>
+    </article>
+  </section>
+
+  <section class="app-feature-grid" aria-label="App features">
+    <article class="app-feature">
+      <h3>Scripture Reader</h3>
+      <p>Quick access to Tanakh, New Testament, Apocrypha, chapter navigation, verse tools, and study panels.</p>
+    </article>
+
+    <article class="app-feature">
+      <h3>Articles & Teachings</h3>
+      <p>Read structured teachings, research articles, pull quotes, footnotes, and topic-focused study material.</p>
+    </article>
+
+    <article class="app-feature">
+      <h3>Dietary Laws</h3>
+      <p>Search clean and unclean foods, hidden ingredients, references, and practical modern examples.</p>
+    </article>
+
+    <article class="app-feature">
+      <h3>Media</h3>
+      <p>Connect users to video teachings, YouTube resources, and the wider Semitic Jew content ecosystem.</p>
+    </article>
+
+    <article class="app-feature">
+      <h3>Search</h3>
+      <p>Find articles, Scripture tools, references, topics, and site resources from one searchable experience.</p>
+    </article>
+
+    <article class="app-feature">
+      <h3>Future Study Tools</h3>
+      <p>Planned tools include bookmarks, highlights, local notes, reading history, offline reading, and reading plans.</p>
+    </article>
+  </section>
+
+  <section class="app-roadmap" aria-label="App roadmap">
+    <h2>Build Roadmap</h2>
+    <ul class="roadmap-list">
+      <li>
+        <strong>Phase 1</strong>
+        <span>Clean up the current app pages and make `/app.html` the main Organization → App destination.</span>
+      </li>
+      <li>
+        <strong>Phase 2</strong>
+        <span>Strengthen the PWA install experience with manifest, icons, install prompts, and service worker strategy.</span>
+      </li>
+      <li>
+        <strong>Phase 3</strong>
+        <span>Add app-like dashboard features: continue reading, saved tools, bookmarks, local notes, and reading history.</span>
+      </li>
+      <li>
+        <strong>Phase 4</strong>
+        <span>Prepare the Bible app experience for later native packaging if the PWA proves strong with users.</span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/include.js"></script>
+</body>
+</html>
