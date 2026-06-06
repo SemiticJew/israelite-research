@@ -751,6 +751,71 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   }
 }
 
+
+
+/* Mobile dropdown refinement: cleaner submenu links */
+@media(max-width:920px){
+  #site-header .nav-dd-menu{
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    padding:2px 0 6px 14px !important;
+    margin:4px 0 8px 0 !important;
+  }
+
+  #site-header .nav-dd-menu a{
+    min-height:34px !important;
+    padding:7px 4px !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    color:var(--muted, #6b7280) !important;
+    font-size:.92rem !important;
+    font-weight:600 !important;
+    line-height:1.25 !important;
+    letter-spacing:0 !important;
+    box-shadow:none !important;
+  }
+
+  #site-header .nav-dd-menu a:hover,
+  #site-header .nav-dd-menu a:focus-visible{
+    background:transparent !important;
+    border:0 !important;
+    color:var(--accent, #F17300) !important;
+    text-decoration:none !important;
+    outline:none !important;
+  }
+
+  #site-header .nav-dd-menu a::before{
+    content:"";
+    width:6px;
+    height:6px;
+    margin-right:8px;
+    border-radius:999px;
+    background:rgba(241,115,0,.45);
+    display:inline-block;
+    flex:0 0 auto;
+  }
+
+  #site-header .nav-dd-toggle{
+    font-weight:800 !important;
+  }
+
+  #site-header nav.primary > a{
+    font-weight:800 !important;
+  }
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a{
+  background:transparent !important;
+  color:var(--muted, #94a3b8) !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
+  color:var(--accent, #F17300) !important;
+}
+
 </style>
 
   <div class="header-inner">
