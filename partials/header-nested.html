@@ -816,6 +816,113 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   color:var(--accent, #F17300) !important;
 }
 
+
+
+/* Mobile nav minimal refinement */
+@media(max-width:920px){
+  #site-header.mobile-open nav.primary{
+    border:0 !important;
+    box-shadow:none !important;
+    background:transparent !important;
+    padding:6px 0 10px !important;
+  }
+
+  #site-header nav.primary::before{
+    display:none !important;
+    content:none !important;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    min-height:42px !important;
+    padding:10px 2px !important;
+    border:0 !important;
+    border-bottom:1px solid var(--border, #e6ebf2) !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    color:var(--ink, #0b2340) !important;
+    font-size:.95rem !important;
+    font-weight:500 !important;
+    letter-spacing:0 !important;
+  }
+
+  #site-header nav.primary > a:hover,
+  #site-header nav.primary > a:focus-visible,
+  #site-header .nav-dd-toggle:hover,
+  #site-header .nav-dd-toggle:focus-visible{
+    background:transparent !important;
+    border-color:var(--border, #e6ebf2) !important;
+    color:var(--accent, #F17300) !important;
+    box-shadow:none !important;
+    outline:none !important;
+  }
+
+  #site-header .nav-dd-menu{
+    padding:2px 0 8px 12px !important;
+    margin:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+
+  #site-header .nav-dd-menu a{
+    min-height:31px !important;
+    padding:6px 0 !important;
+    border:0 !important;
+    border-bottom:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    color:var(--muted, #6b7280) !important;
+    font-size:.88rem !important;
+    font-weight:400 !important;
+    line-height:1.3 !important;
+    letter-spacing:0 !important;
+  }
+
+  #site-header .nav-dd-menu a::before,
+  #site-header .nav-dd-menu a::after{
+    display:none !important;
+    content:none !important;
+  }
+
+  #site-header .nav-dd-menu a:hover,
+  #site-header .nav-dd-menu a:focus-visible{
+    background:transparent !important;
+    border:0 !important;
+    color:var(--accent, #F17300) !important;
+    box-shadow:none !important;
+    outline:none !important;
+  }
+
+  #site-header .nav-dd-toggle::after{
+    opacity:.45 !important;
+  }
+
+  #site-header .nav-dd.mobile-subopen .nav-dd-toggle{
+    color:var(--accent, #F17300) !important;
+    border-bottom-color:rgba(241,115,0,.35) !important;
+  }
+}
+
+html[data-theme="dark"] #site-header.mobile-open nav.primary,
+html[data-theme="dark"] #site-header .nav-dd-menu,
+html[data-theme="dark"] #site-header .nav-dd-menu a,
+html[data-theme="dark"] #site-header nav.primary > a,
+html[data-theme="dark"] #site-header .nav-dd-toggle{
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] #site-header nav.primary > a,
+html[data-theme="dark"] #site-header .nav-dd-toggle{
+  color:#ffffff !important;
+  border-bottom-color:var(--border, #1e293b) !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a{
+  color:var(--muted, #94a3b8) !important;
+}
+
 </style>
 
   <div class="header-inner">
