@@ -356,7 +356,7 @@
       bXR.type = 'button'; bXR.className = 'tool-btn'; bXR.textContent = 'e.g.'; bXR.title = 'e.g. — cross references';
 
       const bCM = document.createElement('button');
-      bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'study notes'; bCM.title = 'Open personal exposition notes for this verse';
+      bCM.type = 'button'; bCM.className = 'tool-btn'; bCM.textContent = 'study notes'; bCM.title = 'Open study notes for this verse';
 
       // Lexicon button
       const bLX = document.createElement('button');
