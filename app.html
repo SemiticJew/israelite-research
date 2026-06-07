@@ -589,6 +589,137 @@ html[data-theme="dark"] .app-bookmark-card strong{
   }
 }
 
+
+
+/* App dashboard: local data tools */
+.app-data-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(5,74,145,.07), transparent 38%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-data-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-data-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.35rem, 3vw, 1.95rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-data-head p,
+.app-data-note{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-data-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:18px 0;
+}
+
+.app-data-stats div{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:14px;
+}
+
+.app-data-stats strong{
+  display:block;
+  color:var(--accent);
+  font-size:1.6rem;
+  font-weight:900;
+  line-height:1;
+}
+
+.app-data-stats span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.app-data-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:0 0 14px;
+}
+
+.app-data-actions button,
+.app-import-label{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 13px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+}
+
+.app-import-label input{
+  display:none;
+}
+
+.app-data-actions button:hover,
+.app-data-actions button:focus-visible,
+.app-import-label:hover,
+.app-import-label:focus-within{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.app-data-actions .danger{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .app-data-shell,
+html[data-theme="dark"] .app-data-stats div,
+html[data-theme="dark"] .app-data-actions button,
+html[data-theme="dark"] .app-import-label{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-data-head h2{
+  color:#ffffff !important;
+}
+
+@media(max-width:650px){
+  .app-data-stats{
+    grid-template-columns:1fr;
+  }
+
+  .app-data-actions button,
+  .app-import-label{
+    width:100%;
+  }
+}
+
 </style>
 </head>
 
@@ -621,6 +752,8 @@ html[data-theme="dark"] .app-bookmark-card strong{
   <section id="app-reading-history" aria-label="Continue reading and recent chapters"></section>
 
   <section id="app-bookmarks" aria-label="Saved Scripture bookmarks"></section>
+
+  <section id="app-data-tools" aria-label="Local app data tools"></section>
 
   <section class="app-overview" aria-label="App overview">
     <article class="app-card">
@@ -700,5 +833,6 @@ html[data-theme="dark"] .app-bookmark-card strong{
 <script src="/js/include.js"></script>
 <script src="/js/app-reading-history.js"></script>
 <script src="/js/app-bookmarks.js"></script>
+<script src="/js/app-data-tools.js"></script>
 </body>
 </html>
