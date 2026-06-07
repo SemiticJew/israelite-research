@@ -6062,3 +6062,65 @@ html[data-theme="dark"] .breadcrumb .current,
 html[data-theme="dark"] .crumbs .current{
   color:#ffffff !important;
 }
+
+
+/* Global page-top rhythm: match Ologies spacing */
+main.container,
+main.wrap,
+main.page,
+main{
+  padding-top:28px;
+}
+
+#site-header + main,
+#site-header + .container,
+#site-header + .wrap{
+  margin-top:0;
+}
+
+.breadcrumbs,
+.breadcrumb,
+.crumbs{
+  margin-top:0 !important;
+  margin-bottom:18px !important;
+}
+
+.page-hero,
+.hero,
+.hub-hero,
+.app-hero,
+.biblia-hero,
+.dietary-hero,
+.ologies-hero,
+.tanakh-hero{
+  margin-top:0 !important;
+}
+
+/* Keep reader pages tighter because they already have their own premium header rhythm */
+body.reader-page main.container,
+body.reader-page main.wrap,
+body.reader-page main{
+  padding-top:22px;
+}
+
+@media(max-width:700px){
+  main.container,
+  main.wrap,
+  main.page,
+  main{
+    padding-top:22px;
+  }
+
+  .breadcrumbs,
+  .breadcrumb,
+  .crumbs{
+    margin-top:0 !important;
+    margin-bottom:14px !important;
+  }
+
+  body.reader-page main.container,
+  body.reader-page main.wrap,
+  body.reader-page main{
+    padding-top:18px;
+  }
+}
