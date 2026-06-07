@@ -1503,6 +1503,109 @@ html[data-theme="dark"] .app-status-copy h2{
   }
 }
 
+
+
+/* App dashboard: changelog */
+.app-changelog-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-changelog-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-changelog-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.3rem, 3vw, 1.85rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-changelog-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-changelog-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+
+.app-changelog-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+
+.app-changelog-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.app-changelog-meta strong{
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.app-changelog-meta span{
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:800;
+}
+
+.app-changelog-card h3{
+  margin:0 0 10px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+}
+
+.app-changelog-card ul{
+  margin:0;
+  padding-left:18px;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+html[data-theme="dark"] .app-changelog-shell,
+html[data-theme="dark"] .app-changelog-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-changelog-head h2,
+html[data-theme="dark"] .app-changelog-card h3{
+  color:#ffffff !important;
+}
+
+@media(max-width:760px){
+  .app-changelog-list{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1622,6 +1725,7 @@ html[data-theme="dark"] .app-status-copy h2{
 <script src="/js/app-expositions.js"></script>
 <script src="/js/app-data-tools.js"></script>
 <script src="/js/app-mobile-sections.js"></script>
+<script src="/js/app-changelog.js"></script>
 <script src="/js/app-study-trails.js"></script>
 </body>
 </html>
