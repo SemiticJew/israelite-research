@@ -317,13 +317,46 @@
       .replace(/'/g, "&#039;");
   }
 
-  document.addEventListener("DOMContentLoaded", function(){
+  function bootstrapHighlights(){
     addHighlightButtons();
     renderHighlightsDashboard();
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    bootstrapHighlights();
+
+    // The Scripture reader often renders verses after DOMContentLoaded.
+    // Observe the page briefly so highlight buttons are added once verses appear.
+    const readerRoot =
+      document.querySelector("main") ||
+      document.querySelector("#verses") ||
+      document.body;
+
+    if(readerRoot && /\/chapter\.html$/i.test(window.location.pathname)){
+      let tries = 0;
+      const observer = new MutationObserver(function(){
+        tries += 1;
+        addHighlightButtons();
+
+        if(document.querySelector(".sj-highlight-btn") || tries > 40){
+          observer.disconnect();
+        }
+      });
+
+      observer.observe(readerRoot, { childList:true, subtree:true });
+
+      setTimeout(function(){
+        addHighlightButtons();
+        observer.disconnect();
+      }, 4000);
+    }
   });
+
+  window.addEventListener("load", bootstrapHighlights);
 
   window.SemJHighlights = {
     read: readHighlights,
-    write: writeHighlights
+    write: writeHighlights,
+    refresh: bootstrapHighlights
   };
 })();
