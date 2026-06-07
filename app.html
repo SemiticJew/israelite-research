@@ -1606,6 +1606,95 @@ html[data-theme="dark"] .app-changelog-card h3{
   }
 }
 
+
+
+/* App dashboard: install guide */
+.app-install-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.14), transparent 38%),
+    var(--surface);
+  box-shadow:var(--shadow);
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+  align-items:start;
+}
+
+.app-install-copy .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-install-copy h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.35rem, 3vw, 1.95rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-install-copy p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-install-steps{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:10px;
+  counter-reset:install-step;
+}
+
+.app-install-steps li{
+  counter-increment:install-step;
+  display:grid;
+  grid-template-columns:32px 1fr;
+  gap:10px;
+  align-items:start;
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.45;
+  font-weight:700;
+}
+
+.app-install-steps li::before{
+  content:counter(install-step);
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  background:var(--accent);
+  color:#ffffff;
+  font-size:.82rem;
+  font-weight:900;
+}
+
+html[data-theme="dark"] .app-install-shell{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-install-copy h2{
+  color:#ffffff !important;
+}
+
+@media(max-width:760px){
+  .app-install-shell{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1720,6 +1809,7 @@ html[data-theme="dark"] .app-changelog-card h3{
 <script src="/js/app-reading-history.js"></script>
 <script src="/js/app-quick-actions.js"></script>
 <script src="/js/app-status.js"></script>
+<script src="/js/app-install-guide.js"></script>
 <script src="/js/app-bookmarks.js"></script>
 <script src="/js/app-highlights.js"></script>
 <script src="/js/app-expositions.js"></script>
