@@ -988,6 +988,31 @@ body.reader-page .sj-bookmark-btn[aria-pressed="true"]{
   border-color:var(--accent);
 }
 
+
+
+/* Reader verse highlight tools */
+body.reader-page .sj-highlight-inline{
+  display:inline-flex;
+  margin-left:8px;
+}
+
+body.reader-page .sj-highlight-btn[aria-pressed="true"]{
+  color:#ffffff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+body.reader-page .sj-verse-highlighted{
+  background:
+    linear-gradient(90deg, rgba(241,115,0,.18), rgba(241,115,0,.07)) !important;
+  box-shadow:inset 4px 0 0 var(--accent);
+}
+
+html[data-theme="dark"] body.reader-page .sj-verse-highlighted{
+  background:
+    linear-gradient(90deg, rgba(241,115,0,.28), rgba(241,115,0,.10)) !important;
+}
+
 </style>
 </head>
 
@@ -1079,5 +1104,6 @@ body.reader-page .sj-bookmark-btn[aria-pressed="true"]{
 <script src="/js/include.js" defer></script>
 <script src="/js/app-reading-history.js" defer></script>
 <script src="/js/app-bookmarks.js" defer></script>
+<script src="/js/app-highlights.js" defer></script>
 </body>
 </html>
