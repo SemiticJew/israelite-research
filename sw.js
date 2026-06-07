@@ -1,6 +1,38 @@
-const CACHE_VERSION = 'sj-pwa-v1';
+const CACHE_VERSION = 'sj-pwa-v2';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
+
+const APP_SHELL_ASSETS = [
+  '/',
+  '/index.html',
+  '/app.html',
+  '/offline.html',
+  '/biblia.html',
+  '/tanakh.html',
+  '/newtestament.html',
+  '/apocrypha.html',
+  '/styles.css',
+  '/js/include.js',
+  '/js/app-status.js',
+  '/js/app-quick-actions.js',
+  '/js/app-mobile-sections.js',
+  '/js/app-changelog.js',
+  '/js/app-study-trails.js',
+  '/js/app-reading-history.js',
+  '/js/app-bookmarks.js',
+  '/js/app-highlights.js',
+  '/js/app-expositions.js',
+  '/js/app-data-tools.js',
+  '/data/study-trails.json',
+  '/data/app-changelog.json',
+  '/site.webmanifest',
+  '/favicon.ico',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/apple-touch-icon.png',
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png'
+];
 
 const APP_SHELL = [
   '/',
