@@ -454,6 +454,141 @@ html[data-theme="dark"] .app-recent-card strong{
   }
 }
 
+
+
+/* App dashboard: saved scripture bookmarks */
+.app-bookmarks-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-bookmarks-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-bookmarks-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.35rem, 3vw, 1.95rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-bookmarks-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-bookmark-main-btn{
+  margin-top:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+
+.app-bookmark-main-btn:hover,
+.app-bookmark-main-btn:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.app-bookmarks-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:18px;
+}
+
+.app-bookmark-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:13px;
+}
+
+.app-bookmark-card a{
+  display:block;
+  color:inherit;
+  text-decoration:none;
+}
+
+.app-bookmark-card strong{
+  display:block;
+  color:var(--ink);
+  font-size:.94rem;
+  font-weight:800;
+  line-height:1.3;
+}
+
+.app-bookmark-card span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.app-bookmark-card button{
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.app-bookmark-card:hover{
+  border-color:var(--accent);
+}
+
+html[data-theme="dark"] .app-bookmarks-shell,
+html[data-theme="dark"] .app-bookmark-card,
+html[data-theme="dark"] .app-bookmark-main-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-bookmarks-head h2,
+html[data-theme="dark"] .app-bookmark-card strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  .app-bookmarks-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px){
+  .app-bookmark-main-btn{
+    width:100%;
+  }
+
+  .app-bookmarks-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -484,6 +619,8 @@ html[data-theme="dark"] .app-recent-card strong{
   </section>
 
   <section id="app-reading-history" aria-label="Continue reading and recent chapters"></section>
+
+  <section id="app-bookmarks" aria-label="Saved Scripture bookmarks"></section>
 
   <section class="app-overview" aria-label="App overview">
     <article class="app-card">
@@ -562,5 +699,6 @@ html[data-theme="dark"] .app-recent-card strong{
 
 <script src="/js/include.js"></script>
 <script src="/js/app-reading-history.js"></script>
+<script src="/js/app-bookmarks.js"></script>
 </body>
 </html>
