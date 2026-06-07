@@ -1347,6 +1347,73 @@ html[data-theme="dark"] .app-quick-card strong{
   }
 }
 
+
+
+/* Mobile collapsible app dashboard sections */
+.app-mobile-collapse{
+  display:block;
+}
+
+.app-mobile-collapse-toggle{
+  display:none;
+}
+
+@media(max-width:760px){
+  .app-mobile-collapse{
+    margin:0 0 16px;
+  }
+
+  .app-mobile-collapse-toggle{
+    width:100%;
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:0 14px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--ink);
+    font:inherit;
+    font-weight:900;
+    text-align:left;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+  }
+
+  .app-mobile-collapse-toggle span{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
+
+  .app-mobile-collapse-toggle strong{
+    display:inline-grid;
+    place-items:center;
+    width:28px;
+    height:28px;
+    flex:0 0 28px;
+    color:#ffffff;
+    background:var(--accent);
+    font-size:1.05rem;
+    line-height:1;
+  }
+
+  .app-mobile-collapse-toggle[aria-expanded="false"] + .app-mobile-collapse-body{
+    display:none;
+  }
+
+  .app-mobile-collapse-body{
+    margin-top:10px;
+  }
+
+  html[data-theme="dark"] .app-mobile-collapse-toggle{
+    background:var(--surface) !important;
+    border-color:var(--border) !important;
+    color:#ffffff !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1464,6 +1531,7 @@ html[data-theme="dark"] .app-quick-card strong{
 <script src="/js/app-highlights.js"></script>
 <script src="/js/app-expositions.js"></script>
 <script src="/js/app-data-tools.js"></script>
+<script src="/js/app-mobile-sections.js"></script>
 <script src="/js/app-study-trails.js"></script>
 </body>
 </html>
