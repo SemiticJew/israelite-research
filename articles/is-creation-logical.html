@@ -163,22 +163,49 @@
     font-weight:800;
   }
 
+
+
+/* Article breadcrumb rhythm: breadcrumb inside article main */
+body.article-doc main.article-page{
+  padding-top:40px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs{
+  margin:0 auto 18px !important;
+  padding:0 16px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs + .article-shell{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.article-doc main.article-page{
+    padding-top:30px !important;
+  }
+
+  body.article-doc main.article-page > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
 </style>
 </head>
 
 <body class="article-doc" data-page="article">
 <div id="site-header"></div>
 
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <a href="/index.html">Home</a>
-  <span class="sep">›</span>
-  <a href="/articles.html">Articles</a>
-  <span class="sep">›</span>
-  <span class="current">Is Creation Logical?</span>
-</nav>
-
 <main class="article-page">
-<article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/articles.html">Articles</a>
+    <span class="sep">›</span>
+    <span class="current">Is Creation Logical?</span>
+  </nav>
+  
+  <article class="article-shell" itemscope itemtype="https://schema.org/Article">
   <header class="article-head">
     <p class="article-date"><time datetime="" id="pub-date" itemprop="datePublished"></time></p>
     <h1 class="article-title" itemprop="headline">Is Creation Logical?</h1>
