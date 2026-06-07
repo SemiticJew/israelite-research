@@ -517,6 +517,49 @@ html[data-theme="dark"] body.tanakh-page .page-title{
   }
 }
 
+
+
+/* Tanakh breadcrumb rhythm fix */
+body.tanakh-page .breadcrumbs,
+body.tanakh-page .breadcrumb,
+body.tanakh-page .crumbs{
+  margin-top:0 !important;
+  margin-bottom:18px !important;
+}
+
+/* Give the Tanakh page the same breathing room before breadcrumbs as the other hub pages */
+body.tanakh-page main.container{
+  padding-top:40px !important;
+}
+
+/* But keep the hero immediately after the breadcrumb */
+body.tanakh-page .breadcrumbs + .hero,
+body.tanakh-page .breadcrumbs + .page-hero,
+body.tanakh-page .breadcrumbs + .hub-hero,
+body.tanakh-page .breadcrumbs + .tanakh-hero,
+body.tanakh-page .breadcrumb + .hero,
+body.tanakh-page .breadcrumb + .page-hero,
+body.tanakh-page .breadcrumb + .hub-hero,
+body.tanakh-page .breadcrumb + .tanakh-hero,
+body.tanakh-page .crumbs + .hero,
+body.tanakh-page .crumbs + .page-hero,
+body.tanakh-page .crumbs + .hub-hero,
+body.tanakh-page .crumbs + .tanakh-hero{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.tanakh-page main.container{
+    padding-top:30px !important;
+  }
+
+  body.tanakh-page .breadcrumbs,
+  body.tanakh-page .breadcrumb,
+  body.tanakh-page .crumbs{
+    margin-bottom:14px !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
