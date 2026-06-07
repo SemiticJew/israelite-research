@@ -1026,6 +1026,25 @@ body.reader-page .sj-highlight-target.sj-highlight-question{
   box-shadow:inset 4px 0 0 #475569;
 }
 
+
+
+/* Reader breadcrumb rhythm: breadcrumb inside main before reader header */
+body.reader-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+}
+
+body.reader-page main.container > .breadcrumbs + .page-header{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.reader-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
 </style>
 </head>
 <body class="reader-page">
