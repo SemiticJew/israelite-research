@@ -379,98 +379,6 @@ html[data-theme="dark"] .canon-hero{
 
 
 
-/* Tanakh hub hero normalization: match modern hub rhythm */
-body.tanakh-page main.container{
-  padding-top:28px;
-}
-
-body.tanakh-page .breadcrumbs,
-body.tanakh-page .breadcrumb,
-body.tanakh-page .crumbs{
-  margin-top:0 !important;
-  margin-bottom:18px !important;
-}
-
-body.tanakh-page .hero,
-body.tanakh-page .page-hero,
-body.tanakh-page .hub-hero,
-body.tanakh-page .tanakh-hero,
-body.tanakh-page main.container > section:first-of-type{
-  margin:0 0 34px !important;
-  padding:62px 30px !important;
-  border:1px solid var(--border) !important;
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
-    linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10)) !important;
-  box-shadow:var(--shadow) !important;
-}
-
-body.tanakh-page .hero h1,
-body.tanakh-page .page-hero h1,
-body.tanakh-page .hub-hero h1,
-body.tanakh-page .tanakh-hero h1,
-body.tanakh-page main.container > section:first-of-type h1,
-body.tanakh-page .page-title{
-  margin:0 !important;
-  color:var(--ink) !important;
-  font-size:clamp(2.45rem, 6vw, 5rem) !important;
-  line-height:1 !important;
-  font-weight:900 !important;
-  letter-spacing:-.055em !important;
-}
-
-body.tanakh-page .hero p,
-body.tanakh-page .page-hero p,
-body.tanakh-page .hub-hero p,
-body.tanakh-page .tanakh-hero p,
-body.tanakh-page main.container > section:first-of-type p{
-  max-width:830px !important;
-  margin:18px 0 0 !important;
-  color:var(--muted) !important;
-  font-size:1.06rem !important;
-  line-height:1.7 !important;
-}
-
-html[data-theme="dark"] body.tanakh-page .hero,
-html[data-theme="dark"] body.tanakh-page .page-hero,
-html[data-theme="dark"] body.tanakh-page .hub-hero,
-html[data-theme="dark"] body.tanakh-page .tanakh-hero,
-html[data-theme="dark"] body.tanakh-page main.container > section:first-of-type{
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.24), transparent 34%),
-    linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92)) !important;
-}
-
-html[data-theme="dark"] body.tanakh-page .hero h1,
-html[data-theme="dark"] body.tanakh-page .page-hero h1,
-html[data-theme="dark"] body.tanakh-page .hub-hero h1,
-html[data-theme="dark"] body.tanakh-page .tanakh-hero h1,
-html[data-theme="dark"] body.tanakh-page main.container > section:first-of-type h1,
-html[data-theme="dark"] body.tanakh-page .page-title{
-  color:#ffffff !important;
-}
-
-@media(max-width:700px){
-  body.tanakh-page main.container{
-    padding-top:22px;
-  }
-
-  body.tanakh-page .hero,
-  body.tanakh-page .page-hero,
-  body.tanakh-page .hub-hero,
-  body.tanakh-page .tanakh-hero,
-  body.tanakh-page main.container > section:first-of-type{
-    margin:0 0 28px !important;
-    padding:46px 20px !important;
-  }
-
-  body.tanakh-page .breadcrumbs,
-  body.tanakh-page .breadcrumb,
-  body.tanakh-page .crumbs{
-    margin-bottom:14px !important;
-  }
-}
-
 
 
 
@@ -501,6 +409,61 @@ body.tanakh-page main.container > .breadcrumbs + .canon-hero{
   }
 }
 
+
+
+/* Tanakh canon hero: match Apocrypha without affecting guide cards */
+body.tanakh-page .canon-hero{
+  margin:0 auto 28px !important;
+  padding:56px 30px !important;
+  border:1px solid var(--border) !important;
+  text-align:center !important;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10)) !important;
+  box-shadow:var(--shadow) !important;
+}
+
+body.tanakh-page .canon-guide{
+  display:grid !important;
+  grid-template-columns:repeat(5, minmax(0, 1fr)) !important;
+  gap:12px !important;
+  margin:0 0 28px !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+body.tanakh-page .canon-guide-card{
+  border:1px solid var(--border) !important;
+  background:var(--surface) !important;
+  padding:16px !important;
+  box-shadow:var(--shadow) !important;
+}
+
+html[data-theme="dark"] body.tanakh-page .canon-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92)) !important;
+}
+
+@media(max-width:1100px){
+  body.tanakh-page .canon-guide{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media(max-width:720px){
+  body.tanakh-page .canon-hero{
+    margin:0 auto 24px !important;
+    padding:42px 20px !important;
+  }
+
+  body.tanakh-page .canon-guide{
+    grid-template-columns:1fr !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -520,8 +483,8 @@ body.tanakh-page main.container > .breadcrumbs + .canon-hero{
     <span class="sep">›</span>
     <span class="current">Tanakh</span>
   </nav>
-  
-    <header class="canon-hero">
+
+  <header class="canon-hero">
     <div class="canon-kicker">The Hebrew Scriptures</div>
     <h1 class="canon-title">Tanakh</h1>
     <p class="canon-subtitle">Explore the Law, historical writings, wisdom literature, prophets, and visions of restoration in a structured canon layout.</p>
