@@ -32,6 +32,10 @@
   function nextCategory(current){
     if(!current) return CATEGORIES[0].key;
     const i = CATEGORIES.findIndex(c => c.key === current);
+
+    // After the final category, return to no highlight.
+    if(i === CATEGORIES.length - 1) return null;
+
     return CATEGORIES[(i + 1) % CATEGORIES.length].key;
   }
 
@@ -150,11 +154,14 @@
 
   function findVerseElements(){
     const selectors = [
-      ".verse",
-      ".v",
-      "[id^='v']",
+      ".verse[data-v]",
+      ".verse[data-verse]",
+      ".v[data-v]",
+      ".v[data-verse]",
       "[data-v]",
-      "[data-verse]"
+      "[data-verse]",
+      ".verse",
+      ".v"
     ];
 
     const found = [];
@@ -162,12 +169,34 @@
     selectors.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
         if(found.includes(el)) return;
+
+        const id = (el.id || "").toLowerCase();
+        const className = String(el.className || "").toLowerCase();
+
+        // Do not highlight large chapter containers.
+        if(id === "verses" || id === "verse-list" || id === "chapter" || id === "scripture") return;
+        if(className.includes("verses") || className.includes("chapter-body") || className.includes("reader-body")) return;
+
         const verse = getVerseNumber(el);
-        if(verse) found.push(el);
+        if(!verse) return;
+
+        // If this element contains other verse candidates, it is probably a wrapper.
+        const nested = el.querySelectorAll("[data-v], [data-verse], .verse, .v");
+        if(nested.length > 2) return;
+
+        found.push(el);
       });
     });
 
     return found;
+  }
+
+  function clearAllAccidentalContainerHighlights(){
+    document.querySelectorAll(".sj-verse-highlighted, .sj-highlight-key, .sj-highlight-law, .sj-highlight-prophecy, .sj-highlight-question").forEach(el => {
+      if(!el.classList.contains("sj-highlight-target")){
+        clearHighlightClasses(el);
+      }
+    });
   }
 
   function addHighlightButtons(){
@@ -177,6 +206,8 @@
     const verses = findVerseElements();
     if(!verses.length) return;
 
+    clearAllAccidentalContainerHighlights();
+
     verses.forEach(verseEl => {
       const verse = getVerseNumber(verseEl);
       if(!verse) return;
@@ -185,6 +216,7 @@
       const existing = getHighlight(key);
 
       verseEl.setAttribute("data-sj-highlight-key", key);
+      verseEl.classList.add("sj-highlight-target");
 
       if(verseEl.querySelector(".sj-highlight-btn")){
         const btn = verseEl.querySelector(".sj-highlight-btn");
@@ -201,6 +233,12 @@
       btn.addEventListener("click", function(){
         const old = getHighlight(key);
         const category = nextCategory(old && old.category);
+
+        if(!category){
+          removeHighlight(key);
+          applyHighlightState(verseEl, btn, null);
+          return;
+        }
 
         const item = {
           key,

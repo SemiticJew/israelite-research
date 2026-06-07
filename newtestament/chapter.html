@@ -998,6 +998,34 @@ body.reader-page .sj-highlight-question{
   box-shadow:inset 4px 0 0 #475569;
 }
 
+
+
+/* Highlight safety: only actual verse targets receive highlight backgrounds */
+body.reader-page .sj-verse-highlighted:not(.sj-highlight-target){
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-key{
+  background:linear-gradient(90deg, rgba(241,115,0,.18), rgba(241,115,0,.07)) !important;
+  box-shadow:inset 4px 0 0 #F17300;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-law{
+  background:linear-gradient(90deg, rgba(180,83,9,.18), rgba(180,83,9,.07)) !important;
+  box-shadow:inset 4px 0 0 #B45309;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-prophecy{
+  background:linear-gradient(90deg, rgba(5,74,145,.18), rgba(5,74,145,.07)) !important;
+  box-shadow:inset 4px 0 0 #054A91;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-question{
+  background:linear-gradient(90deg, rgba(71,85,105,.18), rgba(71,85,105,.07)) !important;
+  box-shadow:inset 4px 0 0 #475569;
+}
+
 </style>
 </head>
 <body class="reader-page">
