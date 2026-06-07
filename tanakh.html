@@ -378,52 +378,6 @@ html[data-theme="dark"] .canon-hero{
   }
 
 
-/* Page breadcrumb consistency override */
-.breadcrumbs,
-.breadcrumb,
-.crumbs{
-  max-width:1200px !important;
-  margin:0 auto 18px !important;
-  padding:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  gap:8px !important;
-  flex-wrap:wrap !important;
-  text-align:left !important;
-}
-
-@media(max-width:700px){
-  .breadcrumbs,
-  .breadcrumb,
-  .crumbs{
-    width:100% !important;
-    max-width:100% !important;
-    margin:0 0 14px !important;
-    padding:0 2px 8px !important;
-    flex-wrap:nowrap !important;
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    white-space:nowrap !important;
-    justify-content:flex-start !important;
-    scrollbar-width:none !important;
-  }
-
-  .breadcrumbs::-webkit-scrollbar,
-  .breadcrumb::-webkit-scrollbar,
-  .crumbs::-webkit-scrollbar{
-    display:none !important;
-  }
-
-  .breadcrumbs .current,
-  .breadcrumb .current,
-  .crumbs .current{
-    max-width:58vw !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-  }
-}
-
-
 
 /* Tanakh hub hero normalization: match modern hub rhythm */
 body.tanakh-page main.container{
@@ -519,32 +473,20 @@ html[data-theme="dark"] body.tanakh-page .page-title{
 
 
 
-/* Tanakh breadcrumb rhythm fix */
-body.tanakh-page .breadcrumbs,
-body.tanakh-page .breadcrumb,
-body.tanakh-page .crumbs{
-  margin-top:0 !important;
-  margin-bottom:18px !important;
-}
 
-/* Give the Tanakh page the same breathing room before breadcrumbs as the other hub pages */
+
+
+/* Tanakh hub rhythm: breadcrumb inside main before hero */
 body.tanakh-page main.container{
   padding-top:40px !important;
 }
 
-/* But keep the hero immediately after the breadcrumb */
-body.tanakh-page .breadcrumbs + .hero,
-body.tanakh-page .breadcrumbs + .page-hero,
-body.tanakh-page .breadcrumbs + .hub-hero,
-body.tanakh-page .breadcrumbs + .tanakh-hero,
-body.tanakh-page .breadcrumb + .hero,
-body.tanakh-page .breadcrumb + .page-hero,
-body.tanakh-page .breadcrumb + .hub-hero,
-body.tanakh-page .breadcrumb + .tanakh-hero,
-body.tanakh-page .crumbs + .hero,
-body.tanakh-page .crumbs + .page-hero,
-body.tanakh-page .crumbs + .hub-hero,
-body.tanakh-page .crumbs + .tanakh-hero{
+body.tanakh-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+}
+
+body.tanakh-page main.container > .breadcrumbs + .canon-hero{
   margin-top:0 !important;
 }
 
@@ -553,10 +495,9 @@ body.tanakh-page .crumbs + .tanakh-hero{
     padding-top:30px !important;
   }
 
-  body.tanakh-page .breadcrumbs,
-  body.tanakh-page .breadcrumb,
-  body.tanakh-page .crumbs{
-    margin-bottom:14px !important;
+  body.tanakh-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
   }
 }
 
@@ -571,16 +512,16 @@ body.tanakh-page .crumbs + .tanakh-hero{
 <body class="tanakh-page">
 <div id="site-header"></div>
 
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <a href="/index.html">Home</a>
-  <span class="sep">›</span>
-  <a href="/biblia.html">Biblia</a>
-  <span class="sep">›</span>
-  <span class="current">Tanakh</span>
-</nav>
-
 <main class="container">
-  <header class="canon-hero">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Tanakh</span>
+  </nav>
+  
+    <header class="canon-hero">
     <div class="canon-kicker">The Hebrew Scriptures</div>
     <h1 class="canon-title">Tanakh</h1>
     <p class="canon-subtitle">Explore the Law, historical writings, wisdom literature, prophets, and visions of restoration in a structured canon layout.</p>
