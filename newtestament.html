@@ -367,6 +367,33 @@
       font-size:1.8rem;
     }
   }
+
+
+/* Newtestament hub rhythm: breadcrumb inside main before hero */
+body.newtestament-page main.container{
+  padding-top:40px !important;
+}
+
+body.newtestament-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+}
+
+body.newtestament-page main.container > .breadcrumbs + .canon-hero{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.newtestament-page main.container{
+    padding-top:30px !important;
+  }
+
+  body.newtestament-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
