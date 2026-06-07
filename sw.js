@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v5';
+const CACHE_VERSION = 'sj-pwa-v6';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -22,6 +22,7 @@ const APP_SHELL_ASSETS = [
   '/js/app-study-trails.js',
   '/js/app-reading-history.js',
   '/js/reader-navigation.js',
+  '/js/reader-progress.js',
   '/js/app-bookmarks.js',
   '/js/app-highlights.js',
   '/js/app-expositions.js',

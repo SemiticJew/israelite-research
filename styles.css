@@ -6354,3 +6354,109 @@ html[data-theme="dark"] body.reader-page .reader-chapter-nav-actions a{
     grid-template-columns:1fr;
   }
 }
+
+
+/* Reader progress and resume */
+body.reader-page .reader-progress-shell{
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+}
+
+body.reader-page .reader-progress-copy .label{
+  display:block;
+  margin:0 0 5px;
+  color:var(--accent);
+  font-size:.68rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+body.reader-page .reader-progress-copy strong{
+  display:block;
+  color:var(--ink);
+  font-size:.98rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+body.reader-page .reader-progress-copy small{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.8rem;
+  line-height:1.35;
+  font-weight:700;
+}
+
+body.reader-page .reader-progress-meter{
+  grid-column:1 / -1;
+  height:8px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:rgba(129,164,205,.18);
+}
+
+body.reader-page .reader-progress-meter span{
+  display:block;
+  width:0%;
+  height:100%;
+  background:var(--accent);
+  transition:width .18s ease;
+}
+
+body.reader-page #reader-progress-resume{
+  min-height:38px;
+  padding:0 12px;
+  border:1px solid var(--accent);
+  background:var(--accent);
+  color:#ffffff;
+  font:inherit;
+  font-size:.84rem;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+body.reader-page #reader-progress-resume:hover,
+body.reader-page #reader-progress-resume:focus-visible{
+  filter:brightness(.95);
+  outline:none;
+}
+
+body.reader-page .reader-resume-pulse{
+  animation:readerResumePulse 1.6s ease;
+}
+
+@keyframes readerResumePulse{
+  0%{box-shadow:0 0 0 0 rgba(241,115,0,.45)}
+  55%{box-shadow:0 0 0 8px rgba(241,115,0,.10)}
+  100%{box-shadow:0 0 0 0 rgba(241,115,0,0)}
+}
+
+html[data-theme="dark"] body.reader-page .reader-progress-shell{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] body.reader-page .reader-progress-copy strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:760px){
+  body.reader-page .reader-progress-shell{
+    grid-template-columns:1fr;
+    margin-bottom:14px;
+  }
+
+  body.reader-page #reader-progress-resume{
+    width:100%;
+  }
+}
