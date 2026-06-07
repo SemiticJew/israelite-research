@@ -6714,3 +6714,100 @@ html[data-theme="dark"] body.reader-page .reader-search-controls button{
     width:100%;
   }
 }
+
+
+/* Reader share tools */
+body.reader-page .reader-share-shell{
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  display:grid;
+  grid-template-columns:190px 1fr auto;
+  gap:12px;
+  align-items:center;
+}
+
+body.reader-page .reader-share-title span{
+  display:block;
+  margin:0 0 4px;
+  color:var(--accent);
+  font-size:.68rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+body.reader-page .reader-share-title strong{
+  display:block;
+  color:var(--ink);
+  font-size:.98rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+body.reader-page .reader-share-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+body.reader-page .reader-share-actions button{
+  min-height:38px;
+  padding:0 11px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font:inherit;
+  font-size:.82rem;
+  font-weight:900;
+  cursor:pointer;
+}
+
+body.reader-page .reader-share-actions button:hover,
+body.reader-page .reader-share-actions button:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+body.reader-page .reader-share-status{
+  min-width:70px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-align:right;
+}
+
+html[data-theme="dark"] body.reader-page .reader-share-shell,
+html[data-theme="dark"] body.reader-page .reader-share-actions button{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] body.reader-page .reader-share-title strong,
+html[data-theme="dark"] body.reader-page .reader-share-actions button{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  body.reader-page .reader-share-shell{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page .reader-share-status{
+    text-align:left;
+  }
+}
+
+@media(max-width:620px){
+  body.reader-page .reader-share-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  body.reader-page .reader-share-actions button{
+    width:100%;
+  }
+}
