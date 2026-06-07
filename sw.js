@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v2';
+const CACHE_VERSION = 'sj-pwa-v3';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -14,6 +14,7 @@ const APP_SHELL_ASSETS = [
   '/styles.css',
   '/js/include.js',
   '/js/app-status.js',
+  '/js/app-update-prompt.js',
   '/js/app-quick-actions.js',
   '/js/app-mobile-sections.js',
   '/js/app-changelog.js',
@@ -141,5 +142,12 @@ self.addEventListener('fetch', event => {
 
   if(shouldCacheRuntime(url)){
     event.respondWith(staleWhileRevalidate(request));
+  }
+});
+
+
+self.addEventListener('message', event => {
+  if(event.data && event.data.type === 'SKIP_WAITING'){
+    self.skipWaiting();
   }
 });

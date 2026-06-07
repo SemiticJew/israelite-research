@@ -299,3 +299,14 @@
     });
   });
 })();
+
+
+/* PWA update prompt loader */
+(function(){
+  if(document.querySelector('script[src="/js/app-update-prompt.js"]')) return;
+
+  var script = document.createElement("script");
+  script.src = "/js/app-update-prompt.js";
+  script.defer = true;
+  document.head.appendChild(script);
+})();
