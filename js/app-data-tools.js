@@ -3,8 +3,7 @@
   const KEYS = {
     history: "sj_reading_history_v1",
     bookmarks: "sj_scripture_bookmarks_v1",
-    highlights: "sj_verse_highlights_v1",
-    notes: "sj_verse_notes_v1"
+    highlights: "sj_verse_highlights_v1"
   };
 
   function readJSON(key){
@@ -27,7 +26,6 @@
     const history = readJSON(KEYS.history);
     const bookmarks = readJSON(KEYS.bookmarks);
     const highlights = readJSON(KEYS.highlights);
-    const notes = readJSON(KEYS.notes);
 
     root.innerHTML = `
       <section class="app-data-shell" aria-label="App data tools">
@@ -41,7 +39,6 @@
           <div><strong>${history.length}</strong><span>Recent Chapters</span></div>
           <div><strong>${bookmarks.length}</strong><span>Bookmarks</span></div>
           <div><strong>${highlights.length}</strong><span>Highlights</span></div>
-          <div><strong>${notes.length}</strong><span>Notes</span></div>
         </div>
 
         <div class="app-data-actions">
@@ -69,8 +66,7 @@
         data: {
           readingHistory: readJSON(KEYS.history),
           bookmarks: readJSON(KEYS.bookmarks),
-          highlights: readJSON(KEYS.highlights),
-          notes: readJSON(KEYS.notes)
+          highlights: readJSON(KEYS.highlights)
         }
       };
 
@@ -96,9 +92,8 @@
         const importedHistory = payload?.data?.readingHistory;
         const importedBookmarks = payload?.data?.bookmarks;
         const importedHighlights = payload?.data?.highlights;
-        const importedNotes = payload?.data?.notes;
 
-        if(!Array.isArray(importedHistory) && !Array.isArray(importedBookmarks) && !Array.isArray(importedHighlights) && !Array.isArray(importedNotes)){
+        if(!Array.isArray(importedHistory) && !Array.isArray(importedBookmarks) && !Array.isArray(importedHighlights)){
           alert("This does not look like a valid Semitic Jew app backup.");
           return;
         }
@@ -106,7 +101,6 @@
         if(Array.isArray(importedHistory)) writeJSON(KEYS.history, importedHistory);
         if(Array.isArray(importedBookmarks)) writeJSON(KEYS.bookmarks, importedBookmarks);
         if(Array.isArray(importedHighlights)) writeJSON(KEYS.highlights, importedHighlights);
-        if(Array.isArray(importedNotes)) writeJSON(KEYS.notes, importedNotes);
 
         alert("App data imported successfully.");
         window.location.reload();
@@ -122,7 +116,6 @@
       localStorage.removeItem(KEYS.history);
       localStorage.removeItem(KEYS.bookmarks);
       localStorage.removeItem(KEYS.highlights);
-      localStorage.removeItem(KEYS.notes);
 
       alert("Local app data cleared.");
       window.location.reload();
