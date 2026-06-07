@@ -1,7 +1,14 @@
-/* Semitic Jew App: Local Verse Highlights */
+/* Semitic Jew App: Local Verse Highlights with Categories */
 (function(){
   const STORAGE_KEY = "sj_verse_highlights_v1";
   const MAX_HIGHLIGHTS = 300;
+
+  const CATEGORIES = [
+    { key:"key", label:"Key Verse" },
+    { key:"law", label:"Law / Command" },
+    { key:"prophecy", label:"Prophecy" },
+    { key:"question", label:"Question / Research" }
+  ];
 
   function titleCaseSlug(slug){
     return String(slug || "")
@@ -16,6 +23,16 @@
       apocrypha: "Apocrypha"
     };
     return map[canon] || titleCaseSlug(canon);
+  }
+
+  function categoryLabel(category){
+    return (CATEGORIES.find(c => c.key === category) || CATEGORIES[0]).label;
+  }
+
+  function nextCategory(current){
+    if(!current) return CATEGORIES[0].key;
+    const i = CATEGORIES.findIndex(c => c.key === current);
+    return CATEGORIES[(i + 1) % CATEGORIES.length].key;
   }
 
   function getCanonFromPath(){
@@ -84,7 +101,7 @@
 
   function getVerseText(verseEl){
     const clone = verseEl.cloneNode(true);
-    clone.querySelectorAll("button, .tools, .tool-btn, .v-tools, .v-panel, .panel").forEach(el => el.remove());
+    clone.querySelectorAll("button, select, .tools, .tool-btn, .v-tools, .v-panel, .panel").forEach(el => el.remove());
     return clone.textContent.replace(/\s+/g, " ").trim();
   }
 
@@ -92,21 +109,43 @@
     return `${ctx.canon}:${ctx.book}:${ctx.chapter}:${verse}`;
   }
 
-  function isHighlighted(key){
-    return readHighlights().some(item => item.key === key);
+  function getHighlight(key){
+    return readHighlights().find(item => item.key === key) || null;
   }
 
-  function toggleHighlight(item){
-    const highlights = readHighlights();
-    const exists = highlights.some(old => old.key === item.key);
+  function removeHighlight(key){
+    writeHighlights(readHighlights().filter(item => item.key !== key));
+  }
 
-    if(exists){
-      writeHighlights(highlights.filter(old => old.key !== item.key));
-      return false;
+  function saveHighlight(item){
+    const existing = readHighlights().filter(old => old.key !== item.key);
+    writeHighlights([{...item, savedAt:new Date().toISOString()}, ...existing]);
+  }
+
+  function clearHighlightClasses(verseEl){
+    verseEl.classList.remove(
+      "sj-verse-highlighted",
+      "sj-highlight-key",
+      "sj-highlight-law",
+      "sj-highlight-prophecy",
+      "sj-highlight-question"
+    );
+  }
+
+  function applyHighlightState(verseEl, btn, item){
+    clearHighlightClasses(verseEl);
+
+    if(!item){
+      btn.textContent = "highlight";
+      btn.setAttribute("aria-pressed", "false");
+      btn.removeAttribute("data-highlight-category");
+      return;
     }
 
-    writeHighlights([{...item, savedAt:new Date().toISOString()}, ...highlights]);
-    return true;
+    verseEl.classList.add("sj-verse-highlighted", `sj-highlight-${item.category || "key"}`);
+    btn.textContent = categoryLabel(item.category || "key");
+    btn.setAttribute("aria-pressed", "true");
+    btn.setAttribute("data-highlight-category", item.category || "key");
   }
 
   function findVerseElements(){
@@ -143,23 +182,30 @@
       if(!verse) return;
 
       const key = keyFor(ctx, verse);
-      const active = isHighlighted(key);
+      const existing = getHighlight(key);
 
-      verseEl.classList.toggle("sj-verse-highlighted", active);
       verseEl.setAttribute("data-sj-highlight-key", key);
 
-      if(verseEl.querySelector(".sj-highlight-btn")) return;
+      if(verseEl.querySelector(".sj-highlight-btn")){
+        const btn = verseEl.querySelector(".sj-highlight-btn");
+        applyHighlightState(verseEl, btn, existing);
+        return;
+      }
 
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "tool-btn sj-highlight-btn";
-      btn.textContent = active ? "highlighted" : "highlight";
-      btn.title = "Highlight this verse";
-      btn.setAttribute("aria-pressed", String(active));
+      btn.title = "Highlight this verse. Tap to cycle categories. Long press/right click to remove.";
+      applyHighlightState(verseEl, btn, existing);
 
       btn.addEventListener("click", function(){
+        const old = getHighlight(key);
+        const category = nextCategory(old && old.category);
+
         const item = {
           key,
+          category,
+          categoryLabel: categoryLabel(category),
           canon: ctx.canon,
           canonLabel: ctx.canonLabel,
           book: ctx.book,
@@ -171,10 +217,20 @@
           text: getVerseText(verseEl)
         };
 
-        const nowActive = toggleHighlight(item);
-        verseEl.classList.toggle("sj-verse-highlighted", nowActive);
-        btn.textContent = nowActive ? "highlighted" : "highlight";
-        btn.setAttribute("aria-pressed", String(nowActive));
+        saveHighlight(item);
+        applyHighlightState(verseEl, btn, item);
+      });
+
+      btn.addEventListener("contextmenu", function(e){
+        e.preventDefault();
+        removeHighlight(key);
+        applyHighlightState(verseEl, btn, null);
+      });
+
+      btn.addEventListener("dblclick", function(e){
+        e.preventDefault();
+        removeHighlight(key);
+        applyHighlightState(verseEl, btn, null);
       });
 
       const tools =
@@ -219,15 +275,15 @@
         <div class="app-highlights-head">
           <span class="label">Highlighted Verses</span>
           <h2>Your highlighted verses</h2>
-          <p>These verse highlights are stored locally on this device.</p>
+          <p>These verse highlights are stored locally on this device. Tap a highlight button in the reader to cycle categories.</p>
         </div>
 
         <div class="app-highlights-grid">
           ${highlights.map(item => `
-            <article class="app-highlight-card">
+            <article class="app-highlight-card ${escapeHTML("highlight-card-" + (item.category || "key"))}">
               <a href="${escapeHTML(item.url)}">
                 <strong>${escapeHTML(item.title)}</strong>
-                <span>${escapeHTML(item.canonLabel)}</span>
+                <span>${escapeHTML(item.canonLabel)} · ${escapeHTML(item.categoryLabel || categoryLabel(item.category || "key"))}</span>
                 <p>${escapeHTML(shorten(item.text, 180))}</p>
               </a>
               <button type="button" data-remove-highlight="${escapeHTML(item.key)}">Remove</button>
