@@ -4,7 +4,8 @@
     history: "sj_reading_history_v1",
     bookmarks: "sj_scripture_bookmarks_v1",
     highlights: "sj_verse_highlights_v1",
-    expositions: "sj_no_private_interpretation_v1"
+    expositions: "sj_no_private_interpretation_v1",
+    trailProgress: "sj_study_trail_progress_v1"
   };
 
   function readJSON(key){
@@ -20,6 +21,19 @@
     localStorage.setItem(key, JSON.stringify(Array.isArray(value) ? value : []));
   }
 
+  function readObject(key){
+    try{
+      const data = JSON.parse(localStorage.getItem(key) || "{}");
+      return data && typeof data === "object" && !Array.isArray(data) ? data : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function writeObject(key, value){
+    localStorage.setItem(key, JSON.stringify(value && typeof value === "object" && !Array.isArray(value) ? value : {}));
+  }
+
   function render(){
     const root = document.getElementById("app-data-tools");
     if(!root) return;
@@ -28,6 +42,10 @@
     const bookmarks = readJSON(KEYS.bookmarks);
     const highlights = readJSON(KEYS.highlights);
     const expositions = readJSON(KEYS.expositions);
+    const trailProgress = readObject(KEYS.trailProgress);
+    const completedTrailSteps = Object.values(trailProgress).reduce((sum, trail) => {
+      return sum + Object.values(trail || {}).filter(Boolean).length;
+    }, 0);
 
     root.innerHTML = `
       <section class="app-data-shell" aria-label="App data tools">
@@ -42,6 +60,7 @@
           <div><strong>${bookmarks.length}</strong><span>Bookmarks</span></div>
           <div><strong>${highlights.length}</strong><span>Highlights</span></div>
           <div><strong>${expositions.length}</strong><span>Expositions</span></div>
+          <div><strong>${completedTrailSteps}</strong><span>Trail Steps</span></div>
         </div>
 
         <div class="app-data-actions">
@@ -70,7 +89,8 @@
           readingHistory: readJSON(KEYS.history),
           bookmarks: readJSON(KEYS.bookmarks),
           highlights: readJSON(KEYS.highlights),
-          expositions: readJSON(KEYS.expositions)
+          expositions: readJSON(KEYS.expositions),
+          trailProgress: readObject(KEYS.trailProgress)
         }
       };
 
@@ -97,8 +117,9 @@
         const importedBookmarks = payload?.data?.bookmarks;
         const importedHighlights = payload?.data?.highlights;
         const importedExpositions = payload?.data?.expositions;
+        const importedTrailProgress = payload?.data?.trailProgress;
 
-        if(!Array.isArray(importedHistory) && !Array.isArray(importedBookmarks) && !Array.isArray(importedHighlights) && !Array.isArray(importedExpositions)){
+        if(!Array.isArray(importedHistory) && !Array.isArray(importedBookmarks) && !Array.isArray(importedHighlights) && !Array.isArray(importedExpositions) && !(importedTrailProgress && typeof importedTrailProgress === "object" && !Array.isArray(importedTrailProgress))){
           alert("This does not look like a valid Semitic Jew app backup.");
           return;
         }
@@ -107,6 +128,7 @@
         if(Array.isArray(importedBookmarks)) writeJSON(KEYS.bookmarks, importedBookmarks);
         if(Array.isArray(importedHighlights)) writeJSON(KEYS.highlights, importedHighlights);
         if(Array.isArray(importedExpositions)) writeJSON(KEYS.expositions, importedExpositions);
+        if(importedTrailProgress && typeof importedTrailProgress === "object" && !Array.isArray(importedTrailProgress)) writeObject(KEYS.trailProgress, importedTrailProgress);
 
         alert("App data imported successfully.");
         window.location.reload();
@@ -123,6 +145,7 @@
       localStorage.removeItem(KEYS.bookmarks);
       localStorage.removeItem(KEYS.highlights);
       localStorage.removeItem(KEYS.expositions);
+      localStorage.removeItem(KEYS.trailProgress);
 
       alert("Local app data cleared.");
       window.location.reload();

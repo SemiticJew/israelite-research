@@ -1180,6 +1180,86 @@ html[data-theme="dark"] .app-exposition-card strong{
   }
 }
 
+
+
+/* Study trail progress */
+.trail-progress{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+
+.trail-progress-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:7px;
+  color:var(--muted);
+  font-size:.76rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.trail-progress-row strong{
+  color:var(--accent);
+}
+
+.trail-progress-bar{
+  height:7px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.06);
+}
+
+.trail-progress-bar span{
+  display:block;
+  height:100%;
+  background:var(--accent);
+}
+
+.trail-step{
+  display:grid;
+  grid-template-columns:28px 1fr;
+  align-items:start;
+  gap:8px;
+}
+
+.trail-step button{
+  width:24px;
+  height:24px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:#ffffff;
+  cursor:pointer;
+  font-size:.78rem;
+  font-weight:900;
+  line-height:1;
+}
+
+.trail-step button[aria-pressed="true"]{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+.trail-step.complete a{
+  color:var(--muted);
+  text-decoration:line-through;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+
+html[data-theme="dark"] .trail-step button{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .trail-step button[aria-pressed="true"]{
+  background:var(--accent) !important;
+  border-color:var(--accent) !important;
+}
+
 </style>
 </head>
 
