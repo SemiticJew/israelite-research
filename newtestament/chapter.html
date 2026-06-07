@@ -95,8 +95,6 @@
     font-weight:800;
   }
 
-
-
 /* Modern shared Bible reader shell */
 body.reader-page{
   background:var(--surface);
@@ -359,10 +357,8 @@ html[data-theme="dark"] body.reader-page .dict-input{
   }
 }
 
-
 #author-modal.modal-overlay{display:none!important;opacity:0;visibility:hidden}
 #author-modal.modal-overlay.open{display:flex!important;opacity:1;visibility:visible}
-
 
 /* Reader refinement: premium scripture reading experience */
 body.reader-page .page-header{
@@ -661,8 +657,6 @@ html[data-theme="dark"] body.reader-page .v-panel{
   }
 }
 
-
-
 /* Lexicon refinement: clearer word-study cards */
 body.reader-page aside.panel{
   overflow:hidden;
@@ -848,8 +842,6 @@ html[data-theme="dark"] body.reader-page .v-panel.st .defs{
   color:#ffffff !important;
 }
 
-
-
 /* Exposition refinement: clearer personal study notes */
 body.reader-page .v-panel.cm{
   padding:14px;
@@ -916,8 +908,6 @@ html[data-theme="dark"] body.reader-page .exposition-text{
   border-color:var(--border);
 }
 
-
-
 /* Reader bookmark button */
 body.reader-page .sj-bookmark-btn.saved,
 body.reader-page .sj-bookmark-btn[aria-pressed="true"]{
@@ -925,8 +915,6 @@ body.reader-page .sj-bookmark-btn[aria-pressed="true"]{
   background:var(--accent);
   border-color:var(--accent);
 }
-
-
 
 /* Reader verse highlight tools */
 body.reader-page .sj-highlight-inline{
@@ -950,8 +938,6 @@ html[data-theme="dark"] body.reader-page .sj-verse-highlighted{
   background:
     linear-gradient(90deg, rgba(241,115,0,.28), rgba(241,115,0,.10)) !important;
 }
-
-
 
 /* Reader highlight category colors */
 body.reader-page .sj-highlight-btn[data-highlight-category="key"]{
@@ -998,8 +984,6 @@ body.reader-page .sj-highlight-question{
   box-shadow:inset 4px 0 0 #475569;
 }
 
-
-
 /* Highlight safety: only actual verse targets receive highlight backgrounds */
 body.reader-page .sj-verse-highlighted:not(.sj-highlight-target){
   background:transparent !important;
@@ -1026,8 +1010,6 @@ body.reader-page .sj-highlight-target.sj-highlight-question{
   box-shadow:inset 4px 0 0 #475569;
 }
 
-
-
 /* Reader breadcrumb rhythm: breadcrumb inside main before reader header */
 body.reader-page main.container > .breadcrumbs{
   margin:0 0 18px !important;
@@ -1046,11 +1028,16 @@ body.reader-page main.container > .breadcrumbs + .page-header{
 }
 
 </style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
 </head>
 <body class="reader-page">
 <div id="site-header"></div>
-
-
 
 <main class="container">
   <nav class="breadcrumbs" aria-label="Breadcrumb" id="readerBreadcrumbs">
