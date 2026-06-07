@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v9';
+const CACHE_VERSION = 'sj-pwa-v10';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -26,6 +26,7 @@ const APP_SHELL_ASSETS = [
   '/js/reader-preferences.js',
   '/js/reader-chapter-search.js',
   '/js/reader-share-tools.js',
+  '/js/reader-shortcuts.js',
   '/js/app-bookmarks.js',
   '/js/app-highlights.js',
   '/js/app-expositions.js',

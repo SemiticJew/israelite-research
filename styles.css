@@ -6811,3 +6811,131 @@ html[data-theme="dark"] body.reader-page .reader-share-actions button{
     width:100%;
   }
 }
+
+
+/* Reader keyboard shortcuts */
+body.reader-page .reader-shortcuts-button{
+  margin:0 0 18px;
+  min-height:38px;
+  padding:0 12px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  box-shadow:var(--shadow);
+  font:inherit;
+  font-size:.82rem;
+  font-weight:900;
+  cursor:pointer;
+}
+
+body.reader-page .reader-shortcuts-button:hover,
+body.reader-page .reader-shortcuts-button:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.reader-shortcuts-help{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.48);
+}
+
+.reader-shortcuts-help[hidden]{
+  display:none;
+}
+
+.reader-shortcuts-card{
+  width:min(520px, 100%);
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:0 22px 60px rgba(0,0,0,.28);
+  padding:18px;
+}
+
+.reader-shortcuts-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.reader-shortcuts-head span{
+  color:var(--accent);
+  font-size:.8rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.reader-shortcuts-head button{
+  width:36px;
+  height:36px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:1.4rem;
+  line-height:1;
+  cursor:pointer;
+}
+
+.reader-shortcuts-card dl{
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+
+.reader-shortcuts-card dl div{
+  display:grid;
+  grid-template-columns:70px 1fr;
+  gap:12px;
+  align-items:center;
+  padding:8px 0;
+  border-top:1px solid var(--border);
+}
+
+.reader-shortcuts-card dt{
+  display:inline-grid;
+  place-items:center;
+  min-height:30px;
+  border:1px solid var(--border);
+  background:rgba(129,164,205,.12);
+  color:var(--ink);
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.reader-shortcuts-card dd{
+  margin:0;
+  color:var(--muted);
+  font-size:.92rem;
+  font-weight:700;
+}
+
+html[data-theme="dark"] .reader-shortcuts-card,
+html[data-theme="dark"] .reader-shortcuts-head button,
+html[data-theme="dark"] body.reader-page .reader-shortcuts-button{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .reader-shortcuts-head button,
+html[data-theme="dark"] .reader-shortcuts-card dt,
+html[data-theme="dark"] body.reader-page .reader-shortcuts-button{
+  color:#ffffff !important;
+}
+
+@media(max-width:620px){
+  .reader-shortcuts-card dl div{
+    grid-template-columns:54px 1fr;
+  }
+
+  body.reader-page .reader-shortcuts-button{
+    width:100%;
+  }
+}
