@@ -303,6 +303,157 @@ html[data-theme="dark"] .app-btn{
     width:100%;
   }
 }
+
+
+/* App dashboard: continue reading */
+.app-reading-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 38%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-reading-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-reading-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.5rem, 3vw, 2.1rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-reading-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-reading-btn{
+  margin-top:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+
+.app-reading-btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#ffffff;
+}
+
+.app-reading-btn:hover,
+.app-reading-btn:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.app-reading-btn.primary:hover,
+.app-reading-btn.primary:focus-visible{
+  color:#ffffff;
+}
+
+.app-recents{
+  margin-top:24px;
+  padding-top:18px;
+  border-top:1px solid var(--border);
+}
+
+.app-recents-title{
+  margin:0 0 12px;
+  color:var(--ink);
+  font-size:.84rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+}
+
+.app-recents-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+
+.app-recent-card{
+  display:block;
+  padding:13px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:inherit;
+  text-decoration:none;
+}
+
+.app-recent-card strong{
+  display:block;
+  color:var(--ink);
+  font-size:.94rem;
+  font-weight:800;
+  line-height:1.3;
+}
+
+.app-recent-card span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.app-recent-card:hover,
+.app-recent-card:focus-visible{
+  border-color:var(--accent);
+  outline:none;
+}
+
+html[data-theme="dark"] .app-reading-shell,
+html[data-theme="dark"] .app-reading-btn,
+html[data-theme="dark"] .app-recent-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-reading-head h2,
+html[data-theme="dark"] .app-recents-title,
+html[data-theme="dark"] .app-recent-card strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  .app-recents-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px){
+  .app-reading-btn{
+    width:100%;
+  }
+
+  .app-recents-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -331,6 +482,8 @@ html[data-theme="dark"] .app-btn{
       <a class="app-btn" href="/biblia.html">Open Biblia</a>
     </div>
   </section>
+
+  <section id="app-reading-history" aria-label="Continue reading and recent chapters"></section>
 
   <section class="app-overview" aria-label="App overview">
     <article class="app-card">
@@ -408,5 +561,6 @@ html[data-theme="dark"] .app-btn{
 <div id="site-footer"></div>
 
 <script src="/js/include.js"></script>
+<script src="/js/app-reading-history.js"></script>
 </body>
 </html>
