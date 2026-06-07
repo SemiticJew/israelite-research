@@ -5957,3 +5957,108 @@ html[data-theme="dark"] .article-doc .article-pullquote p{
 html[data-theme="dark"] .breadcrumbs .current{
   color:#ffffff;
 }
+
+
+/* Global breadcrumb consistency normalization */
+.breadcrumbs,
+.breadcrumb,
+.crumbs{
+  max-width:1200px !important;
+  margin:0 auto 18px !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+  color:var(--muted) !important;
+  font-size:.9rem !important;
+  line-height:1.4 !important;
+  text-align:left !important;
+}
+
+.breadcrumbs a,
+.breadcrumb a,
+.crumbs a{
+  color:var(--muted) !important;
+  text-decoration:none !important;
+  font-weight:700 !important;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible,
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible,
+.crumbs a:hover,
+.crumbs a:focus-visible{
+  color:var(--accent) !important;
+  outline:none !important;
+}
+
+.breadcrumbs .sep,
+.breadcrumb .sep,
+.crumbs .sep{
+  color:var(--accent) !important;
+  font-weight:900 !important;
+}
+
+.breadcrumbs .current,
+.breadcrumb .current,
+.crumbs .current{
+  color:var(--ink) !important;
+  font-weight:800 !important;
+}
+
+@media(max-width:700px){
+  .breadcrumbs,
+  .breadcrumb,
+  .crumbs{
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    gap:7px !important;
+    font-size:.78rem !important;
+    line-height:1.25 !important;
+    white-space:nowrap !important;
+    scrollbar-width:none !important;
+    -webkit-overflow-scrolling:touch !important;
+    text-align:left !important;
+    justify-content:flex-start !important;
+  }
+
+  .breadcrumbs::-webkit-scrollbar,
+  .breadcrumb::-webkit-scrollbar,
+  .crumbs::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .breadcrumbs a,
+  .breadcrumbs .current,
+  .breadcrumbs .sep,
+  .breadcrumb a,
+  .breadcrumb .current,
+  .breadcrumb .sep,
+  .crumbs a,
+  .crumbs .current,
+  .crumbs .sep{
+    flex:0 0 auto !important;
+  }
+
+  .breadcrumbs .current,
+  .breadcrumb .current,
+  .crumbs .current{
+    max-width:58vw !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+}
+
+html[data-theme="dark"] .breadcrumbs .current,
+html[data-theme="dark"] .breadcrumb .current,
+html[data-theme="dark"] .crumbs .current{
+  color:#ffffff !important;
+}
