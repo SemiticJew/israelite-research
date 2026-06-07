@@ -1414,6 +1414,95 @@ html[data-theme="dark"] .app-quick-card strong{
   }
 }
 
+
+
+/* App dashboard: local app status */
+.app-status-shell{
+  margin:0 0 28px;
+  padding:18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.app-status-copy .label{
+  display:block;
+  margin:0 0 8px;
+  color:var(--accent);
+  font-size:.7rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-status-copy h2{
+  margin:0 0 6px;
+  color:var(--ink);
+  font-size:1.2rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.app-status-copy p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.92rem;
+}
+
+.app-status-stat{
+  min-width:132px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 42%),
+    var(--surface);
+  text-align:center;
+}
+
+.app-status-stat strong{
+  display:block;
+  color:var(--accent);
+  font-size:1.75rem;
+  line-height:1;
+  font-weight:900;
+}
+
+.app-status-stat span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+html[data-theme="dark"] .app-status-shell,
+html[data-theme="dark"] .app-status-stat{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-status-copy h2{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .app-status-shell{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .app-status-stat{
+    width:100%;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1527,6 +1616,7 @@ html[data-theme="dark"] .app-quick-card strong{
 <script src="/js/include.js"></script>
 <script src="/js/app-reading-history.js"></script>
 <script src="/js/app-quick-actions.js"></script>
+<script src="/js/app-status.js"></script>
 <script src="/js/app-bookmarks.js"></script>
 <script src="/js/app-highlights.js"></script>
 <script src="/js/app-expositions.js"></script>
