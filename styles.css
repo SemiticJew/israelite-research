@@ -5884,3 +5884,76 @@ html[data-theme="dark"] .article-doc .article-pullquote{
 html[data-theme="dark"] .article-doc .article-pullquote p{
   color:#ffffff;
 }
+
+
+/* Global breadcrumb mobile refinement */
+.breadcrumbs{
+  max-width:1200px;
+  margin:0 auto 18px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.4;
+}
+
+.breadcrumbs a{
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:700;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible{
+  color:var(--accent);
+  outline:none;
+}
+
+.breadcrumbs .sep{
+  color:var(--accent);
+  font-weight:900;
+}
+
+.breadcrumbs .current{
+  color:var(--ink);
+  font-weight:800;
+}
+
+@media(max-width:700px){
+  .breadcrumbs{
+    margin:0 0 14px;
+    padding:0 2px 8px;
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    gap:7px;
+    font-size:.78rem;
+    line-height:1.25;
+    white-space:nowrap;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .breadcrumbs::-webkit-scrollbar{
+    display:none;
+  }
+
+  .breadcrumbs a,
+  .breadcrumbs .current,
+  .breadcrumbs .sep{
+    flex:0 0 auto;
+  }
+
+  .breadcrumbs .current{
+    max-width:58vw;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+html[data-theme="dark"] .breadcrumbs .current{
+  color:#ffffff;
+}
