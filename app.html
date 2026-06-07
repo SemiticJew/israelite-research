@@ -1032,6 +1032,154 @@ html[data-theme="dark"] .app-highlight-card strong{
   border-left:4px solid #475569;
 }
 
+
+
+/* App dashboard: No Private Interpretation */
+.app-expositions-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 38%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-expositions-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-expositions-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.35rem, 3vw, 1.95rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-expositions-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-exposition-main-btn{
+  margin-top:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+
+.app-exposition-main-btn:hover,
+.app-exposition-main-btn:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.app-expositions-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+
+.app-exposition-card{
+  border:1px solid var(--border);
+  border-left:4px solid var(--accent);
+  background:var(--surface);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+
+.app-exposition-card:hover{
+  border-color:var(--accent);
+}
+
+.app-exposition-card a{
+  display:block;
+  color:inherit;
+  text-decoration:none;
+}
+
+.app-exposition-card strong{
+  display:block;
+  color:var(--ink);
+  font-size:.95rem;
+  font-weight:900;
+  line-height:1.3;
+}
+
+.app-exposition-card span{
+  display:block;
+  margin-top:5px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.app-exposition-card p{
+  margin:10px 0 0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:.88rem;
+}
+
+.app-exposition-card button{
+  margin-top:12px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+html[data-theme="dark"] .app-expositions-shell,
+html[data-theme="dark"] .app-exposition-card,
+html[data-theme="dark"] .app-exposition-main-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .app-expositions-head h2,
+html[data-theme="dark"] .app-exposition-card strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:950px){
+  .app-expositions-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:650px){
+  .app-exposition-main-btn{
+    width:100%;
+  }
+
+  .app-expositions-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -1149,6 +1297,7 @@ html[data-theme="dark"] .app-highlight-card strong{
 <script src="/js/app-reading-history.js"></script>
 <script src="/js/app-bookmarks.js"></script>
 <script src="/js/app-highlights.js"></script>
+<script src="/js/app-expositions.js"></script>
 <script src="/js/app-data-tools.js"></script>
 <script src="/js/app-study-trails.js"></script>
 </body>
