@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v12';
+const CACHE_VERSION = 'sj-pwa-v13';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -37,6 +37,7 @@ const APP_SHELL_ASSETS = [
   '/js/app-data-tools.js',
   '/js/app-global-scripture-search.js',
   '/data/study-trails.json',
+  '/data/scripture-search-index.json',
   '/data/app-changelog.json',
   '/site.webmanifest',
   '/favicon.ico',

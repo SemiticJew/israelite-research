@@ -1,24 +1,5 @@
 (function () {
-  const CANONS = [
-    {
-      id: 'tanakh',
-      label: 'Tanakh',
-      basePath: '/tanakh/chapter.html',
-      dataPath: '/data/tanakh'
-    },
-    {
-      id: 'newtestament',
-      label: 'New Testament',
-      basePath: '/newtestament/chapter.html',
-      dataPath: '/data/newtestament'
-    },
-    {
-      id: 'apocrypha',
-      label: 'Apocrypha',
-      basePath: '/apocrypha/chapter.html',
-      dataPath: '/data/apocrypha'
-    }
-  ];
+  const SEARCH_INDEX_PATH = '/data/scripture-search-index.json';
 
   const state = {
     index: [],
@@ -43,105 +24,54 @@
       "'": '&#039;'
     }[char]));
 
-  const titleCaseBook = (slug) =>
-    String(slug || '')
-      .split('-')
-      .map((part) => {
-        if (/^\d+$/.test(part)) return part;
-        return part.charAt(0).toUpperCase() + part.slice(1);
-      })
-      .join(' ')
-      .replace(/\bOf\b/g, 'of')
-      .replace(/\bThe\b/g, 'the');
-
-  const normalizeBooksManifest = (manifest) => {
-    if (Array.isArray(manifest)) return manifest;
-
-    if (manifest && Array.isArray(manifest.books)) return manifest.books;
-
-    if (manifest && typeof manifest === 'object') {
-      return Object.entries(manifest).map(([slug, chapters]) => ({
-        slug,
-        name: titleCaseBook(slug),
-        chapters
-      }));
-    }
-
-    return [];
-  };
-
-  const getBookName = (book) =>
-    book.name || book.title || book.book || book.label || book.slug || 'Unknown Book';
-
-  const getBookSlug = (book) =>
-    book.slug || book.id || book.key || normalize(getBookName(book)).replace(/\s+/g, '-');
-
-  const getChapterCount = (book) => {
-    if (Array.isArray(book.chapters)) return book.chapters.length;
-    return Number(book.chapters || book.total || book.chapterCount || book.count || 0);
-  };
-
   async function fetchJson(path) {
     const response = await fetch(path, { cache: 'default' });
+
     if (!response.ok) {
       throw new Error(`Unable to load ${path}`);
     }
+
     return response.json();
   }
 
-  async function loadCanon(canon) {
-    const manifest = await fetchJson(`${canon.dataPath}/books.json`);
-    const books = normalizeBooksManifest(manifest);
-
-    const entries = [];
-
-    for (const book of books) {
-      const slug = getBookSlug(book);
-      const bookName = getBookName(book);
-      const chapters = getChapterCount(book);
-
-      if (!slug || !chapters) continue;
-
-      for (let chapter = 1; chapter <= chapters; chapter += 1) {
-        try {
-          const chapterData = await fetchJson(`${canon.dataPath}/${slug}/${chapter}.json`);
-          const verses = Array.isArray(chapterData.verses) ? chapterData.verses : [];
-
-          verses.forEach((verse) => {
-            if (!verse || typeof verse.t !== 'string') return;
-
-            entries.push({
-              canon: canon.id,
-              canonLabel: canon.label,
-              basePath: canon.basePath,
-              book: bookName,
-              slug,
-              chapter,
-              verse: verse.v,
-              text: verse.t,
-              normalizedText: normalize(verse.t)
-            });
-          });
-        } catch (error) {
-          console.warn('[Global Scripture Search] Skipped chapter:', canon.id, slug, chapter, error);
-        }
-      }
-    }
-
-    return entries;
+  function hydrateEntry(entry) {
+    return {
+      canon: entry.canon || '',
+      canonLabel: entry.canonLabel || entry.canon || 'Scripture',
+      book: entry.book || entry.slug || 'Unknown Book',
+      slug: entry.slug || '',
+      chapter: Number(entry.chapter || 0),
+      verse: Number(entry.verse || 0),
+      text: entry.text || '',
+      normalizedText: entry.normalizedText || normalize(entry.text),
+      readerPath: entry.readerPath || `/${entry.canon}/chapter.html`
+    };
   }
 
-  async function buildIndex() {
+  async function loadSearchIndex() {
     if (state.loaded || state.loading) return;
+
     state.loading = true;
     state.error = '';
 
     try {
-      const groups = await Promise.all(CANONS.map(loadCanon));
-      state.index = groups.flat();
+      const payload = await fetchJson(SEARCH_INDEX_PATH);
+      const entries = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload.entries)
+          ? payload.entries
+          : [];
+
+      state.index = entries.map(hydrateEntry).filter((entry) =>
+        entry.slug &&
+        entry.chapter &&
+        entry.verse &&
+        entry.text
+      );
+
       state.loaded = true;
     } catch (error) {
-      state.error = error.message || 'Unable to build Scripture search index.';
+      state.error = error.message || 'Unable to load Scripture search index.';
       console.error('[Global Scripture Search]', error);
     } finally {
       state.loading = false;
@@ -179,7 +109,7 @@
       params.set('q', query);
     }
 
-    return `${result.basePath}?${params.toString()}#v${result.verse}`;
+    return `${result.readerPath}?${params.toString()}#v${result.verse}`;
   }
 
   function searchIndex(query, canonFilter) {
@@ -243,7 +173,7 @@
 
       if (!state.loaded) {
         renderStatus(elements, 'Loading Scripture search index...', 'loading');
-        await buildIndex();
+        await loadSearchIndex();
       }
 
       if (state.error) {
@@ -253,11 +183,13 @@
       }
 
       const results = searchIndex(query, canonFilter);
+
       renderStatus(
         elements,
         `${results.length} result${results.length === 1 ? '' : 's'} shown${results.length === 75 ? ' — refine search for more precision.' : '.'}`,
         'success'
       );
+
       renderResults(elements, results, query);
     };
 
