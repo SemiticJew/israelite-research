@@ -7207,3 +7207,137 @@ html[data-theme="dark"] .app-offline-card h3{
     width:100%;
   }
 }
+
+/* === Mini-Batch 12: Organization menu + dark mode dropdown hardening === */
+
+/* Desktop and global header dropdowns must never appear transparent. */
+#site-header .nav-dd-menu,
+#site-header .dropdown{
+  background: var(--surface, #ffffff) !important;
+  color: var(--ink, #0b2340) !important;
+  border: 1px solid var(--border, #e6ebf2) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#site-header .nav-dd-menu a,
+#site-header .dropdown a{
+  background: transparent !important;
+  color: var(--ink, #0b2340) !important;
+}
+
+#site-header .nav-dd-menu a:hover,
+#site-header .nav-dd-menu a:focus-visible,
+#site-header .dropdown a:hover,
+#site-header .dropdown a:focus-visible{
+  background: rgba(241,115,0,.10) !important;
+  color: var(--accent, #F17300) !important;
+}
+
+/* Dark mode: solid dropdowns and readable menu text. */
+html[data-theme="dark"] #site-header .nav-dd-menu,
+html[data-theme="dark"] #site-header .dropdown,
+[data-theme="dark"] #site-header .nav-dd-menu,
+[data-theme="dark"] #site-header .dropdown{
+  background: #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.55) !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a,
+html[data-theme="dark"] #site-header .dropdown a,
+[data-theme="dark"] #site-header .nav-dd-menu a,
+[data-theme="dark"] #site-header .dropdown a{
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible,
+html[data-theme="dark"] #site-header .dropdown a:hover,
+html[data-theme="dark"] #site-header .dropdown a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd-menu a:hover,
+[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible,
+[data-theme="dark"] #site-header .dropdown a:hover,
+[data-theme="dark"] #site-header .dropdown a:focus-visible{
+  background: rgba(241,115,0,.18) !important;
+  color: #ffffff !important;
+}
+
+/* Native form dropdowns/selects across the site. */
+select,
+.input,
+.select,
+input,
+textarea{
+  background-color: var(--surface, #ffffff) !important;
+  color: var(--ink, #0b2340) !important;
+  border-color: var(--border, #e6ebf2) !important;
+}
+
+html[data-theme="dark"] select,
+html[data-theme="dark"] .input,
+html[data-theme="dark"] .select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .input,
+[data-theme="dark"] .select,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea{
+  background-color: #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+}
+
+html[data-theme="dark"] select option,
+[data-theme="dark"] select option{
+  background-color: #07111f !important;
+  color: #ffffff !important;
+}
+
+/* Global Scripture Search panel dark-mode hardening. */
+html[data-theme="dark"] .app-search-shell,
+[data-theme="dark"] .app-search-shell{
+  background:
+    linear-gradient(135deg, rgba(241,115,0,.16), transparent 34%),
+    #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.45) !important;
+}
+
+html[data-theme="dark"] .app-search-head h2,
+html[data-theme="dark"] .app-search-head p,
+html[data-theme="dark"] .app-search-status,
+html[data-theme="dark"] .app-search-empty,
+[data-theme="dark"] .app-search-head h2,
+[data-theme="dark"] .app-search-head p,
+[data-theme="dark"] .app-search-status,
+[data-theme="dark"] .app-search-empty{
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .app-search-form input,
+html[data-theme="dark"] .app-search-form select,
+[data-theme="dark"] .app-search-form input,
+[data-theme="dark"] .app-search-form select{
+  background-color: #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+}
+
+html[data-theme="dark"] .app-search-result,
+[data-theme="dark"] .app-search-result{
+  background: #0f1a2b !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.14) !important;
+}
+
+html[data-theme="dark"] .app-search-text,
+html[data-theme="dark"] .app-search-ref,
+[data-theme="dark"] .app-search-text,
+[data-theme="dark"] .app-search-ref{
+  color: #ffffff !important;
+}
