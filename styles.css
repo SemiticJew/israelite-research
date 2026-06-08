@@ -7341,3 +7341,60 @@ html[data-theme="dark"] .app-search-ref,
 [data-theme="dark"] .app-search-ref{
   color: #ffffff !important;
 }
+
+/* === Mini-Batch 12B: Organization dropdown final contrast override === */
+
+/* Force the Organization dropdown to be a solid panel in both themes. */
+#site-header .nav-dd:has(.nav-dd-menu[aria-label="Organization submenu"]) .nav-dd-menu,
+#site-header .nav-dd-menu[aria-label="Organization submenu"]{
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0b2340 !important;
+  border: 1px solid #e6ebf2 !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.22) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a{
+  background: transparent !important;
+  color: #0b2340 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible{
+  background: rgba(241,115,0,.12) !important;
+  color: #0b2340 !important;
+}
+
+/* Dark mode: Organization dropdown must stay dark with white text. */
+html[data-theme="dark"] #site-header .nav-dd:has(.nav-dd-menu[aria-label="Organization submenu"]) .nav-dd-menu,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"],
+[data-theme="dark"] #site-header .nav-dd:has(.nav-dd-menu[aria-label="Organization submenu"]) .nav-dd-menu,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"]{
+  background: #07111f !important;
+  background-color: #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.65) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a{
+  background: transparent !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible{
+  background: rgba(241,115,0,.22) !important;
+  color: #ffffff !important;
+}
