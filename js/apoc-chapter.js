@@ -194,6 +194,181 @@ function resolveApocSlug(slug) {
         });
       });
 
+
+  function normalizeXrefBookLabel(raw){
+    return String(raw || "")
+      .replace(/\u00A0/g, " ")
+      .replace(/\./g, "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+  }
+
+  function slugifyXrefBook(raw){
+    const book = normalizeXrefBookLabel(raw);
+    const aliases = {
+      "gen": "genesis",
+      "genesis": "genesis",
+      "ex": "exodus",
+      "exo": "exodus",
+      "exod": "exodus",
+      "exodus": "exodus",
+      "lev": "leviticus",
+      "leviticus": "leviticus",
+      "num": "numbers",
+      "numbers": "numbers",
+      "deut": "deuteronomy",
+      "deuteronomy": "deuteronomy",
+      "josh": "joshua",
+      "joshua": "joshua",
+      "judg": "judges",
+      "judges": "judges",
+      "ruth": "ruth",
+      "1 sam": "1-samuel",
+      "1 samuel": "1-samuel",
+      "2 sam": "2-samuel",
+      "2 samuel": "2-samuel",
+      "1 kgs": "1-kings",
+      "1 kings": "1-kings",
+      "2 kgs": "2-kings",
+      "2 kings": "2-kings",
+      "1 chr": "1-chronicles",
+      "1 chronicles": "1-chronicles",
+      "2 chr": "2-chronicles",
+      "2 chronicles": "2-chronicles",
+      "ezra": "ezra",
+      "neh": "nehemiah",
+      "nehemiah": "nehemiah",
+      "esth": "esther",
+      "esther": "esther",
+      "job": "job",
+      "ps": "psalm",
+      "psa": "psalm",
+      "psalm": "psalm",
+      "psalms": "psalm",
+      "prov": "proverbs",
+      "proverbs": "proverbs",
+      "eccl": "ecclesiastes",
+      "ecclesiastes": "ecclesiastes",
+      "song": "song-of-solomon",
+      "song of songs": "song-of-solomon",
+      "song of solomon": "song-of-solomon",
+      "isa": "isaiah",
+      "isaiah": "isaiah",
+      "jer": "jeremiah",
+      "jeremiah": "jeremiah",
+      "lam": "lamentations",
+      "lamentations": "lamentations",
+      "ezek": "ezekiel",
+      "ezekiel": "ezekiel",
+      "dan": "daniel",
+      "daniel": "daniel",
+      "hos": "hosea",
+      "hosea": "hosea",
+      "joel": "joel",
+      "amos": "amos",
+      "obad": "obadiah",
+      "obadiah": "obadiah",
+      "jonah": "jonah",
+      "mic": "micah",
+      "micah": "micah",
+      "nah": "nahum",
+      "nahum": "nahum",
+      "hab": "habakkuk",
+      "habakkuk": "habakkuk",
+      "zeph": "zephaniah",
+      "zephaniah": "zephaniah",
+      "hag": "haggai",
+      "haggai": "haggai",
+      "zech": "zechariah",
+      "zechariah": "zechariah",
+      "mal": "malachi",
+      "malachi": "malachi",
+      "matt": "matthew",
+      "matthew": "matthew",
+      "mark": "mark",
+      "mk": "mark",
+      "luke": "luke",
+      "lk": "luke",
+      "john": "john",
+      "jn": "john",
+      "acts": "acts",
+      "rom": "romans",
+      "romans": "romans",
+      "1 cor": "1-corinthians",
+      "1 corinthians": "1-corinthians",
+      "2 cor": "2-corinthians",
+      "2 corinthians": "2-corinthians",
+      "gal": "galatians",
+      "galatians": "galatians",
+      "eph": "ephesians",
+      "ephesians": "ephesians",
+      "phil": "philippians",
+      "philippians": "philippians",
+      "col": "colossians",
+      "colossians": "colossians",
+      "1 thess": "1-thessalonians",
+      "1 thessalonians": "1-thessalonians",
+      "2 thess": "2-thessalonians",
+      "2 thessalonians": "2-thessalonians",
+      "1 tim": "1-timothy",
+      "1 timothy": "1-timothy",
+      "2 tim": "2-timothy",
+      "2 timothy": "2-timothy",
+      "titus": "titus",
+      "phlm": "philemon",
+      "philemon": "philemon",
+      "heb": "hebrews",
+      "hebrews": "hebrews",
+      "jas": "james",
+      "james": "james",
+      "1 pet": "1-peter",
+      "1 peter": "1-peter",
+      "2 pet": "2-peter",
+      "2 peter": "2-peter",
+      "1 jn": "1-john",
+      "1 john": "1-john",
+      "2 jn": "2-john",
+      "2 john": "2-john",
+      "3 jn": "3-john",
+      "3 john": "3-john",
+      "jude": "jude",
+      "rev": "revelation",
+      "revelation": "revelation"
+    };
+
+    return aliases[book] || book.replace(/\s+/g, "-");
+  }
+
+  function canonForXrefSlug(slug){
+    const tanakh = new Set([
+      "genesis","exodus","leviticus","numbers","deuteronomy","joshua","judges","ruth",
+      "1-samuel","2-samuel","1-kings","2-kings","1-chronicles","2-chronicles",
+      "ezra","nehemiah","esther","job","psalm","proverbs","ecclesiastes","song-of-solomon",
+      "isaiah","jeremiah","lamentations","ezekiel","daniel","hosea","joel","amos","obadiah",
+      "jonah","micah","nahum","habakkuk","zephaniah","haggai","zechariah","malachi"
+    ]);
+
+    return tanakh.has(slug) ? "tanakh" : "newtestament";
+  }
+
+  function xrefAnchorHTML(ref){
+    const clean = String(ref || "").replace(/\u00A0/g, " ").trim();
+    const match = /^(.+?)\s+(\d+):(\d+)(?:[–-](\d+))?$/i.exec(clean);
+
+    if (!match) {
+      return `<span class="xref-item">${escapeHtml(clean)}</span>`;
+    }
+
+    const slug = slugifyXrefBook(match[1]);
+    const canon = canonForXrefSlug(slug);
+    const chapter = match[2];
+    const verse = match[3];
+    const href = `/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(chapter)}#v${encodeURIComponent(verse)}`;
+
+    return `<a class="xref-trigger xref-item" data-xref="${escapeHtml(clean)}" href="${href}">${escapeHtml(clean)}</a>`;
+  }
+
       function hideInline(){ document.querySelectorAll('.lex-inline,.xref-inline').forEach(d=>d.style.display="none"); }
 
       versesEl.querySelectorAll(".xref-btn").forEach(btn=>{
@@ -205,20 +380,12 @@ function resolveApocSlug(slug) {
           hideInline();
           const refs = (btn.getAttribute("data-xref")||"").split("|").filter(Boolean);
           if (!refs.length){ panel.innerHTML = `<p class="muted">No cross references.</p>`; panel.style.display="block"; return; }
-          panel.innerHTML = `<p>Cross references: ${refs.map(r=>`<span class="xref-item">${escapeHtml(r)}</span>`).join(", ")}.</p>`;
+          panel.innerHTML = `<p>Cross references: ${refs.map(r=>xrefAnchorHTML(r)).join(", ")}.</p>`;
           panel.style.display="block";
         });
       });
 
-      versesEl.addEventListener("mouseover",(e)=>{
-        const el = e.target.closest(".xref-item"); if (!el) return;
-        const html = `<div class="vc-head"><span class="vc-ref"><b>${escapeHtml(el.textContent||"")}</b></span></div><div class="vc-text">Preview…</div>`;
-        showHovercardAt(el, html);
-      });
-      versesEl.addEventListener("mouseout",(e)=>{
-        if (e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest("#hovercard")) return;
-        hideHovercard();
-      });
+      // Inline xref anchors are handled by js/xref-hover.js.
 
       // prefetch neighbors if meta known
       const base = getBase();
