@@ -1855,6 +1855,144 @@ html[data-theme="dark"] .app-install-copy h2{
   }
 }
 
+
+/* === Mini-Batch 13: Global Bible Search form polish === */
+.app-search-form{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1.35fr) minmax(190px, .65fr) auto !important;
+  gap:12px !important;
+  margin-top:22px !important;
+  align-items:end !important;
+}
+
+.app-search-field{
+  display:grid !important;
+  gap:7px !important;
+}
+
+.app-search-field label{
+  display:block !important;
+  color:var(--ink) !important;
+  font-size:.74rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.11em !important;
+}
+
+.app-search-control{
+  position:relative !important;
+}
+
+.app-search-control input,
+.app-search-control select{
+  width:100% !important;
+  min-height:52px !important;
+  border:1px solid var(--border) !important;
+  border-radius:14px !important;
+  background:var(--surface) !important;
+  color:var(--ink) !important;
+  padding:0 15px !important;
+  font-weight:850 !important;
+  box-shadow:0 10px 24px rgba(5,74,145,.07) !important;
+  outline:none !important;
+}
+
+.app-search-control input{
+  padding-left:42px !important;
+}
+
+.app-search-control select{
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  padding-right:42px !important;
+  cursor:pointer !important;
+}
+
+.app-search-control::before{
+  content:"" !important;
+  position:absolute !important;
+  left:15px !important;
+  top:50% !important;
+  width:15px !important;
+  height:15px !important;
+  transform:translateY(-50%) !important;
+  opacity:.74 !important;
+  pointer-events:none !important;
+  background:currentColor !important;
+  color:var(--accent) !important;
+  mask:center/contain no-repeat !important;
+  -webkit-mask:center/contain no-repeat !important;
+}
+
+.app-search-control.search::before{
+  mask-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 20.3 16.7 16a8 8 0 1 0-.7.7l4.3 4.3.7-.7ZM10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13Z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 20.3 16.7 16a8 8 0 1 0-.7.7l4.3 4.3.7-.7ZM10.5 17a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13Z'/%3E%3C/svg%3E") !important;
+}
+
+.app-search-control.filter::before{
+  right:15px !important;
+  left:auto !important;
+  width:13px !important;
+  height:13px !important;
+  mask-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5 10 13l5-5.5H5Z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5 10 13l5-5.5H5Z'/%3E%3C/svg%3E") !important;
+}
+
+.app-search-control input:focus,
+.app-search-control select:focus{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 4px rgba(241,115,0,.16), 0 12px 28px rgba(5,74,145,.08) !important;
+}
+
+.app-search-form button{
+  min-height:52px !important;
+  border:1px solid var(--accent) !important;
+  border-radius:14px !important;
+  background:linear-gradient(180deg, #ff8a1f, var(--accent)) !important;
+  color:#111 !important;
+  padding:0 22px !important;
+  font-weight:950 !important;
+  letter-spacing:.02em !important;
+  cursor:pointer !important;
+  box-shadow:0 12px 24px rgba(241,115,0,.18) !important;
+}
+
+.app-search-form button:hover,
+.app-search-form button:focus-visible{
+  transform:translateY(-1px) !important;
+  filter:brightness(.98) !important;
+}
+
+html[data-theme="dark"] .app-search-field label,
+[data-theme="dark"] .app-search-field label{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .app-search-control input,
+html[data-theme="dark"] .app-search-control select,
+[data-theme="dark"] .app-search-control input,
+[data-theme="dark"] .app-search-control select{
+  background:#07111f !important;
+  color:#ffffff !important;
+  border-color:rgba(255,255,255,.18) !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.32) !important;
+}
+
+html[data-theme="dark"] .app-search-control input::placeholder,
+[data-theme="dark"] .app-search-control input::placeholder{
+  color:rgba(255,255,255,.62) !important;
+}
+
+@media (max-width: 760px){
+  .app-search-form{
+    grid-template-columns:1fr !important;
+  }
+
+  .app-search-form button{
+    width:100% !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1900,16 +2038,24 @@ html[data-theme="dark"] .app-install-copy h2{
   </div>
 
   <form class="app-search-form" data-global-scripture-search-form>
-    <label class="sr-only" for="global-scripture-search-input">Search Scripture</label>
-    <input id="global-scripture-search-input" type="search" placeholder="Search words or phrases..." autocomplete="off" data-global-scripture-search-input>
+    <div class="app-search-field">
+      <label for="global-scripture-search-input">Search Scripture</label>
+      <div class="app-search-control search">
+        <input id="global-scripture-search-input" type="search" placeholder="Search words or phrases..." autocomplete="off" data-global-scripture-search-input>
+      </div>
+    </div>
 
-    <label class="sr-only" for="global-scripture-search-canon">Filter canon</label>
-    <select id="global-scripture-search-canon" data-global-scripture-search-canon>
-      <option value="all">All Scripture</option>
-      <option value="tanakh">Tanakh</option>
-      <option value="newtestament">New Testament</option>
-      <option value="apocrypha">Apocrypha</option>
-    </select>
+    <div class="app-search-field">
+      <label for="global-scripture-search-canon">Filter Canon</label>
+      <div class="app-search-control filter">
+        <select id="global-scripture-search-canon" data-global-scripture-search-canon>
+          <option value="all">All Scripture</option>
+          <option value="tanakh">Tanakh</option>
+          <option value="newtestament">New Testament</option>
+          <option value="apocrypha">Apocrypha</option>
+        </select>
+      </div>
+    </div>
 
     <button type="submit">Search</button>
   </form>
