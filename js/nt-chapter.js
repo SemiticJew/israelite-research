@@ -190,6 +190,10 @@
 
     if (window.Strongs?.orderedTerms) {
       try {
+        if (window.Strongs?.load) {
+          await window.Strongs.load("auto");
+        }
+
         terms = await window.Strongs.orderedTerms({
           canon: ctx.canon,
           book: ctx.book,
