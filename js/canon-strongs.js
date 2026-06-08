@@ -1,4 +1,4 @@
-/* canon-strongs.js — load + look up + render Strong's Hebrew/Greek labels */
+/* canon-strongs.js — load + look up + render Strong's Hebrew/Greek accordion labels */
 (function(){
   const S = {
     heUrl: "/data/lexicon/strongs-hebrew.json",
@@ -18,6 +18,16 @@
       "'": "&#039;"
     }[char]));
 
+  const cleanText = (value) =>
+    String(value ?? "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const shortText = (value, limit = 120) => {
+    const text = cleanText(value);
+    return text.length > limit ? `${text.slice(0, limit - 1)}…` : text;
+  };
+
   const loadJSON = (u) => fetch(u, {cache:"force-cache"}).then(r => {
     if (!r.ok) throw new Error(`Unable to load ${u}`);
     return r.json();
@@ -25,6 +35,7 @@
 
   function languageForCode(code){
     const clean = String(code || "").trim().toUpperCase();
+
     if (clean.startsWith("H")) {
       return {
         key: "hebrew",
@@ -53,6 +64,7 @@
 
   function normalizeEntry(code, entry){
     const cleanCode = String(code || entry?.code || "").trim().toUpperCase();
+
     return {
       code: cleanCode,
       ...entry,
@@ -95,18 +107,44 @@
     return arr.map(r => `<a class="xref" data-ref="${esc(r)}">${esc(r)}</a>`).join(" • ");
   }
 
+  function englishSense(entry){
+    if (!entry) return "";
+
+    if (entry.gloss) return entry.gloss;
+
+    if (Array.isArray(entry.defs) && entry.defs.length) {
+      return entry.defs[0];
+    }
+
+    if (entry.kjv_def) {
+      return entry.kjv_def.split(/[;,]/)[0];
+    }
+
+    if (entry.strongs_def) {
+      return entry.strongs_def;
+    }
+
+    return "";
+  }
+
   function renderMissingRow(code){
-    const language = languageForCode(code);
+    const cleanCode = String(code || "Unknown").toUpperCase();
+    const language = languageForCode(cleanCode);
 
     return `
-      <div class="strongs-item missing" data-lexicon-language="${esc(language.key)}">
-        <div class="head">
-          <span class="code">${esc(String(code || "Unknown").toUpperCase())}</span>
-          <span class="lex-language ${esc(language.key)}">${esc(language.full)}</span>
-          <span class="lemma">Entry not found</span>
+      <details class="strongs-item lex-accordion missing" data-lexicon-language="${esc(language.key)}">
+        <summary class="lex-summary">
+          <span class="lex-summary-main">
+            <span class="code">${esc(cleanCode)}</span>
+            <span class="lex-language ${esc(language.key)}">${esc(language.full)}</span>
+            <span class="lemma">Entry not found</span>
+          </span>
+          <span class="lex-summary-meta">Click to review</span>
+        </summary>
+        <div class="lex-details">
+          <p class="lex-note">${esc(language.note)} This code was attached to the verse, but no matching dictionary entry was found.</p>
         </div>
-        <p class="lex-note">${esc(language.note)} This code was attached to the verse, but no matching dictionary entry was found.</p>
-      </div>
+      </details>
     `;
   }
 
@@ -120,24 +158,24 @@
     }
 
     const language = e.language || languageForCode(e.code);
+    const defs = Array.isArray(e.defs) ? e.defs : [];
+    const transliteration = e.translit || e.xlit || "";
+    const sense = englishSense(e);
     const hasDictionaryData = Boolean(
       e.lemma ||
-      e.translit ||
-      e.xlit ||
+      transliteration ||
       e.pron ||
       e.pos ||
       e.gloss ||
       e.strongs_def ||
       e.kjv_def ||
-      (Array.isArray(e.defs) && e.defs.length)
+      defs.length
     );
 
     if (!hasDictionaryData) {
       return renderMissingRow(e.code);
     }
 
-    const defs = Array.isArray(e.defs) ? e.defs : [];
-    const transliteration = e.translit || e.xlit || "";
     const pronunciation = e.pron ? `<span class="pron">Pron. ${esc(e.pron)}</span>` : "";
     const pos = e.pos ? `<span class="pos">${esc(e.pos)}</span>` : "";
     const gloss = e.gloss ? `<span class="gloss"><em>${esc(e.gloss)}</em></span>` : "";
@@ -148,19 +186,40 @@
     const derivation = e.derivation ? `<div class="lex-field"><span class="lex-label">Derivation</span><div class="lex-value">${esc(e.derivation)}</div></div>` : "";
 
     return `
-      <div class="strongs-item" data-lexicon-language="${esc(language.key)}">
-        <div class="head">
-          <span class="code">${esc(e.code)}</span>
-          <span class="lex-language ${esc(language.key)}">${esc(language.full)}</span>
-          <span class="lemma">${esc(e.lemma || "")}</span>
-          <span class="tr">${esc(transliteration)}</span>
-          ${pronunciation}
-          ${pos}
-          ${gloss}
+      <details class="strongs-item lex-accordion" data-lexicon-language="${esc(language.key)}">
+        <summary class="lex-summary">
+          <span class="lex-summary-main">
+            <span class="code">${esc(e.code)}</span>
+            <span class="lex-language ${esc(language.key)}">${esc(language.full)}</span>
+            <span class="lemma">${esc(e.lemma || "")}</span>
+            <span class="tr">${esc(transliteration)}</span>
+          </span>
+          <span class="lex-summary-english">
+            <span class="lex-label-inline">English sense</span>
+            <span>${esc(shortText(sense || "No English gloss available yet."))}</span>
+          </span>
+        </summary>
+
+        <div class="lex-details">
+          <p class="lex-note">${esc(language.note)}</p>
+
+          <div class="lex-selected-line">
+            <span class="lex-label">Selected Term</span>
+            <div class="lex-value">
+              ${esc(e.code)} ${esc(e.lemma || "")}
+              ${transliteration ? ` — ${esc(transliteration)}` : ""}
+            </div>
+          </div>
+
+          ${sense ? `<div class="lex-field"><span class="lex-label">English Sense / Alignment</span><div class="lex-value">${esc(sense)}</div></div>` : ""}
+          ${pos || gloss || pronunciation ? `<div class="lex-meta-line">${pronunciation}${pos}${gloss}</div>` : ""}
+          ${defList ? `<div class="lex-field"><span class="lex-label">Definitions</span>${defList}</div>` : ""}
+          ${strongsDef}
+          ${kjvDef}
+          ${derivation}
+          ${refs}
         </div>
-        <p class="lex-note">${esc(language.note)}</p>
-        ${(defList || refs || strongsDef || kjvDef || derivation) ? `<details class="more"><summary>Show dictionary details</summary>${defList}${strongsDef}${kjvDef}${derivation}${refs}</details>` : ""}
-      </div>
+      </details>
     `;
   }
 
@@ -169,5 +228,5 @@
     try{ window.XRefHover?.scan?.(); }catch{}
   }
 
-  window.Strongs = { load, get, renderRow, languageForCode, _state: S, _rescan: rescan };
+  window.Strongs = { load, get, renderRow, languageForCode, englishSense, _state: S, _rescan: rescan };
 })();

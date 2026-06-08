@@ -1127,6 +1127,93 @@ html[data-theme="dark"] body.reader-page .lex-language.unknown{
   color:#ffffff;
 }
 
+
+/* Word Study accordion preview */
+body.reader-page .lex-accordion{
+  display:block;
+  padding:0 !important;
+  overflow:hidden;
+}
+
+body.reader-page .lex-accordion summary{
+  list-style:none;
+}
+
+body.reader-page .lex-accordion summary::-webkit-details-marker{
+  display:none;
+}
+
+body.reader-page .lex-summary{
+  display:grid;
+  gap:.55rem;
+  padding:14px;
+  cursor:pointer;
+  outline:none;
+}
+
+body.reader-page .lex-summary:focus-visible{
+  outline:3px solid rgba(241,115,0,.45);
+  outline-offset:-3px;
+}
+
+body.reader-page .lex-summary-main{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.45rem;
+}
+
+body.reader-page .lex-summary-main::after{
+  content:"+";
+  margin-left:auto;
+  width:1.65rem;
+  height:1.65rem;
+  display:inline-grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--accent);
+  font-weight:900;
+}
+
+body.reader-page .lex-accordion[open] .lex-summary-main::after{
+  content:"−";
+}
+
+body.reader-page .lex-summary-english{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  align-items:baseline;
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.45;
+}
+
+body.reader-page .lex-label-inline{
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+body.reader-page .lex-details{
+  padding:0 14px 14px;
+  border-top:1px solid var(--border);
+}
+
+body.reader-page .lex-selected-line{
+  margin:.7rem 0 0;
+}
+
+body.reader-page .lex-meta-line{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:.7rem 0 0;
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1185,9 +1272,9 @@ html[data-theme="dark"] body.reader-page .lex-language.unknown{
       </div>
       <div class="dict-reveal" id="dictReveal">
         <input class="dict-input" id="dictQuery" type="search" placeholder="Search a word, H7225, or G3056">
-        <p class="word-study-help">H-numbers are Hebrew / Aramaic entries. G-numbers are Greek entries.</p>
+        <p class="word-study-help">H-numbers are Hebrew / Aramaic entries. G-numbers are Greek entries. Click a term to open or close full dictionary details.</p>
       </div>
-      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Search a word, Hebrew H-number, Greek G-number, or open a verse Word Study entry.</p></div>
+      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Open Word Study on a verse to see compact English sense previews, then click a Hebrew or Greek entry for full dictionary details.</p></div>
     </aside>
   </section>
 </main>
