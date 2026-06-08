@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v13';
+const CACHE_VERSION = 'sj-pwa-v14';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -31,6 +31,7 @@ const APP_SHELL_ASSETS = [
   '/js/app-offline-chapters.js',
   '/js/reader-offline-chapter.js',
   '/js/reader-verse-jump.js',
+  '/js/reader-deep-link.js',
   '/js/app-bookmarks.js',
   '/js/app-highlights.js',
   '/js/app-expositions.js',
