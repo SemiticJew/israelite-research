@@ -170,12 +170,20 @@
   }
 
   async function showPreview(a, evt){
-    // Prefer data-xref (keeps the original label/range)
+    // Prefer data-xref/data-ref (keeps the original label/range)
+    if (!a.getAttribute('data-xref') && a.getAttribute('data-ref')) {
+      a.setAttribute('data-xref', a.getAttribute('data-ref'));
+    }
     const dx = parseFromDataXref(a);
     let slug = slugFromHref(a);
     if (!slug && dx) {
       // Try to infer from anchor URL if present; citations.js always builds URL with slug
       slug = slugFromHref(a);
+    }
+    if (!slug && dx && dx.bookLabel) {
+      const normalizedBook = dx.bookLabel.toLowerCase().replace(/\./g,'').replace(/\s+/g,' ').trim();
+      const psalmAliases = new Set(['ps', 'psa', 'psalm', 'psalms']);
+      if (psalmAliases.has(normalizedBook)) slug = 'psalm';
     }
     if (!slug) return;
 
@@ -199,15 +207,24 @@
 
   // ---------- Wire events ----------
   let hideTimer = null;
+  function getXrefAnchor(target){
+    if (!target || !target.closest) return null;
+    return target.closest('a.xref-trigger, a.xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]');
+  }
+
+  function isXrefAnchor(el){
+    return !!(el && el.matches && el.matches('a.xref-trigger, a.xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]'));
+  }
+
 
   document.addEventListener('mouseover', function(e){
-    const a = e.target.closest('a.xref-trigger');
+    const a = getXrefAnchor(e.target);
     if (!a) return;
     if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
     showPreview(a, e);
   });
   document.addEventListener('mouseout', function(e){
-    const a = e.target.closest('a.xref-trigger');
+    const a = getXrefAnchor(e.target);
     if (!a) return;
     hideTimer = setTimeout(closeHover, 130);
   });
@@ -218,13 +235,13 @@
 
   // Keyboard accessibility
   document.addEventListener('focusin', function(e){
-    const a = e.target.closest('a.xref-trigger');
+    const a = getXrefAnchor(e.target);
     if (!a) return;
     if (hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
     showPreview(a, {clientX:0, clientY:0});
   });
   document.addEventListener('focusout', function(e){
-    const a = e.target.closest('a.xref-trigger');
+    const a = getXrefAnchor(e.target);
     if (!a) return;
     hideTimer = setTimeout(closeHover, 130);
   });
@@ -232,6 +249,6 @@
   // Close on scroll or generic click outside
   document.addEventListener('scroll', closeHover, {passive:true});
   document.addEventListener('click', function(e){
-    if (!hover.contains(e.target) && !e.target.closest('a.xref-trigger')) closeHover();
+    if (!hover.contains(e.target) && !getXrefAnchor(e.target)) closeHover();
   });
 })();
