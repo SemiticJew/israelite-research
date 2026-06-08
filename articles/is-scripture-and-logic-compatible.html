@@ -21,7 +21,7 @@
 <meta name="twitter:site" content="@semitic_jew"/>
 <meta name="twitter:creator" content="@semitic_jew"/>
 
-<link rel="stylesheet" href="/styles.css?v=20250917204823"/>
+<link rel="stylesheet" href="/styles.css"/>
 
 <style>
   .article-head { text-align:center; margin:0 0 .75rem }
@@ -152,6 +152,115 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
   }
 }
 
+
+/* === Standard Article Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -277,7 +386,8 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
             </svg>
           </a>
         </div>
-        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
+        <span class="ap-role">Founder | Teacher | Researcher</span>
+        <p class="ap-text">Semitic Jew focuses on Scripture, logic, historical context, Israelite identity, and disciplined biblical research.</p>
       </div>
 
       <div class="author-list">
@@ -312,13 +422,12 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
 
 <div id="site-footer"></div>
 
-<!-- External scripts -->
-<script src="/js/metadata.js" defer></script>
+<!-- External scripts --><script src="/js/metadata.js" defer></script>
 <script src="/js/modal.js" defer></script>
 <script src="/js/biblio.js" defer></script>
 <script src="/js/articles.js" defer></script>
 <script src="/js/citations.js?v=20260531-footnotes2" defer></script>
-<script src="/js/xref-hover.js?v=20250917204823" defer></script>
+<script src="/js/xref-hover.js" defer></script>
 <script src="/js/include.js"></script>
 </body>
 </html>

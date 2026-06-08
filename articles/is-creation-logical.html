@@ -151,6 +151,115 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
   }
 }
 
+
+/* === Standard Article Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -221,7 +330,7 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
   </div>
 
   <div class="article-content" itemprop="articleBody">
-    <p><strong>God is the Great Logician.</strong> Creation is not presented in Scripture as disorder, accident, or confusion. The Bible opens with structure: God speaks, creation obeys, the work is evaluated, and the order is declared good. That means Genesis does not ask us to abandon reason. It invites us to recognize that reality is built by the wisdom, will, and command of the Most High. All Scripture is God-breathed, and because it proceeds from God, it carries order, meaning, and authority rather than contradiction or chaos <em>2 Tim 3:16–17</em>.<span class="footnote-ref"><a href="#fn1">1</a></span></p>
+    <p><strong>God is the Great Logician.</strong> Creation is not presented in Scripture as disorder, accident, or confusion. The Bible opens with structure: God speaks, creation obeys, the work is evaluated, and the order is declared good. That means Genesis does not ask us to abandon reason. It invites us to recognize that reality is built by the wisdom, will, and command of the Most High. All Scripture is God-breathed, and because it proceeds from God, it carries order, meaning, and authority rather than contradiction or chaos 2 Tim 3:16–17.<span class="footnote-ref"><a href="#fn1">1</a></span></p>
 
     <aside class="article-pullquote" aria-label="Author highlight">
       <p>Creation is logical because creation comes from the mind of God; and if God is orderly, then the world He made must bear the marks of order.</p>
@@ -231,16 +340,16 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
     <p>The question is not whether Scripture can survive human reasoning. The question is whether human reasoning can survive without the God who makes reason possible. If the world is only accident, then order, truth, morality, sequence, purpose, and intelligibility become difficult to justify. But Genesis begins by showing that the world is intelligible because God made it intelligible. Light is separated from darkness. Waters are divided. Dry land appears. Living creatures are ordered according to their kinds. Man is formed with a distinct role above the beasts. Creation teaches that difference, category, sequence, and purpose are not human inventions; they are built into the world by God.</p>
 
     <h2>Creation Order for Israel</h2>
-    <p>In <em>Gen 2:2–3</em>, the creation pattern establishes the rhythm that Israel would later be commanded to imitate: six days of labor followed by one day of holy rest. The Sabbath was not invented by man. It was grounded in the Creator’s own ordering of time. When the commandment is given to our Israelite forefathers in <em>Ex 20:8–11</em>, the reason reaches back to creation itself. Israel was commanded to structure labor, worship, family, servants, animals, and national life around God’s original pattern. This separated Israel from the nations and trained our people to live under divine order rather than human chaos.<span class="footnote-ref"><a href="#fn2">2</a></span></p>
+    <p>In Gen 2:2–3, the creation pattern establishes the rhythm that Israel would later be commanded to imitate: six days of labor followed by one day of holy rest. The Sabbath was not invented by man. It was grounded in the Creator’s own ordering of time. When the commandment is given to our Israelite forefathers in Ex 20:8–11, the reason reaches back to creation itself. Israel was commanded to structure labor, worship, family, servants, animals, and national life around God’s original pattern. This separated Israel from the nations and trained our people to live under divine order rather than human chaos.<span class="footnote-ref"><a href="#fn2">2</a></span></p>
 
     <h2>A Sign in the Heavens and on Earth</h2>
-    <p>In <em>Ex 31:16–17</em>, the Sabbath is called a perpetual sign between the Most High and the children of Israel. That means Sabbath was not merely a weekly pause; it was a covenant sign, a teaching institution, and a visible witness that Israel belonged to the God who created heaven and earth. Through Sabbath, Israel’s children were continually taught that time itself belongs to God. Other nations had rituals for false gods, imperial calendars, and labor systems built around power. Israel was given a holy rhythm that testified to truth, sanctification, and covenant identity. As <em>Ezek 20:12</em> says, the Sabbath was given so Israel would know that the LORD sanctifies them.<span class="footnote-ref"><a href="#fn3">3</a></span></p>
+    <p>In Ex 31:16–17, the Sabbath is called a perpetual sign between the Most High and the children of Israel. That means Sabbath was not merely a weekly pause; it was a covenant sign, a teaching institution, and a visible witness that Israel belonged to the God who created heaven and earth. Through Sabbath, Israel’s children were continually taught that time itself belongs to God. Other nations had rituals for false gods, imperial calendars, and labor systems built around power. Israel was given a holy rhythm that testified to truth, sanctification, and covenant identity. As Ezek 20:12 says, the Sabbath was given so Israel would know that the LORD sanctifies them.<span class="footnote-ref"><a href="#fn3">3</a></span></p>
 
     <h2>Mercy for Israelites</h2>
-    <p>In <em>Ex 23:12</em>, Sabbath also reveals mercy. The command extended rest to sons, daughters, servants, strangers, and even working animals. Israel was not permitted to build society on endless extraction. This matters because our people had come out of Egypt, where rigorous labor and oppression shaped daily life. The Most High did not deliver Israel so we could imitate the systems of bondage around us. He gave us a law that restrained exploitation, protected life, and reminded the nation that productivity is not greater than obedience. Sabbath was therefore logical, moral, and merciful: it ordered time, limited oppression, and taught Israel not to become like the nations that did not know God.<span class="footnote-ref"><a href="#fn4">4</a></span></p>
+    <p>In Ex 23:12, Sabbath also reveals mercy. The command extended rest to sons, daughters, servants, strangers, and even working animals. Israel was not permitted to build society on endless extraction. This matters because our people had come out of Egypt, where rigorous labor and oppression shaped daily life. The Most High did not deliver Israel so we could imitate the systems of bondage around us. He gave us a law that restrained exploitation, protected life, and reminded the nation that productivity is not greater than obedience. Sabbath was therefore logical, moral, and merciful: it ordered time, limited oppression, and taught Israel not to become like the nations that did not know God.<span class="footnote-ref"><a href="#fn4">4</a></span></p>
 
     <h2>Future Hope for Israelites</h2>
-    <p>In <em>Heb 4:9</em> and <em>Isa 66:23</em>, Scripture shows that Sabbath also points forward. The rest given in the beginning and commanded under the covenant becomes a prophetic shadow of the coming kingdom. Israel’s final rest is not merely a personal feeling; it is tied to restoration, rulership, land, judgment, and the subduing of enemies. <em>Isa 14:1–2</em> speaks of Israel being restored and the nations that oppressed them being brought into subjection. <em>Lev 26:34–35</em> shows that even the land itself was owed its Sabbaths. This means Sabbath reaches from creation, to covenant, to captivity, to kingdom. It is a weekly reminder that God’s order will outlast every empire that violates it.<span class="footnote-ref"><a href="#fn5">5</a></span></p>
+    <p>In Heb 4:9 and Isa 66:23, Scripture shows that Sabbath also points forward. The rest given in the beginning and commanded under the covenant becomes a prophetic shadow of the coming kingdom. Israel’s final rest is not merely a personal feeling; it is tied to restoration, rulership, land, judgment, and the subduing of enemies. Isa 14:1–2 speaks of Israel being restored and the nations that oppressed them being brought into subjection. Lev 26:34–35 shows that even the land itself was owed its Sabbaths. This means Sabbath reaches from creation, to covenant, to captivity, to kingdom. It is a weekly reminder that God’s order will outlast every empire that violates it.<span class="footnote-ref"><a href="#fn5">5</a></span></p>
 
     <h2>Conclusion</h2>
     <p>Creation is logical because God is logical. The Sabbath is logical because it is rooted in creation, covenant, mercy, discipline, and prophetic hope. It teaches Israel that life is not supposed to be ruled by confusion, exploitation, or endless labor. It teaches that God orders time, defines holiness, separates His people, and promises rest. The Sabbath given to Israel is therefore more than a break from work. It is a multilayered covenant reality: creation rhythm, national identity, mercy in law, and a prophecy of the kingdom to come.</p>
@@ -250,15 +359,15 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
 <section class="footnotes">
   <div class="biblio-list">
     <p id="fn1">
-      <em>The Holy Bible</em>, KJV. On the inspiration of Scripture as God-breathed and trustworthy (<em>2 Tim 3:16–17</em>).
+      <em>The Holy Bible</em>, KJV. On the inspiration of Scripture as God-breathed and trustworthy (2 Tim 3:16–17).
       <a class="backref" href="#pub-date"><span class="badge">1</span></a> |
-      Sabbath command given to Israel as covenant identity (<em>Gen 2:2–3</em>; <em>Ex 20:8–11</em>).
+      Sabbath command given to Israel as covenant identity (Gen 2:2–3; Ex 20:8–11).
       <a class="backref" href="#pub-date"><span class="badge">2</span></a> |
-      Sabbath as perpetual sign and sanctification for Israel (<em>Ex 31:16–17</em>; <em>Ezek 20:12</em>).
+      Sabbath as perpetual sign and sanctification for Israel (Ex 31:16–17; Ezek 20:12).
       <a class="backref" href="#pub-date"><span class="badge">3</span></a> |
-      Mercy principle in Sabbath law contrasting Egyptian rigor (<em>Ex 23:12</em>).
+      Mercy principle in Sabbath law contrasting Egyptian rigor (Ex 23:12).
       <a class="backref" href="#pub-date"><span class="badge">4</span></a> |
-      Prophetic Sabbath rest and eschatological hope (<em>Heb 4:9</em>; <em>Isa 66:23</em>; <em>Isa 14:1–2</em>; <em>Lev 26:34–35</em>).
+      Prophetic Sabbath rest and eschatological hope (Heb 4:9; Isa 66:23; Isa 14:1–2; Lev 26:34–35).
       <a class="backref" href="#pub-date"><span class="badge">5</span></a>
     </p>
   </div>
@@ -284,7 +393,8 @@ body.article-doc main.article-page > .breadcrumbs + .article-shell{
             </svg>
           </a>
         </div>
-        <p class="ap-text">Founder | Teacher of Semitic Jew Inc. A researcher who focuses on reading the bible logically and proving Ancient Israelites resembled dark skinned Hamites.</p>
+        <span class="ap-role">Founder | Teacher | Researcher</span>
+        <p class="ap-text">Semitic Jew focuses on Scripture, logic, historical context, Israelite identity, and disciplined biblical research.</p>
       </div>
 
       <div class="author-list">
