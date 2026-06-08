@@ -349,6 +349,13 @@
   // ---------- Rendering ----------
   let currentlyOpenLX = null; // only one lexicon panel open across the page
 
+  function normalizeXrefSlug(slug){
+    const clean = String(slug || "").trim().toLowerCase();
+    if (clean === "psalms" || clean === "psalm" || clean === "ps" || clean === "psa") return "psalm";
+    if (clean === "song-of-songs") return "song-of-solomon";
+    return clean;
+  }
+
   function renderVerses(chJson){
     const arr = Array.isArray(chJson?.verses) ? chJson.verses : [];
     if (!arr.length){ status('Verses coming soon.'); return; }
@@ -420,9 +427,11 @@
         pXR.innerHTML = '<div class="muted">No cross references.</div>';
       } else {
         const lineRefs = refs.map(r=>{
-          const href  = chapterHref(r.canon, r.slug, r.c) + `#v${r.v}`;
-          const label = `${prettyBook(r.slug)} ${r.c}:${r.v}`;
-          return `<a class="xref-trigger" data-xref="${esc(label)}" href="${href}">${esc(label)}</a>`;
+          const slug = normalizeXrefSlug(r.slug);
+          const canon = slug === "psalm" ? "tanakh" : r.canon;
+          const href  = chapterHref(canon, slug, r.c) + `#v${r.v}`;
+          const label = `${prettyBook(slug)} ${r.c}:${r.v}`;
+          return `<a class="xref-trigger xref-item" data-xref="${esc(label)}" href="${href}">${esc(label)}</a>`;
         }).join('; ');
         pXR.innerHTML = `<div class="xr-line" style="font-size:.88rem">${lineRefs};</div>`;
       }
