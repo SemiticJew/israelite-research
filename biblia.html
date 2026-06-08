@@ -361,6 +361,78 @@ html[data-theme="dark"] .biblia-page .title{
   }
 }
 
+
+/* === Mini-Batch 15: Biblia hub stat refinement === */
+.biblia-page .hub-stat{
+  position:relative;
+  overflow:hidden;
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:8px;
+  padding:18px !important;
+}
+
+.biblia-page .hub-stat::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg, var(--accent), rgba(241,115,0,.18));
+}
+
+.biblia-page .hub-stat .stat-kicker{
+  display:inline-flex;
+  width:max-content;
+  margin:0 0 2px;
+  padding:4px 8px;
+  border:1px solid rgba(241,115,0,.28);
+  color:var(--accent);
+  background:rgba(241,115,0,.08);
+  font-size:.66rem;
+  font-weight:950;
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.biblia-page .hub-stat strong{
+  font-size:clamp(1.55rem, 4vw, 2.15rem);
+  letter-spacing:-.055em;
+}
+
+.biblia-page .hub-stat span:not(.stat-kicker){
+  margin-top:0;
+  color:var(--ink);
+  font-size:.83rem;
+  line-height:1.2;
+}
+
+.biblia-page .hub-stat p{
+  margin:0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.45;
+}
+
+html[data-theme="dark"] .biblia-page .hub-stat .stat-kicker{
+  background:rgba(241,115,0,.16);
+  border-color:rgba(241,115,0,.42);
+}
+
+html[data-theme="dark"] .biblia-page .hub-stat span:not(.stat-kicker){
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .biblia-page .hub-stat{
+    min-height:auto;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -398,16 +470,22 @@ html[data-theme="dark"] .biblia-page .title{
 
   <div class="hub-stats" aria-label="Biblia quick stats">
     <div class="hub-stat">
+      <span class="stat-kicker">Library</span>
       <strong>3</strong>
       <span>Canon Sections</span>
+      <p>Tanakh, New Testament, and Apocrypha organized for study.</p>
     </div>
     <div class="hub-stat">
+      <span class="stat-kicker">Reader</span>
       <strong>81</strong>
       <span>Book Pages</span>
+      <p>Direct access to book hubs, chapters, and reading tools.</p>
     </div>
     <div class="hub-stat">
-      <strong>Tools</strong>
-      <span>Study Resources</span>
+      <span class="stat-kicker">Research</span>
+      <strong>Study</strong>
+      <span>Tools & Resources</span>
+      <p>References, word study, dietary law, encyclopedia, and sources.</p>
     </div>
   </div>
 </section>
