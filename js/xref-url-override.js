@@ -9,7 +9,7 @@
     "1 chronicles":{canon:"tanakh",slug:"1-chronicles"},"2 chronicles":{canon:"tanakh",slug:"2-chronicles"},
     "ezra":{canon:"tanakh",slug:"ezra"},"nehemiah":{canon:"tanakh",slug:"nehemiah"},
     "esther":{canon:"tanakh",slug:"esther"},"job":{canon:"tanakh",slug:"job"},
-    "psalms":{canon:"tanakh",slug:"psalms"},"proverbs":{canon:"tanakh",slug:"proverbs"},
+    "psalms":{canon:"tanakh",slug:"psalm"},"proverbs":{canon:"tanakh",slug:"proverbs"},
     "ecclesiastes":{canon:"tanakh",slug:"ecclesiastes"},"song-of-songs":{canon:"tanakh",slug:"song-of-songs"},
     "isaiah":{canon:"tanakh",slug:"isaiah"},"jeremiah":{canon:"tanakh",slug:"jeremiah"},
     "lamentations":{canon:"tanakh",slug:"lamentations"},"ezekiel":{canon:"tanakh",slug:"ezekiel"},
@@ -44,7 +44,7 @@
   };
 
   const ALIASES = {
-    "ps":"psalms","psalm":"psalms","song of songs":"song-of-songs","song":"song-of-songs",
+    "ps":"psalm","psalm":"psalm","song of songs":"song-of-songs","song":"song-of-songs",
     "bel and the dragon":"bel-and-the-dragon","prayer of azariah":"prayer-of-azariah",
     "1 mac":"1 maccabees","2 mac":"2 maccabees","1 macc":"1 maccabees","2 macc":"2 maccabees",
     "i maccabees":"1 maccabees","ii maccabees":"2 maccabees",

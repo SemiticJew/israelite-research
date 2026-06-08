@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function(){
       nehemiah:"nehemiah", neh:"nehemiah",
       esther:"esther", esth:"esther",
       job:"job",
-      psalms:"psalms", psalm:"psalms", ps:"psalms", psa:"psalms",
+      psalms:"psalm", psalm:"psalm", ps:"psalm", psa:"psalm",
       proverbs:"proverbs", prov:"proverbs", pr:"proverbs",
       ecclesiastes:"ecclesiastes", eccl:"ecclesiastes", ecc:"ecclesiastes", qoh:"ecclesiastes",
       "song of songs":"song-of-songs","song":"song-of-songs","song of solomon":"song-of-songs","sos":"song-of-songs",
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     var OT_SET = new Set([
       "genesis","exodus","leviticus","numbers","deuteronomy","joshua","judges","ruth","1-samuel","2-samuel",
-      "1-kings","2-kings","1-chronicles","2-chronicles","ezra","nehemiah","esther","job","psalms","proverbs",
+      "1-kings","2-kings","1-chronicles","2-chronicles","ezra","nehemiah","esther","job","psalm","proverbs",
       "ecclesiastes","song-of-songs","isaiah","jeremiah","lamentations","ezekiel","daniel","hosea","joel","amos",
       "obadiah","jonah","micah","nahum","habakkuk","zephaniah","haggai","zechariah","malachi"
     ]);
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
     "ezra":"ezra","neh":"nehemiah","nehemiah":"nehemiah",
     "esth":"esther","esther":"esther",
     "job":"job",
-    "ps":"psalms","psalm":"psalms","psalms":"psalms",
+    "ps":"psalm","psalm":"psalm","psalms":"psalm",
     "prov":"proverbs","proverbs":"proverbs",
     "eccl":"ecclesiastes","ecclesiastes":"ecclesiastes",
     "song":"song-of-songs",
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
   const tanakh = new Set([
     "genesis","exodus","leviticus","numbers","deuteronomy","joshua","judges","ruth",
     "1-samuel","2-samuel","1-kings","2-kings","1-chronicles","2-chronicles",
-    "ezra","nehemiah","esther","job","psalms","proverbs","ecclesiastes","song-of-songs",
+    "ezra","nehemiah","esther","job","psalm","proverbs","ecclesiastes","song-of-songs",
     "isaiah","jeremiah","lamentations","ezekiel","daniel","hosea","joel","amos","obadiah",
     "jonah","micah","nahum","habakkuk","zephaniah","haggai","zechariah","malachi"
   ]);

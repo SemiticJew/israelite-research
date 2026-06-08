@@ -125,6 +125,7 @@
 
   // Create lowercase, hyphenated, roman-numeral slug (e.g., "2-Kings" -> "ii-kings")
   function slugifyBook(bookCanonical){
+    if (bookCanonical === 'Psalms') return 'psalm';
     const m = /^([123])-(.+)$/.exec(bookCanonical);
     if (m){
       const rn = ARABIC_TO_ROMAN_SLUG[+m[1]] || m[1];
