@@ -209,11 +209,11 @@
   let hideTimer = null;
   function getXrefAnchor(target){
     if (!target || !target.closest) return null;
-    return target.closest('a.xref-trigger, a.xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]');
+    return target.closest('a.xref-trigger, a.xref[data-ref], span.xref[data-ref], .xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]');
   }
 
   function isXrefAnchor(el){
-    return !!(el && el.matches && el.matches('a.xref-trigger, a.xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]'));
+    return !!(el && el.matches && el.matches('a.xref-trigger, a.xref[data-ref], span.xref[data-ref], .xref[data-ref], a[data-ref], .bible-ref[data-ref], .verse[data-ref]'));
   }
 
 

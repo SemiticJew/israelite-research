@@ -172,6 +172,7 @@ STANDARD_SCRIPT_BLOCK = '''<script src="/js/metadata.js" defer></script>
 <script src="/js/biblio.js" defer></script>
 <script src="/js/articles.js" defer></script>
 <script src="/js/citations.js?v=20260531-footnotes2" defer></script>
+<script src="/js/article-xref-autowrap.js" defer></script>
 <script src="/js/xref-hover.js" defer></script>
 <script src="/js/include.js"></script>'''
 
