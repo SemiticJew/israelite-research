@@ -104,10 +104,15 @@ body.website-app-page{
   border:1px solid var(--border);
   background:var(--surface);
   color:var(--ink);
-  text-decoration:none;
+  text-decoration:none !important;
+  font-family:inherit;
+  font-size:inherit;
+  line-height:1;
   font-weight:900;
   box-shadow:var(--shadow);
   cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
 }
 
 .install-btn.primary{
@@ -121,11 +126,13 @@ body.website-app-page{
   border-color:var(--accent);
   color:var(--accent);
   outline:none;
+  text-decoration:none !important;
 }
 
 .install-btn.primary:hover,
 .install-btn.primary:focus-visible{
   color:#ffffff;
+  text-decoration:none !important;
 }
 
 .install-grid{
@@ -211,11 +218,13 @@ body.website-app-page{
   color:var(--ink);
 }
 
-.app-mark-preview svg{
-  width:82px;
-  height:82px;
-  color:var(--accent);
-  margin-bottom:12px;
+.app-icon-preview{
+  width:96px;
+  height:96px;
+  display:block;
+  margin:0 auto 14px;
+  border-radius:22px;
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
 }
 
 .app-mark-preview .brand{
@@ -347,13 +356,7 @@ html[data-theme="dark"] .install-btn{
 
     <article class="app-mark-preview" aria-label="Semitic Jew app preview">
       <div>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="6" cy="7" r="1.5" fill="currentColor"/>
-          <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-          <circle cx="18" cy="7" r="1.5" fill="currentColor"/>
-          <path d="M4 19l1.5-9 5 4 3-6 3 6 5-4L20 19H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+        <img class="app-icon-preview" src="/android-chrome-192x192.png" alt="Semitic Jew app icon preview" loading="lazy">
         <div class="brand">Semitic Jew</div>
       </div>
     </article>
