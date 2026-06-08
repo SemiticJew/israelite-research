@@ -990,6 +990,81 @@ body.reader-page main.container > .breadcrumbs + .page-header{
   }
 }
 
+
+/* Word Study language clarity */
+body.reader-page .word-study-help{
+  margin:.45rem 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.5;
+}
+
+body.reader-page .lex-language{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:.16rem .45rem;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  background:rgba(5,74,145,.10);
+  color:var(--brand);
+}
+
+body.reader-page .lex-language.hebrew{
+  background:rgba(5,74,145,.12);
+  color:#054A91;
+}
+
+body.reader-page .lex-language.greek{
+  background:rgba(241,115,0,.15);
+  color:#9a4300;
+}
+
+body.reader-page .lex-language.unknown{
+  background:rgba(107,114,128,.14);
+  color:#4b5563;
+}
+
+body.reader-page .lex-note{
+  margin:.55rem 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+body.reader-page .strongs-item.missing{
+  border-style:dashed;
+  opacity:.92;
+}
+
+body.reader-page .lex-field{
+  margin:.7rem 0 0;
+}
+
+body.reader-page .lex-label{
+  display:block;
+  margin:0 0 .2rem;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+body.reader-page .lex-value{
+  color:var(--ink);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] body.reader-page .lex-language.hebrew,
+html[data-theme="dark"] body.reader-page .lex-language.greek,
+html[data-theme="dark"] body.reader-page .lex-language.unknown{
+  color:#ffffff;
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1036,7 +1111,7 @@ body.reader-page main.container > .breadcrumbs + .page-header{
 
     <aside class="panel">
       <div class="dict-head">
-        <div class="dict-title">Word Study / Lexicon</div>
+        <div class="dict-title">Word Study / Hebrew & Greek Lexicon</div>
         <button class="icon-btn" id="dictToggle" title="Open search">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M21 21l-4.35-4.35m1.18-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
@@ -1045,9 +1120,10 @@ body.reader-page main.container > .breadcrumbs + .page-header{
         </button>
       </div>
       <div class="dict-reveal" id="dictReveal" data-open="0" aria-hidden="true">
-        <input class="dict-input" id="dictQuery" type="search" placeholder="Search a word or Strong’s number">
+        <input class="dict-input" id="dictQuery" type="search" placeholder="Search a word, H7225, or G3056">
+        <p class="word-study-help">H-numbers are Hebrew / Aramaic entries. G-numbers are Greek entries.</p>
       </div>
-      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Search a word or open a verse lexicon entry.</p></div>
+      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Search a word, Hebrew H-number, Greek G-number, or open a verse Word Study entry.</p></div>
     </aside>
   </section>
 </main>
