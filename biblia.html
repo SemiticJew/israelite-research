@@ -433,6 +433,84 @@ html[data-theme="dark"] .biblia-page .hub-stat span:not(.stat-kicker){
   }
 }
 
+
+/* === Mini-Batch 15B: Minimal Biblia stat tiles === */
+.biblia-page .hub-stats{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:14px;
+}
+
+.biblia-page .hub-stat{
+  aspect-ratio:1 / 1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:18px !important;
+  text-align:center;
+  border-radius:0 !important;
+  background:var(--surface) !important;
+}
+
+.biblia-page .hub-stat::before{
+  display:none !important;
+}
+
+.biblia-page .hub-stat strong{
+  display:block;
+  color:var(--ink);
+  font-family:var(--ff-sans, inherit);
+  font-size:clamp(2rem, 5vw, 3.1rem);
+  font-weight:900;
+  line-height:.9;
+  letter-spacing:-.06em;
+}
+
+.biblia-page .hub-stat span{
+  display:block;
+  margin:0;
+  color:var(--muted);
+  font-family:var(--ff-sans, inherit);
+  font-size:.78rem;
+  font-weight:900;
+  line-height:1.15;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.biblia-page .hub-stat p,
+.biblia-page .hub-stat .stat-kicker{
+  display:none !important;
+}
+
+html[data-theme="dark"] .biblia-page .hub-stat strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .biblia-page .hub-stats{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:10px;
+  }
+
+  .biblia-page .hub-stat{
+    aspect-ratio:auto;
+    min-height:112px;
+    padding:14px 8px !important;
+  }
+
+  .biblia-page .hub-stat strong{
+    font-size:2rem;
+  }
+
+  .biblia-page .hub-stat span{
+    font-size:.66rem;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -470,22 +548,16 @@ html[data-theme="dark"] .biblia-page .hub-stat span:not(.stat-kicker){
 
   <div class="hub-stats" aria-label="Biblia quick stats">
     <div class="hub-stat">
-      <span class="stat-kicker">Library</span>
       <strong>3</strong>
-      <span>Canon Sections</span>
-      <p>Tanakh, New Testament, and Apocrypha organized for study.</p>
+      <span>Canons</span>
     </div>
     <div class="hub-stat">
-      <span class="stat-kicker">Reader</span>
       <strong>81</strong>
-      <span>Book Pages</span>
-      <p>Direct access to book hubs, chapters, and reading tools.</p>
+      <span>Books</span>
     </div>
     <div class="hub-stat">
-      <span class="stat-kicker">Research</span>
-      <strong>Study</strong>
-      <span>Tools & Resources</span>
-      <p>References, word study, dietary law, encyclopedia, and sources.</p>
+      <strong>8</strong>
+      <span>Study Tools</span>
     </div>
   </div>
 </section>
