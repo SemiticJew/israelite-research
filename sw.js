@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v17';
+const CACHE_VERSION = 'sj-pwa-v18';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -41,6 +41,7 @@ const APP_SHELL_ASSETS = [
   '/data/scripture-search-index.json',
   '/data/app-changelog.json',
   '/site.webmanifest',
+  '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
   '/favicon-16x16.png',
   '/favicon-32x32.png',
@@ -68,6 +69,7 @@ const APP_SHELL = [
   '/website-app.html',
   '/bible-app.html',
   '/site.webmanifest',
+  '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
   '/favicon-16x16.png',
   '/favicon-32x32.png',

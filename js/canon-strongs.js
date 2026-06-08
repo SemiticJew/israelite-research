@@ -3,8 +3,10 @@
   const S = {
     heUrl: "/data/lexicon/strongs-hebrew.json",
     grUrl: "/data/lexicon/strongs-greek.json",
+    orderUrl: "/data/lexicon/verse-strongs-order.json",
     he: null,
     gr: null,
+    order: null,
     idx: new Map(),
     ready: false
   };
@@ -97,9 +99,65 @@
     S.ready = true;
   }
 
+  async function loadOrder(){
+    if (S.order) return S.order;
+
+    try {
+      const payload = await loadJSON(S.orderUrl);
+      S.order = payload?.entries || {};
+    } catch (_error) {
+      S.order = {};
+    }
+
+    return S.order;
+  }
+
   function get(code){
     if (!code) return null;
     return S.idx.get(String(code).toUpperCase()) || null;
+  }
+
+  function normalizeCanonKeyPart(value){
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function verseOrderKey(meta){
+    if (!meta) return "";
+
+    const canon = normalizeCanonKeyPart(meta.canon || meta.canonId || meta.testament);
+    const book = normalizeCanonKeyPart(meta.book || meta.slug || meta.bookSlug);
+    const chapter = Number(meta.chapter || meta.ch);
+    const verse = Number(meta.verse || meta.v);
+
+    if (!canon || !book || !chapter || !verse) return "";
+    return `${canon}/${book}/${chapter}/${verse}`;
+  }
+
+  async function orderedTerms(meta, fallbackCodes){
+    const order = await loadOrder();
+    const key = verseOrderKey(meta);
+    const ordered = key ? order[key] : null;
+
+    if (Array.isArray(ordered) && ordered.length) {
+      return ordered.map(item => ({
+        word: item.word || "",
+        code: String(item.code || "").toUpperCase()
+      })).filter(item => item.code);
+    }
+
+    const seen = new Set();
+    return (Array.isArray(fallbackCodes) ? fallbackCodes : [])
+      .map(code => String(code || "").toUpperCase())
+      .filter(code => {
+        if (!code || seen.has(code)) return false;
+        seen.add(code);
+        return true;
+      })
+      .map(code => ({ word: "", code }));
   }
 
   function linkifyRefs(arr){
@@ -148,10 +206,12 @@
     `;
   }
 
-  function renderRow(entryOrCode){
+  function renderRow(entryOrCode, options = {}){
     const e = typeof entryOrCode === "string"
       ? get(entryOrCode) || normalizeEntry(entryOrCode, {})
       : normalizeEntry(entryOrCode?.code, entryOrCode || {});
+
+    const alignedWord = cleanText(options.word || entryOrCode?.word || "");
 
     if (!e || !e.code) {
       return renderMissingRow(entryOrCode);
@@ -195,8 +255,8 @@
             <span class="tr">${esc(transliteration)}</span>
           </span>
           <span class="lex-summary-english">
-            <span class="lex-label-inline">English sense</span>
-            <span>${esc(shortText(sense || "No English gloss available yet."))}</span>
+            ${alignedWord ? `<span><span class="lex-label-inline">English term</span> ${esc(alignedWord)}</span>` : ""}
+            <span><span class="lex-label-inline">English sense</span> ${esc(shortText(sense || "No English gloss available yet."))}</span>
           </span>
         </summary>
 
@@ -211,6 +271,7 @@
             </div>
           </div>
 
+          ${alignedWord ? `<div class="lex-field"><span class="lex-label">English Term in Verse</span><div class="lex-value">${esc(alignedWord)}</div></div>` : ""}
           ${sense ? `<div class="lex-field"><span class="lex-label">English Sense / Alignment</span><div class="lex-value">${esc(sense)}</div></div>` : ""}
           ${pos || gloss || pronunciation ? `<div class="lex-meta-line">${pronunciation}${pos}${gloss}</div>` : ""}
           ${defList ? `<div class="lex-field"><span class="lex-label">Definitions</span>${defList}</div>` : ""}
@@ -228,5 +289,22 @@
     try{ window.XRefHover?.scan?.(); }catch{}
   }
 
-  window.Strongs = { load, get, renderRow, languageForCode, englishSense, _state: S, _rescan: rescan };
+  function renderOrderedRows(terms){
+    return (Array.isArray(terms) ? terms : [])
+      .map(term => renderRow(term.code, { word: term.word }))
+      .join("");
+  }
+
+  window.Strongs = {
+    load,
+    loadOrder,
+    get,
+    orderedTerms,
+    renderRow,
+    renderOrderedRows,
+    languageForCode,
+    englishSense,
+    _state: S,
+    _rescan: rescan
+  };
 })();

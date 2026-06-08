@@ -184,15 +184,53 @@
     `;
   }
 
-  function verseLexiconPanelHTML(codes){
-    const uniq = Array.from(new Set((codes||[]).map(c=>String(c).toUpperCase())));
-    if (!uniq.length) return '<div class="muted">No Strong’s codes for this verse.</div>';
-    const rows = uniq.map(c=> strongsListRow(strongsLookup(c))).join('');
+  async function verseLexiconPanelHTML(codes, verseNumber){
+    const fallback = Array.isArray(codes) ? codes : [];
+    let terms = [];
+
+    if (window.Strongs?.orderedTerms) {
+      try {
+        terms = await window.Strongs.orderedTerms({
+          canon: ctx.canon,
+          book: ctx.book,
+          chapter: ctx.chapter,
+          verse: verseNumber
+        }, fallback);
+      } catch (_error) {
+        terms = [];
+      }
+    }
+
+    if (!terms.length) {
+      const seen = new Set();
+      terms = fallback
+        .map(c => String(c || "").toUpperCase())
+        .filter(c => {
+          if (!c || seen.has(c)) return false;
+          seen.add(c);
+          return true;
+        })
+        .map(code => ({ word: "", code }));
+    }
+
+    if (!terms.length) {
+      return '<div class="muted">No Strong’s codes for this verse.</div>';
+    }
+
+    const rows = window.Strongs?.renderOrderedRows
+      ? window.Strongs.renderOrderedRows(terms)
+      : terms.map(term => strongsListRow(strongsLookup(term.code))).join('');
+
     return `
       <div>
-        <div style="font-weight:800;margin:0 0 .35rem">Lexicon</div>
+        <div style="font-weight:800;margin:0 0 .35rem">Word Study · Verse Order</div>
+        <div class="muted" style="margin:0 0 .75rem;font-size:.9rem">
+          Entries follow the English sentence order when alignment data is available.
+        </div>
         ${rows}
-        <div class="muted" style="margin-top:.75rem;font-size:.9rem">Select a Strong’s code below to open the word study details.</div>
+        <div class="muted" style="margin-top:.75rem;font-size:.9rem">
+          Click a Hebrew or Greek term to open or close full dictionary details.
+        </div>
       </div>`;
   }
 
@@ -418,7 +456,11 @@
           return;
         }
         if (currentlyOpenLX && currentlyOpenLX !== pLX){ currentlyOpenLX.classList.remove('open'); }
-        pLX.innerHTML = verseLexiconPanelHTML(v.s || []);
+        pLX.innerHTML = '<div class="muted">Loading Word Study…</div>';
+        verseLexiconPanelHTML(v.s || [], v.v).then(html => {
+          pLX.innerHTML = html;
+          try { window.Strongs?._rescan?.(); } catch (_error) {}
+        });
         pLX.classList.add('open');
         currentlyOpenLX = pLX;
         const r = pLX.getBoundingClientRect();
