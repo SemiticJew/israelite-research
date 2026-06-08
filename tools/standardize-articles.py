@@ -201,6 +201,34 @@ BIBLE_REF_IN_EM_RE = re.compile(
 )
 
 
+# Stronger Bible reference detector used to unwrap <em>...</em> around Scripture references.
+# This intentionally keeps normal emphasized words like <em>goyim</em>, <em>ethnos</em>, book titles, etc.
+BIBLE_REF_TEXT_RE = re.compile(
+    r'\b(?:'
+    r'Gen|Genesis|Ex|Exod|Exodus|Lev|Leviticus|Num|Numbers|Deut|Deuteronomy|Josh|Joshua|Judg|Judges|Ruth|'
+    r'1 Sam|2 Sam|1 Kgs|2 Kgs|1 Chr|2 Chr|Ezra|Neh|Nehemiah|Esth|Esther|Job|'
+    r'Ps|Psalm|Psalms|Prov|Proverbs|Eccl|Ecc|Ecclesiastes|Song|Isa|Isaiah|Jer|Jeremiah|Lam|Lamentations|'
+    r'Ezek|Ezekiel|Dan|Daniel|Hos|Hosea|Joel|Amos|Obad|Obadiah|Jonah|Mic|Micah|Nah|Nahum|Hab|Habakkuk|'
+    r'Zeph|Zephaniah|Hag|Haggai|Zech|Zechariah|Mal|Malachi|'
+    r'Matt|Matthew|Mark|Luke|John|Acts|Rom|Romans|1 Cor|2 Cor|Gal|Eph|Phil|Col|'
+    r'1 Thess|2 Thess|1 Tim|2 Tim|Titus|Phlm|Philemon|Heb|Hebrews|Jas|James|'
+    r'1 Pet|2 Pet|1 John|1 Jn|2 John|2 Jn|3 John|3 Jn|Jude|Rev|Revelation'
+    r')\s+\d{1,3}:\d{1,3}(?:[–-]\d{1,3})?\b'
+)
+
+EM_TAG_RE = re.compile(r'<em>(.*?)</em>', re.S)
+
+def unwrap_bible_ref_italics(html: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        inner = match.group(1)
+        plain = re.sub(r'<[^>]+>', '', inner)
+        if BIBLE_REF_TEXT_RE.search(plain):
+            return inner
+        return match.group(0)
+
+    return EM_TAG_RE.sub(repl, html)
+
+
 def article_paths(include_template: bool = False) -> Iterable[Path]:
     for path in sorted(ARTICLE_DIR.glob("*.html")):
         if not include_template and path.name == TEMPLATE_NAME:
@@ -256,6 +284,7 @@ def standardize_scripts(html: str) -> str:
 
 def standardize_html(html: str) -> str:
     html = STANDARD_STYLESHEET_RE.sub(STANDARD_STYLESHEET, html, count=1)
+    html = unwrap_bible_ref_italics(html)
     html = BIBLE_REF_IN_EM_RE.sub(r"\1", html)
     html = add_modal_refinement_css(html)
     html = standardize_author_bio(html)
