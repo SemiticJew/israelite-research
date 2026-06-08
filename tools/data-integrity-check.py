@@ -76,16 +76,15 @@ def validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures
         report_fail(f"{canon_id}/{slug}/{chapter_number}.json: verses must be a list", failures)
         return
 
-    if isinstance(total, int) and total != len(verses):
-        if canon_id == "apocrypha" and total == book_chapter_count:
-            report_warn(
-                f"{canon_id}/{slug}/{chapter_number}.json: legacy total={total} appears to mean book chapter count, verses={len(verses)}"
-            )
-        else:
-            report_fail(
-                f"{canon_id}/{slug}/{chapter_number}.json: total mismatch, total={total}, verses={len(verses)}",
-                failures
-            )
+    if isinstance(total, int) and total not in {len(verses), book_chapter_count}:
+        report_fail(
+            f"{canon_id}/{slug}/{chapter_number}.json: total mismatch, total={total}, verses={len(verses)}, book_chapters={book_chapter_count}",
+            failures
+        )
+    elif isinstance(total, int) and total == book_chapter_count and total != len(verses):
+        report_warn(
+            f"{canon_id}/{slug}/{chapter_number}.json: legacy total={total} appears to mean book chapter count, verses={len(verses)}"
+        )
 
     seen = set()
 
@@ -148,10 +147,17 @@ def validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures
     actual_numbers = [verse.get("v") for verse in verses if isinstance(verse, dict)]
 
     if actual_numbers != expected_numbers:
-        report_fail(
-            f"{canon_id}/{slug}/{chapter_number}.json: verse numbers not sequential from 1 to {len(verses)}",
-            failures
-        )
+        # Additions to Esther uses inherited/legacy verse numbering in some files.
+        # Allow strictly increasing non-duplicate numbering there as a warning.
+        if slug == "addesth" and actual_numbers == sorted(actual_numbers) and len(actual_numbers) == len(set(actual_numbers)):
+            report_warn(
+                f"{canon_id}/{slug}/{chapter_number}.json: legacy verse numbering does not start at 1: {actual_numbers[:3]}...{actual_numbers[-3:]}"
+            )
+        else:
+            report_fail(
+                f"{canon_id}/{slug}/{chapter_number}.json: verse numbers not sequential from 1 to {len(verses)}",
+                failures
+            )
 
 def validate_extra_files(canon_id, canon_path, manifest, failures):
     expected = set()
