@@ -18,41 +18,6 @@
     padding:0 24px 80px;
   }
 
-  .breadcrumbs{
-    max-width:1200px;
-    margin:18px auto 0;
-    padding:0 24px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-    font-size:.9rem;
-    color:var(--muted);
-  }
-
-  .breadcrumbs a{
-    color:var(--muted);
-    text-decoration:none;
-    font-weight:700;
-  }
-
-  .breadcrumbs a:hover,
-  .breadcrumbs a:focus,
-  .breadcrumbs a:focus-visible{
-    color:var(--accent);
-    text-decoration:none;
-  }
-
-  .breadcrumbs .sep{
-    color:var(--muted);
-    opacity:.75;
-  }
-
-  .breadcrumbs .current{
-    color:var(--ink);
-    font-weight:800;
-  }
-
   .book-hero{
     margin:32px auto 28px;
     padding:56px 30px;
@@ -270,10 +235,6 @@
       overflow-x:hidden;
     }
 
-    .breadcrumbs{
-      padding:0 20px;
-    }
-
     .book-hero{
       margin:22px auto 24px;
       padding:42px 20px;
@@ -288,6 +249,48 @@
       padding:16px;
     }
   }
+
+/* Book page rhythm: match canon hub breadcrumb placement */
+body.tanakh-book-page main.container,
+body.nt-book-page main.container,
+body.newtestament-book-page main.container,
+body.apocrypha-book-page main.container{
+  padding-top:40px !important;
+}
+
+body.tanakh-book-page main.container > .breadcrumbs,
+body.nt-book-page main.container > .breadcrumbs,
+body.newtestament-book-page main.container > .breadcrumbs,
+body.apocrypha-book-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+  max-width:none !important;
+}
+
+body.tanakh-book-page main.container > .breadcrumbs + .book-hero,
+body.nt-book-page main.container > .breadcrumbs + .book-hero,
+body.newtestament-book-page main.container > .breadcrumbs + .book-hero,
+body.apocrypha-book-page main.container > .breadcrumbs + .book-hero{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.tanakh-book-page main.container,
+  body.nt-book-page main.container,
+  body.newtestament-book-page main.container,
+  body.apocrypha-book-page main.container{
+    padding-top:30px !important;
+  }
+
+  body.tanakh-book-page main.container > .breadcrumbs,
+  body.nt-book-page main.container > .breadcrumbs,
+  body.newtestament-book-page main.container > .breadcrumbs,
+  body.apocrypha-book-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>

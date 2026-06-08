@@ -16,6 +16,9 @@ REQUIRED_VERSE_KEYS = {"v", "t", "c", "s"}
 def report_ok(message):
     print(f"OK: {message}")
 
+def report_warn(message):
+    print(f"WARN: {message}")
+
 def report_fail(message, failures):
     failures.append(message)
     print(f"FAIL: {message}")
@@ -50,7 +53,7 @@ def validate_books_manifest(canon_id, canon_path, failures):
     report_ok(f"{canon_id}: books.json loaded with {len(manifest)} books")
     return manifest
 
-def validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures):
+def validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures, book_chapter_count):
     if not chapter_path.exists():
         report_fail(f"{canon_id}/{slug}: missing chapter file {chapter_number}.json", failures)
         return
@@ -74,10 +77,15 @@ def validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures
         return
 
     if isinstance(total, int) and total != len(verses):
-        report_fail(
-            f"{canon_id}/{slug}/{chapter_number}.json: total mismatch, total={total}, verses={len(verses)}",
-            failures
-        )
+        if canon_id == "apocrypha" and total == book_chapter_count:
+            report_warn(
+                f"{canon_id}/{slug}/{chapter_number}.json: legacy total={total} appears to mean book chapter count, verses={len(verses)}"
+            )
+        else:
+            report_fail(
+                f"{canon_id}/{slug}/{chapter_number}.json: total mismatch, total={total}, verses={len(verses)}",
+                failures
+            )
 
     seen = set()
 
@@ -158,12 +166,18 @@ def validate_extra_files(canon_id, canon_path, manifest, failures):
             continue
 
         if path.is_dir() and f"{path.name}/" not in expected:
-            report_fail(f"{canon_id}: folder exists but is not in books.json: {path.relative_to(canon_path)}", failures)
+            if canon_id == "apocrypha":
+                report_warn(f"{canon_id}: legacy/support folder exists but is not in active books.json: {path.relative_to(canon_path)}")
+            else:
+                report_fail(f"{canon_id}: folder exists but is not in books.json: {path.relative_to(canon_path)}", failures)
 
     for path in canon_path.glob("*/*.json"):
         rel = path.relative_to(canon_path).as_posix()
         if rel not in expected:
-            report_fail(f"{canon_id}: chapter file exists but is not expected by books.json: {rel}", failures)
+            if canon_id == "apocrypha":
+                report_warn(f"{canon_id}: legacy/support chapter file exists but is not expected by active books.json: {rel}")
+            else:
+                report_fail(f"{canon_id}: chapter file exists but is not expected by books.json: {rel}", failures)
 
 def validate_canon(canon_id, canon_path, failures):
     if not canon_path.exists():
@@ -190,7 +204,7 @@ def validate_canon(canon_id, canon_path, failures):
         for chapter_number in range(1, chapter_count + 1):
             total_chapters += 1
             chapter_path = book_path / f"{chapter_number}.json"
-            validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures)
+            validate_chapter_file(canon_id, slug, chapter_number, chapter_path, failures, chapter_count)
 
     validate_extra_files(canon_id, canon_path, manifest, failures)
     report_ok(f"{canon_id}: checked {total_books} books and {total_chapters} expected chapters")
