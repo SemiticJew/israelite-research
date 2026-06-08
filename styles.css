@@ -7398,3 +7398,93 @@ html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization subme
   background: rgba(241,115,0,.22) !important;
   color: #ffffff !important;
 }
+
+/* === Mini-Batch 12C: All desktop header dropdown final contrast override === */
+
+/* Force every desktop header dropdown to be a solid readable panel. */
+#site-header .nav-dd-menu[aria-label="Ologies submenu"],
+#site-header .nav-dd-menu[aria-label="Biblia submenu"],
+#site-header .nav-dd-menu[aria-label="Organization submenu"],
+#site-header .nav-dd .nav-dd-menu{
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0b2340 !important;
+  border: 1px solid #e6ebf2 !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.22) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#site-header .nav-dd-menu[aria-label="Ologies submenu"] a,
+#site-header .nav-dd-menu[aria-label="Biblia submenu"] a,
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a,
+#site-header .nav-dd .nav-dd-menu a{
+  background: transparent !important;
+  color: #0b2340 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#site-header .nav-dd-menu[aria-label="Ologies submenu"] a:hover,
+#site-header .nav-dd-menu[aria-label="Ologies submenu"] a:focus-visible,
+#site-header .nav-dd-menu[aria-label="Biblia submenu"] a:hover,
+#site-header .nav-dd-menu[aria-label="Biblia submenu"] a:focus-visible,
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+#site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible,
+#site-header .nav-dd .nav-dd-menu a:hover,
+#site-header .nav-dd .nav-dd-menu a:focus-visible{
+  background: rgba(241,115,0,.12) !important;
+  color: #0b2340 !important;
+}
+
+/* Dark mode: every header dropdown must be solid dark with white text. */
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"],
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"],
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"],
+html[data-theme="dark"] #site-header .nav-dd .nav-dd-menu,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"],
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"],
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"],
+[data-theme="dark"] #site-header .nav-dd .nav-dd-menu{
+  background: #07111f !important;
+  background-color: #07111f !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.65) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a,
+html[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a,
+[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a{
+  background: transparent !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a:focus-visible,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a:focus-visible,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible,
+html[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a:hover,
+html[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a:hover,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Ologies submenu"] a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a:hover,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Biblia submenu"] a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:hover,
+[data-theme="dark"] #site-header .nav-dd-menu[aria-label="Organization submenu"] a:focus-visible,
+[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a:hover,
+[data-theme="dark"] #site-header .nav-dd .nav-dd-menu a:focus-visible{
+  background: rgba(241,115,0,.22) !important;
+  color: #ffffff !important;
+}
