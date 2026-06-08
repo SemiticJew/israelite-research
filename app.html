@@ -1695,6 +1695,166 @@ html[data-theme="dark"] .app-install-copy h2{
   }
 }
 
+
+/* App dashboard: global scripture search */
+.app-search-shell{
+  margin:2rem 0;
+  padding:1.5rem;
+  border:1px solid rgba(5,74,145,.14);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 16px 40px rgba(0,0,0,.06);
+}
+
+.app-search-head .label{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#F17300;
+}
+
+.app-search-head h2{
+  margin:.4rem 0 .35rem;
+  color:#054A91;
+  font-family:"Spectral",serif;
+  font-size:clamp(1.45rem,3vw,2rem);
+}
+
+.app-search-head p{
+  margin:0 0 1rem;
+  color:#4b5563;
+  max-width:760px;
+  line-height:1.6;
+}
+
+.app-search-form{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 190px auto;
+  gap:.75rem;
+  align-items:center;
+  margin:1rem 0;
+}
+
+.app-search-form input,
+.app-search-form select{
+  width:100%;
+  border:1px solid rgba(5,74,145,.2);
+  border-radius:14px;
+  padding:.85rem 1rem;
+  font:inherit;
+  background:#fff;
+  color:#111827;
+}
+
+.app-search-form button{
+  border:0;
+  border-radius:999px;
+  padding:.9rem 1.25rem;
+  font-weight:800;
+  color:#fff;
+  background:#054A91;
+  cursor:pointer;
+  transition:transform .18s ease, background .18s ease;
+}
+
+.app-search-form button:hover,
+.app-search-form button:focus-visible{
+  background:#F17300;
+  transform:translateY(-1px);
+}
+
+.app-search-status{
+  min-height:1.5rem;
+  margin:.5rem 0 1rem;
+  color:#4b5563;
+  font-size:.95rem;
+}
+
+.app-search-status[data-tone="error"]{
+  color:#b91c1c;
+}
+
+.app-search-status[data-tone="success"]{
+  color:#054A91;
+  font-weight:700;
+}
+
+.app-search-results{
+  display:grid;
+  gap:.75rem;
+}
+
+.app-search-result{
+  display:grid;
+  gap:.35rem;
+  padding:1rem;
+  border:1px solid rgba(5,74,145,.12);
+  border-radius:16px;
+  background:#f8fafc;
+  color:inherit;
+  text-decoration:none;
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.app-search-result:hover,
+.app-search-result:focus-visible{
+  transform:translateY(-1px);
+  border-color:rgba(241,115,0,.45);
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+}
+
+.app-search-ref{
+  color:#054A91;
+  font-weight:900;
+}
+
+.app-search-canon{
+  width:max-content;
+  border-radius:999px;
+  padding:.2rem .55rem;
+  background:rgba(241,115,0,.12);
+  color:#9a4300;
+  font-size:.78rem;
+  font-weight:800;
+}
+
+.app-search-text{
+  color:#1f2937;
+  line-height:1.6;
+}
+
+.app-search-text mark{
+  padding:.05rem .18rem;
+  border-radius:.3rem;
+  background:rgba(241,115,0,.22);
+  color:inherit;
+}
+
+.app-search-empty{
+  padding:1rem;
+  border-radius:16px;
+  background:#f8fafc;
+  color:#4b5563;
+}
+
+@media (max-width:760px){
+  .app-search-shell{
+    padding:1.1rem;
+  }
+
+  .app-search-form{
+    grid-template-columns:1fr;
+  }
+
+  .app-search-form button{
+    width:100%;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1730,6 +1890,34 @@ html[data-theme="dark"] .app-install-copy h2{
       <a class="app-btn" href="/biblia.html">Open Biblia</a>
     </div>
   </section>
+
+
+<section class="app-search-shell" data-global-scripture-search>
+  <div class="app-search-head">
+    <span class="label">Global Bible Search</span>
+    <h2>Search Scripture Across the Full Library</h2>
+    <p>Search the Tanakh, New Testament, and Apocrypha from one place. Filter by canon, then open any result directly in the chapter reader.</p>
+  </div>
+
+  <form class="app-search-form" data-global-scripture-search-form>
+    <label class="sr-only" for="global-scripture-search-input">Search Scripture</label>
+    <input id="global-scripture-search-input" type="search" placeholder="Search words or phrases..." autocomplete="off" data-global-scripture-search-input>
+
+    <label class="sr-only" for="global-scripture-search-canon">Filter canon</label>
+    <select id="global-scripture-search-canon" data-global-scripture-search-canon>
+      <option value="all">All Scripture</option>
+      <option value="tanakh">Tanakh</option>
+      <option value="newtestament">New Testament</option>
+      <option value="apocrypha">Apocrypha</option>
+    </select>
+
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="app-search-status" data-global-scripture-search-status></div>
+  <div class="app-search-results" data-global-scripture-search-results></div>
+</section>
+
 <section class="app-overview" aria-label="App overview">
     <article class="app-card">
       <span class="label">PWA First</span>
@@ -1819,5 +2007,6 @@ html[data-theme="dark"] .app-install-copy h2{
 <script src="/js/app-mobile-sections.js"></script>
 <script src="/js/app-changelog.js"></script>
 <script src="/js/app-study-trails.js"></script>
+<script src="/js/app-global-scripture-search.js" defer></script>
 </body>
 </html>
