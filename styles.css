@@ -6939,3 +6939,271 @@ html[data-theme="dark"] body.reader-page .reader-shortcuts-button{
     width:100%;
   }
 }
+
+
+/* Batch 1: verse jump and offline chapter tools */
+body.reader-page .reader-verse-jump-shell,
+body.reader-page .reader-offline-shell{
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  display:grid;
+  grid-template-columns:190px 1fr auto;
+  gap:12px;
+  align-items:center;
+}
+
+body.reader-page .reader-verse-jump-title span,
+body.reader-page .reader-offline-title span{
+  display:block;
+  margin:0 0 4px;
+  color:var(--accent);
+  font-size:.68rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+body.reader-page .reader-verse-jump-title strong,
+body.reader-page .reader-offline-title strong{
+  display:block;
+  color:var(--ink);
+  font-size:.98rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+body.reader-page .reader-verse-jump-form{
+  display:grid;
+  grid-template-columns:auto 100px auto;
+  gap:8px;
+  align-items:center;
+}
+
+body.reader-page .reader-verse-jump-form label{
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:900;
+}
+
+body.reader-page .reader-verse-jump-form input,
+body.reader-page .reader-verse-jump-form button,
+body.reader-page .reader-verse-jump-chips button,
+body.reader-page .reader-offline-actions button,
+body.reader-page .reader-offline-actions a{
+  min-height:38px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font:inherit;
+  font-size:.82rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+body.reader-page .reader-verse-jump-form input{
+  width:100%;
+  padding:0 10px;
+}
+
+body.reader-page .reader-verse-jump-form button,
+body.reader-page .reader-verse-jump-chips button,
+body.reader-page .reader-offline-actions button,
+body.reader-page .reader-offline-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 11px;
+  cursor:pointer;
+}
+
+body.reader-page .reader-verse-jump-chips,
+body.reader-page .reader-offline-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+body.reader-page .reader-verse-jump-form button:hover,
+body.reader-page .reader-verse-jump-form button:focus-visible,
+body.reader-page .reader-verse-jump-chips button:hover,
+body.reader-page .reader-verse-jump-chips button:focus-visible,
+body.reader-page .reader-offline-actions button:hover,
+body.reader-page .reader-offline-actions button:focus-visible,
+body.reader-page .reader-offline-actions a:hover,
+body.reader-page .reader-offline-actions a:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+body.reader-page .reader-offline-status{
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-align:right;
+}
+
+body.reader-page .reader-jump-pulse{
+  animation:readerJumpPulse 1.6s ease;
+}
+
+@keyframes readerJumpPulse{
+  0%{box-shadow:0 0 0 0 rgba(241,115,0,.45)}
+  55%{box-shadow:0 0 0 8px rgba(241,115,0,.10)}
+  100%{box-shadow:0 0 0 0 rgba(241,115,0,0)}
+}
+
+.app-offline-shell{
+  margin:0 0 28px;
+  padding:24px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.app-offline-head .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.app-offline-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:clamp(1.3rem,3vw,1.85rem);
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.app-offline-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.app-offline-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+
+.app-offline-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+
+.app-offline-card span{
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.app-offline-card h3{
+  margin:8px 0 6px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+}
+
+.app-offline-card p{
+  margin:0 0 12px;
+  color:var(--muted);
+  font-size:.88rem;
+}
+
+.app-offline-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.app-offline-actions a,
+.app-offline-actions button{
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 11px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font:inherit;
+  font-size:.82rem;
+  font-weight:900;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.app-offline-actions a:hover,
+.app-offline-actions button:hover,
+.app-offline-actions a:focus-visible,
+.app-offline-actions button:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+html[data-theme="dark"] body.reader-page .reader-verse-jump-shell,
+html[data-theme="dark"] body.reader-page .reader-offline-shell,
+html[data-theme="dark"] .app-offline-shell,
+html[data-theme="dark"] .app-offline-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] body.reader-page .reader-verse-jump-title strong,
+html[data-theme="dark"] body.reader-page .reader-offline-title strong,
+html[data-theme="dark"] .app-offline-head h2,
+html[data-theme="dark"] .app-offline-card h3{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  body.reader-page .reader-verse-jump-shell,
+  body.reader-page .reader-offline-shell{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page .reader-verse-jump-chips,
+  body.reader-page .reader-offline-actions,
+  body.reader-page .reader-offline-status{
+    justify-content:flex-start;
+    text-align:left;
+  }
+
+  .app-offline-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:620px){
+  body.reader-page .reader-verse-jump-form{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page .reader-verse-jump-chips,
+  body.reader-page .reader-offline-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  body.reader-page .reader-verse-jump-form button,
+  body.reader-page .reader-verse-jump-chips button,
+  body.reader-page .reader-offline-actions button,
+  body.reader-page .reader-offline-actions a{
+    width:100%;
+  }
+}
