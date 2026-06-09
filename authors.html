@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Authors — Semitic Jew</title>
+<meta name="description" content="Meet the authors and contributors behind Semitic Jew Inc. Explore writers focused on Scripture, logic, history, Israelite identity, and disciplined biblical research."/>
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+/* === Authors Hub Page === */
+.authors-page{
+  background:var(--bg, #f8fafc);
+  color:var(--ink, #0b2340);
+}
+
+.authors-wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:44px 16px 64px;
+}
+
+.authors-hero{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:28px;
+  align-items:stretch;
+  margin-bottom:34px;
+}
+
+.authors-hero-main,
+.authors-hero-side,
+.author-card{
+  background:var(--surface, #ffffff);
+  border:1px solid var(--border, #e6ebf2);
+  box-shadow:0 10px 30px rgba(11,35,64,.08);
+}
+
+.authors-hero-main{
+  padding:34px;
+}
+
+.authors-kicker{
+  display:inline-flex;
+  align-items:center;
+  margin:0 0 12px;
+  color:var(--accent, #F17300);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+
+.authors-hero h1{
+  margin:0;
+  color:var(--ink, #0b2340);
+  font-size:clamp(2rem, 4vw, 3.45rem);
+  line-height:1.02;
+  letter-spacing:-.045em;
+  font-weight:950;
+}
+
+.authors-hero p{
+  max-width:760px;
+  margin:18px 0 0;
+  color:var(--muted, #526173);
+  font-size:1.03rem;
+  line-height:1.75;
+}
+
+.authors-hero-side{
+  padding:26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:22px;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.13), transparent 34%),
+    var(--surface, #ffffff);
+}
+
+.authors-hero-side strong{
+  display:block;
+  color:var(--ink, #0b2340);
+  font-size:2.2rem;
+  line-height:1;
+  font-weight:950;
+}
+
+.authors-hero-side span{
+  display:block;
+  margin-top:7px;
+  color:var(--muted, #526173);
+  font-size:.84rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+}
+
+.authors-section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:18px;
+  margin:34px 0 16px;
+}
+
+.authors-section-head h2{
+  margin:0;
+  color:var(--ink, #0b2340);
+  font-size:1.35rem;
+  font-weight:950;
+  letter-spacing:-.025em;
+}
+
+.authors-section-head p{
+  margin:0;
+  color:var(--muted, #526173);
+  line-height:1.6;
+}
+
+.authors-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:24px;
+}
+
+.author-card{
+  display:flex;
+  flex-direction:column;
+  min-height:430px;
+  text-decoration:none !important;
+  color:inherit;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.author-card:hover,
+.author-card:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--accent, #F17300);
+  box-shadow:0 16px 38px rgba(11,35,64,.14);
+  outline:none;
+  text-decoration:none !important;
+}
+
+.author-card-top{
+  padding:28px 24px 18px;
+  text-align:center;
+  border-bottom:1px solid var(--border, #e6ebf2);
+}
+
+.author-card img{
+  width:118px;
+  height:118px;
+  border-radius:999px;
+  object-fit:cover;
+  border:3px solid var(--surface, #ffffff);
+  box-shadow:0 14px 34px rgba(5,74,145,.18);
+}
+
+.author-card-body{
+  padding:22px 24px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  flex:1;
+}
+
+.author-card h3{
+  margin:0;
+  color:var(--ink, #0b2340);
+  font-size:1.35rem;
+  font-weight:950;
+  letter-spacing:-.025em;
+}
+
+.author-role{
+  color:var(--accent, #F17300);
+  font-size:.78rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.author-card p{
+  margin:0;
+  color:var(--muted, #526173);
+  line-height:1.65;
+}
+
+.author-card-meta{
+  margin-top:auto;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:10px;
+  padding-top:16px;
+}
+
+.author-mini-stat{
+  border:1px solid var(--border, #e6ebf2);
+  padding:12px;
+  text-align:center;
+}
+
+.author-mini-stat b{
+  display:block;
+  color:var(--ink, #0b2340);
+  font-size:1.35rem;
+  line-height:1;
+  font-weight:950;
+}
+
+.author-mini-stat span{
+  display:block;
+  margin-top:5px;
+  color:var(--muted, #526173);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.author-card-cta{
+  margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  border:1px solid var(--accent, #F17300);
+  background:var(--accent, #F17300);
+  color:#ffffff;
+  font-size:.8rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+
+.author-card:hover .author-card-cta,
+.author-card:focus-visible .author-card-cta{
+  background:var(--ink, #0b2340);
+  border-color:var(--ink, #0b2340);
+}
+
+.authors-future{
+  margin-top:34px;
+  padding:26px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--surface, #ffffff);
+}
+
+.authors-future h2{
+  margin:0 0 10px;
+  color:var(--ink, #0b2340);
+  font-size:1.25rem;
+  font-weight:950;
+}
+
+.authors-future p{
+  margin:0;
+  color:var(--muted, #526173);
+  line-height:1.7;
+}
+
+html[data-theme="dark"] .authors-page{
+  background:var(--bg, #07111f);
+}
+
+html[data-theme="dark"] .authors-hero-main,
+html[data-theme="dark"] .authors-hero-side,
+html[data-theme="dark"] .author-card,
+html[data-theme="dark"] .authors-future{
+  background:var(--surface, #0f172a);
+  border-color:var(--border, #1e293b);
+  box-shadow:0 14px 34px rgba(0,0,0,.28);
+}
+
+html[data-theme="dark"] .authors-hero h1,
+html[data-theme="dark"] .authors-section-head h2,
+html[data-theme="dark"] .authors-hero-side strong,
+html[data-theme="dark"] .author-card h3,
+html[data-theme="dark"] .author-mini-stat b,
+html[data-theme="dark"] .authors-future h2{
+  color:#ffffff;
+}
+
+html[data-theme="dark"] .authors-hero p,
+html[data-theme="dark"] .authors-section-head p,
+html[data-theme="dark"] .authors-hero-side span,
+html[data-theme="dark"] .author-card p,
+html[data-theme="dark"] .author-mini-stat span,
+html[data-theme="dark"] .authors-future p{
+  color:rgba(255,255,255,.72);
+}
+
+html[data-theme="dark"] .author-card-top,
+html[data-theme="dark"] .author-mini-stat{
+  border-color:var(--border, #1e293b);
+}
+
+@media(max-width:900px){
+  .authors-hero{
+    grid-template-columns:1fr;
+  }
+
+  .authors-grid{
+    grid-template-columns:1fr;
+  }
+
+  .authors-section-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media(max-width:620px){
+  .authors-wrap{
+    padding:32px 14px 50px;
+  }
+
+  .authors-hero-main,
+  .authors-hero-side,
+  .authors-future{
+    padding:24px 18px;
+  }
+
+  .author-card{
+    min-height:0;
+  }
+}
+</style>
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+</head>
+
+<body class="authors-page" data-page="authors">
+<div id="site-header"></div>
+
+<main class="authors-wrap">
+  <section class="authors-hero" aria-label="Authors and contributors">
+    <div class="authors-hero-main">
+      <div class="authors-kicker">Authors</div>
+      <h1>Writers &amp; Contributors</h1>
+      <p>
+        Meet the writers behind Semitic Jew Inc — a growing educational platform focused on Scripture,
+        logic, historical context, Israelite identity, and disciplined biblical research.
+      </p>
+    </div>
+
+    <aside class="authors-hero-side" aria-label="Author network summary">
+      <div>
+        <strong>1</strong>
+        <span>Current Author</span>
+      </div>
+      <div>
+        <strong>7</strong>
+        <span>Published Articles</span>
+      </div>
+      <div>
+        <strong>3</strong>
+        <span>Core Focus Areas</span>
+      </div>
+    </aside>
+  </section>
+
+  <section aria-labelledby="authors-list-title">
+    <div class="authors-section-head">
+      <div>
+        <div class="authors-kicker">Directory</div>
+        <h2 id="authors-list-title">Author Profiles</h2>
+      </div>
+      <p>Each profile collects articles, research themes, and public teaching work from the author.</p>
+    </div>
+
+    <div class="authors-grid">
+      <a class="author-card" href="/authors/semitic-jew.html">
+        <div class="author-card-top">
+          <img src="/images/authors/semitic-jew.jpg" alt="Semitic Jew"/>
+        </div>
+
+        <div class="author-card-body">
+          <h3>Semitic Jew</h3>
+          <div class="author-role">Founder • Teacher • Researcher</div>
+          <p>
+            Semitic Jew focuses on Scripture, logic, historical context, Israelite identity,
+            and disciplined biblical research for public teaching and educational development.
+          </p>
+
+          <div class="author-card-meta">
+            <div class="author-mini-stat">
+              <b>7</b>
+              <span>Articles</span>
+            </div>
+            <div class="author-mini-stat">
+              <b>2026</b>
+              <span>Active</span>
+            </div>
+          </div>
+
+          <span class="author-card-cta">View Profile</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="authors-future" aria-label="Future contributors">
+    <h2>Future Contributor Network</h2>
+    <p>
+      This hub is built to scale. As Semitic Jew Inc adds writers, teachers, researchers,
+      and contributors, each author profile will be added here with their articles and public work.
+    </p>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/include.js"></script>
+</body>
+</html>
