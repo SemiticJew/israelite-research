@@ -1028,6 +1028,162 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   }
 }
 
+
+/* === Mini-Batch 16: Header dropdown typography + mobile refinement === */
+
+/* Match dropdown typography to the face-value header nav */
+#site-header .nav-dd-menu,
+#site-header .nav-dd-menu a{
+  font-family:Georgia, serif !important;
+}
+
+@media(min-width:921px){
+  #site-header .nav-dd-menu{
+    min-width:250px !important;
+    padding:10px !important;
+  }
+
+  #site-header .nav-dd-menu a{
+    min-height:38px !important;
+    display:flex !important;
+    align-items:center !important;
+    padding:9px 12px !important;
+    color:var(--ink, #0b2340) !important;
+    font-size:1rem !important;
+    font-weight:400 !important;
+    line-height:1.2 !important;
+    letter-spacing:0 !important;
+    text-decoration:none !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+  }
+
+  #site-header .nav-dd-menu a:hover,
+  #site-header .nav-dd-menu a:focus-visible{
+    color:var(--accent, #F17300) !important;
+    background:rgba(241,115,0,.055) !important;
+    text-decoration:none !important;
+    outline:none !important;
+  }
+
+  #site-header .nav-dd-menu .nav-app-link{
+    margin-top:4px !important;
+    justify-content:center !important;
+    font-family:inherit !important;
+    font-size:.95rem !important;
+    font-weight:700 !important;
+  }
+}
+
+/* Mobile-friendly dropdown panel polish */
+@media(max-width:920px){
+  #site-header.mobile-open nav.primary{
+    display:grid !important;
+    gap:0 !important;
+    max-height:calc(100vh - 88px) !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    padding:12px 16px 16px !important;
+  }
+
+  #site-header nav.primary,
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle,
+  #site-header .nav-dd-menu,
+  #site-header .nav-dd-menu a{
+    font-family:Georgia, serif !important;
+  }
+
+  #site-header nav.primary > a,
+  #site-header .nav-dd-toggle{
+    min-height:46px !important;
+    padding:12px 0 !important;
+    font-size:1.02rem !important;
+    font-weight:400 !important;
+    line-height:1.2 !important;
+    letter-spacing:0 !important;
+    color:var(--ink, #0b2340) !important;
+    border:0 !important;
+    border-bottom:1px solid var(--border, #e6ebf2) !important;
+    background:transparent !important;
+  }
+
+  #site-header .nav-dd-toggle::after{
+    width:7px !important;
+    height:7px !important;
+    opacity:.55 !important;
+  }
+
+  #site-header .nav-dd.mobile-subopen .nav-dd-toggle{
+    color:var(--accent, #F17300) !important;
+    border-bottom-color:rgba(241,115,0,.32) !important;
+  }
+
+  #site-header .nav-dd-menu{
+    padding:7px 0 10px 14px !important;
+    margin:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+  }
+
+  #site-header .nav-dd-menu a{
+    min-height:36px !important;
+    display:flex !important;
+    align-items:center !important;
+    padding:7px 0 !important;
+    color:var(--muted, #6b7280) !important;
+    font-size:.96rem !important;
+    font-weight:400 !important;
+    line-height:1.25 !important;
+    letter-spacing:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    text-decoration:none !important;
+  }
+
+  #site-header .nav-dd-menu a:hover,
+  #site-header .nav-dd-menu a:focus-visible{
+    color:var(--accent, #F17300) !important;
+    background:transparent !important;
+    text-decoration:none !important;
+    outline:none !important;
+  }
+
+  #site-header .nav-dd-menu .nav-app-link{
+    width:max-content !important;
+    min-height:36px !important;
+    margin:6px 0 2px !important;
+    padding:0 12px !important;
+    color:#ffffff !important;
+    background:var(--accent, #F17300) !important;
+    border:1px solid var(--accent, #F17300) !important;
+    font-family:Georgia, serif !important;
+    font-size:.95rem !important;
+    font-weight:700 !important;
+  }
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] #site-header .nav-dd-menu a:hover,
+html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
+  color:var(--accent, #F17300) !important;
+}
+
+@media(max-width:920px){
+  html[data-theme="dark"] #site-header .nav-dd-menu a{
+    color:var(--muted, #94a3b8) !important;
+  }
+
+  html[data-theme="dark"] #site-header .nav-dd.mobile-subopen .nav-dd-toggle{
+    color:var(--accent, #F17300) !important;
+  }
+}
+
 </style>
 
   <div class="header-inner">
