@@ -2,168 +2,167 @@
   "use strict";
 
   const BOOK_ALIASES = new Map(Object.entries({
-    "Gen":"Genesis",
-    "Genesis":"Genesis",
+    "Gen":["Genesis","tanakh","genesis"],
+    "Genesis":["Genesis","tanakh","genesis"],
 
-    "Ex":"Exodus",
-    "Exod":"Exodus",
-    "Exodus":"Exodus",
+    "Ex":["Exodus","tanakh","exodus"],
+    "Exod":["Exodus","tanakh","exodus"],
+    "Exodus":["Exodus","tanakh","exodus"],
 
-    "Lev":"Leviticus",
-    "Leviticus":"Leviticus",
+    "Lev":["Leviticus","tanakh","leviticus"],
+    "Leviticus":["Leviticus","tanakh","leviticus"],
 
-    "Num":"Numbers",
-    "Numbers":"Numbers",
+    "Num":["Numbers","tanakh","numbers"],
+    "Numbers":["Numbers","tanakh","numbers"],
 
-    "Deut":"Deuteronomy",
-    "Deuteronomy":"Deuteronomy",
+    "Deut":["Deuteronomy","tanakh","deuteronomy"],
+    "Deuteronomy":["Deuteronomy","tanakh","deuteronomy"],
 
-    "Josh":"Joshua",
-    "Joshua":"Joshua",
+    "Josh":["Joshua","tanakh","joshua"],
+    "Joshua":["Joshua","tanakh","joshua"],
 
-    "Judg":"Judges",
-    "Judges":"Judges",
+    "Judg":["Judges","tanakh","judges"],
+    "Judges":["Judges","tanakh","judges"],
 
-    "Ruth":"Ruth",
+    "Ruth":["Ruth","tanakh","ruth"],
 
-    "1 Sam":"1 Samuel",
-    "2 Sam":"2 Samuel",
-    "1 Samuel":"1 Samuel",
-    "2 Samuel":"2 Samuel",
+    "1 Sam":["1 Samuel","tanakh","1-samuel"],
+    "2 Sam":["2 Samuel","tanakh","2-samuel"],
+    "1 Samuel":["1 Samuel","tanakh","1-samuel"],
+    "2 Samuel":["2 Samuel","tanakh","2-samuel"],
 
-    "1 Kgs":"1 Kings",
-    "2 Kgs":"2 Kings",
-    "1 Kings":"1 Kings",
-    "2 Kings":"2 Kings",
+    "1 Kgs":["1 Kings","tanakh","1-kings"],
+    "2 Kgs":["2 Kings","tanakh","2-kings"],
+    "1 Kings":["1 Kings","tanakh","1-kings"],
+    "2 Kings":["2 Kings","tanakh","2-kings"],
 
-    "1 Chr":"1 Chronicles",
-    "2 Chr":"2 Chronicles",
-    "1 Chronicles":"1 Chronicles",
-    "2 Chronicles":"2 Chronicles",
+    "1 Chr":["1 Chronicles","tanakh","1-chronicles"],
+    "2 Chr":["2 Chronicles","tanakh","2-chronicles"],
+    "1 Chronicles":["1 Chronicles","tanakh","1-chronicles"],
+    "2 Chronicles":["2 Chronicles","tanakh","2-chronicles"],
 
-    "Ezra":"Ezra",
-    "Neh":"Nehemiah",
-    "Nehemiah":"Nehemiah",
-    "Esth":"Esther",
-    "Esther":"Esther",
+    "Ezra":["Ezra","tanakh","ezra"],
+    "Neh":["Nehemiah","tanakh","nehemiah"],
+    "Nehemiah":["Nehemiah","tanakh","nehemiah"],
+    "Esth":["Esther","tanakh","esther"],
+    "Esther":["Esther","tanakh","esther"],
 
-    "Job":"Job",
+    "Job":["Job","tanakh","job"],
 
-    "Ps":"Psalm",
-    "Psalm":"Psalm",
-    "Psalms":"Psalm",
+    "Ps":["Psalm","tanakh","psalm"],
+    "Psalm":["Psalm","tanakh","psalm"],
+    "Psalms":["Psalm","tanakh","psalm"],
 
-    "Prov":"Proverbs",
-    "Proverbs":"Proverbs",
+    "Prov":["Proverbs","tanakh","proverbs"],
+    "Proverbs":["Proverbs","tanakh","proverbs"],
 
-    "Eccl":"Ecclesiastes",
-    "Ecc":"Ecclesiastes",
-    "Ecclesiastes":"Ecclesiastes",
+    "Eccl":["Ecclesiastes","tanakh","ecclesiastes"],
+    "Ecc":["Ecclesiastes","tanakh","ecclesiastes"],
+    "Ecclesiastes":["Ecclesiastes","tanakh","ecclesiastes"],
 
-    "Song":"Song of Songs",
-    "Song of Songs":"Song of Songs",
-    "Song of Solomon":"Song of Songs",
+    "Song":["Song of Songs","tanakh","song-of-songs"],
+    "Song of Songs":["Song of Songs","tanakh","song-of-songs"],
+    "Song of Solomon":["Song of Songs","tanakh","song-of-songs"],
 
-    "Isa":"Isaiah",
-    "Isaiah":"Isaiah",
+    "Isa":["Isaiah","tanakh","isaiah"],
+    "Isaiah":["Isaiah","tanakh","isaiah"],
 
-    "Jer":"Jeremiah",
-    "Jeremiah":"Jeremiah",
+    "Jer":["Jeremiah","tanakh","jeremiah"],
+    "Jeremiah":["Jeremiah","tanakh","jeremiah"],
 
-    "Lam":"Lamentations",
-    "Lamentations":"Lamentations",
+    "Lam":["Lamentations","tanakh","lamentations"],
+    "Lamentations":["Lamentations","tanakh","lamentations"],
 
-    "Ezek":"Ezekiel",
-    "Ezekiel":"Ezekiel",
+    "Ezek":["Ezekiel","tanakh","ezekiel"],
+    "Ezekiel":["Ezekiel","tanakh","ezekiel"],
 
-    "Dan":"Daniel",
-    "Daniel":"Daniel",
+    "Dan":["Daniel","tanakh","daniel"],
+    "Daniel":["Daniel","tanakh","daniel"],
 
-    "Hos":"Hosea",
-    "Hosea":"Hosea",
+    "Hos":["Hosea","tanakh","hosea"],
+    "Hosea":["Hosea","tanakh","hosea"],
+    "Joel":["Joel","tanakh","joel"],
+    "Amos":["Amos","tanakh","amos"],
+    "Obad":["Obadiah","tanakh","obadiah"],
+    "Obadiah":["Obadiah","tanakh","obadiah"],
+    "Jonah":["Jonah","tanakh","jonah"],
+    "Mic":["Micah","tanakh","micah"],
+    "Micah":["Micah","tanakh","micah"],
+    "Nah":["Nahum","tanakh","nahum"],
+    "Nahum":["Nahum","tanakh","nahum"],
+    "Hab":["Habakkuk","tanakh","habakkuk"],
+    "Habakkuk":["Habakkuk","tanakh","habakkuk"],
+    "Zeph":["Zephaniah","tanakh","zephaniah"],
+    "Zephaniah":["Zephaniah","tanakh","zephaniah"],
+    "Hag":["Haggai","tanakh","haggai"],
+    "Haggai":["Haggai","tanakh","haggai"],
+    "Zech":["Zechariah","tanakh","zechariah"],
+    "Zechariah":["Zechariah","tanakh","zechariah"],
+    "Mal":["Malachi","tanakh","malachi"],
+    "Malachi":["Malachi","tanakh","malachi"],
 
-    "Joel":"Joel",
-    "Amos":"Amos",
-    "Obad":"Obadiah",
-    "Obadiah":"Obadiah",
-    "Jonah":"Jonah",
-    "Mic":"Micah",
-    "Micah":"Micah",
-    "Nah":"Nahum",
-    "Nahum":"Nahum",
-    "Hab":"Habakkuk",
-    "Habakkuk":"Habakkuk",
-    "Zeph":"Zephaniah",
-    "Zephaniah":"Zephaniah",
-    "Hag":"Haggai",
-    "Haggai":"Haggai",
-    "Zech":"Zechariah",
-    "Zechariah":"Zechariah",
-    "Mal":"Malachi",
-    "Malachi":"Malachi",
+    "Matt":["Matthew","newtestament","matthew"],
+    "Matthew":["Matthew","newtestament","matthew"],
+    "Mark":["Mark","newtestament","mark"],
+    "Luke":["Luke","newtestament","luke"],
+    "John":["John","newtestament","john"],
+    "Acts":["Acts","newtestament","acts"],
 
-    "Matt":"Matthew",
-    "Matthew":"Matthew",
-    "Mark":"Mark",
-    "Luke":"Luke",
-    "John":"John",
-    "Acts":"Acts",
+    "Rom":["Romans","newtestament","romans"],
+    "Romans":["Romans","newtestament","romans"],
 
-    "Rom":"Romans",
-    "Romans":"Romans",
+    "1 Cor":["1 Corinthians","newtestament","1-corinthians"],
+    "2 Cor":["2 Corinthians","newtestament","2-corinthians"],
+    "1 Corinthians":["1 Corinthians","newtestament","1-corinthians"],
+    "2 Corinthians":["2 Corinthians","newtestament","2-corinthians"],
 
-    "1 Cor":"1 Corinthians",
-    "2 Cor":"2 Corinthians",
-    "1 Corinthians":"1 Corinthians",
-    "2 Corinthians":"2 Corinthians",
+    "Gal":["Galatians","newtestament","galatians"],
+    "Galatians":["Galatians","newtestament","galatians"],
 
-    "Gal":"Galatians",
-    "Galatians":"Galatians",
+    "Eph":["Ephesians","newtestament","ephesians"],
+    "Ephesians":["Ephesians","newtestament","ephesians"],
 
-    "Eph":"Ephesians",
-    "Ephesians":"Ephesians",
+    "Phil":["Philippians","newtestament","philippians"],
+    "Philippians":["Philippians","newtestament","philippians"],
 
-    "Phil":"Philippians",
-    "Philippians":"Philippians",
+    "Col":["Colossians","newtestament","colossians"],
+    "Colossians":["Colossians","newtestament","colossians"],
 
-    "Col":"Colossians",
-    "Colossians":"Colossians",
+    "1 Thess":["1 Thessalonians","newtestament","1-thessalonians"],
+    "2 Thess":["2 Thessalonians","newtestament","2-thessalonians"],
+    "1 Thessalonians":["1 Thessalonians","newtestament","1-thessalonians"],
+    "2 Thessalonians":["2 Thessalonians","newtestament","2-thessalonians"],
 
-    "1 Thess":"1 Thessalonians",
-    "2 Thess":"2 Thessalonians",
-    "1 Thessalonians":"1 Thessalonians",
-    "2 Thessalonians":"2 Thessalonians",
+    "1 Tim":["1 Timothy","newtestament","1-timothy"],
+    "2 Tim":["2 Timothy","newtestament","2-timothy"],
+    "1 Timothy":["1 Timothy","newtestament","1-timothy"],
+    "2 Timothy":["2 Timothy","newtestament","2-timothy"],
 
-    "1 Tim":"1 Timothy",
-    "2 Tim":"2 Timothy",
-    "1 Timothy":"1 Timothy",
-    "2 Timothy":"2 Timothy",
+    "Titus":["Titus","newtestament","titus"],
+    "Phlm":["Philemon","newtestament","philemon"],
+    "Philemon":["Philemon","newtestament","philemon"],
 
-    "Titus":"Titus",
-    "Phlm":"Philemon",
-    "Philemon":"Philemon",
+    "Heb":["Hebrews","newtestament","hebrews"],
+    "Hebrews":["Hebrews","newtestament","hebrews"],
 
-    "Heb":"Hebrews",
-    "Hebrews":"Hebrews",
+    "Jas":["James","newtestament","james"],
+    "James":["James","newtestament","james"],
 
-    "Jas":"James",
-    "James":"James",
+    "1 Pet":["1 Peter","newtestament","1-peter"],
+    "2 Pet":["2 Peter","newtestament","2-peter"],
+    "1 Peter":["1 Peter","newtestament","1-peter"],
+    "2 Peter":["2 Peter","newtestament","2-peter"],
 
-    "1 Pet":"1 Peter",
-    "2 Pet":"2 Peter",
-    "1 Peter":"1 Peter",
-    "2 Peter":"2 Peter",
+    "1 Jn":["1 John","newtestament","1-john"],
+    "2 Jn":["2 John","newtestament","2-john"],
+    "3 Jn":["3 John","newtestament","3-john"],
+    "1 John":["1 John","newtestament","1-john"],
+    "2 John":["2 John","newtestament","2-john"],
+    "3 John":["3 John","newtestament","3-john"],
 
-    "1 Jn":"1 John",
-    "2 Jn":"2 John",
-    "3 Jn":"3 John",
-    "1 John":"1 John",
-    "2 John":"2 John",
-    "3 John":"3 John",
-
-    "Jude":"Jude",
-    "Rev":"Revelation",
-    "Revelation":"Revelation"
+    "Jude":["Jude","newtestament","jude"],
+    "Rev":["Revelation","newtestament","revelation"],
+    "Revelation":["Revelation","newtestament","revelation"]
   }));
 
   const books = Array.from(BOOK_ALIASES.keys())
@@ -182,9 +181,19 @@
   ]);
 
   function normalizeRef(book, chapter, versePart){
-    const fullBook = BOOK_ALIASES.get(book) || book;
+    const entry = BOOK_ALIASES.get(book);
+    const fullBook = entry ? entry[0] : book;
     const normalizedVerse = String(versePart || "").replace(/–/g, "-");
     return `${fullBook} ${chapter}:${normalizedVerse}`;
+  }
+
+  function hrefForRef(book, chapter, versePart){
+    const entry = BOOK_ALIASES.get(book);
+    if (!entry) return "#";
+    const canon = entry[1];
+    const slug = entry[2];
+    const firstVerse = String(versePart || "").replace(/–/g, "-").split("-")[0];
+    return `/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(chapter)}#v${encodeURIComponent(firstVerse)}`;
   }
 
   function shouldSkipNode(node){
@@ -214,15 +223,17 @@
 
       const visibleRef = match[0];
       const normalizedRef = normalizeRef(match[1], match[2], match[3]);
+      const href = hrefForRef(match[1], match[2], match[3]);
 
-      const span = document.createElement("span");
-      span.className = "xref";
-      span.setAttribute("data-ref", normalizedRef);
-      span.setAttribute("data-xref", normalizedRef);
-      span.setAttribute("title", normalizedRef);
-      span.textContent = visibleRef;
+      const a = document.createElement("a");
+      a.className = "xref-trigger xref";
+      a.setAttribute("data-ref", normalizedRef);
+      a.setAttribute("data-xref", normalizedRef);
+      a.setAttribute("href", href);
+      a.setAttribute("title", normalizedRef);
+      a.textContent = visibleRef;
 
-      frag.appendChild(span);
+      frag.appendChild(a);
       lastIndex = match.index + visibleRef.length;
     }
 
