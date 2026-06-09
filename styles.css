@@ -7580,3 +7580,13 @@ html[data-theme="dark"] .article-shell .article-byline a:hover,
   color:var(--accent, #F17300) !important;
   text-decoration:none !important;
 }
+
+/* === Mini-Batch: Article hero byline-name dark-mode standard === */
+html[data-theme="dark"] .article-page .byline-name,
+html[data-theme="dark"] .article-shell .byline-name,
+html[data-theme="dark"] body.article-doc .byline-name,
+[data-theme="dark"] .article-page .byline-name,
+[data-theme="dark"] .article-shell .byline-name,
+[data-theme="dark"] body.article-doc .byline-name{
+  color:var(--accent, #F17300) !important;
+}
