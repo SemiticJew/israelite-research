@@ -633,6 +633,219 @@ html[data-theme="dark"] .author-page .author-stat{
   }
 }
 
+
+/* === Mini-Batch: DG-style author resource cards === */
+.author-page .list{
+  display:grid !important;
+  grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  gap:24px !important;
+  align-items:stretch !important;
+}
+
+.author-page .card__shadow{
+  display:block !important;
+  color:inherit !important;
+  text-decoration:none !important;
+  background:transparent !important;
+  border:0 !important;
+  padding:0 !important;
+  box-shadow:none !important;
+}
+
+.author-page .card__inner{
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+  background:var(--surface, #ffffff) !important;
+  box-shadow:0 10px 24px rgba(11,35,64,.08) !important;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease !important;
+}
+
+.author-page .card__shadow:hover .card__inner,
+.author-page .card__shadow:focus-visible .card__inner{
+  transform:translateY(-2px) !important;
+  border-color:rgba(241,115,0,.55) !important;
+  box-shadow:0 18px 40px rgba(11,35,64,.14) !important;
+}
+
+.author-page .card__shadow:focus-visible{
+  outline:none !important;
+}
+
+.author-page .card--resource__labels{
+  padding:12px 14px 0 !important;
+}
+
+.author-page .card--resource__labels-inner{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  min-height:30px !important;
+  padding:0 10px 0 0 !important;
+  color:var(--accent, #F17300) !important;
+  font-size:.72rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.09em !important;
+}
+
+.author-page .card--resource__labels-badge{
+  width:30px !important;
+  height:30px !important;
+  border-radius:999px !important;
+  object-fit:cover !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+}
+
+.author-page .card--resource__image--landscape{
+  width:100% !important;
+  aspect-ratio:16 / 9 !important;
+  margin-top:10px !important;
+  overflow:hidden !important;
+  background:#edf2f7 !important;
+}
+
+.author-page .card--resource__image--landscape img{
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  object-fit:cover !important;
+  transition:transform .22s ease !important;
+}
+
+.author-page .card__shadow:hover .card--resource__image--landscape img,
+.author-page .card__shadow:focus-visible .card--resource__image--landscape img{
+  transform:scale(1.025) !important;
+}
+
+.author-page .card--resource__body{
+  flex:1 !important;
+  padding:18px 18px 12px !important;
+}
+
+.author-page .card--resource__title,
+.author-page .entry-title{
+  margin:0 0 10px !important;
+  color:var(--ink, #0b2340) !important;
+  font-size:1.25rem !important;
+  line-height:1.16 !important;
+  letter-spacing:-.035em !important;
+  font-weight:950 !important;
+}
+
+.author-page .card--resource__date{
+  margin:0 0 12px !important;
+  color:var(--accent, #F17300) !important;
+  font-size:.78rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.08em !important;
+}
+
+.author-page .card--resource__text,
+.author-page .entry-excerpt{
+  margin:0 !important;
+  color:var(--muted, #526173) !important;
+  font-size:.94rem !important;
+  line-height:1.62 !important;
+}
+
+.author-page .card--resource__footer{
+  min-height:54px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  padding:12px 18px !important;
+  border-top:1px solid var(--border, #e6ebf2) !important;
+  background:var(--bg, #f8fafc) !important;
+}
+
+.author-page .card__author{
+  display:flex !important;
+  align-items:center !important;
+  gap:9px !important;
+  min-width:0 !important;
+}
+
+.author-page .card__author-image{
+  width:30px !important;
+  height:30px !important;
+  border-radius:999px !important;
+  object-fit:cover !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+}
+
+.author-page .card__author-text{
+  color:var(--ink, #0b2340) !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  white-space:nowrap !important;
+}
+
+.author-page .card--collapsed__date{
+  color:var(--muted, #526173) !important;
+  font-size:.76rem !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+}
+
+.author-page .entry-thumb,
+.author-page .entry-meta{
+  all:unset;
+}
+
+.author-page .list-more{
+  grid-column:1 / -1 !important;
+}
+
+html[data-theme="dark"] .author-page .card__inner{
+  background:var(--surface, #0f172a) !important;
+  border-color:var(--border, #1e293b) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.28) !important;
+}
+
+html[data-theme="dark"] .author-page .card--resource__title,
+html[data-theme="dark"] .author-page .entry-title,
+html[data-theme="dark"] .author-page .card__author-text{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-page .card--resource__text,
+html[data-theme="dark"] .author-page .entry-excerpt,
+html[data-theme="dark"] .author-page .card--collapsed__date{
+  color:rgba(255,255,255,.70) !important;
+}
+
+html[data-theme="dark"] .author-page .card--resource__footer{
+  background:rgba(255,255,255,.035) !important;
+  border-color:var(--border, #1e293b) !important;
+}
+
+html[data-theme="dark"] .author-page .card--resource__labels-badge,
+html[data-theme="dark"] .author-page .card__author-image{
+  border-color:var(--border, #1e293b) !important;
+}
+
+@media(max-width:980px){
+  .author-page .list{
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media(max-width:680px){
+  .author-page .list{
+    grid-template-columns:1fr !important;
+  }
+
+  .author-page .card--resource__footer{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -701,71 +914,209 @@ html[data-theme="dark"] .author-page .author-stat{
 
   <!-- DG-style list -->
   <section class="list" id="author-list" aria-live="polite">
-    <a class="entry" href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">
-      <img class="entry-thumb" src="/images/articles/karmelo-anthony-austin-metcalf-700x394.png" alt="Who Gets Innocence?"/>
-      <div>
-        <h3 class="entry-title">Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment</h3>
-        <div class="entry-meta"><time datetime="2026-06-08">June 8, 2026</time> • Article</div>
-        <p class="entry-excerpt">A scriptural critique of racial judgment, false witness, and how America distributes innocence and suspicion in the Karmelo Anthony and Austin Metcalf case.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment" href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/karmelo-anthony-austin-metcalf-700x394.png" alt="Who Gets Innocence?"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment</h2>
+          <div class="card--resource__date"><time datetime="2026-06-08">June 8, 2026</time></div>
+          <div class="entry-excerpt card--resource__text">A scriptural critique of racial judgment, false witness, and how America distributes innocence and suspicion in the Karmelo Anthony and Austin Metcalf case.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Jun 8, 2026</span>
+        </div>
       </div>
     </a>
 
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Three Laws of Logic" href="/articles/three-laws-of-logic.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
 
-    <a class="entry" href="/articles/three-laws-of-logic.html">
-      <img class="entry-thumb" src="/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic"/>
-      <div>
-        <h3 class="entry-title">Three Laws of Logic</h3>
-        <div class="entry-meta"><time datetime="2025-09-01">September 1, 2025</time> • Article</div>
-        <p class="entry-excerpt">Identity, non-contradiction, and the excluded middle—why biblical truth requires logical consistency and how that bears on Israel and Jesus.</p>
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/three-laws-700x394.jpg" alt="Three Laws of Logic"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Three Laws of Logic</h2>
+          <div class="card--resource__date"><time datetime="2025-09-01">September 1, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">Identity, non-contradiction, and the excluded middle—why biblical truth requires logical consistency and how that bears on Israel and Jesus.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Sep 1, 2025</span>
+        </div>
       </div>
     </a>
 
-    <a class="entry" href="/articles/is-scripture-and-logic-compatible.html">
-      <img class="entry-thumb" src="/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture and Logic Compatible?"/>
-      <div>
-        <h3 class="entry-title">Is Scripture and Logic Compatible?</h3>
-        <div class="entry-meta"><time datetime="2025-08-28">August 28, 2025</time> • Article</div>
-        <p class="entry-excerpt">A longform defense that Scripture not only welcomes logic but models it—from prophets to Jesus—and how readers can follow suit.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Is Scripture and Logic Compatible?" href="/articles/is-scripture-and-logic-compatible.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/logic-compatibility-700x394.jpg" alt="Is Scripture and Logic Compatible?"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Is Scripture and Logic Compatible?</h2>
+          <div class="card--resource__date"><time datetime="2025-08-28">August 28, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">A longform defense that Scripture not only welcomes logic but models it—from prophets to Jesus—and how readers can follow suit.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Aug 28, 2025</span>
+        </div>
       </div>
     </a>
 
-    <a class="entry" href="/articles/is-creation-logical.html">
-      <img class="entry-thumb" src="/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?"/>
-      <div>
-        <h3 class="entry-title">Is Creation Logical?</h3>
-        <div class="entry-meta"><time datetime="2025-08-20">August 20, 2025</time> • Article</div>
-        <p class="entry-excerpt">Genesis 1–2 shows form and fill, purpose and order. Creation’s architecture reveals the character of the Creator.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Is Creation Logical?" href="/articles/is-creation-logical.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/creation-logical-700x394.jpg" alt="Is Creation Logical?"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Is Creation Logical?</h2>
+          <div class="card--resource__date"><time datetime="2025-08-20">August 20, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">Genesis 1–2 shows form and fill, purpose and order. Creation’s architecture reveals the character of the Creator.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Aug 20, 2025</span>
+        </div>
       </div>
     </a>
 
-    <a class="entry" href="/articles/hamites-historicity.html">
-      <img class="entry-thumb" src="/images/articles/hamites-historicity-700x394.jpg" alt="Hamites — Historicity"/>
-      <div>
-        <h3 class="entry-title">Hamites — Historicity</h3>
-        <div class="entry-meta"><time datetime="2025-08-12">August 12, 2025</time> • Article</div>
-        <p class="entry-excerpt">Surveying Cush, Mizraim, Put, and Canaan across Scripture and history, with attention to method and evidence.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Hamites — Historicity" href="/articles/hamites-historicity.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/hamites-historicity-700x394.jpg" alt="Hamites — Historicity"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Hamites — Historicity</h2>
+          <div class="card--resource__date"><time datetime="2025-08-12">August 12, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">Surveying Cush, Mizraim, Put, and Canaan across Scripture and history, with attention to method and evidence.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Aug 12, 2025</span>
+        </div>
       </div>
     </a>
 
-    <a class="entry" href="/articles/gentiles.html">
-      <img class="entry-thumb" src="/images/articles/gentiles-meaning-700x394.jpg" alt="Gentiles"/>
-      <div>
-        <h3 class="entry-title">Gentiles</h3>
-        <div class="entry-meta"><time datetime="2025-08-05">August 5, 2025</time> • Article</div>
-        <p class="entry-excerpt">What “Gentile” meant to biblical authors—genos, ethnos, goy—and why anachronism misreads the people in view.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Gentiles" href="/articles/gentiles.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/gentiles-meaning-700x394.jpg" alt="Gentiles"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Gentiles</h2>
+          <div class="card--resource__date"><time datetime="2025-08-05">August 5, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">What “Gentile” meant to biblical authors—genos, ethnos, goy—and why anachronism misreads the people in view.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Aug 5, 2025</span>
+        </div>
       </div>
     </a>
 
-    <a class="entry" href="/articles/is-truth-reliable.html">
-      <img class="entry-thumb" src="/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?"/>
-      <div>
-        <h3 class="entry-title">Is Truth Reliable?</h3>
-        <div class="entry-meta"><time datetime="2025-07-30">July 30, 2025</time> • Article</div>
-        <p class="entry-excerpt">A case for trusting God’s revelation in a world of spin—truth’s nature, logic’s guardrails, and Scripture’s claims.</p>
+    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Is Truth Reliable?" href="/articles/is-truth-reliable.html">
+      <div class="card__inner">
+        <div class="card--resource__labels">
+          <div class="card--resource__labels-inner">
+            <img class="card--resource__labels-badge" height="30" width="30" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <div class="card--resource__labels-label">Article</div>
+          </div>
+        </div>
+
+        <div class="card--resource__image--landscape">
+          <img src="/images/articles/truth-reliable-700x394.jpg" alt="Is Truth Reliable?"/>
+        </div>
+
+        <div class="card--resource__body">
+          <h2 class="entry-title card--resource__title">Is Truth Reliable?</h2>
+          <div class="card--resource__date"><time datetime="2025-07-30">July 30, 2025</time></div>
+          <div class="entry-excerpt card--resource__text">A case for trusting God’s revelation in a world of spin—truth’s nature, logic’s guardrails, and Scripture’s claims.</div>
+        </div>
+
+        <div class="card--resource__footer">
+          <div class="card__author">
+            <img class="card__author-image" src="/images/authors/semitic-jew.jpg" alt=""/>
+            <span class="card__author-text">Semitic Jew</span>
+          </div>
+          <span class="card--collapsed__date">Jul 30, 2025</span>
+        </div>
       </div>
     </a>
 
-    <!-- Optional “More” pager (link to your articles index filtered by author) -->
     <a class="list-more" href="/articles.html">More from Semitic Jew</a>
   </section>
 </main>
