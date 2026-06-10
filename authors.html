@@ -327,6 +327,213 @@ html[data-theme="dark"] .author-mini-stat{
     min-height:0;
   }
 }
+
+/* === Mini-Batch: Authors Index Directory === */
+.authors-index{
+  margin-top:34px;
+  background:var(--surface, #ffffff);
+  border:1px solid var(--border, #e6ebf2);
+  box-shadow:0 10px 30px rgba(11,35,64,.08);
+  padding:28px;
+}
+
+.authors-index-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:18px;
+  margin-bottom:20px;
+}
+
+.authors-index-head h2{
+  margin:0;
+  color:var(--ink, #0b2340);
+  font-size:1.35rem;
+  font-weight:950;
+  letter-spacing:-.025em;
+}
+
+.authors-index-head p{
+  max-width:620px;
+  margin:8px 0 0;
+  color:var(--muted, #526173);
+  line-height:1.6;
+}
+
+.authors-count-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:0 12px;
+  border:1px solid rgba(241,115,0,.35);
+  background:rgba(241,115,0,.08);
+  color:var(--accent, #F17300);
+  font-size:.76rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  white-space:nowrap;
+}
+
+.author-alpha{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:0 0 24px;
+  padding:0;
+  list-style:none;
+}
+
+.author-alpha a,
+.author-alpha span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  border:1px solid var(--border, #e6ebf2);
+  color:var(--muted, #526173);
+  background:var(--bg, #f8fafc);
+  font-size:.82rem;
+  font-weight:900;
+  text-decoration:none !important;
+}
+
+.author-alpha a{
+  color:var(--ink, #0b2340);
+}
+
+.author-alpha a:hover,
+.author-alpha a:focus-visible{
+  color:#ffffff;
+  background:var(--accent, #F17300);
+  border-color:var(--accent, #F17300);
+  outline:none;
+}
+
+.author-alpha span{
+  opacity:.48;
+}
+
+.author-index-group{
+  border-top:1px solid var(--border, #e6ebf2);
+  padding-top:20px;
+}
+
+.author-index-letter{
+  margin:0 0 12px;
+  color:var(--accent, #F17300);
+  font-size:1.1rem;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+
+.author-index-list{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.author-index-list a{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  min-height:52px;
+  padding:12px 14px;
+  border:1px solid var(--border, #e6ebf2);
+  background:var(--bg, #f8fafc);
+  color:var(--ink, #0b2340);
+  text-decoration:none !important;
+  transition:background .16s ease, border-color .16s ease, transform .16s ease;
+}
+
+.author-index-list a:hover,
+.author-index-list a:focus-visible{
+  transform:translateY(-1px);
+  border-color:var(--accent, #F17300);
+  background:rgba(241,115,0,.06);
+  outline:none;
+}
+
+.author-index-name{
+  font-weight:950;
+  letter-spacing:-.01em;
+}
+
+.author-index-count{
+  color:var(--muted, #526173);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+
+html[data-theme="dark"] .authors-index{
+  background:var(--surface, #0f172a);
+  border-color:var(--border, #1e293b);
+  box-shadow:0 14px 34px rgba(0,0,0,.28);
+}
+
+html[data-theme="dark"] .authors-index-head h2,
+html[data-theme="dark"] .author-alpha a,
+html[data-theme="dark"] .author-index-list a,
+html[data-theme="dark"] .author-index-name{
+  color:#ffffff;
+}
+
+html[data-theme="dark"] .authors-index-head p,
+html[data-theme="dark"] .author-alpha span,
+html[data-theme="dark"] .author-index-count{
+  color:rgba(255,255,255,.68);
+}
+
+html[data-theme="dark"] .author-alpha a,
+html[data-theme="dark"] .author-alpha span,
+html[data-theme="dark"] .author-index-group,
+html[data-theme="dark"] .author-index-list a{
+  border-color:var(--border, #1e293b);
+}
+
+html[data-theme="dark"] .author-alpha a,
+html[data-theme="dark"] .author-alpha span,
+html[data-theme="dark"] .author-index-list a{
+  background:rgba(255,255,255,.035);
+}
+
+html[data-theme="dark"] .author-index-list a:hover,
+html[data-theme="dark"] .author-index-list a:focus-visible{
+  background:rgba(241,115,0,.12);
+  border-color:var(--accent, #F17300);
+}
+
+@media(max-width:760px){
+  .authors-index{
+    padding:24px 18px;
+  }
+
+  .authors-index-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .author-index-list{
+    grid-template-columns:1fr;
+  }
+
+  .author-alpha a,
+  .author-alpha span{
+    width:31px;
+    height:31px;
+    font-size:.78rem;
+  }
+}
+
 </style>
 
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
@@ -404,6 +611,61 @@ html[data-theme="dark"] .author-mini-stat{
           <span class="author-card-cta">View Profile</span>
         </div>
       </a>
+    </div>
+  </section>
+
+  <section class="authors-index" aria-labelledby="author-index-title">
+    <div class="authors-index-head">
+      <div>
+        <div class="authors-kicker">Index</div>
+        <h2 id="author-index-title">Author Index</h2>
+        <p>
+          Browse Semitic Jew Inc authors by name. As new writers and contributors are added,
+          this directory will expand into a full alphabetical author index.
+        </p>
+      </div>
+      <span class="authors-count-pill">1 Author</span>
+    </div>
+
+    <ul class="author-alpha" aria-label="Author alphabetical navigation">
+      <li><span>A</span></li>
+      <li><span>B</span></li>
+      <li><span>C</span></li>
+      <li><span>D</span></li>
+      <li><span>E</span></li>
+      <li><span>F</span></li>
+      <li><span>G</span></li>
+      <li><span>H</span></li>
+      <li><span>I</span></li>
+      <li><span>J</span></li>
+      <li><span>K</span></li>
+      <li><span>L</span></li>
+      <li><span>M</span></li>
+      <li><span>N</span></li>
+      <li><span>O</span></li>
+      <li><span>P</span></li>
+      <li><span>Q</span></li>
+      <li><span>R</span></li>
+      <li><a href="#authors-s">S</a></li>
+      <li><span>T</span></li>
+      <li><span>U</span></li>
+      <li><span>V</span></li>
+      <li><span>W</span></li>
+      <li><span>X</span></li>
+      <li><span>Y</span></li>
+      <li><span>Z</span></li>
+    </ul>
+
+    <div class="author-index-group" id="authors-s">
+      <h3 class="author-index-letter">S</h3>
+      <ul class="author-index-list">
+        <li>
+          <a href="/authors/semitic-jew.html">
+            <span class="author-index-name">Semitic Jew</span>
+            <span class="author-index-count">7 Articles</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </section>
 
