@@ -450,6 +450,189 @@ html[data-theme="dark"] .entry-meta,
     width:100%;
   }
 }
+
+/* === Mini-Batch: DG-style author profile card === */
+.author-page .author-hero{
+  display:grid !important;
+  grid-template-columns:220px minmax(0, 1fr) !important;
+  gap:0 !important;
+  align-items:stretch !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  border-radius:0 !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+  background:var(--surface, #ffffff) !important;
+  box-shadow:0 10px 28px rgba(11,35,64,.07) !important;
+}
+
+.author-page .author-hero::after{
+  display:none !important;
+}
+
+.author-page .author-avatar{
+  width:100% !important;
+  height:100% !important;
+  min-height:260px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  object-fit:cover !important;
+  background:#f0f3f8 !important;
+}
+
+.author-page .author-head{
+  padding:32px 34px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+
+.author-page .author-eyebrow{
+  margin:0 0 12px !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  color:var(--accent, #F17300) !important;
+  font-size:.78rem !important;
+  font-weight:950 !important;
+  letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+}
+
+.author-page .author-head h1{
+  margin:0 0 8px !important;
+  color:var(--ink, #0b2340) !important;
+  font-size:clamp(2.15rem, 4vw, 3.8rem) !important;
+  line-height:1 !important;
+  letter-spacing:-.055em !important;
+  font-weight:950 !important;
+}
+
+.author-page .author-tag{
+  color:var(--accent, #F17300) !important;
+  font-size:.9rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.09em !important;
+}
+
+.author-page .author-bio{
+  max-width:76ch !important;
+  margin:18px 0 20px !important;
+  color:var(--ink, #0b2340) !important;
+  font-size:1.04rem !important;
+  line-height:1.75 !important;
+}
+
+.author-page .author-chips{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:10px !important;
+}
+
+.author-page .chip{
+  min-height:40px !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+  background:var(--bg, #f8fafc) !important;
+  color:var(--ink, #0b2340) !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.075em !important;
+}
+
+.author-page .chip:hover,
+.author-page .chip:focus-visible{
+  transform:none !important;
+  color:#ffffff !important;
+  background:var(--accent, #F17300) !important;
+  border-color:var(--accent, #F17300) !important;
+}
+
+.author-page .author-stats{
+  grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  gap:0 !important;
+  margin:0 0 28px !important;
+  border:1px solid var(--border, #e6ebf2) !important;
+  border-top:0 !important;
+  background:var(--surface, #ffffff) !important;
+}
+
+.author-page .author-stat{
+  aspect-ratio:auto !important;
+  min-height:96px !important;
+  border:0 !important;
+  border-right:1px solid var(--border, #e6ebf2) !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+
+.author-page .author-stat:last-child{
+  border-right:0 !important;
+}
+
+.author-page .author-stat b{
+  font-size:2.05rem !important;
+  letter-spacing:-.045em !important;
+}
+
+.author-page .author-stat span{
+  font-size:.72rem !important;
+}
+
+html[data-theme="dark"] .author-page .author-hero,
+html[data-theme="dark"] .author-page .author-stats{
+  background:var(--surface, #0f172a) !important;
+  border-color:var(--border, #1e293b) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.28) !important;
+}
+
+html[data-theme="dark"] .author-page .author-head h1,
+html[data-theme="dark"] .author-page .author-bio,
+html[data-theme="dark"] .author-page .chip{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-page .chip{
+  background:rgba(255,255,255,.035) !important;
+  border-color:var(--border, #1e293b) !important;
+}
+
+html[data-theme="dark"] .author-page .author-stat{
+  border-color:var(--border, #1e293b) !important;
+}
+
+@media(max-width:760px){
+  .author-page .author-hero{
+    grid-template-columns:1fr !important;
+  }
+
+  .author-page .author-avatar{
+    height:260px !important;
+    min-height:260px !important;
+  }
+
+  .author-page .author-head{
+    padding:26px 20px !important;
+  }
+
+  .author-page .author-stats{
+    grid-template-columns:1fr !important;
+    border-top:1px solid var(--border, #e6ebf2) !important;
+  }
+
+  .author-page .author-stat{
+    border-right:0 !important;
+    border-bottom:1px solid var(--border, #e6ebf2) !important;
+  }
+
+  .author-page .author-stat:last-child{
+    border-bottom:0 !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -468,7 +651,7 @@ html[data-theme="dark"] .entry-meta,
   <section class="author-hero">
     <img class="author-avatar" src="/images/authors/semitic-jew.jpg" alt="Semitic Jew"/>
     <div class="author-head">
-      <div class="author-eyebrow">Author Profile</div>
+      <div class="author-eyebrow">Author</div>
       <h1>Semitic Jew</h1>
       <div class="author-tag">Founder • Teacher • Researcher</div>
       <p class="author-bio">
