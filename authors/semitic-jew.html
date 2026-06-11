@@ -1380,6 +1380,17 @@ html[data-theme="dark"] .author-page .entry-excerpt{
   }
 }
 
+
+/* === Mini-Batch: Karmelo/Austin author card image framing fix === */
+.author-page .card-karmelo-feature .card--resource__image--landscape{
+  background:#111111 !important;
+}
+
+.author-page .card-karmelo-feature .card--resource__image--landscape img{
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -1447,7 +1458,7 @@ html[data-theme="dark"] .author-page .entry-excerpt{
 
   <!-- DG-style list -->
   <section class="list" id="author-list" aria-live="polite">
-    <a class="entry card__shadow" data-name="Semitic Jew" data-resource-title="Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment" href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">
+    <a class="entry card__shadow card-karmelo-featureentry card__shadow>
       <div class="card__inner">
         <div class="card--resource__labels">
           <div class="card--resource__labels-inner">
