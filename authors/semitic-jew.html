@@ -1391,6 +1391,36 @@ html[data-theme="dark"] .author-page .entry-excerpt{
   object-position:center center !important;
 }
 
+
+/* === Mini-Batch: Karmelo/Austin image full card height fix === */
+.author-page .card-karmelo-feature .card__inner{
+  align-items:stretch !important;
+}
+
+.author-page .card-karmelo-feature .card--resource__image--landscape{
+  grid-row:1 / -1 !important;
+  height:100% !important;
+  min-height:100% !important;
+  align-self:stretch !important;
+}
+
+.author-page .card-karmelo-feature .card--resource__image--landscape img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  display:block !important;
+}
+
+@media(max-width:820px){
+  .author-page .card-karmelo-feature .card--resource__image--landscape{
+    grid-row:1 !important;
+    height:auto !important;
+    min-height:0 !important;
+    aspect-ratio:16 / 9 !important;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
