@@ -7590,3 +7590,56 @@ html[data-theme="dark"] body.article-doc .byline-name,
 [data-theme="dark"] body.article-doc .byline-name{
   color:var(--accent, #F17300) !important;
 }
+
+
+/* === Mini-Batch: Article share row Give button === */
+body.article-doc .share-min{
+  flex-wrap:wrap;
+}
+
+body.article-doc .share-give-btn{
+  min-width:44px;
+  padding:.4rem .65rem !important;
+  background:var(--accent, #F17300) !important;
+  border-color:var(--accent, #F17300) !important;
+  color:#ffffff !important;
+  font-size:.72rem !important;
+  font-weight:850 !important;
+  line-height:1 !important;
+  letter-spacing:.07em !important;
+  text-transform:uppercase !important;
+  text-decoration:none !important;
+}
+
+body.article-doc .share-give-btn:hover,
+body.article-doc .share-give-btn:focus-visible{
+  background:var(--ink, #0b2340) !important;
+  border-color:var(--ink, #0b2340) !important;
+  color:#ffffff !important;
+  text-decoration:none !important;
+}
+
+html[data-theme="dark"] body.article-doc .share-btn{
+  background:var(--surface, #0f172a);
+  border-color:rgba(255,255,255,.16);
+  color:#ffffff;
+}
+
+html[data-theme="dark"] body.article-doc .share-give-btn{
+  background:var(--accent, #F17300) !important;
+  border-color:var(--accent, #F17300) !important;
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  body.article-doc .share-min{
+    gap:.42rem;
+  }
+
+  body.article-doc .share-give-btn{
+    min-width:40px;
+    padding:.4rem .55rem !important;
+    font-size:.68rem !important;
+  }
+}
+
