@@ -132,6 +132,15 @@ def type_for(path):
         return "Region"
     return "Page"
 
+def keyword_tags(parser):
+    raw = parser.meta.get("keywords") or parser.meta.get("article:tag") or ""
+    tags = []
+    for part in raw.split(","):
+        t = clean(part).lower()
+        if t:
+            tags.append(t)
+    return tags
+
 def tags_for(title, excerpt, path):
     hay = f"{title} {excerpt} {path}".lower()
     tags = set()
@@ -246,7 +255,7 @@ def build():
             "image": image_for(parser),
             "date": date_for(parser, rel),
             "excerpt": excerpt,
-            "tags": tags_for(title, excerpt, rel),
+            "tags": sorted(set(tags_for(title, excerpt, rel) + keyword_tags(parser))),
         })
 
     def sort_key(item):
