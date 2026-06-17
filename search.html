@@ -517,6 +517,111 @@ html[data-theme="dark"] .search-page .filter-head strong{
   }
 }
 
+
+
+/* === Archive-style search results === */
+.search-page .result-list{
+  gap:0 !important;
+  border-top:1px solid var(--border);
+}
+
+.search-page .result-item{
+  display:block !important;
+  grid-template-columns:none !important;
+  padding:22px 0 !important;
+  border:0 !important;
+  border-bottom:1px solid var(--border) !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  transition:background .18s ease, padding-left .18s ease;
+}
+
+.search-page .result-item:hover{
+  transform:none !important;
+  box-shadow:none !important;
+  border-color:var(--border) !important;
+  background:rgba(5,74,145,.035) !important;
+  padding-left:14px !important;
+}
+
+.search-page .result-item::after{
+  display:none !important;
+}
+
+.search-page .thumb{
+  display:none !important;
+}
+
+.search-page .r-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.search-page .r-type{
+  order:-1;
+  border:0 !important;
+  background:transparent !important;
+  color:var(--accent) !important;
+  padding:0 !important;
+  font-size:.72rem !important;
+  font-weight:900 !important;
+  letter-spacing:.14em !important;
+}
+
+.search-page .r-title{
+  margin:0 !important;
+  font-size:clamp(1.2rem, 2vw, 1.55rem) !important;
+  line-height:1.25 !important;
+}
+
+.search-page .r-title a{
+  color:var(--ink) !important;
+  text-decoration:none !important;
+}
+
+.search-page .r-title a:hover{
+  color:var(--accent) !important;
+}
+
+.search-page .r-excerpt{
+  max-width:850px;
+  margin:0 0 8px !important;
+  color:var(--muted) !important;
+  line-height:1.65 !important;
+}
+
+.search-page .r-meta{
+  margin:0 !important;
+  color:var(--muted) !important;
+  font-size:.82rem !important;
+  font-weight:800 !important;
+  letter-spacing:.04em !important;
+  text-transform:uppercase !important;
+}
+
+html[data-theme="dark"] .search-page .result-item:hover{
+  background:rgba(255,255,255,.04) !important;
+}
+
+@media(max-width:700px){
+  .search-page .result-item{
+    padding:20px 0 !important;
+  }
+
+  .search-page .result-item:hover{
+    padding-left:0 !important;
+  }
+
+  .search-page .r-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:6px;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
