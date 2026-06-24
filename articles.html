@@ -589,6 +589,48 @@ html[data-theme="dark"] body.articles-page .resource-in-image{
   box-shadow:0 2px 10px rgba(0,0,0,.22) !important;
 }
 
+
+/* === Fix featured article image capacity + clipping === */
+body.articles-page .featured-left .image-block,
+body.articles-page .featured-right .image-block{
+  background:#05070a !important;
+}
+
+body.articles-page .featured-left .image-block img,
+body.articles-page .featured-right .image-block img{
+  object-fit:contain !important;
+  background:#05070a !important;
+}
+
+body.articles-page .featured-left .excerpt-wrap{
+  display:flex !important;
+  flex-direction:column !important;
+  width:290px !important;
+  height:450px !important;
+  flex:0 0 290px !important;
+}
+
+body.articles-page .featured-left .excerpt-block{
+  flex:1 1 auto !important;
+}
+
+body.articles-page .featured-right{
+  min-height:450px !important;
+  height:auto !important;
+}
+
+body.articles-page .featured-right a{
+  min-height:450px !important;
+}
+
+body.articles-page .featured-right .card-body{
+  flex:1 1 auto !important;
+}
+
+body.articles-page .featured-right .card-footer{
+  margin-top:auto !important;
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -611,9 +653,10 @@ html[data-theme="dark"] body.articles-page .resource-in-image{
 <a href="/articles/christian-nationalism-not-biblical-righteousness.html">
 <div class="image-block">
 <img alt="Christian Nationalism Is Not Biblical Righteousness" src="/images/articles/christian-nationalism-not-biblical-righteousness-700x394.jpg"/>
-<span class="resource-label resource-in-excerpt">Article</span>
 </div>
-<div class="card-body">
+<div class="excerpt-wrap">
+<div class="excerpt-block">
+<span class="resource-label resource-in-excerpt">Article</span>
 <h3>Christian Nationalism Is Not Biblical Righteousness</h3>
 <time class="meta-date" datetime="2026-06-23">Jun 23, 2026</time>
 <p class="muted">A biblical indictment of Christian nationalism, showing how America, patriotism, and Gentile empire are often confused with covenant righteousness.</p>
@@ -621,6 +664,7 @@ html[data-theme="dark"] body.articles-page .resource-in-image{
 <div class="card-footer">
 <img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
 <span class="author">Semitic Jew</span>
+</div>
 </div>
 </a>
 </article>
