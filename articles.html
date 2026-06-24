@@ -591,7 +591,10 @@ html[data-theme="dark"] body.articles-page .resource-in-image{
 
 
 
-/* === Restore featured card geometry: fixed card sizes, images fill allotted slots === */
+
+/* === Final featured-card fix: original geometry, correct image fit, protected footer === */
+
+/* Preserve original featured geometry */
 body.articles-page .featured-split{
   grid-template-columns:880px 290px !important;
   gap:24px !important;
@@ -602,6 +605,7 @@ body.articles-page .featured-left{
   width:880px !important;
   height:450px !important;
   display:block !important;
+  overflow:hidden !important;
 }
 
 body.articles-page .featured-left a{
@@ -610,27 +614,34 @@ body.articles-page .featured-left a{
   height:100% !important;
 }
 
+/* Left featured image: show the full 700x394 image inside the 590x450 slot */
 body.articles-page .featured-left .image-block{
   width:590px !important;
   height:450px !important;
   flex:0 0 590px !important;
   overflow:hidden !important;
   background:#05070a !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
 }
 
 body.articles-page .featured-left .image-block img{
-  width:590px !important;
-  height:450px !important;
-  object-fit:cover !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  background:#05070a !important;
   display:block !important;
 }
 
+/* Left featured text/footer: keep footer inside the original right column */
 body.articles-page .featured-left .excerpt-wrap{
   width:290px !important;
   height:450px !important;
   flex:0 0 290px !important;
   display:flex !important;
   flex-direction:column !important;
+  overflow:hidden !important;
 }
 
 body.articles-page .featured-left .excerpt-block{
@@ -639,17 +650,24 @@ body.articles-page .featured-left .excerpt-block{
   flex-direction:column !important;
   gap:8px !important;
   flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow:hidden !important;
 }
 
 body.articles-page .featured-left .card-footer{
+  flex:0 0 auto !important;
+  min-height:54px !important;
   margin-top:auto !important;
   padding:12px 14px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
 }
 
+/* Right featured: original card dimensions */
 body.articles-page .featured-right{
   width:290px !important;
   height:450px !important;
-  min-height:0 !important;
   display:flex !important;
   flex-direction:column !important;
   overflow:hidden !important;
@@ -657,11 +675,12 @@ body.articles-page .featured-right{
 
 body.articles-page .featured-right a{
   height:100% !important;
-  min-height:0 !important;
   display:flex !important;
   flex-direction:column !important;
+  overflow:hidden !important;
 }
 
+/* Right featured image: fill its original allotted slot */
 body.articles-page .featured-right .image-block{
   width:290px !important;
   height:163.13px !important;
@@ -677,19 +696,56 @@ body.articles-page .featured-right .image-block img{
   display:block !important;
 }
 
+/* Right featured text: clamp so it cannot eat the footer */
 body.articles-page .featured-right .card-body{
   padding:12px 14px !important;
   display:flex !important;
   flex-direction:column !important;
-  gap:8px !important;
+  gap:7px !important;
   flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow:hidden !important;
 }
 
+body.articles-page .featured-right h3{
+  margin:.25rem 0 0 !important;
+  font-size:1.02rem !important;
+  line-height:1.22 !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:4 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-right .muted{
+  line-height:1.33 !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:3 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+/* Right featured footer: always visible */
 body.articles-page .featured-right .card-footer{
+  flex:0 0 auto !important;
+  min-height:54px !important;
   margin-top:auto !important;
   padding:12px 14px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
 }
 
+/* Make sure footer avatar never disappears */
+body.articles-page .featured-right .card-footer .avatar,
+body.articles-page .featured-left .card-footer .avatar{
+  display:block !important;
+  width:30px !important;
+  height:30px !important;
+  flex:0 0 30px !important;
+}
+
+/* Mobile: return to stacked, natural height */
 @media (max-width:1260px){
   body.articles-page .featured-split{
     grid-template-columns:1fr !important;
@@ -708,10 +764,16 @@ body.articles-page .featured-right .card-footer{
 
   body.articles-page .featured-left .image-block,
   body.articles-page .featured-left .image-block img,
-  body.articles-page .featured-left .excerpt-wrap{
+  body.articles-page .featured-left .excerpt-wrap,
+  body.articles-page .featured-right .image-block,
+  body.articles-page .featured-right .image-block img{
     width:100% !important;
     height:auto !important;
     flex:auto !important;
+  }
+
+  body.articles-page .featured-left .excerpt-wrap{
+    height:auto !important;
   }
 }
 
