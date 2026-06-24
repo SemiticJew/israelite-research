@@ -260,6 +260,47 @@ html[data-theme="dark"] .more-by-btn{
   }
 }
 
+
+/* Featured pull quote */
+.featured-quote{
+  margin:28px 0;
+  padding:22px 24px;
+  border-left:6px solid var(--accent, #F17300);
+  background:rgba(241,115,0,.08);
+  color:var(--ink);
+  font-family:Spectral, Georgia, serif;
+  font-size:1.35rem;
+  line-height:1.35;
+  font-weight:700;
+}
+
+.featured-quote p{
+  margin:0;
+}
+
+.featured-quote cite{
+  display:block;
+  margin-top:10px;
+  color:var(--muted);
+  font-family:Roboto, Arial, sans-serif;
+  font-size:.78rem;
+  font-style:normal;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+html[data-theme="dark"] .featured-quote{
+  background:rgba(241,115,0,.14);
+}
+
+@media(max-width:760px){
+  .featured-quote{
+    padding:18px 18px;
+    font-size:1.15rem;
+  }
+}
+
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -345,6 +386,12 @@ html[data-theme="dark"] .more-by-btn{
     <p>This is where Eurocentric Christianity has become so dangerous. It does not merely misunderstand the Bible. It relocates the Bible. It moves the center of Scripture away from the ethnic Israelites, their ethnic covenant, and the national judgments, then places America at the center of God’s divine plan for humanity.</p>
 
     <p>That is idolatry.</p>
+
+    <blockquote class="featured-quote">
+      <p>“God and country” sounds harmless until country starts interpreting God. That is how nationalism becomes idolatry.</p>
+      <cite>Christian Nationalism Is Not Biblical Righteousness</cite>
+    </blockquote>
+
 
     <p>Christian nationalism is not the faith of the prophets. It is not the doctrine of Christ. It is not the righteousness of the apostles. It is a political religion that confuses national pride, Republicanism, and Democratism with obedience to God.</p>
 
