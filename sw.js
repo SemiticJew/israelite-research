@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v86';
+const CACHE_VERSION = 'sj-pwa-v87';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -12,7 +12,10 @@ const APP_SHELL_ASSETS = [
   '/newtestament.html',
   '/apocrypha.html',
   '/styles.css',
+  '/css/app.css',
   '/js/include.js',
+  '/js/app/app-shell.js',
+  '/js/app/ai-mock.js',
   '/js/app-status.js',
   '/js/app-install-guide.js',
   '/js/app-update-prompt.js',
@@ -40,6 +43,11 @@ const APP_SHELL_ASSETS = [
   '/data/study-trails.json',
   '/data/scripture-search-index.json',
   '/data/app-changelog.json',
+  '/data/app/courses.json',
+  '/data/app/daily-precepts.json',
+  '/data/app/doctrine-topics.json',
+  '/data/app/practice-plans.json',
+  '/data/app/watch-feed.json',
   '/site.webmanifest',
   '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
@@ -56,7 +64,10 @@ const APP_SHELL = [
   '/app.html',
   '/offline.html',
   '/styles.css',
+  '/css/app.css',
   '/js/include.js',
+  '/js/app/app-shell.js',
+  '/js/app/ai-mock.js',
   '/search.html',
   '/biblia.html',
   '/articles.html',
@@ -69,6 +80,11 @@ const APP_SHELL = [
   '/website-app.html',
   '/bible-app.html',
   '/site.webmanifest',
+  '/data/app/courses.json',
+  '/data/app/daily-precepts.json',
+  '/data/app/doctrine-topics.json',
+  '/data/app/practice-plans.json',
+  '/data/app/watch-feed.json',
   '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
   '/favicon-16x16.png',
