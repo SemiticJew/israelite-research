@@ -4,11 +4,11 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Support the Work — Semitic Jew</title>
-<meta name="description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, articles, media, and teaching resources."/>
+<meta name="description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, articles, media education, Bible-study tools, and teaching resources for public benefit."/>
 
 <!-- Open Graph -->
 <meta property="og:title" content="Support the Work — Semitic Jew"/>
-<meta property="og:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media, articles, and teaching resources rooted in Scripture, logic, and truth."/>
+<meta property="og:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources rooted in Scripture, logic, and truth."/>
 <meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://semiticjew.org/donate.html"/>
@@ -17,7 +17,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Support the Work — Semitic Jew"/>
-<meta name="twitter:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media, articles, and teaching resources rooted in Scripture, logic, and truth."/>
+<meta name="twitter:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources rooted in Scripture, logic, and truth."/>
 <meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
 
 <link rel="stylesheet" href="/styles.css"/>
@@ -186,6 +186,90 @@
     font-size:.95rem;
   }
 
+
+  .impact-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+    margin-top:24px;
+  }
+
+  .impact-card{
+    border:1px solid var(--border);
+    background:rgba(5,74,145,.035);
+    padding:16px;
+  }
+
+  .impact-card strong{
+    display:block;
+    margin-bottom:6px;
+    color:var(--ink);
+    font-weight:900;
+  }
+
+  .impact-card span{
+    display:block;
+    color:var(--muted);
+    line-height:1.6;
+    font-size:.95rem;
+  }
+
+  .donate-clarity{
+    margin-top:22px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:rgba(5,74,145,.045);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:.95rem;
+  }
+
+  .donate-clarity strong{
+    color:var(--ink);
+  }
+
+  .donate-mini-links{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .donate-mini-links a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    color:var(--ink);
+    text-decoration:none;
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .donate-mini-links a:hover,
+  .donate-mini-links a:focus,
+  .donate-mini-links a:focus-visible{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  html[data-theme="dark"] .impact-card,
+  html[data-theme="dark"] .donate-clarity{
+    background:rgba(255,255,255,.035);
+  }
+
+  @media(max-width:700px){
+    .impact-grid,
+    .donate-mini-links{
+      grid-template-columns:1fr;
+    }
+  }
+
   html[data-theme="dark"] .donate-hero{
     background:
       radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
@@ -247,7 +331,7 @@
     <div class="donate-kicker">501(c)(3) Educational Nonprofit</div>
     <h1 class="donate-title">Support the Work</h1>
     <p class="donate-subtitle">
-      Semitic Jew Inc produces biblical research, articles, Bible-study tools, media, and teaching resources rooted in Scripture, logic, and truth.
+      Your support helps Semitic Jew Inc produce biblical research, educational articles, Bible-study tools, media teaching, and public learning resources rooted in Scripture, logic, and truth.
     </p>
   </section>
 
@@ -256,8 +340,9 @@
     <div class="donate-panel">
       <h2>Why Support Semitic Jew Inc?</h2>
       <p>
-        Your support helps fund educational content, biblical research, media production, public teaching,
-        digital tools, and resources that strengthen biblical literacy, historical understanding, and critical thinking.
+        Semitic Jew Inc is a 501(c)(3) educational nonprofit serving the public through biblical research,
+        digital publishing, media education, Bible-study tools, and teaching resources. Donations help keep
+        this work accessible and strengthen the organization’s ability to produce consistent public education.
       </p>
 
       <ul class="donate-list">
@@ -267,15 +352,38 @@
         <li>Support lectures, public education, and future instructional programming.</li>
       </ul>
 
+      <div class="impact-grid" aria-label="How donations support the work">
+        <div class="impact-card">
+          <strong>Biblical Research</strong>
+          <span>Supports research, writing, editing, documentation, and publication of educational articles and studies.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Media Education</strong>
+          <span>Supports video, podcast, and teaching content that explains Scripture, logic, history, and public issues.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Study Tools</strong>
+          <span>Supports Bible-study resources, digital tools, reader improvements, and public learning materials.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Public Access</strong>
+          <span>Supports website hosting, accessibility improvements, outreach, and the continued availability of free resources.</span>
+        </div>
+      </div>
+
       <div class="donate-note">
         Semitic Jew Inc is organized for educational and public-benefit purposes. Contributions support the organization’s mission and programming.
+      </div>
+
+      <div class="donate-clarity">
+        <strong>Transparency:</strong> Gifts support educational programming, website operations, research, media production, and teaching resources. Donation receipts and records are provided through the giving platform when available.
       </div>
     </div>
 
     <aside class="donate-card">
       <h2>Give / Support</h2>
       <p>
-        Use the giving link below to support the continued work of Semitic Jew Inc.
+        Use the giving link below to support the continued educational work of Semitic Jew Inc.
       </p>
 
       <div class="donate-actions">
@@ -289,6 +397,13 @@
         <strong>EIN:</strong> 93-4076422<br>
         <strong>Primary Domain:</strong> semiticjew.org<br>
         <strong>Status:</strong> 501(c)(3) educational nonprofit
+      </div>
+
+      <div class="donate-mini-links" aria-label="Explore the work">
+        <a href="/articles.html">Read Articles</a>
+        <a href="/media.html">Watch Media</a>
+        <a href="/biblia.html">Study Biblia</a>
+        <a href="/contact.html">Contact</a>
       </div>
     </aside>
 

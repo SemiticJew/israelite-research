@@ -3,42 +3,63 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>About Semitic Jew Inc</title>
-<meta name="description" content="About Semitic Jew Inc, a federally recognized 501(c)(3) educational nonprofit that owns and operates semiticjew.org."/>
+<title>About Semitic Jew Inc — Semitic Jew</title>
+<meta name="description" content="About Semitic Jew Inc, a 501(c)(3) educational nonprofit advancing biblical literacy, historical understanding, logic, research, media education, and public teaching resources."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="About Semitic Jew Inc — Semitic Jew"/>
+<meta property="og:description" content="Learn about Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/about.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="About Semitic Jew Inc — Semitic Jew"/>
+<meta name="twitter:description" content="Learn about Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
 
 <link rel="stylesheet" href="/styles.css"/>
 
 <style>
   .about-page{
-    max-width:1000px;
+    max-width:1200px;
     margin:0 auto;
-    padding:48px 24px 80px;
+    padding:40px 24px 80px;
   }
 
   .about-hero{
+    margin:24px 0 42px;
+    padding:58px 30px;
     text-align:center;
-    margin-bottom:44px;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
   }
 
   .about-kicker{
-    text-transform:uppercase;
-    letter-spacing:.14em;
-    font-size:.82rem;
-    font-weight:800;
+    margin:0 0 12px;
     color:var(--accent);
-    margin-bottom:12px;
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
   }
 
   .about-title{
     margin:0;
-    font-size:clamp(2.2rem,5vw,4rem);
-    line-height:1.05;
     color:var(--ink);
+    font-size:clamp(2.5rem, 6vw, 5rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
   }
 
   .about-subtitle{
+    max-width:780px;
     margin:18px auto 0;
-    max-width:760px;
     color:var(--muted);
     font-size:1.05rem;
     line-height:1.7;
@@ -49,23 +70,23 @@
     background:var(--surface);
     color:var(--ink);
     border:1px solid var(--border);
-    border-radius:22px;
     padding:28px;
     margin:24px 0;
-    box-shadow:var(--shadow);
   }
 
   .about-section h2,
   .org-verification h2{
     margin:0 0 14px;
-    font-size:1.45rem;
     color:var(--ink);
+    font-size:1.45rem;
+    font-weight:900;
+    letter-spacing:-.02em;
   }
 
   .about-section p,
   .org-verification p{
     margin:0 0 16px;
-    color:var(--ink);
+    color:var(--muted);
     line-height:1.75;
   }
 
@@ -75,119 +96,200 @@
   }
 
   .verification-details{
-    background:var(--surface-alt, rgba(0,0,0,.04));
+    background:rgba(5,74,145,.045);
     border:1px solid var(--border);
-    border-radius:16px;
     padding:18px;
+    color:var(--muted);
   }
 
   .verification-details strong{
     color:var(--ink);
   }
 
-  .mission-grid{
+  .mission-grid,
+  .work-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:18px;
     margin-top:20px;
   }
 
-  .mission-card{
+  .work-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .mission-card,
+  .work-card{
     border:1px solid var(--border);
-    background:var(--surface-alt, rgba(0,0,0,.04));
-    border-radius:18px;
+    background:rgba(5,74,145,.035);
     padding:18px;
   }
 
-  .mission-card h3{
+  .mission-card h3,
+  .work-card h3{
     margin:0 0 8px;
     color:var(--ink);
     font-size:1rem;
+    font-weight:900;
   }
 
-  .mission-card p{
+  .mission-card p,
+  .work-card p{
     margin:0;
     color:var(--muted);
     line-height:1.6;
     font-size:.95rem;
   }
 
-  @media(max-width:760px){
-    .mission-grid{
-      grid-template-columns:1fr;
-    }
+  .about-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:22px;
   }
 
-/* Support the Work callouts */
-.support-callout{
-  margin:56px auto;
-  padding:28px;
-  border:1px solid var(--border);
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
-    var(--surface);
-  color:var(--ink);
-  text-align:center;
-}
+  .about-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:13px 18px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.82rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
 
-.support-callout h2,
-.support-callout h3{
-  margin:0 0 10px;
-  color:var(--ink);
-  font-size:1.45rem;
-  font-weight:900;
-  letter-spacing:-.02em;
-}
+  .about-btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--border);
+  }
 
-.support-callout p{
-  max-width:760px;
-  margin:0 auto 18px;
-  color:var(--muted);
-  line-height:1.7;
-}
+  .about-btn:hover,
+  .about-btn:focus,
+  .about-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+  }
 
-.support-callout .support-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:13px 22px;
-  border:1px solid var(--accent);
-  background:var(--accent);
-  color:#fff;
-  text-decoration:none;
-  font-size:.82rem;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
+  .about-btn.secondary:hover,
+  .about-btn.secondary:focus,
+  .about-btn.secondary:focus-visible{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
 
-.support-callout .support-btn:hover,
-.support-callout .support-btn:focus,
-.support-callout .support-btn:focus-visible{
-  background:var(--ink);
-  border-color:var(--ink);
-  color:#fff;
-  text-decoration:none;
-}
-
-html[data-theme="dark"] .support-callout{
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
-    var(--surface);
-}
-
-@media(max-width:760px){
   .support-callout{
-    margin:42px auto;
-    padding:24px 18px;
+    margin:56px auto;
+    padding:28px;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
+      var(--surface);
+    color:var(--ink);
+    text-align:center;
   }
 
   .support-callout h2,
   .support-callout h3{
-    font-size:1.25rem;
+    margin:0 0 10px;
+    color:var(--ink);
+    font-size:1.45rem;
+    font-weight:900;
+    letter-spacing:-.02em;
   }
-}
 
+  .support-callout p{
+    max-width:760px;
+    margin:0 auto 18px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  .support-callout .support-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:13px 22px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.82rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .support-callout .support-btn:hover,
+  .support-callout .support-btn:focus,
+  .support-callout .support-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  html[data-theme="dark"] .about-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .about-section h2,
+  html[data-theme="dark"] .org-verification h2,
+  html[data-theme="dark"] .mission-card h3,
+  html[data-theme="dark"] .work-card h3,
+  html[data-theme="dark"] .verification-details strong{
+    color:#fff;
+  }
+
+  html[data-theme="dark"] .mission-card,
+  html[data-theme="dark"] .work-card,
+  html[data-theme="dark"] .verification-details{
+    background:rgba(255,255,255,.035);
+  }
+
+  html[data-theme="dark"] .support-callout{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+      var(--surface);
+  }
+
+  @media(max-width:900px){
+    .work-grid{
+      grid-template-columns:repeat(2,1fr);
+    }
+  }
+
+  @media(max-width:760px){
+    .about-page{
+      padding:22px 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .about-hero{
+      margin:18px 0 32px;
+      padding:42px 20px;
+    }
+
+    .about-section,
+    .org-verification{
+      padding:22px 18px;
+    }
+
+    .mission-grid,
+    .work-grid{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -203,13 +305,17 @@ html[data-theme="dark"] .support-callout{
 
 <main class="about-page">
 
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">About</span>
+  </nav>
+
   <section class="about-hero">
     <div class="about-kicker">About the Organization</div>
     <h1 class="about-title">Semitic Jew Inc</h1>
     <p class="about-subtitle">
-      Semitic Jew Inc is an educational nonprofit dedicated to advancing biblical literacy,
-      historical understanding, and critical thinking through research, digital media,
-      publications, and instructional programming.
+      Semitic Jew Inc is a 501(c)(3) educational nonprofit advancing biblical literacy, historical understanding, and critical thinking through research, digital media, public education, and teaching resources.
     </p>
   </section>
 
@@ -217,7 +323,7 @@ html[data-theme="dark"] .support-callout{
     <h2>Mission</h2>
     <p>
       Our mission is to advance biblical literacy, historical understanding, and critical thinking
-      through research, publications, digital media, instructional programming, and public education.
+      through research, publications, digital media, instructional programming, and public education. We create public resources that help readers and viewers study Scripture, evaluate arguments, and engage history with discipline and clarity.
     </p>
 
     <div class="mission-grid">
@@ -260,6 +366,39 @@ html[data-theme="dark"] .support-callout{
     </p>
   </section>
 
+  <section class="about-section" id="public-educational-work">
+    <h2>Public Educational Work</h2>
+    <p>
+      Semitic Jew Inc serves the public through free and accessible educational resources. Our work includes biblical research, articles, digital media, Bible-study tools, teaching resources, and future curriculum development.
+    </p>
+
+    <div class="work-grid">
+      <div class="work-card">
+        <h3>Biblical Research</h3>
+        <p>Scripture-centered articles, historical analysis, apologetics, and research-based teaching.</p>
+      </div>
+      <div class="work-card">
+        <h3>Media Education</h3>
+        <p>Podcast, video, and public teaching content that explains Scripture, logic, and history.</p>
+      </div>
+      <div class="work-card">
+        <h3>Bible-Study Tools</h3>
+        <p>Digital tools, Biblia resources, study aids, and reader improvements for public use.</p>
+      </div>
+      <div class="work-card">
+        <h3>Teaching Resources</h3>
+        <p>Instructional materials, lectures, future courses, and public learning resources.</p>
+      </div>
+    </div>
+
+    <div class="about-actions">
+      <a class="about-btn" href="/articles.html">Read Articles</a>
+      <a class="about-btn secondary" href="/biblia.html">Study Biblia</a>
+      <a class="about-btn secondary" href="/media.html">Watch Media</a>
+      <a class="about-btn secondary" href="/contact.html">Contact</a>
+    </div>
+  </section>
+
   <section class="org-verification" id="organization-verification">
     <h2>Organization Verification</h2>
 
@@ -285,6 +424,11 @@ html[data-theme="dark"] .support-callout{
       educational media production, lectures, podcast/video teaching, and digital tools for studying
       Scripture, history, and logic.
     </p>
+
+    <div class="about-actions">
+      <a class="about-btn" href="/donate.html">Support the Work</a>
+      <a class="about-btn secondary" href="/contact.html">Contact Us</a>
+    </div>
   </section>
 
 <section class="support-callout" aria-label="Support the Work">
