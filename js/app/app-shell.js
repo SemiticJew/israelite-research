@@ -82,6 +82,8 @@ let watchData = [];
 let bookMaps = {};
 let readerRequestId = 0;
 let readerFocusVerse = "";
+let readerActiveVerse = "";
+let currentReaderLocation = { canon: "", book: "", chapter: "" };
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
 const chapterAvailabilityCache = new Map();
@@ -534,6 +536,20 @@ function bookCategory(canon, book){
   return found ? found[1] : context.fallback;
 }
 
+function sameReaderLocation(a, b){
+  return Boolean(a && b &&
+    a.canon === b.canon &&
+    a.book === b.book &&
+    String(a.chapter) === String(b.chapter));
+}
+
+function readerScopeLabel(location){
+  const book = titleFromSlug(location.book);
+  const chapter = String(location.chapter || "1");
+  const verse = location.verse ? `:${location.verse}` : "";
+  return `${book} ${chapter}${verse}`;
+}
+
 function canonicalBookKey(value){
   return String(value || "").toLowerCase().replace(/\s+/g, "-");
 }
@@ -611,13 +627,15 @@ function rankRelatedItem(item, location){
   return score;
 }
 
-function chapterCrossrefItems(crossrefs, location){
+function chapterCrossrefItems(crossrefs, location, scope = "chapter"){
   if (!crossrefs || typeof crossrefs !== "object") return [];
   const items = [];
   const seen = new Set();
+  const activeVerse = String(location.verse || "").trim();
 
   Object.entries(crossrefs).forEach(([sourceVerse, targets]) => {
     const sourceVerseNum = String(sourceVerse || "").trim();
+    if (scope === "verse" && activeVerse && sourceVerseNum !== activeVerse) return;
     const list = Array.isArray(targets) ? targets : [];
     list.forEach(target => {
       const normalized = normalizeChapterCrossref(target);
@@ -653,28 +671,28 @@ function chapterCrossrefItems(crossrefs, location){
   return items;
 }
 
-function dictionaryReferenceItems(entries, location){
+function dictionaryReferenceItems(entries, location, scope = "chapter"){
   const items = [];
   const seen = new Set();
+  const activeVerse = String(location.verse || "").trim();
 
   entries.forEach(entry => {
     const refs = Array.isArray(entry.bible_refs) ? entry.bible_refs : [];
-    const matchedRefs = refs
-      .map(normalizeScriptureRef)
-      .filter(ref => ref && ref.canon === location.canon && ref.slug === location.book && ref.chapter === String(location.chapter));
-
-    if (!matchedRefs.length) return;
-
-    const exactMatch = location.verse
-      ? matchedRefs.find(ref => {
+    const normalizedRefs = refs.map(normalizeScriptureRef).filter(Boolean);
+    const matchedRefs = normalizedRefs.filter(ref => ref.canon === location.canon && ref.slug === location.book && ref.chapter === String(location.chapter));
+    const verseMatches = activeVerse
+      ? matchedRefs.filter(ref => {
           const start = Number(ref.verse || 0);
           const end = Number(ref.verseEnd || ref.verse || 0);
-          const verse = Number(location.verse || 0);
+          const verse = Number(activeVerse || 0);
           return start && verse >= start && verse <= end;
         })
-      : null;
+      : [];
+    const shouldInclude = scope === "verse" ? verseMatches.length > 0 : matchedRefs.length > 0;
 
-    const bestRef = exactMatch || matchedRefs[0];
+    if (!shouldInclude) return;
+
+    const bestRef = verseMatches[0] || matchedRefs[0];
     const key = relatedItemKey({ kind: "dictionary", id: entry.id });
     if (seen.has(key)) return;
     seen.add(key);
@@ -700,7 +718,7 @@ function dictionaryReferenceItems(entries, location){
         chapter: bestRef.chapter,
         verse: bestRef.verse || ""
       },
-      score: exactMatch ? 100 : 60
+      score: verseMatches.length ? 100 : 60
     });
   });
 
@@ -718,9 +736,24 @@ function uniqueRelatedItems(items){
 }
 
 function buildRelatedReferences(location, entries, crossrefs){
-  const crossrefItems = chapterCrossrefItems(crossrefs, location);
-  const dictionaryItems = dictionaryReferenceItems(entries, location);
-  return uniqueRelatedItems([...dictionaryItems, ...crossrefItems])
+  const hasVerse = Boolean(String(location.verse || "").trim());
+  const verseItems = hasVerse
+    ? uniqueRelatedItems([
+        ...dictionaryReferenceItems(entries, location, "verse"),
+        ...chapterCrossrefItems(crossrefs, location, "verse")
+      ])
+    : [];
+  const chapterItems = uniqueRelatedItems([
+    ...dictionaryReferenceItems(entries, location, "chapter"),
+    ...chapterCrossrefItems(crossrefs, location, "chapter")
+  ]);
+  const related = verseItems.length
+    ? [
+        ...verseItems.sort((a, b) => rankRelatedItem(b, location) - rankRelatedItem(a, location) || String(a.title || "").localeCompare(String(b.title || ""))),
+        ...chapterItems.filter(item => !verseItems.some(verseItem => relatedItemKey(verseItem) === relatedItemKey(item)))
+      ]
+    : chapterItems;
+  return related
     .sort((a, b) => rankRelatedItem(b, location) - rankRelatedItem(a, location) || String(a.title || "").localeCompare(String(b.title || "")))
     .slice(0, 8);
 }
@@ -754,6 +787,29 @@ function renderRelatedCard(item){
       </div>
     </article>
   `;
+}
+
+function setReaderActiveVerse(verse, options = {}){
+  readerActiveVerse = verse ? String(verse) : "";
+  const { persist = true, updateRelated = true, location = currentReaderLocation } = options;
+  if (persist && location.canon && location.book && location.chapter){
+    writeLastRead({ ...location, verse: readerActiveVerse });
+  }
+  updateReaderVerseSelection();
+  if (updateRelated && location.canon && location.book && location.chapter){
+    renderRelatedReferences({ ...location, verse: readerActiveVerse }, null, readerRequestId);
+  }
+}
+
+function updateReaderVerseSelection(){
+  const verseNodes = $$(".reader-verse");
+  if (!verseNodes.length) return;
+  verseNodes.forEach(node => {
+    const active = node.dataset.verse === String(readerActiveVerse || "");
+    node.classList.toggle("is-active", active);
+    if (active) node.setAttribute("aria-current", "true");
+    else node.removeAttribute("aria-current");
+  });
 }
 
 function scriptureRefLabel(ref){
@@ -1323,6 +1379,10 @@ async function setReaderLocation({ canon, book, chapter, verse, fontSize, spacin
   const nextBook = resolved.book;
   const nextChapter = resolved.chapter;
   readerFocusVerse = verse ? String(verse) : "";
+  const nextLocation = { canon: nextCanon, book: nextBook, chapter: nextChapter };
+  const changedChapter = !sameReaderLocation(currentReaderLocation, nextLocation);
+  currentReaderLocation = nextLocation;
+  if (changedChapter && !verse) readerActiveVerse = "";
 
   const canonSelect = $("#reader-canon");
   const bookSelect = $("#reader-book");
@@ -1444,12 +1504,14 @@ async function renderRelatedReferences(location, verses, requestId){
     if (requestId !== readerRequestId) return;
 
     const related = buildRelatedReferences(location, entries, crossrefs);
+    const scopeLabel = readerScopeLabel(location);
+    const chapterLabel = location.verse ? `Verse scope active: ${scopeLabel}` : `Chapter scope: ${scopeLabel}`;
     if (!related.length){
       root.innerHTML = `
         <div class="app-related-empty">
           <span class="app-label">Related Precepts</span>
-          <h3 id="reader-related-title">No related references found yet</h3>
-          <p>Open Biblia, the encyclopedia, or the chapter itself to keep studying from the full reference library.</p>
+          <h3 id="reader-related-title">Related Precepts for ${escapeHTML(scopeLabel)}</h3>
+          <p>${escapeHTML(chapterLabel)}. Open Biblia, the encyclopedia, or the chapter itself to keep studying from the full reference library.</p>
         </div>
       `;
       return;
@@ -1458,8 +1520,8 @@ async function renderRelatedReferences(location, verses, requestId){
     root.innerHTML = `
       <div class="app-section-head compact app-related-head">
         <span class="app-label">Related Precepts</span>
-        <h3 id="reader-related-title">Related References</h3>
-        <p>${escapeHTML(related.length)} study links matched this chapter from the dictionary and cross-reference index.</p>
+        <h3 id="reader-related-title">Related Precepts for ${escapeHTML(scopeLabel)}</h3>
+        <p>${escapeHTML(chapterLabel)}. ${escapeHTML(related.length)} study links matched from the dictionary and cross-reference index.</p>
       </div>
       <div class="app-related-list">
         ${related.map(renderRelatedCard).join("")}
@@ -1470,7 +1532,7 @@ async function renderRelatedReferences(location, verses, requestId){
     root.innerHTML = `
       <div class="app-related-empty">
         <span class="app-label">Related Precepts</span>
-        <h3 id="reader-related-title">Reference data unavailable</h3>
+        <h3 id="reader-related-title">Related Precepts for ${escapeHTML(readerScopeLabel(location))}</h3>
         <p>The related reference index could not be loaded. Open Biblia or the encyclopedia for more study.</p>
       </div>
     `;
@@ -1493,6 +1555,11 @@ async function renderReader(){
   const chapter = chapterSelect.value || settings.chapter;
   const fontSize = fontSelect?.value || settings.fontSize;
   const spacing = spacingSelect?.value || settings.spacing;
+  const persistedLastRead = readLastRead();
+  const sameSavedLocation = sameReaderLocation(persistedLastRead, { canon, book, chapter });
+  const selectedVerse = readerFocusVerse || readerActiveVerse || (sameSavedLocation ? persistedLastRead.verse : "");
+  readerActiveVerse = selectedVerse ? String(selectedVerse) : "";
+  currentReaderLocation = { canon, book, chapter };
 
   writeSettings({ canon, book, chapter, fontSize, spacing });
   syncProfileSettings();
@@ -1513,9 +1580,10 @@ async function renderReader(){
     }
 
     const marks = readReaderMarks();
-    const focusVerse = readerFocusVerse;
+    const focusVerse = readerFocusVerse || readerActiveVerse || "";
     readerFocusVerse = "";
-    writeLastRead({ canon, book, chapter, verse: focusVerse || "" });
+    readerActiveVerse = focusVerse ? String(focusVerse) : "";
+    writeLastRead({ canon, book, chapter, verse: readerActiveVerse || "" });
     await updateReaderNav();
 
     output.innerHTML = `
@@ -1535,8 +1603,9 @@ async function renderReader(){
           const bookmarked = hasMark(marks.bookmarks, key);
           const highlighted = hasMark(marks.highlights, key);
           const note = getNote(marks, key);
+          const isActive = String(verseNumber) === String(readerActiveVerse || "");
           return `
-            <section class="reader-verse${highlighted ? " is-highlighted" : ""}" data-key="${escapeHTML(key)}" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(text)}">
+            <section class="reader-verse${highlighted ? " is-highlighted" : ""}${isActive ? " is-active" : ""}" tabindex="0" role="button" aria-label="${escapeHTML(ref)}" data-key="${escapeHTML(key)}" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(text)}" data-verse="${escapeHTML(verseNumber)}">
               <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${escapeHTML(text)}</p>
               ${note ? `<p class="reader-note"><strong>Note:</strong> ${escapeHTML(note.note)}</p>` : ""}
               <div class="reader-actions" aria-label="${escapeHTML(ref)} actions">
@@ -1551,10 +1620,11 @@ async function renderReader(){
       </div>
     `;
 
-    await renderRelatedReferences({ canon, book, chapter, verse: focusVerse }, verses, requestId);
+    updateReaderVerseSelection();
+    await renderRelatedReferences({ canon, book, chapter, verse: readerActiveVerse }, verses, requestId);
 
-    if (focusVerse){
-      const verseNode = $(`[data-key="${escapeSelector(markKey(canon, book, chapter, focusVerse))}"]`);
+    if (readerActiveVerse){
+      const verseNode = $(`[data-key="${escapeSelector(markKey(canon, book, chapter, readerActiveVerse))}"]`);
       verseNode?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }catch(error){
@@ -1576,6 +1646,7 @@ async function renderReader(){
 
 async function syncReaderControls(){
   const settings = readSettings();
+  const lastRead = readLastRead();
   const canonSelect = $("#reader-canon");
   const fontSelect = $("#reader-font-size");
   const spacingSelect = $("#reader-spacing");
@@ -1591,7 +1662,8 @@ async function syncReaderControls(){
   if (profileFont) profileFont.value = settings.fontSize;
   if (profileSpacing) profileSpacing.value = settings.spacing;
 
-  await setReaderLocation(settings);
+  const restoreVerse = lastRead.exists && sameReaderLocation(lastRead, settings) ? lastRead.verse : "";
+  await setReaderLocation({ ...settings, verse: restoreVerse });
 }
 
 function wireReader(){
@@ -1643,58 +1715,75 @@ function wireReader(){
   $("#reader-output")?.addEventListener("click", async event => {
     const button = event.target.closest("[data-reader-action]");
     const verse = event.target.closest(".reader-verse");
-    if (!button || !verse) return;
-    const key = verse.dataset.key;
-    const ref = verse.dataset.ref;
-    const text = verse.dataset.text;
-    const marks = readReaderMarks();
+    if (button && verse) {
+      const key = verse.dataset.key;
+      const ref = verse.dataset.ref;
+      const text = verse.dataset.text;
+      const marks = readReaderMarks();
 
-    if (button.dataset.readerAction === "copy"){
-      try{
-        await navigator.clipboard.writeText(`${ref} ${text}`);
-        button.textContent = "Copied";
-      }catch(error){
-        button.textContent = "Copy unavailable";
+      if (button.dataset.readerAction === "copy"){
+        try{
+          await navigator.clipboard.writeText(`${ref} ${text}`);
+          button.textContent = "Copied";
+        }catch(error){
+          button.textContent = "Copy unavailable";
+        }
+        return;
       }
-      return;
-    }
 
-    if (button.dataset.readerAction === "bookmark"){
-      const exists = hasMark(marks.bookmarks, key);
-      marks.bookmarks = marks.bookmarks.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
-      if (!exists){
-        marks.bookmarks.unshift({ key, ref, text, savedAt: new Date().toISOString() });
+      if (button.dataset.readerAction === "bookmark"){
+        const exists = hasMark(marks.bookmarks, key);
+        marks.bookmarks = marks.bookmarks.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+        if (!exists){
+          marks.bookmarks.unshift({ key, ref, text, savedAt: new Date().toISOString() });
+        }
+        button.textContent = exists ? "Bookmark" : "Bookmarked";
       }
-      button.textContent = exists ? "Bookmark" : "Bookmarked";
-    }
 
-    if (button.dataset.readerAction === "highlight"){
-      const exists = hasMark(marks.highlights, key);
-      marks.highlights = marks.highlights.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
-      if (!exists){
-        marks.highlights.unshift({ key, ref, text, category: "key", savedAt: new Date().toISOString() });
+      if (button.dataset.readerAction === "highlight"){
+        const exists = hasMark(marks.highlights, key);
+        marks.highlights = marks.highlights.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+        if (!exists){
+          marks.highlights.unshift({ key, ref, text, category: "key", savedAt: new Date().toISOString() });
+        }
+        verse.classList.toggle("is-highlighted", !exists);
+        button.textContent = exists ? "Highlight" : "Highlighted";
       }
-      verse.classList.toggle("is-highlighted", !exists);
-      button.textContent = exists ? "Highlight" : "Highlighted";
-    }
 
-    if (button.dataset.readerAction === "note"){
-      const existing = getNote(marks, key);
-      const note = window.prompt(`Note for ${ref}`, existing?.note || "");
-      if (note === null) return;
-      marks.notes = marks.notes.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
-      if (note.trim()){
-        marks.notes.unshift({ key, ref, text, note: note.trim(), savedAt: new Date().toISOString() });
-        button.textContent = "Edit note";
-      }else{
-        button.textContent = "Note";
+      if (button.dataset.readerAction === "note"){
+        const existing = getNote(marks, key);
+        const note = window.prompt(`Note for ${ref}`, existing?.note || "");
+        if (note === null) return;
+        marks.notes = marks.notes.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+        if (note.trim()){
+          marks.notes.unshift({ key, ref, text, note: note.trim(), savedAt: new Date().toISOString() });
+          button.textContent = "Edit note";
+        }else{
+          button.textContent = "Note";
+        }
+        writeReaderMarks(marks);
+        await renderReader();
+        return;
       }
+
       writeReaderMarks(marks);
-      await renderReader();
       return;
     }
+  });
 
-    writeReaderMarks(marks);
+  $("#reader-output")?.addEventListener("keydown", event => {
+    const verse = event.target.closest(".reader-verse");
+    if (!verse || event.target.closest("[data-reader-action]")) return;
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    setReaderActiveVerse(verse.dataset.verse || "", { persist: true, updateRelated: true });
+  });
+
+  $("#reader-output")?.addEventListener("click", event => {
+    const verse = event.target.closest(".reader-verse");
+    const button = event.target.closest("[data-reader-action]");
+    if (!verse || button) return;
+    setReaderActiveVerse(verse.dataset.verse || "", { persist: true, updateRelated: true });
   });
 }
 
