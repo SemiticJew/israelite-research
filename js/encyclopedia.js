@@ -3,6 +3,7 @@
   const mount = document.getElementById('enc-entries');
   const azBar = document.getElementById('enc-az');
   const search = document.getElementById('enc-search');
+  let entries = [];
 
   function azLetters(){ return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''); }
 
@@ -61,6 +62,33 @@
     mount.innerHTML = out.join('\n');
   }
 
+  function findEntryByKey(key){
+    const needle = String(key || '').trim().toLowerCase();
+    if (!needle) return null;
+    return entries.find(entry => {
+      return String(entry.id || '').toLowerCase() === needle ||
+        String(entry.headword || '').toLowerCase() === needle;
+    }) || null;
+  }
+
+  function openEntryById(key, scroll = true){
+    const entry = findEntryByKey(key);
+    if (!entry) return false;
+    const node = document.getElementById(entry.id);
+    if (node && scroll){
+      node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      node.classList.add('is-active');
+      setTimeout(() => node.classList.remove('is-active'), 1200);
+    }
+    return true;
+  }
+
+  function openEntryFromHash(){
+    const hash = decodeURIComponent((location.hash || '').replace(/^#/, ''));
+    if (!hash || hash.startsWith('sec-')) return false;
+    return openEntryById(hash, true);
+  }
+
   function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m])); }
 
   function filterEntries(entries, q){
@@ -77,8 +105,10 @@
     .then(r=>r.json())
     .then(json=>{
       renderAZ();
-      let entries = json.entries || [];
+      entries = json.entries || [];
+      window.__ENC_DB = entries;
       render(entries);
+      openEntryFromHash();
 
       if(search){
         search.addEventListener('input', ()=>{
@@ -90,4 +120,7 @@
     .catch(()=> {
       mount.innerHTML = '<p style="color:#b91c1c">Unable to load encyclopedia data.</p>';
     });
+
+  window.openEncyclopediaEntryById = openEntryById;
+  window.__ENC_CURRENT_ENTRY = null;
 })();

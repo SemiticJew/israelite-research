@@ -15,6 +15,7 @@
 
   const DB = [];
   let activeLetter = null;
+  let currentEntry = null;
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function debounce(fn,ms){ let t; return(...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args),ms); }; }
@@ -49,6 +50,7 @@
         DB.length = 0;
         arr.forEach(e => DB.push(normalizeEntry(e)));
         DB.sort((a,b)=> a.headword.localeCompare(b.headword));
+        window.__ENC_DB = DB;
         console.info("[encyclopedia] loaded:", url, "entries:", DB.length);
         return;
       }catch(e){ lastErr = e; console.warn("[encyclopedia] failed:", url, e.message); }
@@ -120,6 +122,8 @@
 
   function openEntry(e){
   window.__openEntry = openEntry;
+    currentEntry = e;
+    window.__ENC_CURRENT_ENTRY = e;
     const art = READER.querySelector('article');
     const bits = [];
 
@@ -148,6 +152,20 @@
     }
   }
 
+  function openEntryFromHash(){
+    const hash = decodeURIComponent((location.hash || '').replace(/^#/, ''));
+    if (!hash || hash.startsWith('sec-')) return false;
+    const entry = DB.find(item => {
+      return String(item.id || '').toLowerCase() === hash.toLowerCase() ||
+        String(item.headword || '').toLowerCase() === hash.toLowerCase();
+    });
+    if (!entry) return false;
+    openEntry(entry);
+    const node = document.getElementById(entry.id);
+    if (node) node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return true;
+  }
+
   const doFilter = debounce(renderResults, 120);
   Q.addEventListener('input', doFilter);
   CLEAR.addEventListener('click', ()=>{ Q.value=''; renderResults(); Q.focus(); });
@@ -156,5 +174,6 @@
     buildAZ();
     await loadJSON();
     renderResults();
+    openEntryFromHash();
   })();
 })();

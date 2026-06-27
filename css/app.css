@@ -334,6 +334,7 @@
 .institute-app .app-reader-current,
 .institute-app .app-reader-context,
 .institute-app .app-reader-study-actions,
+.institute-app .app-reader-related,
 .institute-app .app-full-library{
   border:1px solid var(--app-line);
   background:#fbfdff;
@@ -376,6 +377,70 @@
 
 .institute-app .app-full-library{
   margin-top:14px;
+}
+
+.institute-app .app-reader-related{
+  margin:0 0 12px;
+}
+
+.institute-app .app-related-head{
+  max-width:none;
+  margin-bottom:12px;
+}
+
+.institute-app .app-related-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:10px;
+}
+
+.institute-app .app-related-card,
+.institute-app .app-related-empty{
+  display:grid;
+  gap:10px;
+  padding:12px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#f8fafc;
+}
+
+.institute-app .app-related-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.institute-app .app-related-source{
+  color:var(--app-muted);
+  font-size:.8rem;
+  font-weight:850;
+}
+
+.institute-app .app-related-card h4,
+.institute-app .app-related-empty h3{
+  margin:0;
+  color:var(--app-ink);
+}
+
+.institute-app .app-related-snippet{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-related-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-related-actions .app-btn{
+  min-height:36px;
+  padding:0 10px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  font-weight:850;
+  text-decoration:none;
 }
 
 .institute-app .app-reader{
@@ -848,6 +913,7 @@ html[data-theme="dark"] .institute-app .ai-response-card,
 html[data-theme="dark"] .institute-app .app-reader-current,
 html[data-theme="dark"] .institute-app .app-reader-context,
 html[data-theme="dark"] .institute-app .app-reader-study-actions,
+html[data-theme="dark"] .institute-app .app-reader-related,
 html[data-theme="dark"] .institute-app .app-full-library,
 html[data-theme="dark"] .institute-app .app-library-item,
 html[data-theme="dark"] .institute-app .app-library-empty,
@@ -893,6 +959,18 @@ html[data-theme="dark"] .institute-app .reader-note strong{
 html[data-theme="dark"] .institute-app .app-library-note{
   background:rgba(129,164,205,.14);
   color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .app-related-card,
+html[data-theme="dark"] .institute-app .app-related-empty,
+html[data-theme="dark"] .institute-app .app-related-actions .app-btn{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-related-source{
+  color:var(--app-muted);
 }
 
 @media(min-width:900px){

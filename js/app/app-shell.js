@@ -81,6 +81,10 @@ let courseData = [];
 let watchData = [];
 let bookMaps = {};
 let readerRequestId = 0;
+let readerFocusVerse = "";
+let referenceEntriesPromise = null;
+const chapterCrossrefCache = new Map();
+const chapterAvailabilityCache = new Map();
 
 function $(selector, root = document){
   return root.querySelector(selector);
@@ -162,6 +166,7 @@ function readLastRead(){
     canon: saved.canon || "tanakh",
     book: saved.book || "genesis",
     chapter: String(saved.chapter || "1"),
+    verse: String(saved.verse || ""),
     updatedAt: saved.updatedAt || "",
     exists
   };
@@ -172,6 +177,7 @@ function writeLastRead(location){
     canon: location.canon,
     book: location.book,
     chapter: String(location.chapter || "1"),
+    verse: String(location.verse || ""),
     updatedAt: new Date().toISOString()
   };
   writeJSONStorage(READER_HISTORY_KEY, lastRead);
@@ -528,6 +534,305 @@ function bookCategory(canon, book){
   return found ? found[1] : context.fallback;
 }
 
+function canonicalBookKey(value){
+  return String(value || "").toLowerCase().replace(/\s+/g, "-");
+}
+
+function normalizeScriptureRef(ref){
+  if (!ref) return null;
+  const canon = String(ref.canon || "").toLowerCase();
+  const slug = String(ref.slug || "").toLowerCase();
+  const chapter = String(ref.ch || ref.chapter || "").trim();
+  const verse = String(ref.vStart || ref.v || "").trim();
+  const verseEnd = String(ref.vEnd || "").trim();
+  if (!canon || !slug || !chapter) return null;
+  return {
+    canon,
+    slug,
+    chapter,
+    verse,
+    verseEnd,
+    label: ref.label || scriptureRefLabel(ref)
+  };
+}
+
+function normalizeChapterCrossref(ref){
+  if (!ref) return null;
+  const canon = String(ref.canon || "").toLowerCase();
+  const slug = String(ref.slug || "").toLowerCase();
+  const chapter = String(ref.c || ref.chapter || "").trim();
+  const verse = String(ref.v || ref.verse || "").trim();
+  if (!canon || !slug || !chapter) return null;
+  return {
+    canon,
+    slug,
+    chapter,
+    verse,
+    label: ref.label || scriptureRefLabel({ ...ref, ch: ref.c || ref.chapter, vStart: ref.v || ref.verse, vEnd: ref.v || ref.verse })
+  };
+}
+
+function relatedSourceLabel(item){
+  if (item.kind === "dictionary") return "Dictionary";
+  if (item.kind === "crossref") return "Cross-reference";
+  return "Reference";
+}
+
+function relatedItemKey(item){
+  if (item.kind === "dictionary") return `dictionary:${item.id}`;
+  return `crossref:${item.canon}:${item.slug}:${item.chapter}:${item.verse}:${item.label}`;
+}
+
+function relatedItemSearchText(item){
+  return [
+    item.title,
+    item.snippet,
+    item.sourceLabel,
+    item.kind,
+    item.canon,
+    CANON_LABELS[item.canon],
+    item.book,
+    titleFromSlug(item.slug),
+    item.label,
+    item.verseLabel
+  ].filter(Boolean).join(" ").toLowerCase();
+}
+
+function rankRelatedItem(item, location){
+  let score = item.score || 0;
+  if (item.kind === "dictionary"){
+    if (item.canon === location.canon && item.slug === location.book) score += 10;
+    if (item.chapter === String(location.chapter)) score += 10;
+    if (location.verse && item.verse && String(location.verse) === String(item.verse)) score += 15;
+  }else if (item.kind === "crossref"){
+    if (item.canon === location.canon && item.slug === location.book) score += 5;
+    if (item.chapter === String(location.chapter)) score += 5;
+  }
+  return score;
+}
+
+function chapterCrossrefItems(crossrefs, location){
+  if (!crossrefs || typeof crossrefs !== "object") return [];
+  const items = [];
+  const seen = new Set();
+
+  Object.entries(crossrefs).forEach(([sourceVerse, targets]) => {
+    const sourceVerseNum = String(sourceVerse || "").trim();
+    const list = Array.isArray(targets) ? targets : [];
+    list.forEach(target => {
+      const normalized = normalizeChapterCrossref(target);
+      if (!normalized) return;
+      const key = relatedItemKey({ kind: "crossref", ...normalized, label: normalized.label, verseLabel: sourceVerseNum });
+      if (seen.has(key)) return;
+      seen.add(key);
+      items.push({
+        kind: "crossref",
+        source: "crossref",
+        sourceLabel: "Cross-reference",
+        title: normalized.label || scriptureRefLabel({ ...normalized, ch: normalized.chapter, vStart: normalized.verse }),
+        snippet: sourceVerseNum ? `Linked from verse ${sourceVerseNum} in this chapter.` : "Linked from this chapter.",
+        canon: normalized.canon,
+        slug: normalized.slug,
+        book: titleFromSlug(normalized.slug),
+        chapter: normalized.chapter,
+        verse: normalized.verse,
+        verseLabel: sourceVerseNum,
+        actionLabel: "Open in Bible",
+        pageUrl: "",
+        location: {
+          canon: normalized.canon,
+          book: normalized.slug,
+          chapter: normalized.chapter,
+          verse: normalized.verse
+        },
+        score: 20 + (location.verse && sourceVerseNum && String(location.verse) === sourceVerseNum ? 20 : 0)
+      });
+    });
+  });
+
+  return items;
+}
+
+function dictionaryReferenceItems(entries, location){
+  const items = [];
+  const seen = new Set();
+
+  entries.forEach(entry => {
+    const refs = Array.isArray(entry.bible_refs) ? entry.bible_refs : [];
+    const matchedRefs = refs
+      .map(normalizeScriptureRef)
+      .filter(ref => ref && ref.canon === location.canon && ref.slug === location.book && ref.chapter === String(location.chapter));
+
+    if (!matchedRefs.length) return;
+
+    const exactMatch = location.verse
+      ? matchedRefs.find(ref => {
+          const start = Number(ref.verse || 0);
+          const end = Number(ref.verseEnd || ref.verse || 0);
+          const verse = Number(location.verse || 0);
+          return start && verse >= start && verse <= end;
+        })
+      : null;
+
+    const bestRef = exactMatch || matchedRefs[0];
+    const key = relatedItemKey({ kind: "dictionary", id: entry.id });
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    items.push({
+      kind: "dictionary",
+      source: "dictionary",
+      sourceLabel: "Dictionary",
+      id: entry.id,
+      title: entry.headword || titleFromSlug(entry.id),
+      snippet: truncate(entry.usage_notes || entry.definition || "", 180),
+      canon: bestRef.canon,
+      slug: bestRef.slug,
+      book: titleFromSlug(bestRef.slug),
+      chapter: bestRef.chapter,
+      verse: bestRef.verse || "",
+      verseLabel: bestRef.label || scriptureRefLabel({ canon: bestRef.canon, slug: bestRef.slug, ch: bestRef.chapter, vStart: bestRef.verse, vEnd: bestRef.verseEnd }),
+      pageUrl: `/encyclopedia.html#${encodeURIComponent(entry.id)}`,
+      actionLabel: "Open reference",
+      location: {
+        canon: bestRef.canon,
+        book: bestRef.slug,
+        chapter: bestRef.chapter,
+        verse: bestRef.verse || ""
+      },
+      score: exactMatch ? 100 : 60
+    });
+  });
+
+  return items;
+}
+
+function uniqueRelatedItems(items){
+  const seen = new Set();
+  return items.filter(item => {
+    const key = relatedItemKey(item);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function buildRelatedReferences(location, entries, crossrefs){
+  const crossrefItems = chapterCrossrefItems(crossrefs, location);
+  const dictionaryItems = dictionaryReferenceItems(entries, location);
+  return uniqueRelatedItems([...dictionaryItems, ...crossrefItems])
+    .sort((a, b) => rankRelatedItem(b, location) - rankRelatedItem(a, location) || String(a.title || "").localeCompare(String(b.title || "")))
+    .slice(0, 8);
+}
+
+function renderRelatedCard(item){
+  const badge = escapeHTML(item.sourceLabel || relatedSourceLabel(item));
+  const title = escapeHTML(item.title || item.label || "Related reference");
+  const snippet = item.snippet ? `<p class="app-related-snippet">${escapeHTML(item.snippet)}</p>` : "";
+  const source = item.verseLabel || item.verse
+    ? `${escapeHTML(CANON_LABELS[item.canon] || titleFromSlug(item.canon))} · ${escapeHTML(item.verseLabel || `${titleFromSlug(item.slug)} ${item.chapter}`)}`
+    : `${escapeHTML(CANON_LABELS[item.canon] || "Reference")}`;
+
+  const openBible = item.location
+    ? `<button class="app-btn" type="button" data-related-open="bible" data-related-canon="${escapeHTML(item.location.canon)}" data-related-book="${escapeHTML(item.location.book)}" data-related-chapter="${escapeHTML(item.location.chapter)}" data-related-verse="${escapeHTML(item.location.verse || "")}">Open in Bible</button>`
+    : "";
+  const openPage = item.pageUrl
+    ? `<a class="app-btn" href="${escapeHTML(item.pageUrl)}" data-related-open="page">Open reference</a>`
+    : "";
+
+  return `
+    <article class="app-related-card">
+      <div class="app-related-meta">
+        <span class="app-pill">${badge}</span>
+        <span class="app-related-source">${source}</span>
+      </div>
+      <h4>${title}</h4>
+      ${snippet}
+      <div class="app-related-actions">
+        ${openBible}
+        ${openPage}
+      </div>
+    </article>
+  `;
+}
+
+function scriptureRefLabel(ref){
+  if (!ref) return "";
+  const start = Number(ref.vStart || ref.v || 0);
+  const end = Number(ref.vEnd || ref.vStart || ref.v || 0);
+  if (!start) return String(ref.label || "").trim();
+  const suffix = end && end !== start ? `:${start}\u2013${end}` : `:${start}`;
+  return `${titleFromSlug(ref.slug)} ${ref.ch}${suffix}`;
+}
+
+async function loadReferenceEntries(){
+  if (!referenceEntriesPromise){
+    referenceEntriesPromise = getJSON("/data/israelite_dictionary.json")
+      .then(data => Array.isArray(data?.entries) ? data.entries : [])
+      .catch(() => []);
+  }
+  return referenceEntriesPromise;
+}
+
+async function loadChapterCrossrefs(canon, book, chapter){
+  const key = `${canon}:${book}:${chapter}`;
+  if (chapterCrossrefCache.has(key)) return chapterCrossrefCache.get(key);
+  try{
+    const refs = await getJSON(`/data/crossrefs/${canon}/${book}/${chapter}.json`);
+    chapterCrossrefCache.set(key, refs && typeof refs === "object" ? refs : null);
+  }catch(error){
+    chapterCrossrefCache.set(key, null);
+  }
+  return chapterCrossrefCache.get(key);
+}
+
+async function chapterExists(canon, book, chapter){
+  const key = `${canon}:${book}:${chapter}`;
+  if (chapterAvailabilityCache.has(key)) return chapterAvailabilityCache.get(key);
+  try{
+    const chapterData = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
+    const verses = Array.isArray(chapterData)
+      ? chapterData
+      : Array.isArray(chapterData?.verses)
+        ? chapterData.verses
+        : [];
+    const exists = verses.length > 0;
+    chapterAvailabilityCache.set(key, exists);
+    return exists;
+  }catch(error){
+    chapterAvailabilityCache.set(key, false);
+    return false;
+  }
+}
+
+async function resolveReaderLocation({ canon, book, chapter } = {}){
+  const settings = readSettings();
+  const nextCanon = canon || settings.canon;
+  const books = await loadBookMap(nextCanon);
+  const slugs = orderedBookSlugs(books, nextCanon);
+  const preferredBook = slugs.includes(book || settings.book) ? (book || settings.book) : slugs[0];
+  const requestedChapter = String(Number(chapter || settings.chapter) || 1);
+  const preferredChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), Number(books[preferredBook]) || 1));
+
+  if (preferredBook && await chapterExists(nextCanon, preferredBook, preferredChapter)){
+    return { canon: nextCanon, book: preferredBook, chapter: preferredChapter };
+  }
+
+  for (const slug of slugs){
+    const total = Number(books[slug]) || 1;
+    const candidateChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), total));
+    const firstChapter = String(1);
+    if (await chapterExists(nextCanon, slug, candidateChapter)){
+      return { canon: nextCanon, book: slug, chapter: candidateChapter };
+    }
+    if (candidateChapter !== firstChapter && await chapterExists(nextCanon, slug, firstChapter)){
+      return { canon: nextCanon, book: slug, chapter: firstChapter };
+    }
+  }
+
+  return { canon: nextCanon, book: preferredBook || slugs[0] || settings.book, chapter: preferredChapter };
+}
+
 function truncate(value, max = 150){
   const text = String(value || "").replace(/\s+/g, " ").trim();
   return text.length > max ? `${text.slice(0, max - 1).trim()}...` : text;
@@ -673,10 +978,13 @@ function renderContinueReading(){
   if (!root) return;
 
   const lastRead = readLastRead();
+  const reference = lastRead.exists
+    ? `${titleFromSlug(lastRead.book)} ${lastRead.chapter}${lastRead.verse ? `:${lastRead.verse}` : ""}`
+    : "Open the reader";
   root.innerHTML = `
     <span class="app-label">Continue Reading</span>
-    <h3>${escapeHTML(titleFromSlug(lastRead.book))} ${escapeHTML(lastRead.chapter)}</h3>
-    <p>${escapeHTML(CANON_LABELS[lastRead.canon] || "Scripture")} reader saved on this device.</p>
+    <h3>${escapeHTML(reference)}</h3>
+    <p>${escapeHTML(lastRead.exists ? `${CANON_LABELS[lastRead.canon] || "Scripture"} reader saved on this device.` : "Start in the first available Tanakh chapter on this device.")}</p>
     <div class="app-button-row">
       <a class="app-btn primary" href="#bible" data-continue-reading>Continue</a>
       <a class="app-btn" href="/biblia.html">Biblia</a>
@@ -1008,15 +1316,13 @@ async function populateBooks(canon, selectedBook){
   return preferred;
 }
 
-async function setReaderLocation({ canon, book, chapter, fontSize, spacing } = {}){
+async function setReaderLocation({ canon, book, chapter, verse, fontSize, spacing } = {}){
   const settings = readSettings();
-  const nextCanon = canon || settings.canon;
-  const books = await loadBookMap(nextCanon);
-  const slugs = orderedBookSlugs(books, nextCanon);
-  const nextBook = slugs.includes(book || settings.book) ? (book || settings.book) : slugs[0];
-  const total = Number(books[nextBook]) || 1;
-  const requestedChapter = Number(chapter || settings.chapter) || 1;
-  const nextChapter = String(Math.min(Math.max(requestedChapter, 1), total));
+  const resolved = await resolveReaderLocation({ canon, book, chapter });
+  const nextCanon = resolved.canon;
+  const nextBook = resolved.book;
+  const nextChapter = resolved.chapter;
+  readerFocusVerse = verse ? String(verse) : "";
 
   const canonSelect = $("#reader-canon");
   const bookSelect = $("#reader-book");
@@ -1027,6 +1333,7 @@ async function setReaderLocation({ canon, book, chapter, fontSize, spacing } = {
   if (canonSelect) canonSelect.value = nextCanon;
   await populateBooks(nextCanon, nextBook);
   if (bookSelect) bookSelect.value = nextBook;
+  const total = Number((await loadBookMap(nextCanon))[nextBook]) || 1;
   if (chapterSelect) chapterSelect.innerHTML = buildChapterOptions(total, nextChapter);
   if (fontSelect) fontSelect.value = fontSize || settings.fontSize;
   if (spacingSelect) spacingSelect.value = spacing || settings.spacing;
@@ -1122,6 +1429,54 @@ function renderReaderChrome({ canon, book, chapter }){
   }
 }
 
+async function renderRelatedReferences(location, verses, requestId){
+  const root = $("#reader-related");
+  if (!root) return;
+
+  root.innerHTML = `<div class="app-loading">Loading related references...</div>`;
+
+  try{
+    const [entries, crossrefs] = await Promise.all([
+      loadReferenceEntries(),
+      loadChapterCrossrefs(location.canon, location.book, location.chapter)
+    ]);
+
+    if (requestId !== readerRequestId) return;
+
+    const related = buildRelatedReferences(location, entries, crossrefs);
+    if (!related.length){
+      root.innerHTML = `
+        <div class="app-related-empty">
+          <span class="app-label">Related Precepts</span>
+          <h3 id="reader-related-title">No related references found yet</h3>
+          <p>Open Biblia, the encyclopedia, or the chapter itself to keep studying from the full reference library.</p>
+        </div>
+      `;
+      return;
+    }
+
+    root.innerHTML = `
+      <div class="app-section-head compact app-related-head">
+        <span class="app-label">Related Precepts</span>
+        <h3 id="reader-related-title">Related References</h3>
+        <p>${escapeHTML(related.length)} study links matched this chapter from the dictionary and cross-reference index.</p>
+      </div>
+      <div class="app-related-list">
+        ${related.map(renderRelatedCard).join("")}
+      </div>
+    `;
+  }catch(error){
+    if (requestId !== readerRequestId) return;
+    root.innerHTML = `
+      <div class="app-related-empty">
+        <span class="app-label">Related Precepts</span>
+        <h3 id="reader-related-title">Reference data unavailable</h3>
+        <p>The related reference index could not be loaded. Open Biblia or the encyclopedia for more study.</p>
+      </div>
+    `;
+  }
+}
+
 async function renderReader(){
   const requestId = ++readerRequestId;
   const output = $("#reader-output");
@@ -1145,7 +1500,12 @@ async function renderReader(){
   output.innerHTML = `<div class="app-loading">Loading ${escapeHTML(titleFromSlug(book))} ${escapeHTML(chapter)}...</div>`;
 
   try{
-    const verses = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
+    const chapterData = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
+    const verses = Array.isArray(chapterData)
+      ? chapterData
+      : Array.isArray(chapterData?.verses)
+        ? chapterData.verses
+        : [];
     if (requestId !== readerRequestId) return;
     if (!Array.isArray(verses) || !verses.length){
       output.innerHTML = `${loadingError("This chapter is not available in the local reader yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
@@ -1153,7 +1513,9 @@ async function renderReader(){
     }
 
     const marks = readReaderMarks();
-    writeLastRead({ canon, book, chapter });
+    const focusVerse = readerFocusVerse;
+    readerFocusVerse = "";
+    writeLastRead({ canon, book, chapter, verse: focusVerse || "" });
     await updateReaderNav();
 
     output.innerHTML = `
@@ -1188,9 +1550,26 @@ async function renderReader(){
         }).join("")}
       </div>
     `;
+
+    await renderRelatedReferences({ canon, book, chapter, verse: focusVerse }, verses, requestId);
+
+    if (focusVerse){
+      const verseNode = $(`[data-key="${escapeSelector(markKey(canon, book, chapter, focusVerse))}"]`);
+      verseNode?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }catch(error){
     if (requestId !== readerRequestId) return;
     await updateReaderNav();
+    const related = $("#reader-related");
+    if (related){
+      related.innerHTML = `
+        <div class="app-related-empty">
+          <span class="app-label">Related Precepts</span>
+          <h3 id="reader-related-title">Reference data unavailable</h3>
+          <p>The related reference index could not be loaded for this chapter.</p>
+        </div>
+      `;
+    }
     output.innerHTML = `${loadingError("The local reader could not load this chapter.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
   }
 }
@@ -1236,6 +1615,19 @@ function wireReader(){
   $("#reader-next")?.addEventListener("click", async () => {
     const location = await getAdjacentReaderLocation("next");
     if (location) await setReaderLocation(location);
+  });
+
+  document.addEventListener("click", async event => {
+    const button = event.target.closest("[data-related-open='bible']");
+    if (!button) return;
+    event.preventDefault();
+    const canon = button.dataset.relatedCanon;
+    const book = button.dataset.relatedBook;
+    const chapter = button.dataset.relatedChapter;
+    const verse = button.dataset.relatedVerse;
+    if (!canon || !book || !chapter) return;
+    setActiveTab("bible");
+    await setReaderLocation({ canon, book, chapter, verse });
   });
 
   document.addEventListener("click", async event => {
