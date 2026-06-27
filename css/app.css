@@ -179,6 +179,7 @@
 .institute-app .app-actions,
 .institute-app .app-button-row,
 .institute-app .app-reader-links,
+.institute-app .app-reader-nav,
 .institute-app .course-meta,
 .institute-app .watch-meta,
 .institute-app .app-precept-meta{
@@ -326,6 +327,10 @@
   margin:12px 0;
 }
 
+.institute-app .app-reader-nav{
+  margin:0 0 12px;
+}
+
 .institute-app .app-reader{
   margin-top:12px;
   padding-top:12px;
@@ -365,6 +370,11 @@
   background:#fbfdff;
 }
 
+.institute-app .reader-verse.is-highlighted{
+  border-color:rgba(241,115,0,.34);
+  background:rgba(241,115,0,.1);
+}
+
 .institute-app .reader-verse-text{
   color:var(--app-ink);
   line-height:1.7;
@@ -373,6 +383,17 @@
 .institute-app .reader-verse-num{
   color:var(--app-orange);
   font-weight:900;
+}
+
+.institute-app .reader-note{
+  padding:10px;
+  border-left:4px solid var(--app-blue-2);
+  background:rgba(219,228,238,.5);
+  color:var(--app-ink);
+}
+
+.institute-app .reader-note strong{
+  color:var(--app-blue);
 }
 
 .institute-app .reader-actions{
@@ -393,6 +414,12 @@
   color:var(--app-ink);
   font-weight:850;
   cursor:pointer;
+}
+
+.institute-app button:disabled,
+.institute-app .app-btn:disabled{
+  cursor:not-allowed;
+  opacity:.52;
 }
 
 .institute-app .app-search-form{
@@ -682,6 +709,20 @@ html[data-theme="dark"] .institute-app .app-example-prompts button{
   color:#f8fafc;
 }
 
+html[data-theme="dark"] .institute-app .reader-verse.is-highlighted{
+  background:rgba(241,115,0,.16);
+  border-color:rgba(241,115,0,.42);
+}
+
+html[data-theme="dark"] .institute-app .reader-note{
+  background:rgba(129,164,205,.14);
+  color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .reader-note strong{
+  color:#DBE4EE;
+}
+
 @media(min-width:900px){
   .institute-app .app-tabbar-bottom{
     display:none;
@@ -752,7 +793,8 @@ html[data-theme="dark"] .institute-app .app-example-prompts button{
 
   .institute-app .app-actions .app-btn,
   .institute-app .app-button-row .app-btn,
-  .institute-app .app-reader-links .app-btn{
+  .institute-app .app-reader-links .app-btn,
+  .institute-app .app-reader-nav .app-btn{
     width:100%;
   }
 
