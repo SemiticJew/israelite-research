@@ -70,6 +70,8 @@ const SETTINGS_KEY = "sj_institute_app_settings_v1";
 const READER_MARKS_KEY = "sj_institute_app_reader_marks_v1";
 const READER_HISTORY_KEY = "sj_institute_app_last_read_v1";
 const SAVED_LIBRARY_FILTERS_KEY = "sj_institute_app_saved_library_filters_v1";
+const CURRENT_STUDY_CHAIN_KEY = "sj_institute_app_current_study_chain_v1";
+const SAVED_STUDY_CHAINS_KEY = "sj_institute_app_study_chains_v1";
 const LEGACY_KEYS = {
   reading: "sj_reading_history_v1",
   bookmarks: "sj_scripture_bookmarks_v1",
@@ -87,6 +89,7 @@ let currentReaderLocation = { canon: "", book: "", chapter: "" };
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
 const chapterAvailabilityCache = new Map();
+const chapterVerseCache = new Map();
 
 function $(selector, root = document){
   return root.querySelector(selector);
@@ -550,6 +553,24 @@ function readerScopeLabel(location){
   return `${book} ${chapter}${verse}`;
 }
 
+async function loadChapterVerses(canon, book, chapter){
+  const key = `${canon}:${book}:${chapter}`;
+  if (chapterVerseCache.has(key)) return chapterVerseCache.get(key);
+  try{
+    const chapterData = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
+    const verses = Array.isArray(chapterData)
+      ? chapterData
+      : Array.isArray(chapterData?.verses)
+        ? chapterData.verses
+        : [];
+    chapterVerseCache.set(key, verses);
+    return verses;
+  }catch(error){
+    chapterVerseCache.set(key, null);
+    return null;
+  }
+}
+
 function canonicalBookKey(value){
   return String(value || "").toLowerCase().replace(/\s+/g, "-");
 }
@@ -584,7 +605,8 @@ function normalizeChapterCrossref(ref){
     slug,
     chapter,
     verse,
-    label: ref.label || scriptureRefLabel({ ...ref, ch: ref.c || ref.chapter, vStart: ref.v || ref.verse, vEnd: ref.v || ref.verse })
+    verseEnd: String(ref.vEnd || ref.verseEnd || "").trim(),
+    label: ref.label || scriptureRefLabel({ ...ref, ch: ref.c || ref.chapter, vStart: ref.v || ref.verse, vEnd: ref.vEnd || ref.verseEnd || ref.v || ref.verse })
   };
 }
 
@@ -596,7 +618,7 @@ function relatedSourceLabel(item){
 
 function relatedItemKey(item){
   if (item.kind === "dictionary") return `dictionary:${item.id}`;
-  return `crossref:${item.canon}:${item.slug}:${item.chapter}:${item.verse}:${item.label}`;
+  return `crossref:${item.canon}:${item.slug}:${item.chapter}:${item.verse}:${item.verseEnd || ""}:${item.label}`;
 }
 
 function relatedItemSearchText(item){
@@ -654,6 +676,7 @@ function chapterCrossrefItems(crossrefs, location, scope = "chapter"){
         book: titleFromSlug(normalized.slug),
         chapter: normalized.chapter,
         verse: normalized.verse,
+        verseEnd: normalized.verseEnd || "",
         verseLabel: sourceVerseNum,
         actionLabel: "Open in Bible",
         pageUrl: "",
@@ -661,7 +684,8 @@ function chapterCrossrefItems(crossrefs, location, scope = "chapter"){
           canon: normalized.canon,
           book: normalized.slug,
           chapter: normalized.chapter,
-          verse: normalized.verse
+          verse: normalized.verse,
+          verseEnd: normalized.verseEnd || ""
         },
         score: 20 + (location.verse && sourceVerseNum && String(location.verse) === sourceVerseNum ? 20 : 0)
       });
@@ -709,6 +733,7 @@ function dictionaryReferenceItems(entries, location, scope = "chapter"){
       book: titleFromSlug(bestRef.slug),
       chapter: bestRef.chapter,
       verse: bestRef.verse || "",
+      verseEnd: bestRef.verseEnd || "",
       verseLabel: bestRef.label || scriptureRefLabel({ canon: bestRef.canon, slug: bestRef.slug, ch: bestRef.chapter, vStart: bestRef.verse, vEnd: bestRef.verseEnd }),
       pageUrl: `/encyclopedia.html#${encodeURIComponent(entry.id)}`,
       actionLabel: "Open reference",
@@ -716,7 +741,8 @@ function dictionaryReferenceItems(entries, location, scope = "chapter"){
         canon: bestRef.canon,
         book: bestRef.slug,
         chapter: bestRef.chapter,
-        verse: bestRef.verse || ""
+        verse: bestRef.verse || "",
+        verseEnd: bestRef.verseEnd || ""
       },
       score: verseMatches.length ? 100 : 60
     });
@@ -772,6 +798,9 @@ function renderRelatedCard(item){
   const openPage = item.pageUrl
     ? `<a class="app-btn" href="${escapeHTML(item.pageUrl)}" data-related-open="page">Open reference</a>`
     : "";
+  const addChain = item.location
+    ? `<button class="app-btn" type="button" data-chain-add data-chain-canon="${escapeHTML(item.location.canon)}" data-chain-book="${escapeHTML(item.location.book)}" data-chain-chapter="${escapeHTML(item.location.chapter)}" data-chain-verse="${escapeHTML(item.location.verse || "")}" data-chain-verse-end="${escapeHTML(item.location.verseEnd || "")}" data-chain-ref="${escapeHTML(item.verseLabel || item.title || "")}" data-chain-text="${escapeHTML(item.snippet || item.title || "")}">Add to Chain</button>`
+    : "";
 
   return `
     <article class="app-related-card">
@@ -783,6 +812,7 @@ function renderRelatedCard(item){
       ${snippet}
       <div class="app-related-actions">
         ${openBible}
+        ${addChain}
         ${openPage}
       </div>
     </article>
@@ -796,6 +826,7 @@ function setReaderActiveVerse(verse, options = {}){
     writeLastRead({ ...location, verse: readerActiveVerse });
   }
   updateReaderVerseSelection();
+  renderStudyChain();
   if (updateRelated && location.canon && location.book && location.chapter){
     renderRelatedReferences({ ...location, verse: readerActiveVerse }, null, readerRequestId);
   }
@@ -810,6 +841,225 @@ function updateReaderVerseSelection(){
     if (active) node.setAttribute("aria-current", "true");
     else node.removeAttribute("aria-current");
   });
+}
+
+function readCurrentStudyChain(){
+  const items = readJSONStorage(CURRENT_STUDY_CHAIN_KEY, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function writeCurrentStudyChain(items){
+  writeJSONStorage(CURRENT_STUDY_CHAIN_KEY, Array.isArray(items) ? items : []);
+  renderStudyChain();
+}
+
+function readSavedStudyChains(){
+  const items = readJSONStorage(SAVED_STUDY_CHAINS_KEY, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function writeSavedStudyChains(items){
+  writeJSONStorage(SAVED_STUDY_CHAINS_KEY, Array.isArray(items) ? items : []);
+}
+
+function chainItemKey(location){
+  return [
+    location.canon,
+    location.book,
+    location.chapter,
+    location.verse || "",
+    location.verseEnd || ""
+  ].join(":");
+}
+
+function normalizeStudyChainItem(item){
+  const location = locationFromItem(item);
+  const canon = String(item.canon || location.canon || "").toLowerCase();
+  const book = String(item.book || location.book || "").toLowerCase();
+  const chapter = String(item.chapter || location.chapter || "1");
+  const verse = String(item.verse || location.verse || "");
+  const verseEnd = String(item.verseEnd || location.verseEnd || "");
+  const reference = item.reference || item.ref || [
+    titleFromSlug(book),
+    chapter,
+    verse ? `:${verse}${verseEnd && verseEnd !== verse ? `–${verseEnd}` : ""}` : ""
+  ].join("").replace(/\s+/g, " ").trim();
+
+  return {
+    id: item.id || chainItemKey({ canon, book, chapter, verse, verseEnd }),
+    canon,
+    book,
+    chapter,
+    verse,
+    verseEnd,
+    reference,
+    text: item.text || "",
+    source: item.source || "reader",
+    sourceLabel: item.sourceLabel || "Reader",
+    addedAt: item.addedAt || item.createdAt || new Date().toISOString()
+  };
+}
+
+async function buildStudyChainItem(location, fallback = {}){
+  const normalized = {
+    canon: String(location.canon || "").toLowerCase(),
+    book: String(location.book || "").toLowerCase(),
+    chapter: String(location.chapter || "1"),
+    verse: String(location.verse || ""),
+    verseEnd: String(location.verseEnd || ""),
+    reference: fallback.reference || "",
+    text: fallback.text || "",
+    source: fallback.source || "reader",
+    sourceLabel: fallback.sourceLabel || "Reader",
+    addedAt: new Date().toISOString()
+  };
+
+  if (!normalized.canon || !normalized.book || !normalized.chapter) return null;
+
+  if (!normalized.text){
+    const verses = await loadChapterVerses(normalized.canon, normalized.book, normalized.chapter);
+    if (Array.isArray(verses) && verses.length){
+      const start = Number(normalized.verse || 0) || 0;
+      const end = Number(normalized.verseEnd || normalized.verse || 0) || start;
+      const selected = start
+        ? verses.filter(verse => {
+            const num = Number(verse.v || 0);
+            return num >= start && num <= end;
+          })
+        : verses;
+      normalized.text = selected.map(verse => {
+        const num = verse.v ?? "";
+        const verseText = verse.t ?? verse.text ?? "";
+        return num ? `${num} ${verseText}` : verseText;
+      }).join(" ");
+    }
+  }
+
+  if (!normalized.reference){
+    normalized.reference = `${titleFromSlug(normalized.book)} ${normalized.chapter}${normalized.verse ? `:${normalized.verse}${normalized.verseEnd && normalized.verseEnd !== normalized.verse ? `–${normalized.verseEnd}` : ""}` : ""}`;
+  }
+
+  return normalizeStudyChainItem(normalized);
+}
+
+function studyChainContains(items, item){
+  return items.some(existing => existing.id === item.id || chainItemKey(existing) === item.id);
+}
+
+function renderStudyChain(){
+  const root = $("#study-chain");
+  if (!root) return;
+
+  const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
+  const activeVerse = readerActiveVerse ? String(readerActiveVerse) : "";
+  const activeLocation = currentReaderLocation?.canon && currentReaderLocation?.book && currentReaderLocation?.chapter
+    ? {
+        canon: currentReaderLocation.canon,
+        book: currentReaderLocation.book,
+        chapter: currentReaderLocation.chapter,
+        verse: activeVerse,
+        verseEnd: activeVerse
+      }
+    : null;
+
+  const hasActiveVerse = Boolean(activeLocation?.canon && activeLocation?.book && activeLocation?.chapter && activeLocation.verse);
+  const activeItem = hasActiveVerse ? normalizeStudyChainItem({
+    ...activeLocation,
+    reference: `${titleFromSlug(activeLocation.book)} ${activeLocation.chapter}:${activeLocation.verse}`,
+    source: "reader",
+    sourceLabel: "Active verse"
+  }) : null;
+  const activeInChain = activeItem ? studyChainContains(chain, activeItem) : false;
+
+  root.innerHTML = `
+    <div class="app-study-chain-head">
+      <div>
+        <span class="app-label">Study Chain</span>
+        <h3 id="study-chain-title">Current Study Chain</h3>
+        <p>${chain.length ? `${chain.length} verse${chain.length === 1 ? "" : "s"} selected in order.` : "Select verses or related precepts to build a study chain."}</p>
+      </div>
+      <div class="app-study-chain-actions">
+        <button class="app-btn" type="button" data-chain-add-active${hasActiveVerse && !activeInChain ? "" : " disabled"}>${activeInChain ? "In Chain" : "Add active verse"}</button>
+        <button class="app-btn" type="button" data-chain-save${chain.length ? "" : " disabled"}>Save Chain</button>
+        <button class="app-btn" type="button" data-chain-clear${chain.length ? "" : " disabled"}>Clear Chain</button>
+      </div>
+    </div>
+    <div class="app-study-chain-list" aria-label="Current study chain verses">
+      ${chain.length
+        ? chain.map((item, index) => `
+          <article class="app-study-chain-item">
+            <div class="app-study-chain-copy">
+              <div class="app-study-chain-meta">
+                <span class="app-pill">${escapeHTML(item.sourceLabel || "Verse")}</span>
+                <span class="app-study-chain-ref">${escapeHTML(item.reference)}</span>
+              </div>
+              ${item.text ? `<p>${escapeHTML(item.text)}</p>` : `<p class="app-study-chain-empty-line">No stored text available.</p>`}
+            </div>
+            <div class="app-study-chain-item-actions">
+              <button class="app-btn" type="button" data-chain-open="${escapeHTML(item.id)}">Open</button>
+              <button class="app-btn" type="button" data-chain-up="${escapeHTML(item.id)}"${index === 0 ? " disabled" : ""}>Up</button>
+              <button class="app-btn" type="button" data-chain-down="${escapeHTML(item.id)}"${index === chain.length - 1 ? " disabled" : ""}>Down</button>
+              <button class="app-btn" type="button" data-chain-remove="${escapeHTML(item.id)}">Remove</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="app-study-chain-empty">Select verses or related precepts to build a study chain.</div>`}
+    </div>
+  `;
+}
+
+async function addToCurrentStudyChain(location, fallback = {}){
+  const item = await buildStudyChainItem(location, fallback);
+  if (!item) return false;
+  const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
+  if (studyChainContains(chain, item)) return false;
+  chain.push(item);
+  writeCurrentStudyChain(chain);
+  return true;
+}
+
+function removeFromCurrentStudyChain(id){
+  const chain = readCurrentStudyChain().map(normalizeStudyChainItem).filter(item => item.id !== id);
+  writeCurrentStudyChain(chain);
+}
+
+function moveCurrentStudyChainItem(id, direction){
+  const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
+  const index = chain.findIndex(item => item.id === id);
+  if (index === -1) return;
+  const target = direction === "up" ? index - 1 : index + 1;
+  if (target < 0 || target >= chain.length) return;
+  const [item] = chain.splice(index, 1);
+  chain.splice(target, 0, item);
+  writeCurrentStudyChain(chain);
+}
+
+function clearCurrentStudyChain(){
+  writeCurrentStudyChain([]);
+}
+
+function chainDefaultTitle(items){
+  if (!items.length) return "Study Chain";
+  const first = items[0];
+  return `${first.reference || titleFromSlug(first.book)} Study Chain`;
+}
+
+async function saveCurrentStudyChain(){
+  const items = readCurrentStudyChain().map(normalizeStudyChainItem);
+  if (!items.length) return;
+  const title = window.prompt("Title for this study chain", chainDefaultTitle(items));
+  if (title === null) return;
+  const trimmed = title.trim() || chainDefaultTitle(items);
+  const now = new Date().toISOString();
+  const saved = readSavedStudyChains();
+  saved.unshift({
+    id: `chain-${Date.now()}`,
+    title: trimmed,
+    createdAt: now,
+    updatedAt: now,
+    items
+  });
+  writeSavedStudyChains(saved);
 }
 
 function scriptureRefLabel(ref){
@@ -845,20 +1095,10 @@ async function loadChapterCrossrefs(canon, book, chapter){
 async function chapterExists(canon, book, chapter){
   const key = `${canon}:${book}:${chapter}`;
   if (chapterAvailabilityCache.has(key)) return chapterAvailabilityCache.get(key);
-  try{
-    const chapterData = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
-    const verses = Array.isArray(chapterData)
-      ? chapterData
-      : Array.isArray(chapterData?.verses)
-        ? chapterData.verses
-        : [];
-    const exists = verses.length > 0;
-    chapterAvailabilityCache.set(key, exists);
-    return exists;
-  }catch(error){
-    chapterAvailabilityCache.set(key, false);
-    return false;
-  }
+  const verses = await loadChapterVerses(canon, book, chapter);
+  const exists = Array.isArray(verses) && verses.length > 0;
+  chapterAvailabilityCache.set(key, exists);
+  return exists;
 }
 
 async function resolveReaderLocation({ canon, book, chapter } = {}){
@@ -1579,12 +1819,13 @@ async function renderReader(){
       return;
     }
 
-    const marks = readReaderMarks();
-    const focusVerse = readerFocusVerse || readerActiveVerse || "";
-    readerFocusVerse = "";
-    readerActiveVerse = focusVerse ? String(focusVerse) : "";
-    writeLastRead({ canon, book, chapter, verse: readerActiveVerse || "" });
-    await updateReaderNav();
+  const marks = readReaderMarks();
+  const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
+  const focusVerse = readerFocusVerse || readerActiveVerse || "";
+  readerFocusVerse = "";
+  readerActiveVerse = focusVerse ? String(focusVerse) : "";
+  writeLastRead({ canon, book, chapter, verse: readerActiveVerse || "" });
+  await updateReaderNav();
 
     output.innerHTML = `
       <div class="reader-head">
@@ -1604,6 +1845,19 @@ async function renderReader(){
           const highlighted = hasMark(marks.highlights, key);
           const note = getNote(marks, key);
           const isActive = String(verseNumber) === String(readerActiveVerse || "");
+          const chainItem = {
+            canon,
+            book,
+            chapter,
+            verse: String(verseNumber || ""),
+            verseEnd: String(verseNumber || "")
+          };
+          const inChain = studyChainContains(chain, normalizeStudyChainItem({
+            ...chainItem,
+            reference: `${titleFromSlug(book)} ${chapter}:${verseNumber}`,
+            source: "reader",
+            sourceLabel: "Active verse"
+          }));
           return `
             <section class="reader-verse${highlighted ? " is-highlighted" : ""}${isActive ? " is-active" : ""}" tabindex="0" role="button" aria-label="${escapeHTML(ref)}" data-key="${escapeHTML(key)}" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(text)}" data-verse="${escapeHTML(verseNumber)}">
               <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${escapeHTML(text)}</p>
@@ -1613,6 +1867,7 @@ async function renderReader(){
                 <button type="button" data-reader-action="bookmark">${bookmarked ? "Bookmarked" : "Bookmark"}</button>
                 <button type="button" data-reader-action="highlight">${highlighted ? "Highlighted" : "Highlight"}</button>
                 <button type="button" data-reader-action="note">${note ? "Edit note" : "Note"}</button>
+                <button type="button" data-reader-action="chain">${inChain ? "In Chain" : "Add to Chain"}</button>
               </div>
             </section>
           `;
@@ -1622,6 +1877,7 @@ async function renderReader(){
 
     updateReaderVerseSelection();
     await renderRelatedReferences({ canon, book, chapter, verse: readerActiveVerse }, verses, requestId);
+    renderStudyChain();
 
     if (readerActiveVerse){
       const verseNode = $(`[data-key="${escapeSelector(markKey(canon, book, chapter, readerActiveVerse))}"]`);
@@ -1640,6 +1896,7 @@ async function renderReader(){
         </div>
       `;
     }
+    renderStudyChain();
     output.innerHTML = `${loadingError("The local reader could not load this chapter.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
   }
 }
@@ -1700,6 +1957,24 @@ function wireReader(){
     if (!canon || !book || !chapter) return;
     setActiveTab("bible");
     await setReaderLocation({ canon, book, chapter, verse });
+  });
+
+  document.addEventListener("click", async event => {
+    const button = event.target.closest("[data-related-add-chain]");
+    if (!button) return;
+    event.preventDefault();
+    await addToCurrentStudyChain({
+      canon: button.dataset.relatedCanon,
+      book: button.dataset.relatedBook,
+      chapter: button.dataset.relatedChapter,
+      verse: button.dataset.relatedVerse,
+      verseEnd: button.dataset.relatedVerseEnd || button.dataset.relatedVerse
+    }, {
+      reference: button.dataset.relatedRef || "",
+      text: button.dataset.relatedText || "",
+      source: "related",
+      sourceLabel: "Related precept"
+    });
   });
 
   document.addEventListener("click", async event => {
@@ -1766,6 +2041,23 @@ function wireReader(){
         return;
       }
 
+      if (button.dataset.readerAction === "chain"){
+        await addToCurrentStudyChain({
+          canon: currentReaderLocation.canon,
+          book: currentReaderLocation.book,
+          chapter: currentReaderLocation.chapter,
+          verse: verse.dataset.verse || "",
+          verseEnd: verse.dataset.verse || ""
+        }, {
+          reference: ref,
+          text,
+          source: "reader",
+          sourceLabel: "Active verse"
+        });
+        await renderReader();
+        return;
+      }
+
       writeReaderMarks(marks);
       return;
     }
@@ -1784,6 +2076,74 @@ function wireReader(){
     const button = event.target.closest("[data-reader-action]");
     if (!verse || button) return;
     setReaderActiveVerse(verse.dataset.verse || "", { persist: true, updateRelated: true });
+  });
+
+  $("#study-chain")?.addEventListener("click", async event => {
+    const addActive = event.target.closest("[data-chain-add-active]");
+    if (addActive){
+      event.preventDefault();
+      if (!readerActiveVerse || !currentReaderLocation.canon) return;
+      await addToCurrentStudyChain({
+        ...currentReaderLocation,
+        verse: readerActiveVerse,
+        verseEnd: readerActiveVerse
+      }, {
+        reference: `${titleFromSlug(currentReaderLocation.book)} ${currentReaderLocation.chapter}:${readerActiveVerse}`,
+        text: "",
+        source: "reader",
+        sourceLabel: "Active verse"
+      });
+      return;
+    }
+
+    const saveButton = event.target.closest("[data-chain-save]");
+    if (saveButton){
+      event.preventDefault();
+      await saveCurrentStudyChain();
+      return;
+    }
+
+    const clearButton = event.target.closest("[data-chain-clear]");
+    if (clearButton){
+      event.preventDefault();
+      clearCurrentStudyChain();
+      return;
+    }
+
+    const openButton = event.target.closest("[data-chain-open]");
+    if (openButton){
+      event.preventDefault();
+      const item = readCurrentStudyChain().map(normalizeStudyChainItem).find(entry => entry.id === openButton.dataset.chainOpen);
+      if (!item) return;
+      setActiveTab("bible");
+      await setReaderLocation({
+        canon: item.canon,
+        book: item.book,
+        chapter: item.chapter,
+        verse: item.verse
+      });
+      return;
+    }
+
+    const removeButton = event.target.closest("[data-chain-remove]");
+    if (removeButton){
+      event.preventDefault();
+      removeFromCurrentStudyChain(removeButton.dataset.chainRemove);
+      return;
+    }
+
+    const upButton = event.target.closest("[data-chain-up]");
+    if (upButton){
+      event.preventDefault();
+      moveCurrentStudyChainItem(upButton.dataset.chainUp, "up");
+      return;
+    }
+
+    const downButton = event.target.closest("[data-chain-down]");
+    if (downButton){
+      event.preventDefault();
+      moveCurrentStudyChainItem(downButton.dataset.chainDown, "down");
+    }
   });
 }
 
