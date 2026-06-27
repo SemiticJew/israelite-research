@@ -868,7 +868,7 @@
 }
 
 .institute-app .app-profile-grid{
-  grid-template-columns:repeat(5, minmax(0, 1fr));
+  grid-template-columns:repeat(6, minmax(0, 1fr));
   margin-bottom:12px;
 }
 
@@ -917,8 +917,18 @@
 }
 
 .institute-app .app-library-section:nth-child(3),
-.institute-app .app-library-section:nth-child(5){
+.institute-app .app-library-section:nth-child(5),
+.institute-app .app-library-section:nth-child(6){
   grid-column:1 / -1;
+}
+
+.institute-app .app-chain-card .app-library-meta{
+  align-items:center;
+}
+
+.institute-app .app-chain-card p{
+  color:var(--app-muted);
+  line-height:1.55;
 }
 
 .institute-app .app-library-head h3,
