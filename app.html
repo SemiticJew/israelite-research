@@ -110,13 +110,18 @@
     </section>
 
     <section class="app-panel" id="bible" data-app-panel="bible" tabindex="-1" aria-labelledby="bible-title" hidden>
-      <div class="app-section-head">
+      <div class="app-section-head app-reader-title">
         <span class="app-label">Bible</span>
         <h2 id="bible-title">Scripture Reader</h2>
-        <p>Read local Scripture data when available, or move directly into Biblia for the complete reader.</p>
+        <p>Open the Word first, then move into notes, saved study, search, and the full Biblia library.</p>
       </div>
 
       <section class="app-reader-shell" aria-label="Bible reader">
+        <div class="app-reader-current" id="reader-current-summary" aria-live="polite">
+          <span class="app-label">Continue Reading</span>
+          <h3>Loading reader...</h3>
+        </div>
+
         <form class="app-reader-controls" id="reader-controls">
           <label>
             <span>Canon</span>
@@ -151,17 +156,32 @@
           </label>
         </form>
 
-        <div class="app-reader-links" aria-label="Scripture quick links">
-          <a class="app-btn primary" href="/biblia.html">Biblia</a>
-          <a class="app-btn" href="/tanakh.html">Tanakh</a>
-          <a class="app-btn" href="/newtestament.html">New Testament</a>
-          <a class="app-btn" href="/apocrypha.html">Apocrypha</a>
-        </div>
-
         <div class="app-reader-nav" aria-label="Chapter navigation">
           <button class="app-btn" type="button" id="reader-prev">Previous chapter</button>
           <button class="app-btn" type="button" id="reader-next">Next chapter</button>
         </div>
+
+        <div class="app-reader-study-grid">
+          <aside class="app-reader-context" id="reader-context" aria-live="polite"></aside>
+          <aside class="app-reader-study-actions" id="reader-study-actions" aria-label="Reader study actions"></aside>
+        </div>
+
+        <article class="app-reader" id="reader-output" aria-live="polite">
+          <div class="app-loading">Loading reader...</div>
+        </article>
+
+        <section class="app-full-library" aria-labelledby="full-library-title">
+          <div class="app-section-head compact">
+            <span class="app-label">Biblia</span>
+            <h3 id="full-library-title">Explore the Full Biblia Library</h3>
+          </div>
+          <div class="app-reader-links" aria-label="Scripture quick links">
+            <a class="app-btn primary" href="/biblia.html">Biblia Hub</a>
+            <a class="app-btn" href="/tanakh.html">Tanakh</a>
+            <a class="app-btn" href="/newtestament.html">New Testament</a>
+            <a class="app-btn" href="/apocrypha.html">Apocrypha</a>
+          </div>
+        </section>
 
         <div class="app-search-shell" data-global-scripture-search>
           <div class="app-section-head compact">
@@ -191,10 +211,6 @@
           <div class="app-search-status" data-global-scripture-search-status></div>
           <div class="app-search-results" data-global-scripture-search-results></div>
         </div>
-
-        <article class="app-reader" id="reader-output" aria-live="polite">
-          <div class="app-loading">Loading reader...</div>
-        </article>
       </section>
     </section>
 
@@ -272,6 +288,57 @@
         <article class="app-stat"><strong id="profile-note-count">0</strong><span>Notes</span></article>
         <article class="app-stat"><strong id="profile-practice-count">0</strong><span>Completed practice</span></article>
       </div>
+
+      <section class="app-card app-library-controls" aria-labelledby="saved-library-controls-title">
+        <div class="app-library-head">
+          <span class="app-label">Saved Library</span>
+          <h3 id="saved-library-controls-title">Search Saved Study</h3>
+          <p id="saved-library-count">Showing saved items on this device.</p>
+        </div>
+        <form class="app-library-filter-form" id="saved-library-filter-form">
+          <label class="app-library-search">
+            <span>Search saved items</span>
+            <input id="saved-library-search" name="query" type="search" placeholder="Search references, notes, or text..." autocomplete="off">
+          </label>
+          <label>
+            <span>Type</span>
+            <select id="saved-library-type" name="type">
+              <option value="all">All</option>
+              <option value="bookmark">Bookmarks</option>
+              <option value="highlight">Highlights</option>
+              <option value="note">Notes</option>
+              <option value="history">Reading History</option>
+            </select>
+          </label>
+          <label>
+            <span>Canon</span>
+            <select id="saved-library-canon" name="canon">
+              <option value="all">All</option>
+              <option value="tanakh">Tanakh</option>
+              <option value="newtestament">New Testament</option>
+              <option value="apocrypha">Apocrypha</option>
+            </select>
+          </label>
+          <label>
+            <span>Source</span>
+            <select id="saved-library-source" name="source">
+              <option value="all">All</option>
+              <option value="app">App</option>
+              <option value="site">Biblia / Site</option>
+            </select>
+          </label>
+          <label>
+            <span>Sort</span>
+            <select id="saved-library-sort" name="sort">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="reference">Reference A-Z</option>
+              <option value="type">Type</option>
+            </select>
+          </label>
+          <button class="app-btn" type="button" id="saved-library-clear">Clear</button>
+        </form>
+      </section>
 
       <div class="app-saved-library" aria-live="polite">
         <section class="app-card app-library-section" id="profile-saved-verses" aria-labelledby="saved-verses-title"></section>

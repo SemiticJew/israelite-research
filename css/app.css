@@ -331,6 +331,53 @@
   margin:0 0 12px;
 }
 
+.institute-app .app-reader-current,
+.institute-app .app-reader-context,
+.institute-app .app-reader-study-actions,
+.institute-app .app-full-library{
+  border:1px solid var(--app-line);
+  background:#fbfdff;
+  padding:14px;
+}
+
+.institute-app .app-reader-current{
+  margin-bottom:12px;
+  background:
+    linear-gradient(135deg, rgba(5,74,145,.08), rgba(129,164,205,.12)),
+    #fbfdff;
+}
+
+.institute-app .app-reader-current h3,
+.institute-app .app-reader-context h3{
+  margin:0 0 6px;
+}
+
+.institute-app .app-reader-study-grid{
+  display:grid;
+  grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr);
+  gap:12px;
+  margin:0 0 12px;
+}
+
+.institute-app .app-reader-context-meta,
+.institute-app .app-reader-action-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-reader-context-meta{
+  margin:0 0 10px;
+}
+
+.institute-app .app-reader-action-grid{
+  align-items:center;
+}
+
+.institute-app .app-full-library{
+  margin-top:14px;
+}
+
 .institute-app .app-reader{
   margin-top:12px;
   padding-top:12px;
@@ -663,6 +710,31 @@
   margin-bottom:12px;
 }
 
+.institute-app .app-library-controls{
+  margin-bottom:12px;
+}
+
+.institute-app .app-library-filter-form{
+  display:grid;
+  grid-template-columns:minmax(220px, 1.4fr) repeat(4, minmax(130px, 1fr)) auto;
+  gap:10px;
+  align-items:end;
+}
+
+.institute-app .app-library-search{
+  min-width:0;
+}
+
+.institute-app .app-library-filter-form button{
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:900;
+  cursor:pointer;
+}
+
 .institute-app .app-library-section{
   display:flex;
   flex-direction:column;
@@ -773,6 +845,10 @@ html[data-theme="dark"] .institute-app .practice-card,
 html[data-theme="dark"] .institute-app .app-stat,
 html[data-theme="dark"] .institute-app .lesson-detail-card,
 html[data-theme="dark"] .institute-app .ai-response-card,
+html[data-theme="dark"] .institute-app .app-reader-current,
+html[data-theme="dark"] .institute-app .app-reader-context,
+html[data-theme="dark"] .institute-app .app-reader-study-actions,
+html[data-theme="dark"] .institute-app .app-full-library,
 html[data-theme="dark"] .institute-app .app-library-item,
 html[data-theme="dark"] .institute-app .app-library-empty,
 html[data-theme="dark"] .institute-app .app-course-progress-row,
@@ -794,7 +870,8 @@ html[data-theme="dark"] .institute-app .reader-actions button,
 html[data-theme="dark"] .institute-app .lesson-list button,
 html[data-theme="dark"] .institute-app .app-example-prompts button,
 html[data-theme="dark"] .institute-app .app-library-actions button,
-html[data-theme="dark"] .institute-app .app-library-actions .app-btn{
+html[data-theme="dark"] .institute-app .app-library-actions .app-btn,
+html[data-theme="dark"] .institute-app .app-library-filter-form button{
   background:#07111f;
   color:#f8fafc;
 }
@@ -840,6 +917,8 @@ html[data-theme="dark"] .institute-app .app-library-note{
   .institute-app .app-reader-controls,
   .institute-app .app-search-form,
   .institute-app .app-settings-form,
+  .institute-app .app-library-filter-form,
+  .institute-app .app-reader-study-grid,
   .institute-app .app-profile-grid{
     grid-template-columns:repeat(2, minmax(0, 1fr));
   }
@@ -890,13 +969,16 @@ html[data-theme="dark"] .institute-app .app-library-note{
   .institute-app .app-actions .app-btn,
   .institute-app .app-button-row .app-btn,
   .institute-app .app-reader-links .app-btn,
-  .institute-app .app-reader-nav .app-btn{
+  .institute-app .app-reader-nav .app-btn,
+  .institute-app .app-reader-action-grid .app-btn{
     width:100%;
   }
 
   .institute-app .app-reader-controls,
   .institute-app .app-search-form,
   .institute-app .app-settings-form,
+  .institute-app .app-library-filter-form,
+  .institute-app .app-reader-study-grid,
   .institute-app .app-profile-grid{
     grid-template-columns:1fr;
   }

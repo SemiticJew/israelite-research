@@ -14,10 +14,62 @@ const CANON_LABELS = {
   apocrypha: "Apocrypha"
 };
 
+const CANON_LANDING_URLS = {
+  tanakh: "/tanakh.html",
+  newtestament: "/newtestament.html",
+  apocrypha: "/apocrypha.html"
+};
+
+const BOOK_PAGE_OVERRIDES = {
+  tanakh: {
+    psalm: "psalms"
+  },
+  apocrypha: {
+    judit: "judith",
+    manassse: "prayer-of-manasseh",
+    addesth: "additions-to-esther",
+    adddan: ""
+  }
+};
+
+const CANON_CONTEXT = {
+  tanakh: {
+    categories: [
+      ["genesis exodus leviticus numbers deuteronomy", "Law / covenant foundation"],
+      ["joshua judges ruth 1-samuel 2-samuel 1-kings 2-kings 1-chronicles 2-chronicles ezra nehemiah esther", "History / kingdom / exile"],
+      ["job psalm proverbs ecclesiastes song-of-solomon", "Wisdom / worship / discipline"],
+      ["isaiah jeremiah lamentations ezekiel daniel hosea joel amos obadiah jonah micah nahum habakkuk zephaniah haggai zechariah malachi", "Prophets / judgment / restoration"]
+    ],
+    fallback: "Law, history, wisdom, prophets, and restoration",
+    framing: "Read the Tanakh as covenant record: creation, law, kingdom, exile, correction, and the promised restoration of Israel."
+  },
+  newtestament: {
+    categories: [
+      ["matthew mark luke john", "Messiah / gospel witness"],
+      ["acts", "Apostolic witness / scattered assemblies"],
+      ["romans 1-corinthians 2-corinthians galatians ephesians philippians colossians 1-thessalonians 2-thessalonians 1-timothy 2-timothy titus philemon hebrews james 1-peter 2-peter 1-john 2-john 3-john jude", "Letters / doctrine / assemblies"],
+      ["revelation", "Revelation / judgment / kingdom"]
+    ],
+    fallback: "Messiah, apostolic witness, assemblies, scattered elect, and Revelation",
+    framing: "Read the New Testament as Israel's Messiah, apostolic correction, covenant faithfulness, and witness to the scattered elect."
+  },
+  apocrypha: {
+    categories: [
+      ["1-esdras 2-esdras baruch", "Exile / remembrance / restoration"],
+      ["tobit judit wisdom sirach", "Wisdom / family / discipline"],
+      ["1-maccabees 2-maccabees", "Resistance / Second Temple history"],
+      ["bel-and-the-dragon susanna", "Captivity witness / righteous judgment"]
+    ],
+    fallback: "Second Temple history, wisdom, resistance, and restoration",
+    framing: "Read the Apocrypha for captivity-era memory, wisdom, resistance, and historical context without replacing the authority of Scripture."
+  }
+};
+
 const PROGRESS_KEY = "semiticJewAppProgress";
 const SETTINGS_KEY = "sj_institute_app_settings_v1";
 const READER_MARKS_KEY = "sj_institute_app_reader_marks_v1";
 const READER_HISTORY_KEY = "sj_institute_app_last_read_v1";
+const SAVED_LIBRARY_FILTERS_KEY = "sj_institute_app_saved_library_filters_v1";
 const LEGACY_KEYS = {
   reading: "sj_reading_history_v1",
   bookmarks: "sj_scripture_bookmarks_v1",
@@ -105,11 +157,13 @@ function writeSettings(settings){
 
 function readLastRead(){
   const saved = readJSONStorage(READER_HISTORY_KEY, {});
+  const exists = Boolean(saved.canon && saved.book && saved.chapter);
   return {
     canon: saved.canon || "tanakh",
     book: saved.book || "genesis",
     chapter: String(saved.chapter || "1"),
-    updatedAt: saved.updatedAt || ""
+    updatedAt: saved.updatedAt || "",
+    exists
   };
 }
 
@@ -220,8 +274,25 @@ function readSiteHistory(){
   return Array.isArray(items) ? items : [];
 }
 
+function writeSiteHistory(items){
+  writeJSONStorage(LEGACY_KEYS.reading, items.slice(0, 8));
+}
+
 function appBookmarkItems(){
   return readReaderMarks().bookmarks.map(item => normalizeSavedItem(item, "bookmark", "app"));
+}
+
+function siteBookmarkItems(){
+  return readSiteBookmarks().map(item => normalizeSavedItem({
+    ...item,
+    key: item.url || item.title,
+    ref: item.title || item.url,
+    text: item.canonLabel || "",
+    canon: item.canon,
+    book: item.book,
+    chapter: item.chapter,
+    savedAt: item.savedAt
+  }, "bookmark", "site"));
 }
 
 function appHighlightItems(){
@@ -280,6 +351,14 @@ function removeSavedItem(type, source, key){
     writeSiteNotes(readSiteNotes().filter(item => item.key !== key));
   }
 
+  if (source === "site" && type === "history"){
+    writeSiteHistory(readSiteHistory().filter(item => item.url !== key && item.key !== key && item.title !== key));
+  }
+
+  if (source === "app" && type === "history"){
+    localStorage.removeItem(READER_HISTORY_KEY);
+  }
+
   renderProfile();
 }
 
@@ -292,6 +371,114 @@ function updateAppNote(key, note){
     marks.notes.unshift({ ...existing, key: existing.key || key, note: note.trim(), savedAt: new Date().toISOString() });
   }
   writeReaderMarks(marks);
+}
+
+function defaultSavedLibraryFilters(){
+  return {
+    query: "",
+    type: "all",
+    canon: "all",
+    source: "all",
+    sort: "newest"
+  };
+}
+
+function readSavedLibraryFilters(){
+  const saved = readJSONStorage(SAVED_LIBRARY_FILTERS_KEY, {});
+  return { ...defaultSavedLibraryFilters(), ...saved };
+}
+
+function writeSavedLibraryFilters(filters){
+  writeJSONStorage(SAVED_LIBRARY_FILTERS_KEY, { ...defaultSavedLibraryFilters(), ...filters });
+}
+
+function applySavedLibraryControls(){
+  const filters = readSavedLibraryFilters();
+  const form = $("#saved-library-filter-form");
+  if (!form) return;
+  if (form.elements.query) form.elements.query.value = filters.query;
+  if (form.elements.type) form.elements.type.value = filters.type;
+  if (form.elements.canon) form.elements.canon.value = filters.canon;
+  if (form.elements.source) form.elements.source.value = filters.source;
+  if (form.elements.sort) form.elements.sort.value = filters.sort;
+}
+
+function savedItemSearchText(item){
+  return [
+    item.ref,
+    item.text,
+    item.note,
+    item.canon,
+    CANON_LABELS[item.canon],
+    item.book,
+    titleFromSlug(item.book),
+    item.type,
+    item.source
+  ].filter(Boolean).join(" ").toLowerCase();
+}
+
+function savedItemTime(item){
+  const time = Date.parse(item.date || "");
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function compareSavedItems(a, b, sort){
+  if (sort === "oldest") return savedItemTime(a) - savedItemTime(b);
+  if (sort === "reference") return String(a.ref || "").localeCompare(String(b.ref || ""));
+  if (sort === "type"){
+    return String(a.type || "").localeCompare(String(b.type || "")) ||
+      String(a.ref || "").localeCompare(String(b.ref || ""));
+  }
+  return savedItemTime(b) - savedItemTime(a);
+}
+
+function collectSavedLibraryItems(){
+  const lastRead = readLastRead();
+  const localHistory = lastRead.exists ? [normalizeSavedItem({
+    key: `history:app:${lastRead.canon}:${lastRead.book}:${lastRead.chapter}`,
+    ref: `${titleFromSlug(lastRead.book)} ${lastRead.chapter}`,
+    text: "Last local app reader location.",
+    canon: lastRead.canon,
+    book: lastRead.book,
+    chapter: lastRead.chapter,
+    savedAt: lastRead.updatedAt
+  }, "history", "app")] : [];
+
+  const siteHistory = readSiteHistory().map(item => normalizeSavedItem({
+    ...item,
+    key: item.url || item.title,
+    ref: item.title || item.url,
+    text: item.canonLabel || "",
+    canon: item.canon,
+    book: item.book,
+    chapter: item.chapter
+  }, "history", "site"));
+
+  return [
+    ...appBookmarkItems(),
+    ...siteBookmarkItems(),
+    ...appHighlightItems(),
+    ...appNoteItems(),
+    ...siteHighlightItems(),
+    ...siteNoteItems(),
+    ...localHistory,
+    ...siteHistory
+  ];
+}
+
+function filteredSavedLibrary(){
+  const filters = readSavedLibraryFilters();
+  const allItems = collectSavedLibraryItems();
+  const query = filters.query.trim().toLowerCase();
+  const filtered = allItems.filter(item => {
+    if (filters.type !== "all" && item.type !== filters.type) return false;
+    if (filters.canon !== "all" && item.canon !== filters.canon) return false;
+    if (filters.source !== "all" && item.source !== filters.source) return false;
+    if (query && !savedItemSearchText(item).includes(query)) return false;
+    return true;
+  }).sort((a, b) => compareSavedItems(a, b, filters.sort));
+
+  return { filters, allItems, filtered };
 }
 
 function storageArrayLength(key){
@@ -312,6 +499,33 @@ function titleFromSlug(slug){
     .filter(Boolean)
     .map(part => part.length <= 2 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function canonLandingUrl(canon){
+  return CANON_LANDING_URLS[canon] || "/biblia.html";
+}
+
+function bookPageSlug(canon, book){
+  const override = BOOK_PAGE_OVERRIDES[canon]?.[book];
+  if (override === "") return "";
+  return override || book;
+}
+
+function bookPageUrl(canon, book){
+  const slug = bookPageSlug(canon, book);
+  return slug ? `/${canon}/${slug}.html` : "";
+}
+
+function chapterPageUrl(canon, book, chapter){
+  if (!canon || !book || !chapter) return "";
+  return `/${canon}/chapter.html?book=${encodeURIComponent(book)}&ch=${encodeURIComponent(chapter)}`;
+}
+
+function bookCategory(canon, book){
+  const context = CANON_CONTEXT[canon];
+  if (!context) return "";
+  const found = context.categories.find(([books]) => books.split(" ").includes(book));
+  return found ? found[1] : context.fallback;
 }
 
 function truncate(value, max = 150){
@@ -373,6 +587,9 @@ function wireTabs(){
     event.preventDefault();
     setActiveTab(tab);
     $(`[data-app-panel="${tab}"]`)?.focus({ preventScroll: true });
+    if (link.hasAttribute("data-focus-saved-search")){
+      $("#saved-library-search")?.focus();
+    }
   });
 
   window.addEventListener("hashchange", () => setActiveTab(activeTabFromHash(), false));
@@ -858,6 +1075,53 @@ async function updateReaderNav(){
   if (nextButton) nextButton.disabled = !next;
 }
 
+function renderReaderChrome({ canon, book, chapter }){
+  const title = `${titleFromSlug(book)} ${chapter}`;
+  const canonLabel = CANON_LABELS[canon] || titleFromSlug(canon);
+  const category = bookCategory(canon, book);
+  const context = CANON_CONTEXT[canon];
+  const landingUrl = canonLandingUrl(canon);
+  const bookUrl = bookPageUrl(canon, book);
+  const chapterUrl = chapterPageUrl(canon, book, chapter);
+
+  const summary = $("#reader-current-summary");
+  if (summary){
+    summary.innerHTML = `
+      <span class="app-label">Continue Reading</span>
+      <h3>${escapeHTML(title)}</h3>
+      <p>${escapeHTML(canonLabel)} · ${escapeHTML(category)}</p>
+    `;
+  }
+
+  const contextRoot = $("#reader-context");
+  if (contextRoot){
+    contextRoot.innerHTML = `
+      <span class="app-label">Israelite Study Context</span>
+      <h3>${escapeHTML(titleFromSlug(book))}</h3>
+      <div class="app-reader-context-meta">
+        <span class="app-pill">${escapeHTML(canonLabel)}</span>
+        <span class="app-pill">${escapeHTML(category)}</span>
+      </div>
+      <p>${escapeHTML(context?.framing || "Read with Scripture, logic, history, and covenant identity in view.")}</p>
+    `;
+  }
+
+  const actions = $("#reader-study-actions");
+  if (actions){
+    actions.innerHTML = `
+      <span class="app-label">Study Actions</span>
+      <div class="app-reader-action-grid">
+        <button class="app-btn" type="button" data-app-tab-link="profile">Open saved library</button>
+        <button class="app-btn" type="button" data-app-tab-link="profile" data-focus-saved-search>Search saved notes</button>
+        <a class="app-btn" href="/biblia.html">Open Biblia hub</a>
+        <a class="app-btn" href="${escapeHTML(landingUrl)}">Open ${escapeHTML(canonLabel)}</a>
+        ${bookUrl ? `<a class="app-btn" href="${escapeHTML(bookUrl)}">Open book page</a>` : ""}
+        <a class="app-btn" href="${escapeHTML(chapterUrl)}">Open full chapter</a>
+      </div>
+    `;
+  }
+}
+
 async function renderReader(){
   const requestId = ++readerRequestId;
   const output = $("#reader-output");
@@ -877,6 +1141,7 @@ async function renderReader(){
 
   writeSettings({ canon, book, chapter, fontSize, spacing });
   syncProfileSettings();
+  renderReaderChrome({ canon, book, chapter });
   output.innerHTML = `<div class="app-loading">Loading ${escapeHTML(titleFromSlug(book))} ${escapeHTML(chapter)}...</div>`;
 
   try{
@@ -1103,11 +1368,10 @@ function emptyLibraryBlock(title, text){
   `;
 }
 
-function renderSavedVerses(){
+function renderSavedVerses(items, hasSavedData){
   const root = $("#profile-saved-verses");
   if (!root) return;
-  const appBookmarks = appBookmarkItems();
-  const siteChapterBookmarks = readSiteBookmarks();
+  const appBookmarks = items.filter(item => item.type === "bookmark");
 
   root.innerHTML = `
     <div class="app-library-head">
@@ -1118,32 +1382,15 @@ function renderSavedVerses(){
     <div class="app-library-list">
       ${appBookmarks.length
         ? appBookmarks.map(item => savedItemCard(item, "Bookmark")).join("")
-        : emptyLibraryBlock("No saved verses yet.", "Open the Bible tab and bookmark a verse.")}
+        : emptyLibraryBlock(hasSavedData ? "No saved items match this search." : "No saved verses yet.", hasSavedData ? "Try clearing search or filters." : "Open the Bible tab and bookmark a verse.")}
     </div>
-    ${siteChapterBookmarks.length ? `
-      <div class="app-library-sublist">
-        <h4>Saved chapters from Biblia</h4>
-        ${siteChapterBookmarks.slice(0, 6).map(item => `
-          <article class="app-library-item compact">
-            <div>
-              <h4>${escapeHTML(item.title || item.url || "Saved chapter")}</h4>
-              <p>${escapeHTML(item.canonLabel || "")}</p>
-            </div>
-            <div class="app-library-actions">
-              <a class="app-btn" href="${escapeHTML(item.url || "/biblia.html")}">Open</a>
-              <button type="button" data-remove-saved="bookmark:site:${escapeHTML(item.url || item.key || "")}">Remove</button>
-            </div>
-          </article>
-        `).join("")}
-      </div>
-    ` : ""}
   `;
 }
 
-function renderSavedHighlights(){
+function renderSavedHighlights(items, hasSavedData){
   const root = $("#profile-highlights");
   if (!root) return;
-  const items = [...appHighlightItems(), ...siteHighlightItems()];
+  const highlights = items.filter(item => item.type === "highlight");
   root.innerHTML = `
     <div class="app-library-head">
       <span class="app-label">Highlights</span>
@@ -1151,17 +1398,17 @@ function renderSavedHighlights(){
       <p>Highlights from the app reader and existing Scripture reader are shown together.</p>
     </div>
     <div class="app-library-list">
-      ${items.length
-        ? items.map(item => savedItemCard(item, item.categoryLabel || "Highlight")).join("")
-        : emptyLibraryBlock("No highlights yet.", "Highlight a verse in the Bible tab or Scripture reader.")}
+      ${highlights.length
+        ? highlights.map(item => savedItemCard(item, item.categoryLabel || "Highlight")).join("")
+        : emptyLibraryBlock(hasSavedData ? "No saved items match this search." : "No highlights yet.", hasSavedData ? "Try clearing search or filters." : "Highlight a verse in the Bible tab or Scripture reader.")}
     </div>
   `;
 }
 
-function renderSavedNotes(){
+function renderSavedNotes(items, hasSavedData){
   const root = $("#profile-notes");
   if (!root) return;
-  const items = [...appNoteItems(), ...siteNoteItems()];
+  const notes = items.filter(item => item.type === "note");
   root.innerHTML = `
     <div class="app-library-head">
       <span class="app-label">Notes</span>
@@ -1169,19 +1416,17 @@ function renderSavedNotes(){
       <p>Verse notes and existing No Private Interpretation entries are stored locally.</p>
     </div>
     <div class="app-library-list">
-      ${items.length
-        ? items.map(item => savedItemCard(item, item.source === "site" ? "Exposition" : "Note")).join("")
-        : emptyLibraryBlock("No notes yet.", "Add a note to a verse in the Bible tab.")}
+      ${notes.length
+        ? notes.map(item => savedItemCard(item, item.source === "site" ? "Exposition" : "Note")).join("")
+        : emptyLibraryBlock(hasSavedData ? "No saved items match this search." : "No notes yet.", hasSavedData ? "Try clearing search or filters." : "Add a note to a verse in the Bible tab.")}
     </div>
   `;
 }
 
-function renderReadingHistory(){
+function renderReadingHistory(items, hasSavedData){
   const root = $("#profile-reading-history");
   if (!root) return;
-  const lastRead = readLastRead();
-  const siteHistory = readSiteHistory();
-  const hasLastRead = Boolean(lastRead.book);
+  const history = items.filter(item => item.type === "history");
 
   root.innerHTML = `
     <div class="app-library-head">
@@ -1190,32 +1435,9 @@ function renderReadingHistory(){
       <p>Continue in the app reader or reopen recent Biblia chapters saved on this device.</p>
     </div>
     <div class="app-library-list">
-      ${hasLastRead ? `
-        <article class="app-library-item">
-          <div>
-            <div class="app-library-meta">
-              <span class="app-pill">${escapeHTML(CANON_LABELS[lastRead.canon] || titleFromSlug(lastRead.canon))}</span>
-              ${lastRead.updatedAt ? `<time datetime="${escapeHTML(lastRead.updatedAt)}">${escapeHTML(formatSavedDate(lastRead.updatedAt))}</time>` : ""}
-            </div>
-            <h4>${escapeHTML(titleFromSlug(lastRead.book))} ${escapeHTML(lastRead.chapter)}</h4>
-            <p>Last local app reader location.</p>
-          </div>
-          <div class="app-library-actions">
-            <button type="button" data-open-saved="${escapeHTML(lastRead.canon)}:${escapeHTML(lastRead.book)}:${escapeHTML(lastRead.chapter)}:">Continue Reading</button>
-          </div>
-        </article>
-      ` : emptyLibraryBlock("No local reading history yet.", "Open a chapter in the Bible tab to start.")}
-      ${siteHistory.slice(0, 6).map(item => `
-        <article class="app-library-item compact">
-          <div>
-            <h4>${escapeHTML(item.title || "Recent chapter")}</h4>
-            <p>${escapeHTML(item.canonLabel || "")}</p>
-          </div>
-          <div class="app-library-actions">
-            <a class="app-btn" href="${escapeHTML(item.url || "/biblia.html")}">Open</a>
-          </div>
-        </article>
-      `).join("")}
+      ${history.length
+        ? history.map(item => savedItemCard(item, item.source === "app" ? "Continue" : "Recent")).join("")
+        : emptyLibraryBlock(hasSavedData ? "No saved items match this search." : "No local reading history yet.", hasSavedData ? "Try clearing search or filters." : "Open a chapter in the Bible tab to start.")}
     </div>
   `;
 }
@@ -1253,14 +1475,50 @@ function renderStudyProgress(){
 }
 
 function renderSavedLibrary(){
-  renderSavedVerses();
-  renderSavedHighlights();
-  renderSavedNotes();
-  renderReadingHistory();
+  const { allItems, filtered } = filteredSavedLibrary();
+  const hasSavedData = allItems.length > 0;
+  const count = $("#saved-library-count");
+  if (count){
+    count.textContent = hasSavedData
+      ? `Showing ${filtered.length} of ${allItems.length} saved items`
+      : "No saved items on this device yet.";
+  }
+
+  renderSavedVerses(filtered, hasSavedData);
+  renderSavedHighlights(filtered, hasSavedData);
+  renderSavedNotes(filtered, hasSavedData);
+  renderReadingHistory(filtered, hasSavedData);
   renderStudyProgress();
 }
 
 function wireSavedLibrary(){
+  const form = $("#saved-library-filter-form");
+  if (form){
+    const syncFilters = () => {
+      writeSavedLibraryFilters({
+        query: form.elements.query?.value || "",
+        type: form.elements.type?.value || "all",
+        canon: form.elements.canon?.value || "all",
+        source: form.elements.source?.value || "all",
+        sort: form.elements.sort?.value || "newest"
+      });
+      renderSavedLibrary();
+    };
+
+    form.addEventListener("input", event => {
+      if (event.target.matches("input, select")) syncFilters();
+    });
+
+    form.addEventListener("change", syncFilters);
+  }
+
+  $("#saved-library-clear")?.addEventListener("click", () => {
+    writeSavedLibraryFilters(defaultSavedLibraryFilters());
+    applySavedLibraryControls();
+    renderSavedLibrary();
+    $("#saved-library-search")?.focus();
+  });
+
   $("#profile")?.addEventListener("click", async event => {
     const openButton = event.target.closest("[data-open-saved]");
     if (openButton){
@@ -1295,7 +1553,7 @@ function renderProfile(){
   const marks = readReaderMarks();
   const practiceCount = completedPracticeIds().length;
   const siteHistoryCount = storageArrayLength(LEGACY_KEYS.reading);
-  const readingCount = siteHistoryCount + (readLastRead().book ? 1 : 0);
+  const readingCount = siteHistoryCount + (readLastRead().exists ? 1 : 0);
   const setText = (selector, value) => {
     const node = $(selector);
     if (node) node.textContent = String(value);
@@ -1317,6 +1575,7 @@ async function init(){
   wireReader();
   wireProfileSettings();
   wireSavedLibrary();
+  applySavedLibraryControls();
   await Promise.all([
     renderDailyPrecept(),
     renderCourses(),
