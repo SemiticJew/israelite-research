@@ -416,6 +416,7 @@ function applySavedLibraryControls(){
 
 function savedItemSearchText(item){
   return [
+    item.title,
     item.ref,
     item.text,
     item.note,
@@ -424,7 +425,8 @@ function savedItemSearchText(item){
     item.book,
     titleFromSlug(item.book),
     item.type,
-    item.source
+    item.source,
+    item.preview
   ].filter(Boolean).join(" ").toLowerCase();
 }
 
@@ -445,6 +447,7 @@ function compareSavedItems(a, b, sort){
 
 function collectSavedLibraryItems(){
   const lastRead = readLastRead();
+  const chains = readSavedStudyChains();
   const localHistory = lastRead.exists ? [normalizeSavedItem({
     key: `history:app:${lastRead.canon}:${lastRead.book}:${lastRead.chapter}`,
     ref: `${titleFromSlug(lastRead.book)} ${lastRead.chapter}`,
@@ -473,7 +476,27 @@ function collectSavedLibraryItems(){
     ...siteHighlightItems(),
     ...siteNoteItems(),
     ...localHistory,
-    ...siteHistory
+    ...siteHistory,
+    ...chains.map(chain => {
+      const preview = savedStudyChainPreview(chain).join(" · ");
+      return normalizeSavedItem({
+        id: chain.id,
+        key: chain.id,
+        ref: chain.title,
+        title: chain.title,
+        items: chain.items,
+        text: preview,
+        preview,
+        note: preview,
+        canon: chain.canon,
+        book: chain.book,
+        chapter: chain.chapter || "1",
+        verse: chain.items?.[0]?.verse || "",
+        source: "app",
+        type: "chain",
+        savedAt: chain.updatedAt || chain.createdAt
+      }, "chain", "app");
+    })
   ];
 }
 
@@ -855,11 +878,49 @@ function writeCurrentStudyChain(items){
 
 function readSavedStudyChains(){
   const items = readJSONStorage(SAVED_STUDY_CHAINS_KEY, []);
-  return Array.isArray(items) ? items : [];
+  return Array.isArray(items) ? items.map(normalizeSavedStudyChain).filter(Boolean) : [];
 }
 
 function writeSavedStudyChains(items){
-  writeJSONStorage(SAVED_STUDY_CHAINS_KEY, Array.isArray(items) ? items : []);
+  writeJSONStorage(SAVED_STUDY_CHAINS_KEY, Array.isArray(items) ? items.map(normalizeSavedStudyChain).filter(Boolean) : []);
+}
+
+function normalizeSavedStudyChain(chain){
+  if (!chain || typeof chain !== "object") return null;
+  const items = Array.isArray(chain.items) ? chain.items.map(normalizeStudyChainItem).filter(Boolean) : [];
+  const first = items[0] || null;
+  const canonSet = new Set(items.map(item => item.canon).filter(Boolean));
+  const canon = chain.canon || (canonSet.size === 1 ? (first?.canon || "") : "mixed") || "mixed";
+  return {
+    id: chain.id || `chain-${Date.now()}`,
+    title: chain.title || "Study Chain",
+    createdAt: chain.createdAt || chain.updatedAt || new Date().toISOString(),
+    updatedAt: chain.updatedAt || chain.createdAt || new Date().toISOString(),
+    canon,
+    book: chain.book || first?.book || "",
+    chapter: String(chain.chapter || first?.chapter || ""),
+    items
+  };
+}
+
+function savedStudyChainPreview(chain, count = 3){
+  return (Array.isArray(chain.items) ? chain.items : [])
+    .slice(0, count)
+    .map(item => item.reference || `${titleFromSlug(item.book)} ${item.chapter}${item.verse ? `:${item.verse}` : ""}`)
+    .filter(Boolean);
+}
+
+function savedStudyChainSearchText(chain){
+  return [
+    chain.title,
+    chain.canon,
+    CANON_LABELS[chain.canon],
+    chain.book,
+    titleFromSlug(chain.book),
+    chain.chapter,
+    savedStudyChainPreview(chain, 3).join(" "),
+    Array.isArray(chain.items) ? chain.items.map(item => item.text).join(" ") : ""
+  ].filter(Boolean).join(" ").toLowerCase();
 }
 
 function chainItemKey(location){
@@ -1060,6 +1121,8 @@ async function saveCurrentStudyChain(){
     items
   });
   writeSavedStudyChains(saved);
+  renderSavedLibrary();
+  renderProfile();
 }
 
 function scriptureRefLabel(ref){
@@ -2283,6 +2346,104 @@ function renderReadingHistory(items, hasSavedData){
   `;
 }
 
+function renderSavedStudyChains(items, hasSavedData){
+  const root = $("#profile-study-chains");
+  if (!root) return;
+  const chains = items.filter(item => item.type === "chain");
+  const totalChains = readSavedStudyChains().length;
+
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Study Chains</span>
+      <h3 id="saved-study-chains-title">Saved Study Chains</h3>
+      <p>${escapeHTML(totalChains)} chain${totalChains === 1 ? "" : "s"} saved on this device. Open one to continue reading where the chain started.</p>
+    </div>
+    <div class="app-library-list">
+      ${chains.length
+        ? chains.map(savedStudyChainCard).join("")
+        : emptyLibraryBlock(hasSavedData ? "No saved items match this search." : "No saved study chains yet.", hasSavedData ? "Try clearing search or filters." : "Build one from the Bible reader.")}
+    </div>
+  `;
+}
+
+function savedStudyChainCard(chain){
+  const chainId = chain.id || chain.key || "";
+  const preview = savedStudyChainPreview(chain);
+  const count = Array.isArray(chain.items) ? chain.items.length : 0;
+  const created = formatSavedDate(chain.createdAt);
+  const updated = formatSavedDate(chain.updatedAt);
+  const canonLabel = chain.canon && chain.canon !== "mixed" ? (CANON_LABELS[chain.canon] || titleFromSlug(chain.canon)) : "Mixed canon";
+
+  return `
+    <article class="app-library-item app-chain-card">
+      <div>
+        <div class="app-library-meta">
+          <span class="app-pill">Study Chain</span>
+          <span class="app-pill">${escapeHTML(canonLabel)}</span>
+          <span class="app-pill">${escapeHTML(String(count))} item${count === 1 ? "" : "s"}</span>
+          ${updated ? `<time datetime="${escapeHTML(chain.updatedAt)}">Updated ${escapeHTML(updated)}</time>` : ""}
+          ${created && created !== updated ? `<time datetime="${escapeHTML(chain.createdAt)}">Created ${escapeHTML(created)}</time>` : ""}
+        </div>
+        <h4>${escapeHTML(chain.title || "Study Chain")}</h4>
+        <p>${escapeHTML(preview.length ? preview.join(" · ") : "No verse preview available yet.")}</p>
+      </div>
+      <div class="app-library-actions">
+        <button type="button" data-open-chain="${escapeHTML(chainId)}">Continue</button>
+        <button type="button" data-rename-chain="${escapeHTML(chainId)}">Rename</button>
+        <button type="button" data-delete-chain="${escapeHTML(chainId)}">Delete</button>
+      </div>
+    </article>
+  `;
+}
+
+async function openSavedStudyChain(chainId){
+  const chain = readSavedStudyChains().find(item => item.id === chainId);
+  if (!chain || !Array.isArray(chain.items) || !chain.items.length) return;
+  const items = chain.items.map(normalizeStudyChainItem).filter(Boolean);
+  if (!items.length) return;
+  writeCurrentStudyChain(items);
+  setActiveTab("bible");
+  const first = items[0];
+  await setReaderLocation({
+    canon: first.canon,
+    book: first.book,
+    chapter: first.chapter,
+    verse: first.verse || ""
+  });
+  $("#study-chain")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renameSavedStudyChain(chainId){
+  const chains = readSavedStudyChains();
+  const index = chains.findIndex(item => item.id === chainId);
+  if (index === -1) return;
+  const existing = chains[index];
+  const title = window.prompt("Rename this study chain", existing.title || "Study Chain");
+  if (title === null) return;
+  const trimmed = title.trim();
+  chains[index] = {
+    ...existing,
+    title: trimmed || existing.title || "Study Chain",
+    updatedAt: new Date().toISOString()
+  };
+  writeSavedStudyChains(chains);
+  renderSavedLibrary();
+  renderProfile();
+}
+
+function deleteSavedStudyChain(chainId){
+  const chains = readSavedStudyChains();
+  const index = chains.findIndex(item => item.id === chainId);
+  if (index === -1) return;
+  const existing = chains[index];
+  const confirmed = window.confirm(`Delete "${existing.title || "Study Chain"}"? This removes the saved chain but keeps the current in-progress chain.`);
+  if (!confirmed) return;
+  chains.splice(index, 1);
+  writeSavedStudyChains(chains);
+  renderSavedLibrary();
+  renderProfile();
+}
+
 function renderStudyProgress(){
   const root = $("#profile-study-progress");
   if (!root) return;
@@ -2329,6 +2490,7 @@ function renderSavedLibrary(){
   renderSavedHighlights(filtered, hasSavedData);
   renderSavedNotes(filtered, hasSavedData);
   renderReadingHistory(filtered, hasSavedData);
+  renderSavedStudyChains(filtered, hasSavedData);
   renderStudyProgress();
 }
 
@@ -2361,6 +2523,24 @@ function wireSavedLibrary(){
   });
 
   $("#profile")?.addEventListener("click", async event => {
+    const openChainButton = event.target.closest("[data-open-chain]");
+    if (openChainButton){
+      await openSavedStudyChain(openChainButton.dataset.openChain);
+      return;
+    }
+
+    const renameChainButton = event.target.closest("[data-rename-chain]");
+    if (renameChainButton){
+      renameSavedStudyChain(renameChainButton.dataset.renameChain);
+      return;
+    }
+
+    const deleteChainButton = event.target.closest("[data-delete-chain]");
+    if (deleteChainButton){
+      deleteSavedStudyChain(deleteChainButton.dataset.deleteChain);
+      return;
+    }
+
     const openButton = event.target.closest("[data-open-saved]");
     if (openButton){
       const [canon, book, chapter, verse] = openButton.dataset.openSaved.split(":");
@@ -2393,6 +2573,7 @@ function wireSavedLibrary(){
 function renderProfile(){
   const marks = readReaderMarks();
   const practiceCount = completedPracticeIds().length;
+  const chainCount = readSavedStudyChains().length;
   const siteHistoryCount = storageArrayLength(LEGACY_KEYS.reading);
   const readingCount = siteHistoryCount + (readLastRead().exists ? 1 : 0);
   const setText = (selector, value) => {
@@ -2405,6 +2586,7 @@ function renderProfile(){
   setText("#profile-highlight-count", storageArrayLength(LEGACY_KEYS.highlights) + marks.highlights.length);
   setText("#profile-note-count", storageArrayLength(LEGACY_KEYS.notes) + marks.notes.length);
   setText("#profile-practice-count", practiceCount);
+  setText("#profile-chain-count", chainCount);
   syncProfileSettings();
   renderSavedLibrary();
 }
