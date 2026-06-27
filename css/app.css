@@ -656,6 +656,91 @@
   padding:14px;
 }
 
+.institute-app .app-saved-library{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.institute-app .app-library-section{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.institute-app .app-library-section:nth-child(3),
+.institute-app .app-library-section:nth-child(5){
+  grid-column:1 / -1;
+}
+
+.institute-app .app-library-head h3,
+.institute-app .app-library-item h4,
+.institute-app .app-course-progress-row h4{
+  margin:0 0 6px;
+}
+
+.institute-app .app-library-list,
+.institute-app .app-library-sublist,
+.institute-app .app-course-progress-list{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-library-sublist{
+  padding-top:12px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .app-library-item,
+.institute-app .app-course-progress-row,
+.institute-app .app-library-empty{
+  display:grid;
+  gap:10px;
+  padding:12px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#fbfdff;
+}
+
+.institute-app .app-library-item.compact{
+  grid-template-columns:minmax(0, 1fr) auto;
+  align-items:center;
+}
+
+.institute-app .app-library-meta,
+.institute-app .app-library-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+}
+
+.institute-app .app-library-meta time{
+  color:var(--app-muted);
+  font-size:.78rem;
+  font-weight:850;
+}
+
+.institute-app .app-library-note{
+  margin-top:8px;
+  padding:10px;
+  border-left:4px solid var(--app-blue-2);
+  background:rgba(219,228,238,.45);
+  color:var(--app-ink);
+}
+
+.institute-app .app-library-actions button,
+.institute-app .app-library-actions .app-btn{
+  min-height:36px;
+  padding:0 10px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:850;
+  text-decoration:none;
+  cursor:pointer;
+}
+
 .institute-app .app-settings-form{
   grid-template-columns:repeat(3, minmax(0, 1fr));
   margin-bottom:12px;
@@ -688,6 +773,9 @@ html[data-theme="dark"] .institute-app .practice-card,
 html[data-theme="dark"] .institute-app .app-stat,
 html[data-theme="dark"] .institute-app .lesson-detail-card,
 html[data-theme="dark"] .institute-app .ai-response-card,
+html[data-theme="dark"] .institute-app .app-library-item,
+html[data-theme="dark"] .institute-app .app-library-empty,
+html[data-theme="dark"] .institute-app .app-course-progress-row,
 html[data-theme="dark"] .institute-app input,
 html[data-theme="dark"] .institute-app select,
 html[data-theme="dark"] .institute-app textarea,
@@ -704,7 +792,9 @@ html[data-theme="dark"] .institute-app .app-search-result,
 html[data-theme="dark"] .institute-app .app-practice-summary,
 html[data-theme="dark"] .institute-app .reader-actions button,
 html[data-theme="dark"] .institute-app .lesson-list button,
-html[data-theme="dark"] .institute-app .app-example-prompts button{
+html[data-theme="dark"] .institute-app .app-example-prompts button,
+html[data-theme="dark"] .institute-app .app-library-actions button,
+html[data-theme="dark"] .institute-app .app-library-actions .app-btn{
   background:#07111f;
   color:#f8fafc;
 }
@@ -723,6 +813,11 @@ html[data-theme="dark"] .institute-app .reader-note strong{
   color:#DBE4EE;
 }
 
+html[data-theme="dark"] .institute-app .app-library-note{
+  background:rgba(129,164,205,.14);
+  color:#f8fafc;
+}
+
 @media(min-width:900px){
   .institute-app .app-tabbar-bottom{
     display:none;
@@ -737,7 +832,8 @@ html[data-theme="dark"] .institute-app .reader-note strong{
   .institute-app .app-home-grid,
   .institute-app .app-course-grid,
   .institute-app .app-watch-grid,
-  .institute-app .app-practice-grid{
+  .institute-app .app-practice-grid,
+  .institute-app .app-saved-library{
     grid-template-columns:1fr;
   }
 
@@ -802,6 +898,13 @@ html[data-theme="dark"] .institute-app .reader-note strong{
   .institute-app .app-search-form,
   .institute-app .app-settings-form,
   .institute-app .app-profile-grid{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-library-section:nth-child(3),
+  .institute-app .app-library-section:nth-child(5),
+  .institute-app .app-library-item.compact{
+    grid-column:auto;
     grid-template-columns:1fr;
   }
 
