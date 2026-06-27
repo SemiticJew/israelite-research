@@ -893,7 +893,7 @@ function normalizeSavedStudyChain(chain){
   const canon = chain.canon || (canonSet.size === 1 ? (first?.canon || "") : "mixed") || "mixed";
   return {
     id: chain.id || `chain-${Date.now()}`,
-    title: chain.title || "Study Chain",
+    title: String(chain.title || "").trim() || "Untitled Study Chain",
     createdAt: chain.createdAt || chain.updatedAt || new Date().toISOString(),
     updatedAt: chain.updatedAt || chain.createdAt || new Date().toISOString(),
     canon,
@@ -903,11 +903,133 @@ function normalizeSavedStudyChain(chain){
   };
 }
 
+function studyChainTitle(chain){
+  const title = String(chain?.title || "").trim();
+  return title || "Untitled Study Chain";
+}
+
 function savedStudyChainPreview(chain, count = 3){
   return (Array.isArray(chain.items) ? chain.items : [])
     .slice(0, count)
     .map(item => item.reference || `${titleFromSlug(item.book)} ${item.chapter}${item.verse ? `:${item.verse}` : ""}`)
     .filter(Boolean);
+}
+
+function studyChainExportText(chain, { includeHeading = true } = {}){
+  const normalized = normalizeSavedStudyChain(chain);
+  if (!normalized) return "";
+  const items = Array.isArray(normalized.items) ? normalized.items : [];
+  const lines = [
+    studyChainTitle(normalized),
+    includeHeading ? "Semitic Jew Study Chain" : ""
+  ].filter(Boolean);
+
+  if (items.length) lines.push("");
+
+  items.forEach((item, index) => {
+    const ref = item.reference || `${titleFromSlug(item.book)} ${item.chapter}${item.verse ? `:${item.verse}` : ""}` || `Verse ${index + 1}`;
+    const text = String(item.text || "").trim();
+    lines.push(`${index + 1}. ${ref}`);
+    if (text) lines.push(`   ${text}`);
+    lines.push("");
+  });
+
+  lines.push("Study with Semitic Jew:");
+  lines.push("https://semiticjew.org/app.html");
+  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function studyChainLessonOutline(chain){
+  const normalized = normalizeSavedStudyChain(chain);
+  if (!normalized) return "";
+  const items = Array.isArray(normalized.items) ? normalized.items : [];
+  const title = studyChainTitle(normalized);
+  const outline = [
+    title,
+    "Opening Scripture:",
+    items[0]?.reference || "Choose the opening verse",
+    "Precept Chain:",
+    ...items.map((item, index) => `${index + 1}. ${item.reference || `${titleFromSlug(item.book)} ${item.chapter}`}`),
+    "Notes:",
+    "Add brief teaching notes here.",
+    "Closing Application:",
+    "State the covenant lesson and the obedience response."
+  ];
+  return outline.join("\n");
+}
+
+async function copyTextToClipboard(text){
+  const value = String(text || "");
+  if (!value) return false;
+  try{
+    if (navigator.clipboard?.writeText){
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+  }catch(error){
+    // fall through to fallback
+  }
+
+  try{
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "readonly");
+    textarea.style.position = "fixed";
+    textarea.style.top = "-9999px";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    const ok = document.execCommand("copy");
+    textarea.remove();
+    return Boolean(ok);
+  }catch(error){
+    return false;
+  }
+}
+
+function setChainStatus(target, message, state = "info"){
+  const selector = target === "saved" ? "#saved-study-chains-status" : "#study-chain-status";
+  const node = $(selector);
+  if (!node) return;
+  node.textContent = message || "";
+  node.dataset.state = state;
+}
+
+async function exportStudyChain(chain, { share = false, target = "current" } = {}){
+  const normalized = normalizeSavedStudyChain(chain);
+  if (!normalized) return false;
+  const text = studyChainExportText(normalized);
+  if (!text) return false;
+
+  if (share && navigator.share){
+    try{
+      await navigator.share({
+        title: studyChainTitle(normalized),
+        text,
+        url: "https://semiticjew.org/app.html"
+      });
+      setChainStatus(target, "Study chain shared.", "success");
+      return true;
+    }catch(error){
+      // Share cancelled or unavailable.
+      setChainStatus(target, "Share was not completed.", "error");
+      return false;
+    }
+  }
+
+  const copied = await copyTextToClipboard(text);
+  setChainStatus(target, copied ? "Study chain copied to clipboard." : "Copy failed. Try again.", copied ? "success" : "error");
+  return copied;
+}
+
+async function exportLessonOutline(chain, { target = "current" } = {}){
+  const normalized = normalizeSavedStudyChain(chain);
+  if (!normalized) return false;
+  const text = studyChainLessonOutline(normalized);
+  const copied = await copyTextToClipboard(text);
+  setChainStatus(target, copied ? "Lesson outline copied to clipboard." : "Copy failed. Try again.", copied ? "success" : "error");
+  return copied;
 }
 
 function savedStudyChainSearchText(chain){
@@ -1043,8 +1165,11 @@ function renderStudyChain(){
         <button class="app-btn" type="button" data-chain-add-active${hasActiveVerse && !activeInChain ? "" : " disabled"}>${activeInChain ? "In Chain" : "Add active verse"}</button>
         <button class="app-btn" type="button" data-chain-save${chain.length ? "" : " disabled"}>Save Chain</button>
         <button class="app-btn" type="button" data-chain-clear${chain.length ? "" : " disabled"}>Clear Chain</button>
+        <button class="app-btn" type="button" data-chain-copy${chain.length ? "" : " disabled"}>Copy Chain</button>
+        ${navigator.share ? `<button class="app-btn" type="button" data-chain-share${chain.length ? "" : " disabled"}>Share</button>` : ""}
       </div>
     </div>
+    <p class="app-study-chain-status" id="study-chain-status" aria-live="polite"></p>
     <div class="app-study-chain-list" aria-label="Current study chain verses">
       ${chain.length
         ? chain.map((item, index) => `
@@ -2159,6 +2284,26 @@ function wireReader(){
       return;
     }
 
+    const copyButton = event.target.closest("[data-chain-copy]");
+    if (copyButton){
+      event.preventDefault();
+      await exportStudyChain({
+        title: "",
+        items: readCurrentStudyChain().map(normalizeStudyChainItem)
+      }, { target: "current" });
+      return;
+    }
+
+    const shareButton = event.target.closest("[data-chain-share]");
+    if (shareButton){
+      event.preventDefault();
+      await exportStudyChain({
+        title: "",
+        items: readCurrentStudyChain().map(normalizeStudyChainItem)
+      }, { share: true, target: "current" });
+      return;
+    }
+
     const saveButton = event.target.closest("[data-chain-save]");
     if (saveButton){
       event.preventDefault();
@@ -2358,6 +2503,7 @@ function renderSavedStudyChains(items, hasSavedData){
       <h3 id="saved-study-chains-title">Saved Study Chains</h3>
       <p>${escapeHTML(totalChains)} chain${totalChains === 1 ? "" : "s"} saved on this device. Open one to continue reading where the chain started.</p>
     </div>
+    <p class="app-study-chain-status" id="saved-study-chains-status" aria-live="polite"></p>
     <div class="app-library-list">
       ${chains.length
         ? chains.map(savedStudyChainCard).join("")
@@ -2384,13 +2530,15 @@ function savedStudyChainCard(chain){
           ${updated ? `<time datetime="${escapeHTML(chain.updatedAt)}">Updated ${escapeHTML(updated)}</time>` : ""}
           ${created && created !== updated ? `<time datetime="${escapeHTML(chain.createdAt)}">Created ${escapeHTML(created)}</time>` : ""}
         </div>
-        <h4>${escapeHTML(chain.title || "Study Chain")}</h4>
+        <h4>${escapeHTML(studyChainTitle(chain))}</h4>
         <p>${escapeHTML(preview.length ? preview.join(" · ") : "No verse preview available yet.")}</p>
       </div>
       <div class="app-library-actions">
         <button type="button" data-open-chain="${escapeHTML(chainId)}">Continue</button>
         <button type="button" data-rename-chain="${escapeHTML(chainId)}">Rename</button>
         <button type="button" data-delete-chain="${escapeHTML(chainId)}">Delete</button>
+        <button type="button" data-copy-chain="${escapeHTML(chainId)}">Copy</button>
+        ${navigator.share ? `<button type="button" data-share-chain="${escapeHTML(chainId)}">Share</button>` : ""}
       </div>
     </article>
   `;
@@ -2538,6 +2686,20 @@ function wireSavedLibrary(){
     const deleteChainButton = event.target.closest("[data-delete-chain]");
     if (deleteChainButton){
       deleteSavedStudyChain(deleteChainButton.dataset.deleteChain);
+      return;
+    }
+
+    const copyChainButton = event.target.closest("[data-copy-chain]");
+    if (copyChainButton){
+      const chain = readSavedStudyChains().find(item => item.id === copyChainButton.dataset.copyChain);
+      if (chain) await exportStudyChain(chain, { target: "saved" });
+      return;
+    }
+
+    const shareChainButton = event.target.closest("[data-share-chain]");
+    if (shareChainButton){
+      const chain = readSavedStudyChains().find(item => item.id === shareChainButton.dataset.shareChain);
+      if (chain) await exportStudyChain(chain, { share: true, target: "saved" });
       return;
     }
 

@@ -450,6 +450,22 @@
   color:var(--app-muted);
 }
 
+.institute-app .app-study-chain-status{
+  margin:10px 0 0;
+  min-height:1.2em;
+  color:var(--app-muted);
+  font-size:.88rem;
+  font-weight:800;
+}
+
+.institute-app .app-study-chain-status[data-state="success"]{
+  color:var(--app-blue);
+}
+
+.institute-app .app-study-chain-status[data-state="error"]{
+  color:var(--app-orange);
+}
+
 .institute-app .app-reader-context-meta,
 .institute-app .app-reader-action-grid{
   display:flex;
@@ -1109,6 +1125,10 @@ html[data-theme="dark"] .institute-app .app-study-chain-empty{
   background:rgba(5,74,145,.18);
   border-color:rgba(129,164,205,.2);
   color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .app-study-chain-status{
+  color:#dbe4ee;
 }
 
 html[data-theme="dark"] .institute-app .app-study-chain-actions .app-btn,
