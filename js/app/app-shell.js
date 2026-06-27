@@ -17,6 +17,7 @@ const CANON_LABELS = {
 const PROGRESS_KEY = "semiticJewAppProgress";
 const SETTINGS_KEY = "sj_institute_app_settings_v1";
 const READER_MARKS_KEY = "sj_institute_app_reader_marks_v1";
+const READER_HISTORY_KEY = "sj_institute_app_last_read_v1";
 const LEGACY_KEYS = {
   reading: "sj_reading_history_v1",
   bookmarks: "sj_scripture_bookmarks_v1",
@@ -27,6 +28,7 @@ const LEGACY_KEYS = {
 let courseData = [];
 let watchData = [];
 let bookMaps = {};
+let readerRequestId = 0;
 
 function $(selector, root = document){
   return root.querySelector(selector);
@@ -96,6 +98,26 @@ function writeSettings(settings){
   writeJSONStorage(SETTINGS_KEY, { ...readSettings(), ...settings });
 }
 
+function readLastRead(){
+  const saved = readJSONStorage(READER_HISTORY_KEY, {});
+  return {
+    canon: saved.canon || "tanakh",
+    book: saved.book || "genesis",
+    chapter: String(saved.chapter || "1")
+  };
+}
+
+function writeLastRead(location){
+  const lastRead = {
+    canon: location.canon,
+    book: location.book,
+    chapter: String(location.chapter || "1"),
+    updatedAt: new Date().toISOString()
+  };
+  writeJSONStorage(READER_HISTORY_KEY, lastRead);
+  renderContinueReading();
+}
+
 function readReaderMarks(){
   return readJSONStorage(READER_MARKS_KEY, { bookmarks: [], highlights: [], notes: [] });
 }
@@ -107,6 +129,18 @@ function writeReaderMarks(marks){
     notes: Array.isArray(marks.notes) ? marks.notes : []
   });
   renderProfile();
+}
+
+function markKey(canon, book, chapter, verseNumber){
+  return `${canon}:${book}:${chapter}:${verseNumber}`;
+}
+
+function hasMark(items, key){
+  return Array.isArray(items) && items.some(item => item.key === key || item.ref === key);
+}
+
+function getNote(marks, key){
+  return (marks.notes || []).find(item => item.key === key);
 }
 
 function storageArrayLength(key){
@@ -262,6 +296,22 @@ function renderWatchHome(){
     <div class="app-button-row">
       <a class="app-btn primary" href="#media" data-app-tab-link="media">Open Media</a>
       <a class="app-btn" href="${escapeHTML(item.link || "/media.html")}" target="${String(item.link || "").startsWith("http") ? "_blank" : "_self"}" rel="noopener">Lesson</a>
+    </div>
+  `;
+}
+
+function renderContinueReading(){
+  const root = $("#continue-reading-card");
+  if (!root) return;
+
+  const lastRead = readLastRead();
+  root.innerHTML = `
+    <span class="app-label">Continue Reading</span>
+    <h3>${escapeHTML(titleFromSlug(lastRead.book))} ${escapeHTML(lastRead.chapter)}</h3>
+    <p>${escapeHTML(CANON_LABELS[lastRead.canon] || "Scripture")} reader saved on this device.</p>
+    <div class="app-button-row">
+      <a class="app-btn primary" href="#bible" data-continue-reading>Continue</a>
+      <a class="app-btn" href="/biblia.html">Biblia</a>
     </div>
   `;
 }
@@ -555,6 +605,21 @@ function buildChapterOptions(total, selected){
   }).join("");
 }
 
+function orderedBookSlugs(books, canon){
+  const available = Object.keys(books || {});
+  if (!available.length) return [];
+  if (canon === "tanakh" && available.includes("genesis")){
+    return ["genesis", ...available.filter(slug => slug !== "genesis").sort()];
+  }
+  if (canon === "newtestament" && available.includes("matthew")){
+    return ["matthew", ...available.filter(slug => slug !== "matthew").sort()];
+  }
+  if (canon === "apocrypha" && available.includes("1-esdras")){
+    return ["1-esdras", ...available.filter(slug => slug !== "1-esdras").sort()];
+  }
+  return available.sort();
+}
+
 async function loadBookMap(canon){
   if (bookMaps[canon]) return bookMaps[canon];
   const map = await getJSON(`/data/${canon}/books.json`);
@@ -568,14 +633,82 @@ async function populateBooks(canon, selectedBook){
   if (!bookSelect || !chapterSelect) return "";
 
   const books = await loadBookMap(canon);
-  const slugs = Object.keys(books).sort();
+  const slugs = orderedBookSlugs(books, canon);
   const preferred = slugs.includes(selectedBook) ? selectedBook : slugs[0];
   bookSelect.innerHTML = slugs.map(slug => `<option value="${escapeHTML(slug)}"${slug === preferred ? " selected" : ""}>${escapeHTML(titleFromSlug(slug))}</option>`).join("");
   chapterSelect.innerHTML = buildChapterOptions(books[preferred], readSettings().chapter);
   return preferred;
 }
 
+async function setReaderLocation({ canon, book, chapter, fontSize, spacing } = {}){
+  const settings = readSettings();
+  const nextCanon = canon || settings.canon;
+  const books = await loadBookMap(nextCanon);
+  const slugs = orderedBookSlugs(books, nextCanon);
+  const nextBook = slugs.includes(book || settings.book) ? (book || settings.book) : slugs[0];
+  const total = Number(books[nextBook]) || 1;
+  const requestedChapter = Number(chapter || settings.chapter) || 1;
+  const nextChapter = String(Math.min(Math.max(requestedChapter, 1), total));
+
+  const canonSelect = $("#reader-canon");
+  const bookSelect = $("#reader-book");
+  const chapterSelect = $("#reader-chapter");
+  const fontSelect = $("#reader-font-size");
+  const spacingSelect = $("#reader-spacing");
+
+  if (canonSelect) canonSelect.value = nextCanon;
+  await populateBooks(nextCanon, nextBook);
+  if (bookSelect) bookSelect.value = nextBook;
+  if (chapterSelect) chapterSelect.innerHTML = buildChapterOptions(total, nextChapter);
+  if (fontSelect) fontSelect.value = fontSize || settings.fontSize;
+  if (spacingSelect) spacingSelect.value = spacing || settings.spacing;
+
+  writeSettings({
+    canon: nextCanon,
+    book: nextBook,
+    chapter: nextChapter,
+    fontSize: fontSize || settings.fontSize,
+    spacing: spacing || settings.spacing
+  });
+
+  await renderReader();
+}
+
+async function getAdjacentReaderLocation(direction){
+  const settings = readSettings();
+  const books = await loadBookMap(settings.canon);
+  const slugs = orderedBookSlugs(books, settings.canon);
+  const currentIndex = slugs.indexOf(settings.book);
+  const chapter = Number(settings.chapter) || 1;
+  const total = Number(books[settings.book]) || 1;
+
+  if (direction === "previous"){
+    if (chapter > 1) return { ...settings, chapter: String(chapter - 1) };
+    if (currentIndex > 0){
+      const previousBook = slugs[currentIndex - 1];
+      return { ...settings, book: previousBook, chapter: String(books[previousBook] || 1) };
+    }
+    return null;
+  }
+
+  if (chapter < total) return { ...settings, chapter: String(chapter + 1) };
+  if (currentIndex !== -1 && currentIndex < slugs.length - 1){
+    return { ...settings, book: slugs[currentIndex + 1], chapter: "1" };
+  }
+  return null;
+}
+
+async function updateReaderNav(){
+  const previous = await getAdjacentReaderLocation("previous");
+  const next = await getAdjacentReaderLocation("next");
+  const previousButton = $("#reader-prev");
+  const nextButton = $("#reader-next");
+  if (previousButton) previousButton.disabled = !previous;
+  if (nextButton) nextButton.disabled = !next;
+}
+
 async function renderReader(){
+  const requestId = ++readerRequestId;
   const output = $("#reader-output");
   const canonSelect = $("#reader-canon");
   const bookSelect = $("#reader-book");
@@ -592,14 +725,20 @@ async function renderReader(){
   const spacing = spacingSelect?.value || settings.spacing;
 
   writeSettings({ canon, book, chapter, fontSize, spacing });
+  syncProfileSettings();
   output.innerHTML = `<div class="app-loading">Loading ${escapeHTML(titleFromSlug(book))} ${escapeHTML(chapter)}...</div>`;
 
   try{
     const verses = await getJSON(`/data/${canon}/${book}/${chapter}.json`);
+    if (requestId !== readerRequestId) return;
     if (!Array.isArray(verses) || !verses.length){
-      output.innerHTML = loadingError("This chapter is not available in the local reader yet.");
+      output.innerHTML = `${loadingError("This chapter is not available in the local reader yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
       return;
     }
+
+    const marks = readReaderMarks();
+    writeLastRead({ canon, book, chapter });
+    await updateReaderNav();
 
     output.innerHTML = `
       <div class="reader-head">
@@ -611,15 +750,22 @@ async function renderReader(){
       </div>
       <div class="reader-verses ${escapeHTML(fontSize)} ${spacing === "compact" ? "compact" : ""}">
         ${verses.map(verse => {
-          const ref = `${titleFromSlug(book)} ${chapter}:${verse.v}`;
+          const verseNumber = verse.v ?? "";
+          const text = verse.t ?? verse.text ?? "";
+          const ref = `${titleFromSlug(book)} ${chapter}:${verseNumber}`;
+          const key = markKey(canon, book, chapter, verseNumber);
+          const bookmarked = hasMark(marks.bookmarks, key);
+          const highlighted = hasMark(marks.highlights, key);
+          const note = getNote(marks, key);
           return `
-            <section class="reader-verse" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(verse.t)}">
-              <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verse.v)}</span> ${escapeHTML(verse.t)}</p>
+            <section class="reader-verse${highlighted ? " is-highlighted" : ""}" data-key="${escapeHTML(key)}" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(text)}">
+              <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${escapeHTML(text)}</p>
+              ${note ? `<p class="reader-note"><strong>Note:</strong> ${escapeHTML(note.note)}</p>` : ""}
               <div class="reader-actions" aria-label="${escapeHTML(ref)} actions">
                 <button type="button" data-reader-action="copy">Copy</button>
-                <button type="button" data-reader-action="bookmark">Bookmark</button>
-                <button type="button" data-reader-action="highlight">Highlight</button>
-                <button type="button" data-reader-action="note">Note</button>
+                <button type="button" data-reader-action="bookmark">${bookmarked ? "Bookmarked" : "Bookmark"}</button>
+                <button type="button" data-reader-action="highlight">${highlighted ? "Highlighted" : "Highlight"}</button>
+                <button type="button" data-reader-action="note">${note ? "Edit note" : "Note"}</button>
               </div>
             </section>
           `;
@@ -627,7 +773,9 @@ async function renderReader(){
       </div>
     `;
   }catch(error){
-    output.innerHTML = loadingError("The local reader could not load this chapter. Use Biblia for the full reader.");
+    if (requestId !== readerRequestId) return;
+    await updateReaderNav();
+    output.innerHTML = `${loadingError("The local reader could not load this chapter.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
   }
 }
 
@@ -648,40 +796,47 @@ async function syncReaderControls(){
   if (profileFont) profileFont.value = settings.fontSize;
   if (profileSpacing) profileSpacing.value = settings.spacing;
 
-  const book = await populateBooks(settings.canon, settings.book);
-  const books = await loadBookMap(settings.canon);
-  const chapterSelect = $("#reader-chapter");
-  if (chapterSelect) chapterSelect.innerHTML = buildChapterOptions(books[book], settings.chapter);
-  await renderReader();
+  await setReaderLocation(settings);
 }
 
 function wireReader(){
   $("#reader-canon")?.addEventListener("change", async event => {
-    const settings = readSettings();
-    const book = await populateBooks(event.target.value, settings.book);
-    writeSettings({ canon: event.target.value, book, chapter: "1" });
-    const books = await loadBookMap(event.target.value);
-    $("#reader-chapter").innerHTML = buildChapterOptions(books[book], "1");
-    await renderReader();
-    syncProfileSettings();
+    await setReaderLocation({ canon: event.target.value, chapter: "1" });
   });
 
   $("#reader-book")?.addEventListener("change", async event => {
-    const canon = $("#reader-canon").value;
-    const books = await loadBookMap(canon);
-    $("#reader-chapter").innerHTML = buildChapterOptions(books[event.target.value], "1");
-    writeSettings({ canon, book: event.target.value, chapter: "1" });
-    await renderReader();
+    await setReaderLocation({ canon: $("#reader-canon").value, book: event.target.value, chapter: "1" });
   });
 
   ["#reader-chapter", "#reader-font-size", "#reader-spacing"].forEach(selector => {
     $(selector)?.addEventListener("change", renderReader);
   });
 
+  $("#reader-prev")?.addEventListener("click", async () => {
+    const location = await getAdjacentReaderLocation("previous");
+    if (location) await setReaderLocation(location);
+  });
+
+  $("#reader-next")?.addEventListener("click", async () => {
+    const location = await getAdjacentReaderLocation("next");
+    if (location) await setReaderLocation(location);
+  });
+
+  document.addEventListener("click", async event => {
+    const link = event.target.closest("[data-continue-reading]");
+    if (!link) return;
+    event.preventDefault();
+    const lastRead = readLastRead();
+    setActiveTab("bible");
+    await setReaderLocation(lastRead);
+    $("#reader-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
   $("#reader-output")?.addEventListener("click", async event => {
     const button = event.target.closest("[data-reader-action]");
     const verse = event.target.closest(".reader-verse");
     if (!button || !verse) return;
+    const key = verse.dataset.key;
     const ref = verse.dataset.ref;
     const text = verse.dataset.text;
     const marks = readReaderMarks();
@@ -697,24 +852,38 @@ function wireReader(){
     }
 
     if (button.dataset.readerAction === "bookmark"){
-      marks.bookmarks = marks.bookmarks.filter(item => item.ref !== ref);
-      marks.bookmarks.unshift({ ref, text, savedAt: new Date().toISOString() });
-      button.textContent = "Bookmarked";
+      const exists = hasMark(marks.bookmarks, key);
+      marks.bookmarks = marks.bookmarks.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+      if (!exists){
+        marks.bookmarks.unshift({ key, ref, text, savedAt: new Date().toISOString() });
+      }
+      button.textContent = exists ? "Bookmark" : "Bookmarked";
     }
 
     if (button.dataset.readerAction === "highlight"){
-      marks.highlights = marks.highlights.filter(item => item.ref !== ref);
-      marks.highlights.unshift({ ref, text, category: "key", savedAt: new Date().toISOString() });
-      verse.style.background = "rgba(241,115,0,.12)";
-      button.textContent = "Highlighted";
+      const exists = hasMark(marks.highlights, key);
+      marks.highlights = marks.highlights.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+      if (!exists){
+        marks.highlights.unshift({ key, ref, text, category: "key", savedAt: new Date().toISOString() });
+      }
+      verse.classList.toggle("is-highlighted", !exists);
+      button.textContent = exists ? "Highlight" : "Highlighted";
     }
 
     if (button.dataset.readerAction === "note"){
-      const note = window.prompt(`Note for ${ref}`);
-      if (!note) return;
-      marks.notes = marks.notes.filter(item => item.ref !== ref);
-      marks.notes.unshift({ ref, text, note, savedAt: new Date().toISOString() });
-      button.textContent = "Noted";
+      const existing = getNote(marks, key);
+      const note = window.prompt(`Note for ${ref}`, existing?.note || "");
+      if (note === null) return;
+      marks.notes = marks.notes.filter(item => item.key !== key && item.ref !== key && item.ref !== ref);
+      if (note.trim()){
+        marks.notes.unshift({ key, ref, text, note: note.trim(), savedAt: new Date().toISOString() });
+        button.textContent = "Edit note";
+      }else{
+        button.textContent = "Note";
+      }
+      writeReaderMarks(marks);
+      await renderReader();
+      return;
     }
 
     writeReaderMarks(marks);
@@ -746,8 +915,7 @@ function wireProfileSettings(){
     if (readerCanon) readerCanon.value = settings.canon;
     if (readerFont) readerFont.value = settings.fontSize;
     if (readerSpacing) readerSpacing.value = settings.spacing;
-    await populateBooks(settings.canon, readSettings().book);
-    await renderReader();
+    await setReaderLocation(settings);
   });
 }
 
@@ -780,6 +948,7 @@ async function init(){
     renderPractice(),
     syncReaderControls()
   ]);
+  renderContinueReading();
   renderProfile();
 }
 
