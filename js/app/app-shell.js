@@ -48,6 +48,11 @@ function escapeHTML(value){
   })[ch]);
 }
 
+function escapeSelector(value){
+  if (window.CSS?.escape) return CSS.escape(value);
+  return String(value || "").replace(/["\\]/g, "\\$&");
+}
+
 async function getJSON(url){
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`Unable to load ${url}`);
@@ -103,7 +108,8 @@ function readLastRead(){
   return {
     canon: saved.canon || "tanakh",
     book: saved.book || "genesis",
-    chapter: String(saved.chapter || "1")
+    chapter: String(saved.chapter || "1"),
+    updatedAt: saved.updatedAt || ""
   };
 }
 
@@ -141,6 +147,151 @@ function hasMark(items, key){
 
 function getNote(marks, key){
   return (marks.notes || []).find(item => item.key === key);
+}
+
+function parseMarkKey(key){
+  const [canon, book, chapter, verse] = String(key || "").split(":");
+  if (!canon || !book || !chapter) return null;
+  return { canon, book, chapter, verse: verse || "" };
+}
+
+function locationFromItem(item){
+  const parsed = parseMarkKey(item.key);
+  return {
+    canon: item.canon || parsed?.canon || "",
+    book: item.book || parsed?.book || "",
+    chapter: String(item.chapter || parsed?.chapter || "1"),
+    verse: String(item.verse || parsed?.verse || "")
+  };
+}
+
+function normalizeSavedItem(item, type, source){
+  const location = locationFromItem(item);
+  const ref = item.ref || item.title || [
+    titleFromSlug(location.book),
+    location.chapter && `${location.chapter}${location.verse ? `:${location.verse}` : ""}`
+  ].filter(Boolean).join(" ");
+
+  return {
+    ...item,
+    type,
+    source,
+    key: item.key || item.ref || item.url || `${source}:${type}:${ref}`,
+    ref,
+    text: item.text || item.exposition || item.note || "",
+    note: item.note || item.exposition || "",
+    canon: location.canon,
+    book: location.book,
+    chapter: location.chapter,
+    verse: location.verse,
+    date: item.savedAt || item.updatedAt || ""
+  };
+}
+
+function readSiteBookmarks(){
+  const items = readJSONStorage(LEGACY_KEYS.bookmarks, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function writeSiteBookmarks(items){
+  writeJSONStorage(LEGACY_KEYS.bookmarks, items.slice(0, 50));
+}
+
+function readSiteHighlights(){
+  const items = readJSONStorage(LEGACY_KEYS.highlights, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function writeSiteHighlights(items){
+  writeJSONStorage(LEGACY_KEYS.highlights, items.slice(0, 300));
+}
+
+function readSiteNotes(){
+  const items = readJSONStorage(LEGACY_KEYS.notes, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function writeSiteNotes(items){
+  writeJSONStorage(LEGACY_KEYS.notes, items.slice(0, 300));
+}
+
+function readSiteHistory(){
+  const items = readJSONStorage(LEGACY_KEYS.reading, []);
+  return Array.isArray(items) ? items : [];
+}
+
+function appBookmarkItems(){
+  return readReaderMarks().bookmarks.map(item => normalizeSavedItem(item, "bookmark", "app"));
+}
+
+function appHighlightItems(){
+  return readReaderMarks().highlights.map(item => normalizeSavedItem(item, "highlight", "app"));
+}
+
+function appNoteItems(){
+  return readReaderMarks().notes.map(item => normalizeSavedItem(item, "note", "app"));
+}
+
+function siteHighlightItems(){
+  return readSiteHighlights().map(item => normalizeSavedItem(item, "highlight", "site"));
+}
+
+function siteNoteItems(){
+  return readSiteNotes().map(item => normalizeSavedItem(item, "note", "site"));
+}
+
+function formatSavedDate(value){
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function removeSavedItem(type, source, key){
+  const marks = readReaderMarks();
+
+  if (source === "app" && type === "bookmark"){
+    marks.bookmarks = marks.bookmarks.filter(item => item.key !== key && item.ref !== key);
+    writeReaderMarks(marks);
+    return;
+  }
+
+  if (source === "app" && type === "highlight"){
+    marks.highlights = marks.highlights.filter(item => item.key !== key && item.ref !== key);
+    writeReaderMarks(marks);
+    return;
+  }
+
+  if (source === "app" && type === "note"){
+    marks.notes = marks.notes.filter(item => item.key !== key && item.ref !== key);
+    writeReaderMarks(marks);
+    return;
+  }
+
+  if (source === "site" && type === "bookmark"){
+    writeSiteBookmarks(readSiteBookmarks().filter(item => item.url !== key && item.key !== key));
+  }
+
+  if (source === "site" && type === "highlight"){
+    writeSiteHighlights(readSiteHighlights().filter(item => item.key !== key));
+  }
+
+  if (source === "site" && type === "note"){
+    writeSiteNotes(readSiteNotes().filter(item => item.key !== key));
+  }
+
+  renderProfile();
+}
+
+function updateAppNote(key, note){
+  const marks = readReaderMarks();
+  const existing = marks.notes.find(item => item.key === key || item.ref === key);
+  if (!existing) return;
+  marks.notes = marks.notes.filter(item => item.key !== key && item.ref !== key);
+  if (note.trim()){
+    marks.notes.unshift({ ...existing, key: existing.key || key, note: note.trim(), savedAt: new Date().toISOString() });
+  }
+  writeReaderMarks(marks);
 }
 
 function storageArrayLength(key){
@@ -919,20 +1070,244 @@ function wireProfileSettings(){
   });
 }
 
+function savedItemCard(item, typeLabel){
+  const date = formatSavedDate(item.date);
+  const canOpen = item.canon && item.book && item.chapter;
+  return `
+    <article class="app-library-item">
+      <div>
+        <div class="app-library-meta">
+          <span class="app-pill">${escapeHTML(typeLabel)}</span>
+          ${item.canon ? `<span class="app-pill">${escapeHTML(CANON_LABELS[item.canon] || titleFromSlug(item.canon))}</span>` : ""}
+          ${date ? `<time datetime="${escapeHTML(item.date)}">${escapeHTML(date)}</time>` : ""}
+        </div>
+        <h4>${escapeHTML(item.ref || "Saved item")}</h4>
+        ${item.text ? `<p>${escapeHTML(truncate(item.text, 220))}</p>` : ""}
+        ${item.note && item.note !== item.text ? `<p class="app-library-note">${escapeHTML(truncate(item.note, 220))}</p>` : ""}
+      </div>
+      <div class="app-library-actions">
+        ${canOpen ? `<button type="button" data-open-saved="${escapeHTML(item.canon)}:${escapeHTML(item.book)}:${escapeHTML(item.chapter)}:${escapeHTML(item.verse || "")}">Open in Bible</button>` : item.url ? `<a class="app-btn" href="${escapeHTML(item.url)}">Open</a>` : ""}
+        ${item.source === "app" && item.type === "note" ? `<button type="button" data-edit-saved-note="${escapeHTML(item.key)}">Edit</button>` : ""}
+        <button type="button" data-remove-saved="${escapeHTML(item.type)}:${escapeHTML(item.source)}:${escapeHTML(item.key)}">Remove</button>
+      </div>
+    </article>
+  `;
+}
+
+function emptyLibraryBlock(title, text){
+  return `
+    <div class="app-library-empty">
+      <h4>${escapeHTML(title)}</h4>
+      <p>${escapeHTML(text)}</p>
+    </div>
+  `;
+}
+
+function renderSavedVerses(){
+  const root = $("#profile-saved-verses");
+  if (!root) return;
+  const appBookmarks = appBookmarkItems();
+  const siteChapterBookmarks = readSiteBookmarks();
+
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Saved Library</span>
+      <h3 id="saved-verses-title">Saved Verses</h3>
+      <p>Bookmarked verses from the app reader are saved locally on this device.</p>
+    </div>
+    <div class="app-library-list">
+      ${appBookmarks.length
+        ? appBookmarks.map(item => savedItemCard(item, "Bookmark")).join("")
+        : emptyLibraryBlock("No saved verses yet.", "Open the Bible tab and bookmark a verse.")}
+    </div>
+    ${siteChapterBookmarks.length ? `
+      <div class="app-library-sublist">
+        <h4>Saved chapters from Biblia</h4>
+        ${siteChapterBookmarks.slice(0, 6).map(item => `
+          <article class="app-library-item compact">
+            <div>
+              <h4>${escapeHTML(item.title || item.url || "Saved chapter")}</h4>
+              <p>${escapeHTML(item.canonLabel || "")}</p>
+            </div>
+            <div class="app-library-actions">
+              <a class="app-btn" href="${escapeHTML(item.url || "/biblia.html")}">Open</a>
+              <button type="button" data-remove-saved="bookmark:site:${escapeHTML(item.url || item.key || "")}">Remove</button>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    ` : ""}
+  `;
+}
+
+function renderSavedHighlights(){
+  const root = $("#profile-highlights");
+  if (!root) return;
+  const items = [...appHighlightItems(), ...siteHighlightItems()];
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Highlights</span>
+      <h3 id="saved-highlights-title">Highlighted Verses</h3>
+      <p>Highlights from the app reader and existing Scripture reader are shown together.</p>
+    </div>
+    <div class="app-library-list">
+      ${items.length
+        ? items.map(item => savedItemCard(item, item.categoryLabel || "Highlight")).join("")
+        : emptyLibraryBlock("No highlights yet.", "Highlight a verse in the Bible tab or Scripture reader.")}
+    </div>
+  `;
+}
+
+function renderSavedNotes(){
+  const root = $("#profile-notes");
+  if (!root) return;
+  const items = [...appNoteItems(), ...siteNoteItems()];
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Notes</span>
+      <h3 id="saved-notes-title">Study Notes</h3>
+      <p>Verse notes and existing No Private Interpretation entries are stored locally.</p>
+    </div>
+    <div class="app-library-list">
+      ${items.length
+        ? items.map(item => savedItemCard(item, item.source === "site" ? "Exposition" : "Note")).join("")
+        : emptyLibraryBlock("No notes yet.", "Add a note to a verse in the Bible tab.")}
+    </div>
+  `;
+}
+
+function renderReadingHistory(){
+  const root = $("#profile-reading-history");
+  if (!root) return;
+  const lastRead = readLastRead();
+  const siteHistory = readSiteHistory();
+  const hasLastRead = Boolean(lastRead.book);
+
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Reading</span>
+      <h3 id="reading-history-title">Reading History</h3>
+      <p>Continue in the app reader or reopen recent Biblia chapters saved on this device.</p>
+    </div>
+    <div class="app-library-list">
+      ${hasLastRead ? `
+        <article class="app-library-item">
+          <div>
+            <div class="app-library-meta">
+              <span class="app-pill">${escapeHTML(CANON_LABELS[lastRead.canon] || titleFromSlug(lastRead.canon))}</span>
+              ${lastRead.updatedAt ? `<time datetime="${escapeHTML(lastRead.updatedAt)}">${escapeHTML(formatSavedDate(lastRead.updatedAt))}</time>` : ""}
+            </div>
+            <h4>${escapeHTML(titleFromSlug(lastRead.book))} ${escapeHTML(lastRead.chapter)}</h4>
+            <p>Last local app reader location.</p>
+          </div>
+          <div class="app-library-actions">
+            <button type="button" data-open-saved="${escapeHTML(lastRead.canon)}:${escapeHTML(lastRead.book)}:${escapeHTML(lastRead.chapter)}:">Continue Reading</button>
+          </div>
+        </article>
+      ` : emptyLibraryBlock("No local reading history yet.", "Open a chapter in the Bible tab to start.")}
+      ${siteHistory.slice(0, 6).map(item => `
+        <article class="app-library-item compact">
+          <div>
+            <h4>${escapeHTML(item.title || "Recent chapter")}</h4>
+            <p>${escapeHTML(item.canonLabel || "")}</p>
+          </div>
+          <div class="app-library-actions">
+            <a class="app-btn" href="${escapeHTML(item.url || "/biblia.html")}">Open</a>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderStudyProgress(){
+  const root = $("#profile-study-progress");
+  if (!root) return;
+  const completed = completedLessonMap();
+  const completedLessons = Object.keys(completed).filter(key => completed[key]).length;
+  const practiceCount = completedPracticeIds().length;
+
+  root.innerHTML = `
+    <div class="app-library-head">
+      <span class="app-label">Progress</span>
+      <h3 id="study-progress-title">Study Progress</h3>
+      <p>${escapeHTML(completedLessons)} completed lessons and ${escapeHTML(practiceCount)} completed practice items today.</p>
+    </div>
+    <div class="app-course-progress-list">
+      ${courseData.length ? courseData.map(course => {
+        const lessons = Array.isArray(course.lessons) ? course.lessons : [];
+        const done = lessons.filter(lesson => completed[lessonKey(course.id, lesson.id)]).length;
+        const percent = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
+        return `
+          <article class="app-course-progress-row">
+            <div>
+              <h4>${escapeHTML(course.title)}</h4>
+              <p>${done}/${lessons.length} lessons complete</p>
+            </div>
+            <div class="course-progress" aria-label="${percent}% complete"><span style="width:${percent}%"></span></div>
+          </article>
+        `;
+      }).join("") : emptyLibraryBlock("Courses are loading.", "Study progress will appear after course data loads.")}
+    </div>
+  `;
+}
+
+function renderSavedLibrary(){
+  renderSavedVerses();
+  renderSavedHighlights();
+  renderSavedNotes();
+  renderReadingHistory();
+  renderStudyProgress();
+}
+
+function wireSavedLibrary(){
+  $("#profile")?.addEventListener("click", async event => {
+    const openButton = event.target.closest("[data-open-saved]");
+    if (openButton){
+      const [canon, book, chapter, verse] = openButton.dataset.openSaved.split(":");
+      if (canon && book && chapter){
+        setActiveTab("bible");
+        await setReaderLocation({ canon, book, chapter });
+        const target = verse ? $(`[data-key="${escapeSelector(markKey(canon, book, chapter, verse))}"]`) : $("#reader-output");
+        target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
+
+    const removeButton = event.target.closest("[data-remove-saved]");
+    if (removeButton){
+      const [type, source, ...keyParts] = removeButton.dataset.removeSaved.split(":");
+      removeSavedItem(type, source, keyParts.join(":"));
+      return;
+    }
+
+    const editButton = event.target.closest("[data-edit-saved-note]");
+    if (editButton){
+      const key = editButton.dataset.editSavedNote;
+      const existing = getNote(readReaderMarks(), key);
+      const note = window.prompt("Edit verse note", existing?.note || "");
+      if (note !== null) updateAppNote(key, note);
+    }
+  });
+}
+
 function renderProfile(){
   const marks = readReaderMarks();
   const practiceCount = completedPracticeIds().length;
+  const siteHistoryCount = storageArrayLength(LEGACY_KEYS.reading);
+  const readingCount = siteHistoryCount + (readLastRead().book ? 1 : 0);
   const setText = (selector, value) => {
     const node = $(selector);
     if (node) node.textContent = String(value);
   };
 
-  setText("#profile-reading-count", storageArrayLength(LEGACY_KEYS.reading));
+  setText("#profile-reading-count", readingCount);
   setText("#profile-bookmark-count", storageArrayLength(LEGACY_KEYS.bookmarks) + marks.bookmarks.length);
   setText("#profile-highlight-count", storageArrayLength(LEGACY_KEYS.highlights) + marks.highlights.length);
   setText("#profile-note-count", storageArrayLength(LEGACY_KEYS.notes) + marks.notes.length);
   setText("#profile-practice-count", practiceCount);
   syncProfileSettings();
+  renderSavedLibrary();
 }
 
 async function init(){
@@ -941,6 +1316,7 @@ async function init(){
   wireCourses();
   wireReader();
   wireProfileSettings();
+  wireSavedLibrary();
   await Promise.all([
     renderDailyPrecept(),
     renderCourses(),
