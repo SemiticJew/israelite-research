@@ -438,12 +438,14 @@ html[data-theme="dark"] .biblia-page .hub-stat span:not(.stat-kicker){
 .biblia-page .hub-stats{
   display:grid;
   grid-template-columns:repeat(3, minmax(0, 1fr));
+  grid-auto-rows:1fr;
   gap:14px;
+  height:100%;
+  align-self:stretch;
 }
 
 .biblia-page .hub-stat{
-  aspect-ratio:1 / 1;
-  min-height:0;
+  min-height:118px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -493,21 +495,22 @@ html[data-theme="dark"] .biblia-page .hub-stat strong{
 @media(max-width:700px){
   .biblia-page .hub-stats{
     grid-template-columns:repeat(3, minmax(0, 1fr));
-    gap:10px;
+    grid-auto-rows:auto;
+    height:auto;
+    gap:8px;
   }
 
   .biblia-page .hub-stat{
-    aspect-ratio:auto;
-    min-height:112px;
-    padding:14px 8px !important;
+    min-height:92px;
+    padding:14px 6px !important;
   }
 
   .biblia-page .hub-stat strong{
-    font-size:2rem;
+    font-size:1.85rem;
   }
 
   .biblia-page .hub-stat span{
-    font-size:.66rem;
+    font-size:.62rem;
   }
 }
 

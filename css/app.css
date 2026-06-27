@@ -1,394 +1,291 @@
-/* Semitic Jew Institute app dashboard. Scoped to body.institute-app. */
+/* Semitic Jew Institute app shell. Scoped to body.institute-app. */
 .institute-app{
-  background:linear-gradient(180deg, #f7fafc 0, #ffffff 260px);
-  color:var(--ink);
+  --app-blue:#054A91;
+  --app-blue-2:#3E7CB1;
+  --app-soft:#DBE4EE;
+  --app-orange:#F17300;
+  --app-sky:#81A4CD;
+  --app-ink:#111827;
+  --app-muted:#4b5563;
+  --app-line:rgba(5,74,145,.16);
+  --app-surface:#fff;
+  background:#f6f9fc;
+  color:var(--app-ink);
+}
+
+.institute-app *{
+  box-sizing:border-box;
 }
 
 .institute-app .app-shell{
-  width:min(1180px, calc(100% - 32px));
+  width:min(1120px, calc(100% - 28px));
   margin:0 auto;
-  padding:28px 0 72px;
+  padding:20px 0 94px;
 }
 
 .institute-app .app-breadcrumbs{
-  margin:0 0 18px;
-  font-size:.9rem;
+  margin:0 0 12px;
+  font-size:.88rem;
 }
 
 .institute-app .app-breadcrumbs a{
-  color:var(--muted);
+  color:var(--app-muted);
   text-decoration:none;
 }
 
 .institute-app .app-topbar{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:16px;
-  margin-bottom:16px;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
 }
 
 .institute-app .app-topbar h1{
   margin:0;
-  font-size:2rem;
+  color:var(--app-ink);
+  font-size:1.65rem;
   line-height:1.1;
-  color:var(--ink);
 }
 
 .institute-app .app-kicker,
 .institute-app .app-label{
   display:block;
-  margin:0 0 8px;
-  color:var(--accent);
+  margin:0 0 7px;
+  color:var(--app-orange);
   font-size:.72rem;
   font-weight:900;
-  letter-spacing:.12em;
+  letter-spacing:.1em;
   text-transform:uppercase;
 }
 
 .institute-app .app-install-link,
 .institute-app .app-btn,
-.institute-app .app-section-nav a,
 .institute-app button{
   border-radius:8px;
 }
 
-.institute-app .app-install-link{
-  flex:0 0 auto;
-  min-height:40px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:0 13px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--ink);
-  font-weight:900;
-  text-decoration:none;
-  box-shadow:var(--shadow, 0 8px 20px rgba(5,74,145,.08));
-}
-
-.institute-app .app-section-nav{
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:grid;
-  grid-template-columns:repeat(5, minmax(0, 1fr));
-  gap:8px;
-  margin:0 0 18px;
-  padding:8px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(10px);
-  box-shadow:0 10px 24px rgba(5,74,145,.08);
-}
-
-.institute-app .app-section-nav a{
-  min-height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--ink);
-  font-weight:900;
-  font-size:.88rem;
-  text-decoration:none;
-}
-
-.institute-app .app-section-nav a:hover,
-.institute-app .app-section-nav a:focus-visible{
-  background:#DBE4EE;
-  color:#054A91;
-  outline:none;
-}
-
-.institute-app .app-hero{
-  display:grid;
-  grid-template-columns:minmax(0, 1.35fr) minmax(260px, .65fr);
-  gap:18px;
-  align-items:stretch;
-  margin:0 0 18px;
-  padding:0;
-  border:0;
-  background:none;
-  box-shadow:none;
-  text-align:left;
-}
-
-.institute-app .app-hero-copy,
-.institute-app .app-hero-panel,
-.institute-app .app-card,
-.institute-app .app-search-shell{
-  border:1px solid var(--border);
-  background:var(--surface);
-  box-shadow:var(--shadow, 0 8px 20px rgba(5,74,145,.08));
-}
-
-.institute-app .app-hero-copy{
-  padding:28px;
-  background:
-    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.10)),
-    var(--surface);
-}
-
-.institute-app .app-hero h2{
-  max-width:780px;
-  margin:0;
-  color:var(--ink);
-  font-size:5.4rem;
-  line-height:.96;
-  font-weight:950;
-}
-
-.institute-app .app-hero p{
-  max-width:680px;
-  margin:14px 0 0;
-  color:var(--muted);
-  font-size:1.05rem;
-  line-height:1.65;
-}
-
-.institute-app .app-hero-panel{
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  padding:24px;
-  background:
-    linear-gradient(160deg, rgba(5,74,145,.95), rgba(11,35,64,.96)),
-    #054A91;
-  color:#fff;
-}
-
-.institute-app .app-hero-panel strong{
-  font-size:1.55rem;
-  line-height:1.1;
-}
-
-.institute-app .app-hero-panel span{
-  margin-top:12px;
-  color:rgba(255,255,255,.82);
-  line-height:1.55;
-}
-
-.institute-app .app-actions,
-.institute-app .app-button-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:18px;
-}
-
-.institute-app .app-btn,
-.institute-app .app-ask-form button,
-.institute-app .app-practice-summary button{
+.institute-app .app-install-link,
+.institute-app .app-btn{
   min-height:42px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap:8px;
   padding:0 14px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--ink);
+  border:1px solid var(--app-line);
+  background:var(--app-surface);
+  color:var(--app-ink);
   font-weight:900;
   text-decoration:none;
-  cursor:pointer;
 }
 
-.institute-app .app-btn.primary,
-.institute-app .app-ask-form .app-btn.primary{
-  border-color:var(--accent);
-  background:var(--accent);
+.institute-app .app-btn.primary{
+  border-color:var(--app-orange);
+  background:var(--app-orange);
   color:#fff;
 }
 
 .institute-app .app-btn:hover,
 .institute-app .app-btn:focus-visible,
 .institute-app button:hover,
-.institute-app button:focus-visible{
-  border-color:var(--accent);
-  outline:3px solid rgba(241,115,0,.18);
+.institute-app button:focus-visible,
+.institute-app a:focus-visible{
+  border-color:var(--app-orange);
+  outline:3px solid rgba(241,115,0,.2);
   outline-offset:2px;
 }
 
-.institute-app .app-dashboard-grid{
+.institute-app .app-tabbar{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-  margin-bottom:18px;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  gap:6px;
+  padding:7px;
+  border:1px solid var(--app-line);
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 24px rgba(5,74,145,.08);
+  backdrop-filter:blur(12px);
 }
 
-.institute-app .app-card,
-.institute-app .app-search-shell{
+.institute-app .app-tabbar-top{
+  position:sticky;
+  top:0;
+  z-index:30;
+  margin-bottom:14px;
+}
+
+.institute-app .app-tabbar-bottom{
+  position:fixed;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:80;
+  border-width:1px 0 0;
+  border-radius:0;
+  padding:7px max(8px, env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+}
+
+.institute-app .app-tab-link{
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  color:var(--app-muted);
+  font-size:.84rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.institute-app .app-tab-link.is-active{
+  background:var(--app-blue);
+  color:#fff;
+}
+
+.institute-app .app-panel{
+  display:block;
+}
+
+.institute-app .app-panel[hidden]{
+  display:none;
+}
+
+.institute-app .app-hero{
+  margin:0 0 14px;
   padding:22px;
+  border:1px solid var(--app-line);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  color:#fff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
 }
 
-.institute-app .app-section{
-  padding:28px 0 0;
-}
-
-.institute-app .app-card h2,
-.institute-app .app-section h2,
-.institute-app .app-search-shell h2{
-  margin:0 0 8px;
-  color:var(--ink);
-  font-size:2rem;
-  line-height:1.1;
-}
-
-.institute-app .app-card h3,
-.institute-app .app-section h3{
-  margin:0 0 8px;
-  color:var(--ink);
-  font-size:1.05rem;
-}
-
-.institute-app p{
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.institute-app .app-section,
-.institute-app .app-search-shell{
-  margin-top:18px;
-}
-
-.institute-app .app-section-head{
+.institute-app .app-hero h2{
   max-width:760px;
-  margin-bottom:18px;
-}
-
-.institute-app .app-section-head p,
-.institute-app .app-card p{
   margin:0;
+  color:#fff;
+  font-size:clamp(2.15rem, 7vw, 4.8rem);
+  line-height:1;
 }
 
-.institute-app .app-precept blockquote{
-  margin:14px 0;
-  padding:14px 16px;
-  border-left:4px solid var(--accent);
-  background:rgba(219,228,238,.45);
-  color:var(--ink);
-  line-height:1.65;
+.institute-app .app-hero p{
+  max-width:620px;
+  margin:12px 0 0;
+  color:rgba(255,255,255,.86);
+  line-height:1.55;
 }
 
+.institute-app .app-actions,
+.institute-app .app-button-row,
+.institute-app .app-reader-links,
+.institute-app .course-meta,
+.institute-app .watch-meta,
 .institute-app .app-precept-meta{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
-  margin-top:12px;
 }
 
-.institute-app .app-pill,
-.institute-app .app-tag{
-  display:inline-flex;
-  align-items:center;
-  min-height:28px;
-  padding:0 9px;
-  border:1px solid var(--border);
-  border-radius:999px;
-  color:#054A91;
-  background:#DBE4EE;
-  font-size:.78rem;
-  font-weight:900;
+.institute-app .app-actions,
+.institute-app .app-button-row{
+  margin-top:16px;
 }
 
-.institute-app .app-course-grid,
-.institute-app .app-watch-grid,
-.institute-app .app-practice-grid,
-.institute-app .app-fellowship-grid{
-  display:grid;
-  grid-template-columns:repeat(3, minmax(0, 1fr));
-  gap:14px;
-}
-
+.institute-app .app-card,
+.institute-app .app-search-shell,
+.institute-app .app-reader-shell,
 .institute-app .course-card,
 .institute-app .watch-card,
 .institute-app .practice-card,
-.institute-app .app-fellowship-grid article{
-  border:1px solid var(--border);
-  background:var(--surface);
+.institute-app .app-stat,
+.institute-app .lesson-detail-card,
+.institute-app .ai-response-card{
+  border:1px solid var(--app-line);
+  background:var(--app-surface);
+  box-shadow:0 7px 18px rgba(5,74,145,.06);
+}
+
+.institute-app .app-card,
+.institute-app .app-search-shell,
+.institute-app .app-reader-shell{
   padding:16px;
-  box-shadow:0 5px 16px rgba(5,74,145,.06);
 }
 
-.institute-app .course-card{
-  display:flex;
-  flex-direction:column;
+.institute-app .app-home-grid,
+.institute-app .app-course-grid,
+.institute-app .app-watch-grid,
+.institute-app .app-practice-grid,
+.institute-app .app-profile-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
   gap:12px;
 }
 
-.institute-app .course-meta,
-.institute-app .watch-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
+.institute-app .app-precept-card,
+.institute-app .app-practice-home{
+  grid-column:1 / -1;
 }
 
-.institute-app .lesson-list{
-  display:grid;
-  gap:8px;
-  margin-top:auto;
+.institute-app h2,
+.institute-app h3,
+.institute-app h4{
+  color:var(--app-ink);
 }
 
-.institute-app .lesson-list button{
-  min-height:40px;
-  padding:9px 10px;
-  border:1px solid var(--border);
-  background:#f8fafc;
-  color:var(--ink);
-  text-align:left;
-  font-weight:850;
-  cursor:pointer;
+.institute-app h2{
+  margin:0 0 8px;
+  font-size:1.85rem;
+  line-height:1.12;
 }
 
-.institute-app .app-lesson-detail{
-  margin-top:18px;
+.institute-app h3{
+  margin:0 0 8px;
+  font-size:1.12rem;
+  line-height:1.2;
 }
 
-.institute-app .lesson-detail-card{
-  border:1px solid var(--border);
-  background:
-    linear-gradient(135deg, rgba(5,74,145,.06), rgba(241,115,0,.06)),
-    var(--surface);
-  padding:18px;
+.institute-app p{
+  margin:0;
+  color:var(--app-muted);
+  line-height:1.58;
 }
 
-.institute-app .lesson-detail-card dl{
-  display:grid;
-  gap:12px;
-  margin:14px 0;
+.institute-app .app-section-head{
+  max-width:760px;
+  margin:0 0 14px;
 }
 
-.institute-app .lesson-detail-card dt{
-  color:var(--accent);
-  font-size:.78rem;
+.institute-app .app-section-head.compact{
+  margin-bottom:10px;
+}
+
+.institute-app .app-precept blockquote{
+  margin:12px 0;
+  padding:13px 14px;
+  border-left:4px solid var(--app-orange);
+  background:rgba(219,228,238,.52);
+  color:var(--app-ink);
+  line-height:1.6;
+}
+
+.institute-app .app-pill,
+.institute-app .app-tag,
+.institute-app .reader-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:26px;
+  padding:0 9px;
+  border:1px solid var(--app-line);
+  border-radius:999px;
+  background:var(--app-soft);
+  color:var(--app-blue);
+  font-size:.76rem;
   font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.institute-app .lesson-detail-card dd{
-  margin:4px 0 0;
-  color:var(--muted);
-  line-height:1.55;
-}
-
-.institute-app .app-ai-disclaimer{
-  margin-bottom:14px;
-  padding:12px 14px;
-  border:1px solid rgba(241,115,0,.34);
-  background:rgba(241,115,0,.08);
-  color:var(--ink);
-  font-weight:800;
-  line-height:1.45;
-}
-
-.institute-app .app-ask-form{
-  display:grid;
-  gap:10px;
 }
 
 .institute-app label{
-  color:var(--ink);
+  color:var(--app-ink);
   font-weight:900;
 }
 
@@ -398,10 +295,10 @@
   width:100%;
   min-height:44px;
   margin-top:6px;
-  border:1px solid var(--border);
+  border:1px solid var(--app-line);
   border-radius:8px;
-  background:var(--surface);
-  color:var(--ink);
+  background:var(--app-surface);
+  color:var(--app-ink);
   padding:10px 12px;
   font:inherit;
 }
@@ -413,166 +310,142 @@
 .institute-app input:focus,
 .institute-app select:focus,
 .institute-app textarea:focus{
-  border-color:var(--accent);
+  border-color:var(--app-orange);
   box-shadow:0 0 0 4px rgba(241,115,0,.14);
   outline:none;
 }
 
-.institute-app .app-example-prompts{
+.institute-app .app-reader-controls,
+.institute-app .app-settings-form{
+  display:grid;
+  grid-template-columns:repeat(5, minmax(0, 1fr));
+  gap:10px;
+}
+
+.institute-app .app-reader-links{
+  margin:12px 0;
+}
+
+.institute-app .app-reader{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .reader-head{
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-
-.institute-app .app-example-prompts button{
-  min-height:36px;
-  padding:0 10px;
-  border:1px solid var(--border);
-  background:#f8fafc;
-  color:var(--ink);
-  font-weight:850;
-  cursor:pointer;
-}
-
-.institute-app .app-ai-response{
-  margin-top:16px;
-}
-
-.institute-app .ai-response-card{
-  border:1px solid var(--border);
-  background:#f8fafc;
-  padding:16px;
-}
-
-.institute-app .ai-response-card ol,
-.institute-app .ai-response-card ul{
-  margin:8px 0 0;
-  padding-left:20px;
-  color:var(--muted);
-  line-height:1.55;
-}
-
-.institute-app .ai-response-section{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid var(--border);
-}
-
-.institute-app .watch-card a{
-  color:var(--accent);
-  font-weight:900;
-  text-decoration:none;
-}
-
-.institute-app .watch-card time,
-.institute-app .watch-card .watch-duration{
-  color:var(--muted);
-  font-size:.82rem;
-  font-weight:800;
-}
-
-.institute-app .app-practice-summary{
-  display:flex;
-  align-items:center;
+  align-items:flex-start;
+  justify-content:space-between;
   gap:12px;
-  margin:0 0 16px;
-  padding:14px;
-  border:1px solid var(--border);
-  background:#f8fafc;
+  margin-bottom:10px;
 }
 
-.institute-app .app-practice-summary strong{
-  color:var(--accent);
-  font-size:2rem;
-  line-height:1;
-}
-
-.institute-app .app-practice-summary span{
-  color:var(--muted);
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-size:.78rem;
-}
-
-.institute-app .app-practice-summary button{
-  margin-left:auto;
-}
-
-.institute-app .practice-card{
+.institute-app .reader-verses{
   display:grid;
   gap:10px;
 }
 
-.institute-app .practice-card.complete{
-  border-color:rgba(5,74,145,.42);
-  background:rgba(219,228,238,.42);
+.institute-app .reader-verses.compact{
+  gap:4px;
 }
 
-.institute-app .practice-card .practice-action{
-  justify-self:start;
+.institute-app .reader-verses.large{
+  font-size:1.14rem;
+}
+
+.institute-app .reader-verses.small{
+  font-size:.94rem;
+}
+
+.institute-app .reader-verse{
+  display:grid;
+  gap:8px;
+  padding:10px;
+  border:1px solid rgba(5,74,145,.1);
+  background:#fbfdff;
+}
+
+.institute-app .reader-verse-text{
+  color:var(--app-ink);
+  line-height:1.7;
+}
+
+.institute-app .reader-verse-num{
+  color:var(--app-orange);
+  font-weight:900;
+}
+
+.institute-app .reader-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.institute-app .reader-actions button,
+.institute-app .lesson-list button,
+.institute-app .app-example-prompts button,
+.institute-app .app-practice-summary button,
+.institute-app .app-search-form button{
+  min-height:38px;
+  padding:0 10px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:850;
+  cursor:pointer;
 }
 
 .institute-app .app-search-form{
   display:grid;
-  grid-template-columns:1fr minmax(180px, .35fr) auto;
-  gap:12px;
+  grid-template-columns:1fr minmax(150px, .35fr) auto;
+  gap:10px;
   align-items:end;
 }
 
 .institute-app .app-search-form button{
   min-height:44px;
-  padding:0 18px;
-  border:1px solid var(--accent);
-  background:var(--accent);
+  border-color:var(--app-orange);
+  background:var(--app-orange);
   color:#fff;
-  font-weight:900;
-  cursor:pointer;
 }
 
 .institute-app .app-search-status{
-  margin-top:14px;
-  color:var(--muted);
+  margin-top:12px;
+  color:var(--app-muted);
   font-weight:850;
 }
 
 .institute-app .app-search-results{
   display:grid;
-  gap:10px;
-  margin-top:12px;
+  gap:9px;
+  margin-top:10px;
 }
 
 .institute-app .app-search-result{
   display:grid;
-  gap:6px;
-  padding:13px;
-  border:1px solid var(--border);
+  gap:5px;
+  padding:12px;
+  border:1px solid var(--app-line);
   background:#f8fafc;
   color:inherit;
   text-decoration:none;
 }
 
-.institute-app .app-search-result:hover,
-.institute-app .app-search-result:focus-visible{
-  border-color:var(--accent);
-  outline:none;
-}
-
 .institute-app .app-search-ref{
-  color:var(--ink);
+  color:var(--app-ink);
   font-weight:900;
 }
 
 .institute-app .app-search-canon{
-  color:var(--accent);
-  font-size:.78rem;
+  color:var(--app-orange);
+  font-size:.76rem;
   font-weight:900;
-  text-transform:uppercase;
   letter-spacing:.08em;
+  text-transform:uppercase;
 }
 
 .institute-app .app-search-text{
-  color:var(--muted);
+  color:var(--app-muted);
   line-height:1.55;
 }
 
@@ -582,80 +455,268 @@
   padding:0 2px;
 }
 
+.institute-app .course-card,
+.institute-app .watch-card,
+.institute-app .practice-card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px;
+}
+
+.institute-app .course-progress{
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:var(--app-soft);
+}
+
+.institute-app .course-progress span{
+  display:block;
+  height:100%;
+  background:var(--app-orange);
+}
+
+.institute-app .lesson-list{
+  display:grid;
+  gap:7px;
+  margin-top:auto;
+}
+
+.institute-app .lesson-list button{
+  text-align:left;
+}
+
+.institute-app .lesson-list button.is-complete{
+  border-color:rgba(5,74,145,.35);
+  background:rgba(219,228,238,.62);
+}
+
+.institute-app .app-lesson-detail{
+  margin-top:14px;
+}
+
+.institute-app .lesson-detail-card{
+  padding:16px;
+  background:linear-gradient(135deg, rgba(5,74,145,.06), rgba(241,115,0,.06)), #fff;
+}
+
+.institute-app .lesson-detail-card dl{
+  display:grid;
+  gap:12px;
+  margin:14px 0;
+}
+
+.institute-app .lesson-detail-card dt{
+  color:var(--app-orange);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.institute-app .lesson-detail-card dd{
+  margin:4px 0 0;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-ai-disclaimer,
+.institute-app .app-filter-note,
+.institute-app .app-data-note{
+  margin-bottom:12px;
+  padding:11px 12px;
+  border:1px solid rgba(241,115,0,.32);
+  background:rgba(241,115,0,.08);
+  color:var(--app-ink);
+  font-weight:800;
+  line-height:1.45;
+}
+
+.institute-app .app-ask-form{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-example-prompts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-ai-response{
+  margin-top:14px;
+}
+
+.institute-app .ai-response-card{
+  padding:16px;
+}
+
+.institute-app .ai-response-card ul{
+  margin:8px 0 0;
+  padding-left:20px;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .ai-response-section{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .watch-card a{
+  margin-top:auto;
+  color:var(--app-orange);
+  font-weight:900;
+  text-decoration:none;
+}
+
+.institute-app .watch-card time,
+.institute-app .watch-card .watch-duration{
+  color:var(--app-muted);
+  font-size:.82rem;
+  font-weight:800;
+}
+
+.institute-app .app-practice-summary{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  padding:12px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+}
+
+.institute-app .app-practice-summary strong,
+.institute-app .app-stat strong{
+  color:var(--app-orange);
+  font-size:1.85rem;
+  line-height:1;
+}
+
+.institute-app .app-practice-summary span,
+.institute-app .app-stat span{
+  color:var(--app-muted);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-practice-summary button{
+  margin-left:auto;
+}
+
+.institute-app .practice-card.complete{
+  border-color:rgba(5,74,145,.38);
+  background:rgba(219,228,238,.42);
+}
+
+.institute-app .practice-card .practice-action{
+  align-self:flex-start;
+}
+
+.institute-app .app-profile-grid{
+  grid-template-columns:repeat(5, minmax(0, 1fr));
+  margin-bottom:12px;
+}
+
+.institute-app .app-stat{
+  display:grid;
+  gap:8px;
+  padding:14px;
+}
+
+.institute-app .app-settings-form{
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  margin-bottom:12px;
+}
+
 .institute-app .app-loading,
 .institute-app .app-error,
 .institute-app .app-empty{
   padding:14px;
-  border:1px solid var(--border);
+  border:1px solid var(--app-line);
   background:#f8fafc;
-  color:var(--muted);
+  color:var(--app-muted);
   font-weight:800;
 }
 
 html[data-theme="dark"] .institute-app{
-  background:#0f172a;
+  --app-ink:#f8fafc;
+  --app-muted:#cbd5e1;
+  --app-line:rgba(219,228,238,.22);
+  --app-surface:#111827;
+  background:#050b14;
 }
 
-html[data-theme="dark"] .institute-app .app-section-nav,
-html[data-theme="dark"] .institute-app .app-hero-copy,
 html[data-theme="dark"] .institute-app .app-card,
 html[data-theme="dark"] .institute-app .app-search-shell,
+html[data-theme="dark"] .institute-app .app-reader-shell,
 html[data-theme="dark"] .institute-app .course-card,
 html[data-theme="dark"] .institute-app .watch-card,
 html[data-theme="dark"] .institute-app .practice-card,
-html[data-theme="dark"] .institute-app .app-fellowship-grid article,
+html[data-theme="dark"] .institute-app .app-stat,
+html[data-theme="dark"] .institute-app .lesson-detail-card,
+html[data-theme="dark"] .institute-app .ai-response-card,
 html[data-theme="dark"] .institute-app input,
 html[data-theme="dark"] .institute-app select,
 html[data-theme="dark"] .institute-app textarea,
-html[data-theme="dark"] .institute-app .ai-response-card,
-html[data-theme="dark"] .institute-app .lesson-detail-card,
-html[data-theme="dark"] .institute-app .app-practice-summary{
-  background:var(--surface) !important;
-  border-color:var(--border) !important;
+html[data-theme="dark"] .institute-app .app-tabbar{
+  background:var(--app-surface);
+  border-color:var(--app-line);
 }
 
-html[data-theme="dark"] .institute-app h1,
-html[data-theme="dark"] .institute-app h2,
-html[data-theme="dark"] .institute-app h3,
-html[data-theme="dark"] .institute-app label,
-html[data-theme="dark"] .institute-app .app-ai-disclaimer,
-html[data-theme="dark"] .institute-app .app-section-nav a{
-  color:#fff !important;
-}
-
-html[data-theme="dark"] .institute-app .lesson-list button,
-html[data-theme="dark"] .institute-app .app-example-prompts button,
+html[data-theme="dark"] .institute-app .reader-verse,
 html[data-theme="dark"] .institute-app .app-loading,
 html[data-theme="dark"] .institute-app .app-error,
-html[data-theme="dark"] .institute-app .app-empty{
+html[data-theme="dark"] .institute-app .app-empty,
+html[data-theme="dark"] .institute-app .app-search-result,
+html[data-theme="dark"] .institute-app .app-practice-summary,
+html[data-theme="dark"] .institute-app .reader-actions button,
+html[data-theme="dark"] .institute-app .lesson-list button,
+html[data-theme="dark"] .institute-app .app-example-prompts button{
   background:#07111f;
-  border-color:var(--border);
-  color:#fff;
+  color:#f8fafc;
+}
+
+@media(min-width:900px){
+  .institute-app .app-tabbar-bottom{
+    display:none;
+  }
+
+  .institute-app .app-shell{
+    padding-bottom:70px;
+  }
 }
 
 @media(max-width:920px){
-  .institute-app .app-hero h2{
-    font-size:4rem;
-  }
-
-  .institute-app .app-hero,
-  .institute-app .app-dashboard-grid,
-  .institute-app .app-search-form{
+  .institute-app .app-home-grid,
+  .institute-app .app-course-grid,
+  .institute-app .app-watch-grid,
+  .institute-app .app-practice-grid{
     grid-template-columns:1fr;
   }
 
-  .institute-app .app-course-grid,
-  .institute-app .app-watch-grid,
-  .institute-app .app-practice-grid,
-  .institute-app .app-fellowship-grid{
+  .institute-app .app-reader-controls,
+  .institute-app .app-search-form,
+  .institute-app .app-settings-form,
+  .institute-app .app-profile-grid{
     grid-template-columns:repeat(2, minmax(0, 1fr));
   }
 }
 
 @media(max-width:640px){
   .institute-app .app-shell{
-    width:min(100% - 24px, 1180px);
-    padding-top:18px;
+    width:min(100% - 20px, 1120px);
+    padding-top:14px;
+  }
+
+  .institute-app .app-breadcrumbs,
+  .institute-app .app-tabbar-top{
+    display:none;
   }
 
   .institute-app .app-topbar{
@@ -664,51 +725,41 @@ html[data-theme="dark"] .institute-app .app-empty{
   }
 
   .institute-app .app-topbar h1{
-    font-size:1.45rem;
+    font-size:1.25rem;
   }
 
-  .institute-app .app-hero h2{
-    font-size:2.65rem;
-  }
-
-  .institute-app .app-card h2,
-  .institute-app .app-section h2,
-  .institute-app .app-search-shell h2{
-    font-size:1.5rem;
-  }
-
-  .institute-app .app-install-link,
-  .institute-app .app-btn,
-  .institute-app .app-search-form button,
-  .institute-app .app-ask-form .app-btn,
-  .institute-app .app-practice-summary button{
+  .institute-app .app-install-link{
     width:100%;
   }
 
-  .institute-app .app-section-nav{
-    grid-template-columns:repeat(5, minmax(54px, 1fr));
-    overflow-x:auto;
+  .institute-app .app-tabbar-bottom{
+    grid-template-columns:repeat(6, minmax(0, 1fr));
+    gap:2px;
   }
 
-  .institute-app .app-section-nav a{
-    font-size:.8rem;
+  .institute-app .app-tab-link{
+    min-height:44px;
+    padding:0 2px;
+    font-size:.68rem;
   }
 
-  .institute-app .app-hero-copy,
-  .institute-app .app-hero-panel,
+  .institute-app .app-hero,
   .institute-app .app-card,
-  .institute-app .app-search-shell{
-    padding:18px;
+  .institute-app .app-search-shell,
+  .institute-app .app-reader-shell{
+    padding:14px;
   }
 
-  .institute-app .app-section{
-    padding:24px 0 0;
+  .institute-app .app-actions .app-btn,
+  .institute-app .app-button-row .app-btn,
+  .institute-app .app-reader-links .app-btn{
+    width:100%;
   }
 
-  .institute-app .app-course-grid,
-  .institute-app .app-watch-grid,
-  .institute-app .app-practice-grid,
-  .institute-app .app-fellowship-grid{
+  .institute-app .app-reader-controls,
+  .institute-app .app-search-form,
+  .institute-app .app-settings-form,
+  .institute-app .app-profile-grid{
     grid-template-columns:1fr;
   }
 
@@ -718,6 +769,17 @@ html[data-theme="dark"] .institute-app .app-empty{
   }
 
   .institute-app .app-practice-summary button{
+    width:100%;
     margin-left:0;
+  }
+}
+
+@media(max-width:340px){
+  .institute-app .app-shell{
+    width:min(100% - 16px, 1120px);
+  }
+
+  .institute-app .app-tab-link{
+    font-size:.62rem;
   }
 }
