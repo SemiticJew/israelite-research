@@ -113,10 +113,19 @@
       );
       state.booksByCanon = buildBookLists(state.index);
 
+      if (!state.index.length && !navigator.onLine) {
+        state.error = 'Scripture search requires the search index to be available. Reconnect and try again.';
+        return;
+      }
+
       state.loaded = true;
     } catch (error) {
-      state.error = error.message || 'Unable to load Scripture search index.';
-      console.error('[Global Scripture Search]', error);
+      state.error = !navigator.onLine
+        ? 'Scripture search requires the search index to be available. Reconnect and try again.'
+        : (error.message || 'Unable to load Scripture search index.');
+      if (navigator.onLine) {
+        console.error('[Global Scripture Search]', error);
+      }
     } finally {
       state.loading = false;
     }

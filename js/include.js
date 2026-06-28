@@ -131,6 +131,7 @@
 
 // Google Analytics / Google tag
 (function(){
+  if (document.body?.classList.contains("app-page")) return;
   if (document.getElementById("google-gtag-loader")) return;
 
   const gtagScript = document.createElement("script");

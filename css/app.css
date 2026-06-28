@@ -299,6 +299,46 @@
   line-height:1.55;
 }
 
+.institute-app .app-offline-card{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+
+.institute-app .app-offline-points{
+  display:grid;
+  gap:8px;
+}
+
+.institute-app .app-offline-point{
+  padding:10px 11px;
+  border:1px solid rgba(5,74,145,.12);
+  background:rgba(219,228,238,.28);
+  border-radius:8px;
+  color:var(--app-ink);
+  line-height:1.5;
+}
+
+.institute-app .app-connectivity-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:28px;
+  padding:0 10px;
+  border-radius:999px;
+  background:rgba(5,74,145,.08);
+  color:var(--app-blue);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-connectivity-badge.is-offline{
+  background:rgba(241,115,0,.1);
+  color:var(--app-orange);
+}
+
 .institute-app h2,
 .institute-app h3,
 .institute-app h4{

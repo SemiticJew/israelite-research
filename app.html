@@ -353,6 +353,20 @@
         <article class="app-stat"><strong id="profile-chain-count">0</strong><span>Study chains</span></article>
       </div>
 
+      <section class="app-card app-offline-card" id="offline-status-card" aria-labelledby="offline-status-title" aria-live="polite">
+        <div class="app-library-head">
+          <span class="app-label">Connectivity</span>
+          <span class="app-connectivity-badge" id="offline-status-badge">Checking status</span>
+          <h3 id="offline-status-title">Checking app status...</h3>
+          <p id="offline-status-text">Your device connectivity and cached Scripture access will appear here.</p>
+        </div>
+        <div class="app-offline-points" id="offline-availability-list">
+          <div class="app-offline-point">Saved verses, highlights, notes, study chains, and study path progress stay available locally.</div>
+          <div class="app-offline-point">Recently opened chapters can load offline when the browser or service worker has cached them.</div>
+          <div class="app-offline-point">Full Scripture search depends on the search index being cached or reachable.</div>
+        </div>
+      </section>
+
       <section class="app-card app-library-controls" aria-labelledby="saved-library-controls-title">
         <div class="app-library-head">
           <span class="app-label">Saved Library</span>

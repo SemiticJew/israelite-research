@@ -1844,29 +1844,39 @@ async function chapterExists(canon, book, chapter){
 async function resolveReaderLocation({ canon, book, chapter } = {}){
   const settings = readSettings();
   const nextCanon = canon || settings.canon;
-  const books = await loadBookMap(nextCanon);
-  const slugs = orderedBookSlugs(books, nextCanon);
-  const preferredBook = slugs.includes(book || settings.book) ? (book || settings.book) : slugs[0];
+  const requestedBook = book || settings.book;
   const requestedChapter = String(Number(chapter || settings.chapter) || 1);
-  const preferredChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), Number(books[preferredBook]) || 1));
 
-  if (preferredBook && await chapterExists(nextCanon, preferredBook, preferredChapter)){
-    return { canon: nextCanon, book: preferredBook, chapter: preferredChapter };
-  }
+  try{
+    const books = await loadBookMap(nextCanon);
+    const slugs = orderedBookSlugs(books, nextCanon);
+    const preferredBook = slugs.includes(requestedBook) ? requestedBook : slugs[0];
+    const preferredChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), Number(books[preferredBook]) || 1));
 
-  for (const slug of slugs){
-    const total = Number(books[slug]) || 1;
-    const candidateChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), total));
-    const firstChapter = String(1);
-    if (await chapterExists(nextCanon, slug, candidateChapter)){
-      return { canon: nextCanon, book: slug, chapter: candidateChapter };
+    if (preferredBook && await chapterExists(nextCanon, preferredBook, preferredChapter)){
+      return { canon: nextCanon, book: preferredBook, chapter: preferredChapter };
     }
-    if (candidateChapter !== firstChapter && await chapterExists(nextCanon, slug, firstChapter)){
-      return { canon: nextCanon, book: slug, chapter: firstChapter };
-    }
-  }
 
-  return { canon: nextCanon, book: preferredBook || slugs[0] || settings.book, chapter: preferredChapter };
+    for (const slug of slugs){
+      const total = Number(books[slug]) || 1;
+      const candidateChapter = String(Math.min(Math.max(Number(requestedChapter) || 1, 1), total));
+      const firstChapter = String(1);
+      if (await chapterExists(nextCanon, slug, candidateChapter)){
+        return { canon: nextCanon, book: slug, chapter: candidateChapter };
+      }
+      if (candidateChapter !== firstChapter && await chapterExists(nextCanon, slug, firstChapter)){
+        return { canon: nextCanon, book: slug, chapter: firstChapter };
+      }
+    }
+
+    return { canon: nextCanon, book: preferredBook || slugs[0] || requestedBook || settings.book, chapter: preferredChapter };
+  }catch(error){
+    return {
+      canon: nextCanon,
+      book: requestedBook || settings.book,
+      chapter: requestedChapter
+    };
+  }
 }
 
 function truncate(value, max = 150){
@@ -2211,6 +2221,23 @@ function renderTodayDashboard(){
   renderTodayProgressCard();
 }
 
+function renderConnectivityStatus(){
+  const root = $("#offline-status-card");
+  const badge = $("#offline-status-badge");
+  const title = $("#offline-status-title");
+  const text = $("#offline-status-text");
+  if (!root || !badge || !title || !text) return;
+
+  const offline = !navigator.onLine;
+  badge.textContent = offline ? "Offline" : "Online";
+  badge.classList.toggle("is-offline", offline);
+  title.textContent = offline ? "Offline mode" : "Online";
+  text.textContent = offline
+    ? "Offline — saved Scripture and study data remain available where cached. Recently opened chapters may still load if the browser or service worker cached them."
+    : "Online — the app can refresh cached chapters, search data, and media when network access is available.";
+  root.dataset.state = offline ? "offline" : "online";
+}
+
 async function renderDailyPrecept(){
   const root = $("#daily-precept");
   if (!root) return;
@@ -2242,7 +2269,7 @@ async function renderDailyPrecept(){
       </div>
     `;
   }catch(error){
-    root.innerHTML = loadingError("Today's precept could not be loaded.");
+    root.innerHTML = loadingError(navigator.onLine ? "Today's precept could not be loaded." : "Offline: today's precept is unavailable until the precept data has been cached.");
   }
 }
 
@@ -2759,8 +2786,12 @@ function orderedBookSlugs(books, canon){
 
 async function loadBookMap(canon){
   if (bookMaps[canon]) return bookMaps[canon];
-  const map = await getJSON(`/data/${canon}/books.json`);
-  bookMaps[canon] = map && typeof map === "object" ? map : {};
+  try{
+    const map = await getJSON(`/data/${canon}/books.json`);
+    bookMaps[canon] = map && typeof map === "object" ? map : {};
+  }catch(error){
+    bookMaps[canon] = {};
+  }
   return bookMaps[canon];
 }
 
@@ -2772,6 +2803,12 @@ async function populateBooks(canon, selectedBook){
   const books = await loadBookMap(canon);
   const slugs = orderedBookSlugs(books, canon);
   const preferred = slugs.includes(selectedBook) ? selectedBook : slugs[0];
+  if (!slugs.length){
+    const fallbackBook = selectedBook || readSettings().book || "";
+    bookSelect.innerHTML = fallbackBook ? `<option value="${escapeHTML(fallbackBook)}" selected>${escapeHTML(titleFromSlug(fallbackBook))}</option>` : "";
+    chapterSelect.innerHTML = buildChapterOptions(1, readSettings().chapter);
+    return fallbackBook;
+  }
   bookSelect.innerHTML = slugs.map(slug => `<option value="${escapeHTML(slug)}"${slug === preferred ? " selected" : ""}>${escapeHTML(titleFromSlug(slug))}</option>`).join("");
   chapterSelect.innerHTML = buildChapterOptions(books[preferred], readSettings().chapter);
   return preferred;
@@ -2943,7 +2980,7 @@ async function renderRelatedReferences(location, verses, requestId){
       <div class="app-related-empty">
         <span class="app-label">Related Precepts</span>
         <h3 id="reader-related-title">Related Precepts for ${escapeHTML(readerScopeLabel(location))}</h3>
-        <p>The related reference index could not be loaded. Open Biblia or the encyclopedia for more study.</p>
+        <p>${escapeHTML(navigator.onLine ? "The related reference index could not be loaded. Open Biblia or the encyclopedia for more study." : "Offline: related precepts are unavailable until the dictionary or cross-reference data has been cached.")}</p>
       </div>
     `;
   }
@@ -2985,7 +3022,7 @@ async function renderReader(){
         : [];
     if (requestId !== readerRequestId) return;
     if (!Array.isArray(verses) || !verses.length){
-      output.innerHTML = `${loadingError("This chapter is not available in the local reader yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
+      output.innerHTML = `${loadingError(navigator.onLine ? "This chapter is not available in the local reader yet." : "Offline: this chapter is not cached on this device yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
       return;
     }
 
@@ -3068,12 +3105,12 @@ async function renderReader(){
         <div class="app-related-empty">
           <span class="app-label">Related Precepts</span>
           <h3 id="reader-related-title">Reference data unavailable</h3>
-          <p>The related reference index could not be loaded for this chapter.</p>
+          <p>${escapeHTML(navigator.onLine ? "The related reference index could not be loaded for this chapter." : "Offline: this chapter is not cached on this device yet. Recently opened chapters, saved notes, bookmarks, highlights, study chains, and study path progress remain available.")}</p>
         </div>
       `;
     }
     renderStudyChain();
-    output.innerHTML = `${loadingError("The local reader could not load this chapter.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
+    output.innerHTML = `${loadingError(navigator.onLine ? "The local reader could not load this chapter." : "Offline: this chapter is not cached on this device yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
   }
 }
 
@@ -3783,6 +3820,7 @@ function renderProfile(){
   setText("#profile-practice-count", practiceCount);
   setText("#profile-chain-count", chainCount);
   syncProfileSettings();
+  renderConnectivityStatus();
   renderSavedLibrary();
 }
 
@@ -3815,6 +3853,9 @@ async function init(){
   wireProfileSettings();
   wireSavedLibrary();
   applySavedLibraryControls();
+  window.addEventListener("online", renderConnectivityStatus);
+  window.addEventListener("offline", renderConnectivityStatus);
+  renderConnectivityStatus();
   renderTodayDashboard();
   await Promise.all([
     renderStudyPaths(),
