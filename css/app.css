@@ -2189,3 +2189,85 @@ html[data-theme="dark"] .institute-app .app-related-source{
     margin-bottom:16px;
   }
 }
+
+/* App section panel polish */
+.institute-app .app-panel > :is(
+  .app-card,
+  .app-grid,
+  .app-reader-shell,
+  .app-reader-links,
+  .app-offline-card,
+  .app-profile-card,
+  .app-library-section,
+  .app-media-grid,
+  .app-ask-card,
+  .app-study-card,
+  .course-grid,
+  .practice-grid
+){
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > .app-grid,
+.institute-app .app-panel > .course-grid,
+.institute-app .app-panel > .practice-grid,
+.institute-app .app-panel > .app-media-grid{
+  align-items:stretch;
+}
+
+.institute-app .app-panel > :is(
+  .app-card,
+  .app-reader-shell,
+  .app-offline-card,
+  .app-profile-card,
+  .app-library-section,
+  .app-ask-card,
+  .app-study-card
+){
+  padding:18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.28));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-panel > * + *{
+  margin-top:18px;
+}
+
+.institute-app .app-panel > .app-section-head + *{
+  margin-top:0;
+}
+
+@media (max-width:520px){
+  .institute-app .app-panel > :is(
+    .app-card,
+    .app-grid,
+    .app-reader-shell,
+    .app-reader-links,
+    .app-offline-card,
+    .app-profile-card,
+    .app-library-section,
+    .app-media-grid,
+    .app-ask-card,
+    .app-study-card,
+    .course-grid,
+    .practice-grid
+  ){
+    width:calc(100% - 20px);
+  }
+
+  .institute-app .app-panel > :is(
+    .app-card,
+    .app-reader-shell,
+    .app-offline-card,
+    .app-profile-card,
+    .app-library-section,
+    .app-ask-card,
+    .app-study-card
+  ){
+    padding:16px;
+  }
+}
