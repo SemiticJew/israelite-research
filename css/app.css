@@ -460,19 +460,21 @@
 .institute-app .app-reader-controls,
 .institute-app .app-settings-form{
   display:grid;
-  grid-template-columns:repeat(5, minmax(0, 1fr));
-  gap:10px;
+  grid-template-columns:repeat(auto-fit, minmax(128px, 1fr));
+  gap:12px;
+  align-items:stretch;
 }
 
 .institute-app .app-reader-controls > label{
   display:grid;
-  gap:6px;
-  padding:12px 12px 13px;
+  gap:7px;
+  padding:13px 12px 12px;
   border:1px solid var(--app-line);
   border-radius:12px;
   background:#fff;
   box-shadow:0 4px 12px rgba(5,74,145,.04);
   min-width:0;
+  min-height:88px;
 }
 
 .institute-app .app-reader-controls > label > span{
@@ -492,6 +494,17 @@
   padding:10px 12px;
   border-radius:10px;
   background:#f8fafc;
+  font-size:.96rem;
+  line-height:1.2;
+}
+
+.institute-app .app-reader-controls > label:nth-child(-n+3){
+  background:linear-gradient(180deg, rgba(219,228,238,.34), rgba(255,255,255,.96));
+}
+
+.institute-app .app-reader-controls > label:nth-child(4),
+.institute-app .app-reader-controls > label:nth-child(5){
+  background:linear-gradient(180deg, rgba(248,250,252,.98), rgba(255,255,255,.98));
 }
 
 .institute-app .app-reader-links{
@@ -511,6 +524,7 @@
   padding:0 14px;
   font-size:.9rem;
   line-height:1.15;
+  font-weight:900;
 }
 
 .institute-app .app-reader-links{
@@ -527,6 +541,7 @@
 
 .institute-app .app-reader-search-form{
   gap:10px;
+  align-items:end;
 }
 
 .institute-app .app-reader-search-form button{
@@ -543,6 +558,8 @@
 
 .institute-app .app-reader-search-input input{
   margin-top:0;
+  min-height:44px;
+  font-size:.96rem;
 }
 
 .institute-app .app-reader-current,
@@ -1828,9 +1845,22 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-reader-search-form,
   .institute-app .app-settings-form,
   .institute-app .app-library-filter-form,
-  .institute-app .app-reader-study-grid,
   .institute-app .app-profile-grid{
     grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-study-grid{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-controls{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:8px;
+  }
+
+  .institute-app .app-reader-controls > label{
+    min-height:84px;
+    padding:11px 11px 12px;
   }
 
   .institute-app .app-reader-nav,
