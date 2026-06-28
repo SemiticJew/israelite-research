@@ -409,7 +409,8 @@
   font-weight:900;
   letter-spacing:.07em;
   text-transform:uppercase;
-  white-space:nowrap;
+  white-space:normal;
+  text-align:center;
   line-height:1;
 }
 
@@ -464,6 +465,33 @@
 
 .institute-app .app-reader-nav .app-btn{
   min-width:0;
+  min-height:44px;
+  padding:0 14px;
+  font-size:.9rem;
+  line-height:1.15;
+}
+
+.institute-app .app-reader-links{
+  gap:10px;
+}
+
+.institute-app .app-reader-links .app-btn{
+  min-height:44px;
+  padding:0 14px;
+  font-size:.9rem;
+  line-height:1.15;
+  flex:1 1 155px;
+}
+
+.institute-app .app-reader-search-form{
+  gap:10px;
+}
+
+.institute-app .app-reader-search-form button{
+  min-height:44px;
+  padding:0 14px;
+  font-size:.9rem;
+  line-height:1.15;
 }
 
 .institute-app .app-reader-current,
@@ -474,14 +502,16 @@
 .institute-app .app-full-library{
   border:1px solid var(--app-line);
   background:#fbfdff;
-  padding:14px;
+  padding:15px;
+  border-radius:12px;
 }
 
 .institute-app .app-study-chain{
   margin:0 0 12px;
   border:1px solid var(--app-line);
   background:#fbfdff;
-  padding:14px;
+  padding:15px;
+  border-radius:12px;
 }
 
 .institute-app .app-reader-current{
@@ -499,7 +529,7 @@
 .institute-app .app-reader-study-grid{
   display:grid;
   grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr);
-  gap:12px;
+  gap:14px;
   margin:0 0 12px;
 }
 
@@ -609,19 +639,30 @@
 .institute-app .app-reader-action-grid{
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
+  gap:12px;
 }
 
 .institute-app .app-reader-context-meta{
-  margin:0 0 10px;
+  margin:0 0 12px;
+  row-gap:10px;
 }
 
 .institute-app .app-reader-action-grid{
   align-items:center;
+  row-gap:12px;
+}
+
+.institute-app .app-reader-context-meta .app-pill,
+.institute-app .app-reader-action-grid .app-btn{
+  flex:0 0 auto;
 }
 
 .institute-app .app-reader-action-grid .app-btn{
-  flex:1 1 170px;
+  flex:1 1 180px;
+  min-height:44px;
+  padding:0 14px;
+  font-size:.9rem;
+  line-height:1.15;
 }
 
 .institute-app .app-full-library{
@@ -1730,6 +1771,25 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-reader-study-grid,
   .institute-app .app-profile-grid{
     grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-nav,
+  .institute-app .app-reader-links{
+    gap:8px;
+  }
+
+  .institute-app .app-reader-nav .app-btn,
+  .institute-app .app-reader-links .app-btn,
+  .institute-app .app-reader-search-form button{
+    width:100%;
+  }
+
+  .institute-app .app-reader-context-meta{
+    gap:8px;
+  }
+
+  .institute-app .app-reader-action-grid .app-btn{
+    flex:1 1 100%;
   }
 
   .institute-app .app-study-chain-actions,
