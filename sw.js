@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v89';
+const CACHE_VERSION = 'sj-pwa-v90';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -42,6 +42,9 @@ const APP_SHELL_ASSETS = [
   '/js/app-global-scripture-search.js',
   '/data/study-trails.json',
   '/data/scripture-search-index.json',
+  '/data/tanakh/books.json',
+  '/data/newtestament/books.json',
+  '/data/apocrypha/books.json',
   '/data/app-changelog.json',
   '/data/app/courses.json',
   '/data/app/daily-precepts.json',
@@ -95,7 +98,7 @@ const APP_SHELL = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(APP_SHELL_CACHE)
-      .then(cache => cache.addAll(APP_SHELL))
+      .then(cache => cache.addAll(APP_SHELL_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
@@ -141,7 +144,7 @@ async function networkFirst(request){
     return fresh;
   }catch(error){
     const cached = await caches.match(request);
-    return cached || caches.match('/offline.html');
+    return cached || fallbackResponseFor(request);
   }
 }
 
@@ -156,9 +159,24 @@ async function staleWhileRevalidate(request){
       }
       return response;
     })
-    .catch(() => cached);
+    .catch(() => cached || fallbackResponseFor(request));
 
   return cached || fetchPromise;
+}
+
+function fallbackResponseFor(request){
+  const url = new URL(request.url);
+  if (url.pathname.endsWith('.json') || url.pathname.startsWith('/data/')){
+    const body = url.pathname.endsWith('/books.json') ? '{}' : '[]';
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
+  return caches.match('/offline.html');
 }
 
 self.addEventListener('fetch', event => {
