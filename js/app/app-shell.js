@@ -1319,11 +1319,6 @@ function renderStudyPathCards(){
       <article class="app-study-path-card${current ? " is-active" : ""}" data-study-path-card="${escapeHTML(path.id)}">
         <div class="app-study-path-card-head">
           <div class="app-study-path-card-copy">
-            <div class="app-study-path-card-meta">
-              <span class="app-pill">${escapeHTML(path.level || "Study")}</span>
-              <span class="app-pill">${escapeHTML(path.category || "Path")}</span>
-              <span class="app-study-path-count">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>
-            </div>
             <h4>${escapeHTML(path.title)}</h4>
             <p>${escapeHTML(path.description)}</p>
           </div>
