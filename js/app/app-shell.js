@@ -1118,12 +1118,8 @@ function buildRelatedReferences(location, entries, crossrefs){
 }
 
 function renderRelatedCard(item){
-  const badge = escapeHTML(item.sourceLabel || relatedSourceLabel(item));
   const title = escapeHTML(item.title || item.label || "Related reference");
   const snippet = item.snippet ? `<p class="app-related-snippet">${escapeHTML(item.snippet)}</p>` : "";
-  const source = item.verseLabel || item.verse
-    ? `${escapeHTML(CANON_LABELS[item.canon] || titleFromSlug(item.canon))} · ${escapeHTML(item.verseLabel || `${titleFromSlug(item.slug)} ${item.chapter}`)}`
-    : `${escapeHTML(CANON_LABELS[item.canon] || "Reference")}`;
 
   const openBible = item.location
     ? `<button class="app-btn" type="button" data-related-open="bible" data-related-canon="${escapeHTML(item.location.canon)}" data-related-book="${escapeHTML(item.location.book)}" data-related-chapter="${escapeHTML(item.location.chapter)}" data-related-verse="${escapeHTML(item.location.verse || "")}">Open in Bible</button>`
@@ -1137,10 +1133,6 @@ function renderRelatedCard(item){
 
   return `
     <article class="app-related-card">
-      <div class="app-related-meta">
-        <span class="app-pill">${badge}</span>
-        <span class="app-related-source">${source}</span>
-      </div>
       <h4>${title}</h4>
       ${snippet}
       <div class="app-related-actions">
@@ -1360,11 +1352,6 @@ function renderStudyPathDetail(path, focusStepId = ""){
           <span class="app-label">Study Path</span>
           <h3>${escapeHTML(path.title)}</h3>
           <p>${escapeHTML(path.description)}</p>
-          <div class="app-study-path-detail-meta">
-            <span class="app-pill">${escapeHTML(path.level || "Study")}</span>
-            <span class="app-pill">${escapeHTML(path.category || "Path")}</span>
-            <span class="app-study-path-count">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>
-          </div>
         </div>
         <div class="app-study-path-detail-actions">
           <button class="app-btn primary" type="button" data-study-path-continue="${escapeHTML(path.id)}">${done >= total && total ? "Review next step" : "Continue"}</button>
@@ -2388,11 +2375,6 @@ function renderCourseHome(){
     <span class="app-label">Recommended Path</span>
     <h3>${escapeHTML(path?.title || "Study Paths")}</h3>
     <p>${escapeHTML(path ? `${path.description} ${nextStep ? `Next step: ${nextStep.title}.` : ""}` : "Guided study paths will appear here.")}</p>
-    <div class="course-meta">
-      ${path ? `<span class="app-pill">${escapeHTML(path.level || "Study")}</span>` : ""}
-      ${path ? `<span class="app-pill">${escapeHTML(path.category || "Path")}</span>` : ""}
-      ${path ? `<span class="app-pill">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>` : ""}
-    </div>
     <div class="course-progress" aria-label="${done} of ${total} steps complete"><span style="width:${progress}%"></span></div>
     <div class="app-button-row">
       <button class="app-btn primary" type="button" data-home-study-path="${escapeHTML(path?.id || "")}" ${path ? "" : "disabled"}>${done >= total && total ? "Review Study Path" : done ? "Continue Study Path" : "Start Study Path"}</button>
@@ -2412,10 +2394,6 @@ function renderWatchHome(){
       ${items.length
         ? items.map(item => `
           <article class="app-today-recent-item">
-            <div class="app-library-meta">
-              <span class="app-pill">${escapeHTML(item.label || item.type || "Saved")}</span>
-              ${item.canon ? `<span class="app-pill">${escapeHTML(CANON_LABELS[item.canon] || titleFromSlug(item.canon))}</span>` : ""}
-            </div>
             <h4>${escapeHTML(item.ref || item.title || "Saved item")}</h4>
             <p>${escapeHTML(truncate(item.summary || item.text || item.note || "", 120))}</p>
           </article>
