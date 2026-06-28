@@ -216,7 +216,7 @@
           <form class="app-search-form" data-global-scripture-search-form>
             <label>
               <span>Search Scripture</span>
-              <input id="global-scripture-search-input" type="search" placeholder="Search words or phrases..." autocomplete="off" data-global-scripture-search-input>
+              <input id="global-scripture-search-input" type="search" placeholder="Search Tanakh, New Testament, and Apocrypha..." autocomplete="off" data-global-scripture-search-input>
             </label>
 
             <label>
@@ -229,10 +229,20 @@
               </select>
             </label>
 
-            <button type="submit">Search</button>
+            <label>
+              <span>Book</span>
+              <select id="global-scripture-search-book" data-global-scripture-search-book>
+                <option value="all">All books</option>
+              </select>
+            </label>
+
+            <div class="app-search-actions">
+              <button type="submit">Search</button>
+              <button type="button" data-global-scripture-search-clear>Clear</button>
+            </div>
           </form>
 
-          <div class="app-search-status" data-global-scripture-search-status></div>
+          <div class="app-search-status" data-global-scripture-search-status>Search Scripture across Tanakh, New Testament, and Apocrypha.</div>
           <div class="app-search-results" data-global-scripture-search-results></div>
         </div>
       </section>
