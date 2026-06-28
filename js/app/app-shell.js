@@ -2484,10 +2484,6 @@ function renderCourseGrid(){
     return `
       <article class="course-card">
         <div>
-          <div class="course-meta">
-            <span class="app-pill">${escapeHTML(course.level || "study")}</span>
-            <span class="app-pill">${done}/${lessons.length} complete</span>
-          </div>
           <h3>${escapeHTML(course.title)}</h3>
           <p>${escapeHTML(course.description)}</p>
         </div>
@@ -3121,7 +3117,6 @@ async function renderReader(){
           <span class="app-label">${escapeHTML(CANON_LABELS[canon] || "Scripture")}</span>
           <h3>${escapeHTML(titleFromSlug(book))} ${escapeHTML(chapter)}</h3>
         </div>
-        <span class="reader-badge">Local reader</span>
       </div>
       <div class="reader-verses ${escapeHTML(fontSize)} ${spacing === "compact" ? "compact" : ""}">
         ${verses.map(verse => {
