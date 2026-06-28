@@ -461,50 +461,51 @@
 .institute-app .app-settings-form{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(128px, 1fr));
-  gap:12px;
+  gap:10px;
   align-items:stretch;
 }
 
 .institute-app .app-reader-controls > label{
   display:grid;
-  gap:7px;
-  padding:13px 12px 12px;
-  border:1px solid var(--app-line);
-  border-radius:12px;
-  background:#fff;
-  box-shadow:0 4px 12px rgba(5,74,145,.04);
+  gap:5px;
+  padding:10px 10px 11px;
+  border:1px solid rgba(5,74,145,.12);
+  border-radius:10px;
+  background:rgba(219,228,238,.18);
   min-width:0;
-  min-height:88px;
+  min-height:80px;
 }
 
 .institute-app .app-reader-controls > label > span{
   margin:0;
   color:var(--app-blue);
-  font-size:.72rem;
+  font-size:.7rem;
   font-weight:900;
-  letter-spacing:.08em;
+  letter-spacing:.09em;
   text-transform:uppercase;
-  line-height:1.1;
+  line-height:1;
 }
 
 .institute-app .app-reader-controls > label > select{
   margin-top:0;
   min-width:0;
   min-height:44px;
-  padding:10px 12px;
-  border-radius:10px;
-  background:#f8fafc;
-  font-size:.96rem;
+  padding:10px 11px;
+  border-radius:8px;
+  border-color:rgba(5,74,145,.14);
+  background:#fff;
+  font-size:.94rem;
   line-height:1.2;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
 }
 
 .institute-app .app-reader-controls > label:nth-child(-n+3){
-  background:linear-gradient(180deg, rgba(219,228,238,.34), rgba(255,255,255,.96));
+  background:rgba(219,228,238,.22);
 }
 
 .institute-app .app-reader-controls > label:nth-child(4),
 .institute-app .app-reader-controls > label:nth-child(5){
-  background:linear-gradient(180deg, rgba(248,250,252,.98), rgba(255,255,255,.98));
+  background:rgba(248,250,252,.92);
 }
 
 .institute-app .app-reader-links{
@@ -512,7 +513,7 @@
 }
 
 .institute-app .app-reader-nav{
-  margin:0 0 12px;
+  margin:16px 0 16px;
   display:grid;
   grid-template-columns:repeat(2, minmax(0, 1fr));
   gap:10px;
@@ -522,9 +523,11 @@
   min-width:0;
   min-height:44px;
   padding:0 14px;
-  font-size:.9rem;
-  line-height:1.15;
+  font-size:.88rem;
+  line-height:1.1;
   font-weight:900;
+  border-color:rgba(5,74,145,.16);
+  background:#fff;
 }
 
 .institute-app .app-reader-links{
@@ -542,13 +545,14 @@
 .institute-app .app-reader-search-form{
   gap:10px;
   align-items:end;
+  margin-top:2px;
 }
 
 .institute-app .app-reader-search-form button{
   min-height:44px;
   padding:0 14px;
-  font-size:.9rem;
-  line-height:1.15;
+  font-size:.88rem;
+  line-height:1.1;
 }
 
 .institute-app .app-reader-search-input{
@@ -570,7 +574,7 @@
 .institute-app .app-full-library{
   border:1px solid var(--app-line);
   background:#fbfdff;
-  padding:15px;
+  padding:14px;
   border-radius:12px;
 }
 
@@ -597,7 +601,7 @@
 .institute-app .app-reader-study-grid{
   display:grid;
   grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr);
-  gap:14px;
+  gap:12px;
   margin:0 0 12px;
 }
 
@@ -707,17 +711,17 @@
 .institute-app .app-reader-action-grid{
   display:flex;
   flex-wrap:wrap;
-  gap:12px;
+  gap:10px;
 }
 
 .institute-app .app-reader-context-meta{
-  margin:0 0 12px;
-  row-gap:10px;
+  margin:0 0 10px;
+  row-gap:8px;
 }
 
 .institute-app .app-reader-action-grid{
   align-items:center;
-  row-gap:12px;
+  row-gap:10px;
 }
 
 .institute-app .app-reader-context-meta .app-pill,
@@ -728,9 +732,14 @@
 .institute-app .app-reader-action-grid .app-btn{
   flex:1 1 180px;
   min-height:44px;
-  padding:0 14px;
-  font-size:.9rem;
-  line-height:1.15;
+  padding:0 13px;
+  font-size:.88rem;
+  line-height:1.1;
+  letter-spacing:.01em;
+  border-color:rgba(5,74,145,.14);
+  background:#fff;
+  justify-content:flex-start;
+  text-align:left;
 }
 
 .institute-app .app-reader-study-actions{
