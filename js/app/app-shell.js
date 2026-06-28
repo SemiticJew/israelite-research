@@ -2907,6 +2907,25 @@ function renderProfile(){
   renderSavedLibrary();
 }
 
+function openScriptureResultInReader(result){
+  if (!result) return Promise.resolve(false);
+  const canon = String(result.canon || "").toLowerCase();
+  const book = String(result.slug || result.book || "").toLowerCase();
+  const chapter = String(result.chapter || "1");
+  const verse = String(result.verse || "");
+  if (!canon || !book || !chapter) return Promise.resolve(false);
+  setActiveTab("bible");
+  return setReaderLocation({ canon, book, chapter, verse });
+}
+
+window.semiticJewApp = {
+  setActiveTab,
+  setReaderLocation,
+  addToCurrentStudyChain,
+  copyTextToClipboard,
+  openScriptureResult: openScriptureResultInReader
+};
+
 async function init(){
   wireTabs();
   wireAsk();

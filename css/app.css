@@ -743,11 +743,18 @@
 
 .institute-app .app-search-form{
   display:grid;
-  grid-template-columns:1fr minmax(150px, .35fr) auto;
+  grid-template-columns:minmax(0, 1fr) minmax(150px, .35fr) minmax(170px, .45fr) auto;
   gap:10px;
   align-items:end;
 }
 
+.institute-app .app-search-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-search-actions button,
 .institute-app .app-search-form button{
   min-height:44px;
   border-color:var(--app-orange);
@@ -777,6 +784,18 @@
   text-decoration:none;
 }
 
+.institute-app .app-search-result-card{
+  gap:10px;
+}
+
+.institute-app .app-search-result-header{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 12px;
+}
+
 .institute-app .app-search-ref{
   color:var(--app-ink);
   font-weight:900;
@@ -799,6 +818,25 @@
   background:rgba(241,115,0,.18);
   color:inherit;
   padding:0 2px;
+}
+
+.institute-app .app-search-result-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-search-result-actions .app-btn,
+.institute-app .app-search-result-actions button{
+  min-height:38px;
+  padding:0 10px;
+}
+
+.institute-app .app-search-result-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
 }
 
 .institute-app .course-card,
@@ -1203,6 +1241,12 @@ html[data-theme="dark"] .institute-app .app-reader-search-empty{
   border-color:var(--app-line);
 }
 
+html[data-theme="dark"] .institute-app .app-search-result{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
 html[data-theme="dark"] .institute-app .app-reader-search-result.is-active{
   background:rgba(5,74,145,.24);
   border-color:rgba(129,164,205,.42);
@@ -1322,7 +1366,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-reader-links .app-btn,
   .institute-app .app-reader-nav .app-btn,
   .institute-app .app-reader-action-grid .app-btn,
-  .institute-app .app-reader-search-form .app-btn{
+  .institute-app .app-reader-search-form .app-btn,
+  .institute-app .app-search-actions .app-btn{
     width:100%;
   }
 
@@ -1356,6 +1401,11 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-practice-summary button{
     width:100%;
     margin-left:0;
+  }
+
+  .institute-app .app-search-result-header{
+    align-items:flex-start;
+    flex-direction:column;
   }
 }
 
