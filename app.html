@@ -161,6 +161,22 @@
           <button class="app-btn" type="button" id="reader-next">Next chapter</button>
         </div>
 
+        <section class="app-reader-search" id="reader-chapter-search-panel" aria-labelledby="reader-chapter-search-title">
+          <div class="app-section-head compact app-reader-search-head">
+            <span class="app-label">Chapter Search</span>
+            <h3 id="reader-chapter-search-title">Search this chapter</h3>
+          </div>
+          <form class="app-reader-search-form" id="reader-chapter-search-form">
+            <label class="app-reader-search-input">
+              <span>Search this chapter</span>
+              <input id="reader-chapter-search" type="search" placeholder="Search words in this chapter..." autocomplete="off">
+            </label>
+            <button class="app-btn" type="button" id="reader-chapter-search-clear">Clear</button>
+          </form>
+          <p class="app-reader-search-status" id="reader-chapter-search-status" aria-live="polite">Search within the current chapter.</p>
+          <div class="app-reader-search-results" id="reader-chapter-search-results" aria-live="polite"></div>
+        </section>
+
         <div class="app-reader-study-grid">
           <aside class="app-reader-context" id="reader-context" aria-live="polite"></aside>
           <aside class="app-reader-study-actions" id="reader-study-actions" aria-label="Reader study actions"></aside>
