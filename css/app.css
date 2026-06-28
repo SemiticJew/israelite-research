@@ -814,20 +814,41 @@
 .institute-app .app-study-path-detail-meta{
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
+  gap:8px;
   margin:0 0 10px;
 }
 
 .institute-app .app-study-path-count{
   flex:0 0 auto;
-  padding:8px 10px;
+  align-self:flex-start;
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 10px;
+  border:1px solid rgba(5,74,145,.12);
   border-radius:999px;
-  background:rgba(219,228,238,.72);
+  background:rgba(219,228,238,.42);
   color:var(--app-blue);
-  font-size:.76rem;
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
+  font-size:.7rem;
+  font-weight:850;
+  letter-spacing:.03em;
+  text-transform:none;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.institute-app .app-study-path-card .app-study-path-count{
+  margin-top:1px;
+}
+
+.institute-app .app-study-path-card.is-active .app-study-path-count{
+  background:rgba(5,74,145,.08);
+  border-color:rgba(5,74,145,.18);
+}
+
+.institute-app .app-study-path-detail-meta .app-pill{
+  background:rgba(219,228,238,.34);
+  border-color:rgba(5,74,145,.12);
 }
 
 .institute-app .app-study-path-card-actions,
@@ -876,14 +897,16 @@
 
 .institute-app .app-study-path-step-badge{
   flex:0 0 auto;
-  padding:7px 10px;
+  min-height:28px;
+  padding:0 10px;
   border-radius:999px;
   background:rgba(241,115,0,.08);
   color:var(--app-orange);
-  font-size:.72rem;
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
+  font-size:.7rem;
+  font-weight:850;
+  letter-spacing:.03em;
+  text-transform:none;
+  line-height:1;
 }
 
 .institute-app .app-study-path-ref-list{
@@ -1730,6 +1753,7 @@ html[data-theme="dark"] .institute-app .app-study-path-count,
 html[data-theme="dark"] .institute-app .app-study-path-step-badge{
   background:rgba(129,164,205,.14);
   color:#dbe4ee;
+  border-color:rgba(129,164,205,.18);
 }
 
 html[data-theme="dark"] .institute-app .app-study-chain-status{
