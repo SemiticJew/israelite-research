@@ -85,6 +85,8 @@ let bookMaps = {};
 let readerRequestId = 0;
 let readerFocusVerse = "";
 let readerActiveVerse = "";
+let readerChapterSearchTerm = "";
+let currentReaderVerses = [];
 let currentReaderLocation = { canon: "", book: "", chapter: "" };
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
@@ -1322,6 +1324,104 @@ function truncate(value, max = 150){
   return text.length > max ? `${text.slice(0, max - 1).trim()}...` : text;
 }
 
+function highlightSearchMarkup(text, term){
+  const raw = String(text || "");
+  const query = String(term || "").trim();
+  if (!query) return escapeHTML(raw);
+  const source = raw.toLowerCase();
+  const needle = query.toLowerCase();
+  if (!needle) return escapeHTML(raw);
+  let index = 0;
+  const parts = [];
+  while (true){
+    const found = source.indexOf(needle, index);
+    if (found === -1) break;
+    parts.push(escapeHTML(raw.slice(index, found)));
+    parts.push(`<mark>${escapeHTML(raw.slice(found, found + query.length))}</mark>`);
+    index = found + query.length;
+  }
+  parts.push(escapeHTML(raw.slice(index)));
+  return parts.join("");
+}
+
+function chapterSearchResults(){
+  const term = readerChapterSearchTerm.trim().toLowerCase();
+  const verses = Array.isArray(currentReaderVerses) ? currentReaderVerses : [];
+  if (!term) return [];
+  return verses.filter(verse => {
+    const text = String(verse.t ?? verse.text ?? "");
+    return text.toLowerCase().includes(term) || String(verse.v || "").includes(term);
+  });
+}
+
+function clearChapterSearch(){
+  readerChapterSearchTerm = "";
+  const input = $("#reader-chapter-search");
+  if (input) input.value = "";
+  renderChapterSearch();
+  syncReaderSearchHighlight();
+}
+
+function renderChapterSearch(verses = currentReaderVerses){
+  const input = $("#reader-chapter-search");
+  const status = $("#reader-chapter-search-status");
+  const resultsRoot = $("#reader-chapter-search-results");
+  if (!input || !status || !resultsRoot) return;
+
+  const term = readerChapterSearchTerm.trim();
+  const matches = chapterSearchResults();
+
+  if (!term){
+    status.textContent = "Search within the current chapter.";
+    resultsRoot.innerHTML = "";
+    return;
+  }
+
+  if (!matches.length){
+    status.textContent = "No matches in this chapter.";
+    resultsRoot.innerHTML = `
+      <div class="app-reader-search-empty">
+        <p>No matches in this chapter.</p>
+      </div>
+    `;
+    return;
+  }
+
+  status.textContent = `${matches.length} match${matches.length === 1 ? "" : "es"} in this chapter.`;
+  resultsRoot.innerHTML = matches.map(verse => {
+    const verseNumber = verse.v ?? "";
+    const ref = `${titleFromSlug(currentReaderLocation.book)} ${currentReaderLocation.chapter}:${verseNumber}`;
+    const text = verse.t ?? verse.text ?? "";
+    const active = String(verseNumber) === String(readerActiveVerse || "");
+    return `
+      <button type="button" class="app-reader-search-result${active ? " is-active" : ""}" data-chapter-search-verse="${escapeHTML(verseNumber)}" aria-label="${escapeHTML(ref)}">
+        <span class="app-reader-search-ref">${escapeHTML(ref)}</span>
+        <span class="app-reader-search-text">${highlightSearchMarkup(truncate(text, 180), term)}</span>
+      </button>
+    `;
+  }).join("");
+}
+
+function syncReaderSearchHighlight(){
+  $$(".reader-verse").forEach(node => {
+    const verseNumber = node.dataset.verse || "";
+    const text = node.dataset.text || "";
+    const target = $(".reader-verse-text", node);
+    if (!target) return;
+    target.innerHTML = `<span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${highlightSearchMarkup(text, readerChapterSearchTerm)}`;
+  });
+}
+
+async function openChapterSearchResult(verse){
+  if (!verse) return;
+  await setReaderLocation({
+    canon: currentReaderLocation.canon,
+    book: currentReaderLocation.book,
+    chapter: currentReaderLocation.chapter,
+    verse
+  });
+}
+
 function lessonKey(courseId, lessonId){
   return `${courseId}:${lessonId}`;
 }
@@ -1811,6 +1911,11 @@ async function setReaderLocation({ canon, book, chapter, verse, fontSize, spacin
   const changedChapter = !sameReaderLocation(currentReaderLocation, nextLocation);
   currentReaderLocation = nextLocation;
   if (changedChapter && !verse) readerActiveVerse = "";
+  if (changedChapter){
+    readerChapterSearchTerm = "";
+    const chapterSearchInput = $("#reader-chapter-search");
+    if (chapterSearchInput) chapterSearchInput.value = "";
+  }
 
   const canonSelect = $("#reader-canon");
   const bookSelect = $("#reader-book");
@@ -2012,6 +2117,7 @@ async function renderReader(){
   const focusVerse = readerFocusVerse || readerActiveVerse || "";
   readerFocusVerse = "";
   readerActiveVerse = focusVerse ? String(focusVerse) : "";
+  currentReaderVerses = verses;
   writeLastRead({ canon, book, chapter, verse: readerActiveVerse || "" });
   await updateReaderNav();
 
@@ -2048,7 +2154,7 @@ async function renderReader(){
           }));
           return `
             <section class="reader-verse${highlighted ? " is-highlighted" : ""}${isActive ? " is-active" : ""}" tabindex="0" role="button" aria-label="${escapeHTML(ref)}" data-key="${escapeHTML(key)}" data-ref="${escapeHTML(ref)}" data-text="${escapeHTML(text)}" data-verse="${escapeHTML(verseNumber)}">
-              <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${escapeHTML(text)}</p>
+              <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${highlightSearchMarkup(text, readerChapterSearchTerm)}</p>
               ${note ? `<p class="reader-note"><strong>Note:</strong> ${escapeHTML(note.note)}</p>` : ""}
               <div class="reader-actions" aria-label="${escapeHTML(ref)} actions">
                 <button type="button" data-reader-action="copy">Copy</button>
@@ -2064,6 +2170,8 @@ async function renderReader(){
     `;
 
     updateReaderVerseSelection();
+    renderChapterSearch(verses);
+    syncReaderSearchHighlight();
     await renderRelatedReferences({ canon, book, chapter, verse: readerActiveVerse }, verses, requestId);
     renderStudyChain();
 
@@ -2074,6 +2182,9 @@ async function renderReader(){
   }catch(error){
     if (requestId !== readerRequestId) return;
     await updateReaderNav();
+    currentReaderVerses = [];
+    renderChapterSearch([]);
+    syncReaderSearchHighlight();
     const related = $("#reader-related");
     if (related){
       related.innerHTML = `
@@ -2120,7 +2231,11 @@ function wireReader(){
     await setReaderLocation({ canon: $("#reader-canon").value, book: event.target.value, chapter: "1" });
   });
 
-  ["#reader-chapter", "#reader-font-size", "#reader-spacing"].forEach(selector => {
+  $("#reader-chapter")?.addEventListener("change", async event => {
+    await setReaderLocation({ canon: $("#reader-canon").value, book: $("#reader-book").value, chapter: event.target.value });
+  });
+
+  ["#reader-font-size", "#reader-spacing"].forEach(selector => {
     $(selector)?.addEventListener("change", renderReader);
   });
 
@@ -2132,6 +2247,45 @@ function wireReader(){
   $("#reader-next")?.addEventListener("click", async () => {
     const location = await getAdjacentReaderLocation("next");
     if (location) await setReaderLocation(location);
+  });
+
+  const chapterSearchForm = $("#reader-chapter-search-form");
+  const chapterSearchInput = $("#reader-chapter-search");
+  const chapterSearchClear = $("#reader-chapter-search-clear");
+  const chapterSearchResultsRoot = $("#reader-chapter-search-results");
+
+  chapterSearchInput?.addEventListener("input", () => {
+    readerChapterSearchTerm = chapterSearchInput.value || "";
+    renderChapterSearch();
+    syncReaderSearchHighlight();
+  });
+
+  chapterSearchForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const results = chapterSearchResults();
+    if (!results.length) return;
+    const verse = String(results[0].v || "");
+    await openChapterSearchResult(verse);
+  });
+
+  chapterSearchInput?.addEventListener("keydown", async event => {
+    if (event.key !== "Enter") return;
+    const results = chapterSearchResults();
+    if (!results.length) return;
+    event.preventDefault();
+    await openChapterSearchResult(String(results[0].v || ""));
+  });
+
+  chapterSearchClear?.addEventListener("click", () => {
+    clearChapterSearch();
+    chapterSearchInput?.focus();
+  });
+
+  chapterSearchResultsRoot?.addEventListener("click", async event => {
+    const button = event.target.closest("[data-chapter-search-verse]");
+    if (!button) return;
+    event.preventDefault();
+    await openChapterSearchResult(button.dataset.chapterSearchVerse || "");
   });
 
   document.addEventListener("click", async event => {

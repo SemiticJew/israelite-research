@@ -334,6 +334,7 @@
 .institute-app .app-reader-current,
 .institute-app .app-reader-context,
 .institute-app .app-reader-study-actions,
+.institute-app .app-reader-search,
 .institute-app .app-reader-related,
 .institute-app .app-full-library{
   border:1px solid var(--app-line);
@@ -487,6 +488,86 @@
 
 .institute-app .app-reader-related{
   margin:0 0 12px;
+}
+
+.institute-app .app-reader-search{
+  margin:0 0 12px;
+}
+
+.institute-app .app-reader-search-head{
+  margin-bottom:10px;
+}
+
+.institute-app .app-reader-search-form{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  gap:8px;
+  align-items:end;
+}
+
+.institute-app .app-reader-search-input{
+  min-width:0;
+}
+
+.institute-app .app-reader-search-form button{
+  min-height:44px;
+  padding:0 14px;
+}
+
+.institute-app .app-reader-search-status{
+  margin:10px 0 0;
+  color:var(--app-muted);
+  font-size:.88rem;
+  font-weight:800;
+}
+
+.institute-app .app-reader-search-results{
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+
+.institute-app .app-reader-search-result,
+.institute-app .app-reader-search-empty{
+  display:grid;
+  gap:6px;
+  width:100%;
+  text-align:left;
+  padding:12px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  border-radius:8px;
+}
+
+.institute-app .app-reader-search-result{
+  cursor:pointer;
+}
+
+.institute-app .app-reader-search-result.is-active{
+  border-color:rgba(5,74,145,.42);
+  background:rgba(219,228,238,.72);
+}
+
+.institute-app .app-reader-search-ref{
+  color:var(--app-blue);
+  font-size:.84rem;
+  font-weight:900;
+}
+
+.institute-app .app-reader-search-text{
+  color:var(--app-ink);
+  line-height:1.5;
+}
+
+.institute-app .app-reader-search-text mark{
+  background:rgba(241,115,0,.18);
+  color:inherit;
+  padding:0 2px;
+}
+
+.institute-app .app-reader-search-empty{
+  color:var(--app-muted);
 }
 
 .institute-app .app-related-head{
@@ -1049,6 +1130,7 @@ html[data-theme="dark"] .institute-app .ai-response-card,
 html[data-theme="dark"] .institute-app .app-reader-current,
 html[data-theme="dark"] .institute-app .app-reader-context,
 html[data-theme="dark"] .institute-app .app-reader-study-actions,
+html[data-theme="dark"] .institute-app .app-reader-search,
 html[data-theme="dark"] .institute-app .app-reader-related,
 html[data-theme="dark"] .institute-app .app-full-library,
 html[data-theme="dark"] .institute-app .app-library-item,
@@ -1114,6 +1196,22 @@ html[data-theme="dark"] .institute-app .app-related-actions .app-btn{
   border-color:var(--app-line);
 }
 
+html[data-theme="dark"] .institute-app .app-reader-search-result,
+html[data-theme="dark"] .institute-app .app-reader-search-empty{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-reader-search-result.is-active{
+  background:rgba(5,74,145,.24);
+  border-color:rgba(129,164,205,.42);
+}
+
+html[data-theme="dark"] .institute-app .app-reader-search-ref{
+  color:#DBE4EE;
+}
+
 html[data-theme="dark"] .institute-app .app-study-chain,
 html[data-theme="dark"] .institute-app .app-study-chain-item{
   background:#07111f;
@@ -1163,6 +1261,7 @@ html[data-theme="dark"] .institute-app .app-related-source{
 
   .institute-app .app-reader-controls,
   .institute-app .app-search-form,
+  .institute-app .app-reader-search-form,
   .institute-app .app-settings-form,
   .institute-app .app-library-filter-form,
   .institute-app .app-reader-study-grid,
@@ -1222,12 +1321,14 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-button-row .app-btn,
   .institute-app .app-reader-links .app-btn,
   .institute-app .app-reader-nav .app-btn,
-  .institute-app .app-reader-action-grid .app-btn{
+  .institute-app .app-reader-action-grid .app-btn,
+  .institute-app .app-reader-search-form .app-btn{
     width:100%;
   }
 
   .institute-app .app-reader-controls,
   .institute-app .app-search-form,
+  .institute-app .app-reader-search-form,
   .institute-app .app-settings-form,
   .institute-app .app-library-filter-form,
   .institute-app .app-reader-study-grid,
