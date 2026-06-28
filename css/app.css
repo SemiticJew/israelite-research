@@ -17,6 +17,19 @@
   box-sizing:border-box;
 }
 
+.institute-app,
+.institute-app *{
+  -webkit-tap-highlight-color:transparent;
+}
+
+.institute-app button,
+.institute-app a,
+.institute-app input,
+.institute-app select,
+.institute-app textarea{
+  touch-action:manipulation;
+}
+
 .institute-app .app-shell{
   width:min(1120px, calc(100% - 28px));
   margin:0 auto;
