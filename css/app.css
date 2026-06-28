@@ -778,8 +778,9 @@
 .institute-app .app-study-path-card{
   padding:16px;
   display:grid;
-  gap:16px;
-  border-radius:12px;
+  gap:15px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(219,228,238,.18)) #fbfdff;
 }
 
 .institute-app .app-study-path-card.is-active{
@@ -796,10 +797,19 @@
   align-items:flex-start;
 }
 
+.institute-app .app-study-path-card-copy,
+.institute-app .app-study-path-detail-copy{
+  display:grid;
+  gap:10px;
+  min-width:0;
+}
+
 .institute-app .app-study-path-card-head h4,
 .institute-app .app-study-path-detail-head h3,
 .institute-app .app-study-path-step-head h4{
-  margin:0 0 10px;
+  margin:0;
+  line-height:1.25;
+  letter-spacing:-.01em;
 }
 
 .institute-app .app-study-path-card-head p,
@@ -815,30 +825,31 @@
   display:flex;
   flex-wrap:wrap;
   gap:8px;
-  margin:0 0 16px;
+  margin:0;
+  align-items:center;
+  padding-bottom:2px;
 }
 
+.institute-app .app-study-path-card .app-study-path-card-meta .app-pill,
+.institute-app .app-study-path-detail-meta .app-pill,
 .institute-app .app-study-path-count{
   flex:0 0 auto;
   align-self:flex-start;
   display:inline-flex;
   align-items:center;
-  min-height:30px;
-  padding:0 10px;
+  min-height:28px;
+  padding:0 11px;
   border:1px solid rgba(5,74,145,.12);
   border-radius:999px;
-  background:rgba(219,228,238,.42);
+  background:rgba(219,228,238,.38);
   color:var(--app-blue);
-  font-size:.7rem;
+  font-size:.71rem;
   font-weight:850;
-  letter-spacing:.03em;
+  letter-spacing:.05em;
   text-transform:none;
   line-height:1;
+  font-variant-numeric:tabular-nums;
   white-space:nowrap;
-}
-
-.institute-app .app-study-path-card .app-study-path-count{
-  margin-top:4px;
 }
 
 .institute-app .app-study-path-card.is-active .app-study-path-count{
@@ -846,6 +857,7 @@
   border-color:rgba(5,74,145,.18);
 }
 
+.institute-app .app-study-path-card .app-study-path-card-meta .app-pill,
 .institute-app .app-study-path-detail-meta .app-pill{
   background:rgba(219,228,238,.34);
   border-color:rgba(5,74,145,.12);
@@ -867,7 +879,7 @@
 
 .institute-app .app-study-path-detail{
   display:grid;
-  gap:14px;
+  gap:16px;
   min-height:0;
 }
 
@@ -877,13 +889,13 @@
 
 .institute-app .app-study-path-steps{
   display:grid;
-  gap:14px;
+  gap:12px;
 }
 
 .institute-app .app-study-path-step{
   padding:15px;
   display:grid;
-  gap:13px;
+  gap:12px;
 }
 
 .institute-app .app-study-path-step.is-target{
@@ -1810,6 +1822,20 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app .app-study-path-detail-head,
   .institute-app .app-study-path-step-head{
     flex-direction:column;
+  }
+
+  .institute-app .app-study-path-card-head{
+    gap:12px;
+  }
+
+  .institute-app .app-study-path-card-meta,
+  .institute-app .app-study-path-detail-meta{
+    margin:0;
+  }
+
+  .institute-app .app-study-path-card-copy,
+  .institute-app .app-study-path-detail-copy{
+    gap:8px;
   }
 
   .institute-app .app-today-stats{
