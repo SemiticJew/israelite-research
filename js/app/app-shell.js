@@ -370,10 +370,19 @@ let currentReaderVerses = [];
 let currentReaderLocation = { canon: "", book: "", chapter: "" };
 let currentStudyPathId = "";
 let currentStudyPathStepId = "";
+let dailyPreceptsPromise = null;
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
 const chapterAvailabilityCache = new Map();
 const chapterVerseCache = new Map();
+
+const DAILY_PROMPTS = [
+  "What does this passage reveal about covenant identity?",
+  "What command, promise, or warning appears in this passage?",
+  "What precept connects this verse to the rest of Scripture?",
+  "How does this text correct common religious assumptions?",
+  "What does this passage require the reader to obey today?"
+];
 
 function $(selector, root = document){
   return root.querySelector(selector);
@@ -484,6 +493,7 @@ function writeReaderMarks(marks){
     notes: Array.isArray(marks.notes) ? marks.notes : []
   });
   renderProfile();
+  renderTodayDashboard();
 }
 
 function markKey(canon, book, chapter, verseNumber){
@@ -655,6 +665,7 @@ function removeSavedItem(type, source, key){
   }
 
   renderProfile();
+  renderTodayDashboard();
 }
 
 function updateAppNote(key, note){
@@ -1158,6 +1169,7 @@ function readCurrentStudyChain(){
 function writeCurrentStudyChain(items){
   writeJSONStorage(CURRENT_STUDY_CHAIN_KEY, Array.isArray(items) ? items : []);
   renderStudyChain();
+  renderTodayDashboard();
 }
 
 function readStudyPathProgress(){
@@ -1204,6 +1216,7 @@ function setStudyPathStepComplete(pathId, stepId, complete){
     updatedAt: new Date().toISOString()
   };
   writeStudyPathProgress(progress);
+  renderTodayDashboard();
 }
 
 function studyPathNextIncompleteStep(path){
@@ -1786,6 +1799,7 @@ async function saveCurrentStudyChain(){
   writeSavedStudyChains(saved);
   renderSavedLibrary();
   renderProfile();
+  renderTodayDashboard();
 }
 
 function scriptureRefLabel(ref){
@@ -2021,19 +2035,195 @@ function wireTabs(){
   setActiveTab(activeTabFromHash(), false);
 }
 
+async function loadDailyPrecepts(){
+  if (!dailyPreceptsPromise){
+    dailyPreceptsPromise = getJSON(DATA.precepts)
+      .then(data => Array.isArray(data) ? data : [])
+      .catch(() => []);
+  }
+  return dailyPreceptsPromise;
+}
+
+function stableDailyIndex(seed, size){
+  const total = Array.from(String(seed || "")).reduce((acc, char) => ((acc * 33) + char.charCodeAt(0)) >>> 0, 5381);
+  return size > 0 ? total % size : 0;
+}
+
+function dailyPromptForToday(){
+  if (!DAILY_PROMPTS.length) return "";
+  return DAILY_PROMPTS[stableDailyIndex(todayKey(), DAILY_PROMPTS.length)];
+}
+
+function dailyPreceptForToday(list){
+  if (!Array.isArray(list) || !list.length) return null;
+  return list[stableDailyIndex(todayKey(), list.length)] || null;
+}
+
+async function resolveScriptureReferenceLocation(reference, preferredCanon = ""){
+  const text = String(reference || "").trim();
+  if (!text) return null;
+  const canonOrder = preferredCanon
+    ? [preferredCanon, ...Object.keys(CANON_LABELS).filter(canon => canon !== preferredCanon)]
+    : Object.keys(CANON_LABELS);
+  const normalizedText = text.toLowerCase();
+
+  for (const canon of canonOrder){
+    const books = await loadBookMap(canon);
+    const candidates = orderedBookSlugs(books, canon)
+      .map(slug => ({ slug, title: titleFromSlug(slug) }))
+      .sort((a, b) => b.title.length - a.title.length);
+
+    for (const candidate of candidates){
+      const title = candidate.title.toLowerCase();
+      const slugText = candidate.slug.toLowerCase().replace(/-/g, " ");
+      const titleIndex = normalizedText.indexOf(title);
+      const slugIndex = slugText !== title ? normalizedText.indexOf(slugText) : -1;
+      const index = titleIndex >= 0 ? titleIndex : slugIndex;
+      if (index < 0) continue;
+
+      const after = text.slice(index + (titleIndex >= 0 ? candidate.title.length : slugText.length)).trim();
+      const match = after.match(/^(\d+)(?::(\d+)(?:\s*[-–]\s*(\d+))?)?/);
+      if (!match || !match[1]) continue;
+
+      const chapter = match[1];
+      const verse = match[2] || "";
+      const verseEnd = match[3] || verse;
+      return {
+        canon,
+        book: candidate.slug,
+        chapter,
+        verse,
+        verseEnd
+      };
+    }
+  }
+
+  return null;
+}
+
+function studyPathProgressSummary(){
+  const progress = readStudyPathProgress();
+  const completedSteps = Object.values(progress).reduce((sum, entry) => sum + (Array.isArray(entry?.completed) ? entry.completed.length : 0), 0);
+  const activePaths = STUDY_PATHS.filter(path => {
+    const done = studyPathCompleteCount(path);
+    return done > 0 && done < (Array.isArray(path.steps) ? path.steps.length : 0);
+  }).length;
+  const completedPaths = STUDY_PATHS.filter(path => {
+    const total = Array.isArray(path.steps) ? path.steps.length : 0;
+    return total > 0 && studyPathCompleteCount(path) >= total;
+  }).length;
+  return { completedSteps, activePaths, completedPaths };
+}
+
+function recommendedStudyPath(){
+  const partialPaths = STUDY_PATHS
+    .map(path => ({
+      path,
+      done: studyPathCompleteCount(path),
+      total: Array.isArray(path.steps) ? path.steps.length : 0,
+      updatedAt: studyPathProgress(path.id).updatedAt || ""
+    }))
+    .filter(item => item.done > 0 && item.done < item.total)
+    .sort((a, b) => Date.parse(b.updatedAt || "") - Date.parse(a.updatedAt || "") || b.done - a.done);
+
+  if (partialPaths.length) return partialPaths[0].path;
+
+  const nextIncomplete = STUDY_PATHS.find(path => studyPathCompleteCount(path) < (Array.isArray(path.steps) ? path.steps.length : 0));
+  if (nextIncomplete) return nextIncomplete;
+
+  return STUDY_PATHS.find(path => path.id === "who-are-israelites") || STUDY_PATHS[0] || null;
+}
+
+function recentSavedWorkItems(){
+  const notes = [...appNoteItems(), ...siteNoteItems()].sort((a, b) => savedItemTime(b) - savedItemTime(a))[0];
+  const bookmarks = [...appBookmarkItems(), ...siteBookmarkItems()].sort((a, b) => savedItemTime(b) - savedItemTime(a))[0];
+  const highlights = [...appHighlightItems(), ...siteHighlightItems()].sort((a, b) => savedItemTime(b) - savedItemTime(a))[0];
+  const chains = readSavedStudyChains().sort((a, b) => Date.parse(b.updatedAt || b.createdAt || "") - Date.parse(a.updatedAt || a.createdAt || ""));
+
+  return [
+    notes ? { ...notes, label: "Recent note", summary: notes.note || notes.text || "Saved locally." } : null,
+    bookmarks ? { ...bookmarks, label: "Recent bookmark", summary: bookmarks.text || "Saved locally." } : null,
+    highlights ? { ...highlights, label: "Recent highlight", summary: highlights.text || "Saved locally." } : null,
+    chains[0]
+      ? {
+          ...chains[0],
+          type: "chain",
+          label: "Recent study chain",
+          ref: studyChainTitle(chains[0]),
+          summary: savedStudyChainPreview(chains[0]).join(" · ") || "Saved locally."
+        }
+      : null
+  ].filter(Boolean);
+}
+
+function renderDailyPromptCard(){
+  const root = $("#daily-prompt-card");
+  if (!root) return;
+  const prompt = dailyPromptForToday();
+  root.innerHTML = `
+    <span class="app-label">Daily Prompt</span>
+    <h3>Study question for today</h3>
+    <p>${escapeHTML(prompt || "What does this passage reveal about covenant identity?")}</p>
+    <div class="app-button-row">
+      <a class="app-btn primary" href="#ask" data-app-tab-link="ask">Open Ask</a>
+    </div>
+  `;
+}
+
+function renderTodayProgressCard(){
+  const root = $("#today-progress-card");
+  if (!root) return;
+  const marks = readReaderMarks();
+  const savedVerses = storageArrayLength(LEGACY_KEYS.bookmarks) + (Array.isArray(marks.bookmarks) ? marks.bookmarks.length : 0);
+  const chainCount = readSavedStudyChains().length;
+  const pathSummary = studyPathProgressSummary();
+
+  root.innerHTML = `
+    <span class="app-label">Progress Summary</span>
+    <h3>What’s stored on this device</h3>
+    <div class="app-today-stats" aria-label="Daily progress summary">
+      <article class="app-today-stat">
+        <strong>${escapeHTML(savedVerses)}</strong>
+        <span>Saved verses</span>
+      </article>
+      <article class="app-today-stat">
+        <strong>${escapeHTML(chainCount)}</strong>
+        <span>Study chains</span>
+      </article>
+      <article class="app-today-stat">
+        <strong>${escapeHTML(pathSummary.completedSteps)}</strong>
+        <span>Path steps</span>
+      </article>
+    </div>
+    <p>${escapeHTML(pathSummary.activePaths ? `${pathSummary.activePaths} path${pathSummary.activePaths === 1 ? "" : "s"} in progress, ${pathSummary.completedPaths} complete.` : `${pathSummary.completedPaths} study path${pathSummary.completedPaths === 1 ? "" : "s"} complete.`)}</p>
+    <div class="app-button-row">
+      <a class="app-btn primary" href="#profile" data-app-tab-link="profile">Open Profile</a>
+    </div>
+  `;
+}
+
+function renderTodayDashboard(){
+  renderContinueReading();
+  renderCourseHome();
+  renderWatchHome();
+  renderDailyPrecept();
+  renderDailyPromptCard();
+  renderTodayProgressCard();
+}
+
 async function renderDailyPrecept(){
   const root = $("#daily-precept");
   if (!root) return;
 
   try{
-    const precepts = await getJSON(DATA.precepts);
-    const list = Array.isArray(precepts) ? precepts : [];
-    const item = list.length ? list[new Date().getDay() % list.length] : null;
+    const list = await loadDailyPrecepts();
+    const item = dailyPreceptForToday(list);
     if (!item){
       root.innerHTML = loadingError("No daily precepts are available yet.");
       return;
     }
 
+    const location = await resolveScriptureReferenceLocation(item.reference);
     root.innerHTML = `
       <div class="app-precept">
         <span class="app-label">Daily Precept</span>
@@ -2041,9 +2231,12 @@ async function renderDailyPrecept(){
         <blockquote>${escapeHTML(item.text)}</blockquote>
         <div class="app-precept-meta">
           <span class="app-pill">${escapeHTML(item.theme)}</span>
+          ${location ? `<span class="app-pill">${escapeHTML(CANON_LABELS[location.canon] || "Scripture")}</span>` : ""}
         </div>
         <p>${escapeHTML(item.prompt)}</p>
         <div class="app-button-row">
+          <button class="app-btn primary" type="button" data-home-precept-open data-reference="${escapeHTML(item.reference)}" data-canon="${escapeHTML(location?.canon || "")}" data-book="${escapeHTML(location?.book || "")}" data-chapter="${escapeHTML(location?.chapter || "")}" data-verse="${escapeHTML(location?.verse || "")}">Open in Reader</button>
+          ${location ? `<button class="app-btn" type="button" data-home-precept-chain data-reference="${escapeHTML(item.reference)}" data-canon="${escapeHTML(location.canon)}" data-book="${escapeHTML(location.book)}" data-chapter="${escapeHTML(location.chapter)}" data-verse="${escapeHTML(location.verse || "")}" data-verse-end="${escapeHTML(location.verseEnd || location.verse || "")}" data-text="${escapeHTML(item.text)}">Add to Chain</button>` : ""}
           <button class="app-btn" type="button" data-explain-precept data-reference="${escapeHTML(item.reference)}" data-question="${escapeHTML(item.prompt)}">Explain this</button>
         </div>
       </div>
@@ -2055,40 +2248,53 @@ async function renderDailyPrecept(){
 
 function renderCourseHome(){
   const root = $("#continue-course-card");
-  if (!root || !courseData.length) return;
-
-  const progress = readProgress();
-  const completed = completedLessonMap();
-  const last = progress.lastLesson;
-  const fallbackCourse = courseData[0];
-  const fallbackLesson = fallbackCourse?.lessons?.[0];
-  const course = courseData.find(item => item.id === last?.courseId) || fallbackCourse;
-  const lesson = course?.lessons?.find(item => item.id === last?.lessonId) || fallbackLesson;
-  const total = course?.lessons?.length || 0;
-  const done = course?.lessons?.filter(item => completed[lessonKey(course.id, item.id)]).length || 0;
+  if (!root) return;
+  const path = recommendedStudyPath();
+  const total = Array.isArray(path?.steps) ? path.steps.length : 0;
+  const done = path ? studyPathCompleteCount(path) : 0;
+  const nextStep = path ? studyPathNextIncompleteStep(path) : null;
+  const progress = total ? Math.round((done / total) * 100) : 0;
 
   root.innerHTML = `
-    <span class="app-label">Continue Course</span>
-    <h3>${escapeHTML(course?.title || "Study Plans")}</h3>
-    <p>${lesson ? escapeHTML(lesson.title) : "Choose a course to begin."}</p>
-    <div class="course-progress" aria-label="${done} of ${total} lessons complete"><span style="width:${total ? Math.round((done / total) * 100) : 0}%"></span></div>
+    <span class="app-label">Recommended Path</span>
+    <h3>${escapeHTML(path?.title || "Study Paths")}</h3>
+    <p>${escapeHTML(path ? `${path.description} ${nextStep ? `Next step: ${nextStep.title}.` : ""}` : "Guided study paths will appear here.")}</p>
+    <div class="course-meta">
+      ${path ? `<span class="app-pill">${escapeHTML(path.level || "Study")}</span>` : ""}
+      ${path ? `<span class="app-pill">${escapeHTML(path.category || "Path")}</span>` : ""}
+      ${path ? `<span class="app-pill">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>` : ""}
+    </div>
+    <div class="course-progress" aria-label="${done} of ${total} steps complete"><span style="width:${progress}%"></span></div>
     <div class="app-button-row">
-      <a class="app-btn primary" href="#study" data-app-tab-link="study">Continue</a>
+      <button class="app-btn primary" type="button" data-home-study-path="${escapeHTML(path?.id || "")}" ${path ? "" : "disabled"}>${done >= total && total ? "Review Study Path" : done ? "Continue Study Path" : "Start Study Path"}</button>
+      <a class="app-btn" href="#study" data-app-tab-link="study">Open Study</a>
     </div>
   `;
 }
 
 function renderWatchHome(){
   const root = $("#latest-lesson-card");
-  if (!root || !watchData.length) return;
-  const item = watchData[0];
+  if (!root) return;
+  const items = recentSavedWorkItems();
   root.innerHTML = `
-    <span class="app-label">Latest Lesson</span>
-    <h3>${escapeHTML(item.title)}</h3>
-    <p>${escapeHTML(truncate(item.description, 110))}</p>
+    <span class="app-label">Recent Saved Work</span>
+    <h3>${escapeHTML(items.length ? "Latest notes, bookmarks, highlights, and chains" : "No saved work yet")}</h3>
+    <div class="app-today-recent-list">
+      ${items.length
+        ? items.map(item => `
+          <article class="app-today-recent-item">
+            <div class="app-library-meta">
+              <span class="app-pill">${escapeHTML(item.label || item.type || "Saved")}</span>
+              ${item.canon ? `<span class="app-pill">${escapeHTML(CANON_LABELS[item.canon] || titleFromSlug(item.canon))}</span>` : ""}
+            </div>
+            <h4>${escapeHTML(item.ref || item.title || "Saved item")}</h4>
+            <p>${escapeHTML(truncate(item.summary || item.text || item.note || "", 120))}</p>
+          </article>
+        `).join("")
+        : `<p class="app-today-empty">Save a verse, highlight, note, or chain to surface it here.</p>`}
+    </div>
     <div class="app-button-row">
-      <a class="app-btn primary" href="#media" data-app-tab-link="media">Open Media</a>
-      <a class="app-btn" href="${escapeHTML(item.link || "/media.html")}" target="${String(item.link || "").startsWith("http") ? "_blank" : "_self"}" rel="noopener">Lesson</a>
+      <a class="app-btn primary" href="#profile" data-app-tab-link="profile">Open Saved Library</a>
     </div>
   `;
 }
@@ -2098,15 +2304,16 @@ function renderContinueReading(){
   if (!root) return;
 
   const lastRead = readLastRead();
+  const settings = readSettings();
   const reference = lastRead.exists
     ? `${titleFromSlug(lastRead.book)} ${lastRead.chapter}${lastRead.verse ? `:${lastRead.verse}` : ""}`
-    : "Open the reader";
+    : `${titleFromSlug(settings.book)} ${settings.chapter}`;
   root.innerHTML = `
     <span class="app-label">Continue Reading</span>
-    <h3>${escapeHTML(reference)}</h3>
-    <p>${escapeHTML(lastRead.exists ? `${CANON_LABELS[lastRead.canon] || "Scripture"} reader saved on this device.` : "Start in the first available Tanakh chapter on this device.")}</p>
+    <h3>${escapeHTML(lastRead.exists ? reference : "Start Reading")}</h3>
+    <p>${escapeHTML(lastRead.exists ? `${CANON_LABELS[lastRead.canon] || "Scripture"} reader saved on this device.` : `Open ${titleFromSlug(settings.book)} ${settings.chapter} as the default reader chapter.`)}</p>
     <div class="app-button-row">
-      <a class="app-btn primary" href="#bible" data-continue-reading>Continue</a>
+      <button class="app-btn primary" type="button" data-home-continue-reading>${lastRead.exists ? "Continue Reading" : "Start Reading"}</button>
       <a class="app-btn" href="/biblia.html">Biblia</a>
     </div>
   `;
@@ -2291,6 +2498,75 @@ function wireStudyPaths(){
   });
 }
 
+function wireHome(){
+  $("#home")?.addEventListener("click", async event => {
+    const continueReadingButton = event.target.closest("[data-home-continue-reading]");
+    if (continueReadingButton){
+      event.preventDefault();
+      const lastRead = readLastRead();
+      const settings = readSettings();
+      const location = lastRead.exists
+        ? { canon: lastRead.canon, book: lastRead.book, chapter: lastRead.chapter, verse: lastRead.verse || "" }
+        : { canon: settings.canon, book: settings.book, chapter: settings.chapter, verse: "" };
+      setActiveTab("bible");
+      await setReaderLocation(location);
+      $("#reader-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    const preceptOpenButton = event.target.closest("[data-home-precept-open]");
+    if (preceptOpenButton){
+      event.preventDefault();
+      const canon = String(preceptOpenButton.dataset.canon || "");
+      const book = String(preceptOpenButton.dataset.book || "");
+      const chapter = String(preceptOpenButton.dataset.chapter || "");
+      const verse = String(preceptOpenButton.dataset.verse || "");
+      if (canon && book && chapter){
+        setActiveTab("bible");
+        await setReaderLocation({ canon, book, chapter, verse });
+        $("#reader-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }else{
+        const settings = readSettings();
+        setActiveTab("bible");
+        await setReaderLocation({ canon: settings.canon, book: settings.book, chapter: settings.chapter });
+      }
+      return;
+    }
+
+    const preceptChainButton = event.target.closest("[data-home-precept-chain]");
+    if (preceptChainButton){
+      event.preventDefault();
+      const location = {
+        canon: String(preceptChainButton.dataset.canon || ""),
+        book: String(preceptChainButton.dataset.book || ""),
+        chapter: String(preceptChainButton.dataset.chapter || ""),
+        verse: String(preceptChainButton.dataset.verse || ""),
+        verseEnd: String(preceptChainButton.dataset.verseEnd || preceptChainButton.dataset.verse || "")
+      };
+      if (!location.canon || !location.book || !location.chapter) return;
+      const added = await addToCurrentStudyChain(location, {
+        reference: String(preceptChainButton.dataset.reference || ""),
+        text: String(preceptChainButton.dataset.text || ""),
+        source: "daily-precept",
+        sourceLabel: "Daily Precept"
+      });
+      setChainStatus("current", added ? "Daily precept added to the current chain." : "That precept is already in the current chain.", added ? "success" : "info");
+      return;
+    }
+
+    const studyPathButton = event.target.closest("[data-home-study-path]");
+    if (studyPathButton){
+      event.preventDefault();
+      const pathId = String(studyPathButton.dataset.homeStudyPath || "");
+      const path = STUDY_PATHS.find(item => item.id === pathId);
+      if (path){
+        setActiveTab("study");
+        await openStudyPath(path.id, { continueNext: true });
+      }
+    }
+  });
+}
+
 function renderAiResponse(response){
   const root = $("#ai-response");
   if (!root) return;
@@ -2405,6 +2681,7 @@ function updatePracticeProgress(total){
   const root = $("#practice-progress");
   if (root) root.textContent = `${percent}%`;
   renderProfile();
+  renderTodayDashboard();
 }
 
 async function renderPractice(){
@@ -3331,6 +3608,7 @@ function renameSavedStudyChain(chainId){
   writeSavedStudyChains(chains);
   renderSavedLibrary();
   renderProfile();
+  renderTodayDashboard();
 }
 
 function deleteSavedStudyChain(chainId){
@@ -3344,6 +3622,7 @@ function deleteSavedStudyChain(chainId){
   writeSavedStudyChains(chains);
   renderSavedLibrary();
   renderProfile();
+  renderTodayDashboard();
 }
 
 function renderStudyProgress(){
@@ -3528,6 +3807,7 @@ window.semiticJewApp = {
 
 async function init(){
   wireTabs();
+  wireHome();
   wireAsk();
   wireCourses();
   wireStudyPaths();
@@ -3535,15 +3815,14 @@ async function init(){
   wireProfileSettings();
   wireSavedLibrary();
   applySavedLibraryControls();
+  renderTodayDashboard();
   await Promise.all([
-    renderDailyPrecept(),
     renderStudyPaths(),
     renderCourses(),
     renderWatch(),
     renderPractice(),
     syncReaderControls()
   ]);
-  renderContinueReading();
   renderProfile();
 }
 
