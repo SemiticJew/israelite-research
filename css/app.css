@@ -1718,3 +1718,120 @@ html[data-theme="dark"] .institute-app .app-related-source{
     font-size:.62rem;
   }
 }
+
+.institute-app .app-onboarding-overlay{
+  position:fixed;
+  inset:0;
+  z-index:140;
+  display:grid;
+  place-items:center;
+  padding:16px;
+}
+
+.institute-app .app-onboarding-overlay[hidden]{
+  display:none;
+}
+
+.institute-app .app-onboarding-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(5,74,145,.72);
+  backdrop-filter:blur(3px);
+}
+
+.institute-app .app-onboarding-card{
+  position:relative;
+  z-index:1;
+  width:min(760px, 100%);
+  max-height:min(88vh, 920px);
+  overflow:auto;
+  padding:20px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,251,255,.98));
+  box-shadow:0 28px 60px rgba(3,27,56,.35);
+}
+
+.institute-app .app-onboarding-card .app-section-head{
+  margin-bottom:16px;
+}
+
+.institute-app .app-onboarding-card h2{
+  margin:0;
+  color:var(--app-ink);
+  font-size:clamp(1.55rem, 5vw, 2.35rem);
+  line-height:1.1;
+}
+
+.institute-app .app-onboarding-card p{
+  margin:10px 0 0;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-onboarding-points{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+  margin-top:12px;
+}
+
+.institute-app .app-onboarding-point{
+  padding:14px;
+  border:1px solid var(--app-line);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(5,74,145,.05);
+}
+
+.institute-app .app-onboarding-point strong{
+  display:block;
+  margin-bottom:6px;
+  color:var(--app-blue);
+  font-size:.92rem;
+}
+
+.institute-app .app-onboarding-point span{
+  display:block;
+  color:var(--app-muted);
+  line-height:1.45;
+}
+
+.institute-app .app-onboarding-actions,
+.institute-app .app-onboarding-footer{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:16px;
+}
+
+.institute-app .app-onboarding-actions .app-btn,
+.institute-app .app-onboarding-footer .app-btn{
+  min-width:0;
+  flex:1 1 180px;
+}
+
+.institute-app .app-onboarding-footer{
+  justify-content:flex-end;
+}
+
+@media(max-width:640px){
+  .institute-app .app-onboarding-overlay{
+    padding:12px;
+  }
+
+  .institute-app .app-onboarding-card{
+    padding:16px;
+    border-radius:16px;
+  }
+
+  .institute-app .app-onboarding-points{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-onboarding-actions .app-btn,
+  .institute-app .app-onboarding-footer .app-btn{
+    flex:1 1 100%;
+  }
+}

@@ -8,6 +8,8 @@ const DATA = {
   youtube: "/data/youtube-videos.json"
 };
 
+const ONBOARDING_KEY = "sj_institute_app_onboarding_v1";
+
 const CANON_LABELS = {
   tanakh: "Tanakh",
   newtestament: "New Testament",
@@ -370,6 +372,7 @@ let currentReaderVerses = [];
 let currentReaderLocation = { canon: "", book: "", chapter: "" };
 let currentStudyPathId = "";
 let currentStudyPathStepId = "";
+let onboardingLastFocus = null;
 let dailyPreceptsPromise = null;
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
@@ -432,6 +435,18 @@ function readJSONStorage(key, fallback){
 
 function writeJSONStorage(key, value){
   localStorage.setItem(key, JSON.stringify(value));
+}
+
+function readOnboardingState(){
+  return readJSONStorage(ONBOARDING_KEY, {});
+}
+
+function writeOnboardingState(state = {}){
+  writeJSONStorage(ONBOARDING_KEY, {
+    completed: Boolean(state.completed),
+    completedAt: state.completedAt || "",
+    source: state.source || ""
+  });
 }
 
 function readProgress(){
@@ -2045,6 +2060,98 @@ function wireTabs(){
   setActiveTab(activeTabFromHash(), false);
 }
 
+function focusAppTarget(selector, options = {}){
+  const target = selector ? $(selector) : null;
+  if (!target) return false;
+  if (typeof target.focus === "function"){
+    target.focus({ preventScroll: Boolean(options.preventScroll) });
+  }
+  if (options.scroll !== false && typeof target.scrollIntoView === "function"){
+    target.scrollIntoView({ behavior: "smooth", block: options.block || "start" });
+  }
+  return true;
+}
+
+function completeOnboarding(source = "finish"){
+  writeOnboardingState({
+    completed: true,
+    completedAt: new Date().toISOString(),
+    source
+  });
+}
+
+function hideOnboarding(restoreFocus = true){
+  const overlay = $("#app-onboarding");
+  if (!overlay) return;
+  overlay.hidden = true;
+  document.body.classList.remove("app-onboarding-open");
+  if (restoreFocus && onboardingLastFocus && typeof onboardingLastFocus.focus === "function"){
+    onboardingLastFocus.focus({ preventScroll: true });
+  }
+  onboardingLastFocus = null;
+}
+
+function showOnboarding(force = false){
+  const state = readOnboardingState();
+  if (state.completed && !force) return false;
+
+  const overlay = $("#app-onboarding");
+  if (!overlay) return false;
+
+  onboardingLastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  overlay.hidden = false;
+  document.body.classList.add("app-onboarding-open");
+  requestAnimationFrame(() => {
+    overlay.querySelector("[data-onboarding-primary]")?.focus({ preventScroll: true });
+  });
+  return true;
+}
+
+async function launchOnboardingAction(tab, selector){
+  completeOnboarding("start");
+  hideOnboarding(false);
+  setActiveTab(tab);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  focusAppTarget(selector, { preventScroll: false });
+}
+
+function wireOnboarding(){
+  document.addEventListener("click", async event => {
+    const actionButton = event.target.closest("[data-onboarding-action]");
+    if (actionButton){
+      event.preventDefault();
+      const action = actionButton.dataset.onboardingAction;
+      if (action === "bible") await launchOnboardingAction("bible", "#reader-canon");
+      else if (action === "search") await launchOnboardingAction("bible", "#global-scripture-search-input");
+      else if (action === "study-paths") await launchOnboardingAction("study", "#study-path-grid");
+      else if (action === "chain") await launchOnboardingAction("bible", "#study-chain");
+      else if (action === "library") await launchOnboardingAction("profile", "#saved-library-search");
+      return;
+    }
+
+    if (event.target.closest("[data-onboarding-dismiss]")){
+      event.preventDefault();
+      completeOnboarding("skip");
+      hideOnboarding(false);
+      return;
+    }
+
+    if (event.target.closest("[data-onboarding-finish]")){
+      event.preventDefault();
+      completeOnboarding("finish");
+      hideOnboarding(false);
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    const overlay = $("#app-onboarding");
+    if (!overlay || overlay.hidden) return;
+    completeOnboarding("escape");
+    hideOnboarding(false);
+  });
+}
+
 async function loadDailyPrecepts(){
   if (!dailyPreceptsPromise){
     dailyPreceptsPromise = getJSON(DATA.precepts)
@@ -3450,6 +3557,12 @@ function wireProfileSettings(){
     if (readerSpacing) readerSpacing.value = settings.spacing;
     await setReaderLocation(settings);
   });
+
+  $("#profile")?.addEventListener("click", event => {
+    if (!event.target.closest("[data-restart-onboarding]")) return;
+    event.preventDefault();
+    showOnboarding(true);
+  });
 }
 
 function savedItemCard(item, typeLabel){
@@ -3845,6 +3958,7 @@ window.semiticJewApp = {
 
 async function init(){
   wireTabs();
+  wireOnboarding();
   wireHome();
   wireAsk();
   wireCourses();
@@ -3865,6 +3979,9 @@ async function init(){
     syncReaderControls()
   ]);
   renderProfile();
+  if (!readOnboardingState().completed){
+    showOnboarding();
+  }
 }
 
 if (document.readyState === "loading"){
