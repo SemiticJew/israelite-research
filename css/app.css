@@ -445,11 +445,53 @@
   outline:none;
 }
 
+.institute-app .sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0, 0, 0, 0);
+  white-space:nowrap;
+  border:0;
+}
+
 .institute-app .app-reader-controls,
 .institute-app .app-settings-form{
   display:grid;
   grid-template-columns:repeat(5, minmax(0, 1fr));
   gap:10px;
+}
+
+.institute-app .app-reader-controls > label{
+  display:grid;
+  gap:6px;
+  padding:12px 12px 13px;
+  border:1px solid var(--app-line);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(5,74,145,.04);
+  min-width:0;
+}
+
+.institute-app .app-reader-controls > label > span{
+  margin:0;
+  color:var(--app-blue);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+
+.institute-app .app-reader-controls > label > select{
+  margin-top:0;
+  min-width:0;
+  min-height:44px;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#f8fafc;
 }
 
 .institute-app .app-reader-links{
@@ -492,6 +534,15 @@
   padding:0 14px;
   font-size:.9rem;
   line-height:1.15;
+}
+
+.institute-app .app-reader-search-input{
+  display:grid;
+  gap:6px;
+}
+
+.institute-app .app-reader-search-input input{
+  margin-top:0;
 }
 
 .institute-app .app-reader-current,
@@ -663,6 +714,15 @@
   padding:0 14px;
   font-size:.9rem;
   line-height:1.15;
+}
+
+.institute-app .app-reader-study-actions{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-reader-study-actions .app-label{
+  margin-bottom:0;
 }
 
 .institute-app .app-full-library{
