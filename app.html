@@ -204,7 +204,7 @@
           <div class="app-loading">Loading related references...</div>
         </section>
 
-        <section class="app-study-chain" id="study-chain" aria-live="polite" aria-labelledby="study-chain-title">
+        <section class="app-study-chain" id="study-chain" aria-live="polite" aria-labelledby="study-chain-title" tabindex="-1">
           <div class="app-loading">Loading study chain...</div>
         </section>
 
@@ -278,7 +278,7 @@
           <h3 id="study-paths-title">Guided study paths</h3>
           <p>Follow structured learning tracks built from Scripture, context, and the Semitic Jew teaching library.</p>
         </div>
-        <div class="app-study-path-grid" id="study-path-grid" aria-live="polite">
+        <div class="app-study-path-grid" id="study-path-grid" aria-live="polite" tabindex="-1">
           <div class="app-loading">Loading study paths...</div>
         </div>
         <div class="app-study-path-detail" id="study-path-detail" aria-live="polite" tabindex="-1"></div>
@@ -458,6 +458,7 @@
         </form>
         <p class="app-data-note">Saved on this device for now.</p>
         <a class="app-btn primary" href="/website-app.html">Install App</a>
+        <button class="app-btn" type="button" data-restart-onboarding>Show App Introduction</button>
       </section>
     </div>
   </div>
@@ -471,6 +472,58 @@
     <a class="app-tab-link" href="#profile" data-app-tab-link="profile">Profile</a>
   </nav>
 </main>
+
+<div class="app-onboarding-overlay" id="app-onboarding" hidden>
+  <div class="app-onboarding-backdrop" data-onboarding-dismiss tabindex="-1" aria-hidden="true"></div>
+  <section
+    class="app-onboarding-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="onboarding-title"
+    aria-describedby="onboarding-description"
+  >
+    <div class="app-section-head compact">
+      <span class="app-label">Semitic Jew Institute</span>
+      <h2 id="onboarding-title">Scripture. Logic. History. Identity.</h2>
+      <p id="onboarding-description">
+        Semitic Jew is built for Israelite-centered study. Read Scripture, search Scripture, build study chains,
+        follow study paths, and save notes as you learn.
+      </p>
+    </div>
+
+    <div class="app-onboarding-points" aria-label="App introduction">
+      <div class="app-onboarding-point">
+        <strong>Scripture</strong>
+        <span>Read the Bible locally with chapter search, references, and study tools.</span>
+      </div>
+      <div class="app-onboarding-point">
+        <strong>Logic</strong>
+        <span>Search, compare, and build chains from connected verses and precepts.</span>
+      </div>
+      <div class="app-onboarding-point">
+        <strong>History</strong>
+        <span>Follow study paths and reference the biblical and historical record.</span>
+      </div>
+      <div class="app-onboarding-point">
+        <strong>Identity</strong>
+        <span>Use the app as a guide for covenant memory, correction, and restoration.</span>
+      </div>
+    </div>
+
+    <div class="app-onboarding-actions" aria-label="Start options">
+      <button class="app-btn primary" type="button" data-onboarding-action="bible" data-onboarding-primary>Start Reading Scripture</button>
+      <button class="app-btn" type="button" data-onboarding-action="search">Search Scripture</button>
+      <button class="app-btn" type="button" data-onboarding-action="study-paths">Follow a Study Path</button>
+      <button class="app-btn" type="button" data-onboarding-action="chain">Build a Study Chain</button>
+      <button class="app-btn" type="button" data-onboarding-action="library">View Saved Library</button>
+    </div>
+
+    <div class="app-onboarding-footer">
+      <button class="app-btn" type="button" data-onboarding-dismiss>Skip</button>
+      <button class="app-btn primary" type="button" data-onboarding-finish>Finish</button>
+    </div>
+  </section>
+</div>
 
 <div id="site-footer"></div>
 
