@@ -65,6 +65,286 @@ const CANON_CONTEXT = {
   }
 };
 
+const STUDY_PATHS = [
+  {
+    id: "who-are-israelites",
+    title: "Who Are Israelites?",
+    description: "Trace covenant identity from promise to scattering and restoration.",
+    level: "Foundation",
+    category: "Identity",
+    resource: { label: "Open biblical references", href: "/biblical_references.html" },
+    steps: [
+      {
+        id: "who-are-israelites-promise",
+        title: "Promise to the fathers",
+        description: "Start with the covenant promise, the chosen line, and the land oath.",
+        references: [
+          { canon: "tanakh", book: "genesis", chapter: "12", verse: "1", verseEnd: "3" },
+          { canon: "tanakh", book: "genesis", chapter: "15", verse: "5", verseEnd: "6" },
+          { canon: "tanakh", book: "genesis", chapter: "17", verse: "7", verseEnd: "8" }
+        ]
+      },
+      {
+        id: "who-are-israelites-chosen",
+        title: "Israel chosen for covenant witness",
+        description: "Read how the Most High set Israel apart to keep covenant testimony in the earth.",
+        references: [
+          { canon: "tanakh", book: "deuteronomy", chapter: "7", verse: "6", verseEnd: "8" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "14", verse: "2" }
+        ]
+      },
+      {
+        id: "who-are-israelites-scattered",
+        title: "Scattered among the nations",
+        description: "See how covenant disobedience brought dispersion, while identity was not erased.",
+        references: [
+          { canon: "tanakh", book: "deuteronomy", chapter: "28", verse: "64", verseEnd: "68" },
+          { canon: "tanakh", book: "leviticus", chapter: "26", verse: "33", verseEnd: "39" }
+        ],
+        resource: { label: "Open Scripture search", href: "/biblia.html" }
+      },
+      {
+        id: "who-are-israelites-restoration",
+        title: "Restoration and regathering",
+        description: "Follow the promise that the dispersed would be gathered again in the last days.",
+        references: [
+          { canon: "tanakh", book: "hosea", chapter: "1", verse: "10", verseEnd: "11" },
+          { canon: "tanakh", book: "isaiah", chapter: "11", verse: "11", verseEnd: "12" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "law-and-obedience",
+    title: "Law and Obedience",
+    description: "Build a covenant reading of commandment, hearing, and doing.",
+    level: "Foundational",
+    category: "Commandments",
+    resource: { label: "Open Tanakh hub", href: "/tanakh.html" },
+    steps: [
+      {
+        id: "law-and-obedience-sinai",
+        title: "The law at Sinai",
+        description: "See the commandments given directly to Israel before the nations.",
+        references: [
+          { canon: "tanakh", book: "exodus", chapter: "20", verse: "1", verseEnd: "17" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "4", verse: "5", verseEnd: "8" }
+        ]
+      },
+      {
+        id: "law-and-obedience-hear",
+        title: "Hear and do",
+        description: "Learn the covenant rhythm of hearing, keeping, and teaching.",
+        references: [
+          { canon: "tanakh", book: "deuteronomy", chapter: "6", verse: "4", verseEnd: "9" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "30", verse: "11", verseEnd: "14" }
+        ]
+      },
+      {
+        id: "law-and-obedience-blessing",
+        title: "Blessing and curse",
+        description: "Study the covenant outcomes attached to obedience and rebellion.",
+        references: [
+          { canon: "tanakh", book: "deuteronomy", chapter: "28", verse: "1", verseEnd: "14" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "28", verse: "15", verseEnd: "68" }
+        ]
+      },
+      {
+        id: "law-and-obedience-messiah",
+        title: "Messiah and the law",
+        description: "Read the Messiah’s own words about law, righteousness, and fulfillment.",
+        references: [
+          { canon: "newtestament", book: "matthew", chapter: "5", verse: "17", verseEnd: "19" },
+          { canon: "newtestament", book: "1-john", chapter: "5", verse: "2", verseEnd: "3" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "christ-and-the-covenant",
+    title: "Christ and the Covenant",
+    description: "Read the Messiah through the promises made to Israel and Judah.",
+    level: "Intermediate",
+    category: "Messiah",
+    resource: { label: "Open New Testament hub", href: "/newtestament.html" },
+    steps: [
+      {
+        id: "christ-and-the-covenant-promise",
+        title: "The promised king",
+        description: "Start where the Scriptures speak of the child, the throne, and the kingdom.",
+        references: [
+          { canon: "tanakh", book: "isaiah", chapter: "9", verse: "6", verseEnd: "7" },
+          { canon: "newtestament", book: "luke", chapter: "1", verse: "68", verseEnd: "75" }
+        ]
+      },
+      {
+        id: "christ-and-the-covenant-new-covenant",
+        title: "New covenant with Israel and Judah",
+        description: "See the covenant promise that explicitly names the house of Israel and Judah.",
+        references: [
+          { canon: "tanakh", book: "jeremiah", chapter: "31", verse: "31", verseEnd: "34" },
+          { canon: "newtestament", book: "hebrews", chapter: "8", verse: "8", verseEnd: "12" }
+        ]
+      },
+      {
+        id: "christ-and-the-covenant-blood",
+        title: "Blood of the covenant",
+        description: "Read the covenant meal and the kingdom promise together.",
+        references: [
+          { canon: "newtestament", book: "matthew", chapter: "26", verse: "27", verseEnd: "28" },
+          { canon: "newtestament", book: "acts", chapter: "3", verse: "19", verseEnd: "21" }
+        ]
+      },
+      {
+        id: "christ-and-the-covenant-remnant",
+        title: "Remnant and restoration",
+        description: "Track restoration language through the apostles and the prophets.",
+        references: [
+          { canon: "newtestament", book: "romans", chapter: "11", verse: "25", verseEnd: "29" },
+          { canon: "tanakh", book: "ezekiel", chapter: "36", verse: "24", verseEnd: "28" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "captivity-and-scattering",
+    title: "Captivity and Scattering",
+    description: "Follow exile, dispersion, and the promise of a remnant remembered.",
+    level: "Intermediate",
+    category: "Restoration",
+    resource: { label: "Open biblical references", href: "/biblical_references.html" },
+    steps: [
+      {
+        id: "captivity-and-scattering-curses",
+        title: "Covenant curses",
+        description: "Read the warning passages that describe discipline and dispersion.",
+        references: [
+          { canon: "tanakh", book: "leviticus", chapter: "26", verse: "33", verseEnd: "39" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "28", verse: "15", verseEnd: "37" }
+        ]
+      },
+      {
+        id: "captivity-and-scattering-nations",
+        title: "Scattered among the nations",
+        description: "See how the covenant language describes life among foreign nations.",
+        references: [
+          { canon: "tanakh", book: "deuteronomy", chapter: "28", verse: "64", verseEnd: "68" },
+          { canon: "tanakh", book: "hosea", chapter: "3", verse: "4", verseEnd: "5" }
+        ]
+      },
+      {
+        id: "captivity-and-scattering-remembered",
+        title: "Remembered in captivity",
+        description: "Connect the remnant language to hope while the people are still dispersed.",
+        references: [
+          { canon: "tanakh", book: "ezekiel", chapter: "11", verse: "16", verseEnd: "17" },
+          { canon: "tanakh", book: "jeremiah", chapter: "29", verse: "11", verseEnd: "14" }
+        ]
+      },
+      {
+        id: "captivity-and-scattering-regathered",
+        title: "Regathered and restored",
+        description: "Finish with the promise that the scattered would be gathered again.",
+        references: [
+          { canon: "tanakh", book: "isaiah", chapter: "56", verse: "8" },
+          { canon: "tanakh", book: "ezekiel", chapter: "37", verse: "21", verseEnd: "28" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "clean-and-unclean",
+    title: "Clean and Unclean",
+    description: "Study holiness through distinction, discipline, and covenant order.",
+    level: "Foundational",
+    category: "Holiness",
+    resource: { label: "Open encyclopedia", href: "/encyclopedia.html" },
+    steps: [
+      {
+        id: "clean-and-unclean-leviticus",
+        title: "Distinctions in Torah",
+        description: "Start where clean and unclean are named and ordered for the people.",
+        references: [
+          { canon: "tanakh", book: "leviticus", chapter: "11", verse: "1", verseEnd: "47" }
+        ]
+      },
+      {
+        id: "clean-and-unclean-holy-common",
+        title: "Holy and common",
+        description: "Read how priests were told to teach the difference between holy and profane.",
+        references: [
+          { canon: "tanakh", book: "leviticus", chapter: "10", verse: "10", verseEnd: "11" },
+          { canon: "tanakh", book: "deuteronomy", chapter: "14", verse: "1", verseEnd: "21" }
+        ]
+      },
+      {
+        id: "clean-and-unclean-witness",
+        title: "Witness in conduct",
+        description: "Connect holiness to daily behavior and the public witness of the nation.",
+        references: [
+          { canon: "tanakh", book: "isaiah", chapter: "52", verse: "11" },
+          { canon: "newtestament", book: "1-peter", chapter: "1", verse: "15", verseEnd: "16" }
+        ]
+      },
+      {
+        id: "clean-and-unclean-discernment",
+        title: "Discernment in the assemblies",
+        description: "Test modern claims by the covenant pattern of discernment and obedience.",
+        references: [
+          { canon: "newtestament", book: "acts", chapter: "10", verse: "14" },
+          { canon: "newtestament", book: "1-corinthians", chapter: "6", verse: "19", verseEnd: "20" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "replacement-theology",
+    title: "Replacement Theology",
+    description: "Test the doctrine that claims Israel’s covenant role was replaced.",
+    level: "Advanced",
+    category: "Doctrine correction",
+    resource: { label: "Open biblical references", href: "/biblical_references.html" },
+    steps: [
+      {
+        id: "replacement-theology-not-cast-away",
+        title: "Israel not cast away",
+        description: "Begin with the apostolic denial that God rejected His people.",
+        references: [
+          { canon: "newtestament", book: "romans", chapter: "11", verse: "1", verseEnd: "5" }
+        ]
+      },
+      {
+        id: "replacement-theology-blindness",
+        title: "Blindness in part",
+        description: "Read the mystery of partial blindness and the fullness of the nations.",
+        references: [
+          { canon: "newtestament", book: "romans", chapter: "11", verse: "25", verseEnd: "29" },
+          { canon: "newtestament", book: "ephesians", chapter: "2", verse: "11", verseEnd: "13" }
+        ]
+      },
+      {
+        id: "replacement-theology-grafted-in",
+        title: "Grafted in, not replacing",
+        description: "See how the olive tree image preserves the root and warns against boasting.",
+        references: [
+          { canon: "newtestament", book: "romans", chapter: "11", verse: "17", verseEnd: "24" }
+        ]
+      },
+      {
+        id: "replacement-theology-restoration",
+        title: "Restoration promised",
+        description: "End with the prophets’ assurance that Israel’s covenant identity remains in view.",
+        references: [
+          { canon: "tanakh", book: "ezekiel", chapter: "36", verse: "24", verseEnd: "28" },
+          { canon: "tanakh", book: "amos", chapter: "9", verse: "11", verseEnd: "15" }
+        ]
+      }
+    ]
+  }
+];
+
+const STUDY_PATH_PROGRESS_KEY = "sj_institute_app_study_path_progress_v1";
+
 const PROGRESS_KEY = "semiticJewAppProgress";
 const SETTINGS_KEY = "sj_institute_app_settings_v1";
 const READER_MARKS_KEY = "sj_institute_app_reader_marks_v1";
@@ -88,6 +368,8 @@ let readerActiveVerse = "";
 let readerChapterSearchTerm = "";
 let currentReaderVerses = [];
 let currentReaderLocation = { canon: "", book: "", chapter: "" };
+let currentStudyPathId = "";
+let currentStudyPathStepId = "";
 let referenceEntriesPromise = null;
 const chapterCrossrefCache = new Map();
 const chapterAvailabilityCache = new Map();
@@ -876,6 +1158,260 @@ function readCurrentStudyChain(){
 function writeCurrentStudyChain(items){
   writeJSONStorage(CURRENT_STUDY_CHAIN_KEY, Array.isArray(items) ? items : []);
   renderStudyChain();
+}
+
+function readStudyPathProgress(){
+  return readJSONStorage(STUDY_PATH_PROGRESS_KEY, {});
+}
+
+function writeStudyPathProgress(progress){
+  writeJSONStorage(STUDY_PATH_PROGRESS_KEY, progress && typeof progress === "object" ? progress : {});
+}
+
+function studyPathProgress(pathId){
+  const progress = readStudyPathProgress();
+  return progress[pathId] && typeof progress[pathId] === "object"
+    ? progress[pathId]
+    : { completed: [], updatedAt: "" };
+}
+
+function studyPathCompletedIds(pathId){
+  const progress = studyPathProgress(pathId);
+  return Array.isArray(progress.completed) ? progress.completed : [];
+}
+
+function studyPathCompleteCount(path){
+  return studyPathCompletedIds(path.id).length;
+}
+
+function studyPathStepKey(pathId, stepId){
+  return `${pathId}:${stepId}`;
+}
+
+function isStudyPathStepComplete(pathId, stepId){
+  return studyPathCompletedIds(pathId).includes(stepId);
+}
+
+function setStudyPathStepComplete(pathId, stepId, complete){
+  const progress = readStudyPathProgress();
+  const entry = progress[pathId] && typeof progress[pathId] === "object" ? progress[pathId] : { completed: [], updatedAt: "" };
+  const completed = new Set(Array.isArray(entry.completed) ? entry.completed : []);
+  const shouldComplete = typeof complete === "boolean" ? complete : !completed.has(stepId);
+  if (shouldComplete) completed.add(stepId);
+  else completed.delete(stepId);
+  progress[pathId] = {
+    completed: Array.from(completed),
+    updatedAt: new Date().toISOString()
+  };
+  writeStudyPathProgress(progress);
+}
+
+function studyPathNextIncompleteStep(path){
+  const completed = new Set(studyPathCompletedIds(path.id));
+  return (Array.isArray(path.steps) ? path.steps : []).find(step => !completed.has(step.id)) || (Array.isArray(path.steps) ? path.steps[0] : null) || null;
+}
+
+function formatStudyPathReference(ref){
+  if (!ref) return "";
+  return scriptureRefLabel({
+    slug: ref.book,
+    ch: ref.chapter,
+    vStart: ref.verse,
+    vEnd: ref.verseEnd,
+    label: ref.label
+  }) || `${titleFromSlug(ref.book)} ${ref.chapter}${ref.verse ? `:${ref.verse}${ref.verseEnd && ref.verseEnd !== ref.verse ? `–${ref.verseEnd}` : ""}` : ""}`;
+}
+
+function studyPathStepRefs(step){
+  return Array.isArray(step.references) ? step.references.filter(Boolean) : [];
+}
+
+function studyPathResource(step, path){
+  return step.resource || path.resource || null;
+}
+
+async function openStudyPathScripture(ref){
+  if (!ref || !ref.book || !ref.chapter) return false;
+  setActiveTab("bible");
+  await setReaderLocation({
+    canon: String(ref.canon || "tanakh").toLowerCase(),
+    book: String(ref.book).toLowerCase(),
+    chapter: String(ref.chapter),
+    verse: String(ref.verse || "")
+  });
+  $("#reader-output")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+}
+
+async function addStudyPathReferencesToChain(path, step){
+  const refs = studyPathStepRefs(step);
+  if (!refs.length) return false;
+  let added = false;
+  for (const ref of refs){
+    const ok = await addToCurrentStudyChain({
+      canon: String(ref.canon || "tanakh").toLowerCase(),
+      book: String(ref.book).toLowerCase(),
+      chapter: String(ref.chapter),
+      verse: String(ref.verse || ""),
+      verseEnd: String(ref.verseEnd || ref.verse || "")
+    }, {
+      reference: formatStudyPathReference(ref),
+      text: step.description || path.description || "",
+      source: "study-path",
+      sourceLabel: path.title
+    });
+    added = added || ok;
+  }
+  return added;
+}
+
+function setStudyPathStatus(message, state = "info"){
+  const root = $("#study-path-status");
+  if (!root) return;
+  root.textContent = message || "";
+  root.dataset.state = state;
+}
+
+function renderStudyPathCards(){
+  const root = $("#study-path-grid");
+  if (!root) return;
+
+  if (!Array.isArray(STUDY_PATHS) || !STUDY_PATHS.length){
+    root.innerHTML = `<div class="app-study-path-empty">Study paths will appear here.</div>`;
+    return;
+  }
+
+  root.innerHTML = STUDY_PATHS.map(path => {
+    const done = studyPathCompleteCount(path);
+    const total = Array.isArray(path.steps) ? path.steps.length : 0;
+    const current = currentStudyPathId === path.id;
+    const buttonLabel = done >= total && total ? "Review" : done > 0 ? "Continue" : "Start";
+
+    return `
+      <article class="app-study-path-card${current ? " is-active" : ""}" data-study-path-card="${escapeHTML(path.id)}">
+        <div class="app-study-path-card-head">
+          <div>
+            <div class="app-study-path-card-meta">
+              <span class="app-pill">${escapeHTML(path.level || "Study")}</span>
+              <span class="app-pill">${escapeHTML(path.category || "Path")}</span>
+            </div>
+            <h4>${escapeHTML(path.title)}</h4>
+            <p>${escapeHTML(path.description)}</p>
+          </div>
+          <span class="app-study-path-count">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>
+        </div>
+        <div class="app-study-path-card-actions">
+          <button class="app-btn primary" type="button" data-study-path-open="${escapeHTML(path.id)}">${escapeHTML(buttonLabel)}</button>
+          ${path.resource ? `<a class="app-btn" href="${escapeHTML(path.resource.href)}">${escapeHTML(path.resource.label || "Open resource")}</a>` : ""}
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderStudyPathDetail(path, focusStepId = ""){
+  const root = $("#study-path-detail");
+  if (!root) return;
+
+  if (!path){
+    root.innerHTML = `
+      <div class="app-study-path-empty">
+        Select a study path to begin.
+      </div>
+    `;
+    return;
+  }
+
+  const completed = new Set(studyPathCompletedIds(path.id));
+  const total = Array.isArray(path.steps) ? path.steps.length : 0;
+  const done = completed.size;
+  const nextStep = focusStepId ? (path.steps || []).find(step => step.id === focusStepId) : studyPathNextIncompleteStep(path);
+  const targetStepId = nextStep?.id || path.steps?.[0]?.id || "";
+  currentStudyPathId = path.id;
+  currentStudyPathStepId = targetStepId;
+
+  root.innerHTML = `
+    <article class="app-study-path-detail-card">
+      <div class="app-study-path-detail-head">
+        <div>
+          <span class="app-label">Study Path</span>
+          <h3>${escapeHTML(path.title)}</h3>
+          <p>${escapeHTML(path.description)}</p>
+          <div class="app-study-path-detail-meta">
+            <span class="app-pill">${escapeHTML(path.level || "Study")}</span>
+            <span class="app-pill">${escapeHTML(path.category || "Path")}</span>
+            <span class="app-pill">${escapeHTML(done)} of ${escapeHTML(total)} complete</span>
+          </div>
+        </div>
+        <div class="app-study-path-detail-actions">
+          <button class="app-btn primary" type="button" data-study-path-continue="${escapeHTML(path.id)}">${done >= total && total ? "Review next step" : "Continue"}</button>
+          ${path.resource ? `<a class="app-btn" href="${escapeHTML(path.resource.href)}">${escapeHTML(path.resource.label || "Open resource")}</a>` : ""}
+        </div>
+      </div>
+      <p class="app-study-path-status" id="study-path-status" aria-live="polite"></p>
+      <div class="app-study-path-steps" aria-label="${escapeHTML(path.title)} steps">
+        ${(Array.isArray(path.steps) ? path.steps : []).map(step => {
+          const stepRefs = studyPathStepRefs(step);
+          const stepComplete = completed.has(step.id);
+          const stepTarget = step.id === targetStepId;
+          const resource = studyPathResource(step, path);
+          return `
+            <article class="app-study-path-step${stepComplete ? " is-complete" : ""}${stepTarget ? " is-target" : ""}" id="study-path-step-${escapeHTML(step.id)}" data-study-path-step-card="${escapeHTML(path.id)}:${escapeHTML(step.id)}"${stepTarget ? ' aria-current="step"' : ""}>
+              <div class="app-study-path-step-head">
+                <div>
+                  <h4>${escapeHTML(step.title)}</h4>
+                  <p>${escapeHTML(step.description)}</p>
+                </div>
+                <span class="app-study-path-step-badge">${stepComplete ? "Complete" : "Pending"}</span>
+              </div>
+              ${stepRefs.length ? `
+                <div class="app-study-path-ref-list" aria-label="${escapeHTML(step.title)} references">
+                  ${stepRefs.map((ref, index) => `<button class="app-tag" type="button" data-study-path-step-ref="${escapeHTML(path.id)}:${escapeHTML(step.id)}:${index}">${escapeHTML(formatStudyPathReference(ref))}</button>`).join("")}
+                </div>
+              ` : `<p class="app-study-path-empty-line">No Scripture references provided for this step yet.</p>`}
+              <div class="app-study-path-step-actions">
+                <button class="app-btn" type="button" data-study-path-step-open="${escapeHTML(path.id)}:${escapeHTML(step.id)}"${stepRefs.length ? "" : " disabled"}>Open Scripture</button>
+                <button class="app-btn" type="button" data-study-path-step-add-chain="${escapeHTML(path.id)}:${escapeHTML(step.id)}"${stepRefs.length ? "" : " disabled"}>Add references to Study Chain</button>
+                ${resource ? `<a class="app-btn" href="${escapeHTML(resource.href)}" data-study-path-resource="${escapeHTML(path.id)}:${escapeHTML(step.id)}">${escapeHTML(resource.label || "Open resource")}</a>` : ""}
+                <button class="app-btn" type="button" data-study-path-step-complete="${escapeHTML(path.id)}:${escapeHTML(step.id)}">${stepComplete ? "Undo complete" : "Mark complete"}</button>
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    </article>
+  `;
+
+  requestAnimationFrame(() => {
+    const target = targetStepId ? $(`#study-path-step-${escapeSelector(targetStepId)}`) : null;
+    target?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+}
+
+function renderStudyPaths(){
+  renderStudyPathCards();
+  const path = STUDY_PATHS.find(item => item.id === currentStudyPathId) || null;
+  if (path){
+    renderStudyPathDetail(path, currentStudyPathStepId);
+  }else{
+    const detail = $("#study-path-detail");
+    if (detail){
+      detail.innerHTML = `<div class="app-study-path-empty">Select a study path to begin.</div>`;
+    }
+    setStudyPathStatus("Select a study path to begin.", "info");
+  }
+}
+
+async function openStudyPath(pathId, { continueNext = false, focusStepId = "" } = {}){
+  const path = STUDY_PATHS.find(item => item.id === pathId);
+  if (!path) return;
+  const step = focusStepId
+    ? (path.steps || []).find(item => item.id === focusStepId)
+    : (continueNext ? studyPathNextIncompleteStep(path) : (path.steps || [])[0]);
+  currentStudyPathId = path.id;
+  currentStudyPathStepId = step?.id || "";
+  renderStudyPaths();
+  $("#study-path-detail")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function readSavedStudyChains(){
@@ -1688,6 +2224,70 @@ function wireCourses(){
     renderCourseGrid();
     renderCourseHome();
     renderProfile();
+  });
+}
+
+function wireStudyPaths(){
+  $("#study")?.addEventListener("click", async event => {
+    const openButton = event.target.closest("[data-study-path-open]");
+    if (openButton){
+      await openStudyPath(openButton.dataset.studyPathOpen, { continueNext: true });
+      return;
+    }
+
+    const continueButton = event.target.closest("[data-study-path-continue]");
+    if (continueButton){
+      await openStudyPath(continueButton.dataset.studyPathContinue, { continueNext: true });
+      return;
+    }
+
+    const openStepButton = event.target.closest("[data-study-path-step-open]");
+    if (openStepButton){
+      const [pathId, stepId] = String(openStepButton.dataset.studyPathStepOpen || "").split(":");
+      const path = STUDY_PATHS.find(item => item.id === pathId);
+      const step = path?.steps?.find(item => item.id === stepId);
+      const ref = studyPathStepRefs(step || {})[0];
+      if (ref) await openStudyPathScripture(ref);
+      return;
+    }
+
+    const stepRefButton = event.target.closest("[data-study-path-step-ref]");
+    if (stepRefButton){
+      const [, , refIndex] = String(stepRefButton.dataset.studyPathStepRef || "").split(":");
+      const [pathId, stepId] = String(stepRefButton.dataset.studyPathStepRef || "").split(":");
+      const path = STUDY_PATHS.find(item => item.id === pathId);
+      const step = path?.steps?.find(item => item.id === stepId);
+      const ref = studyPathStepRefs(step || [])[Number(refIndex || 0)];
+      if (ref) await openStudyPathScripture(ref);
+      return;
+    }
+
+    const addChainButton = event.target.closest("[data-study-path-step-add-chain]");
+    if (addChainButton){
+      const [pathId, stepId] = String(addChainButton.dataset.studyPathStepAddChain || "").split(":");
+      const path = STUDY_PATHS.find(item => item.id === pathId);
+      const step = path?.steps?.find(item => item.id === stepId);
+      if (path && step){
+        const added = await addStudyPathReferencesToChain(path, step);
+        setStudyPathStatus(added ? "Study path references added to the current chain." : "Those references are already in the current chain.", added ? "success" : "info");
+      }
+      return;
+    }
+
+    const completeButton = event.target.closest("[data-study-path-step-complete]");
+    if (completeButton){
+      const [pathId, stepId] = String(completeButton.dataset.studyPathStepComplete || "").split(":");
+      const path = STUDY_PATHS.find(item => item.id === pathId);
+      const step = path?.steps?.find(item => item.id === stepId);
+      if (!path || !step) return;
+      const complete = !isStudyPathStepComplete(pathId, stepId);
+      setStudyPathStepComplete(pathId, stepId, complete);
+      currentStudyPathId = pathId;
+      currentStudyPathStepId = (complete ? studyPathNextIncompleteStep(path)?.id : stepId) || stepId;
+      renderStudyPaths();
+      setStudyPathStatus(complete ? "Step marked complete." : "Step marked incomplete.", complete ? "success" : "info");
+      return;
+    }
   });
 }
 
@@ -2930,12 +3530,14 @@ async function init(){
   wireTabs();
   wireAsk();
   wireCourses();
+  wireStudyPaths();
   wireReader();
   wireProfileSettings();
   wireSavedLibrary();
   applySavedLibraryControls();
   await Promise.all([
     renderDailyPrecept(),
+    renderStudyPaths(),
     renderCourses(),
     renderWatch(),
     renderPractice(),
