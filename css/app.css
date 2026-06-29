@@ -2619,3 +2619,127 @@ html[data-theme="dark"] .institute-app :is(input,select,textarea){
   border-color:var(--app-orange);
   color:#fff;
 }
+
+/* App reader control theme fix */
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+){
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+) :where(h2,h3,h4,strong,label,legend){
+  color:#fff !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+) :where(p,span,small,em){
+  color:#dbe4ee !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary){
+  border-color:rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary):hover,
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary):focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-controls :is(label, label span){
+  color:#fff !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea){
+  border-color:rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea)::placeholder{
+  color:#4b5563 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea){
+  border-color:rgba(129,164,205,.38) !important;
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea)::placeholder{
+  color:#94a3b8 !important;
+}
