@@ -3319,3 +3319,100 @@ html[data-theme="dark"] .institute-app #bible #reader-controls > label{
   border-color:rgba(241,115,0,.34) !important;
   color:#f8fafc !important;
 }
+
+/* App dark mode white text correction */
+html[data-theme="dark"] .institute-app,
+html[data-theme="dark"] .institute-app :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  a,
+  button,
+  .app-btn,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-reader-search-status,
+  .app-tab,
+  .app-tab-button,
+  [role="tab"]
+){
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+)::placeholder{
+  color:#dbe4ee !important;
+  -webkit-text-fill-color:#dbe4ee !important;
+}
+
+html[data-theme="dark"] .institute-app option{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button,
+  .app-btn,
+  a.app-btn
+):not(.primary){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button.primary,
+  .app-btn.primary,
+  a.app-btn.primary
+){
+  background:#f17300 !important;
+  border-color:#f17300 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-tab[aria-selected="true"],
+  .app-tab-button[aria-selected="true"],
+  [role="tab"][aria-selected="true"],
+  .is-active,
+  .active
+){
+  background:#f17300 !important;
+  border-color:#f17300 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-section-head .app-label,
+  .app-reader-current .app-label
+){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
