@@ -2271,3 +2271,124 @@ html[data-theme="dark"] .institute-app .app-related-source{
     padding:16px;
   }
 }
+
+/* App nav, media, ask, and profile panel polish */
+.institute-app .app-tabs,
+.institute-app .app-bottom-tabs{
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-tabs{
+  padding:10px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-tab-link{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.institute-app #ask .app-card,
+.institute-app #ask form,
+.institute-app #ask .app-response,
+.institute-app #media .app-card,
+.institute-app #media article,
+.institute-app #profile .app-stat-grid,
+.institute-app #profile .app-stat{
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app #ask form,
+.institute-app #ask .app-response{
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+  padding:18px;
+}
+
+.institute-app #media .app-media-grid{
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app #media article,
+.institute-app #media .app-card{
+  padding:18px;
+  min-height:180px;
+}
+
+.institute-app #media article h3,
+.institute-app #media .app-card h3{
+  margin-top:0;
+}
+
+.institute-app #profile .app-stat-grid{
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+  padding:18px;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.institute-app #profile .app-stat{
+  padding:18px;
+  text-align:center;
+}
+
+.institute-app #profile .app-stat strong{
+  display:block;
+  font-size:1.6rem;
+  line-height:1;
+  color:#054A91;
+  margin-bottom:8px;
+}
+
+.institute-app #profile .app-stat span{
+  display:block;
+  font-size:0.86rem;
+  line-height:1.25;
+  color:#22364f;
+}
+
+@media (max-width:720px){
+  .institute-app #profile .app-stat-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width:520px){
+  .institute-app .app-tabs,
+  .institute-app .app-bottom-tabs,
+  .institute-app #ask form,
+  .institute-app #ask .app-response,
+  .institute-app #media .app-media-grid,
+  .institute-app #profile .app-stat-grid{
+    width:calc(100% - 20px);
+  }
+
+  .institute-app .app-tabs{
+    padding:8px;
+  }
+
+  .institute-app #ask form,
+  .institute-app #ask .app-response,
+  .institute-app #media article,
+  .institute-app #media .app-card,
+  .institute-app #profile .app-stat-grid,
+  .institute-app #profile .app-stat{
+    padding:16px;
+  }
+}
