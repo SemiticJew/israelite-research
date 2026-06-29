@@ -811,7 +811,9 @@
   display:grid;
   gap:14px;
   border-radius:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(219,228,238,.12)) #fbfdff;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   max-width:100%;
 }
 
@@ -2056,7 +2058,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   border:1px solid rgba(255,255,255,.2);
   border-radius:18px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,251,255,.98));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 28px 60px rgba(3,27,56,.35);
 }
 
@@ -2165,7 +2168,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   padding:18px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.34));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2229,7 +2233,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   padding:18px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.28));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2286,7 +2291,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   padding:16px 18px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.28));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2295,7 +2301,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   padding:10px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2368,7 +2375,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
 ){
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.26));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2426,7 +2434,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   padding:18px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2448,7 +2457,8 @@ html[data-theme="dark"] .institute-app .app-related-source{
   text-align:center;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
@@ -2520,4 +2530,92 @@ html[data-theme="dark"] .institute-app .app-related-source{
   .institute-app #profile .app-profile-grid{
     grid-template-columns:1fr;
   }
+}
+
+/* App blue panel text guard */
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+){
+  border-color:rgba(219,228,238,.28);
+  color:#fff;
+}
+
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+) :where(h1,h2,h3,h4,h5,h6,strong,label,legend){
+  color:#fff;
+}
+
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+) :where(p,span,li,small,em){
+  color:#dbe4ee;
+}
+
+.institute-app :is(.app-label,.app-kicker){
+  color:#ffb36b;
+}
+
+.institute-app :is(input,select,textarea){
+  background:#fff;
+  color:#111827;
+}
+
+html[data-theme="dark"] .institute-app :is(input,select,textarea){
+  background:#07111f;
+  color:#f8fafc;
+}
+
+.institute-app .app-btn.primary{
+  background:var(--app-orange);
+  border-color:var(--app-orange);
+  color:#fff;
 }
