@@ -2811,3 +2811,125 @@ html[data-theme="dark"] .institute-app #bible .app-reader-controls option{
   background:#07111f;
   color:#f8fafc;
 }
+
+/* App reader direct control fix */
+.institute-app #bible #reader-controls{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-controls > label,
+.institute-app #bible #reader-controls > label:nth-child(1),
+.institute-app #bible #reader-controls > label:nth-child(2),
+.institute-app #bible #reader-controls > label:nth-child(3),
+.institute-app #bible #reader-controls > label:nth-child(4),
+.institute-app #bible #reader-controls > label:nth-child(5){
+  border:1px solid rgba(255,255,255,.32) !important;
+  background:rgba(255,255,255,.08) !important;
+  background-image:none !important;
+  color:#fff !important;
+  box-shadow:none !important;
+}
+
+.institute-app #bible #reader-controls > label > span,
+.institute-app #bible #reader-controls > label:nth-child(4) > span,
+.institute-app #bible #reader-controls > label:nth-child(5) > span{
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-canon,
+.institute-app #bible #reader-book,
+.institute-app #bible #reader-chapter,
+.institute-app #bible #reader-font-size,
+.institute-app #bible #reader-spacing{
+  border:1px solid rgba(255,255,255,.72) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.institute-app #bible #reader-canon option,
+.institute-app #bible #reader-book option,
+.institute-app #bible #reader-chapter option,
+.institute-app #bible #reader-font-size option,
+.institute-app #bible #reader-spacing option{
+  background:#fff !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-nav{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-prev,
+.institute-app #bible #reader-next{
+  border:1px solid rgba(255,255,255,.72) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.institute-app #bible #reader-prev:hover,
+.institute-app #bible #reader-next:hover,
+.institute-app #bible #reader-prev:focus-visible,
+.institute-app #bible #reader-next:focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-controls,
+html[data-theme="dark"] .institute-app #bible .app-reader-nav{
+  border-color:rgba(129,164,205,.32) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.9), rgba(7,17,31,.96)),
+    #07111f !important;
+  color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-controls > label,
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(1),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(2),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(3),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(4),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(5){
+  border-color:rgba(129,164,205,.38) !important;
+  background:rgba(7,17,31,.34) !important;
+  background-image:none !important;
+  color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-canon,
+html[data-theme="dark"] .institute-app #bible #reader-book,
+html[data-theme="dark"] .institute-app #bible #reader-chapter,
+html[data-theme="dark"] .institute-app #bible #reader-font-size,
+html[data-theme="dark"] .institute-app #bible #reader-spacing,
+html[data-theme="dark"] .institute-app #bible #reader-prev,
+html[data-theme="dark"] .institute-app #bible #reader-next{
+  border-color:rgba(129,164,205,.46) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-canon option,
+html[data-theme="dark"] .institute-app #bible #reader-book option,
+html[data-theme="dark"] .institute-app #bible #reader-chapter option,
+html[data-theme="dark"] .institute-app #bible #reader-font-size option,
+html[data-theme="dark"] .institute-app #bible #reader-spacing option{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
