@@ -2272,20 +2272,35 @@ html[data-theme="dark"] .institute-app .app-related-source{
   }
 }
 
-/* App nav, media, ask, and profile panel polish */
-.institute-app .app-tabs,
-.institute-app .app-bottom-tabs{
-  width:min(100%, 920px);
+/* App web nav and tab context polish */
+.institute-app .app-breadcrumbs,
+.institute-app .app-topbar,
+.institute-app .app-tabbar-top,
+.institute-app .app-panels{
+  width:min(100%, 1040px);
   margin-left:auto;
   margin-right:auto;
 }
 
-.institute-app .app-tabs{
+.institute-app .app-topbar{
+  padding:16px 18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.28));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-tabbar-top{
+  margin:0 auto 18px;
   padding:10px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
     linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-tabbar-bottom{
+  box-shadow:0 -10px 24px rgba(5, 35, 72, 0.1);
 }
 
 .institute-app .app-tab-link{
@@ -2295,49 +2310,134 @@ html[data-theme="dark"] .institute-app .app-related-source{
   justify-content:center;
 }
 
-.institute-app #ask .app-card,
-.institute-app #ask form,
-.institute-app #ask .app-response,
-.institute-app #media .app-card,
+.institute-app .app-tabbar-top .app-tab-link:hover,
+.institute-app .app-tabbar-top .app-tab-link:focus-visible{
+  background:rgba(5, 74, 145, 0.08);
+}
+
+.institute-app .app-tabbar-top .app-tab-link.is-active:hover,
+.institute-app .app-tabbar-top .app-tab-link.is-active:focus-visible{
+  background:var(--app-blue);
+}
+
+.institute-app .app-panel{
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > :is(
+  .app-hero,
+  .app-section-head,
+  .app-home-grid,
+  .app-reader-shell,
+  .app-study-paths,
+  .app-study-path-grid,
+  .app-study-path-detail,
+  .app-course-grid,
+  .app-lesson-detail,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-watch-grid,
+  .app-profile-grid,
+  .app-offline-card,
+  .app-library-controls,
+  .app-saved-library,
+  .app-settings-card,
+  .app-card
+){
+  width:min(100%, 960px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > :is(
+  .app-section-head,
+  .app-reader-shell,
+  .app-study-paths,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-profile-grid,
+  .app-offline-card,
+  .app-library-controls,
+  .app-settings-card
+){
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.26));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-panel > :is(
+  .app-study-paths,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-profile-grid
+){
+  padding:18px;
+}
+
+.institute-app .app-panel > * + *{
+  margin-top:18px;
+}
+
+.institute-app .app-panel > .app-section-head + *{
+  margin-top:0;
+}
+
+.institute-app #home .app-hero,
+.institute-app #home .app-home-today-head,
+.institute-app #home .app-home-grid{
+  width:min(100%, 960px);
+}
+
+.institute-app #study .app-study-paths{
+  display:block;
+}
+
+.institute-app #study .app-study-path-grid,
+.institute-app #study .app-study-path-detail{
+  width:100%;
+}
+
+.institute-app #ask .app-ask-form,
+.institute-app #ask .app-ai-response{
+  width:min(100%, 960px);
+}
+
+.institute-app #media .app-watch-grid{
+  width:min(100%, 960px);
+  margin-left:auto;
+  margin-right:auto;
+  display:grid;
+  gap:14px;
+}
+
+.institute-app #media .app-watch-grid > *,
 .institute-app #media article,
-.institute-app #profile .app-stat-grid,
-.institute-app #profile .app-stat{
+.institute-app #media .app-card{
+  min-height:180px;
+  padding:18px;
   border:1px solid rgba(5, 74, 145, 0.14);
   background:
     linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
   box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
-.institute-app #ask form,
-.institute-app #ask .app-response{
-  width:min(100%, 920px);
-  margin-left:auto;
-  margin-right:auto;
-  padding:18px;
-}
-
-.institute-app #media .app-media-grid{
-  width:min(100%, 920px);
-  margin-left:auto;
-  margin-right:auto;
-}
-
-.institute-app #media article,
-.institute-app #media .app-card{
-  padding:18px;
-  min-height:180px;
-}
-
+.institute-app #media .app-watch-grid > * h3,
 .institute-app #media article h3,
 .institute-app #media .app-card h3{
   margin-top:0;
 }
 
-.institute-app #profile .app-stat-grid{
-  width:min(100%, 920px);
-  margin-left:auto;
-  margin-right:auto;
-  padding:18px;
+.institute-app #profile .app-profile-grid{
+  width:min(100%, 960px);
   display:grid;
   grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:12px;
@@ -2346,49 +2446,78 @@ html[data-theme="dark"] .institute-app .app-related-source{
 .institute-app #profile .app-stat{
   padding:18px;
   text-align:center;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(219,228,238,0.24));
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
 }
 
 .institute-app #profile .app-stat strong{
   display:block;
+  margin-bottom:8px;
+  color:#054A91;
   font-size:1.6rem;
   line-height:1;
-  color:#054A91;
-  margin-bottom:8px;
 }
 
 .institute-app #profile .app-stat span{
   display:block;
+  color:#22364f;
   font-size:0.86rem;
   line-height:1.25;
-  color:#22364f;
 }
 
 @media (max-width:720px){
-  .institute-app #profile .app-stat-grid{
+  .institute-app #profile .app-profile-grid{
     grid-template-columns:repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width:520px){
-  .institute-app .app-tabs,
-  .institute-app .app-bottom-tabs,
-  .institute-app #ask form,
-  .institute-app #ask .app-response,
-  .institute-app #media .app-media-grid,
-  .institute-app #profile .app-stat-grid{
-    width:calc(100% - 20px);
+@media (max-width:640px){
+  .institute-app .app-topbar,
+  .institute-app .app-panel > :is(
+    .app-hero,
+    .app-section-head,
+    .app-home-grid,
+    .app-reader-shell,
+    .app-study-paths,
+    .app-study-path-grid,
+    .app-study-path-detail,
+    .app-course-grid,
+    .app-lesson-detail,
+    .app-ai-disclaimer,
+    .app-ask-form,
+    .app-ai-response,
+    .app-filter-note,
+    .app-watch-grid,
+    .app-profile-grid,
+    .app-offline-card,
+    .app-library-controls,
+    .app-saved-library,
+    .app-settings-card,
+    .app-card
+  ){
+    width:100%;
   }
 
-  .institute-app .app-tabs{
-    padding:8px;
-  }
-
-  .institute-app #ask form,
-  .institute-app #ask .app-response,
+  .institute-app .app-panel > :is(
+    .app-study-paths,
+    .app-ai-disclaimer,
+    .app-ask-form,
+    .app-ai-response,
+    .app-filter-note,
+    .app-profile-grid
+  ),
+  .institute-app #media .app-watch-grid > *,
   .institute-app #media article,
   .institute-app #media .app-card,
-  .institute-app #profile .app-stat-grid,
   .institute-app #profile .app-stat{
     padding:16px;
+  }
+}
+
+@media (max-width:520px){
+  .institute-app #profile .app-profile-grid{
+    grid-template-columns:1fr;
   }
 }
