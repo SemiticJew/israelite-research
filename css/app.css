@@ -2743,3 +2743,71 @@ html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,in
 html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea)::placeholder{
   color:#94a3b8 !important;
 }
+
+/* App reader controls unified theme fix */
+.institute-app #bible .app-reader-controls{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls{
+  border-color:rgba(129,164,205,.32) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.9), rgba(7,17,31,.96)),
+    #07111f !important;
+  color:#fff !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.32);
+}
+
+.institute-app #bible .app-reader-controls :is(label,label span){
+  color:#fff !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea),
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn){
+  min-height:44px;
+  border:1px solid rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea):hover,
+.institute-app #bible .app-reader-controls :is(select,input,textarea):focus-visible,
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):hover,
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea),
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn){
+  border-color:rgba(129,164,205,.42) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea):hover,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea):focus-visible,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):hover,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):focus-visible{
+  background:#0b1626 !important;
+  color:#f8fafc !important;
+}
+
+.institute-app #bible .app-reader-controls option{
+  background:#fff;
+  color:#111827;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls option{
+  background:#07111f;
+  color:#f8fafc;
+}
