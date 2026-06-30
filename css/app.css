@@ -3836,230 +3836,92 @@ html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
   -webkit-text-fill-color:#f8fafc !important;
 }
 
-/* App tab label white text fix */
-.institute-app :is(
+/* App Bible tab light text and helper removal fix */
+
+/* Light mode app navigation labels: Home / Bible / Study / Ask / Media / Profile */
+html:not([data-theme="dark"]) .institute-app :is(
   .app-tabbar,
   .app-tabbar-top,
-  .app-bottom-tabs
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
 ) :is(
   button,
+  a,
   .app-tab,
   .app-tab-button,
-  [role="tab"]
+  .tab,
+  [role="tab"],
+  [data-tab],
+  [data-app-tab]
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(
+  button,
+  a,
+  .app-tab,
+  .app-tab-button,
+  .tab,
+  [role="tab"],
+  [data-tab],
+  [data-app-tab]
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Light mode Bible tab blue header text: Bible / Scripture Reader / subtitle */
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .app-screen-head,
+  .app-section-head,
+  .app-panel-head,
+  .app-page-head,
+  .app-reader-head,
+  .app-hero,
+  .app-bible-hero,
+  .app-tab-hero,
+  .app-view-hero,
+  header,
+  [class*="hero"],
+  [class*="head"]
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,small,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-subtitle,
+  .app-description
 ){
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
 }
 
-.institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-bottom-tabs
-) :is(
-  button,
-  .app-tab,
-  .app-tab-button,
-  [role="tab"]
-):hover,
-.institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-bottom-tabs
-) :is(
-  button,
-  .app-tab,
-  .app-tab-button,
-  [role="tab"]
-):focus-visible,
-.institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-bottom-tabs
-) :is(
-  button,
-  .app-tab,
-  .app-tab-button,
-  [role="tab"]
-)[aria-selected="true"]{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* App reader light mode reset */
-html:not([data-theme="dark"]) .institute-app #bible,
-html:not([data-theme="dark"]) .institute-app #bible::before,
-html:not([data-theme="dark"]) .institute-app #bible::after,
-html:not([data-theme="dark"]) .institute-app #bible .app-reader-shell,
-html:not([data-theme="dark"]) .institute-app #bible .app-reader-shell::before,
-html:not([data-theme="dark"]) .institute-app #bible .app-reader-shell::after{
-  background:#f8fafc !important;
-  background-color:#f8fafc !important;
-  background-image:none !important;
-  color:#111827 !important;
-}
-
+/* Hard fallback: remove the verbose Bible helper sections from display */
 html:not([data-theme="dark"]) .institute-app #bible :is(
-  .app-reader-current,
-  #reader-current-summary,
-  .app-reader-controls,
-  #reader-controls,
-  .app-reader-nav,
-  .app-reader-search,
-  #reader-chapter-search-panel,
   .app-reader-study-grid,
   .app-reader-context,
   #reader-context,
   .app-reader-study-actions,
   #reader-study-actions,
   .app-reader-related,
-  #reader-related,
-  .app-study-chain,
-  #study-chain,
-  .app-reader,
-  #reader-output,
-  .app-full-library,
-  .app-search-shell
-){
-  border-color:rgba(129,164,205,.34) !important;
-  background:#ffffff !important;
-  background-color:#ffffff !important;
-  background-image:none !important;
-  color:#111827 !important;
-  box-shadow:0 12px 28px rgba(5,74,145,.08) !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status,
-  .app-reader-search-status,
-  .reader-note,
-  .reader-verse-text
-){
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-verse,
-  .app-reader-verse,
-  .verse-card,
-  .app-verse-card,
-  [class*="verse"]
-){
-  border-color:rgba(129,164,205,.3) !important;
-  background:#ffffff !important;
-  background-color:#ffffff !important;
-  background-image:none !important;
-  color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-actions,
-  .app-reader-verse-actions,
-  .reader-verse-actions,
-  .verse-actions,
-  .app-verse-actions,
-  .verse-tools,
-  .app-verse-tools,
-  [class*="verse-actions"],
-  [class*="verse-tools"]
-){
-  border-color:rgba(129,164,205,.28) !important;
-  background:#f8fafc !important;
-  background-color:#f8fafc !important;
-  background-image:none !important;
-  color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  input,
-  select,
-  textarea
+  #reader-related
 ),
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  button,
-  .app-btn,
-  a.app-btn,
-  #reader-study-actions a,
-  #reader-study-actions button,
-  #reader-study-actions .app-btn,
-  #reader-output button,
-  #reader-output .app-btn,
-  #reader-output a.app-btn
+.institute-app #bible :is(
+  .app-reader-study-grid,
+  .app-reader-context,
+  #reader-context,
+  .app-reader-study-actions,
+  #reader-study-actions,
+  .app-reader-related,
+  #reader-related
 ){
-  border-color:rgba(129,164,205,.42) !important;
-  background:#ffffff !important;
-  background-color:#ffffff !important;
-  background-image:none !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-  box-shadow:none !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  input,
-  select,
-  textarea
-)::placeholder{
-  color:#4b5563 !important;
-  -webkit-text-fill-color:#4b5563 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible option{
-  background:#ffffff !important;
-  color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  button,
-  .app-btn,
-  a.app-btn,
-  #reader-study-actions a,
-  #reader-study-actions button,
-  #reader-study-actions .app-btn,
-  #reader-output button,
-  #reader-output .app-btn,
-  #reader-output a.app-btn
-):hover,
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  button,
-  .app-btn,
-  a.app-btn,
-  #reader-study-actions a,
-  #reader-study-actions button,
-  #reader-study-actions .app-btn,
-  #reader-output button,
-  #reader-output .app-btn,
-  #reader-output a.app-btn
-):focus-visible{
-  border-color:#054A91 !important;
-  background:#eef3f8 !important;
-  background-color:#eef3f8 !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-verse-num,
-  .verse-number,
-  .app-verse-number,
-  .reader-verse-number,
-  [class*="verse-number"]
-){
-  color:#054A91 !important;
-  -webkit-text-fill-color:#054A91 !important;
+  display:none !important;
 }
