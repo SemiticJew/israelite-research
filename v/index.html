@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Semitic Jew Verse</title>
+  <meta name="description" content="Semitic Jew verse link">
+  <meta name="theme-color" content="#054A91">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Semitic Jew">
+  <meta property="og:title" content="Semitic Jew Verse">
+  <meta property="og:description" content="Scripture. Logic. History. Identity.">
+  <meta property="og:url" content="https://semiticjew.org/v/">
+  <meta property="twitter:card" content="summary">
+  <style>
+    :root{
+      color-scheme: light dark;
+      --navy:#054A91;
+      --ice:#DBE4EE;
+      --blue:#3E7CB1;
+      --gold:#F17300;
+      --steel:#81A4CD;
+      --ink:#0b1220;
+      --paper:#ffffff;
+      --line: color-mix(in srgb, var(--steel) 30%, transparent);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100%}
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+      color: var(--ink);
+      padding: 24px;
+    }
+    main{
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(5, 74, 145, .10);
+      padding: clamp(20px, 4vw, 36px);
+    }
+    .brand{
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1{
+      margin: 0;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      line-height: 1.1;
+    }
+    .meta{
+      margin: 12px 0 0;
+      font-size: .95rem;
+      color: rgba(11, 18, 32, .75);
+    }
+    blockquote{
+      margin: 22px 0 0;
+      padding: 18px 18px 18px 20px;
+      border-left: 4px solid var(--gold);
+      background: linear-gradient(180deg, rgba(219,228,238,.45), rgba(255,255,255,.85));
+      border-radius: 14px;
+      font-size: clamp(1.1rem, 3.4vw, 1.35rem);
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+    .actions{
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    a{
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .button{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(62,124,177,.22);
+      background: rgba(219,228,238,.5);
+    }
+    .brandline{
+      margin: 20px 0 0;
+      color: rgba(11, 18, 32, .72);
+      font-size: .96rem;
+    }
+    .loading, .error{
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(129,164,205,.12);
+      border: 1px solid rgba(62,124,177,.16);
+    }
+    .error{
+      background: rgba(241,115,0,.08);
+      border-color: rgba(241,115,0,.22);
+    }
+    @media (prefers-color-scheme: dark){
+      body{
+        background: linear-gradient(180deg, #07121f 0%, #0c1625 100%);
+        color: #eef4fb;
+      }
+      main{
+        background: #0b1220;
+        border-color: rgba(129,164,205,.22);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, .36);
+      }
+      .meta,.brandline{color: rgba(238,244,251,.72)}
+      blockquote{
+        background: linear-gradient(180deg, rgba(8, 21, 38, .98), rgba(10, 18, 32, .92));
+        color: #f8fbff;
+        border-left-color: var(--gold);
+      }
+      .button{
+        background: rgba(129,164,205,.10);
+        border-color: rgba(129,164,205,.22);
+      }
+      a{color:#eaf3ff}
+      .loading{background: rgba(129,164,205,.10)}
+      .error{background: rgba(241,115,0,.12)}
+    }
+  </style>
+</head>
+<body>
+  <main aria-live="polite">
+    <p class="brand">Semitic Jew</p>
+    <h1 id="title">Loading verse…</h1>
+    <p class="meta" id="meta">Fetching the chapter text.</p>
+    <blockquote id="verse" class="loading">Loading…</blockquote>
+    <div class="actions">
+      <a id="context-link" class="button" href="/app.html">Read in context</a>
+      <a class="button" href="/biblia.html">Open Biblia hub</a>
+    </div>
+    <p class="brandline">Scripture. Logic. History. Identity.</p>
+  </main>
+  <script>
+    const BASE = "https://semiticjew.org";
+    const CANONS = [
+      { canon: "tanakh", books: "/data/tanakh/books.json" },
+      { canon: "newtestament", books: "/data/newtestament/books.json" },
+      { canon: "apocrypha", books: "/data/apocrypha/books.json" }
+    ];
+    const CANON_LABELS = {
+      tanakh: "Tanakh",
+      newtestament: "New Testament",
+      apocrypha: "Apocrypha"
+    };
+
+    const titleNode = document.getElementById("title");
+    const metaNode = document.getElementById("meta");
+    const verseNode = document.getElementById("verse");
+    const contextLink = document.getElementById("context-link");
+
+    function titleFromSlug(slug){
+      return String(slug || "")
+        .split("-")
+        .filter(Boolean)
+        .map(part => part.length <= 2 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ");
+    }
+
+    function requestedPath(){
+      const params = new URLSearchParams(location.search);
+      const fallback = params.get("path") || "";
+      if (fallback) return fallback;
+      if (location.pathname.toLowerCase().startsWith("/v/")) return location.pathname;
+      return "/v/";
+    }
+
+    function parseShareSlug(pathname){
+      const clean = String(pathname || "").trim().replace(/^\/+|\/+$/g, "");
+      const parts = clean.split("/").filter(Boolean);
+      const target = parts[0] === "v" ? parts.slice(1).join("/") : parts.join("/");
+      const tokens = target.split("-").filter(Boolean);
+      if (tokens.length < 3) return null;
+      const verse = tokens.pop();
+      const chapter = tokens.pop();
+      const book = tokens.join("-");
+      if (!book || !/^\d+$/.test(chapter) || !/^\d+$/.test(verse)) return null;
+      return { book, chapter, verse, slug: `${book}-${chapter}-${verse}` };
+    }
+
+    async function loadBooksIndex(){
+      const entries = await Promise.all(CANONS.map(async item => {
+        const response = await fetch(item.books, { cache: "force-cache" });
+        if (!response.ok) throw new Error(`Unable to load ${item.books}`);
+        const books = await response.json();
+        return [item.canon, books];
+      }));
+      return Object.fromEntries(entries);
+    }
+
+    function setMeta(name, content, attr = "name"){
+      let tag = Array.from(document.head.querySelectorAll("meta")).find(node => node.getAttribute(attr) === name);
+      if (!tag){
+        tag = document.createElement("meta");
+        tag.setAttribute(attr, name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    }
+
+    function setCanonical(url){
+      let link = document.head.querySelector('link[rel="canonical"]');
+      if (!link){
+        link = document.createElement("link");
+        link.rel = "canonical";
+        document.head.appendChild(link);
+      }
+      link.href = url;
+    }
+
+    function updateHead({ ref, text, shortUrl }){
+      const description = text ? text.slice(0, 180) : "Semitic Jew verse link";
+      document.title = ref ? `${ref} | Semitic Jew` : "Semitic Jew Verse";
+      setMeta("description", description);
+      setMeta("og:title", ref ? `${ref} | Semitic Jew` : "Semitic Jew Verse", "property");
+      setMeta("og:description", description, "property");
+      setMeta("og:url", shortUrl, "property");
+      setMeta("twitter:title", ref ? `${ref} | Semitic Jew` : "Semitic Jew Verse");
+      setMeta("twitter:description", description);
+      setCanonical(shortUrl);
+    }
+
+    function renderNotFound(message = "Verse not found."){
+      titleNode.textContent = "Verse not found";
+      metaNode.textContent = message;
+      verseNode.className = "error";
+      verseNode.textContent = "Open the Bible reader to continue.";
+      contextLink.href = "/biblia.html";
+      contextLink.textContent = "Open Biblia hub";
+      updateHead({
+        ref: "Verse not found",
+        text: message,
+        shortUrl: `${BASE}/v/`
+      });
+    }
+
+    async function resolveVerse(){
+      const target = parseShareSlug(requestedPath());
+      if (!target){
+        renderNotFound();
+        return;
+      }
+
+      if (location.pathname !== `/v/${target.slug}/`){
+        history.replaceState({}, "", `/v/${target.slug}/`);
+      }
+
+      const booksIndex = await loadBooksIndex();
+      const canon = Object.keys(booksIndex).find(key => booksIndex[key] && Object.prototype.hasOwnProperty.call(booksIndex[key], target.book));
+      if (!canon){
+        renderNotFound(`No Bible record found for ${titleFromSlug(target.book)}.`);
+        return;
+      }
+
+      const chapterUrl = `/data/${canon}/${target.book}/${target.chapter}.json`;
+      const response = await fetch(chapterUrl, { cache: "force-cache" });
+      if (!response.ok){
+        renderNotFound(`Chapter data not available for ${titleFromSlug(target.book)} ${target.chapter}.`);
+        return;
+      }
+
+      const chapter = await response.json();
+      const verse = Array.isArray(chapter?.verses)
+        ? chapter.verses.find(item => String(item?.v) === String(target.verse))
+        : null;
+
+      if (!verse){
+        renderNotFound(`Verse ${target.verse} was not found in ${titleFromSlug(target.book)} ${target.chapter}.`);
+        return;
+      }
+
+      const ref = `${titleFromSlug(target.book)} ${target.chapter}:${target.verse}`;
+      const shortUrl = `${BASE}/v/${target.slug}/`;
+      const verseText = String(verse.t || "").trim().replace(/\s+/g, " ");
+
+      titleNode.textContent = ref;
+      metaNode.textContent = CANON_LABELS[canon] || "";
+      verseNode.className = "";
+      verseNode.textContent = verseText;
+      contextLink.href = `/app.html?canon=${encodeURIComponent(canon)}&book=${encodeURIComponent(target.book)}&ch=${encodeURIComponent(target.chapter)}&v=${encodeURIComponent(target.verse)}`;
+      contextLink.textContent = "Read in context";
+
+      updateHead({
+        ref: `${ref}, KJV`,
+        text: verseText,
+        shortUrl
+      });
+    }
+
+    resolveVerse().catch(error => {
+      console.error(error);
+      renderNotFound("The verse page could not be loaded right now.");
+    });
+  </script>
+</body>
+</html>

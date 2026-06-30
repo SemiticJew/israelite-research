@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v111';
+const CACHE_VERSION = 'sj-pwa-v112';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -7,10 +7,12 @@ const APP_SHELL_ASSETS = [
   '/index.html',
   '/app.html',
   '/offline.html',
+  '/404.html',
   '/biblia.html',
   '/tanakh.html',
   '/newtestament.html',
   '/apocrypha.html',
+  '/v/index.html',
   '/styles.css',
   '/css/app.css',
   '/js/include.js',
@@ -66,6 +68,7 @@ const APP_SHELL = [
   '/index.html',
   '/app.html',
   '/offline.html',
+  '/404.html',
   '/styles.css',
   '/css/app.css',
   '/js/include.js',
@@ -73,6 +76,7 @@ const APP_SHELL = [
   '/js/app/ai-mock.js',
   '/search.html',
   '/biblia.html',
+  '/v/index.html',
   '/articles.html',
   '/media.html',
   '/dietary-laws.html',
@@ -148,6 +152,28 @@ async function networkFirst(request){
   }
 }
 
+async function verseShareNavigation(request){
+  const url = new URL(request.url);
+  try{
+    const fresh = await fetch(request);
+    if (fresh && fresh.ok) return fresh;
+    if (url.pathname.startsWith('/v/')){
+      const cached = await caches.match('/v/index.html');
+      if (cached) return cached;
+      const fallback = await caches.match('/404.html');
+      if (fallback) return fallback;
+    }
+    return fresh;
+  }catch(error){
+    if (url.pathname.startsWith('/v/')){
+      const cached = await caches.match('/v/index.html');
+      if (cached) return cached;
+    }
+    const cached = await caches.match(request);
+    return cached || fallbackResponseFor(request);
+  }
+}
+
 async function staleWhileRevalidate(request){
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(request);
@@ -186,6 +212,10 @@ self.addEventListener('fetch', event => {
   if(request.method !== 'GET') return;
 
   if(isHtmlRequest(request)){
+    if (url.pathname.startsWith('/v/')){
+      event.respondWith(verseShareNavigation(request));
+      return;
+    }
     event.respondWith(networkFirst(request));
     return;
   }
