@@ -3597,3 +3597,195 @@ html[data-theme="dark"] .institute-app #bible #reader-output :is(
   color:#f8fafc !important;
   -webkit-text-fill-color:#f8fafc !important;
 }
+
+/* App header dark mode nav text fix */
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):hover,
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):focus-visible{
+  color:#f17300 !important;
+  -webkit-text-fill-color:#f17300 !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  [data-site-header]
+) :is(
+  .brand,
+  .site-brand,
+  .brand-link,
+  .site-logo,
+  .logo,
+  .wordmark
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  [data-site-header]
+) :is(
+  .give-button,
+  .donate-button,
+  a[href*="donate"],
+  a[href*="donations"]
+){
+  border-color:#f17300 !important;
+  background:#f17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* App page site header dark link fix */
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):hover,
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):focus-visible{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  text-decoration-color:#f17300 !important;
+}
+
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  .brand,
+  .brand a,
+  .site-brand,
+  .site-brand a,
+  .brand-link,
+  .logo,
+  .logo a,
+  .wordmark,
+  .wordmark a
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
