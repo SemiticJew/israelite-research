@@ -3836,84 +3836,9 @@ html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
   -webkit-text-fill-color:#f8fafc !important;
 }
 
-/* App Bible tab light text and helper removal fix */
+/* App light mode contrast repair v2 */
 
-/* Light mode app navigation labels: Home / Bible / Study / Ask / Media / Profile */
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-bottom-tabs,
-  .app-tabs,
-  .app-nav-tabs
-) :is(
-  button,
-  a,
-  .app-tab,
-  .app-tab-button,
-  .tab,
-  [role="tab"],
-  [data-tab],
-  [data-app-tab]
-),
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-bottom-tabs,
-  .app-tabs,
-  .app-nav-tabs
-) :is(
-  button,
-  a,
-  .app-tab,
-  .app-tab-button,
-  .tab,
-  [role="tab"],
-  [data-tab],
-  [data-app-tab]
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Light mode Bible tab blue header text: Bible / Scripture Reader / subtitle */
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .app-screen-head,
-  .app-section-head,
-  .app-panel-head,
-  .app-page-head,
-  .app-reader-head,
-  .app-hero,
-  .app-bible-hero,
-  .app-tab-hero,
-  .app-view-hero,
-  header,
-  [class*="hero"],
-  [class*="head"]
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,small,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-subtitle,
-  .app-description
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Hard fallback: remove the verbose Bible helper sections from display */
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .app-reader-study-grid,
-  .app-reader-context,
-  #reader-context,
-  .app-reader-study-actions,
-  #reader-study-actions,
-  .app-reader-related,
-  #reader-related
-),
+/* Remove the verbose Bible helper areas entirely. */
 .institute-app #bible :is(
   .app-reader-study-grid,
   .app-reader-context,
@@ -3924,4 +3849,191 @@ html:not([data-theme="dark"]) .institute-app #bible :is(
   #reader-related
 ){
   display:none !important;
+}
+
+/* Light mode app navigation labels: Home / Bible / Study / Ask / Media / Profile */
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(
+  a,
+  button,
+  .app-tab,
+  .app-tab-link,
+  .app-tab-button,
+  [role="tab"],
+  [data-tab],
+  [data-app-tab]
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(
+  a,
+  button,
+  .app-tab,
+  .app-tab-link,
+  .app-tab-button,
+  [role="tab"],
+  [data-tab],
+  [data-app-tab]
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Light mode blue hero/header text: Bible / Scripture Reader / subtitle */
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-screen-head,
+  .app-screen-hero,
+  .app-page-hero,
+  .app-section-hero,
+  .app-tab-hero,
+  .app-view-hero,
+  .app-hero,
+  .app-bible-hero
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-screen-head,
+  .app-screen-hero,
+  .app-page-hero,
+  .app-section-hero,
+  .app-tab-hero,
+  .app-view-hero,
+  .app-hero,
+  .app-bible-hero
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Light mode reader white cards must have black readable text. */
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .app-reader-current,
+  #reader-current-summary,
+  .app-reader-search,
+  #reader-chapter-search-panel,
+  .app-study-chain,
+  #study-chain,
+  .app-reader,
+  #reader-output,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card
+),
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .app-reader-current,
+  #reader-current-summary,
+  .app-reader-search,
+  #reader-chapter-search-panel,
+  .app-study-chain,
+  #study-chain,
+  .app-reader,
+  #reader-output,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-reader-search-status,
+  .reader-note,
+  .reader-verse-text,
+  .reader-verse-num,
+  .verse-number,
+  .app-verse-number,
+  .reader-verse-number
+){
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+/* Light mode form controls and reader buttons stay black on white. */
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  input,
+  select,
+  textarea,
+  option,
+  button,
+  .app-btn,
+  a.app-btn,
+  #reader-output button,
+  #reader-output .app-btn,
+  #reader-output a.app-btn,
+  #study-chain button,
+  #study-chain .app-btn,
+  #study-chain a.app-btn
+){
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  input,
+  textarea
+)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
+
+/* Light mode profile blue stat cards should not have gray/washed labels. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Light mode profile light callouts/cards stay black and readable. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .app-note,
+  .app-helper
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .app-note,
+  .app-helper
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
 }
