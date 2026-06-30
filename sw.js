@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v109';
+const CACHE_VERSION = 'sj-pwa-v110';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
