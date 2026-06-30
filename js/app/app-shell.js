@@ -879,26 +879,32 @@ function sameReaderLocation(a, b){
     String(a.chapter) === String(b.chapter));
 }
 
+function readerVerseShareSlug(location = {}, verse = ""){
+  const book = String(location.book || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-");
+  const chapter = String(location.chapter || "").trim();
+  const verseNumber = String(verse || "").trim();
+  if (!book || !chapter || !verseNumber) return "";
+  return `${book}-${chapter}-${verseNumber}`;
+}
+
 function readerVerseShareUrl(location = {}, verse = ""){
-  const params = new URLSearchParams();
-  if (location.canon) params.set("canon", location.canon);
-  if (location.book) params.set("book", location.book);
-  if (location.chapter) params.set("ch", String(location.chapter));
-  if (verse) params.set("v", String(verse));
-  const query = params.toString();
-  return query ? `https://semiticjew.org/app.html?${query}` : "https://semiticjew.org/app.html";
+  const slug = readerVerseShareSlug(location, verse);
+  return slug ? `https://semiticjew.org/v/${slug}/` : "https://semiticjew.org/app.html";
 }
 
 function readerVerseShareText(ref, text, location = {}, verse = ""){
   const reference = String(ref || "").trim();
-  const verseText = String(text || "").trim();
+  const verseText = String(text || "").trim().replace(/\s+/g, " ");
   const shareUrl = readerVerseShareUrl(location, verse);
   return [
-    verseText,
-    reference ? `— ${reference}, KJV` : "— KJV",
+    reference ? `${reference}, KJV` : "KJV",
     "",
-    "Read in context:",
-    shareUrl,
+    `“${verseText}”`,
+    "",
+    `Read in context | ${shareUrl}`,
     "",
     "Semitic Jew",
     "Scripture. Logic. History. Identity."
@@ -912,7 +918,7 @@ async function shareReaderVerse(ref, text, location = {}, verse = ""){
 
   if (navigator.share){
     try{
-      await navigator.share({ title, text: shareText, url: shareUrl });
+      await navigator.share({ title, text: shareText });
       return "shared";
     }catch(error){
       if (error?.name === "AbortError") return "canceled";

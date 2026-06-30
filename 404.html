@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Semitic Jew</title>
+  <meta name="theme-color" content="#054A91">
+  <meta name="robots" content="noindex">
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#f4f7fb;
+      color:#0b1220;
+      padding:24px;
+    }
+    main{
+      max-width: 520px;
+      width: 100%;
+      padding: 24px;
+      border-radius: 16px;
+      background:#fff;
+      box-shadow: 0 14px 34px rgba(5,74,145,.10);
+      border: 1px solid rgba(129,164,205,.28);
+    }
+    h1{margin:0 0 10px;font-size:1.5rem;line-height:1.15;color:#054A91}
+    p{margin:0;line-height:1.6}
+    .small{margin-top:12px;color:rgba(11,18,32,.75);font-size:.95rem}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Page not found</h1>
+    <p id="message">This link could not be found.</p>
+    <p class="small">If this was a Semitic Jew verse link, it will be routed to the short verse page.</p>
+  </main>
+  <script>
+    (function(){
+      var path = location.pathname + location.search + location.hash;
+      if (!/^\/v\//i.test(location.pathname)) {
+        return;
+      }
+      var message = document.getElementById('message');
+      if (message) message.textContent = 'Routing to the short verse page.';
+      location.replace('/v/index.html?path=' + encodeURIComponent(path));
+    })();
+  </script>
+</body>
+</html>
