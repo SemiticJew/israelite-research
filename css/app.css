@@ -3789,3 +3789,49 @@ html[data-theme="dark"] body:has(.institute-app) :is(
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
 }
+
+/* App study actions buttons dark mode fix */
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+){
+  border:1px solid rgba(241,115,0,.58) !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+):hover,
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+):focus-visible{
+  border-color:#f17300 !important;
+  background:#111827 !important;
+  background-color:#111827 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+).primary{
+  border-color:#f17300 !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
