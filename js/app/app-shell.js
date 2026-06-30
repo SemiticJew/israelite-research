@@ -879,6 +879,50 @@ function sameReaderLocation(a, b){
     String(a.chapter) === String(b.chapter));
 }
 
+function readerVerseShareUrl(location = {}, verse = ""){
+  const params = new URLSearchParams();
+  if (location.canon) params.set("canon", location.canon);
+  if (location.book) params.set("book", location.book);
+  if (location.chapter) params.set("ch", String(location.chapter));
+  if (verse) params.set("v", String(verse));
+  const query = params.toString();
+  return query ? `https://semiticjew.org/app.html?${query}` : "https://semiticjew.org/app.html";
+}
+
+function readerVerseShareText(ref, text, location = {}, verse = ""){
+  const reference = String(ref || "").trim();
+  const verseText = String(text || "").trim();
+  const shareUrl = readerVerseShareUrl(location, verse);
+  return [
+    verseText,
+    reference ? `— ${reference}, KJV` : "— KJV",
+    "",
+    "Read in context:",
+    shareUrl,
+    "",
+    "Semitic Jew",
+    "Scripture. Logic. History. Identity."
+  ].join("\n");
+}
+
+async function shareReaderVerse(ref, text, location = {}, verse = ""){
+  const shareUrl = readerVerseShareUrl(location, verse);
+  const shareText = readerVerseShareText(ref, text, location, verse);
+  const title = ref ? `${ref} - Semitic Jew` : "Semitic Jew";
+
+  if (navigator.share){
+    try{
+      await navigator.share({ title, text: shareText, url: shareUrl });
+      return "shared";
+    }catch(error){
+      if (error?.name === "AbortError") return "canceled";
+    }
+  }
+
+  const copied = await copyTextToClipboard(shareText);
+  return copied ? "copied" : "failed";
+}
+
 function readerScopeLabel(location){
   const book = titleFromSlug(location.book);
   const chapter = String(location.chapter || "1");
@@ -3146,7 +3190,7 @@ async function renderReader(){
               <p class="reader-verse-text"><span class="reader-verse-num">${escapeHTML(verseNumber)}</span> ${highlightSearchMarkup(text, readerChapterSearchTerm)}</p>
               ${note ? `<p class="reader-note"><strong>Note:</strong> ${escapeHTML(note.note)}</p>` : ""}
               <div class="reader-actions" aria-label="${escapeHTML(ref)} actions">
-                <button type="button" data-reader-action="copy">Copy</button>
+                <button type="button" data-reader-action="share">Share</button>
                 <button type="button" data-reader-action="bookmark">${bookmarked ? "Bookmarked" : "Bookmark"}</button>
                 <button type="button" data-reader-action="highlight">${highlighted ? "Highlighted" : "Highlight"}</button>
                 <button type="button" data-reader-action="note">${note ? "Edit note" : "Note"}</button>
@@ -3325,15 +3369,12 @@ function wireReader(){
       const key = verse.dataset.key;
       const ref = verse.dataset.ref;
       const text = verse.dataset.text;
+      const verseNumber = verse.dataset.verse;
       const marks = readReaderMarks();
 
-      if (button.dataset.readerAction === "copy"){
-        try{
-          await navigator.clipboard.writeText(`${ref} ${text}`);
-          button.textContent = "Copied";
-        }catch(error){
-          button.textContent = "Copy unavailable";
-        }
+      if (button.dataset.readerAction === "share"){
+        const result = await shareReaderVerse(ref, text, currentReaderLocation, verseNumber);
+        button.textContent = result === "shared" ? "Shared" : result === "copied" ? "Copied" : "Share";
         return;
       }
 
