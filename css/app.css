@@ -3836,22 +3836,24 @@ html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
   -webkit-text-fill-color:#f8fafc !important;
 }
 
-/* App light mode contrast repair v2 */
+/* App light mode contrast repair v3 */
 
-/* Remove the verbose Bible helper areas entirely. */
-.institute-app #bible :is(
+/* Remove verbose Bible-tab helper/study blocks. */
+.institute-app :is(
   .app-reader-study-grid,
   .app-reader-context,
   #reader-context,
   .app-reader-study-actions,
   #reader-study-actions,
   .app-reader-related,
-  #reader-related
+  #reader-related,
+  .app-study-chain,
+  #study-chain
 ){
   display:none !important;
 }
 
-/* Light mode app navigation labels: Home / Bible / Study / Ask / Media / Profile */
+/* Light mode: top app nav labels must stay white. */
 html:not([data-theme="dark"]) .institute-app :is(
   .app-tabbar,
   .app-tabbar-top,
@@ -3890,8 +3892,9 @@ html:not([data-theme="dark"]) .institute-app :is(
   -webkit-text-fill-color:#fff !important;
 }
 
-/* Light mode blue hero/header text: Bible / Scripture Reader / subtitle */
+/* Light mode: blue hero/header regions must stay white. */
 html:not([data-theme="dark"]) .institute-app :is(
+  .app-shell-hero,
   .app-screen-head,
   .app-screen-hero,
   .app-page-hero,
@@ -3902,6 +3905,7 @@ html:not([data-theme="dark"]) .institute-app :is(
   .app-bible-hero
 ),
 html:not([data-theme="dark"]) .institute-app :is(
+  .app-shell-hero,
   .app-screen-head,
   .app-screen-hero,
   .app-page-hero,
@@ -3915,84 +3919,72 @@ html:not([data-theme="dark"]) .institute-app :is(
   -webkit-text-fill-color:#fff !important;
 }
 
-/* Light mode reader white cards must have black readable text. */
-html:not([data-theme="dark"]) .institute-app #bible :is(
+/* Light mode: reader, Biblia, search, and saved-library white cards must be black/readable. */
+html:not([data-theme="dark"]) .institute-app :is(
   .app-reader-current,
   #reader-current-summary,
   .app-reader-search,
   #reader-chapter-search-panel,
-  .app-study-chain,
-  #study-chain,
   .app-reader,
   #reader-output,
   .reader-verse,
   .app-reader-verse,
   .verse-card,
-  .app-verse-card
+  .app-verse-card,
+  .app-biblia-hub,
+  .app-biblia-panel,
+  .app-search-shell,
+  .app-search-panel,
+  .app-full-library,
+  .app-library-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-card,
+  .app-panel-card
 ),
-html:not([data-theme="dark"]) .institute-app #bible :is(
+html:not([data-theme="dark"]) .institute-app :is(
   .app-reader-current,
   #reader-current-summary,
   .app-reader-search,
   #reader-chapter-search-panel,
-  .app-study-chain,
-  #study-chain,
   .app-reader,
   #reader-output,
   .reader-verse,
   .app-reader-verse,
   .verse-card,
-  .app-verse-card
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status,
-  .app-reader-search-status,
-  .reader-note,
-  .reader-verse-text,
-  .reader-verse-num,
-  .verse-number,
-  .app-verse-number,
-  .reader-verse-number
-){
+  .app-verse-card,
+  .app-biblia-hub,
+  .app-biblia-panel,
+  .app-search-shell,
+  .app-search-panel,
+  .app-full-library,
+  .app-library-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-card,
+  .app-panel-card
+) *{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
 
-/* Light mode form controls and reader buttons stay black on white. */
-html:not([data-theme="dark"]) .institute-app #bible :is(
+/* Light mode: form controls/buttons must be black on white unless they are orange primary buttons. */
+html:not([data-theme="dark"]) .institute-app :is(
   input,
   select,
   textarea,
   option,
-  button,
-  .app-btn,
-  a.app-btn,
-  #reader-output button,
-  #reader-output .app-btn,
-  #reader-output a.app-btn,
-  #study-chain button,
-  #study-chain .app-btn,
-  #study-chain a.app-btn
+  button:not(.app-primary):not(.primary):not([data-variant="primary"]),
+  .app-btn:not(.app-primary):not(.primary):not([data-variant="primary"]),
+  a.app-btn:not(.app-primary):not(.primary):not([data-variant="primary"])
 ){
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
 
-html:not([data-theme="dark"]) .institute-app #bible :is(
+html:not([data-theme="dark"]) .institute-app :is(
   input,
   textarea
 )::placeholder{
@@ -4000,39 +3992,50 @@ html:not([data-theme="dark"]) .institute-app #bible :is(
   -webkit-text-fill-color:#4b5563 !important;
 }
 
-/* Light mode profile blue stat cards should not have gray/washed labels. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
+/* Light mode: profile stat cards are blue cards, so their text must be white. */
+html:not([data-theme="dark"]) .institute-app :is(
   .app-stat-card,
   .app-profile-stat,
-  .profile-stat
+  .profile-stat,
+  .profile-stat-card
 ),
-html:not([data-theme="dark"]) .institute-app #profile :is(
+html:not([data-theme="dark"]) .institute-app :is(
   .app-stat-card,
   .app-profile-stat,
-  .profile-stat
+  .profile-stat,
+  .profile-stat-card
 ) *{
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
 }
 
-/* Light mode profile light callouts/cards stay black and readable. */
+/* Light mode: profile connectivity/saved-library blue panels need white headings, but light callouts stay black. */
 html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-card,
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-library-card,
+  .app-section,
+  .app-panel,
+  .profile-section,
+  .profile-panel
+) > :is(
+  .app-label,
+  .app-kicker,
+  h1,h2,h3,h4,h5,h6,
+  p
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #profile :is(
   .app-note,
-  .app-helper
+  .app-helper,
+  .app-callout,
+  .profile-callout
 ),
 html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-card,
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-library-card,
   .app-note,
-  .app-helper
+  .app-helper,
+  .app-callout,
+  .profile-callout
 ) *{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
