@@ -4040,3 +4040,110 @@ html:not([data-theme="dark"]) .institute-app #profile :is(
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
+
+/* App profile light mode white text repair */
+
+/* Profile tab: blue regions keep their existing background, but all text becomes white in light mode. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-profile-summary,
+  .app-profile-stats,
+  .app-profile-grid,
+  .app-stat-grid,
+  .profile-stats,
+  .profile-grid,
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat,
+  .profile-stat-card,
+  .app-section,
+  .app-panel,
+  .profile-section,
+  .profile-panel,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-profile-summary,
+  .app-profile-stats,
+  .app-profile-grid,
+  .app-stat-grid,
+  .profile-stats,
+  .profile-grid,
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat,
+  .profile-stat-card,
+  .app-section,
+  .app-panel,
+  .profile-section,
+  .profile-panel,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile tab: form controls stay readable with dark text on white controls. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  input,
+  select,
+  textarea,
+  option,
+  button:not(.app-primary):not(.primary):not([data-variant="primary"]),
+  .app-btn:not(.app-primary):not(.primary):not([data-variant="primary"]),
+  a.app-btn:not(.app-primary):not(.primary):not([data-variant="primary"])
+){
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+/* Profile tab: white result cards below the blue regions keep black readable text. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-card:not(.app-panel):not(.app-section),
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .library-card,
+  .app-result-card,
+  .result-card
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-card:not(.app-panel):not(.app-section),
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .library-card,
+  .app-result-card,
+  .result-card
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
