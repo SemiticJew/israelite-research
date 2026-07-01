@@ -1399,7 +1399,6 @@ function renderStudyPathDetail(path, focusStepId = ""){
     <article class="app-study-path-detail-card">
       <div class="app-study-path-detail-head">
         <div class="app-study-path-detail-copy">
-          <span class="app-label">Study Path</span>
           <h3>${escapeHTML(path.title)}</h3>
           <p>${escapeHTML(path.description)}</p>
         </div>
@@ -1422,7 +1421,6 @@ function renderStudyPathDetail(path, focusStepId = ""){
                   <h4>${escapeHTML(step.title)}</h4>
                   <p>${escapeHTML(step.description)}</p>
                 </div>
-                <span class="app-study-path-step-badge">${stepComplete ? "Complete" : "Pending"}</span>
               </div>
               ${stepRefs.length ? `
                 <div class="app-study-path-ref-list" aria-label="${escapeHTML(step.title)} references">
@@ -1730,6 +1728,8 @@ function studyChainContains(items, item){
 function renderStudyChain(){
   const root = $("#study-chain");
   if (!root) return;
+  root.innerHTML = "";
+  return;
 
   const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
   const activeVerse = readerActiveVerse ? String(readerActiveVerse) : "";
@@ -1756,7 +1756,7 @@ function renderStudyChain(){
     <div class="app-study-chain-head">
       <div>
         <span class="app-label">Study Chain</span>
-        <h3 id="study-chain-title">Current Study Chain</h3>
+        <h3 id="study-chain-title"></h3>
         <p>${chain.length ? `${chain.length} verse${chain.length === 1 ? "" : "s"} selected in order.` : "Select verses or related precepts to build a study chain."}</p>
       </div>
       <div class="app-study-chain-actions">
@@ -3036,12 +3036,7 @@ function renderReaderChrome({ canon, book, chapter }){
   const contextRoot = $("#reader-context");
   if (contextRoot){
     contextRoot.innerHTML = `
-      <span class="app-label">Israelite Study Context</span>
       <h3>${escapeHTML(titleFromSlug(book))}</h3>
-      <div class="app-reader-context-meta">
-        <span class="app-pill">${escapeHTML(canonLabel)}</span>
-        <span class="app-pill">${escapeHTML(category)}</span>
-      </div>
       <p>${escapeHTML(context?.framing || "Read with Scripture, logic, history, and covenant identity in view.")}</p>
     `;
   }
@@ -3049,7 +3044,6 @@ function renderReaderChrome({ canon, book, chapter }){
   const actions = $("#reader-study-actions");
   if (actions){
     actions.innerHTML = `
-      <span class="app-label">Study Actions</span>
       <div class="app-reader-action-grid">
         <button class="app-btn" type="button" data-app-tab-link="profile">Open saved library</button>
         <button class="app-btn" type="button" data-app-tab-link="profile" data-focus-saved-search>Search saved notes</button>
@@ -3065,51 +3059,7 @@ function renderReaderChrome({ canon, book, chapter }){
 async function renderRelatedReferences(location, verses, requestId){
   const root = $("#reader-related");
   if (!root) return;
-
-  root.innerHTML = `<div class="app-loading">Loading related references...</div>`;
-
-  try{
-    const [entries, crossrefs] = await Promise.all([
-      loadReferenceEntries(),
-      loadChapterCrossrefs(location.canon, location.book, location.chapter)
-    ]);
-
-    if (requestId !== readerRequestId) return;
-
-    const related = buildRelatedReferences(location, entries, crossrefs);
-    const scopeLabel = readerScopeLabel(location);
-    const chapterLabel = location.verse ? `Verse scope active: ${scopeLabel}` : `Chapter scope: ${scopeLabel}`;
-    if (!related.length){
-      root.innerHTML = `
-        <div class="app-related-empty">
-          <span class="app-label">Related Precepts</span>
-          <h3 id="reader-related-title">Related Precepts for ${escapeHTML(scopeLabel)}</h3>
-          <p>${escapeHTML(chapterLabel)}. Open Biblia, the encyclopedia, or the chapter itself to keep studying from the full reference library.</p>
-        </div>
-      `;
-      return;
-    }
-
-    root.innerHTML = `
-      <div class="app-section-head compact app-related-head">
-        <span class="app-label">Related Precepts</span>
-        <h3 id="reader-related-title">Related Precepts for ${escapeHTML(scopeLabel)}</h3>
-        <p>${escapeHTML(chapterLabel)}. ${escapeHTML(related.length)} study links matched from the dictionary and cross-reference index.</p>
-      </div>
-      <div class="app-related-list">
-        ${related.map(renderRelatedCard).join("")}
-      </div>
-    `;
-  }catch(error){
-    if (requestId !== readerRequestId) return;
-    root.innerHTML = `
-      <div class="app-related-empty">
-        <span class="app-label">Related Precepts</span>
-        <h3 id="reader-related-title">Related Precepts for ${escapeHTML(readerScopeLabel(location))}</h3>
-        <p>${escapeHTML(navigator.onLine ? "The related reference index could not be loaded. Open Biblia or the encyclopedia for more study." : "Offline: related precepts are unavailable until the dictionary or cross-reference data has been cached.")}</p>
-      </div>
-    `;
-  }
+  root.innerHTML = "";
 }
 
 async function renderReader(){
@@ -3226,13 +3176,7 @@ async function renderReader(){
     syncReaderSearchHighlight();
     const related = $("#reader-related");
     if (related){
-      related.innerHTML = `
-        <div class="app-related-empty">
-          <span class="app-label">Related Precepts</span>
-          <h3 id="reader-related-title">Reference data unavailable</h3>
-          <p>${escapeHTML(navigator.onLine ? "The related reference index could not be loaded for this chapter." : "Offline: this chapter is not cached on this device yet. Recently opened chapters, saved notes, bookmarks, highlights, study chains, and study path progress remain available.")}</p>
-        </div>
-      `;
+      related.innerHTML = "";
     }
     renderStudyChain();
     output.innerHTML = `${loadingError(navigator.onLine ? "The local reader could not load this chapter." : "Offline: this chapter is not cached on this device yet.")}<p><a class="app-btn primary" href="/biblia.html">Open Biblia</a></p>`;
@@ -3799,7 +3743,6 @@ function renderStudyProgress(){
 
   root.innerHTML = `
     <div class="app-library-head">
-      <span class="app-label">Progress</span>
       <h3 id="study-progress-title">Study Progress</h3>
       <p>${escapeHTML(completedLessons)} completed lessons and ${escapeHTML(practiceCount)} completed practice items today.</p>
     </div>
@@ -3812,7 +3755,6 @@ function renderStudyProgress(){
           <article class="app-course-progress-row">
             <div>
               <h4>${escapeHTML(course.title)}</h4>
-              <p>${done}/${lessons.length} lessons complete</p>
             </div>
             <div class="course-progress" aria-label="${percent}% complete"><span style="width:${percent}%"></span></div>
           </article>
