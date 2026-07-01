@@ -4461,3 +4461,264 @@ html:not([data-theme="dark"]) .institute-app #profile :is(
   color:#4b5563 !important;
   -webkit-text-fill-color:#4b5563 !important;
 }
+/* Final light-mode repair: consolidated overrides for blue regions, light cards, and touch feedback. */
+html:not([data-theme="dark"]) body.institute-app,
+html:not([data-theme="dark"]) body.institute-app *{
+  -webkit-tap-highlight-color:transparent !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-hero,
+  .app-section-head.app-reader-title,
+  #bible .app-reader-current,
+  #study .app-study-path-card,
+  #profile .app-offline-card,
+  #profile .app-library-controls,
+  #profile .app-profile-grid,
+  #profile .app-stat,
+  #media .app-watch-grid > *,
+  #media .app-card
+),
+html:not([data-theme="dark"]) body.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-hero,
+  .app-section-head.app-reader-title,
+  #bible .app-reader-current,
+  #study .app-study-path-card,
+  #profile .app-offline-card,
+  #profile .app-library-controls,
+  #profile .app-profile-grid,
+  #profile .app-stat,
+  #media .app-watch-grid > *,
+  #media .app-card
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-connectivity-badge
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-offline-card .app-offline-point{
+  border-color:rgba(219,228,238,.22) !important;
+  background:rgba(255,255,255,.1) !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls,
+html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(input,select,textarea,option){
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(button,.app-btn,a.app-btn){
+  border-color:#F17300 !important;
+  background:#F17300 !important;
+  background-color:#F17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(input,textarea)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current,
+html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current{
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  border-color:rgba(219,228,238,.28) !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,select,textarea,option){
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(button,.app-btn,a.app-btn){
+  border-color:#F17300 !important;
+  background:#F17300 !important;
+  background-color:#F17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,textarea)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app :is(
+  #bible .app-reader-controls,
+  #bible .app-reader-search,
+  #bible .app-reader,
+  #bible .app-search-shell,
+  #bible .app-full-library,
+  #bible .app-reader-nav,
+  #study .app-course-grid,
+  #study .app-lesson-detail,
+  #study .app-study-path-detail-card,
+  #study .app-study-path-step,
+  #profile .app-library-item,
+  #profile .app-course-progress-row,
+  #profile .app-library-empty,
+  #profile .app-settings,
+  #profile .app-settings-card,
+  .lesson-detail-card,
+  .ai-response-card,
+  .app-reader-search-result,
+  .app-reader-search-empty,
+  .app-related-card,
+  .app-related-empty
+),
+html:not([data-theme="dark"]) body.institute-app :is(
+  #bible .app-reader-controls,
+  #bible .app-reader-search,
+  #bible .app-reader,
+  #bible .app-search-shell,
+  #bible .app-full-library,
+  #bible .app-reader-nav,
+  #study .app-course-grid,
+  #study .app-lesson-detail,
+  #study .app-study-path-detail-card,
+  #study .app-study-path-step,
+  #profile .app-library-item,
+  #profile .app-course-progress-row,
+  #profile .app-library-empty,
+  #profile .app-settings,
+  #profile .app-settings-card,
+  .lesson-detail-card,
+  .ai-response-card,
+  .app-reader-search-result,
+  .app-reader-search-empty,
+  .app-related-card,
+  .app-related-empty
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-library-meta,
+  .app-library-actions,
+  .app-library-empty,
+  .app-course-progress-row,
+  .app-study-path-status,
+  .app-study-path-detail-head,
+  .app-study-path-step-head,
+  .app-related-snippet
+){
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app .app-tabbar-top :is(
+  .app-tab-link:hover,
+  .app-tab-link:focus-visible,
+  .app-tab-link:active,
+  .app-tab-link.is-active:hover,
+  .app-tab-link.is-active:focus-visible,
+  .app-tab-link.is-active:active
+){
+  background:rgba(241,115,0,.12) !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app :is(
+  .app-reader-context-meta,
+  .app-study-path-card-meta,
+  .app-study-path-detail-meta,
+  .app-study-path-step-badge,
+  .app-related-meta
+){
+  display:none !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile #offline-status-card,
+html:not([data-theme="dark"]) body.institute-app #profile #offline-status-card *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls,
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,select,textarea,option){
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(button,.app-btn,a.app-btn){
+  border-color:#F17300 !important;
+  background:#F17300 !important;
+  background-color:#F17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,textarea)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
+
+html:not([data-theme="dark"]) body.institute-app #profile .app-offline-card .app-offline-point{
+  border-color:rgba(219,228,238,.22) !important;
+  background:rgba(255,255,255,.1) !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
