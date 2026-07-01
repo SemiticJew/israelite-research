@@ -4147,3 +4147,150 @@ html:not([data-theme="dark"]) .institute-app #profile :is(
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
+
+/* App blue region white text final repair */
+
+/* Bible tab: section labels/headings that sit directly on blue background. */
+html:not([data-theme="dark"]) .institute-app #bible #reader-output > :not(.reader-verse):not(.app-reader-verse):not(.verse-card):not(.app-verse-card),
+html:not([data-theme="dark"]) .institute-app #bible #reader-output > :not(.reader-verse):not(.app-reader-verse):not(.verse-card):not(.app-verse-card) *,
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .reader-output-heading,
+  .reader-chapter-heading,
+  .reader-book-heading,
+  .app-reader-heading,
+  .app-reader-book-heading,
+  .app-reader-chapter-heading
+),
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .reader-output-heading,
+  .reader-chapter-heading,
+  .reader-book-heading,
+  .app-reader-heading,
+  .app-reader-book-heading,
+  .app-reader-chapter-heading
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Bible tab: keep actual verse cards black/readable. */
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card
+),
+html:not([data-theme="dark"]) .institute-app #bible :is(
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+/* Profile tab: all direct blue profile regions keep existing backgrounds but use white text. */
+html:not([data-theme="dark"]) .institute-app #profile > :is(
+  section,
+  article,
+  div
+),
+html:not([data-theme="dark"]) .institute-app #profile > :is(
+  section,
+  article,
+  div
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile tab: light blue callouts inside blue regions should also use white text. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-callout,
+  .profile-callout,
+  .app-note,
+  .app-helper,
+  .app-status-note,
+  .profile-note
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-callout,
+  .profile-callout,
+  .app-note,
+  .app-helper,
+  .app-status-note,
+  .profile-note
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile tab: white controls stay black/readable. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  input,
+  select,
+  textarea,
+  option,
+  button,
+  .app-btn,
+  a.app-btn
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  input,
+  select,
+  textarea,
+  option,
+  button,
+  .app-btn,
+  a.app-btn
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+/* Profile tab: white saved/result cards below blue sections stay black/readable. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .library-card,
+  .app-result-card,
+  .result-card,
+  .app-empty-state,
+  .saved-list,
+  .app-list-card
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-library-card,
+  .library-card,
+  .app-result-card,
+  .result-card,
+  .app-empty-state,
+  .saved-list,
+  .app-list-card
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
