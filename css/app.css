@@ -4294,3 +4294,170 @@ html:not([data-theme="dark"]) .institute-app #profile :is(
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
+
+/* App profile connectivity and saved library final repair */
+
+/* Profile tab: force Connectivity and Saved Library blue-panel text white in light mode. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-connectivity,
+  .profile-connectivity,
+  .connectivity,
+  .app-connectivity-panel,
+  .profile-connectivity-panel,
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-connectivity,
+  .profile-connectivity,
+  .connectivity,
+  .app-connectivity-panel,
+  .profile-connectivity-panel,
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+) :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile tab: the light-blue Connectivity callout rows also need white text. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-connectivity,
+  .profile-connectivity,
+  .connectivity,
+  .app-connectivity-panel,
+  .profile-connectivity-panel
+) :is(
+  .app-callout,
+  .profile-callout,
+  .app-note,
+  .app-helper,
+  .app-status-note,
+  .profile-note,
+  .app-list-item,
+  .profile-list-item,
+  li
+),
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-connectivity,
+  .profile-connectivity,
+  .connectivity,
+  .app-connectivity-panel,
+  .profile-connectivity-panel
+) :is(
+  .app-callout,
+  .profile-callout,
+  .app-note,
+  .app-helper,
+  .app-status-note,
+  .profile-note,
+  .app-list-item,
+  .profile-list-item,
+  li
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile Saved Library: buttons should be orange with white text. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+) :is(
+  button,
+  .app-btn,
+  a.app-btn
+){
+  border-color:#F17300 !important;
+  background:#F17300 !important;
+  background-color:#F17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+) :is(
+  button,
+  .app-btn,
+  a.app-btn
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* Profile Saved Library: inputs/selects stay white with black readable text. */
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+) :is(
+  input,
+  select,
+  textarea,
+  option
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-saved-library,
+  .saved-library,
+  .saved-library-panel,
+  .app-saved-search,
+  .saved-search-panel,
+  .app-library-search,
+  .library-search-panel
+) :is(
+  input,
+  textarea
+)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
