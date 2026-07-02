@@ -219,6 +219,7 @@
     nav.addEventListener('click', function(e){
       const link = e.target.closest('a');
       if(!link) return;
+      if(link.classList.contains('nav-dd-toggle')) return;
       if(window.matchMedia('(max-width: 920px)').matches){
         header.classList.remove('mobile-open');
         btn.setAttribute('aria-expanded', 'false');
@@ -240,6 +241,74 @@
   window.addEventListener('load', setupMobileNav);
 
   const mo = new MutationObserver(setupMobileNav);
+  mo.observe(document.documentElement, {childList:true, subtree:true});
+})();
+
+
+/* Header dropdown accessibility state */
+(function(){
+  function setupHeaderDropdowns(){
+    const header = document.getElementById('site-header');
+    if(!header || header.dataset.dropdownsReady === 'true') return;
+
+    const dropdowns = Array.from(header.querySelectorAll('.nav-dd'));
+    if(!dropdowns.length) return;
+
+    header.dataset.dropdownsReady = 'true';
+
+    const isMobile = () => window.matchMedia('(max-width: 920px)').matches;
+
+    function setOpen(dd, open){
+      const toggle = dd.querySelector('.nav-dd-toggle');
+      dd.classList.toggle('is-open', Boolean(open));
+      if(toggle) toggle.setAttribute('aria-expanded', String(Boolean(open)));
+    }
+
+    dropdowns.forEach(dd => {
+      const toggle = dd.querySelector('.nav-dd-toggle');
+      if(!toggle) return;
+
+      toggle.setAttribute('aria-expanded', dd.classList.contains('mobile-subopen') ? 'true' : 'false');
+
+      dd.addEventListener('mouseenter', function(){
+        if(isMobile()) return;
+        setOpen(dd, true);
+      });
+
+      dd.addEventListener('mouseleave', function(){
+        if(isMobile()) return;
+        setOpen(dd, false);
+      });
+
+      dd.addEventListener('focusin', function(){
+        if(isMobile()) return;
+        setOpen(dd, true);
+      });
+
+      dd.addEventListener('focusout', function(){
+        if(isMobile()) return;
+        window.setTimeout(function(){
+          if(!dd.contains(document.activeElement)) setOpen(dd, false);
+        }, 0);
+      });
+    });
+
+    window.addEventListener('resize', function(){
+      dropdowns.forEach(dd => {
+        if(isMobile()){
+          setOpen(dd, dd.classList.contains('mobile-subopen'));
+        }else{
+          dd.classList.remove('mobile-subopen');
+          setOpen(dd, false);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupHeaderDropdowns);
+  window.addEventListener('load', setupHeaderDropdowns);
+
+  const mo = new MutationObserver(setupHeaderDropdowns);
   mo.observe(document.documentElement, {childList:true, subtree:true});
 })();
 
