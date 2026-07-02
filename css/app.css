@@ -4387,97 +4387,119 @@ html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-actio
   -webkit-text-fill-color:#ffffff !important;
 }
 
-/* Website nav hover cleanup */
-.site-header :is(
+/* Website nav no color hover */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
   .nav-link,
   .site-nav a,
   .site-nav button,
   .nav-dropdown-trigger,
   .dropdown-trigger,
   .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
+  .has-dropdown > button
+),
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button
 ):hover,
-.site-header :is(
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
   .nav-link,
   .site-nav a,
   .site-nav button,
   .nav-dropdown-trigger,
   .dropdown-trigger,
   .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
-):focus-visible,
-header :is(
-  .nav-link,
-  .site-nav a,
-  .site-nav button,
-  .nav-dropdown-trigger,
-  .dropdown-trigger,
-  .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
-):hover,
-header :is(
-  .nav-link,
-  .site-nav a,
-  .site-nav button,
-  .nav-dropdown-trigger,
-  .dropdown-trigger,
-  .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
-):focus-visible{
+  .has-dropdown > button
+):active{
   background:transparent !important;
   background-color:transparent !important;
   background-image:none !important;
   box-shadow:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
 }
 
-.site-header :is(
-  .nav-link,
-  .site-nav a,
-  .site-nav button,
-  .nav-dropdown-trigger,
-  .dropdown-trigger,
-  .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
+/* Dropdown words also stay black in light mode, including hover. */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
+),
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
 ):hover,
-header :is(
-  .nav-link,
-  .site-nav a,
-  .site-nav button,
-  .nav-dropdown-trigger,
-  .dropdown-trigger,
-  .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
-):hover{
-  color:#F17300 !important;
-  text-decoration:none;
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
+):active{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
 }
 
-.site-header :is(
+/* Keep keyboard focus accessible without creating a hover color wash. */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
   .nav-link,
   .site-nav a,
   .site-nav button,
   .nav-dropdown-trigger,
   .dropdown-trigger,
   .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
-):focus-visible,
-header :is(
-  .nav-link,
-  .site-nav a,
-  .site-nav button,
-  .nav-dropdown-trigger,
-  .dropdown-trigger,
-  .has-dropdown > a,
-  .has-dropdown > button,
-  .app-tab-link
+  .has-dropdown > button
 ):focus-visible{
-  outline:2px solid rgba(241,115,0,.45);
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  outline:2px solid rgba(17,24,39,.35);
   outline-offset:4px;
 }
