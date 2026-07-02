@@ -221,9 +221,10 @@
 #site-header .nav-dd-menu a:hover,
 #site-header .nav-dd-menu a:focus-visible{
   border-color:var(--border, #e6ebf2);
-  color:var(--accent, #F17300);
-  background:rgba(241,115,0,.06);
-  outline:none;
+  color:#111827;
+  background:transparent;
+  outline:2px solid rgba(17,24,39,.35);
+  outline-offset:3px;
 }
 
 @media(max-width:920px){
@@ -333,7 +334,7 @@
     transform:none;
     box-shadow:none;
     border:1px solid var(--border, #e6ebf2);
-    background:rgba(241,115,0,.035);
+    background:transparent;
   }
 
   #site-header .nav-dd-menu a{
@@ -673,14 +674,14 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
 
   #site-header .nav-dd-menu a:hover,
   #site-header .nav-dd-menu a:focus-visible{
-    border-left-color:var(--accent, #F17300);
+    border-left-color:transparent;
   }
 
   #site-header nav.primary::before{
     content:"Menu";
     display:block;
     padding:2px 2px 8px;
-    color:var(--accent, #F17300);
+    color:#111827;
     font-size:.74rem;
     font-weight:900;
     text-transform:uppercase;
@@ -769,7 +770,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
     border:0 !important;
     border-radius:0 !important;
     background:transparent !important;
-    color:var(--muted, #6b7280) !important;
+    color:#111827 !important;
     font-size:.92rem !important;
     font-weight:600 !important;
     line-height:1.25 !important;
@@ -781,9 +782,10 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
   #site-header .nav-dd-menu a:focus-visible{
     background:transparent !important;
     border:0 !important;
-    color:var(--accent, #F17300) !important;
+    color:#111827 !important;
     text-decoration:none !important;
-    outline:none !important;
+    outline:2px solid rgba(17,24,39,.35) !important;
+    outline-offset:3px !important;
   }
 
   #site-header .nav-dd-menu a::before{
@@ -792,7 +794,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
     height:6px;
     margin-right:8px;
     border-radius:999px;
-    background:rgba(241,115,0,.45);
+    background:transparent;
     display:inline-block;
     flex:0 0 auto;
   }
@@ -852,9 +854,10 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   #site-header .nav-dd-toggle:focus-visible{
     background:transparent !important;
     border-color:var(--border, #e6ebf2) !important;
-    color:var(--accent, #F17300) !important;
+    color:#111827 !important;
     box-shadow:none !important;
-    outline:none !important;
+    outline:2px solid rgba(17,24,39,.35) !important;
+    outline-offset:3px !important;
   }
 
   #site-header .nav-dd-menu{
@@ -872,7 +875,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
     border-bottom:0 !important;
     background:transparent !important;
     box-shadow:none !important;
-    color:var(--muted, #6b7280) !important;
+    color:#111827 !important;
     font-size:.88rem !important;
     font-weight:400 !important;
     line-height:1.3 !important;
@@ -889,9 +892,10 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   #site-header .nav-dd-menu a:focus-visible{
     background:transparent !important;
     border:0 !important;
-    color:var(--accent, #F17300) !important;
+    color:#111827 !important;
     box-shadow:none !important;
-    outline:none !important;
+    outline:2px solid rgba(17,24,39,.35) !important;
+    outline-offset:3px !important;
   }
 
   #site-header .nav-dd-toggle::after{
@@ -899,8 +903,8 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   }
 
   #site-header .nav-dd.mobile-subopen .nav-dd-toggle{
-    color:var(--accent, #F17300) !important;
-    border-bottom-color:rgba(241,115,0,.35) !important;
+    color:#111827 !important;
+    border-bottom-color:var(--border, #e6ebf2) !important;
   }
 }
 
@@ -1061,10 +1065,11 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
 
   #site-header .nav-dd-menu a:hover,
   #site-header .nav-dd-menu a:focus-visible{
-    color:var(--accent, #F17300) !important;
-    background:rgba(241,115,0,.055) !important;
+    color:#111827 !important;
+    background:transparent !important;
     text-decoration:none !important;
-    outline:none !important;
+    outline:2px solid rgba(17,24,39,.35) !important;
+    outline-offset:3px !important;
   }
 
   #site-header .nav-dd-menu .nav-app-link{
@@ -1116,8 +1121,8 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   }
 
   #site-header .nav-dd.mobile-subopen .nav-dd-toggle{
-    color:var(--accent, #F17300) !important;
-    border-bottom-color:rgba(241,115,0,.32) !important;
+    color:#111827 !important;
+    border-bottom-color:var(--border, #e6ebf2) !important;
   }
 
   #site-header .nav-dd-menu{
@@ -1133,7 +1138,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
     display:flex !important;
     align-items:center !important;
     padding:7px 0 !important;
-    color:var(--muted, #6b7280) !important;
+    color:#111827 !important;
     font-size:.96rem !important;
     font-weight:400 !important;
     line-height:1.25 !important;
@@ -1145,10 +1150,11 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
 
   #site-header .nav-dd-menu a:hover,
   #site-header .nav-dd-menu a:focus-visible{
-    color:var(--accent, #F17300) !important;
+    color:#111827 !important;
     background:transparent !important;
     text-decoration:none !important;
-    outline:none !important;
+    outline:2px solid rgba(17,24,39,.35) !important;
+    outline-offset:3px !important;
   }
 
   #site-header .nav-dd-menu .nav-app-link{
@@ -1260,7 +1266,7 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):foc
     left:0 !important;
     margin-top:0 !important;
     border-radius:0 0 8px 8px !important;
-    border-top:2px solid var(--accent, #F17300) !important;
+    border-top:2px solid rgba(5,74,145,.16) !important;
     transform:translateY(4px) !important;
     transition:opacity .12s ease, transform .12s ease, visibility .12s ease !important;
   }
@@ -1301,11 +1307,11 @@ html:not([data-theme="dark"]) #site-header .nav-dd:hover > .nav-dd-toggle,
 html:not([data-theme="dark"]) #site-header .nav-dd:focus-within > .nav-dd-toggle,
 html:not([data-theme="dark"]) #site-header .nav-dd.is-open > .nav-dd-toggle,
 html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen > .nav-dd-toggle,
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a,
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:hover,
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:active,
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus,
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible{
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
   background:transparent !important;
