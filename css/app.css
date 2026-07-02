@@ -3836,64 +3836,26 @@ html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
   -webkit-text-fill-color:#f8fafc !important;
 }
 
-/* App light mode contrast repair v3 */
+/* App light mode contract */
 
-/* Remove verbose Bible-tab helper/study blocks. */
-.institute-app :is(
-  .app-reader-study-grid,
-  .app-reader-context,
-  #reader-context,
-  .app-reader-study-actions,
-  #reader-study-actions,
-  .app-reader-related,
-  #reader-related,
-  .app-study-chain,
-  #study-chain
-){
-  display:none !important;
+html:not([data-theme="dark"]) .institute-app,
+html:not([data-theme="dark"]) .institute-app body,
+html:not([data-theme="dark"]) body.app-page.institute-app,
+html:not([data-theme="dark"]) .institute-app main,
+html:not([data-theme="dark"]) .institute-app .app-shell,
+html:not([data-theme="dark"]) .institute-app .app-main,
+html:not([data-theme="dark"]) .institute-app .app-content{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
 }
 
-/* Light mode: top app nav labels must stay white. */
 html:not([data-theme="dark"]) .institute-app :is(
+  .app-topbar,
   .app-tabbar,
   .app-tabbar-top,
   .app-tabbar-bottom,
   .app-bottom-tabs,
-  .app-tabs,
-  .app-nav-tabs
-) :is(
-  a,
-  button,
-  .app-tab,
-  .app-tab-link,
-  .app-tab-button,
-  [role="tab"],
-  [data-tab],
-  [data-app-tab]
-),
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-tabbar,
-  .app-tabbar-top,
-  .app-tabbar-bottom,
-  .app-bottom-tabs,
-  .app-tabs,
-  .app-nav-tabs
-) :is(
-  a,
-  button,
-  .app-tab,
-  .app-tab-link,
-  .app-tab-button,
-  [role="tab"],
-  [data-tab],
-  [data-app-tab]
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Light mode: blue hero/header regions must stay white. */
-html:not([data-theme="dark"]) .institute-app :is(
+  .app-hero,
   .app-shell-hero,
   .app-screen-head,
   .app-screen-hero,
@@ -3901,10 +3863,47 @@ html:not([data-theme="dark"]) .institute-app :is(
   .app-section-hero,
   .app-tab-hero,
   .app-view-hero,
-  .app-hero,
-  .app-bible-hero
+  .app-bible-hero,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-profile-grid,
+  .app-profile-summary,
+  .app-profile-stats,
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat,
+  .profile-stat-card,
+  .app-library-controls,
+  .app-study-path-card,
+  .app-study-paths,
+  .app-study-path-detail-card,
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #media .app-watch-grid > *,
+  #media .app-card,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #ask .app-card,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  #profile .app-section-head,
+  #profile .app-panel,
+  #profile .app-card,
+  #profile .app-stat,
+  .app-onboarding-card
 ),
 html:not([data-theme="dark"]) .institute-app :is(
+  .app-topbar,
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-hero,
   .app-shell-hero,
   .app-screen-head,
   .app-screen-hero,
@@ -3912,813 +3911,264 @@ html:not([data-theme="dark"]) .institute-app :is(
   .app-section-hero,
   .app-tab-hero,
   .app-view-hero,
-  .app-hero,
-  .app-bible-hero
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Light mode: reader, Biblia, search, and saved-library white cards must be black/readable. */
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-reader-current,
-  #reader-current-summary,
-  .app-reader-search,
-  #reader-chapter-search-panel,
-  .app-reader,
-  #reader-output,
-  .reader-verse,
-  .app-reader-verse,
-  .verse-card,
-  .app-verse-card,
-  .app-biblia-hub,
-  .app-biblia-panel,
-  .app-search-shell,
-  .app-search-panel,
-  .app-full-library,
-  .app-library-card,
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-card,
-  .app-panel-card
-),
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-reader-current,
-  #reader-current-summary,
-  .app-reader-search,
-  #reader-chapter-search-panel,
-  .app-reader,
-  #reader-output,
-  .reader-verse,
-  .app-reader-verse,
-  .verse-card,
-  .app-verse-card,
-  .app-biblia-hub,
-  .app-biblia-panel,
-  .app-search-shell,
-  .app-search-panel,
-  .app-full-library,
-  .app-library-card,
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-card,
-  .app-panel-card
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* Light mode: form controls/buttons must be black on white unless they are orange primary buttons. */
-html:not([data-theme="dark"]) .institute-app :is(
-  input,
-  select,
-  textarea,
-  option,
-  button:not(.app-primary):not(.primary):not([data-variant="primary"]),
-  .app-btn:not(.app-primary):not(.primary):not([data-variant="primary"]),
-  a.app-btn:not(.app-primary):not(.primary):not([data-variant="primary"])
-){
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app :is(
-  input,
-  textarea
-)::placeholder{
-  color:#4b5563 !important;
-  -webkit-text-fill-color:#4b5563 !important;
-}
-
-/* Light mode: profile stat cards are blue cards, so their text must be white. */
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-stat-card,
-  .app-profile-stat,
-  .profile-stat,
-  .profile-stat-card
-),
-html:not([data-theme="dark"]) .institute-app :is(
-  .app-stat-card,
-  .app-profile-stat,
-  .profile-stat,
-  .profile-stat-card
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Light mode: profile connectivity/saved-library blue panels need white headings, but light callouts stay black. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-section,
-  .app-panel,
-  .profile-section,
-  .profile-panel
-) > :is(
-  .app-label,
-  .app-kicker,
-  h1,h2,h3,h4,h5,h6,
-  p
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-note,
-  .app-helper,
-  .app-callout,
-  .profile-callout
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-note,
-  .app-helper,
-  .app-callout,
-  .profile-callout
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* App profile light mode white text repair */
-
-/* Profile tab: blue regions keep their existing background, but all text becomes white in light mode. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
+  .app-bible-hero,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-profile-grid,
   .app-profile-summary,
   .app-profile-stats,
-  .app-profile-grid,
-  .app-stat-grid,
-  .profile-stats,
-  .profile-grid,
   .app-stat-card,
   .app-profile-stat,
   .profile-stat,
   .profile-stat-card,
-  .app-section,
+  .app-library-controls,
+  .app-study-path-card,
+  .app-study-paths,
+  .app-study-path-detail-card,
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #media .app-watch-grid > *,
+  #media .app-card,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #ask .app-card,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  #profile .app-section-head,
+  #profile .app-panel,
+  #profile .app-card,
+  #profile .app-stat,
+  .app-onboarding-card
+) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-card,
   .app-panel,
-  .profile-section,
-  .profile-panel,
-  .app-connectivity,
-  .profile-connectivity,
-  .app-saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-profile-summary,
-  .app-profile-stats,
-  .app-profile-grid,
-  .app-stat-grid,
-  .profile-stats,
-  .profile-grid,
-  .app-stat-card,
-  .app-profile-stat,
-  .profile-stat,
-  .profile-stat-card,
-  .app-section,
-  .app-panel,
-  .profile-section,
-  .profile-panel,
-  .app-connectivity,
-  .profile-connectivity,
-  .app-saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile tab: form controls stay readable with dark text on white controls. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  input,
-  select,
-  textarea,
-  option,
-  button:not(.app-primary):not(.primary):not([data-variant="primary"]),
-  .app-btn:not(.app-primary):not(.primary):not([data-variant="primary"]),
-  a.app-btn:not(.app-primary):not(.primary):not([data-variant="primary"])
-){
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* Profile tab: white result cards below the blue regions keep black readable text. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-card:not(.app-panel):not(.app-section),
+  .app-library-card,
   .app-saved-card,
   .saved-card,
   .saved-item,
-  .app-library-card,
-  .library-card,
-  .app-result-card,
-  .result-card
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-card:not(.app-panel):not(.app-section),
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-library-card,
-  .library-card,
-  .app-result-card,
-  .result-card
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* App blue region white text final repair */
-
-/* Bible tab: section labels/headings that sit directly on blue background. */
-html:not([data-theme="dark"]) .institute-app #bible #reader-output > :not(.reader-verse):not(.app-reader-verse):not(.verse-card):not(.app-verse-card),
-html:not([data-theme="dark"]) .institute-app #bible #reader-output > :not(.reader-verse):not(.app-reader-verse):not(.verse-card):not(.app-verse-card) *,
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-output-heading,
-  .reader-chapter-heading,
-  .reader-book-heading,
-  .app-reader-heading,
-  .app-reader-book-heading,
-  .app-reader-chapter-heading
-),
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-output-heading,
-  .reader-chapter-heading,
-  .reader-book-heading,
-  .app-reader-heading,
-  .app-reader-book-heading,
-  .app-reader-chapter-heading
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Bible tab: keep actual verse cards black/readable. */
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-verse,
-  .app-reader-verse,
-  .verse-card,
-  .app-verse-card
-),
-html:not([data-theme="dark"]) .institute-app #bible :is(
-  .reader-verse,
-  .app-reader-verse,
-  .verse-card,
-  .app-verse-card
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* Profile tab: all direct blue profile regions keep existing backgrounds but use white text. */
-html:not([data-theme="dark"]) .institute-app #profile > :is(
-  section,
-  article,
-  div
-),
-html:not([data-theme="dark"]) .institute-app #profile > :is(
-  section,
-  article,
-  div
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile tab: light blue callouts inside blue regions should also use white text. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-callout,
-  .profile-callout,
-  .app-note,
-  .app-helper,
-  .app-status-note,
-  .profile-note
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-callout,
-  .profile-callout,
-  .app-note,
-  .app-helper,
-  .app-status-note,
-  .profile-note
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile tab: white controls stay black/readable. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  input,
-  select,
-  textarea,
-  option,
-  button,
-  .app-btn,
-  a.app-btn
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  input,
-  select,
-  textarea,
-  option,
-  button,
-  .app-btn,
-  a.app-btn
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* Profile tab: white saved/result cards below blue sections stay black/readable. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-library-card,
-  .library-card,
   .app-result-card,
   .result-card,
-  .app-empty-state,
-  .saved-list,
-  .app-list-card
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-card,
-  .saved-card,
-  .saved-item,
-  .app-library-card,
-  .library-card,
-  .app-result-card,
-  .result-card,
-  .app-empty-state,
-  .saved-list,
-  .app-list-card
-) *{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-/* App profile connectivity and saved library final repair */
-
-/* Profile tab: force Connectivity and Saved Library blue-panel text white in light mode. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-connectivity,
-  .profile-connectivity,
-  .connectivity,
-  .app-connectivity-panel,
-  .profile-connectivity-panel,
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-connectivity,
-  .profile-connectivity,
-  .connectivity,
-  .app-connectivity-panel,
-  .profile-connectivity-panel,
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile tab: the light-blue Connectivity callout rows also need white text. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-connectivity,
-  .profile-connectivity,
-  .connectivity,
-  .app-connectivity-panel,
-  .profile-connectivity-panel
-) :is(
-  .app-callout,
-  .profile-callout,
-  .app-note,
-  .app-helper,
-  .app-status-note,
-  .profile-note,
-  .app-list-item,
-  .profile-list-item,
-  li
-),
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-connectivity,
-  .profile-connectivity,
-  .connectivity,
-  .app-connectivity-panel,
-  .profile-connectivity-panel
-) :is(
-  .app-callout,
-  .profile-callout,
-  .app-note,
-  .app-helper,
-  .app-status-note,
-  .profile-note,
-  .app-list-item,
-  .profile-list-item,
-  li
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile Saved Library: buttons should be orange with white text. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-) :is(
-  button,
-  .app-btn,
-  a.app-btn
-){
-  border-color:#F17300 !important;
-  background:#F17300 !important;
-  background-color:#F17300 !important;
-  background-image:none !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-) :is(
-  button,
-  .app-btn,
-  a.app-btn
-) *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-/* Profile Saved Library: inputs/selects stay white with black readable text. */
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-) :is(
-  input,
-  select,
-  textarea,
-  option
-){
-  background:#fff !important;
-  background-color:#fff !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) .institute-app #profile :is(
-  .app-saved-library,
-  .saved-library,
-  .saved-library-panel,
-  .app-saved-search,
-  .saved-search-panel,
-  .app-library-search,
-  .library-search-panel
-) :is(
-  input,
-  textarea
-)::placeholder{
-  color:#4b5563 !important;
-  -webkit-text-fill-color:#4b5563 !important;
-}
-/* Final light-mode repair: consolidated overrides for blue regions, light cards, and touch feedback. */
-html:not([data-theme="dark"]) body.institute-app,
-html:not([data-theme="dark"]) body.institute-app *{
-  -webkit-tap-highlight-color:transparent !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app :is(
-  .app-topbar,
-  .app-tabbar-top,
-  .app-hero,
-  .app-section-head.app-reader-title,
-  #bible .app-reader-current,
-  #study .app-study-path-card,
-  #profile .app-offline-card,
-  #profile .app-library-controls,
-  #profile .app-profile-grid,
-  #profile .app-stat,
-  #media .app-watch-grid > *,
-  #media .app-card
-),
-html:not([data-theme="dark"]) body.institute-app :is(
-  .app-topbar,
-  .app-tabbar-top,
-  .app-hero,
-  .app-section-head.app-reader-title,
-  #bible .app-reader-current,
-  #study .app-study-path-card,
-  #profile .app-offline-card,
-  #profile .app-library-controls,
-  #profile .app-profile-grid,
-  #profile .app-stat,
-  #media .app-watch-grid > *,
-  #media .app-card
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status,
-  .app-connectivity-badge
-){
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-offline-card .app-offline-point{
-  border-color:rgba(219,228,238,.22) !important;
-  background:rgba(255,255,255,.1) !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls,
-html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(input,select,textarea,option){
-  background:#fff !important;
-  background-color:#fff !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(button,.app-btn,a.app-btn){
-  border-color:#F17300 !important;
-  background:#F17300 !important;
-  background-color:#F17300 !important;
-  background-image:none !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.app-page.institute-app #main-content #profile section.app-library-controls :is(input,textarea)::placeholder{
-  color:#4b5563 !important;
-  -webkit-text-fill-color:#4b5563 !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current,
-html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #bible .app-reader-current{
-  background:
-    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
-    var(--app-blue) !important;
-  border-color:rgba(219,228,238,.28) !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,select,textarea,option){
-  background:#fff !important;
-  background-color:#fff !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(button,.app-btn,a.app-btn){
-  border-color:#F17300 !important;
-  background:#F17300 !important;
-  background-color:#F17300 !important;
-  background-image:none !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,textarea)::placeholder{
-  color:#4b5563 !important;
-  -webkit-text-fill-color:#4b5563 !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app :is(
-  #bible .app-reader-controls,
-  #bible .app-reader-search,
-  #bible .app-reader,
-  #bible .app-search-shell,
-  #bible .app-full-library,
-  #bible .app-reader-nav,
-  #study .app-course-grid,
-  #study .app-lesson-detail,
-  #study .app-study-path-detail-card,
-  #study .app-study-path-step,
-  #profile .app-library-item,
-  #profile .app-course-progress-row,
-  #profile .app-library-empty,
-  #profile .app-settings,
-  #profile .app-settings-card,
+  .course-card,
+  .watch-card,
   .lesson-detail-card,
-  .ai-response-card,
   .app-reader-search-result,
   .app-reader-search-empty,
   .app-related-card,
-  .app-related-empty
-),
-html:not([data-theme="dark"]) body.institute-app :is(
-  #bible .app-reader-controls,
-  #bible .app-reader-search,
-  #bible .app-reader,
-  #bible .app-search-shell,
-  #bible .app-full-library,
-  #bible .app-reader-nav,
-  #study .app-course-grid,
-  #study .app-lesson-detail,
-  #study .app-study-path-detail-card,
-  #study .app-study-path-step,
-  #profile .app-library-item,
-  #profile .app-course-progress-row,
-  #profile .app-library-empty,
-  #profile .app-settings,
-  #profile .app-settings-card,
-  .lesson-detail-card,
-  .ai-response-card,
-  .app-reader-search-result,
-  .app-reader-search-empty,
-  .app-related-card,
-  .app-related-empty
-) :is(
-  h1,h2,h3,h4,h5,h6,
-  p,span,strong,em,small,
-  li,dt,dd,label,legend,
-  .app-label,
-  .app-kicker,
-  .app-eyebrow,
-  .app-title,
-  .app-heading,
-  .app-card-title,
-  .app-section-title,
-  .app-subtitle,
-  .app-description,
-  .app-helper,
-  .app-note,
-  .app-filter-note,
-  .app-search-status,
-  .app-library-meta,
-  .app-library-actions,
-  .app-library-empty,
+  .app-related-empty,
+  .app-library-item,
   .app-course-progress-row,
-  .app-study-path-status,
-  .app-study-path-detail-head,
-  .app-study-path-step-head,
-  .app-related-snippet
-){
+  .app-library-empty,
+  .app-study-path-step,
+  .app-study-path-detail-card,
+  .app-search-result,
+  .app-search-result-card,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card,
+  .app-reader-search,
+  .reader-search,
+  .app-search-panel,
+  .app-search-shell,
+  .app-biblia-panel,
+  .app-biblia-hub,
+  .app-ai-response,
+  .app-ask-result,
+  .app-note-card,
+  .app-summary-card,
+  .app-today-card,
+  .app-daily-card,
+  .app-home-card,
+  .app-saved-detail,
+  .app-library-result
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-card,
+  .app-panel,
+  .app-library-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-result-card,
+  .result-card,
+  .course-card,
+  .watch-card,
+  .lesson-detail-card,
+  .app-reader-search-result,
+  .app-reader-search-empty,
+  .app-related-card,
+  .app-related-empty,
+  .app-library-item,
+  .app-course-progress-row,
+  .app-library-empty,
+  .app-study-path-step,
+  .app-study-path-detail-card,
+  .app-search-result,
+  .app-search-result-card,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card,
+  .app-reader-search,
+  .reader-search,
+  .app-search-panel,
+  .app-search-shell,
+  .app-biblia-panel,
+  .app-biblia-hub,
+  .app-ai-response,
+  .app-ask-result,
+  .app-note-card,
+  .app-summary-card,
+  .app-today-card,
+  .app-daily-card,
+  .app-home-card,
+  .app-saved-detail,
+  .app-library-result
+) *{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
 }
 
-html:not([data-theme="dark"]) body.institute-app .app-tabbar-top :is(
-  .app-tab-link:hover,
-  .app-tab-link:focus-visible,
-  .app-tab-link:active,
-  .app-tab-link.is-active:hover,
-  .app-tab-link.is-active:focus-visible,
-  .app-tab-link.is-active:active
+html:not([data-theme="dark"]) .institute-app :is(
+  input,
+  select,
+  textarea
 ){
-  background:rgba(241,115,0,.12) !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app :is(
-  .app-reader-context-meta,
-  .app-study-path-card-meta,
-  .app-study-path-detail-meta,
-  .app-study-path-step-badge,
-  .app-related-meta
-){
-  display:none !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile #offline-status-card,
-html:not([data-theme="dark"]) body.institute-app #profile #offline-status-card *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls,
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls *{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,select,textarea,option){
   background:#fff !important;
-  background-color:#fff !important;
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
+  border-color:rgba(5,74,145,.28) !important;
 }
 
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(button,.app-btn,a.app-btn){
-  border-color:#F17300 !important;
-  background:#F17300 !important;
-  background-color:#F17300 !important;
-  background-image:none !important;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
-
-html:not([data-theme="dark"]) body.institute-app #profile .app-library-controls :is(input,textarea)::placeholder{
+html:not([data-theme="dark"]) .institute-app :is(
+  input,
+  select,
+  textarea
+)::placeholder{
   color:#4b5563 !important;
   -webkit-text-fill-color:#4b5563 !important;
 }
 
-html:not([data-theme="dark"]) body.institute-app #profile .app-offline-card .app-offline-point{
-  border-color:rgba(219,228,238,.22) !important;
-  background:rgba(255,255,255,.1) !important;
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+){
+  background:#f17300 !important;
+  border-color:#f17300 !important;
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+):is(:hover,:focus-visible){
+  background:#db6600 !important;
+  border-color:#db6600 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-btn,
+  button,
+  a.app-btn,
+  a.button,
+  .app-link-button,
+  .app-action,
+  .app-outline-button,
+  .app-secondary
+):not(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+){
+  background:#fff !important;
+  color:#054a91 !important;
+  -webkit-text-fill-color:#054a91 !important;
+  border-color:rgba(5,74,145,.35) !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-btn,
+  button,
+  a.app-btn,
+  a.button,
+  .app-link-button,
+  .app-action,
+  .app-outline-button,
+  .app-secondary
+):not(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+):is(:hover,:focus-visible){
+  background:#f8fafc !important;
+  color:#f17300 !important;
+  -webkit-text-fill-color:#f17300 !important;
+  border-color:#f17300 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab]),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab]) *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app *{
+  -webkit-tap-highlight-color:transparent;
 }

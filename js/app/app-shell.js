@@ -1729,67 +1729,6 @@ function renderStudyChain(){
   const root = $("#study-chain");
   if (!root) return;
   root.innerHTML = "";
-  return;
-
-  const chain = readCurrentStudyChain().map(normalizeStudyChainItem);
-  const activeVerse = readerActiveVerse ? String(readerActiveVerse) : "";
-  const activeLocation = currentReaderLocation?.canon && currentReaderLocation?.book && currentReaderLocation?.chapter
-    ? {
-        canon: currentReaderLocation.canon,
-        book: currentReaderLocation.book,
-        chapter: currentReaderLocation.chapter,
-        verse: activeVerse,
-        verseEnd: activeVerse
-      }
-    : null;
-
-  const hasActiveVerse = Boolean(activeLocation?.canon && activeLocation?.book && activeLocation?.chapter && activeLocation.verse);
-  const activeItem = hasActiveVerse ? normalizeStudyChainItem({
-    ...activeLocation,
-    reference: `${titleFromSlug(activeLocation.book)} ${activeLocation.chapter}:${activeLocation.verse}`,
-    source: "reader",
-    sourceLabel: "Active verse"
-  }) : null;
-  const activeInChain = activeItem ? studyChainContains(chain, activeItem) : false;
-
-  root.innerHTML = `
-    <div class="app-study-chain-head">
-      <div>
-        <span class="app-label">Study Chain</span>
-        <h3 id="study-chain-title"></h3>
-        <p>${chain.length ? `${chain.length} verse${chain.length === 1 ? "" : "s"} selected in order.` : "Select verses or related precepts to build a study chain."}</p>
-      </div>
-      <div class="app-study-chain-actions">
-        <button class="app-btn" type="button" data-chain-add-active${hasActiveVerse && !activeInChain ? "" : " disabled"}>${activeInChain ? "In Chain" : "Add active verse"}</button>
-        <button class="app-btn" type="button" data-chain-save${chain.length ? "" : " disabled"}>Save Chain</button>
-        <button class="app-btn" type="button" data-chain-clear${chain.length ? "" : " disabled"}>Clear Chain</button>
-        <button class="app-btn" type="button" data-chain-copy${chain.length ? "" : " disabled"}>Copy Chain</button>
-        ${navigator.share ? `<button class="app-btn" type="button" data-chain-share${chain.length ? "" : " disabled"}>Share</button>` : ""}
-      </div>
-    </div>
-    <p class="app-study-chain-status" id="study-chain-status" aria-live="polite"></p>
-    <div class="app-study-chain-list" aria-label="Current study chain verses">
-      ${chain.length
-        ? chain.map((item, index) => `
-          <article class="app-study-chain-item">
-            <div class="app-study-chain-copy">
-              <div class="app-study-chain-meta">
-                <span class="app-pill">${escapeHTML(item.sourceLabel || "Verse")}</span>
-                <span class="app-study-chain-ref">${escapeHTML(item.reference)}</span>
-              </div>
-              ${item.text ? `<p>${escapeHTML(item.text)}</p>` : `<p class="app-study-chain-empty-line">No stored text available.</p>`}
-            </div>
-            <div class="app-study-chain-item-actions">
-              <button class="app-btn" type="button" data-chain-open="${escapeHTML(item.id)}">Open</button>
-              <button class="app-btn" type="button" data-chain-up="${escapeHTML(item.id)}"${index === 0 ? " disabled" : ""}>Up</button>
-              <button class="app-btn" type="button" data-chain-down="${escapeHTML(item.id)}"${index === chain.length - 1 ? " disabled" : ""}>Down</button>
-              <button class="app-btn" type="button" data-chain-remove="${escapeHTML(item.id)}">Remove</button>
-            </div>
-          </article>
-        `).join("")
-        : `<div class="app-study-chain-empty">Select verses or related precepts to build a study chain.</div>`}
-    </div>
-  `;
 }
 
 async function addToCurrentStudyChain(location, fallback = {}){
