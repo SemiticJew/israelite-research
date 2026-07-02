@@ -217,11 +217,13 @@
 #site-header .nav-dd-menu a{
   display:block;
   padding:10px 11px;
-  border:1px solid transparent;
+  border:0;
   color:var(--ink, #0b2340);
   text-decoration:none;
   font-weight:800;
   border-radius:0;
+  background:transparent;
+  box-shadow:none;
 }
 
 #site-header nav.primary > a:hover,
@@ -245,9 +247,13 @@
 
 #site-header .nav-dd-menu a:hover,
 #site-header .nav-dd-menu a:focus-visible{
-  border-color:transparent;
   color:#111827;
   background:transparent;
+  box-shadow:none;
+  text-decoration:none;
+}
+
+#site-header .nav-dd-menu a:focus-visible{
   outline:2px solid rgba(17,24,39,.35);
   outline-offset:3px;
 }
@@ -694,12 +700,12 @@ html[data-theme="dark"] #site-header .nav-dd-menu{
     align-items:center;
     padding:9px 12px;
     font-size:.9rem;
-    border-left:3px solid transparent;
+    border:0;
   }
 
   #site-header .nav-dd-menu a:hover,
   #site-header .nav-dd-menu a:focus-visible{
-    border-left-color:transparent;
+    border:0;
   }
 
   #site-header nav.primary::before{
@@ -919,8 +925,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
     border:0 !important;
     color:#111827 !important;
     box-shadow:none !important;
-    outline:2px solid rgba(17,24,39,.35) !important;
-    outline-offset:3px !important;
+    outline:none !important;
   }
 
   #site-header .nav-dd-toggle::after{
@@ -1375,7 +1380,7 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hov
   background-image:none !important;
   box-shadow:none !important;
   text-decoration:none !important;
-  transition:background-color .2s ease, color .2s ease, transform .2s ease, opacity .2s ease !important;
+  transition:color .2s ease, opacity .2s ease !important;
 }
 
 /* Keep the dropdown/caret behavior, but remove orange hover color. */
