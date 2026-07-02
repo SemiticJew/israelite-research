@@ -3087,7 +3087,7 @@ async function renderReader(){
               <div class="reader-actions" aria-label="${escapeHTML(ref)} actions">
                 <button type="button" data-reader-action="share">Share</button>
                 <button type="button" data-reader-action="bookmark">${bookmarked ? "Bookmarked" : "Bookmark"}</button>
-                <button type="button" data-reader-action="highlight">${highlighted ? "Highlighted" : "Highlight"}</button>
+                <button type="button" data-reader-action="highlight" aria-pressed="${highlighted ? "true" : "false"}" data-active="${highlighted ? "true" : "false"}">${highlighted ? "Highlighted" : "Highlight"}</button>
                 <button type="button" data-reader-action="note">${note ? "Edit note" : "Note"}</button>
                 <button type="button" data-reader-action="chain">${inChain ? "In Chain" : "Add to Chain"}</button>
               </div>
@@ -3284,6 +3284,8 @@ function wireReader(){
         }
         verse.classList.toggle("is-highlighted", !exists);
         button.textContent = exists ? "Highlight" : "Highlighted";
+        button.setAttribute("aria-pressed", String(!exists));
+        button.dataset.active = String(!exists);
       }
 
       if (button.dataset.readerAction === "note"){
