@@ -1207,29 +1207,6 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
 
 /* Final nav repair: light-mode text, attached dropdowns, and chevron state */
 html:not([data-theme="dark"]) #site-header nav.primary > a,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle{
-  position:relative;
-  overflow:visible;
-  transition:color .2s ease, opacity .2s ease, transform .2s ease !important;
-}
-
-html:not([data-theme="dark"]) #site-header nav.primary > a::before,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle::before{
-  content:"";
-  position:absolute;
-  left:11px;
-  right:11px;
-  bottom:4px;
-  height:2px;
-  background:var(--accent, #F17300);
-  opacity:0;
-  transform:scaleX(0);
-  transform-origin:left center;
-  transition:opacity .2s ease, transform .2s ease;
-  pointer-events:none;
-}
-
-html:not([data-theme="dark"]) #site-header nav.primary > a,
 html:not([data-theme="dark"]) #site-header nav.primary > a:hover,
 html:not([data-theme="dark"]) #site-header nav.primary > a:active,
 html:not([data-theme="dark"]) #site-header nav.primary > a:focus-visible,
@@ -1251,36 +1228,11 @@ html:not([data-theme="dark"]) #site-header .nav-dd-toggle[aria-expanded="true"]{
   text-decoration:none !important;
 }
 
-html:not([data-theme="dark"]) #site-header nav.primary > a:hover::before,
-html:not([data-theme="dark"]) #site-header nav.primary > a:active::before,
-html:not([data-theme="dark"]) #site-header nav.primary > a:focus-visible::before,
-html:not([data-theme="dark"]) #site-header .nav-dd:hover > .nav-dd-toggle::before,
-html:not([data-theme="dark"]) #site-header .nav-dd:focus-within > .nav-dd-toggle::before,
-html:not([data-theme="dark"]) #site-header .nav-dd.is-open > .nav-dd-toggle::before,
-html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen > .nav-dd-toggle::before,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle:hover::before,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle:active::before,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle:focus-visible::before,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle[aria-expanded="true"]::before{
-  opacity:1;
-  transform:scaleX(1);
-}
-
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
   background:#ffffff !important;
   background-color:#ffffff !important;
-  background-image:none !important;
-  box-shadow:none !important;
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-  text-decoration:none !important;
-}
-
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover{
-  background:#f7f7f7 !important;
-  background-color:#f7f7f7 !important;
   background-image:none !important;
   box-shadow:none !important;
   color:#111827 !important;
