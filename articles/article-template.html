@@ -153,6 +153,40 @@ Recommended article order:
   /* Also ensure inline citation refs (if present) are un-underlined */
   .footnote-ref a{ text-decoration:none; border-bottom:0 }
   .footnote-ref a:hover{ text-decoration:none }
+
+  .article-abstract{
+    margin:0 0 1.2rem;
+    padding:1rem 1rem 1rem 1.1rem;
+    border-left:4px solid var(--accent, #F17300);
+    background:#f8fafc;
+    color:#111827;
+  }
+
+  .article-abstract h2{
+    margin:0 0 .45rem;
+    color:#111827;
+    font-size:1.02rem;
+    line-height:1.2;
+    letter-spacing:0;
+    text-transform:none;
+  }
+
+  .article-abstract p{
+    margin:0;
+    color:#111827;
+    line-height:1.65;
+  }
+
+  html[data-theme="dark"] .article-abstract{
+    background:#0f1a2b;
+    color:#f8fafc;
+    border-left-color:var(--accent, #F17300);
+  }
+
+  html[data-theme="dark"] .article-abstract h2,
+  html[data-theme="dark"] .article-abstract p{
+    color:#f8fafc;
+  }
 /* Article breadcrumb rhythm: breadcrumb inside article main */
 body.article-doc main.article-page{
   padding-top:40px !important;
@@ -358,6 +392,19 @@ html[data-theme="dark"] .more-by-btn{
   </div>
 
   <div class="article-content" itemprop="articleBody">
+    <section class="article-abstract" aria-labelledby="article-abstract-title">
+      <h2 id="article-abstract-title">Abstract</h2>
+      <p>
+        This article advances a Scripture, Logic, and Truth framework for examining
+        [ARTICLE_TOPIC]. It rejects Eurocentric interpretation, Jewish rhetoric, and
+        Christian theological framing as controlling authorities over the biblical
+        text. Instead, this study approaches the subject through the covenantal
+        record of Scripture, sound reasoning, and historical analysis in order to
+        clarify [CENTRAL_CLAIM] and establish a coherent Israelite understanding of
+        the issue.
+      </p>
+    </section>
+
     <p><strong>OPENING CLAIM.</strong> Write the first paragraph here. Establish the main thesis clearly and directly. Use Scripture, logic, and historical context without overexplaining the introduction.<span class="footnote-ref"><a href="#fn1">1</a></span></p>
 
     <aside class="article-pullquote" aria-label="Author highlight">
