@@ -4503,3 +4503,71 @@ html:not([data-theme="dark"]) :is(
   outline:2px solid rgba(17,24,39,.35);
   outline-offset:4px;
 }
+
+/* App tabbar no color hover */
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):hover,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):active,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):focus-visible,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+).is-active{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  text-decoration:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):focus-visible{
+  outline:2px solid rgba(17,24,39,.35);
+  outline-offset:4px;
+}
