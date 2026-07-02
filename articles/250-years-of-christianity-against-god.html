@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>250 Years of Christianity. 250 Years Against God. — Semitic Jew</title>
 <meta name="description" content="A covenant-centered response to America&#x27;s 250-year Christian story, arguing that Scripture measures nations by justice, righteousness, and obedience — not religious branding."/>
 <link rel="canonical" href="https://semiticjew.org/articles/250-years-of-christianity-against-god.html"/>
@@ -22,23 +21,262 @@
 <meta name="twitter:title" content="250 Years of Christianity. 250 Years Against God."/>
 <meta name="twitter:description" content="A covenant-centered response to America&#x27;s 250-year Christian story, arguing that Scripture measures nations by justice, righteousness, and obedience — not religious branding."/>
 <meta name="twitter:image" content="https://semiticjew.org/images/articles/christianity-250-years-against-god-700x394.jpg"/>
+<meta name="twitter:site" content="@semitic_jew"/>
+<meta name="twitter:creator" content="@semitic_jew"/>
 
 <link rel="stylesheet" href="/styles.css"/>
-<link rel="stylesheet" href="/css/article.css"/>
 
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Fullscreen modal */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:22px;
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;
+    align-items:stretch;
+    min-height:60vh;
+  }
+  @media (max-width: 720px){
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
+  }
+
+  /* Left column (centered vertically) */
+  .author-pane {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-right:12px; text-align:center;
+  }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{
+    display:inline-flex; align-items:center; justify-content:center;
+    text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
+  }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+
+  /* Right column */
+  .author-list{
+    display:flex; flex-direction:column; min-height:0; padding-left:12px;
+  }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{
+    margin:0; padding:.6rem 0;
+    border-top:1px solid #e6ebf2;
+  }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{
+    font-weight:700; text-decoration:none; display:inline-block;
+  }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{
+    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
+  }
+
+  /* Button centered at base of right column */
+  .more-by-btn{
+    margin-top:auto; display:inline-block;
+    padding:.55rem .9rem; border-radius:10px;
+    border:1px solid #e6ebf2; background:#fff;
+    text-decoration:none; font-weight:600;
+    align-self:center;
+  }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography styles */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{
+    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
+    border:1px solid #e6ebf2; border-radius:6px;
+  }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+  .footnote-ref a:hover{ text-decoration:none }
+/* Article breadcrumb rhythm: breadcrumb inside article main */
+body.article-doc main.article-page{
+  padding-top:40px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs{
+  margin:0 auto 18px !important;
+  padding:0 16px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs + .article-shell{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.article-doc main.article-page{
+    padding-top:30px !important;
+  }
+
+  body.article-doc main.article-page > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+
+/* === Standard Article Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
+</style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
+
 </head>
 
-<body>
+<body class="article-doc" data-page="article">
 <div id="site-header"></div>
 
-<main class="article-shell">
-
+<main class="article-page">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <a href="/index.html">Home</a>
     <span class="sep">›</span>
@@ -47,28 +285,56 @@
     <span class="current">250 Years of Christianity. 250 Years Against God.</span>
   </nav>
 
-  <article class="article-page">
-    <header class="article-header">
-      <p class="article-kicker">Covenant • Christianity • America</p>
-      <h1 class="article-title">250 Years of Christianity. 250 Years Against God.</h1>
-      <p class="article-deck">A covenant-centered response to America's 250-year Christian story, arguing that Scripture measures nations by justice, righteousness, and obedience — not religious branding.</p>
+  <article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date"><time datetime="2026-07-02" id="pub-date" itemprop="datePublished">July 2, 2026</time></p>
+    <h1 class="article-title" itemprop="headline">250 Years of Christianity. 250 Years Against God.</h1>
+  </header>
 
-      <div class="article-meta">
-        <span>By <button class="author-link" id="author-info" type="button">Semitic Jew</button></span>
-        <span aria-hidden="true">•</span>
-        <time datetime="2026-07-02">July 2, 2026</time>
-      </div>
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="An open Bible before courthouse pillars and a shadowed American flag" height="394" src="/images/articles/christianity-250-years-against-god-700x394.jpg" width="700"/>
+    <meta content="/images/articles/christianity-250-years-against-god-700x394.jpg" itemprop="url"/>
+  </figure>
 
-      <figure class="article-cover">
-        <img src="/images/articles/christianity-250-years-against-god-700x394.jpg" alt="An open Bible before courthouse pillars and a shadowed American flag"/>
-      </figure>
+  <div class="meta-row">
+    <div class="author-inline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/images/authors/semitic-jew.jpg" width="40"/>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z 
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z 
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z 
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z 
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z 
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+    </div>
 
-      <p class="article-pullquote">America does not need another celebration of Christian heritage. It needs to be judged by the covenant standards it spent centuries ignoring.</p>
-    </header>
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
+      </button>
+      <a aria-label="Support the work" class="share-btn share-give-btn" href="/donate.html" title="Support the work">Give</a>
+    </div>
+  </div>
 
-    <div class="article-content">
+  <div class="article-content" itemprop="articleBody">
 
-      <p>America is approaching 250 years of national existence, and many Christians are preparing to tell the story as a spiritual inheritance. They will speak of churches, revivals, missionaries, and founding documents. They will present America as a nation covertly or secretly shaped by Christianity, even when they admit it was "never" the same as biblical Israel.</p>
+<p>America is approaching 250 years of national existence, and many Christians are preparing to tell the story as a spiritual inheritance. They will speak of churches, revivals, missionaries, and founding documents. They will present America as a nation covertly or secretly shaped by Christianity, even when they admit it was "never" the same as biblical Israel.</p>
 
       <p>However, Scripture does not allow nations to hide behind man-made religious dogma for very long.</p>
 
@@ -85,6 +351,13 @@
       <p>A nation can sing spiritual hymns and still be wicked. A nation can print Bibles and still pervert judgment. A nation can send missionaries abroad while crushing the afflicted at across every state. A nation can speak often of God and still stand against the ancient holy ethnic God of Israelites, not the Israeli's of today.</p>
 
       <p>That is the contradiction at the center of America’s religious story.</p>
+
+
+    <aside class="article-pullquote" aria-label="Author highlight">
+      <p>America does not need another celebration of Christian heritage. It needs to be judged by the covenant standards it spent centuries ignoring.</p>
+      <span>Semitic Jew</span>
+    </aside>
+
 
       <h2>God Gave Israel a Covenant</h2>
 
@@ -306,19 +579,8 @@
 
       <p>They prove how long a nation can talk about God while standing against what God commands.</p>
 
-    </div>
-
-    <footer class="article-footer">
-      <div class="article-tags" aria-label="Article tags">
-        <span>Christian Nationalism</span>
-        <span>America</span>
-        <span>Covenant</span>
-        <span>Israelites</span>
-        <span>Christianity</span>
-        <span>Justice</span>
-      </div>
-    </footer>
-  </article>
+  </div>
+</article>
 </main>
 
 <!-- Modal -->
@@ -376,7 +638,14 @@
 
 <div id="site-footer"></div>
 
+<!-- External scripts -->
+<script src="/js/metadata.js" defer></script>
+<script src="/js/modal.js" defer></script>
+<script src="/js/biblio.js" defer></script>
+<script src="/js/articles.js" defer></script>
+<script src="/js/citations.js?v=20260531-footnotes2" defer></script>
+<script src="/js/article-xref-autowrap.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
 <script src="/js/include.js"></script>
-<script src="/js/modal.js"></script>
 </body>
 </html>
