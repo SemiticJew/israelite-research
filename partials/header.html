@@ -1201,19 +1201,43 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
 
 /* Final nav repair: light-mode text, attached dropdowns, and chevron state */
 html:not([data-theme="dark"]) #site-header nav.primary > a,
-html:not([data-theme="dark"]) #site-header .nav-dd-toggle{
+html:not([data-theme="dark"]) #site-header nav.primary > a:hover,
+html:not([data-theme="dark"]) #site-header nav.primary > a:active,
+html:not([data-theme="dark"]) #site-header nav.primary > a:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd:hover > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd:focus-within > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd.is-open > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:hover,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:active,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle[aria-expanded="true"]{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
 }
 
-html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link){
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
 }
 
 #site-header nav.primary > a:focus-visible,
 #site-header .nav-dd-toggle:focus-visible{
-  outline:2px solid rgba(241,115,0,.42) !important;
+  outline:2px solid rgba(17,24,39,.36) !important;
   outline-offset:3px !important;
 }
 
@@ -1248,7 +1272,14 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link){
 }
 
 @media(max-width:920px){
-  html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link){
+  html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
+  html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover,
+  html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
+  html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
+    background:transparent !important;
+    background-color:transparent !important;
+    background-image:none !important;
+    box-shadow:none !important;
     color:#111827 !important;
     -webkit-text-fill-color:#111827 !important;
   }
