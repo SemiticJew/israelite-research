@@ -1285,6 +1285,72 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):foc
   }
 }
 
+/* Final light nav hover lock */
+html:not([data-theme="dark"]) #site-header nav.primary > a,
+html:not([data-theme="dark"]) #site-header nav.primary > a:hover,
+html:not([data-theme="dark"]) #site-header nav.primary > a:active,
+html:not([data-theme="dark"]) #site-header nav.primary > a:focus,
+html:not([data-theme="dark"]) #site-header nav.primary > a:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:hover,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:active,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:focus,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle[aria-expanded="true"],
+html:not([data-theme="dark"]) #site-header .nav-dd:hover > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd:focus-within > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd.is-open > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen > .nav-dd-toggle,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:hover,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:active,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  text-decoration:none !important;
+}
+
+/* Keep the dropdown/caret behavior, but remove orange hover color. */
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle::after,
+html:not([data-theme="dark"]) #site-header .nav-dd:hover .nav-dd-toggle::after,
+html:not([data-theme="dark"]) #site-header .nav-dd:focus-within .nav-dd-toggle::after,
+html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen .nav-dd-toggle::after,
+html:not([data-theme="dark"]) #site-header .nav-dd.is-open .nav-dd-toggle::after{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  border-color:#111827 !important;
+}
+
+/* Remove orange hover strips/dots/pseudo accents from dropdown links. */
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a::before,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a::after,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:hover::before,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:hover::after,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible::before,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible::after{
+  background:transparent !important;
+  background-color:transparent !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Remove orange attachment stripe from dropdown panel in light mode. */
+html:not([data-theme="dark"]) #site-header .nav-dd-menu{
+  border-top-color:rgba(5,74,145,.16) !important;
+}
+
+/* Focus stays accessible but neutral, not orange. */
+html:not([data-theme="dark"]) #site-header nav.primary > a:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd-toggle:focus-visible,
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible{
+  outline:2px solid rgba(17,24,39,.35) !important;
+  outline-offset:4px;
+}
 </style>
 
   <div class="header-inner">
