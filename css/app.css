@@ -4386,3 +4386,98 @@ html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-actio
   color:#ffffff !important;
   -webkit-text-fill-color:#ffffff !important;
 }
+
+/* Website nav hover cleanup */
+.site-header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):hover,
+.site-header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):focus-visible,
+header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):hover,
+header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+}
+
+.site-header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):hover,
+header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):hover{
+  color:#F17300 !important;
+  text-decoration:none;
+}
+
+.site-header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):focus-visible,
+header :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button,
+  .app-tab-link
+):focus-visible{
+  outline:2px solid rgba(241,115,0,.45);
+  outline-offset:4px;
+}
