@@ -26,14 +26,20 @@
     }
 
     /* NAVIGATION */
-    #site-header nav.primary{
-      display:flex;
-      gap:36px;
-      margin-left:40px;
-      font-family: Georgia, serif;
-      font-size:1.05rem;
-      align-items:center;
-    }
+#site-header nav.primary{
+  display:flex;
+  gap:36px;
+  margin-left:40px;
+  font-family: Georgia, serif;
+  font-size:1.05rem;
+  align-items:center;
+}
+
+#site-primary-nav{
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
 
     #site-header .nav-item{
       position:relative;
@@ -218,9 +224,28 @@
   border-radius:0;
 }
 
+#site-header nav.primary > a:hover,
+#site-header nav.primary > a:active,
+#site-header nav.primary > a:focus-visible,
+#site-header .nav-dd:hover > .nav-dd-toggle,
+#site-header .nav-dd:focus-within > .nav-dd-toggle,
+#site-header .nav-dd.is-open > .nav-dd-toggle,
+#site-header .nav-dd.mobile-subopen > .nav-dd-toggle,
+#site-header .nav-dd-toggle:hover,
+#site-header .nav-dd-toggle:active,
+#site-header .nav-dd-toggle:focus-visible,
+#site-header .nav-dd-toggle[aria-expanded="true"]{
+  background:transparent;
+  background-color:transparent;
+  background-image:none;
+  box-shadow:none;
+  color:#111827;
+  text-decoration:none;
+}
+
 #site-header .nav-dd-menu a:hover,
 #site-header .nav-dd-menu a:focus-visible{
-  border-color:var(--border, #e6ebf2);
+  border-color:transparent;
   color:#111827;
   background:transparent;
   outline:2px solid rgba(17,24,39,.35);
@@ -839,7 +864,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
     min-height:42px !important;
     padding:10px 2px !important;
     border:0 !important;
-    border-bottom:1px solid var(--border, #e6ebf2) !important;
+    border-bottom:0 !important;
     background:transparent !important;
     box-shadow:none !important;
     color:var(--ink, #0b2340) !important;
@@ -853,7 +878,7 @@ html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible{
   #site-header .nav-dd-toggle:hover,
   #site-header .nav-dd-toggle:focus-visible{
     background:transparent !important;
-    border-color:var(--border, #e6ebf2) !important;
+    border-color:transparent !important;
     color:#111827 !important;
     box-shadow:none !important;
     outline:2px solid rgba(17,24,39,.35) !important;
@@ -977,7 +1002,7 @@ html[data-theme="dark"] #site-header.mobile-open nav.primary{
   #site-header .nav-dd-menu a:hover,
   #site-header .nav-dd-menu a:focus-visible{
     color:var(--ink, #0b2340);
-    background:#f7f7f7;
+    background:transparent;
     border:0;
     box-shadow:none;
     outline:none;
@@ -985,7 +1010,7 @@ html[data-theme="dark"] #site-header.mobile-open nav.primary{
   }
 
   #site-header .nav-dd-menu a:active{
-    background:#f7f7f7;
+    background:transparent;
   }
 }
 
@@ -1229,10 +1254,11 @@ html:not([data-theme="dark"]) #site-header .nav-dd-toggle[aria-expanded="true"]{
 }
 
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
-  background:#ffffff !important;
-  background-color:#ffffff !important;
+  background:transparent !important;
+  background-color:transparent !important;
   background-image:none !important;
   box-shadow:none !important;
   color:#111827 !important;
@@ -1284,8 +1310,8 @@ html:not([data-theme="dark"]) #site-header .nav-dd-toggle::after{
   html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
   html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
   html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
-    background:#ffffff !important;
-    background-color:#ffffff !important;
+    background:transparent !important;
+    background-color:transparent !important;
     background-image:none !important;
     box-shadow:none !important;
     color:#111827 !important;
@@ -1293,8 +1319,8 @@ html:not([data-theme="dark"]) #site-header .nav-dd-toggle::after{
   }
 
   html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover{
-    background:#f7f7f7 !important;
-    background-color:#f7f7f7 !important;
+    background:transparent !important;
+    background-color:transparent !important;
     background-image:none !important;
     box-shadow:none !important;
     color:#111827 !important;
@@ -1328,13 +1354,14 @@ html:not([data-theme="dark"]) #site-header .nav-dd.mobile-subopen > .nav-dd-togg
 }
 
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link),
+html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):active,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus,
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):focus-visible{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
-  background:#ffffff !important;
-  background-color:#ffffff !important;
+  background:transparent !important;
+  background-color:transparent !important;
   background-image:none !important;
   box-shadow:none !important;
   text-decoration:none !important;
@@ -1343,8 +1370,8 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):foc
 html:not([data-theme="dark"]) #site-header .nav-dd-menu a:not(.nav-app-link):hover{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
-  background:#f7f7f7 !important;
-  background-color:#f7f7f7 !important;
+  background:transparent !important;
+  background-color:transparent !important;
   background-image:none !important;
   box-shadow:none !important;
   text-decoration:none !important;
@@ -1373,6 +1400,7 @@ html:not([data-theme="dark"]) #site-header .nav-dd-menu a:focus-visible::after{
   background-color:transparent !important;
   border-color:transparent !important;
   box-shadow:none !important;
+  content:none !important;
 }
 
 /* Remove orange attachment stripe from dropdown panel in light mode. */
