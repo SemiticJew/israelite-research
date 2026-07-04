@@ -7643,3 +7643,378 @@ html[data-theme="dark"] body.article-doc .share-give-btn{
   }
 }
 
+/* === Semitic Jew Author Modal Upgrade === */
+body #author-modal.modal-overlay[aria-hidden="true"]{
+  display:none !important;
+}
+
+body #author-modal.modal-overlay[aria-hidden="false"]{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(241,115,0,.18), transparent 34%),
+    rgba(3,10,24,.72);
+  backdrop-filter:blur(10px);
+}
+
+#author-modal .sj-author-modal{
+  width:min(94vw, 980px);
+  max-height:88vh;
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.18);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 30px 90px rgba(0,0,0,.38);
+}
+
+#author-modal .sj-author-modal-body{
+  display:grid;
+  grid-template-columns:minmax(280px, 360px) 1fr;
+  gap:0;
+  padding:0;
+  min-height:610px;
+  overflow:auto;
+}
+
+#author-modal .sj-author-profile{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:34px 28px;
+  border-right:1px solid rgba(5,74,145,.14);
+  background:
+    radial-gradient(circle at top, rgba(241,115,0,.14), transparent 36%),
+    linear-gradient(180deg, rgba(5,74,145,.08), rgba(255,255,255,.8));
+}
+
+#author-modal .sj-author-mark{
+  position:absolute;
+  top:18px;
+  left:20px;
+  color:#054A91;
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+#author-modal .sj-author-avatar{
+  width:128px;
+  height:128px;
+  border-radius:999px;
+  object-fit:cover;
+  border:4px solid #ffffff;
+  box-shadow:0 18px 40px rgba(5,74,145,.22);
+  margin-bottom:14px;
+}
+
+#author-modal .sj-author-name-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:.1rem 0 .15rem;
+}
+
+#author-modal .sj-author-name{
+  margin:0;
+  color:#07111f;
+  font-size:1.55rem;
+  line-height:1.05;
+  font-weight:950;
+  letter-spacing:-.035em;
+}
+
+#author-modal .sj-author-role{
+  color:#F17300;
+  font-size:.76rem;
+  font-weight:950;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+#author-modal .sj-author-text{
+  max-width:34ch;
+  margin:14px auto 0;
+  color:#243247;
+  line-height:1.58;
+  font-size:.96rem;
+}
+
+#author-modal .sj-author-pill-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin:18px 0 0;
+}
+
+#author-modal .sj-author-pill-row span{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(5,74,145,.14);
+  border-radius:999px;
+  padding:6px 10px;
+  background:rgba(255,255,255,.78);
+  color:#0b2340;
+  font-size:.72rem;
+  font-weight:850;
+}
+
+#author-modal .sj-author-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin-top:22px;
+}
+
+#author-modal .sj-author-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(5,74,145,.18);
+  background:#ffffff;
+  color:#0b2340;
+  text-decoration:none;
+  font-weight:900;
+  font-size:.86rem;
+}
+
+#author-modal .sj-author-btn.primary{
+  background:#054A91;
+  color:#ffffff;
+  border-color:#054A91;
+}
+
+#author-modal .sj-author-btn:hover,
+#author-modal .sj-more-by-btn:hover,
+#author-modal .sj-resource-links a:hover{
+  color:#F17300;
+  text-decoration:none;
+}
+
+#author-modal .sj-author-work{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  padding:34px 34px 28px;
+  background:#ffffff;
+}
+
+#author-modal .sj-author-work-head{
+  margin-bottom:12px;
+}
+
+#author-modal .sj-work-kicker,
+#author-modal .sj-resource-label{
+  display:block;
+  color:#F17300;
+  font-size:.72rem;
+  font-weight:950;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+
+#author-modal .sj-author-work h3{
+  margin:0;
+  color:#07111f;
+  font-size:1.6rem;
+  line-height:1.05;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+
+#author-modal .sj-author-work-head p{
+  margin:8px 0 0;
+  color:#64748b;
+  font-size:.94rem;
+}
+
+#author-modal .sj-recent-list{
+  list-style:none;
+  padding:0;
+  margin:4px 0 18px;
+}
+
+#author-modal .sj-recent-list li{
+  padding:12px 0;
+  border-top:1px solid rgba(5,74,145,.12);
+}
+
+#author-modal .sj-recent-list li:first-child{
+  border-top:0;
+}
+
+#author-modal .ra-title{
+  color:#07111f;
+  font-size:.98rem;
+  line-height:1.25;
+  font-weight:950;
+  text-decoration:none;
+}
+
+#author-modal .ra-title:hover{
+  color:#F17300;
+  text-decoration:none;
+}
+
+#author-modal .ra-meta{
+  display:block;
+  margin-top:4px;
+  color:#64748b;
+  font-size:.82rem;
+  font-weight:650;
+}
+
+#author-modal .sj-author-resource{
+  margin-top:auto;
+  padding:16px;
+  border-radius:18px;
+  border:1px solid rgba(5,74,145,.14);
+  background:
+    radial-gradient(circle at top right, rgba(241,115,0,.10), transparent 36%),
+    #f8fafc;
+}
+
+#author-modal .sj-author-resource strong{
+  display:block;
+  color:#07111f;
+  font-size:1rem;
+  line-height:1.25;
+}
+
+#author-modal .sj-author-resource p{
+  margin:7px 0 12px;
+  color:#475569;
+  line-height:1.45;
+  font-size:.9rem;
+}
+
+#author-modal .sj-resource-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+#author-modal .sj-resource-links a{
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#ffffff;
+  border:1px solid rgba(5,74,145,.12);
+  color:#0b2340;
+  text-decoration:none;
+  font-weight:850;
+  font-size:.78rem;
+}
+
+#author-modal .sj-more-by-btn{
+  align-self:flex-start;
+  margin-top:16px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:#07111f;
+  color:#ffffff;
+  border:1px solid #07111f;
+  text-decoration:none;
+  font-weight:950;
+}
+
+#author-modal .modal-close{
+  top:16px;
+  right:16px;
+  z-index:4;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(5,74,145,.12);
+  box-shadow:0 10px 26px rgba(15,23,42,.12);
+}
+
+html[data-theme="dark"] #author-modal .sj-author-modal{
+  background:linear-gradient(135deg, #07111f, #0f1a2b);
+  border-color:rgba(255,255,255,.16);
+}
+
+html[data-theme="dark"] #author-modal .sj-author-profile{
+  border-right-color:rgba(255,255,255,.14);
+  background:
+    radial-gradient(circle at top, rgba(241,115,0,.20), transparent 36%),
+    linear-gradient(180deg, rgba(5,74,145,.20), rgba(7,17,31,.94));
+}
+
+html[data-theme="dark"] #author-modal .sj-author-work{
+  background:#07111f;
+}
+
+html[data-theme="dark"] #author-modal .sj-author-name,
+html[data-theme="dark"] #author-modal .sj-author-work h3,
+html[data-theme="dark"] #author-modal .ra-title,
+html[data-theme="dark"] #author-modal .sj-author-resource strong{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] #author-modal .sj-author-text,
+html[data-theme="dark"] #author-modal .sj-author-work-head p,
+html[data-theme="dark"] #author-modal .sj-author-resource p,
+html[data-theme="dark"] #author-modal .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] #author-modal .sj-author-resource,
+html[data-theme="dark"] #author-modal .sj-author-pill-row span,
+html[data-theme="dark"] #author-modal .sj-resource-links a{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.14);
+  color:#ffffff;
+}
+
+@media(max-width:760px){
+  body #author-modal.modal-overlay[aria-hidden="false"]{
+    padding:12px;
+    align-items:flex-start;
+    overflow:auto;
+  }
+
+  #author-modal .sj-author-modal{
+    width:min(96vw, 560px);
+    max-height:none;
+    margin:18px auto;
+    border-radius:20px;
+  }
+
+  #author-modal .sj-author-modal-body{
+    grid-template-columns:1fr;
+    min-height:0;
+  }
+
+  #author-modal .sj-author-profile{
+    border-right:0;
+    border-bottom:1px solid rgba(5,74,145,.14);
+    padding:34px 22px 26px;
+  }
+
+  #author-modal .sj-author-work{
+    padding:26px 22px 24px;
+  }
+
+  #author-modal .sj-author-work h3{
+    font-size:1.35rem;
+  }
+
+  #author-modal .sj-more-by-btn{
+    align-self:stretch;
+    justify-content:center;
+    text-align:center;
+  }
+}
+/* === End Semitic Jew Author Modal Upgrade === */
