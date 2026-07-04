@@ -7913,3 +7913,99 @@ html[data-theme="dark"] #author-modal .sj-author-page-more{
   }
 }
 /* === End Semitic Jew Full Page Author Modal === */
+
+/* === Author Modal Spacing + Social Button Refinement === */
+#author-modal .sj-author-page-left{
+  justify-content:flex-start;
+}
+
+#author-modal .sj-author-page-top{
+  margin-bottom:20px;
+}
+
+#author-modal .sj-author-page-avatar{
+  margin-bottom:12px;
+}
+
+#author-modal .sj-author-page-kicker{
+  margin-bottom:3px;
+}
+
+#author-modal .sj-author-page-left h2{
+  margin-bottom:4px;
+}
+
+#author-modal .sj-author-page-role{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+#author-modal .sj-author-page-description{
+  padding-top:18px;
+  margin-top:0;
+}
+
+#author-modal .sj-author-page-description p{
+  line-height:1.55;
+}
+
+#author-modal .sj-author-page-description a:not(.sj-author-social-btn){
+  display:inline-block;
+  margin-top:14px;
+}
+
+#author-modal .sj-author-social-btn{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:max-content;
+  min-height:40px;
+  margin-top:16px;
+  padding:0 14px;
+  border-radius:999px;
+  background:#111827;
+  color:#ffffff !important;
+  border:1px solid #111827;
+  text-decoration:none !important;
+  font-size:.9rem;
+  font-weight:850;
+  line-height:1;
+  box-shadow:0 8px 22px rgba(17,24,39,.12);
+}
+
+#author-modal .sj-author-social-btn svg{
+  width:15px;
+  height:15px;
+  flex:0 0 auto;
+}
+
+#author-modal .sj-author-social-btn:hover{
+  background:#054A91;
+  border-color:#054A91;
+  color:#ffffff !important;
+  transform:translateY(-1px);
+}
+
+html[data-theme="dark"] #author-modal .sj-author-social-btn{
+  background:#ffffff;
+  color:#07111f !important;
+  border-color:#ffffff;
+}
+
+html[data-theme="dark"] #author-modal .sj-author-social-btn:hover{
+  background:#F17300;
+  border-color:#F17300;
+  color:#07111f !important;
+}
+
+@media(max-width:760px){
+  #author-modal .sj-author-page-top{
+    margin-bottom:14px;
+  }
+
+  #author-modal .sj-author-page-description{
+    padding-top:10px;
+  }
+}
+/* === End Author Modal Spacing + Social Button Refinement === */
