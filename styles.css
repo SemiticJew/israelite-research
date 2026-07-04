@@ -7654,10 +7654,7 @@ body #author-modal.modal-overlay{
   visibility:hidden;
   pointer-events:none;
   transform:translateY(10px);
-  transition:
-    opacity .24s ease,
-    visibility .24s ease,
-    transform .24s ease;
+  transition:opacity .24s ease, visibility .24s ease, transform .24s ease;
 }
 
 body #author-modal.modal-overlay[aria-hidden="false"]{
@@ -7702,21 +7699,27 @@ body #author-modal.modal-overlay[aria-hidden="false"]{
 
 #author-modal .sj-author-page-body{
   display:block !important;
-  width:min(92vw, 760px) !important;
+  width:min(92vw, 900px) !important;
   margin:0 auto !important;
-  padding:86px 0 70px !important;
+  padding:92px 0 70px !important;
   background:#ffffff !important;
   min-height:100vh !important;
 }
 
-#author-modal .sj-author-page-profile{
+#author-modal .sj-author-page-grid{
   display:grid;
-  grid-template-columns:86px 1fr;
-  gap:22px;
-  align-items:start;
-  padding:0 0 36px;
-  margin:0 0 28px;
-  border-bottom:1px solid #e5e7eb;
+  grid-template-columns:minmax(240px, 320px) 1fr;
+  gap:72px;
+  align-items:stretch;
+  min-height:520px;
+}
+
+#author-modal .sj-author-page-left{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-right:1px solid #e5e7eb;
+  padding-right:42px;
 }
 
 #author-modal .sj-author-page-avatar{
@@ -7725,111 +7728,115 @@ body #author-modal.modal-overlay[aria-hidden="false"]{
   border-radius:999px;
   object-fit:cover;
   display:block;
+  margin:0 0 18px;
 }
 
 #author-modal .sj-author-page-kicker{
-  margin:0 0 4px;
+  margin:0 0 6px;
   color:#6b7280;
   font-size:.88rem;
   font-weight:700;
-  letter-spacing:.02em;
 }
 
-#author-modal .sj-author-page-copy h2{
+#author-modal .sj-author-page-left h2{
   margin:0;
   color:#111827;
-  font-size:2rem;
+  font-size:2.1rem;
   line-height:1.05;
-  letter-spacing:-.04em;
+  letter-spacing:-.045em;
   font-weight:900;
 }
 
 #author-modal .sj-author-page-role{
-  margin:7px 0 12px;
+  margin:8px 0 0;
   color:#4b5563;
-  font-size:.9rem;
+  font-size:.92rem;
   font-weight:700;
 }
 
-#author-modal .sj-author-page-text{
+#author-modal .sj-author-page-description{
+  padding-top:42px;
+}
+
+#author-modal .sj-author-page-description p{
   margin:0;
   color:#374151;
   font-size:1rem;
-  line-height:1.62;
-  max-width:58ch;
+  line-height:1.65;
 }
 
-#author-modal .sj-author-page-links{
-  display:flex;
-  flex-wrap:wrap;
-  gap:14px;
+#author-modal .sj-author-page-description a{
+  display:inline-block;
   margin-top:16px;
-}
-
-#author-modal .sj-author-page-links a{
   color:#054A91;
   font-size:.94rem;
-  font-weight:700;
+  font-weight:800;
   text-decoration:underline;
   text-underline-offset:3px;
 }
 
-#author-modal .sj-author-page-links a:hover{
-  color:#F17300;
-}
-
-#author-modal .sj-author-page-articles h3{
-  margin:0 0 12px;
+#author-modal .sj-author-page-right h3{
+  margin:0 0 14px;
   color:#111827;
-  font-size:1.35rem;
+  font-size:1.45rem;
   line-height:1.1;
   font-weight:900;
-  letter-spacing:-.025em;
+  letter-spacing:-.03em;
 }
 
-#author-modal .sj-author-page-articles article{
+#author-modal .sj-author-page-right article{
   padding:18px 0;
   border-top:1px solid #e5e7eb;
 }
 
-#author-modal .sj-author-page-articles article:first-of-type{
+#author-modal .sj-author-page-right article:first-of-type{
   border-top:0;
 }
 
-#author-modal .sj-author-page-articles article a{
+#author-modal .sj-author-page-right article a{
   display:inline-block;
   color:#111827;
   font-size:1.12rem;
-  line-height:1.35;
+  line-height:1.36;
   font-weight:800;
   text-decoration:none;
 }
 
-#author-modal .sj-author-page-articles article a:hover{
+#author-modal .sj-author-page-right article a:hover,
+#author-modal .sj-author-page-description a:hover,
+#author-modal .sj-author-page-more:hover{
   color:#F17300;
 }
 
-#author-modal .sj-author-page-articles article p{
+#author-modal .sj-author-page-right article p{
   margin:5px 0 0;
   color:#6b7280;
   font-size:.92rem;
 }
 
-#author-modal .sj-author-page-articles article span{
+#author-modal .sj-author-page-right article span{
   color:#9ca3af;
 }
 
-#author-modal .sj-author-page-more{
-  display:inline-block;
-  margin-top:18px;
-  color:#054A91;
-  font-weight:800;
-  text-decoration:underline;
-  text-underline-offset:3px;
+#author-modal .sj-author-page-footer{
+  margin-top:46px;
+  padding-top:28px;
+  border-top:1px solid #e5e7eb;
+  text-align:center;
 }
 
-#author-modal .sj-author-page-more:hover{
-  color:#F17300;
+#author-modal .sj-author-page-more{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:0 20px;
+  border-radius:999px;
+  border:1px solid #d1d5db;
+  color:#111827;
+  background:#ffffff;
+  font-weight:850;
+  text-decoration:none;
 }
 
 html[data-theme="dark"] body #author-modal.modal-overlay,
@@ -7839,55 +7846,70 @@ html[data-theme="dark"] #author-modal .sj-author-page-body{
 }
 
 html[data-theme="dark"] #author-modal .sj-author-page-close,
-html[data-theme="dark"] #author-modal .sj-author-page-copy h2,
-html[data-theme="dark"] #author-modal .sj-author-page-articles h3,
-html[data-theme="dark"] #author-modal .sj-author-page-articles article a{
+html[data-theme="dark"] #author-modal .sj-author-page-left h2,
+html[data-theme="dark"] #author-modal .sj-author-page-right h3,
+html[data-theme="dark"] #author-modal .sj-author-page-right article a,
+html[data-theme="dark"] #author-modal .sj-author-page-more{
   color:#ffffff !important;
 }
 
-html[data-theme="dark"] #author-modal .sj-author-page-close:hover{
-  background:rgba(255,255,255,.08) !important;
-}
-
-html[data-theme="dark"] #author-modal .sj-author-page-profile,
-html[data-theme="dark"] #author-modal .sj-author-page-articles article{
+html[data-theme="dark"] #author-modal .sj-author-page-left,
+html[data-theme="dark"] #author-modal .sj-author-page-right article,
+html[data-theme="dark"] #author-modal .sj-author-page-footer{
   border-color:rgba(255,255,255,.14) !important;
 }
 
 html[data-theme="dark"] #author-modal .sj-author-page-kicker,
 html[data-theme="dark"] #author-modal .sj-author-page-role,
-html[data-theme="dark"] #author-modal .sj-author-page-text,
-html[data-theme="dark"] #author-modal .sj-author-page-articles article p{
+html[data-theme="dark"] #author-modal .sj-author-page-description p,
+html[data-theme="dark"] #author-modal .sj-author-page-right article p{
   color:rgba(255,255,255,.72) !important;
 }
 
-@media(max-width:680px){
+html[data-theme="dark"] #author-modal .sj-author-page-more{
+  background:#07111f;
+  border-color:rgba(255,255,255,.22);
+}
+
+@media(max-width:760px){
   #author-modal .sj-author-page-close{
     top:18px !important;
     right:18px !important;
   }
 
   #author-modal .sj-author-page-body{
-    width:min(90vw, 520px) !important;
+    width:min(90vw, 560px) !important;
     padding:74px 0 54px !important;
   }
 
-  #author-modal .sj-author-page-profile{
+  #author-modal .sj-author-page-grid{
     grid-template-columns:1fr;
-    gap:14px;
+    gap:34px;
+    min-height:0;
   }
 
-  #author-modal .sj-author-page-avatar{
-    width:76px;
-    height:76px;
+  #author-modal .sj-author-page-left{
+    border-right:0;
+    border-bottom:1px solid #e5e7eb;
+    padding-right:0;
+    padding-bottom:30px;
+    gap:30px;
   }
 
-  #author-modal .sj-author-page-copy h2{
-    font-size:1.7rem;
+  #author-modal .sj-author-page-left h2{
+    font-size:1.8rem;
   }
 
-  #author-modal .sj-author-page-links{
-    gap:10px 14px;
+  #author-modal .sj-author-page-description{
+    padding-top:0;
+  }
+
+  #author-modal .sj-author-page-footer{
+    margin-top:34px;
+  }
+
+  #author-modal .sj-author-page-more{
+    width:100%;
   }
 }
 /* === End Semitic Jew Full Page Author Modal === */
