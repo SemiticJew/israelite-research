@@ -8010,74 +8010,95 @@ html[data-theme="dark"] #author-modal .sj-author-social-btn:hover{
 }
 /* === End Author Modal Spacing + Social Button Refinement === */
 
-/* === Minimal Article Card Hover: No Image Zoom === */
-body.articles-page .featured-left,
-body.articles-page .featured-right,
-body.articles-page .article-card,
-.homepage-articles article,
-.homepage-articles .article-card,
-.homepage-articles .featured-left,
-.homepage-articles .featured-right{
-  transition:
-    box-shadow .22s ease,
-    transform .22s ease,
-    border-color .22s ease !important;
+/* === Hard Stop Article Image Hover Motion === */
+/*
+  Article card hover rule:
+  - Images must never zoom, shift, scale, fade, slide, or animate.
+  - Only the card shell may receive a minimal shadow/lift.
+*/
+
+/* Freeze image containers and media on Articles page */
+body.articles-page .featured-left .image-block,
+body.articles-page .featured-right .image-block,
+body.articles-page .article-card .image-block,
+body.articles-page .featured-left .image-block *,
+body.articles-page .featured-right .image-block *,
+body.articles-page .article-card .image-block *,
+body.articles-page .featured-left img,
+body.articles-page .featured-right img,
+body.articles-page .article-card img,
+body.articles-page .featured-left:hover .image-block,
+body.articles-page .featured-right:hover .image-block,
+body.articles-page .article-card:hover .image-block,
+body.articles-page .featured-left:hover .image-block *,
+body.articles-page .featured-right:hover .image-block *,
+body.articles-page .article-card:hover .image-block *,
+body.articles-page .featured-left:hover img,
+body.articles-page .featured-right:hover img,
+body.articles-page .article-card:hover img{
+  transform:none !important;
+  scale:1 !important;
+  translate:none !important;
+  rotate:none !important;
+  opacity:1 !important;
+  filter:none !important;
+  animation:none !important;
+  transition:none !important;
 }
 
-body.articles-page .featured-left:hover,
-body.articles-page .featured-right:hover,
-body.articles-page .article-card:hover,
+/* Freeze image containers and media on Homepage latest articles */
+.homepage-articles .image-block,
+.homepage-articles .image-block *,
+.homepage-articles img,
+.homepage-articles article:hover .image-block,
+.homepage-articles article:hover .image-block *,
+.homepage-articles article:hover img,
+.homepage-articles a:hover .image-block,
+.homepage-articles a:hover .image-block *,
+.homepage-articles a:hover img{
+  transform:none !important;
+  scale:1 !important;
+  translate:none !important;
+  rotate:none !important;
+  opacity:1 !important;
+  filter:none !important;
+  animation:none !important;
+  transition:none !important;
+}
+
+/* Kill older explicit zoom rules by overriding their exact hover selectors */
+body.articles-page .featured-left:hover .image-block img,
+body.articles-page .featured-right:hover .image-block img,
+body.articles-page .article-card:hover .image-block img{
+  transform:none !important;
+}
+
+/* Minimal card-only hover */
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-right.boxed,
+body.articles-page .article-card.boxed,
+.homepage-articles article,
+.homepage-articles .article-card{
+  transition:box-shadow .22s ease, transform .22s ease, border-color .22s ease !important;
+}
+
+body.articles-page .featured-left.boxed:hover,
+body.articles-page .featured-right.boxed:hover,
+body.articles-page .article-card.boxed:hover,
 .homepage-articles article:hover,
-.homepage-articles .article-card:hover,
-.homepage-articles .featured-left:hover,
-.homepage-articles .featured-right:hover{
+.homepage-articles .article-card:hover{
   transform:translateY(-2px) !important;
   box-shadow:0 14px 34px rgba(15,23,42,.10) !important;
   border-color:rgba(5,74,145,.16) !important;
 }
 
-/* Keep article images completely stagnant on hover */
-body.articles-page .featured-left:hover .image-block img,
-body.articles-page .featured-right:hover .image-block img,
-body.articles-page .article-card:hover .image-block img,
-body.articles-page .featured-left .image-block img,
-body.articles-page .featured-right .image-block img,
-body.articles-page .article-card .image-block img,
-.homepage-articles article:hover img,
-.homepage-articles .article-card:hover img,
-.homepage-articles .featured-left:hover img,
-.homepage-articles .featured-right:hover img,
-.homepage-articles article img,
-.homepage-articles .article-card img,
-.homepage-articles .featured-left img,
-.homepage-articles .featured-right img{
-  transform:none !important;
-  scale:1 !important;
-}
-
-/* Prevent image animation while preserving object-fit/layout */
-body.articles-page .image-block img,
-.homepage-articles img{
-  transition:none !important;
-}
-
-html[data-theme="dark"] body.articles-page .featured-left:hover,
-html[data-theme="dark"] body.articles-page .featured-right:hover,
-html[data-theme="dark"] body.articles-page .article-card:hover,
-html[data-theme="dark"] .homepage-articles article:hover,
-html[data-theme="dark"] .homepage-articles .article-card:hover{
-  box-shadow:0 16px 38px rgba(0,0,0,.32) !important;
-  border-color:rgba(255,255,255,.16) !important;
-}
-
 @media (prefers-reduced-motion: reduce){
-  body.articles-page .featured-left,
-  body.articles-page .featured-right,
-  body.articles-page .article-card,
-  .homepage-articles article,
-  .homepage-articles .article-card{
-    transition:none !important;
+  body.articles-page .featured-left.boxed:hover,
+  body.articles-page .featured-right.boxed:hover,
+  body.articles-page .article-card.boxed:hover,
+  .homepage-articles article:hover,
+  .homepage-articles .article-card:hover{
     transform:none !important;
   }
 }
-/* === End Minimal Article Card Hover: No Image Zoom === */
+/* === End Hard Stop Article Image Hover Motion === */
