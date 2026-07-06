@@ -8102,3 +8102,30 @@ body.articles-page .article-card.boxed:hover,
   }
 }
 /* === End Hard Stop Article Image Hover Motion === */
+
+/* === Primary Featured Article Image Fit === */
+/*
+  Only the large left featured card.
+  Keep the full 700x394 image visible without cropping.
+  Do not affect right featured or recent article cards.
+*/
+body.articles-page .featured-left .image-block{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:#f8fafc !important;
+}
+
+body.articles-page .featured-left .image-block img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+ 
+body.articles-page .featured-left:hover .image-block img{
+  object-fit:contain !important;
+  transform:none !important;
+}
+/* === End Primary Featured Article Image Fit === */
