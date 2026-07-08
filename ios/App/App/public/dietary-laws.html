@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Dietary Laws — Semitic Jew</title>
+<meta name="description" content="Search and study biblical dietary laws, clean and unclean foods, hidden ingredients, and Scripture references."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Dietary Laws — Semitic Jew"/>
+<meta property="og:description" content="Search and study biblical dietary laws, clean and unclean foods, hidden ingredients, and Scripture references."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/dietary-laws.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Dietary Laws — Semitic Jew"/>
+<meta name="twitter:description" content="Search and study biblical dietary laws, clean and unclean foods, hidden ingredients, and Scripture references."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link href="/styles.css" rel="stylesheet"/>
+<style>
+  .page-header{padding:24px 0 8px}
+  .page-title{margin:0;font-size:2rem;font-weight:800;color:var(--ink)}
+  .breadcrumb{color:var(--muted);font-size:.9rem;margin-top:6px}
+
+  /* Search bar */
+  .searchbar{
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:.5rem;
+    margin:12px 0 10px;
+  }
+
+  .searchbar input[type="search"]{
+    flex:1;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:.55rem .7rem;
+    font:inherit;
+    background:var(--surface);
+    color:var(--ink);
+  }
+
+  .searchbar .btn{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:10px;
+    padding:.5rem .8rem;
+    cursor:pointer;
+    font:inherit;
+    color:var(--ink);
+  }
+
+  .searchbar .btn:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  /* Tree */
+  .tree{margin:14px 0 36px}
+
+  .tree details{
+    border:1px solid var(--border);
+    background:var(--surface);
+    margin:8px 0;
+    border-radius:10px;
+    padding:8px 10px
+  }
+
+  .tree details[open]{
+    box-shadow:0 4px 10px rgba(0,0,0,.08)
+  }
+
+  .tree .group{margin:8px 0 0 0; padding:0}
+  .tree .group details{margin:6px 0}
+  .tree .leaf{list-style:none; margin:4px 0; display:flex; align-items:center; gap:.5rem}
+
+  .law-link{
+    color:var(--brand);
+    text-decoration:none;
+    border-bottom:1px solid transparent
+  }
+
+  .law-link:hover{
+    border-bottom-color:var(--brand)
+  }
+
+  .tag{
+    display:inline-block;
+    font-size:.78rem;
+    color:var(--ink);
+    background:var(--surface-alt, rgba(5,74,145,.08));
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:.05rem .35rem
+  }
+
+  .note{color:var(--muted); font-size:.85rem; margin-top:.35rem}
+
+  /* Highlight */
+  .hl{
+    background:var(--surface-alt, rgba(241,115,0,.15));
+    box-shadow:0 0 0 2px var(--accent) inset;
+  }
+
+  .hide{ display:none !important; }
+
+  /* Chevron */
+  .tree summary::-webkit-details-marker { display: none; }
+  .tree summary { list-style: none; }
+
+  .tree summary{
+    padding:.4rem .6rem .4rem 1.5rem;
+    border-radius:8px;
+    position:relative;
+    cursor:pointer;
+    font-weight:800;
+    color:var(--brand);
+    transition:background .2s;
+  }
+
+  .tree summary:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  .tree summary::before{
+    content:"";
+    border:solid var(--accent);
+    border-width:0 .15em .15em 0;
+    display:inline-block;
+    padding:.25em;
+    position:absolute;
+    left:.5rem;
+    top:50%;
+    transform:translateY(-50%) rotate(45deg);
+    transition:transform .2s;
+  }
+
+  .tree details[open] > summary::before{
+    transform:translateY(-50%) rotate(135deg);
+  }
+
+  /* Icons */
+  .ico{
+    width:18px;height:18px;
+    vertical-align:-3px;
+    margin-right:.45rem;
+    color:var(--brand);
+    flex:0 0 18px;
+  }
+
+  .ico path,.ico circle,.ico rect,.ico polygon,.ico line{
+    fill:currentColor;
+    stroke:currentColor;
+  }
+
+  .tree summary .sumline{
+    display:inline-flex;
+    align-items:center;
+    gap:.45rem;
+  }
+
+  /* Example cards */
+  .example-cards{
+    display:grid;
+    gap:12px;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  }
+
+  .example-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:6px 8px;
+    font-size:.85rem;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+
+  .example-card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-hover, 0 6px 16px rgba(0,0,0,.15));
+  }
+
+  .example-card .card-head{
+    font-weight:800;
+    padding:6px 10px;
+    letter-spacing:.2px;
+    color:#fff;
+  }
+
+  .example-card .card-title{
+    padding:10px 12px 2px 12px;
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .example-card .card-foot{
+    padding:0 12px 10px 12px;
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  /* Status colors */
+  .example-card.allowed   .card-head{ background:#054A91; }
+  .example-card.forbidden .card-head{ background:#F17300; }
+  .example-card.prohibited .card-head{ background:#F17300; }
+  .example-card.avoid     .card-head{ background:#3E7CB1; }
+  .example-card.verify    .card-head{ background:#81A4CD; color:#0b2340; }
+
+  /* Foodcheck */
+  .foodcheck-wrap textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:.8rem;
+    font:inherit;
+    resize:vertical;
+    background:var(--surface);
+    color:var(--ink);
+  }
+
+  .fc-actions{ display:flex; align-items:center; gap:.6rem; margin-top:.5rem; }
+
+  #foodCheckBtn{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:10px;
+    padding:.5rem .9rem;
+    cursor:pointer;
+    font:inherit;
+    color:var(--ink);
+  }
+
+  #foodCheckBtn:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  .fc-hint{ color:var(--muted); }
+
+  /* Verdict banner */
+  .fc-banner{
+    margin:12px 0;
+    padding:.6rem .8rem;
+    border-radius:10px;
+    font-weight:800;
+    border:1px solid var(--border);
+  }
+
+  .fc-banner.allowed   { background:rgba(5,74,145,.15); color:#054A91; }
+  .fc-banner.verify    { background:rgba(129,164,205,.2); color:var(--ink); }
+  .fc-banner.avoid     { background:rgba(62,124,177,.2); color:var(--ink); }
+  .fc-banner.forbidden,
+  .fc-banner.prohibited{ background:rgba(241,115,0,.15); color:#F17300; }
+
+  /* Suggestions */
+  .fc-suggest{
+    margin:10px 0;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+
+  .fc-suggest button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:.5rem .8rem;
+    background:var(--surface);
+    border:0;
+    border-bottom:1px solid var(--border);
+    cursor:pointer;
+    color:var(--ink);
+  }
+
+  .fc-suggest button:last-child{ border-bottom:0; }
+
+  .fc-suggest button:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  /* Nutrition */
+  .nutri-card.example-card .card-head{
+    background:#054A91;
+    color:#fff;
+  }
+
+  .nutri-lines{
+    padding:6px 12px 10px 12px;
+    font-size:.9rem;
+    color:var(--ink);
+  }
+
+  .nutri-lines div{
+    display:flex;
+    justify-content:space-between;
+  }
+
+  .nutri-lines small{
+    color:var(--muted);
+  }
+
+  .page-subtitle{
+    max-width:760px;
+    margin:8px 0 0;
+    color:var(--muted);
+    line-height:1.65;
+  }
+
+  html[data-theme="dark"] body.dietary-page .example-card,
+  html[data-theme="dark"] body.dietary-page .tree details,
+  html[data-theme="dark"] body.dietary-page .searchbar,
+  html[data-theme="dark"] body.dietary-page .foodcheck-wrap textarea,
+  html[data-theme="dark"] body.dietary-page .fc-suggest,
+  html[data-theme="dark"] body.dietary-page .fc-suggest button{
+    background:var(--surface) !important;
+    border-color:var(--border) !important;
+    color:var(--ink) !important;
+  }
+
+  html[data-theme="dark"] body.dietary-page .page-title,
+  html[data-theme="dark"] body.dietary-page .tree summary,
+  html[data-theme="dark"] body.dietary-page .example-card .card-title,
+  html[data-theme="dark"] body.dietary-page .nutri-lines{
+    color:#ffffff !important;
+  }
+
+  html[data-theme="dark"] body.dietary-page .tag{
+    background:rgba(255,255,255,.06) !important;
+    color:#ffffff !important;
+    border-color:var(--border) !important;
+  }
+
+/* Dietary Laws modern page polish */
+.dietary-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.dietary-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.dietary-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.dietary-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.dietary-subtitle{
+  max-width:820px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.dietary-intro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.dietary-info-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+}
+
+.dietary-info-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.dietary-info-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.dietary-tool-shell,
+.dietary-tree-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.dietary-section-head{
+  margin:0 0 16px;
+}
+
+.dietary-section-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.dietary-section-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.dietary-page .searchbar{
+  margin:0 0 16px;
+}
+
+.dietary-page #foodCheck{
+  margin:0 !important;
+}
+
+.dietary-page .tree{
+  margin:0;
+}
+
+.dietary-page .tree details{
+  border-radius:0;
+}
+
+.dietary-page .example-card{
+  border-radius:0;
+}
+
+.dietary-page .example-card .card-head{
+  border-radius:0;
+}
+
+.dietary-page .note{
+  border:1px solid var(--border);
+  background:rgba(241,115,0,.06);
+  padding:18px;
+  margin:24px 0 0;
+  line-height:1.65;
+}
+
+html[data-theme="dark"] .dietary-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .dietary-title,
+html[data-theme="dark"] .dietary-info-card h2,
+html[data-theme="dark"] .dietary-section-head h2{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .dietary-tool-shell,
+html[data-theme="dark"] .dietary-tree-shell,
+html[data-theme="dark"] .dietary-info-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:900px){
+  .dietary-intro-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .dietary-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .dietary-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .dietary-tool-shell,
+  .dietary-tree-shell{
+    padding:20px 16px;
+  }
+
+  .searchbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
+/* Dietary guide quick controls */
+.dietary-quick-tools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.dietary-chip-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-chip-label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.dietary-chip,
+.dietary-tree-btn{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  border-radius:999px;
+  padding:.45rem .72rem;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.dietary-chip:hover,
+.dietary-tree-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.dietary-tree-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-search-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.45;
+}
+
+#dietCount{
+  font-weight:800;
+  color:var(--ink);
+}
+
+html[data-theme="dark"] .dietary-quick-tools{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] #dietCount{
+  color:#ffffff;
+}
+
+@media(max-width:700px){
+  .dietary-quick-tools{
+    align-items:stretch;
+  }
+
+  .dietary-chip-row,
+  .dietary-tree-actions{
+    width:100%;
+  }
+
+  .dietary-chip,
+  .dietary-tree-btn{
+    flex:1 1 auto;
+  }
+
+  .dietary-search-meta{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+/* Dietary Categories modernization */
+.dietary-page .dietary-tree-shell{
+  position:relative;
+  overflow:hidden;
+}
+
+.dietary-page .dietary-tree-shell::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:4px;
+  background:linear-gradient(90deg, var(--accent), var(--blue, #054A91));
+}
+
+.dietary-page .tree{
+  display:grid;
+  gap:16px;
+}
+
+.dietary-page .tree details.sec{
+  position:relative;
+  margin:0;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.dietary-page .tree details.sec[open]{
+  box-shadow:var(--shadow-hover, 0 16px 34px rgba(0,0,0,.12));
+}
+
+.dietary-page .tree details.sec > summary{
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 20px 18px 48px;
+  border-radius:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+  border-bottom:1px solid transparent;
+}
+
+.dietary-page .tree details.sec[open] > summary{
+  border-bottom-color:var(--border);
+}
+
+.dietary-page .tree details.sec > summary::before{
+  left:20px;
+  border-color:var(--accent);
+}
+
+.dietary-page .diet-sec-main{
+  display:grid;
+  gap:5px;
+}
+
+.dietary-page .diet-sec-title{
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.dietary-page .diet-sec-sub{
+  color:var(--muted);
+  font-size:.9rem;
+  font-weight:700;
+  line-height:1.45;
+}
+
+.dietary-page .diet-sec-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  padding:7px 10px;
+  border:1px solid rgba(241,115,0,.28);
+  background:rgba(241,115,0,.08);
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+
+.dietary-page .tree .group{
+  display:grid;
+  gap:12px;
+  margin:0;
+  padding:16px;
+}
+
+.dietary-page .tree .group details.grp{
+  margin:0;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:
+    radial-gradient(circle at top left, rgba(5,74,145,.045), transparent 38%),
+    var(--surface);
+  box-shadow:none;
+  overflow:hidden;
+}
+
+.dietary-page .tree .group details.grp[open]{
+  border-color:rgba(241,115,0,.45);
+}
+
+.dietary-page .tree .group details.grp > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px 14px 42px;
+  border-radius:0;
+  color:var(--ink);
+  background:transparent;
+}
+
+.dietary-page .tree .group details.grp > summary::before{
+  left:17px;
+}
+
+.dietary-page .diet-grp-title{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--ink);
+  font-weight:900;
+  line-height:1.35;
+}
+
+.dietary-page .diet-grp-meta{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.dietary-page .tree .tag{
+  border-radius:999px;
+  background:rgba(5,74,145,.055);
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.dietary-page .tree .grp > ul{
+  margin:0 !important;
+  padding:0 16px 14px 42px !important;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.dietary-page .tree .leaf{
+  margin:0;
+}
+
+.dietary-page .law-link{
+  display:inline-flex;
+  align-items:center;
+  min-height:32px;
+  padding:0 10px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.dietary-page .law-link:hover,
+.dietary-page .law-link:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  text-decoration:none;
+  outline:none;
+}
+
+.dietary-page .example-cards{
+  padding:0 16px 16px 42px;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+}
+
+.dietary-page .example-card{
+  position:relative;
+  padding:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.dietary-page .example-card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .18s ease;
+}
+
+.dietary-page .example-card:hover::after{
+  transform:scaleY(1);
+}
+
+.dietary-page .example-card .card-head{
+  padding:9px 12px;
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.dietary-page .example-card .card-title{
+  padding:13px 14px 3px;
+  color:var(--ink);
+  font-size:.98rem;
+  font-weight:900;
+  line-height:1.35;
+}
+
+.dietary-page .example-card .card-foot{
+  padding:0 14px 14px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+html[data-theme="dark"] .dietary-page .tree details.sec,
+html[data-theme="dark"] .dietary-page .tree details.sec > summary,
+html[data-theme="dark"] .dietary-page .tree .group details.grp,
+html[data-theme="dark"] .dietary-page .law-link,
+html[data-theme="dark"] .dietary-page .example-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .dietary-page .diet-sec-title,
+html[data-theme="dark"] .dietary-page .diet-grp-title,
+html[data-theme="dark"] .dietary-page .example-card .card-title{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .dietary-page .tree details.sec > summary{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:18px 18px 18px 46px;
+  }
+
+  .dietary-page .diet-sec-count{
+    align-self:flex-start;
+  }
+
+  .dietary-page .tree .group{
+    padding:12px;
+  }
+
+  .dietary-page .tree .group details.grp > summary{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:14px 14px 14px 40px;
+  }
+
+  .dietary-page .diet-grp-meta{
+    justify-content:flex-start;
+  }
+
+  .dietary-page .tree .grp > ul,
+  .dietary-page .example-cards{
+    padding-left:14px !important;
+    padding-right:14px;
+  }
+}
+
+/* Dietary Categories: compact example list cards */
+.dietary-page .dietary-tree-shell .example-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:8px;
+  padding:0 16px 16px 42px;
+}
+
+.dietary-page .dietary-tree-shell .example-card{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
+  column-gap:10px;
+  row-gap:3px;
+  min-height:auto;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:none;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.dietary-page .dietary-tree-shell .example-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow);
+}
+
+.dietary-page .dietary-tree-shell .example-card::after{
+  display:none;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-head{
+  grid-row:1 / span 2;
+  align-self:start;
+  min-width:74px;
+  padding:5px 7px;
+  border-radius:999px;
+  text-align:center;
+  font-size:.62rem;
+  line-height:1;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-title{
+  padding:0;
+  color:var(--ink);
+  font-size:.92rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+.dietary-page .dietary-tree-shell .example-card .card-foot{
+  grid-column:2;
+  padding:0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.35;
+}
+
+.dietary-page .dietary-tree-shell .example-card.allowed .card-head{
+  background:rgba(5,74,145,.10);
+  color:#054A91;
+  border:1px solid rgba(5,74,145,.22);
+}
+
+.dietary-page .dietary-tree-shell .example-card.forbidden .card-head,
+.dietary-page .dietary-tree-shell .example-card.prohibited .card-head,
+.dietary-page .dietary-tree-shell .example-card.avoid .card-head{
+  background:rgba(241,115,0,.12);
+  color:#F17300;
+  border:1px solid rgba(241,115,0,.28);
+}
+
+.dietary-page .dietary-tree-shell .example-card.verify .card-head{
+  background:rgba(129,164,205,.20);
+  color:var(--ink);
+  border:1px solid rgba(129,164,205,.42);
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card .card-title{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .card-head{
+  color:#ffffff;
+}
+
+@media(max-width:700px){
+  .dietary-page .dietary-tree-shell .example-cards{
+    grid-template-columns:1fr;
+    padding-left:14px !important;
+    padding-right:14px;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card{
+    grid-template-columns:1fr;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card .card-head{
+    grid-row:auto;
+    width:max-content;
+  }
+
+  .dietary-page .dietary-tree-shell .example-card .card-foot{
+    grid-column:1;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="dietary-page">
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Dietary Laws</span>
+  </nav>
+
+  <section class="dietary-hero">
+    <div class="dietary-kicker">Torah Focus</div>
+    <h1 class="dietary-title">Dietary Laws</h1>
+    <p class="dietary-subtitle">
+      Search clean and unclean foods, hidden ingredients, biblical categories, and Scripture references from the Law.
+    </p>
+  </section>
+
+  <section class="dietary-intro-grid" aria-label="Dietary law overview">
+    <article class="dietary-info-card">
+      <h2>Clean & Unclean</h2>
+      <p>Study biblical categories for mammals, fish, birds, insects, blood, carcasses, and prohibited practices.</p>
+    </article>
+    <article class="dietary-info-card">
+      <h2>Hidden Ingredients</h2>
+      <p>Check common modern ingredients such as gelatin, lard, shellfish derivatives, carmine, enzymes, and flavor bases.</p>
+    </article>
+    <article class="dietary-info-card">
+      <h2>Scripture References</h2>
+      <p>Use linked references to move from practical examples back to the biblical text.</p>
+    </article>
+  </section>
+
+  <section class="dietary-tool-shell" aria-label="Dietary search tools">
+    <div class="dietary-section-head">
+      <h2>Search the Dietary Guide</h2>
+      <p>Filter the guide or paste ingredients to flag forbidden, avoid, verify, or allowed items.</p>
+    </div>
+
+  <div class="dietary-quick-tools" aria-label="Dietary quick tools">
+    <div class="dietary-chip-row" aria-label="Quick searches">
+      <span class="dietary-chip-label">Quick Search</span>
+      <button class="dietary-chip" type="button" data-diet-query="pork">Pork</button>
+      <button class="dietary-chip" type="button" data-diet-query="gelatin">Gelatin</button>
+      <button class="dietary-chip" type="button" data-diet-query="shellfish">Shellfish</button>
+      <button class="dietary-chip" type="button" data-diet-query="blood">Blood</button>
+      <button class="dietary-chip" type="button" data-diet-query="carmine">Carmine</button>
+      <button class="dietary-chip" type="button" data-diet-query="rennet">Rennet</button>
+    </div>
+
+    <div class="dietary-tree-actions" aria-label="Tree controls">
+      <button class="dietary-tree-btn" type="button" id="dietExpandAll">Expand All</button>
+      <button class="dietary-tree-btn" type="button" id="dietCollapseAll">Collapse All</button>
+    </div>
+  </div>
+
+  <!-- Search / Filter -->
+  <div class="searchbar" role="search">
+    <input aria-label="Search dietary items" id="dietSearch" placeholder="Search animals, fish, birds, or ingredients (e.g., pig, salmon, blood, gelatin, oyster sauce, carmine)…" type="search"/>
+    <button class="btn" id="dietClear" type="button">Clear</button>
+  </div>
+
+  <div class="dietary-search-meta" aria-live="polite">
+    <span id="dietCount">Showing full guide</span>
+    <span>Tip: search an animal, ingredient, source, or biblical category.</span>
+  </div>
+<section id="foodCheck" aria-label="Search My Food" style="margin:18px 0 28px">
+  <div class="foodcheck-wrap">
+    <label for="foodText" class="sr-only">Paste ingredients or type a product</label>
+    <textarea id="foodText" rows="3" placeholder="Paste ingredients (e.g., sugar, gelatin, natural flavors, carmine/E120) or type a product (e.g., Hummus, commercial)…"></textarea>
+    <div class="fc-actions">
+      <button id="foodCheckBtn" type="button">Check</button>
+      <small class="fc-hint">We’ll flag Forbidden, Avoid, Verify, or Allowed — and show why.</small>
+    </div>
+
+    <div id="foodSuggestions" class="fc-suggest" hidden></div>
+    <div id="foodVerdict" class="fc-banner" hidden></div>
+    <div id="foodResults" class="example-cards" aria-live="polite"></div>
+  </div>
+</section>
+  </section>
+
+  <section class="dietary-tree-shell" aria-label="Dietary law categories">
+    <div class="dietary-section-head">
+      <h2>Dietary Categories</h2>
+      <p>Open each category to study the biblical references and modern examples.</p>
+    </div>
+
+    <section aria-label="Collapsible tree of dietary laws" class="tree" id="dietTree"></section>
+  </section>
+
+  <p class="note">
+    <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
+  </p>
+</main>
+
+<div id="site-footer"></div>
+<script>
+  // --- Book slug map for links (extend anytime) ---
+  const BOOK_SLUG = {
+    "Genesis":"genesis","Exodus":"exodus","Leviticus":"leviticus","Numbers":"numbers","Deuteronomy":"deuteronomy",
+    "Matthew":"matthew","Mark":"mark","Luke":"luke","John":"john","Acts":"acts","Romans":"romans"
+  };
+
+  function parseRef(ref){
+    const m = String(ref).trim().match(/^([1-3]?\s?[A-Za-z]+)\s+(\d+):(\d+)$/);
+    if(!m) return null;
+    const bookName = m[1].replace(/\s+/g," ").trim();
+    const ch = parseInt(m[2],10), v = parseInt(m[3],10);
+    const base = bookName.replace(/^1\s|^2\s|^3\s/,'');
+    const slug = BOOK_SLUG[base] || BOOK_SLUG[bookName] || base.toLowerCase();
+    return { book:bookName, ch, v, slug };
+  }
+  function refHref(ref){
+    const p = parseRef(ref); if(!p) return '#';
+    const canon = (["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"].includes(p.book) ? "tanakh" : "newtestament");
+    return `/${canon}/chapter.html?book=${encodeURIComponent(p.slug)}&ch=${p.ch}#v${p.v}`;
+  }
+
+  /* ======================= DATA (labels without emojis) ======================= */
+  const DATA = {
+    "Clean": {
+      "Mammals": {
+        refs: ["Leviticus 11:3", "Deuteronomy 14:4", "Deuteronomy 14:6"],
+        examples: [
+          {name:"Cattle (beef)", why:"cloven hoof, chews cud"},
+          {name:"Sheep (lamb/mutton)", why:"cloven hoof, chews cud"},
+          {name:"Goat (chevon)", why:"cloven hoof, chews cud"},
+          {name:"Deer/Antelope", why:"clean wild species (Deut 14:5)"}
+        ]
+      },
+      "Fish (fins & scales)": {
+        refs: ["Leviticus 11:9", "Deuteronomy 14:9"],
+        examples: [
+          {name:"Salmon, Trout, Char"},
+          {name:"Cod, Haddock, Pollock"},
+          {name:"Sardine, Anchovy, Mackerel"},
+          {name:"Carp, Tilapia"},
+          {name:"Tuna*", why:"scales debate by species—verify", status:"verify"}
+        ]
+      },
+      "Birds (general allowance)": {
+        refs: ["Deuteronomy 14:11"],
+        examples: [
+          {name:"Chicken"},
+          {name:"Turkey"},
+          {name:"Goose* / Duck*", why:"accepted by many; verify local tradition", status:"verify"},
+          {name:"Dove / Pigeon", why:"used for offerings"},
+          {name:"Quail"}
+        ]
+      }
+    },
+
+    "Unclean": {
+      "Mammals (do not meet both signs)": {
+        refs: ["Leviticus 11:4", "Leviticus 11:7", "Leviticus 11:8", "Deuteronomy 14:7", "Deuteronomy 14:8"],
+        examples: [
+          {name:"Pig (pork)", why:"split hoof but does not chew cud"},
+          {name:"Camel", why:"chews cud but no split hoof"},
+          {name:"Hare / Rabbit", why:"chews cud (appearance) but no split hoof"},
+          {name:"Rock badger (hyrax)", why:"chews cud (appearance) but no split hoof"}
+        ]
+      },
+      "Aquatic (no fins & scales)": {
+        refs: ["Leviticus 11:10"],
+        examples: [
+          {name:"Shrimp, Prawn", why:"No fins & scales"},
+          {name:"Crab, Lobster", why:"No fins & scales"},
+          {name:"Oyster, Clam, Mussel, Scallop", why:"No fins & scales"},
+          {name:"Squid, Octopus", why:"No fins & scales"},
+          {name:"Eel, Catfish*", why:"scales absent/non-removable"}
+        ]
+      },
+      "Birds (forbidden list patterns)": {
+        refs: ["Leviticus 11:13", "Leviticus 11:19", "Deuteronomy 14:12", "Deuteronomy 14:18"],
+        examples: [
+          {name:"Birds of prey", why:"eagle, hawk, falcon, kite, osprey"},
+          {name:"Carrion/seabirds", why:"vulture, raven, cormorant, pelican"},
+          {name:"Owls & night birds"},
+          {name:"Stork, Heron"},
+          {name:"Bat", why:"explicitly forbidden"}
+        ]
+      },
+      "Insects": {
+        refs: ["Leviticus 11:20", "Leviticus 11:23"],
+        examples: [
+          {name:"Most winged creeping things", why:"unclean"},
+          {name:"Locust/Grasshopper families", why:"specific kinds permitted (Lev 11:22) if identified correctly", status:"verify"}
+        ]
+      }
+    },
+
+    "Prohibited Practices": {
+      "Blood": {
+        refs: ["Leviticus 17:10", "Leviticus 17:12", "Leviticus 17:14"],
+        examples: [
+          {name:"Blood dishes (e.g., blood sausage/black pudding)", why:"forbidden"},
+          {name:"Undrained meat", why:"drain & salt to remove blood"}
+        ]
+      },
+      "Carcasses / torn animals": {
+        refs: ["Leviticus 11:39", "Leviticus 11:40", "Exodus 22:31", "Leviticus 17:15"],
+        examples: [
+          {name:"Animals dead of themselves", why:"do not eat"},
+          {name:"Torn by beasts", why:"do not eat"}
+        ]
+      },
+      "Certain fats (ox/sheep/goat)": {
+        refs: ["Leviticus 7:23", "Leviticus 7:25"],
+        examples: [
+          {name:"Suet/fat reserved from these animals", why:"do not eat"}
+        ]
+      }
+    },
+
+    "Everyday Foods & Hidden Ingredients (Check Labels)": {
+      "Pork-derived (avoid)": {
+        refs: ["Leviticus 11:7", "Deuteronomy 14:8"],
+        examples: [
+          {name:"Gelatin (porcine)", why:"used in gummies, marshmallows, capsules", status:"avoid"},
+          {name:"Lard / Pork fat", why:"baked goods, refried beans, pie crusts", status:"avoid"},
+          {name:"Mono-/Diglycerides (animal)", why:"E471/E472—origin may be pork; verify plant vs animal", status:"verify"},
+          {name:"Pepsin/Lipase (animal)", why:"enzymes in some cheeses; verify microbial/vegetable", status:"verify"},
+          {name:"‘Natural flavors’ (meat-derived)", why:"can include pork stock/essence—ask vendor", status:"verify"}
+        ]
+      },
+      "Shellfish-derived (avoid)": {
+        refs: ["Leviticus 11:10"],
+        examples: [
+          {name:"Oyster sauce", why:"common in stir-fry sauces", status:"avoid"},
+          {name:"Shrimp paste", why:"used in SE Asian condiments/curries", status:"avoid"},
+          {name:"Imitation crab (surimi)", why:"often contains shellfish", status:"avoid"},
+          {name:"Fish/seafood stock blends", why:"may include shellfish extracts", status:"avoid"},
+          {name:"Krill oil supplements", why:"crustacean-derived", status:"avoid"}
+        ]
+      },
+      "Insect-derived (avoid except permitted locust kinds)": {
+        refs: ["Leviticus 11:20", "Leviticus 11:23"],
+        examples: [
+          {name:"Carmine/Cochineal (E120)", why:"red color in drinks/candies/yogurts", status:"avoid"},
+          {name:"Shellac/Confectioner’s glaze (E904)", why:"candy/produce coating", status:"avoid"},
+          {name:"Insect protein flours", why:"marketed as sustainable protein", status:"avoid"}
+        ]
+      },
+      "Cheese & Enzymes (verify source)": {
+        refs: ["Leviticus 11 (category context)"],
+        examples: [
+          {name:"Animal rennet cheeses", why:"use microbial/vegetable rennet instead", status:"verify"},
+          {name:"Lipase (animal)", why:"used for flavor development—seek microbial", status:"verify"},
+          {name:"‘Parmesan’ style", why:"often animal rennet; check label or brand policy", status:"verify"}
+        ]
+      },
+      "Stocks, Broths, Flavorings (avoid if unclean)": {
+        refs: ["Leviticus 11 (category context)"],
+        examples: [
+          {name:"Pork broth / ham flavor", why:"soups, legumes, greens", status:"avoid"},
+          {name:"Mixed ‘meat flavor’ packets", why:"can blend multiple animal bases", status:"avoid"},
+          {name:"Ramen flavor bases", why:"may include pork or shellfish", status:"avoid"}
+        ]
+      },
+      "Confectionery & Capsules (verify gelatin source)": {
+        refs: ["Leviticus 11:7-8 (category context)"],
+        examples: [
+          {name:"Marshmallows/Gummies", why:"often porcine gelatin—look for fish/plant gelatin", status:"verify"},
+          {name:"Vitamin/med capsules", why:"ask for fish/plant-based or HPMC capsules", status:"verify"},
+          {name:"Desserts with ‘stabilizers’", why:"may include gelatin—confirm origin", status:"verify"}
+        ]
+      }
+    }
+  };
+
+  /* ======================= Icon helpers ======================= */
+  function iconCow(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h2l2-2h8l2 2h2v3h-2v5a2 2 0 0 1-2 2h-1v-3h-2v3H8a2 2 0 0 1-2-2v-5H4V8z"/></svg>'; }
+  function iconFish(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3-5 9-5c5 0 9 5 9 5s-4 5-9 5c-6 0-9-5-9-5zm13 0a2 2 0 1 0 0-0.01z"/></svg>'; }
+  function iconBird(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l6-2 3-6 3 6 6 2-6 2-3 6-3-6-6-2z"/></svg>'; }
+  function iconBug(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8h10a4 4 0 0 1 4 4v2H3v-2a4 4 0 0 1 4-4zm5-5l3 3H9l3-3zM4 14v3h3v-3H4zm13 0v3h3v-3h-3z"/></svg>'; }
+  function iconDrop(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>'; }
+  function iconWarn(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2L12 3zm0 5l-1 7h2l-1-7zm0 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>'; }
+  function iconCheese(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-5 9 5v8H3v-8zm5 4a2 2 0 1 0 0-.01zM15 14a1 1 0 1 0 0-.01z"/></svg>'; }
+  function iconPot(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9zm-2-2h20v2H2V7z"/></svg>'; }
+  function iconCandy(){ return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h6v6H9zM5 7l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2zm-14 8l2 2-2 2-2-2 2-2zm14 0l2 2-2 2-2-2 2-2z"/></svg>'; }
+
+  function iconFor(label){
+    const L = label.toLowerCase();
+    if (L.startsWith('mammals')) return iconCow();
+    if (L.startsWith('fish') || L.startsWith('aquatic')) return iconFish();
+    if (L.startsWith('birds')) return iconBird();
+    if (L.startsWith('insects')) return iconBug();
+    if (L === 'blood') return iconDrop();
+    if (L.startsWith('carcasses')) return iconWarn();
+    if (L.startsWith('certain fats')) return iconDrop();
+    if (L.startsWith('cheese')) return iconCheese();
+    if (L.startsWith('stocks') || L.startsWith('broths') || L.startsWith('flavorings')) return iconPot();
+    if (L.startsWith('confectionery') || L.includes('capsules')) return iconCandy();
+    if (L.startsWith('pork-derived')) return iconWarn();
+    if (L.startsWith('shellfish')) return iconFish();
+    if (L.startsWith('insect-derived')) return iconBug();
+    return iconWarn(); // default fallback
+  }
+
+  /* ======================= Render & Search ======================= */
+  const tree = document.getElementById('dietTree');
+
+  const SECTION_META = {
+    "Clean": {
+      sub: "Foods permitted by biblical signs and category markers."
+    },
+    "Unclean": {
+      sub: "Foods forbidden by category, sign, or explicit prohibition."
+    },
+    "Prohibited Practices": {
+      sub: "Practices forbidden even when the animal itself may otherwise be clean."
+    },
+    "Everyday Foods & Hidden Ingredients (Check Labels)": {
+      sub: "Modern ingredients and processed-food issues that require checking labels."
+    }
+  };
+
+  function sectionClass(label){
+    return "sec-" + String(label || "")
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function renderTree(){
+    const frag = document.createDocumentFragment();
+
+    Object.entries(DATA).forEach(([section, groups]) => {
+      const sec = document.createElement('details');
+      sec.open = true;
+      sec.className = 'sec ' + sectionClass(section);
+      const sum = document.createElement('summary');
+      const secMeta = SECTION_META[section] || {};
+      const groupCount = Object.keys(groups || {}).length;
+      sum.innerHTML = `
+        <span class="diet-sec-main">
+          <span class="diet-sec-title">${section}</span>
+          <span class="diet-sec-sub">${secMeta.sub || 'Open this category to study references and examples.'}</span>
+        </span>
+        <span class="diet-sec-count">${groupCount} ${groupCount === 1 ? 'group' : 'groups'}</span>
+      `;
+      sec.appendChild(sum);
+
+      const wrap = document.createElement('div');
+      wrap.className = 'group';
+
+      Object.entries(groups).forEach(([label, payload]) => {
+        const grp = document.createElement('details');
+        grp.className = 'grp';
+
+        const gsum = document.createElement('summary');
+        let refs = [], examples = [];
+        if (Array.isArray(payload)) refs = payload;
+        else if (payload && typeof payload === 'object') {
+          refs = Array.isArray(payload.refs) ? payload.refs : [];
+          examples = Array.isArray(payload.examples) ? payload.examples : [];
+        }
+        gsum.innerHTML = `
+          <span class="diet-grp-title">${iconFor(label)} ${label}</span>
+          <span class="diet-grp-meta">
+            <span class="tag">${refs.length} refs</span>
+            ${examples.length ? '<span class="tag">'+examples.length+' examples</span>' : ''}
+          </span>
+        `;
+        grp.appendChild(gsum);
+
+        // Refs list
+        if (refs.length) {
+          const ul = document.createElement('ul');
+          ul.style.margin = '6px 0 0 18px'; ul.style.padding = '0';
+          refs.forEach(r => {
+            const li = document.createElement('li'); li.className = 'leaf';
+            const a = document.createElement('a');
+            a.className = 'law-link xref-trigger';
+            a.dataset.ref = r;
+            a.href = refHref(r);
+            a.textContent = r;
+            a.setAttribute('data-xref', r); // for hover script
+            a.dataset.search = `ref ${r.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()}`;
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+          grp.appendChild(ul);
+        }
+
+        // === Examples renderer: Cards with Header/Middle/Footer ===
+        if (examples.length) {
+          const grid = document.createElement('div');
+          grid.className = 'example-cards';
+
+          // Split "Shrimp, Prawn" or "Goose* / Duck*"
+          const splitNames = (s) =>
+            String(s || '')
+              .split(/[,/]/)
+              .map(t => t.trim())
+              .filter(Boolean);
+
+          // Decide status class/text
+          function computeStatus(sectionLabel, groupLabel, ex) {
+            const explicit = (ex.status || '').toLowerCase().trim();
+            if (explicit) {
+              const textMap = { allowed:'Allowed', forbidden:'Forbidden', avoid:'Avoid', verify:'Verify Source', prohibited:'Prohibited' };
+              return { cls: explicit, text: textMap[explicit] || explicit.charAt(0).toUpperCase()+explicit.slice(1) };
+            }
+            const sec = (sectionLabel || '').toLowerCase();
+            if (sec === 'clean') return { cls: 'allowed', text: 'Allowed' };
+            if (sec === 'unclean') return { cls: 'forbidden', text: 'Forbidden' };
+            if (sec.startsWith('prohibited')) return { cls: 'prohibited', text: 'Prohibited' };
+
+            const lbl = (groupLabel || '').toLowerCase();
+            if (lbl.includes('verify')) return { cls: 'verify', text: 'Verify Source' };
+            if (lbl.includes('avoid'))  return { cls: 'avoid',  text: 'Avoid' };
+
+            const why = (ex.why || '').toLowerCase();
+            if (/\b(verify|check|confirm|ask)\b/.test(why)) return { cls: 'verify', text: 'Verify Source' };
+            return { cls: 'avoid', text: 'Avoid' };
+          }
+
+          examples.forEach(ex => {
+            const names = splitNames(ex.name);
+            const why   = ex.why || '';
+
+            const { cls, text } = computeStatus(section, label, ex);
+
+            names.forEach(n => {
+              const card = document.createElement('div');
+              card.className = `example-card ${cls}`;
+              card.innerHTML = `
+                <div class="card-head" aria-label="Status: ${text}">${text}</div>
+                <div class="card-title">${n}</div>
+                ${why ? `<div class="card-foot">${why}</div>` : ``}
+              `;
+              card.dataset.search = `${n.toLowerCase()} ${why.toLowerCase()} ${label.toLowerCase()} ${section.toLowerCase()} ${text.toLowerCase()}`;
+              grid.appendChild(card);
+            });
+          });
+
+          grp.appendChild(grid);
+        }
+
+        grp.dataset.search = `${label.toLowerCase()} ${section.toLowerCase()}`;
+        wrap.appendChild(grp);
+      });
+
+      sec.appendChild(wrap);
+      frag.appendChild(sec);
+    });
+
+    tree.innerHTML = '';
+    tree.appendChild(frag);
+  }
+
+  function debounce(fn, ms){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
+
+  function updateDietCount(query){
+    const count = document.getElementById('dietCount');
+    if(!count) return;
+
+    if(!query){
+      count.textContent = 'Showing full guide';
+      return;
+    }
+
+    const visibleGroups = tree.querySelectorAll('.grp:not(.hide)').length;
+    const visibleCards = tree.querySelectorAll('.example-card.hl').length;
+    const visibleRefs = tree.querySelectorAll('.law-link.hl').length;
+
+    count.textContent = `${visibleGroups} categories matched · ${visibleCards} examples · ${visibleRefs} references`;
+  }
+
+  function applyFilter(q){
+    const query = (q||'').trim().toLowerCase();
+    const groups = Array.from(tree.querySelectorAll('.grp'));
+    const sections = Array.from(tree.querySelectorAll('.sec'));
+
+    // reset
+    tree.querySelectorAll('.hl').forEach(el => el.classList.remove('hl'));
+    groups.forEach(g => { g.classList.remove('hide'); g.open = false; });
+    sections.forEach(s => { s.classList.remove('hide'); s.open = true; });
+
+    if (!query) {
+      updateDietCount('');
+      return;
+    }
+
+    groups.forEach(grp => {
+      const links = Array.from(grp.querySelectorAll('.law-link'));
+      const cards = Array.from(grp.querySelectorAll('.example-card'));
+
+      let anyMatch = false;
+
+      cards.forEach(cd => {
+        const hay = (cd.dataset.search || cd.textContent || '').toLowerCase();
+        const match = hay.includes(query);
+        cd.classList.toggle('hl', match);
+        if (match) anyMatch = true;
+      });
+
+      links.forEach(a => {
+        const hay = (a.dataset.search || a.textContent || '').toLowerCase();
+        const match = hay.includes(query);
+        a.classList.toggle('hl', match);
+        if (match) anyMatch = true;
+      });
+
+      if (!anyMatch) {
+        const hay = (grp.dataset.search || '').toLowerCase();
+        anyMatch = hay.includes(query);
+      }
+
+      grp.classList.toggle('hide', !anyMatch);
+      grp.open = anyMatch;
+    });
+
+    sections.forEach(sec => {
+      const visible = sec.querySelector('.grp:not(.hide)');
+      sec.classList.toggle('hide', !visible);
+      sec.open = !!visible;
+    });
+
+    updateDietCount(query);
+  }
+
+  // Bootstrap render + search
+  renderTree();
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.XRef && typeof window.XRef.scan === "function") {
+      window.XRef.scan(document);
+    } else {
+      document.dispatchEvent(new CustomEvent("xref:refresh"));
+    }
+  });
+
+  const search = document.getElementById('dietSearch');
+  const clearBtn = document.getElementById('dietClear');
+  const doFilter = debounce(applyFilter, 120);
+  search.addEventListener('input', e => doFilter(e.target.value));
+  clearBtn.addEventListener('click', () => { search.value=''; applyFilter(''); search.focus(); });
+
+  document.querySelectorAll('[data-diet-query]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      search.value = btn.dataset.dietQuery || '';
+      applyFilter(search.value);
+      search.focus();
+    });
+  });
+
+  const expandAll = document.getElementById('dietExpandAll');
+  const collapseAll = document.getElementById('dietCollapseAll');
+
+  if(expandAll){
+    expandAll.addEventListener('click', () => {
+      tree.querySelectorAll('details').forEach(d => d.open = true);
+    });
+  }
+
+  if(collapseAll){
+    collapseAll.addEventListener('click', () => {
+      tree.querySelectorAll('.grp').forEach(d => d.open = false);
+    });
+  }
+
+  updateDietCount('');
+
+// ====== Search My Food configuration (data paths) ======
+const DICT_URL = '/data/dictionaries/dictionary.json';
+const FOODS_URL = '/data/dictionaries/foundation_foods.json';
+
+</script>
+
+<script>
+// ======= Search My Food: minimal implementation =======
+const PRECEDENCE = ['forbidden','prohibited','avoid','verify','allowed'];
+let _DICT=null, _FOODS=null;
+
+async function loadJSON(u){
+  const r=await fetch(u,{cache:'no-store'});
+  if(!r.ok) throw new Error('Load failed '+u);
+  return r.json();
+}
+
+async function loadDictionary(){
+  if(_DICT) return _DICT;
+  const raw = await loadJSON(DICT_URL);
+  const map = new Map(), alias = new Map();
+
+  (raw.entries||[]).forEach(e=>{
+    const k=(e.term||'').toLowerCase().trim();
+    if(!k) return;
+
+    map.set(k,{
+      status:e.status,
+      reason:e.reason,
+      display:e.display||e.term
+    });
+
+    (e.aliases||[]).forEach(a=>alias.set(String(a).toLowerCase(),k));
+    (e.enumbers||[]).forEach(code=>alias.set(String(code).toLowerCase(),k));
+  });
+
+  _DICT={map,alias};
+  return _DICT;
+}
+
+function tokenize(text){
+  const t=String(text||'').toLowerCase();
+  const en=Array.from(t.matchAll(/\b(e\d{3}[a-z]?)\b/gi)).map(m=>m[1].toLowerCase());
+  const parts=t.replace(/[()]/g,' ').split(/[,;|/]+/).map(s=>s.trim()).filter(Boolean);
+  return {parts,enumbers:en};
+}
+
+function matchTokens(tokens,dict){
+  const hits=[], seen=new Set();
+
+  function add(key,disp,status,reason){
+    const sig=key+'|'+status;
+    if(seen.has(sig)) return;
+    seen.add(sig);
+    hits.push({
+      term:disp,
+      status:String(status||'verify').toLowerCase(),
+      reason:reason||''
+    });
+  }
+
+  tokens.parts.concat(tokens.enumbers).forEach(tok=>{
+    const t=tok.toLowerCase();
+    const main = dict.map.has(t) ? t : (dict.alias.get(t)||null);
+    if(main){
+      const e=dict.map.get(main);
+      add(main,e.display||tok,e.status,e.reason);
+    }
+  });
+
+  return hits;
+}
+
+function verdict(hits){
+  if(!hits.length){
+    return {cls:'allowed',text:'No issues found based on current dictionary'};
+  }
+
+  const best=hits
+    .map(h=>h.status)
+    .sort((a,b)=>PRECEDENCE.indexOf(a)-PRECEDENCE.indexOf(b))[0];
+
+  const m={
+    allowed:'Allowed',
+    verify:'Verify',
+    avoid:'Avoid',
+    forbidden:'Forbidden',
+    prohibited:'Prohibited'
+  };
+
+  return {cls:best,text:m[best]||best};
+}
+
+function renderCard(hit, extra=''){
+  const m={
+    allowed:'Allowed',
+    verify:'Verify Source',
+    avoid:'Avoid',
+    forbidden:'Forbidden',
+    prohibited:'Prohibited'
+  };
+
+  const head=m[hit.status]||hit.status;
+  const div=document.createElement('div');
+  div.className=`example-card ${hit.status} ${extra}`.trim();
+
+  div.innerHTML=`
+    <div class="card-head" aria-label="Status: ${head}">${head}</div>
+    <div class="card-title">${hit.term}</div>
+    ${hit.reason ? `<div class="card-foot">${hit.reason}</div>` : ''}
+  `;
+
+  return div;
+}
+
+(function initFoodTool(){
+  const ta=document.getElementById('foodText');
+  const btn=document.getElementById('foodCheckBtn');
+  const res=document.getElementById('foodResults');
+  const ban=document.getElementById('foodVerdict');
+
+  if(!ta||!btn||!res||!ban) return;
+
+  function setBanner(cls,msg){
+    ban.className=`fc-banner ${cls}`;
+    ban.textContent=msg;
+    ban.hidden=false;
+  }
+
+  btn.addEventListener('click', async ()=>{
+    res.innerHTML='';
+    ban.hidden=true;
+
+    let dict;
+    try{
+      dict=await loadDictionary();
+    }catch(e){
+      setBanner('forbidden','Dictionary failed to load.');
+      return;
+    }
+
+    const tokens=tokenize(ta.value);
+    const hits=matchTokens(tokens,dict);
+    const v=verdict(hits);
+
+    setBanner(v.cls,v.text);
+
+    const seen=new Set();
+    hits.forEach(h=>{
+      const sig=h.term+'|'+h.status;
+      if(seen.has(sig)) return;
+      seen.add(sig);
+      res.appendChild(renderCard(h));
+    });
+
+    if(!hits.length){
+      res.appendChild(renderCard({
+        status:'allowed',
+        term:'No flags from dictionary',
+        reason:'No Forbidden, Avoid, or Verify matches were found.'
+      }));
+    }
+  });
+})();
+</script>
+
+<!-- Use the same Scripture hover as articles -->
+<script src="/js/citations.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<!-- Global Includes -->
+<script src="/js/include.js"></script>
+</body>
+</html>

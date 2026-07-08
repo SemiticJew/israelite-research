@@ -1,0 +1,307 @@
+<!-- Universal Footer Partial -->
+<footer id="site-footer" class="site-footer">
+  <style>
+    #site-footer{
+      background: var(--surface, #ffffff);
+      color: var(--ink, #0b2340);
+      border-top: 1px solid var(--border, #e6ebf2);
+      font-family: Georgia, serif;
+    }
+
+    #site-footer .footer-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:36px 16px 28px;
+      display:grid;
+      gap:40px;
+      grid-template-columns: 1.2fr .8fr .8fr .8fr;
+      align-items:start;
+    }
+
+    @media (max-width:960px){
+      #site-footer .footer-inner{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* LEFT COLUMN */
+    #site-footer .footer-brand{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      text-align:left;
+    }
+
+    /* Remove any old crown styling */
+    #site-footer .mark{
+      display:none !important;
+    }
+
+    /* Logo */
+    #site-footer .footer-logo{
+      margin-bottom:18px;
+    }
+
+    #site-footer .footer-logo img{
+      width:170px;
+      height:auto;
+      display:block;
+    }
+
+    /* Verse */
+    #site-footer .footer-verse{
+      margin:0 0 20px;
+      font-size:.95rem;
+      line-height:1.6;
+      max-width:42ch;
+      color:var(--muted);
+    }
+
+    #site-footer .footer-verse-ref{
+      display:block;
+      margin-top:6px;
+      font-weight:700;
+      color:var(--accent);
+    }
+
+    /* Column Headings */
+#site-footer h4.footer-heading{
+  margin:0 0 12px;
+  font-size:.9rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+
+/* FORCE white in dark mode */
+html[data-theme="dark"] #site-footer h4.footer-heading{
+  color:#ffffff !important;
+}
+
+    #site-footer .footer-nav{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:8px;
+    }
+
+    #site-footer .footer-nav a{
+      color:var(--ink);
+      text-decoration:none;
+      padding:6px 0;
+      opacity:.85;
+      transition:opacity .15s ease;
+    }
+
+    html[data-theme="dark"] #site-footer .footer-nav a{
+      color:#ffffff !important;
+    }
+
+    #site-footer .footer-nav a:hover{
+      opacity:1;
+    }
+
+    /* Bottom Bar */
+    #site-footer .footer-bottom{
+      max-width:1200px;
+      margin:0 auto;
+      padding:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-top:1px solid var(--border);
+      font-size:.9rem;
+      color:var(--muted);
+    }
+
+    @media (max-width:720px){
+      #site-footer .footer-bottom{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+      }
+    }
+
+    #site-footer .legal-links{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    #site-footer .legal-links a{
+      color:var(--ink);
+      text-decoration:none;
+      opacity:.8;
+    }
+
+    html[data-theme="dark"] #site-footer .legal-links a{
+      color:#ffffff;
+    }
+
+    #site-footer .legal-links a:hover{
+      opacity:1;
+    }
+
+
+    /* Modern Footer Social Icons */
+    #site-footer .socials{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    #site-footer .socials a{
+      width:42px;
+      height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 45%),
+        var(--surface);
+      color:var(--ink);
+      text-decoration:none;
+      border-radius:999px;
+      transition:transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    #site-footer .socials a:hover,
+    #site-footer .socials a:focus,
+    #site-footer .socials a:focus-visible{
+      transform:translateY(-3px);
+      border-color:var(--accent);
+      background:var(--accent);
+      color:#ffffff;
+      box-shadow:0 12px 28px rgba(241,115,0,.28);
+      outline:none;
+    }
+
+    #site-footer .socials svg{
+      width:19px;
+      height:19px;
+      display:block;
+    }
+
+    html[data-theme="dark"] #site-footer .socials a{
+      background:rgba(255,255,255,.04);
+      border-color:var(--border);
+      color:#ffffff;
+    }
+
+    html[data-theme="dark"] #site-footer .socials a:hover,
+    html[data-theme="dark"] #site-footer .socials a:focus,
+    html[data-theme="dark"] #site-footer .socials a:focus-visible{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#ffffff;
+    }
+
+  </style>
+
+  <div class="footer-inner">
+
+    <!-- LEFT COLUMN -->
+    <div class="footer-brand">
+
+      <div class="footer-logo">
+  <img id="footer-logo"
+       src="/images/black-logo-letters.png"
+       alt="Semitic Jew Logo">
+</div>
+
+      <p class="footer-verse">
+        “For she is a breath of the power of God,
+        and a pure emanation of the glory of the Almighty.”
+        <span class="footer-verse-ref">— Wisdom 7:25–26</span>
+      </p>
+
+      <!-- Social Media -->
+      <div class="socials">
+
+        <!-- YouTube -->
+        <a href="https://www.youtube.com/channel/UC6ukYTYZ8YqsSYq4-nl11gA" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M23 7.5s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C17.5 4 12 4 12 4s-5.5 0-8.1.2c-.4.1-1.3.1-2.1 1C1.2 5.9 1 7.5 1 7.5S.8 9.4.8 11.3v1.4c0 1.9.2 3.8.2 3.8s.2 1.6.8 2.3c.8.9 1.9.9 2.4 1C6 20 12 20 12 20s5.5 0 8.1-.2c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.2-1.9.2-3.8v-1.4c0-1.9-.2-3.8-.2-3.8zM9.8 14.7V8.9l5.7 2.9-5.7 2.9z"/>
+          </svg>
+        </a>
+
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/semiticjew/" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .2 2 .2v2.3h-1.1c-1.1 0-1.4.7-1.4 1.4V12H16l-.4 2.9h-2.1v7A10 10 0 0 0 22 12z"/>
+          </svg>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/semiticjew/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 2h10c2.8 0 5 2.2 5 5v10c0 2.8-2.2 5-5 5H7c-2.8 0-5-2.2-5-5V7c0-2.8 2.2-5 5-5zm5 5.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2zm5.1-2.7a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1z"/>
+          </svg>
+        </a>
+
+        <!-- X -->
+        <a href="https://x.com/semitic_jew" target="_blank" rel="noopener" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.9l-5.4-7.1L4.7 22H1.5l7.3-8.3L1 2h7l4.9 6.5L18.9 2zm-1.2 17.9h1.9L7.2 4H5.1l12.6 15.9z"/>
+          </svg>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@semitic_jew" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21 8.2a7.3 7.3 0 0 1-4.2-1.3v6.7a5.5 5.5 0 1 1-4.7-5.4v2.8a2.7 2.7 0 1 0 1.9 2.6V2h3a4.3 4.3 0 0 0 4 4v2.2z"/>
+          </svg>
+        </a>
+
+      </div>
+</div>
+
+    <!-- RESOURCES -->
+    <div>
+      <h4 class="footer-heading">Resources</h4>
+      <ul class="footer-nav">
+        <li><a href="/mission.html">Mission</a></li>
+        <li><a href="/programs.html">Programs</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/donate.html">Support the Work</a></li>
+      </ul>
+    </div>
+
+    <!-- WRITINGS -->
+    <div>
+      <h4 class="footer-heading">The Writings</h4>
+      <ul class="footer-nav">
+        <li><a href="/articles.html">Articles</a></li>
+        <li><a href="/biblia.html">Biblia</a></li>
+        <li><a href="/ologies.html">Ologies</a></li>
+        <li><a href="/israelite-catechism.html">Catechism</a></li>
+        <li><a href="/authors.html">Authors</a></li>
+      </ul>
+    </div>
+
+    <!-- LEGAL -->
+    <div>
+      <h4 class="footer-heading">Legal</h4>
+      <ul class="footer-nav">
+        <li><a href="/about.html#organization-verification">Organization Verification</a></li>
+        <li><a href="/privacy.html">Privacy Policy</a></li>
+        <li><a href="/terms.html">Terms of Use</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+  <p>
+© 2026 Semitic Jew Inc. All rights reserved.
+Semitic Jew Inc is a federally recognized 501(c)(3) nonprofit corporation.
+Contributions are tax-deductible to the fullest extent permitted by U.S. law.
+Your support advances our educational mission and is deeply appreciated.
+</p>
+</div>
+</footer>

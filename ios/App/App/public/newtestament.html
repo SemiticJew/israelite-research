@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>New Testament — Semitic Jew</title>
+<meta name="description" content="Explore the New Testament through the testimony of Christ, apostolic history, letters, assemblies, Israelite context, and the vision of Revelation."/>
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+  body.newtestament-page{
+    background:var(--surface);
+    color:var(--ink);
+  }
+
+  body.newtestament-page main.container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 24px 80px;
+  }
+
+  .breadcrumbs{
+    max-width:1200px;
+    margin:18px auto 0;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    font-size:.9rem;
+    color:var(--muted);
+  }
+
+  .breadcrumbs a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:700;
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus,
+  .breadcrumbs a:focus-visible{
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  .breadcrumbs .sep{
+    color:var(--muted);
+    opacity:.75;
+  }
+
+  .breadcrumbs .current{
+    color:var(--ink);
+    font-weight:800;
+  }
+
+  .canon-hero{
+    margin:32px auto 28px;
+    padding:56px 30px;
+    border:1px solid var(--border);
+    text-align:center;
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
+    box-shadow:var(--shadow);
+  }
+
+  .canon-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
+
+  .canon-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.4rem, 6vw, 4.8rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .canon-subtitle{
+    margin:18px auto 0;
+    max-width:820px;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  .canon-guide{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:12px;
+    margin:0 0 28px;
+  }
+
+  .canon-guide-card{
+    border:1px solid var(--border);
+    background:var(--surface);
+    padding:16px;
+    box-shadow:var(--shadow);
+  }
+
+  .canon-guide-card h2{
+    margin:0 0 6px;
+    color:var(--ink);
+    font-size:.95rem;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .canon-guide-card p{
+    margin:0;
+    color:var(--muted);
+    font-size:.88rem;
+    line-height:1.5;
+  }
+
+  .canon-guide-card .count{
+    display:inline-flex;
+    margin-bottom:10px;
+    color:var(--accent);
+    font-size:.72rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+  }
+
+  .pt-wrap{
+    margin:26px 0 18px;
+  }
+
+  .pt-columns{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    justify-content:center;
+    flex-wrap:nowrap;
+  }
+
+  .pt-col{
+    display:grid;
+    gap:14px;
+    width:160px;
+  }
+
+  .pt-card,
+  .pt-card:hover,
+  .pt-card:focus,
+  .pt-card:focus-visible,
+  .pt-card *{
+    text-decoration:none !important;
+  }
+
+  .pt-card{
+    position:relative;
+    width:160px;
+    height:190px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:6px;
+    padding:12px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:inherit;
+    text-align:center;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transition:
+      transform .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease,
+      background .18s ease;
+  }
+
+  .pt-card::after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:4px;
+    height:100%;
+    background:var(--accent);
+    transform:scaleY(0);
+    transform-origin:bottom;
+    transition:transform .2s ease;
+  }
+
+  .pt-card:hover,
+  .pt-card:focus-visible{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+    box-shadow:var(--shadow-hover, 0 16px 34px rgba(0,0,0,.14));
+    outline:none;
+  }
+
+  .pt-card:hover::after,
+  .pt-card:focus-visible::after{
+    transform:scaleY(1);
+  }
+
+  .pt-era{
+    width:100%;
+    margin:0;
+    padding:0 0 7px;
+    border-bottom:1px solid rgba(255,255,255,.26);
+    color:rgba(255,255,255,.88);
+    font-size:.76rem;
+    font-weight:800;
+    line-height:1.25;
+  }
+
+  .pt-abbr{
+    flex:1;
+    display:grid;
+    place-items:center;
+    min-height:72px;
+    margin:0;
+    color:#ffffff;
+    font-size:2rem;
+    font-weight:900;
+    line-height:1;
+    letter-spacing:.02em;
+    text-align:center;
+  }
+
+  .pt-abbr sup{
+    position:relative;
+    top:-.4em;
+    color:#ffffff;
+    font-size:.6em;
+    margin-right:2px;
+  }
+
+  .pt-name{
+    width:100%;
+    margin-top:auto;
+    padding-top:8px;
+    border-top:1px solid rgba(255,255,255,.26);
+    color:#ffffff;
+    font-size:.9rem;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .pt-card.test{
+    background:linear-gradient(180deg, rgba(169,78,0,.94), rgba(169,78,0,.78));
+    border-color:rgba(169,78,0,.45);
+  }
+
+  .pt-card.acts{
+    background:linear-gradient(180deg, rgba(33,76,114,.92), rgba(33,76,114,.76));
+    border-color:rgba(33,76,114,.45);
+  }
+
+  .pt-card.paul{
+    background:linear-gradient(180deg, rgba(3,38,78,.92), rgba(3,38,78,.76));
+    border-color:rgba(3,38,78,.45);
+  }
+
+  .pt-card.israel{
+    background:linear-gradient(180deg, rgba(87,121,158,.92), rgba(87,121,158,.76));
+    border-color:rgba(87,121,158,.45);
+  }
+
+  .pt-card.vision{
+    background:linear-gradient(180deg, rgba(0,0,0,.90), rgba(0,0,0,.76));
+    border-color:rgba(0,0,0,.45);
+  }
+
+  .pt-card.test:hover{
+    background:linear-gradient(180deg, rgba(169,78,0,1), rgba(169,78,0,.84));
+    box-shadow:0 16px 34px rgba(169,78,0,.34);
+  }
+
+  .pt-card.acts:hover{
+    background:linear-gradient(180deg, rgba(33,76,114,1), rgba(33,76,114,.84));
+    box-shadow:0 16px 34px rgba(33,76,114,.34);
+  }
+
+  .pt-card.paul:hover{
+    background:linear-gradient(180deg, rgba(3,38,78,1), rgba(3,38,78,.84));
+    box-shadow:0 16px 34px rgba(3,38,78,.34);
+  }
+
+  .pt-card.israel:hover{
+    background:linear-gradient(180deg, rgba(87,121,158,1), rgba(87,121,158,.84));
+    box-shadow:0 16px 34px rgba(87,121,158,.34);
+  }
+
+  .pt-card.vision:hover{
+    background:linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,.84));
+    box-shadow:0 16px 34px rgba(0,0,0,.38);
+  }
+
+  html[data-theme="dark"] .canon-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .canon-title,
+  html[data-theme="dark"] .canon-guide-card h2{
+    color:#ffffff !important;
+  }
+
+  html[data-theme="dark"] .canon-guide-card{
+    background:var(--surface) !important;
+    border-color:var(--border) !important;
+  }
+
+  @media(max-width:1100px){
+    .pt-columns{
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .pt-col{
+      width:calc(33.333% - 12px);
+      min-width:160px;
+    }
+
+    .pt-card{
+      width:100%;
+    }
+
+    .canon-guide{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media(max-width:720px){
+    body.newtestament-page main.container{
+      padding:0 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .breadcrumbs{
+      padding:0 20px;
+    }
+
+    .canon-hero{
+      margin:22px auto 24px;
+      padding:42px 20px;
+    }
+
+    .canon-guide{
+      grid-template-columns:1fr;
+    }
+
+    .pt-col{
+      width:100%;
+    }
+
+    .pt-card{
+      height:168px;
+    }
+
+    .pt-abbr{
+      font-size:1.8rem;
+    }
+  }
+
+/* Newtestament hub rhythm: breadcrumb inside main before hero */
+body.newtestament-page main.container{
+  padding-top:40px !important;
+}
+
+body.newtestament-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+}
+
+body.newtestament-page main.container > .breadcrumbs + .canon-hero{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.newtestament-page main.container{
+    padding-top:30px !important;
+  }
+
+  body.newtestament-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="newtestament-page">
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">New Testament</span>
+  </nav>
+
+  <header class="canon-hero">
+    <div class="canon-kicker">The Apostolic Writings</div>
+    <h1 class="canon-title">New Testament</h1>
+    <p class="canon-subtitle">Explore the testimony of Christ, apostolic history, letters to Israel and the nations, and the vision of Revelation.</p>
+  </header>
+
+  <section class="canon-guide" aria-label="New Testament groups">
+    <article class="canon-guide-card">
+      <span class="count">4 Books</span>
+      <h2>Israelite Testimonies of the Messiah</h2>
+      <p>The testimony of Christ through Matthew, Mark, Luke, and John.</p>
+    </article>
+    <article class="canon-guide-card">
+      <span class="count">History</span>
+      <h2>Israelite Congregational History</h2>
+      <p>Acts records the spread of the testimony, the apostles, and early assemblies.</p>
+    </article>
+    <article class="canon-guide-card">
+      <span class="count">Pauline Letters</span>
+      <h2>Letters for the Scattered Elect</h2>
+      <p>Instruction, correction, order, faith, and doctrine across the assemblies.</p>
+    </article>
+    <article class="canon-guide-card">
+      <span class="count">General Letters</span>
+      <h2>Letters to the House of Israel</h2>
+      <p>Hebrews, James, Peter, John, and Jude address faithfulness, trial, and endurance.</p>
+    </article>
+    <article class="canon-guide-card">
+      <span class="count">Vision</span>
+      <h2>Vision to the Twelve Tribes</h2>
+      <p>Revelation gives judgment, kingdom hope, endurance, and final restoration.</p>
+    </article>
+  </section>
+
+  <!-- Periodic-style columns -->
+  <section class="pt-wrap" aria-label="New Testament Books (periodic layout)">
+    <div class="pt-columns">
+      <!-- Column 1: 4 vertical (Testimonies) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card test" href="/newtestament/matthew.html" aria-label="Matthew">
+          <div class="pt-era">c. 60–80 CE</div>
+          <div class="pt-abbr">Mt</div>
+          <div class="pt-name">Matthew</div>
+        </a>
+        <a class="pt-card test" href="/newtestament/mark.html" aria-label="Mark">
+          <div class="pt-era">c. 55–70 CE</div>
+          <div class="pt-abbr">Mk</div>
+          <div class="pt-name">Mark</div>
+        </a>
+        <a class="pt-card test" href="/newtestament/luke.html" aria-label="Luke">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Lk</div>
+          <div class="pt-name">Luke</div>
+        </a>
+        <a class="pt-card test" href="/newtestament/john.html" aria-label="John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr">Jn</div>
+          <div class="pt-name">John</div>
+        </a>
+      </div>
+
+      <!-- Column 2: 1 vertical (Acts) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card acts" href="/newtestament/acts.html" aria-label="Acts">
+          <div class="pt-era">c. 62–90 CE</div>
+          <div class="pt-abbr">Ac</div>
+          <div class="pt-name">Acts</div>
+        </a>
+      </div>
+
+      <!-- Column 3: 6 vertical (Paul: Rom → Col) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card paul" href="/newtestament/romans.html" aria-label="Romans">
+          <div class="pt-era">c. 57 CE</div>
+          <div class="pt-abbr">Rom</div>
+          <div class="pt-name">Romans</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/1-corinthians.html" aria-label="1 Corinthians">
+          <div class="pt-era">c. 53–55 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Co</div>
+          <div class="pt-name">1 Corinthians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/2-corinthians.html" aria-label="2 Corinthians">
+          <div class="pt-era">c. 55–57 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Co</div>
+          <div class="pt-name">2 Corinthians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/galatians.html" aria-label="Galatians">
+          <div class="pt-era">c. 48–55 CE</div>
+          <div class="pt-abbr">Gal</div>
+          <div class="pt-name">Galatians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/ephesians.html" aria-label="Ephesians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Eph</div>
+          <div class="pt-name">Ephesians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/philippians.html" aria-label="Philippians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Php</div>
+          <div class="pt-name">Philippians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/colossians.html" aria-label="Colossians">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Col</div>
+          <div class="pt-name">Colossians</div>
+        </a>
+      </div>
+
+      <!-- Column 4: 7 vertical (Paul: 1Th → Phm incl. 2Th, 1/2Ti, Tit) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card paul" href="/newtestament/1-thessalonians.html" aria-label="1 Thessalonians">
+          <div class="pt-era">c. 50–51 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Th</div>
+          <div class="pt-name">1 Thessalonians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/2-thessalonians.html" aria-label="2 Thessalonians">
+          <div class="pt-era">c. 50–52 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Th</div>
+          <div class="pt-name">2 Thessalonians</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/1-timothy.html" aria-label="1 Timothy">
+          <div class="pt-era">c. 62–64 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Ti</div>
+          <div class="pt-name">1 Timothy</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/2-timothy.html" aria-label="2 Timothy">
+          <div class="pt-era">c. 64–67 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Ti</div>
+          <div class="pt-name">2 Timothy</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/titus.html" aria-label="Titus">
+          <div class="pt-era">c. 62–64 CE</div>
+          <div class="pt-abbr">Tit</div>
+          <div class="pt-name">Titus</div>
+        </a>
+        <a class="pt-card paul" href="/newtestament/philemon.html" aria-label="Philemon">
+          <div class="pt-era">c. 60–62 CE</div>
+          <div class="pt-abbr">Phm</div>
+          <div class="pt-name">Philemon</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/hebrews.html" aria-label="Hebrews">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Heb</div>
+          <div class="pt-name">Hebrews</div>
+        </a>
+      </div>
+
+      <!-- Column 5: 7 vertical (General: Jas → Jude) -->
+      <div class="pt-col pt-col--wide">
+        <a class="pt-card israel" href="/newtestament/james.html" aria-label="James">
+          <div class="pt-era">c. 45–62 CE</div>
+          <div class="pt-abbr">Jas</div>
+          <div class="pt-name">James</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/1-peter.html" aria-label="1 Peter">
+          <div class="pt-era">c. 60–65 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Pe</div>
+          <div class="pt-name">1 Peter</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/2-peter.html" aria-label="2 Peter">
+          <div class="pt-era">c. 60–68 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Pe</div>
+          <div class="pt-name">2 Peter</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/1-john.html" aria-label="1 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>1</sup>Jn</div>
+          <div class="pt-name">1 John</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/2-john.html" aria-label="2 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>2</sup>Jn</div>
+          <div class="pt-name">2 John</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/3-john.html" aria-label="3 John">
+          <div class="pt-era">c. 90–110 CE</div>
+          <div class="pt-abbr"><sup>3</sup>Jn</div>
+          <div class="pt-name">3 John</div>
+        </a>
+        <a class="pt-card israel" href="/newtestament/jude.html" aria-label="Jude">
+          <div class="pt-era">c. 60–90 CE</div>
+          <div class="pt-abbr">Jud</div>
+          <div class="pt-name">Jude</div>
+        </a>
+      </div>
+
+      <!-- Column 6: 1 vertical (Vision: Revelation) -->
+      <div class="pt-col pt-col--narrow">
+        <a class="pt-card vision" href="/newtestament/revelation.html" aria-label="Revelation">
+          <div class="pt-era">c. 95–96 CE</div>
+          <div class="pt-abbr">Rev</div>
+          <div class="pt-name">Revelation</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="/js/include.js" defer></script>
+</body>
+</html>

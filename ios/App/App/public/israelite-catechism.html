@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Israelite Catechism — Semitic Jew</title>
+<link href="/styles.css" rel="stylesheet"/>
+<style>
+  /* Page layout only — no root overrides */
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+  .wrap{padding:16px 0 40px}
+  .split{display:grid;grid-template-columns:300px 1fr;gap:16px}
+  @media (max-width:900px){.split{grid-template-columns:1fr}}
+
+  /* Left vertical tabs */
+  .vtabs{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:8px;
+    position:sticky; top:12px;
+  }
+
+  .vtabs h2{
+    margin:4px 8px 10px;
+    font-size:.9rem;
+    font-weight:800;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em
+  }
+
+  .vlist{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+
+  .vtab{
+    width:100%;
+    text-align:left;
+    cursor:pointer;
+    font:inherit;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:all .15s ease;
+  }
+
+  .vtab:hover{
+    border-color:var(--border);
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    transform:translateY(-1px)
+  }
+
+  .vtab[aria-selected="true"]{
+    border-color:var(--accent);
+    background:var(--surface);
+    box-shadow:0 0 0 2px rgba(241,115,0,.12) inset;
+  }
+
+  .vicon{flex:0 0 18px;height:18px}
+  .vlabel{font-weight:800;color:var(--accent)}
+  .vdesc{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
+
+  /* Right pane */
+  .pane{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    min-height:320px;
+  }
+
+  .pane .title{
+    margin:0 0 8px;
+    font-size:1.4rem;
+    font-weight:900;
+    color:var(--accent)
+  }
+
+  .divider{height:1px;background:var(--border);margin:8px 0 14px}
+  .lead{color:var(--ink);line-height:1.7}
+  .cite{color:var(--muted);font-size:.9rem}
+  .block{margin:14px 0}
+  .block h3{margin:0 0 6px;font-size:1.05rem;color:var(--ink)}
+  .block p{margin:.35rem 0;line-height:1.7}
+  .bullets{margin:.25rem 0 0 1.15rem}
+  .bullets li{line-height:1.7}
+
+  .note{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    margin:10px 0
+  }
+
+  .vtab:focus-visible{
+    outline:3px solid var(--accent);
+    outline-offset:2px
+  }
+
+/* Catechism page modern hero */
+.catechism-page main,
+.catechism-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.catechism-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.catechism-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.catechism-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.catechism-subtitle{
+  max-width:820px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+html[data-theme="dark"] .catechism-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .catechism-title{
+  color:#ffffff !important;
+}
+
+@media(max-width:700px){
+  .catechism-page main,
+  .catechism-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .catechism-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+}
+
+/* Final catechism hero containment */
+.catechism-page main.wrap{
+  max-width:1200px !important;
+  margin:0 auto !important;
+  padding:40px 24px 80px !important;
+  box-sizing:border-box !important;
+}
+
+.catechism-page .catechism-hero{
+  width:100% !important;
+  max-width:1120px !important;
+  margin:24px auto 34px !important;
+  box-sizing:border-box !important;
+}
+
+.catechism-page .container.split{
+  max-width:100% !important;
+  margin:0 !important;
+}
+
+@media(max-width:700px){
+  .catechism-page main.wrap{
+    padding:22px 20px 64px !important;
+    overflow-x:hidden !important;
+  }
+
+  .catechism-page .catechism-hero{
+    margin:18px auto 28px !important;
+  }
+}
+
+/* Hard fix: contain catechism hero by actual page structure */
+main.wrap > .catechism-hero,
+.wrap > .catechism-hero{
+  width:auto !important;
+  max-width:1120px !important;
+  margin:24px auto 34px !important;
+  box-sizing:border-box !important;
+}
+
+main.wrap > .breadcrumbs,
+.wrap > .breadcrumbs{
+  max-width:1120px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+@media(max-width:700px){
+  main.wrap > .catechism-hero,
+  .wrap > .catechism-hero{
+    max-width:100% !important;
+    margin:18px auto 28px !important;
+  }
+
+  main.wrap > .breadcrumbs,
+  .wrap > .breadcrumbs{
+    max-width:100% !important;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="israelite-catechism">
+<!-- Header include -->
+<div data-include="partials/header.html" id="site-header"></div>
+<main class="wrap">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Catechism</span>
+  </nav>
+
+  <section class="catechism-hero">
+    <div class="catechism-kicker">Doctrine & Instruction</div>
+    <h1 class="catechism-title">Israelite Catechism</h1>
+    <p class="catechism-subtitle">
+      A structured teaching resource for biblical doctrine, identity, obedience, covenant understanding, and practical instruction.
+    </p>
+  </section>
+
+<div class="container split">
+<!-- LEFT: Vertical tabs -->
+<aside aria-orientation="vertical" class="vtabs" id="vtabs" role="tablist">
+<h2>Sections</h2>
+<ul class="vlist">
+<li>
+<button aria-controls="panel-israelites" aria-selected="true" class="vtab" data-tab="israelites" id="tab-israelites" role="tab">
+<svg aria-hidden="true" class="vicon" viewbox="0 0 24 24"><path d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7l7-4z" fill="none" stroke="#F17300" stroke-linecap="round" stroke-width="2"></path></svg>
+<span>
+<span class="vlabel">Israelites</span>
+<span class="vdesc">Identity &amp; context</span>
+</span>
+</button>
+</li>
+<li>
+<button aria-controls="panel-biography" aria-selected="false" class="vtab" data-tab="biography" id="tab-biography" role="tab">
+<svg aria-hidden="true" class="vicon" viewbox="0 0 24 24"><path d="M4 20v-1a4 4 0 014-4h8a4 4 0 014 4v1M12 12a5 5 0 100-10 5 5 0 000 10z" fill="none" stroke="#F17300" stroke-linecap="round" stroke-width="2"></path></svg>
+<span>
+<span class="vlabel">Biography</span>
+<span class="vdesc">Who we are</span>
+</span>
+</button>
+</li>
+<li>
+<button aria-controls="panel-purpose" aria-selected="false" class="vtab" data-tab="purpose" id="tab-purpose" role="tab">
+<svg aria-hidden="true" class="vicon" viewbox="0 0 24 24"><path d="M12 5v14m-7-7h14" fill="none" stroke="#F17300" stroke-linecap="round" stroke-width="2"></path></svg>
+<span>
+<span class="vlabel">Purpose Statement</span>
+<span class="vdesc">Why we exist</span>
+</span>
+</button>
+</li>
+<li>
+<button aria-controls="panel-doctrine" aria-selected="false" class="vtab" data-tab="doctrine" id="tab-doctrine" role="tab">
+<svg aria-hidden="true" class="vicon" viewbox="0 0 24 24"><path d="M3 7h18M6 12h12M9 17h6" fill="none" stroke="#F17300" stroke-linecap="round" stroke-width="2"></path></svg>
+<span>
+<span class="vlabel">Doctrinal Statement</span>
+<span class="vdesc">What we believe</span>
+</span>
+</button>
+</li>
+<li>
+<button aria-controls="panel-copyright" aria-selected="false" class="vtab" data-tab="copyright" id="tab-copyright" role="tab">
+<svg aria-hidden="true" class="vicon" viewbox="0 0 24 24"><path d="M12 20a8 8 0 118-8" fill="none" stroke="#F17300" stroke-linecap="round" stroke-width="2"></path><circle cx="12" cy="12" fill="none" r="4" stroke="#F17300" stroke-width="2"></circle></svg>
+<span>
+<span class="vlabel">Copyright Policy</span>
+<span class="vdesc">Use &amp; permissions</span>
+</span>
+</button>
+</li>
+</ul>
+</aside>
+<!-- RIGHT: Content pane -->
+<section class="pane">
+<!-- Israelites -->
+<article aria-labelledby="tab-israelites" id="panel-israelites" role="tabpanel">
+<h1 class="title">Israelites</h1>
+<div class="divider"></div>
+<p class="lead">
+    Nationally, Israel is a <em>collection of nations within one nation</em>—twelve patriarchs forming twelve distinct tribes, understood biblically as peoples with real history, culture, and language.
+    Our aim is to restore the identity of those tribes as a people and a nation within their Scriptural setting.
+    <span class="cite">[Gen 49; Num 1; Josh 13–21]</span>
+</p>
+<div class="block">
+<h3>National Identity &amp; Promise</h3>
+<p>
+      The twelve sons of Jacob became twelve tribal nations under one covenant people. Scripture testifies that the Israelites would never cease as a people before the Most High, regardless of being scattered to the four corners of the earth. The Most High used chastening and dispersion to discipline and rebuke them. However, God preserved a remnant and keeps His covenant for His name’s sake.
+      <span class="cite">[<span>Jer 31:35–37</span>; <span>Jer 33:24–26</span>; <span>Lev 26:44–45</span>; <span>Isa 10:20–22</span>]</span>
+</p>
+</div>
+<div class="block">
+<h3>Misidentification &amp; Recovery</h3>
+<p>
+      In our day, many deploy the Bible for personal gain and power, or superimpose themselves geographically as the Israelite people of the Book.
+      We maintain, from Scripture and historical context, that the ancient Israelites were a Black people who lived alongside other Black nations—
+      including peoples traditionally classed as “Hamitic” (Canaanites, Egyptians, Cushites/Ethiopians).
+      <span class="cite">[Gen 10; <span>Exod 1:8–14</span>; <span>1 Kgs 9:16</span>,21; <span>Song 1:5–6</span>; <span>Amos 9:7</span>]</span>
+</p>
+<p>
+      These claims engage biblical comparisons, geographic proximity, and ancient descriptors; they also challenge later iconography that obscures the Bible’s own setting, people, and culture.
+    </p>
+</div>
+<div class="block">
+<h3>Cultural Framework (Not a Man-Made “Religion”)</h3>
+<p>
+      Scripture does not present Israel as receiving a man-made religion; rather, God gave them a <em>culture</em>—His commandments—ordered for a holy people, a holy nation.
+      This heavenly culture should govern their feasts, sppointed times, household rhythms, justice, mercy, agriculture, economy, diet, and more.
+      <span class="cite">[<span>Deut 4:5–8</span>; Exod 12; Lev 23; Lev 25; <span>Deut 6:6–9</span>; Lev 11; Deut 14]</span>
+</p>
+<p>
+      Thus, Israel’s identity is covenantal and lived: calendars and convocations, family catechesis, courts and kindness to the poor, stewardship of resources, and distinct food laws.
+      God never commanded them to invent a “religion” for Israel; He commanded them to keep His commandments and live.
+    </p>
+</div>
+<div class="block">
+<h3>Historical, Cultural, &amp; Linguistic Setting</h3>
+<p>
+      The tribes are to be described as Scripture describes roots with now called Sub-Saharan Africa and North Africa with deep connections across other surrounding Semitic lands.
+      We read their history and speech within this world and resist anachronistic overlays that flatten their distinctiveness.
+      <span class="cite">[<span>Gen 12:10</span>; <span>1 Kgs 10:1–13</span>; <span>2 Chr 14:9–13</span>; <span>Jer 25:19–26</span>; <span>Acts 2:5–11</span>]</span>
+</p>
+</div>
+</article>
+<!-- Biography -->
+<article aria-labelledby="tab-biography" hidden="" id="panel-biography" role="tabpanel">
+<h1 class="title">Biography</h1>
+<div class="divider"></div>
+
+<p class="lead">
+  Semitic Jew Inc is led by an educator, researcher, and biblical teacher committed to clear instruction, disciplined reasoning, and Scripture-centered study. The work is built around biblical literacy, historical understanding, logic, and the recovery of Israelite context.
+</p>
+
+<div class="block">
+<h3>Educational Background</h3>
+<p>
+  The founder’s academic background includes formal study in mathematics, science, education, and secondary mathematics, along with professional experience teaching mathematics at the middle-school and university levels. This educational foundation shapes the project’s emphasis on structure, definitions, evidence, logical consistency, and careful reasoning.
+</p>
+</div>
+
+<div class="block">
+<h3>Research Focus</h3>
+<p>
+  The work draws from the Tanakh, Second Temple literature, the New Testament, historical sources, linguistic study, and logical analysis. The goal is not novelty, entertainment, or religious trend, but clarity, correction, and faithful engagement with the text.
+</p>
+</div>
+
+<div class="block">
+<h3>Teaching Approach</h3>
+<p>
+  Semitic Jew Inc approaches Scripture as something to be read carefully, tested honestly, and taught plainly. The emphasis is on helping people understand what is written, recognize inherited assumptions, and reason from Scripture rather than from tradition, emotion, or popular opinion.
+</p>
+</div>
+</article>
+<!-- Purpose -->
+<article aria-labelledby="tab-purpose" hidden="" id="panel-purpose" role="tabpanel">
+<h1 class="title">Purpose Statement</h1>
+<div class="divider"></div>
+
+<p class="lead">
+  The purpose of Semitic Jew Inc is to teach the Scriptures plainly, restore Israelite context, and equip people to reason from the text rather than tradition, assumption, emotion, or inherited error.
+</p>
+
+<div class="block">
+<h3>Our Aim</h3>
+<p>
+  We labor to provide clear biblical instruction that joins Scripture, logic, history, and practical obedience. Our goal is not to create confusion, spectacle, or religious performance, but to help people understand what is written, test claims carefully, and live according to truth.
+</p>
+</div>
+
+<div class="block">
+<h3>Practically</h3>
+<ul class="bullets">
+<li>Develop trustworthy Bible-study tools, articles, guides, and teaching resources.</li>
+<li>Explain Scripture in its Israelite, covenantal, historical, and linguistic context.</li>
+<li>Strengthen critical thinking by exposing contradictions, fallacies, and unsupported traditions.</li>
+<li>Encourage obedience to the Most High in household, community, discipline, justice, mercy, and worship.</li>
+<li>Equip families, students, and assemblies with resources that can be studied, tested, and taught.</li>
+</ul>
+</div>
+
+<div class="block">
+<h3>Guiding Principle</h3>
+<p>
+  We believe truth must be read carefully, reasoned honestly, and practiced faithfully. Scripture is not merely information to possess; it is instruction that should form the life, conduct, and conscience of the people who claim to believe it.
+</p>
+</div>
+</article>
+<!-- Doctrinal Statement (UPDATED) -->
+<article aria-labelledby="tab-doctrine" hidden="" id="panel-doctrine" role="tabpanel">
+<h1 class="title">Doctrinal Statement</h1>
+<div class="divider"></div>
+<!-- Scripture -->
+<div class="block" id="ds-scripture">
+<h3>Scripture</h3>
+<p class="lead">
+              We confess Holy Scripture to be the inspired, sufficient, and self-consistent Word of God. Because God is truthful and not a God of confusion,
+              the Scriptures do not contradict themselves; apparent tensions call us to fuller context and careful exegesis rather than to dismiss the text.
+              Logic serves Scripture—not the reverse—yet logic also reflects God’s own orderly nature and therefore is woven through the Word He breathed.
+              <span class="cite">[<span>2 Tim 3:16–17</span>; <span>Ps 19:7–9</span>; <span>1 Cor 14:33</span>; <span>Jn 10:35</span>; Tit 1:2]</span>
+</p>
+<p>
+              Therefore we read <em>the whole counsel</em> of God, comparing Scripture with Scripture, submitting our reasoning to what God has spoken,
+              confident that sound interpretation will be coherent, faithful, and fruitful in godliness.
+            </p>
+</div>
+<!-- God & Redemption -->
+<div class="block" id="ds-god-redemption">
+<h3>God &amp; Redemption</h3>
+<p class="lead">
+              The Most High has, in covenant love, rebuked His people Israel throughout history—disciplining disobedience, warning by prophets, and scattering them among the nations—
+              and yet promising mercy and a future regathering by His own hand.
+              <span class="cite">[Lev 26; <span>Deut 28:36–37</span>,64; 2 Kgs 17; 2 Chr 36; <span>Jer 31:31–37</span>; Ezek 36–37]</span>
+</p>
+<p>
+              In the New Testament era the dispersion continues (diaspora among the nations) with Jerusalem trampled by Gentiles,
+              yet the Messiah will gather His elect “from the four winds” at His appearing—the consummate restoration foretold by the prophets.
+              <span class="cite">[<span>Lk 21:24</span>; <span>Jas 1:1</span>; <span>Mt 24:30–31</span>; <span>Isa 11:11–12</span>; Ezek 37; <span>Rom 11:25–27</span>]</span>
+</p>
+</div>
+<!-- Life & Practice -->
+<div class="block" id="ds-life-practice">
+<h3>Life &amp; Practice</h3>
+<p class="lead">
+              We affirm the abiding importance of keeping God’s commandments in love—trusting His ways for holiness, justice, and mercy.
+              <span class="cite">[<span>Deut 6:1–9</span>; <span>Jn 14:15</span>; <span>1 Jn 5:3</span>]</span>
+</p>
+<p>
+              We uphold the dietary distinctions given in the Law as wisdom for God’s people,
+              while confessing that the sacrificial system has been once-for-all fulfilled in the sacrifice of the Messiah, so that animal offerings are no longer required.
+              <span class="cite">[Lev 11; Deut 14; Heb 10:1–14; <span>Eph 2:15</span>; <span>Col 2:14–17</span>]</span>
+</p>
+</div>
+<!-- Humanity -->
+<div class="block" id="ds-humanity">
+<h3>Humanity</h3>
+<p class="lead">
+              We hold that Scripture presents Adam as formed from the earth and read this, together with linguistic, historical, and genealogical considerations,
+              as aligning with an origin consistent with dark or Black complexion; we likewise affirm the ancient Israelites as a Black people in antiquity.
+              We recognize diversity within African and Near Eastern populations and see this reflected in Scripture’s own descriptions and comparisons.
+              <span class="cite">[<span>Gen 2:7</span>; <span>Song 1:5–6</span>; <span>Lam 4:8</span>; <span>Amos 9:7</span>]</span>
+</p>
+<p>
+              This articulation aims to restore context often obscured in later portrayals, and to encourage reading the Bible within its own geography,
+              peoples, and times rather than through anachronistic lenses.
+            </p>
+</div>
+<!-- Iconoclasm -->
+<div class="block" id="ds-iconoclasm">
+<h3>Iconoclasm</h3>
+<p class="lead">
+              Across history, conquering peoples have seized resources, recast customs, re-told stories, and absorbed arts and symbols—folding them into their own identity.
+              This cultural overwriting—often accompanied by the destruction or rebranding of images—distorts memory and can obscure the witness of the conquered.
+            </p>
+<p>
+              We therefore labor to sift sources, recover primary voices, and resist inherited distortions, so that Scripture and credible evidence guide our understanding
+              of Israel and the nations with integrity and justice.
+            </p>
+</div>
+</article>
+<!-- Copyright Policy -->
+<article aria-labelledby="tab-copyright" hidden="" id="panel-copyright" role="tabpanel">
+<h1 class="title">Copyright Policy</h1>
+<div class="divider"></div>
+
+<p class="lead">
+  Original articles, studies, teaching materials, graphics, page layouts, written explanations, and other original content published by Semitic Jew Inc are protected by copyright unless otherwise stated.
+</p>
+
+<div class="block">
+<h3>Permitted Use</h3>
+<p>
+  You may quote brief excerpts for teaching, research, commentary, review, or discussion, provided that proper attribution is given to Semitic Jew Inc and, where applicable, a link back to semiticjew.org is included.
+</p>
+</div>
+
+<div class="block">
+<h3>Restricted Use</h3>
+<p>
+  You may not copy, reproduce, republish, sell, modify, redistribute, translate, upload, or present substantial portions of original Semitic Jew Inc content as your own without written permission.
+</p>
+</div>
+
+<div class="block">
+<h3>External Sources &amp; Citations</h3>
+<p>
+  Scripture quotations, public-domain materials, historical references, scholarly citations, images, videos, or third-party materials remain subject to their own copyright, license, and usage terms. Citations are provided for educational and scholarly reference.
+</p>
+</div>
+
+<div class="block">
+<h3>Permission Requests</h3>
+<p>
+  For print use, redistribution, course packets, translations, media use, publication use, or broader reproduction, please request permission through the contact page.
+</p>
+</div>
+</article>
+</section>
+</div>
+</main>
+<!-- Footer include -->
+<div data-include="partials/footer.html" id="site-footer"></div>
+<script src="/js/include.js"></script>
+<script>
+    // Vertical tabs behavior (ARIA-friendly)
+    (function(){
+      const tabs = Array.from(document.querySelectorAll('.vtab[role="tab"]'));
+      const panels = {
+        israelites: document.getElementById('panel-israelites'),
+        biography:  document.getElementById('panel-biography'),
+        purpose:    document.getElementById('panel-purpose'),
+        doctrine:   document.getElementById('panel-doctrine'),
+        copyright:  document.getElementById('panel-copyright'),
+      };
+
+      function show(id, push=true){
+        tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab===id ? 'true' : 'false'));
+        Object.entries(panels).forEach(([key, el]) => {
+          if(!el) return;
+          el.hidden = key!==id;
+        });
+        if(push){
+          const url = new URL(location.href);
+          url.hash = id;
+          history.replaceState(null,'',url);
+        }
+      }
+
+      tabs.forEach(t=> t.addEventListener('click', ()=> show(t.dataset.tab)));
+
+      // keyboard nav: up/down/home/end
+      document.getElementById('vtabs').addEventListener('keydown', (e)=>{
+        const i = tabs.findIndex(t=>t.getAttribute('aria-selected')==='true');
+        if(e.key==='ArrowDown'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+        if(e.key==='ArrowUp'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+        if(e.key==='Home'){ e.preventDefault(); tabs[0].focus(); }
+        if(e.key==='End'){ e.preventDefault(); tabs[tabs.length-1].focus(); }
+      });
+
+      // initialize (hash or default)
+      const initial = (location.hash||'#israelites').slice(1);
+      const ok = tabs.some(t=>t.dataset.tab===initial) ? initial : 'israelites';
+      show(ok, false);
+    })();
+  </script>
+</html>

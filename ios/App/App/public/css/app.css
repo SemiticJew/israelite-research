@@ -1,0 +1,4571 @@
+/* Semitic Jew Institute app shell. Scoped to body.institute-app. */
+.institute-app{
+  --app-blue:#054A91;
+  --app-blue-2:#3E7CB1;
+  --app-soft:#DBE4EE;
+  --app-orange:#F17300;
+  --app-sky:#81A4CD;
+  --app-ink:#111827;
+  --app-muted:#4b5563;
+  --app-line:rgba(5,74,145,.16);
+  --app-surface:#fff;
+  background:#f6f9fc;
+  color:var(--app-ink);
+}
+
+.institute-app *{
+  box-sizing:border-box;
+}
+
+.institute-app,
+.institute-app *{
+  -webkit-tap-highlight-color:transparent;
+}
+
+.institute-app button,
+.institute-app a,
+.institute-app input,
+.institute-app select,
+.institute-app textarea{
+  touch-action:manipulation;
+}
+
+.institute-app .app-shell{
+  width:min(1120px, calc(100% - 28px));
+  margin:0 auto;
+  padding:20px 0 94px;
+}
+
+.institute-app .app-breadcrumbs{
+  margin:0 0 12px;
+  font-size:.88rem;
+}
+
+.institute-app .app-breadcrumbs a{
+  color:var(--app-muted);
+  text-decoration:none;
+}
+
+.institute-app .app-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.institute-app .app-topbar h1{
+  margin:0;
+  color:var(--app-ink);
+  font-size:1.65rem;
+  line-height:1.1;
+}
+
+.institute-app .app-kicker,
+.institute-app .app-label{
+  display:block;
+  margin:0 0 7px;
+  color:var(--app-orange);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-install-link,
+.institute-app .app-btn,
+.institute-app button{
+  border-radius:8px;
+}
+
+.institute-app .app-install-link,
+.institute-app .app-btn{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 16px;
+  border:1px solid var(--app-line);
+  background:var(--app-surface);
+  color:var(--app-ink);
+  font-weight:900;
+  text-decoration:none;
+  text-align:center;
+  white-space:normal;
+  line-height:1.2;
+  min-width:0;
+}
+
+.institute-app .app-btn.primary{
+  border-color:var(--app-orange);
+  background:var(--app-orange);
+  color:#fff;
+}
+
+.institute-app .app-btn:hover,
+.institute-app .app-btn:focus-visible,
+.institute-app button:hover,
+.institute-app button:focus-visible,
+.institute-app a:focus-visible{
+  border-color:var(--app-orange);
+  outline:3px solid rgba(241,115,0,.2);
+  outline-offset:2px;
+}
+
+.institute-app .app-tabbar{
+  display:grid;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  gap:6px;
+  padding:7px;
+  border:1px solid var(--app-line);
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 24px rgba(5,74,145,.08);
+  backdrop-filter:blur(12px);
+}
+
+.institute-app .app-tabbar-top{
+  position:sticky;
+  top:0;
+  z-index:30;
+  margin-bottom:14px;
+}
+
+.institute-app .app-tabbar-bottom{
+  position:fixed;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:80;
+  border-width:1px 0 0;
+  border-radius:0;
+  padding:7px max(8px, env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+}
+
+.institute-app .app-tab-link{
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  color:var(--app-muted);
+  font-size:.84rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.institute-app .app-tab-link.is-active{
+  background:var(--app-blue);
+  color:#fff;
+}
+
+.institute-app .app-panel{
+  display:block;
+}
+
+.institute-app .app-panel[hidden]{
+  display:none;
+}
+
+.institute-app .app-hero{
+  margin:0 0 14px;
+  padding:22px;
+  border:1px solid var(--app-line);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  color:#fff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.institute-app .app-hero h2{
+  max-width:760px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(2.15rem, 7vw, 4.8rem);
+  line-height:1;
+}
+
+.institute-app .app-hero p{
+  max-width:620px;
+  margin:12px 0 0;
+  color:rgba(255,255,255,.86);
+  line-height:1.55;
+}
+
+.institute-app .app-actions,
+.institute-app .app-button-row,
+.institute-app .app-reader-links,
+.institute-app .app-reader-nav,
+.institute-app .course-meta,
+.institute-app .watch-meta,
+.institute-app .app-precept-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-actions,
+.institute-app .app-button-row{
+  margin-top:16px;
+}
+
+.institute-app .app-card,
+.institute-app .app-search-shell,
+.institute-app .app-reader-shell,
+.institute-app .course-card,
+.institute-app .watch-card,
+.institute-app .practice-card,
+.institute-app .app-stat,
+.institute-app .lesson-detail-card,
+.institute-app .ai-response-card{
+  border:1px solid var(--app-line);
+  background:var(--app-surface);
+  box-shadow:0 7px 18px rgba(5,74,145,.06);
+  border-radius:12px;
+}
+
+.institute-app .app-card,
+.institute-app .app-search-shell,
+.institute-app .app-reader-shell{
+  padding:16px;
+}
+
+.institute-app .app-home-grid,
+.institute-app .app-course-grid,
+.institute-app .app-watch-grid,
+.institute-app .app-practice-grid,
+.institute-app .app-profile-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+}
+
+.institute-app .app-home-grid > .app-card{
+  display:grid;
+  gap:12px;
+  align-content:start;
+}
+
+.institute-app .app-precept-card,
+.institute-app .app-practice-home{
+  grid-column:1 / -1;
+}
+
+.institute-app .app-home-today-head{
+  margin-bottom:12px;
+}
+
+.institute-app .app-today-stats{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:8px;
+  margin:12px 0;
+}
+
+.institute-app .app-today-stat{
+  display:grid;
+  gap:4px;
+  padding:12px 13px;
+  border:1px solid var(--app-line);
+  background:rgba(219,228,238,.34);
+  border-radius:12px;
+}
+
+.institute-app .app-today-stat strong{
+  color:var(--app-blue);
+  font-size:1.15rem;
+  line-height:1;
+}
+
+.institute-app .app-today-stat span{
+  color:var(--app-muted);
+  font-size:.74rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-today-recent-list{
+  display:grid;
+  gap:8px;
+}
+
+.institute-app .app-today-recent-item{
+  padding:12px 13px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#f8fafc;
+  display:grid;
+  gap:6px;
+  border-radius:12px;
+}
+
+.institute-app .app-today-recent-item h4{
+  margin:0;
+  font-size:.98rem;
+  line-height:1.2;
+}
+
+.institute-app .app-today-recent-item p{
+  margin:0;
+  color:var(--app-muted);
+  font-size:.92rem;
+  line-height:1.5;
+}
+
+.institute-app .app-today-empty{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-offline-card{
+  display:grid;
+  gap:14px;
+  margin-top:12px;
+}
+
+.institute-app .app-offline-card .app-library-head{
+  display:grid;
+  gap:6px;
+}
+
+.institute-app .app-offline-points{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-offline-point{
+  padding:12px 13px;
+  border:1px solid rgba(5,74,145,.12);
+  background:rgba(219,228,238,.28);
+  border-radius:12px;
+  color:var(--app-ink);
+  line-height:1.5;
+}
+
+.institute-app .app-connectivity-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  color:var(--app-blue);
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.01em;
+  text-transform:none;
+  align-self:flex-start;
+  width:auto;
+}
+
+.institute-app .app-connectivity-badge.is-offline{
+  color:var(--app-orange);
+}
+
+.institute-app h2,
+.institute-app h3,
+.institute-app h4{
+  color:var(--app-ink);
+}
+
+.institute-app h2{
+  margin:0 0 8px;
+  font-size:1.85rem;
+  line-height:1.12;
+}
+
+.institute-app h3{
+  margin:0 0 8px;
+  font-size:1.12rem;
+  line-height:1.2;
+}
+
+.institute-app p{
+  margin:0;
+  color:var(--app-muted);
+  line-height:1.58;
+}
+
+.institute-app .app-section-head{
+  max-width:760px;
+  margin:0 0 14px;
+}
+
+.institute-app .app-section-head.compact{
+  margin-bottom:10px;
+}
+
+.institute-app .app-precept blockquote{
+  margin:12px 0;
+  padding:13px 14px;
+  border-left:4px solid var(--app-orange);
+  background:rgba(219,228,238,.52);
+  color:var(--app-ink);
+  line-height:1.6;
+}
+
+.institute-app .app-pill,
+.institute-app .app-tag,
+.institute-app .reader-badge{
+  display:inline;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  color:var(--app-muted);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.01em;
+  text-transform:none;
+  white-space:normal;
+  text-align:left;
+  line-height:1.45;
+}
+
+.institute-app .app-tag{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:0 2px;
+  color:var(--app-blue);
+  cursor:pointer;
+  line-height:1.3;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
+.institute-app .app-tag:hover,
+.institute-app .app-tag:focus-visible{
+  color:var(--app-orange);
+  outline:none;
+}
+
+.institute-app label{
+  color:var(--app-ink);
+  font-weight:900;
+}
+
+.institute-app input,
+.institute-app select,
+.institute-app textarea{
+  width:100%;
+  min-height:44px;
+  margin-top:6px;
+  border:1px solid var(--app-line);
+  border-radius:8px;
+  background:var(--app-surface);
+  color:var(--app-ink);
+  padding:10px 12px;
+  font:inherit;
+}
+
+.institute-app textarea{
+  resize:vertical;
+}
+
+.institute-app input:focus,
+.institute-app select:focus,
+.institute-app textarea:focus{
+  border-color:var(--app-orange);
+  box-shadow:0 0 0 4px rgba(241,115,0,.14);
+  outline:none;
+}
+
+.institute-app .sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0, 0, 0, 0);
+  white-space:nowrap;
+  border:0;
+}
+
+.institute-app .app-reader-controls,
+.institute-app .app-settings-form{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(128px, 1fr));
+  gap:10px;
+  align-items:stretch;
+}
+
+.institute-app .app-reader-controls > label{
+  display:grid;
+  gap:5px;
+  padding:10px 10px 11px;
+  border:1px solid rgba(5,74,145,.12);
+  border-radius:10px;
+  background:rgba(219,228,238,.18);
+  min-width:0;
+  min-height:80px;
+}
+
+.institute-app .app-reader-controls > label > span{
+  margin:0;
+  color:var(--app-blue);
+  font-size:.7rem;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  line-height:1;
+}
+
+.institute-app .app-reader-controls > label > select{
+  margin-top:0;
+  min-width:0;
+  min-height:44px;
+  padding:10px 11px;
+  border-radius:8px;
+  border-color:rgba(5,74,145,.14);
+  background:#fff;
+  font-size:.94rem;
+  line-height:1.2;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.institute-app .app-reader-controls > label:nth-child(-n+3){
+  background:rgba(219,228,238,.22);
+}
+
+.institute-app .app-reader-controls > label:nth-child(4),
+.institute-app .app-reader-controls > label:nth-child(5){
+  background:rgba(248,250,252,.92);
+}
+
+.institute-app .app-reader-links{
+  margin:12px 0;
+}
+
+.institute-app .app-reader-nav{
+  margin:16px 0 16px;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+}
+
+.institute-app .app-reader-nav .app-btn{
+  min-width:0;
+  min-height:44px;
+  padding:0 14px;
+  font-size:.88rem;
+  line-height:1.1;
+  font-weight:900;
+  border-color:rgba(5,74,145,.16);
+  background:#fff;
+}
+
+.institute-app .app-reader-links{
+  gap:10px;
+}
+
+.institute-app .app-reader-links .app-btn{
+  min-height:44px;
+  padding:0 14px;
+  font-size:.9rem;
+  line-height:1.15;
+  flex:1 1 155px;
+}
+
+.institute-app .app-reader-search-form{
+  gap:10px;
+  align-items:end;
+  margin-top:2px;
+}
+
+.institute-app .app-reader-search-form button{
+  min-height:44px;
+  padding:0 14px;
+  font-size:.88rem;
+  line-height:1.1;
+}
+
+.institute-app .app-reader-search-input{
+  display:grid;
+  gap:6px;
+}
+
+.institute-app .app-reader-search-input input{
+  margin-top:0;
+  min-height:44px;
+  font-size:.96rem;
+}
+
+.institute-app .app-reader-current,
+.institute-app .app-reader-context,
+.institute-app .app-reader-study-actions,
+.institute-app .app-reader-search,
+.institute-app .app-reader-related,
+.institute-app .app-full-library{
+  border:1px solid var(--app-line);
+  background:#fbfdff;
+  padding:15px;
+  border-radius:12px;
+}
+
+.institute-app .app-study-chain{
+  margin:0 0 12px;
+  border:1px solid var(--app-line);
+  background:#fbfdff;
+  padding:16px;
+  border-radius:12px;
+}
+
+.institute-app .app-reader-current{
+  margin-bottom:12px;
+  background:
+    linear-gradient(135deg, rgba(5,74,145,.08), rgba(129,164,205,.12)),
+    #fbfdff;
+}
+
+.institute-app .app-reader-current h3,
+.institute-app .app-reader-context h3{
+  margin:0 0 6px;
+}
+
+.institute-app .app-reader-study-grid{
+  display:grid;
+  grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr);
+  gap:12px;
+  margin:0 0 12px;
+}
+
+.institute-app .app-study-chain-head{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  gap:12px;
+  align-items:start;
+}
+
+.institute-app .app-study-chain-head h3{
+  margin:0 0 6px;
+}
+
+.institute-app .app-study-chain-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.institute-app .app-study-chain-actions .app-btn{
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  font-weight:850;
+  flex:1 1 132px;
+}
+
+.institute-app .app-study-chain-list{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+
+.institute-app .app-study-chain-item{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  gap:12px;
+  padding:14px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#f8fafc;
+  border-radius:12px;
+}
+
+.institute-app .app-study-chain-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 8px;
+  align-items:flex-start;
+  margin-bottom:8px;
+}
+
+.institute-app .app-study-chain-ref{
+  color:var(--app-ink);
+  font-weight:900;
+}
+
+.institute-app .app-study-chain-item-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-content:start;
+}
+
+.institute-app .app-study-chain-item-actions .app-btn{
+  min-height:42px;
+  padding:0 12px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  font-weight:850;
+  flex:1 1 96px;
+}
+
+.institute-app .app-study-chain-empty{
+  padding:12px;
+  border:1px dashed var(--app-line);
+  background:rgba(219,228,238,.28);
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-study-chain-empty-line{
+  color:var(--app-muted);
+}
+
+.institute-app .app-study-chain-status{
+  margin:10px 0 0;
+  min-height:1.2em;
+  color:var(--app-muted);
+  font-size:.88rem;
+  font-weight:800;
+}
+
+.institute-app .app-study-chain-status[data-state="success"]{
+  color:var(--app-blue);
+}
+
+.institute-app .app-study-chain-status[data-state="error"]{
+  color:var(--app-orange);
+}
+
+.institute-app .app-reader-context-meta,
+.institute-app .app-reader-action-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 10px;
+}
+
+.institute-app .app-reader-context-meta{
+  margin:0 0 8px;
+  row-gap:6px;
+}
+
+.institute-app .app-reader-action-grid{
+  align-items:center;
+  row-gap:10px;
+}
+
+.institute-app .app-reader-context-meta .app-pill,
+.institute-app .app-reader-action-grid .app-btn{
+  flex:0 0 auto;
+}
+
+.institute-app .app-reader-action-grid .app-btn{
+  flex:1 1 180px;
+  min-height:44px;
+  padding:0 13px;
+  font-size:.88rem;
+  line-height:1.1;
+  letter-spacing:.01em;
+  border-color:rgba(5,74,145,.14);
+  background:#fff;
+  justify-content:flex-start;
+  text-align:left;
+}
+
+.institute-app .app-reader-study-actions{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-reader-study-actions .app-label{
+  margin-bottom:0;
+}
+
+.institute-app .app-full-library{
+  margin-top:14px;
+}
+
+.institute-app .app-study-paths{
+  margin:0 0 16px;
+  display:grid;
+  gap:12px;
+}
+
+.institute-app .app-study-path-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  width:min(100%, 920px);
+  margin-inline:auto;
+}
+
+.institute-app .app-study-path-card,
+.institute-app .app-study-path-detail-card,
+.institute-app .app-study-path-step{
+  border:1px solid var(--app-line);
+  background:#fbfdff;
+  box-shadow:0 7px 18px rgba(5,74,145,.06);
+}
+
+.institute-app .app-study-path-card{
+  padding:18px;
+  display:grid;
+  gap:14px;
+  border-radius:14px;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  max-width:100%;
+}
+
+.institute-app .app-study-path-card.is-active{
+  border-color:rgba(5,74,145,.28);
+  background:linear-gradient(135deg, rgba(5,74,145,.05), rgba(129,164,205,.09)), #fbfdff;
+}
+
+.institute-app .app-study-path-card-head,
+.institute-app .app-study-path-detail-head,
+.institute-app .app-study-path-step-head{
+  display:flex;
+  gap:14px;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+
+.institute-app .app-study-path-card-copy,
+.institute-app .app-study-path-detail-copy{
+  display:grid;
+  gap:10px;
+  min-width:0;
+}
+
+.institute-app .app-study-path-card-head h4,
+.institute-app .app-study-path-detail-head h3,
+.institute-app .app-study-path-step-head h4{
+  margin:0;
+  line-height:1.25;
+  letter-spacing:-.01em;
+}
+
+.institute-app .app-study-path-card-head p,
+.institute-app .app-study-path-detail-head p,
+.institute-app .app-study-path-step-head p{
+  margin:0;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-study-path-card-meta,
+.institute-app .app-study-path-detail-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:0;
+  align-items:center;
+  padding-bottom:2px;
+}
+
+.institute-app .app-study-path-card .app-study-path-card-meta .app-pill,
+.institute-app .app-study-path-detail-meta .app-pill,
+.institute-app .app-study-path-count{
+  display:inline;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  color:var(--app-muted);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.01em;
+  text-transform:none;
+  line-height:1.45;
+  font-variant-numeric:tabular-nums;
+  white-space:normal;
+}
+
+.institute-app .app-study-path-card.is-active .app-study-path-count{
+  color:var(--app-blue);
+}
+
+.institute-app .app-study-path-card .app-study-path-card-meta .app-pill,
+.institute-app .app-study-path-detail-meta .app-pill{
+  display:inline;
+  padding:0;
+  border:0;
+  background:none;
+}
+
+.institute-app .app-study-path-card-actions,
+.institute-app .app-study-path-detail-actions,
+.institute-app .app-study-path-step-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.institute-app .app-study-path-card-actions .app-btn,
+.institute-app .app-study-path-detail-actions .app-btn,
+.institute-app .app-study-path-step-actions .app-btn{
+  flex:1 1 150px;
+}
+
+.institute-app .app-study-path-detail{
+  display:grid;
+  gap:16px;
+  min-height:0;
+}
+
+.institute-app .app-study-path-detail-card{
+  padding:17px;
+}
+
+.institute-app .app-study-path-steps{
+  display:grid;
+  gap:12px;
+}
+
+.institute-app .app-study-path-step{
+  padding:15px;
+  display:grid;
+  gap:12px;
+}
+
+.institute-app .app-study-path-step.is-target{
+  border-color:rgba(5,74,145,.32);
+  box-shadow:0 10px 22px rgba(5,74,145,.1);
+}
+
+.institute-app .app-study-path-step.is-complete{
+  background:rgba(219,228,238,.52);
+}
+
+.institute-app .app-study-path-step-badge{
+  display:inline;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  color:var(--app-orange);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.01em;
+  text-transform:none;
+  line-height:1.45;
+}
+
+.institute-app .app-study-path-ref-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-study-path-ref-list .app-tag{
+  min-height:0;
+  padding:0;
+}
+
+.institute-app .app-study-path-empty,
+.institute-app .app-study-path-empty-line{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-study-path-status{
+  margin:0;
+  min-height:1.2em;
+  color:var(--app-muted);
+  font-size:.88rem;
+  font-weight:800;
+}
+
+.institute-app .app-study-path-status[data-state="success"]{
+  color:var(--app-blue);
+}
+
+.institute-app .app-study-path-status[data-state="error"]{
+  color:var(--app-orange);
+}
+
+.institute-app .app-reader-related{
+  margin:0 0 12px;
+}
+
+.institute-app .app-reader-search{
+  margin:0 0 12px;
+}
+
+.institute-app .app-reader-search-head{
+  margin-bottom:10px;
+}
+
+.institute-app .app-reader-search-form{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  gap:8px;
+  align-items:end;
+}
+
+.institute-app .app-reader-search-input{
+  min-width:0;
+}
+
+.institute-app .app-reader-search-form button{
+  min-height:44px;
+  padding:0 14px;
+}
+
+.institute-app .app-reader-search-status{
+  margin:10px 0 0;
+  color:var(--app-muted);
+  font-size:.88rem;
+  font-weight:800;
+}
+
+.institute-app .app-reader-search-results{
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+
+.institute-app .app-reader-search-result,
+.institute-app .app-reader-search-empty{
+  display:grid;
+  gap:6px;
+  width:100%;
+  text-align:left;
+  padding:12px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  border-radius:8px;
+}
+
+.institute-app .app-reader-search-result{
+  cursor:pointer;
+}
+
+.institute-app .app-reader-search-result.is-active{
+  border-color:rgba(5,74,145,.42);
+  background:rgba(219,228,238,.72);
+}
+
+.institute-app .app-reader-search-ref{
+  color:var(--app-blue);
+  font-size:.84rem;
+  font-weight:900;
+}
+
+.institute-app .app-reader-search-text{
+  color:var(--app-ink);
+  line-height:1.5;
+}
+
+.institute-app .app-reader-search-text mark{
+  background:rgba(241,115,0,.18);
+  color:inherit;
+  padding:0 2px;
+}
+
+.institute-app .app-reader-search-empty{
+  color:var(--app-muted);
+}
+
+.institute-app .app-related-head{
+  max-width:none;
+  margin-bottom:12px;
+}
+
+.institute-app .app-related-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:10px;
+}
+
+.institute-app .app-related-card,
+.institute-app .app-related-empty{
+  display:grid;
+  gap:10px;
+  padding:12px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#f8fafc;
+}
+
+.institute-app .app-related-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.institute-app .app-related-source{
+  color:var(--app-muted);
+  font-size:.8rem;
+  font-weight:850;
+}
+
+.institute-app .app-related-card h4,
+.institute-app .app-related-empty h3{
+  margin:0;
+  color:var(--app-ink);
+}
+
+.institute-app .app-related-snippet{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-related-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-related-actions .app-btn{
+  min-height:36px;
+  padding:0 10px;
+  border:1px solid var(--app-line);
+  background:#fff;
+  color:var(--app-ink);
+  font-weight:850;
+  text-decoration:none;
+}
+
+.institute-app .app-reader{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .reader-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.institute-app .reader-verses{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .reader-verses.compact{
+  gap:4px;
+}
+
+.institute-app .reader-verses.large{
+  font-size:1.14rem;
+}
+
+.institute-app .reader-verses.small{
+  font-size:.94rem;
+}
+
+.institute-app .reader-verse{
+  display:grid;
+  gap:8px;
+  padding:10px;
+  border:1px solid rgba(5,74,145,.1);
+  background:#fbfdff;
+  border-radius:8px;
+  cursor:pointer;
+  transition:border-color .15s ease, background-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.institute-app .reader-verse:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 4px rgba(241,115,0,.18);
+  border-color:rgba(241,115,0,.38);
+}
+
+.institute-app .reader-verse.is-active{
+  border-color:rgba(5,74,145,.42);
+  background:rgba(219,228,238,.72);
+  box-shadow:inset 0 0 0 1px rgba(5,74,145,.1);
+}
+
+.institute-app .reader-verse.is-highlighted{
+  border-color:rgba(241,115,0,.34);
+  background:rgba(241,115,0,.1);
+}
+
+.institute-app .reader-verse.is-active.is-highlighted{
+  border-color:rgba(241,115,0,.42);
+  background:linear-gradient(135deg, rgba(219,228,238,.72), rgba(241,115,0,.1));
+}
+
+.institute-app .reader-verse-text{
+  color:var(--app-ink);
+  line-height:1.7;
+}
+
+.institute-app .reader-verse-num{
+  color:var(--app-orange);
+  font-weight:900;
+}
+
+.institute-app .reader-note{
+  padding:10px;
+  border-left:4px solid var(--app-blue-2);
+  background:rgba(219,228,238,.5);
+  color:var(--app-ink);
+}
+
+.institute-app .reader-note strong{
+  color:var(--app-blue);
+}
+
+.institute-app .reader-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.institute-app .reader-actions button,
+.institute-app .lesson-list button,
+.institute-app .app-example-prompts button,
+.institute-app .app-practice-summary button,
+.institute-app .app-search-form button{
+  min-height:38px;
+  padding:0 10px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:850;
+  cursor:pointer;
+}
+
+.institute-app button:disabled,
+.institute-app .app-btn:disabled{
+  cursor:not-allowed;
+  opacity:.52;
+}
+
+.institute-app .app-search-form{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(150px, .35fr) minmax(170px, .45fr) auto;
+  gap:10px;
+  align-items:end;
+}
+
+.institute-app .app-search-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-search-actions button,
+.institute-app .app-search-form button{
+  min-height:44px;
+  border-color:var(--app-orange);
+  background:var(--app-orange);
+  color:#fff;
+}
+
+.institute-app .app-search-status{
+  margin-top:12px;
+  color:var(--app-muted);
+  font-weight:850;
+}
+
+.institute-app .app-search-results{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+
+.institute-app .app-search-result{
+  display:grid;
+  gap:7px;
+  padding:14px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:inherit;
+  text-decoration:none;
+  border-radius:12px;
+}
+
+.institute-app .app-search-result-card{
+  gap:10px;
+}
+
+.institute-app .app-search-result-header{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 12px;
+}
+
+.institute-app .app-search-ref{
+  color:var(--app-ink);
+  font-weight:900;
+}
+
+.institute-app .app-search-canon{
+  color:var(--app-orange);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-search-text{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-search-text mark{
+  background:rgba(241,115,0,.18);
+  color:inherit;
+  padding:0 2px;
+}
+
+.institute-app .app-search-result-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.institute-app .app-search-result-actions .app-btn,
+.institute-app .app-search-result-actions button{
+  min-height:42px;
+  padding:0 12px;
+  flex:1 1 128px;
+}
+
+.institute-app .app-search-result-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+}
+
+.institute-app .course-card,
+.institute-app .watch-card,
+.institute-app .practice-card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px;
+}
+
+.institute-app .course-progress{
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:var(--app-soft);
+}
+
+.institute-app .course-progress span{
+  display:block;
+  height:100%;
+  background:var(--app-orange);
+}
+
+.institute-app .lesson-list{
+  display:grid;
+  gap:7px;
+  margin-top:auto;
+}
+
+.institute-app .lesson-list button{
+  text-align:left;
+}
+
+.institute-app .lesson-list button.is-complete{
+  border-color:rgba(5,74,145,.35);
+  background:rgba(219,228,238,.62);
+}
+
+.institute-app .app-lesson-detail{
+  margin-top:14px;
+}
+
+.institute-app .lesson-detail-card{
+  padding:16px;
+  background:linear-gradient(135deg, rgba(5,74,145,.06), rgba(241,115,0,.06)), #fff;
+}
+
+.institute-app .lesson-detail-card dl{
+  display:grid;
+  gap:12px;
+  margin:14px 0;
+}
+
+.institute-app .lesson-detail-card dt{
+  color:var(--app-orange);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.institute-app .lesson-detail-card dd{
+  margin:4px 0 0;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-ai-disclaimer,
+.institute-app .app-filter-note,
+.institute-app .app-data-note{
+  margin-bottom:12px;
+  padding:11px 12px;
+  border:1px solid rgba(241,115,0,.32);
+  background:rgba(241,115,0,.08);
+  color:var(--app-ink);
+  font-weight:800;
+  line-height:1.45;
+}
+
+.institute-app .app-ask-form{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-example-prompts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.institute-app .app-ai-response{
+  margin-top:14px;
+}
+
+.institute-app .ai-response-card{
+  padding:16px;
+}
+
+.institute-app .ai-response-card ul{
+  margin:8px 0 0;
+  padding-left:20px;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .ai-response-section{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .watch-card a{
+  margin-top:auto;
+  color:var(--app-orange);
+  font-weight:900;
+  text-decoration:none;
+}
+
+.institute-app .watch-card time,
+.institute-app .watch-card .watch-duration{
+  color:var(--app-muted);
+  font-size:.82rem;
+  font-weight:800;
+}
+
+.institute-app .app-practice-summary{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  padding:12px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+}
+
+.institute-app .app-practice-summary strong,
+.institute-app .app-stat strong{
+  color:var(--app-orange);
+  font-size:1.85rem;
+  line-height:1;
+}
+
+.institute-app .app-practice-summary span,
+.institute-app .app-stat span{
+  color:var(--app-muted);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.institute-app .app-practice-summary button{
+  margin-left:auto;
+}
+
+.institute-app .practice-card.complete{
+  border-color:rgba(5,74,145,.38);
+  background:rgba(219,228,238,.42);
+}
+
+.institute-app .practice-card .practice-action{
+  align-self:flex-start;
+}
+
+.institute-app .app-profile-grid{
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  margin-bottom:12px;
+}
+
+.institute-app .app-stat{
+  display:grid;
+  gap:8px;
+  padding:15px;
+  border-radius:12px;
+}
+
+.institute-app .app-saved-library{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.institute-app .app-library-controls{
+  margin-bottom:12px;
+}
+
+.institute-app .app-library-filter-form{
+  display:grid;
+  grid-template-columns:minmax(220px, 1.4fr) repeat(4, minmax(130px, 1fr)) auto;
+  gap:10px;
+  align-items:end;
+}
+
+.institute-app .app-library-search{
+  min-width:0;
+}
+
+.institute-app .app-library-filter-form button{
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:normal;
+}
+
+.institute-app .app-library-section{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.institute-app .app-library-section:nth-child(3),
+.institute-app .app-library-section:nth-child(5),
+.institute-app .app-library-section:nth-child(6){
+  grid-column:1 / -1;
+}
+
+.institute-app .app-chain-card .app-library-meta{
+  align-items:center;
+}
+
+.institute-app .app-chain-card p{
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-library-head h3,
+.institute-app .app-library-item h4,
+.institute-app .app-course-progress-row h4{
+  margin:0 0 6px;
+}
+
+.institute-app .app-library-list,
+.institute-app .app-library-sublist,
+.institute-app .app-course-progress-list{
+  display:grid;
+  gap:10px;
+}
+
+.institute-app .app-library-sublist{
+  padding-top:12px;
+  border-top:1px solid var(--app-line);
+}
+
+.institute-app .app-library-item,
+.institute-app .app-course-progress-row,
+.institute-app .app-library-empty{
+  display:grid;
+  gap:12px;
+  padding:15px;
+  border:1px solid rgba(5,74,145,.12);
+  background:#fbfdff;
+  border-radius:12px;
+}
+
+.institute-app .app-library-item.compact{
+  grid-template-columns:minmax(0, 1fr) auto;
+  align-items:center;
+}
+
+.institute-app .app-library-meta,
+.institute-app .app-library-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 8px;
+  align-items:flex-start;
+}
+
+.institute-app .app-library-meta,
+.institute-app .app-search-result-meta,
+.institute-app .app-study-chain-meta,
+.institute-app .app-reader-context-meta,
+.institute-app .app-study-path-card-meta,
+.institute-app .app-study-path-detail-meta,
+.institute-app .app-today-recent-item .app-library-meta,
+.institute-app .course-meta{
+  color:var(--app-muted);
+  font-size:.78rem;
+  line-height:1.45;
+}
+
+.institute-app .app-library-meta time{
+  color:var(--app-muted);
+  font-size:.76rem;
+  font-weight:850;
+  line-height:1.2;
+}
+
+.institute-app .app-library-note{
+  margin-top:8px;
+  padding:10px;
+  border-left:4px solid var(--app-blue-2);
+  background:rgba(219,228,238,.45);
+  color:var(--app-ink);
+}
+
+.institute-app .app-library-actions button,
+.institute-app .app-library-actions .app-btn{
+  min-height:42px;
+  padding:0 12px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-ink);
+  font-weight:850;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:1 1 120px;
+}
+
+.institute-app .app-settings-form{
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  margin-bottom:12px;
+}
+
+.institute-app .app-loading,
+.institute-app .app-error,
+.institute-app .app-empty{
+  padding:14px;
+  border:1px solid var(--app-line);
+  background:#f8fafc;
+  color:var(--app-muted);
+  font-weight:800;
+}
+
+html[data-theme="dark"] .institute-app{
+  --app-ink:#f8fafc;
+  --app-muted:#cbd5e1;
+  --app-line:rgba(219,228,238,.22);
+  --app-surface:#111827;
+  background:#050b14;
+}
+
+html[data-theme="dark"] .institute-app .app-card,
+html[data-theme="dark"] .institute-app .app-search-shell,
+html[data-theme="dark"] .institute-app .app-reader-shell,
+html[data-theme="dark"] .institute-app .course-card,
+html[data-theme="dark"] .institute-app .watch-card,
+html[data-theme="dark"] .institute-app .practice-card,
+html[data-theme="dark"] .institute-app .app-stat,
+html[data-theme="dark"] .institute-app .lesson-detail-card,
+html[data-theme="dark"] .institute-app .ai-response-card,
+html[data-theme="dark"] .institute-app .app-reader-current,
+html[data-theme="dark"] .institute-app .app-reader-context,
+html[data-theme="dark"] .institute-app .app-reader-study-actions,
+html[data-theme="dark"] .institute-app .app-reader-search,
+html[data-theme="dark"] .institute-app .app-reader-related,
+html[data-theme="dark"] .institute-app .app-full-library,
+html[data-theme="dark"] .institute-app .app-library-item,
+html[data-theme="dark"] .institute-app .app-library-empty,
+html[data-theme="dark"] .institute-app .app-study-path-card,
+html[data-theme="dark"] .institute-app .app-study-path-detail-card,
+html[data-theme="dark"] .institute-app .app-study-path-step,
+html[data-theme="dark"] .institute-app .app-course-progress-row,
+html[data-theme="dark"] .institute-app input,
+html[data-theme="dark"] .institute-app select,
+html[data-theme="dark"] .institute-app textarea,
+html[data-theme="dark"] .institute-app .app-tabbar{
+  background:var(--app-surface);
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .reader-verse,
+html[data-theme="dark"] .institute-app .app-loading,
+html[data-theme="dark"] .institute-app .app-error,
+html[data-theme="dark"] .institute-app .app-empty,
+html[data-theme="dark"] .institute-app .app-search-result,
+html[data-theme="dark"] .institute-app .app-practice-summary,
+html[data-theme="dark"] .institute-app .reader-actions button,
+html[data-theme="dark"] .institute-app .lesson-list button,
+html[data-theme="dark"] .institute-app .app-example-prompts button,
+html[data-theme="dark"] .institute-app .app-library-actions button,
+html[data-theme="dark"] .institute-app .app-library-actions .app-btn,
+html[data-theme="dark"] .institute-app .app-library-filter-form button{
+  background:#07111f;
+  color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .reader-verse.is-highlighted{
+  background:rgba(241,115,0,.16);
+  border-color:rgba(241,115,0,.42);
+}
+
+html[data-theme="dark"] .institute-app .reader-verse.is-active{
+  background:rgba(5,74,145,.24);
+  border-color:rgba(129,164,205,.42);
+}
+
+html[data-theme="dark"] .institute-app .reader-verse.is-active.is-highlighted{
+  background:linear-gradient(135deg, rgba(5,74,145,.24), rgba(241,115,0,.16));
+}
+
+html[data-theme="dark"] .institute-app .reader-note{
+  background:rgba(129,164,205,.14);
+  color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .reader-note strong{
+  color:#DBE4EE;
+}
+
+html[data-theme="dark"] .institute-app .app-library-note{
+  background:rgba(129,164,205,.14);
+  color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .app-related-card,
+html[data-theme="dark"] .institute-app .app-related-empty,
+html[data-theme="dark"] .institute-app .app-related-actions .app-btn{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-reader-search-result,
+html[data-theme="dark"] .institute-app .app-reader-search-empty{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-search-result{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-reader-search-result.is-active{
+  background:rgba(5,74,145,.24);
+  border-color:rgba(129,164,205,.42);
+}
+
+html[data-theme="dark"] .institute-app .app-reader-search-ref{
+  color:#DBE4EE;
+}
+
+html[data-theme="dark"] .institute-app .app-study-chain,
+html[data-theme="dark"] .institute-app .app-study-chain-item{
+  background:#07111f;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-study-chain-empty{
+  background:rgba(5,74,145,.18);
+  border-color:rgba(129,164,205,.2);
+  color:#f8fafc;
+}
+
+html[data-theme="dark"] .institute-app .app-study-path-card.is-active{
+  background:linear-gradient(135deg, rgba(5,74,145,.24), rgba(129,164,205,.12));
+}
+
+html[data-theme="dark"] .institute-app .app-study-path-step.is-complete{
+  background:rgba(5,74,145,.18);
+}
+
+html[data-theme="dark"] .institute-app .app-study-path-count,
+html[data-theme="dark"] .institute-app .app-study-path-step-badge{
+  background:rgba(129,164,205,.14);
+  color:#dbe4ee;
+  border-color:rgba(129,164,205,.18);
+}
+
+html[data-theme="dark"] .institute-app .app-study-chain-status{
+  color:#dbe4ee;
+}
+
+html[data-theme="dark"] .institute-app .app-study-chain-actions .app-btn,
+html[data-theme="dark"] .institute-app .app-study-chain-item-actions .app-btn{
+  background:#111827;
+  color:#f8fafc;
+  border-color:var(--app-line);
+}
+
+html[data-theme="dark"] .institute-app .app-related-source{
+  color:var(--app-muted);
+}
+
+@media(min-width:900px){
+  .institute-app .app-tabbar-bottom{
+    display:none;
+  }
+
+  .institute-app .app-shell{
+    padding-bottom:70px;
+  }
+}
+
+@media(max-width:920px){
+  .institute-app .app-home-grid,
+  .institute-app .app-course-grid,
+  .institute-app .app-watch-grid,
+  .institute-app .app-practice-grid,
+  .institute-app .app-saved-library,
+  .institute-app .app-study-path-grid{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-controls,
+  .institute-app .app-search-form,
+  .institute-app .app-reader-search-form,
+  .institute-app .app-settings-form,
+  .institute-app .app-library-filter-form,
+  .institute-app .app-reader-study-grid,
+  .institute-app .app-profile-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .institute-app .app-study-chain-head,
+  .institute-app .app-study-chain-item{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-study-path-card-head,
+  .institute-app .app-study-path-detail-head,
+  .institute-app .app-study-path-step-head{
+    flex-direction:column;
+  }
+
+  .institute-app .app-study-path-card-head{
+    gap:12px;
+  }
+
+  .institute-app .app-study-path-grid{
+    width:100%;
+  }
+
+  .institute-app .app-study-path-card-meta,
+  .institute-app .app-study-path-detail-meta{
+    margin:0;
+  }
+
+  .institute-app .app-study-path-card-copy,
+  .institute-app .app-study-path-detail-copy{
+    gap:8px;
+  }
+
+  .institute-app .app-today-stats{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:640px){
+  .institute-app .app-shell{
+    width:min(100% - 20px, 1120px);
+    padding-top:14px;
+  }
+
+  .institute-app .app-breadcrumbs,
+  .institute-app .app-tabbar-top{
+    display:none;
+  }
+
+  .institute-app .app-topbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .institute-app .app-topbar h1{
+    font-size:1.25rem;
+  }
+
+  .institute-app .app-install-link{
+    width:100%;
+  }
+
+  .institute-app .app-tabbar-bottom{
+    grid-template-columns:repeat(6, minmax(0, 1fr));
+    gap:2px;
+  }
+
+  .institute-app .app-tab-link{
+    min-height:48px;
+    padding:0 4px;
+    font-size:.75rem;
+    line-height:1.15;
+  }
+
+  .institute-app .app-hero,
+  .institute-app .app-card,
+  .institute-app .app-search-shell,
+  .institute-app .app-reader-shell{
+    padding:14px;
+  }
+
+  .institute-app .app-actions .app-btn,
+  .institute-app .app-button-row .app-btn,
+  .institute-app .app-reader-links .app-btn,
+  .institute-app .app-reader-nav .app-btn,
+  .institute-app .app-reader-action-grid .app-btn,
+  .institute-app .app-reader-search-form .app-btn,
+  .institute-app .app-search-actions .app-btn,
+  .institute-app .app-study-path-card-actions .app-btn,
+  .institute-app .app-study-path-detail-actions .app-btn,
+  .institute-app .app-study-path-step-actions .app-btn,
+  .institute-app .app-study-path-step-actions .app-tag{
+    width:100%;
+  }
+
+  .institute-app .app-reader-controls,
+  .institute-app .app-search-form,
+  .institute-app .app-reader-search-form,
+  .institute-app .app-settings-form,
+  .institute-app .app-library-filter-form,
+  .institute-app .app-profile-grid{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-study-grid{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-reader-controls{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:8px;
+  }
+
+  .institute-app .app-reader-controls > label{
+    min-height:84px;
+    padding:11px 11px 12px;
+  }
+
+  .institute-app .app-reader-nav,
+  .institute-app .app-reader-links{
+    gap:8px;
+  }
+
+  .institute-app .app-reader-nav .app-btn,
+  .institute-app .app-reader-links .app-btn,
+  .institute-app .app-reader-search-form button{
+    width:100%;
+  }
+
+  .institute-app .app-reader-context-meta{
+    gap:8px;
+  }
+
+  .institute-app .app-reader-action-grid .app-btn{
+    flex:1 1 100%;
+  }
+
+  .institute-app .app-study-chain-actions,
+  .institute-app .app-study-chain-item-actions{
+    justify-content:flex-start;
+  }
+
+  .institute-app .app-library-section:nth-child(3),
+  .institute-app .app-library-section:nth-child(5),
+  .institute-app .app-library-item.compact{
+    grid-column:auto;
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-practice-summary{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .institute-app .app-practice-summary button{
+    width:100%;
+    margin-left:0;
+  }
+
+  .institute-app .app-search-result-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media(max-width:340px){
+  .institute-app .app-shell{
+    width:min(100% - 16px, 1120px);
+  }
+
+  .institute-app .app-tab-link{
+    font-size:.62rem;
+  }
+}
+
+.institute-app .app-onboarding-overlay{
+  position:fixed;
+  inset:0;
+  z-index:140;
+  display:grid;
+  place-items:center;
+  padding:16px;
+}
+
+.institute-app .app-onboarding-overlay[hidden]{
+  display:none;
+}
+
+.institute-app .app-onboarding-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(5,74,145,.72);
+  backdrop-filter:blur(3px);
+}
+
+.institute-app .app-onboarding-card{
+  position:relative;
+  z-index:1;
+  width:min(760px, 100%);
+  max-height:min(88vh, 920px);
+  overflow:auto;
+  padding:20px;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:18px;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 28px 60px rgba(3,27,56,.35);
+}
+
+.institute-app .app-onboarding-card .app-section-head{
+  margin-bottom:16px;
+}
+
+.institute-app .app-onboarding-card h2{
+  margin:0;
+  color:var(--app-ink);
+  font-size:clamp(1.55rem, 5vw, 2.35rem);
+  line-height:1.1;
+}
+
+.institute-app .app-onboarding-card p{
+  margin:10px 0 0;
+  color:var(--app-muted);
+  line-height:1.55;
+}
+
+.institute-app .app-onboarding-points{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+  margin-top:12px;
+}
+
+.institute-app .app-onboarding-point{
+  padding:14px;
+  border:1px solid var(--app-line);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(5,74,145,.05);
+}
+
+.institute-app .app-onboarding-point strong{
+  display:block;
+  margin-bottom:6px;
+  color:var(--app-blue);
+  font-size:.92rem;
+}
+
+.institute-app .app-onboarding-point span{
+  display:block;
+  color:var(--app-muted);
+  line-height:1.45;
+}
+
+.institute-app .app-onboarding-actions,
+.institute-app .app-onboarding-footer{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:16px;
+}
+
+.institute-app .app-onboarding-actions .app-btn,
+.institute-app .app-onboarding-footer .app-btn{
+  min-width:0;
+  flex:1 1 180px;
+}
+
+.institute-app .app-onboarding-footer{
+  justify-content:flex-end;
+}
+
+@media(max-width:640px){
+  .institute-app .app-onboarding-overlay{
+    padding:12px;
+  }
+
+  .institute-app .app-onboarding-card{
+    padding:16px;
+    border-radius:16px;
+  }
+
+  .institute-app .app-onboarding-points{
+    grid-template-columns:1fr;
+  }
+
+  .institute-app .app-onboarding-actions .app-btn,
+  .institute-app .app-onboarding-footer .app-btn{
+    flex:1 1 100%;
+  }
+}
+
+/* Final app reader square-panel alignment */
+.institute-app .app-reader-shell,
+.institute-app .app-reader-current,
+.institute-app .app-reader-context,
+.institute-app .app-reader-study-actions,
+.institute-app .app-reader-search,
+.institute-app .app-reader-related,
+.institute-app .app-reader,
+.institute-app .reader-verse,
+.institute-app .app-reader-search-result,
+.institute-app .app-reader-search-empty,
+.institute-app .app-reader-controls > label{
+  border-radius:0;
+}
+
+/* App tab header inset polish */
+.institute-app .app-panel > .app-section-head{
+  width:min(100%, 920px);
+  margin:0 auto 18px;
+  padding:18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-panel > .app-section-head .app-label{
+  margin-bottom:6px;
+}
+
+.institute-app .app-panel > .app-section-head h2{
+  margin:0 0 8px;
+}
+
+.institute-app .app-panel > .app-section-head p{
+  max-width:64ch;
+  margin:0;
+}
+
+@media (max-width:520px){
+  .institute-app .app-panel > .app-section-head{
+    width:calc(100% - 20px);
+    padding:16px;
+    margin-bottom:16px;
+  }
+}
+
+/* App section panel polish */
+.institute-app .app-panel > :is(
+  .app-card,
+  .app-grid,
+  .app-reader-shell,
+  .app-reader-links,
+  .app-offline-card,
+  .app-profile-card,
+  .app-library-section,
+  .app-media-grid,
+  .app-ask-card,
+  .app-study-card,
+  .course-grid,
+  .practice-grid
+){
+  width:min(100%, 920px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > .app-grid,
+.institute-app .app-panel > .course-grid,
+.institute-app .app-panel > .practice-grid,
+.institute-app .app-panel > .app-media-grid{
+  align-items:stretch;
+}
+
+.institute-app .app-panel > :is(
+  .app-card,
+  .app-reader-shell,
+  .app-offline-card,
+  .app-profile-card,
+  .app-library-section,
+  .app-ask-card,
+  .app-study-card
+){
+  padding:18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-panel > * + *{
+  margin-top:18px;
+}
+
+.institute-app .app-panel > .app-section-head + *{
+  margin-top:0;
+}
+
+@media (max-width:520px){
+  .institute-app .app-panel > :is(
+    .app-card,
+    .app-grid,
+    .app-reader-shell,
+    .app-reader-links,
+    .app-offline-card,
+    .app-profile-card,
+    .app-library-section,
+    .app-media-grid,
+    .app-ask-card,
+    .app-study-card,
+    .course-grid,
+    .practice-grid
+  ){
+    width:calc(100% - 20px);
+  }
+
+  .institute-app .app-panel > :is(
+    .app-card,
+    .app-reader-shell,
+    .app-offline-card,
+    .app-profile-card,
+    .app-library-section,
+    .app-ask-card,
+    .app-study-card
+  ){
+    padding:16px;
+  }
+}
+
+/* App web nav and tab context polish */
+.institute-app .app-breadcrumbs,
+.institute-app .app-topbar,
+.institute-app .app-tabbar-top,
+.institute-app .app-panels{
+  width:min(100%, 1040px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-topbar{
+  padding:16px 18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-tabbar-top{
+  margin:0 auto 18px;
+  padding:10px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-tabbar-bottom{
+  box-shadow:0 -10px 24px rgba(5, 35, 72, 0.1);
+}
+
+.institute-app .app-tab-link{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.institute-app .app-tabbar-top .app-tab-link:hover,
+.institute-app .app-tabbar-top .app-tab-link:focus-visible{
+  background:rgba(5, 74, 145, 0.08);
+}
+
+.institute-app .app-tabbar-top .app-tab-link.is-active:hover,
+.institute-app .app-tabbar-top .app-tab-link.is-active:focus-visible{
+  background:var(--app-blue);
+}
+
+.institute-app .app-panel{
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > :is(
+  .app-hero,
+  .app-section-head,
+  .app-home-grid,
+  .app-reader-shell,
+  .app-study-paths,
+  .app-study-path-grid,
+  .app-study-path-detail,
+  .app-course-grid,
+  .app-lesson-detail,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-watch-grid,
+  .app-profile-grid,
+  .app-offline-card,
+  .app-library-controls,
+  .app-saved-library,
+  .app-settings-card,
+  .app-card
+){
+  width:min(100%, 960px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.institute-app .app-panel > :is(
+  .app-section-head,
+  .app-reader-shell,
+  .app-study-paths,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-profile-grid,
+  .app-offline-card,
+  .app-library-controls,
+  .app-settings-card
+){
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app .app-panel > :is(
+  .app-study-paths,
+  .app-ai-disclaimer,
+  .app-ask-form,
+  .app-ai-response,
+  .app-filter-note,
+  .app-profile-grid
+){
+  padding:18px;
+}
+
+.institute-app .app-panel > * + *{
+  margin-top:18px;
+}
+
+.institute-app .app-panel > .app-section-head + *{
+  margin-top:0;
+}
+
+.institute-app #home .app-hero,
+.institute-app #home .app-home-today-head,
+.institute-app #home .app-home-grid{
+  width:min(100%, 960px);
+}
+
+.institute-app #study .app-study-paths{
+  display:block;
+}
+
+.institute-app #study .app-study-path-grid,
+.institute-app #study .app-study-path-detail{
+  width:100%;
+}
+
+.institute-app #ask .app-ask-form,
+.institute-app #ask .app-ai-response{
+  width:min(100%, 960px);
+}
+
+.institute-app #media .app-watch-grid{
+  width:min(100%, 960px);
+  margin-left:auto;
+  margin-right:auto;
+  display:grid;
+  gap:14px;
+}
+
+.institute-app #media .app-watch-grid > *,
+.institute-app #media article,
+.institute-app #media .app-card{
+  min-height:180px;
+  padding:18px;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app #media .app-watch-grid > * h3,
+.institute-app #media article h3,
+.institute-app #media .app-card h3{
+  margin-top:0;
+}
+
+.institute-app #profile .app-profile-grid{
+  width:min(100%, 960px);
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.institute-app #profile .app-stat{
+  padding:18px;
+  text-align:center;
+  border:1px solid rgba(5, 74, 145, 0.14);
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue);
+  box-shadow:0 10px 24px rgba(5, 35, 72, 0.06);
+}
+
+.institute-app #profile .app-stat strong{
+  display:block;
+  margin-bottom:8px;
+  color:#054A91;
+  font-size:1.6rem;
+  line-height:1;
+}
+
+.institute-app #profile .app-stat span{
+  display:block;
+  color:#22364f;
+  font-size:0.86rem;
+  line-height:1.25;
+}
+
+@media (max-width:720px){
+  .institute-app #profile .app-profile-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width:640px){
+  .institute-app .app-topbar,
+  .institute-app .app-panel > :is(
+    .app-hero,
+    .app-section-head,
+    .app-home-grid,
+    .app-reader-shell,
+    .app-study-paths,
+    .app-study-path-grid,
+    .app-study-path-detail,
+    .app-course-grid,
+    .app-lesson-detail,
+    .app-ai-disclaimer,
+    .app-ask-form,
+    .app-ai-response,
+    .app-filter-note,
+    .app-watch-grid,
+    .app-profile-grid,
+    .app-offline-card,
+    .app-library-controls,
+    .app-saved-library,
+    .app-settings-card,
+    .app-card
+  ){
+    width:100%;
+  }
+
+  .institute-app .app-panel > :is(
+    .app-study-paths,
+    .app-ai-disclaimer,
+    .app-ask-form,
+    .app-ai-response,
+    .app-filter-note,
+    .app-profile-grid
+  ),
+  .institute-app #media .app-watch-grid > *,
+  .institute-app #media article,
+  .institute-app #media .app-card,
+  .institute-app #profile .app-stat{
+    padding:16px;
+  }
+}
+
+@media (max-width:520px){
+  .institute-app #profile .app-profile-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* App blue panel text guard */
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+){
+  border-color:rgba(219,228,238,.28);
+  color:#fff;
+}
+
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+) :where(h1,h2,h3,h4,h5,h6,strong,label,legend){
+  color:#fff;
+}
+
+.institute-app :is(
+  .app-topbar,
+  .app-tabbar-top,
+  .app-panel > .app-section-head,
+  .app-panel > .app-card,
+  .app-panel > .app-reader-shell,
+  .app-panel > .app-study-paths,
+  .app-panel > .app-ai-disclaimer,
+  .app-panel > .app-ask-form,
+  .app-panel > .app-ai-response,
+  .app-panel > .app-filter-note,
+  .app-panel > .app-profile-grid,
+  .app-panel > .app-offline-card,
+  .app-panel > .app-library-controls,
+  .app-panel > .app-settings-card,
+  .app-watch-grid > *,
+  .app-stat,
+  .app-onboarding-card
+) :where(p,span,li,small,em){
+  color:#dbe4ee;
+}
+
+.institute-app :is(.app-label,.app-kicker){
+  color:#ffb36b;
+}
+
+.institute-app :is(input,select,textarea){
+  background:#fff;
+  color:#111827;
+}
+
+html[data-theme="dark"] .institute-app :is(input,select,textarea){
+  background:#07111f;
+  color:#f8fafc;
+}
+
+.institute-app .app-btn.primary{
+  background:var(--app-orange);
+  border-color:var(--app-orange);
+  color:#fff;
+}
+
+/* App reader control theme fix */
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+){
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+) :where(h2,h3,h4,strong,label,legend){
+  color:#fff !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav
+) :where(p,span,small,em){
+  color:#dbe4ee !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary){
+  border-color:rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary):hover,
+.institute-app #bible :is(
+  .app-reader-study-actions,
+  .app-reader-study-grid,
+  .app-reader-links,
+  .app-reader-actions,
+  .app-reader-nav,
+  .app-reader-pager,
+  .reader-actions,
+  .reader-nav,
+  .app-reader-controls
+) :is(
+  .app-btn,
+  button,
+  a.app-btn
+):not(.primary):focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-controls :is(label, label span){
+  color:#fff !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea){
+  border-color:rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea)::placeholder{
+  color:#4b5563 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea){
+  border-color:rgba(129,164,205,.38) !important;
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea)::placeholder{
+  color:#94a3b8 !important;
+}
+
+/* App reader controls unified theme fix */
+.institute-app #bible .app-reader-controls{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls{
+  border-color:rgba(129,164,205,.32) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.9), rgba(7,17,31,.96)),
+    #07111f !important;
+  color:#fff !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.32);
+}
+
+.institute-app #bible .app-reader-controls :is(label,label span){
+  color:#fff !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea),
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn){
+  min-height:44px;
+  border:1px solid rgba(255,255,255,.65) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+}
+
+.institute-app #bible .app-reader-controls :is(select,input,textarea):hover,
+.institute-app #bible .app-reader-controls :is(select,input,textarea):focus-visible,
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):hover,
+.institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea),
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn){
+  border-color:rgba(129,164,205,.42) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea):hover,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(select,input,textarea):focus-visible,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):hover,
+html[data-theme="dark"] .institute-app #bible .app-reader-controls :is(button,.app-btn,a.app-btn):focus-visible{
+  background:#0b1626 !important;
+  color:#f8fafc !important;
+}
+
+.institute-app #bible .app-reader-controls option{
+  background:#fff;
+  color:#111827;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls option{
+  background:#07111f;
+  color:#f8fafc;
+}
+
+/* App reader direct control fix */
+.institute-app #bible #reader-controls{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-controls > label,
+.institute-app #bible #reader-controls > label:nth-child(1),
+.institute-app #bible #reader-controls > label:nth-child(2),
+.institute-app #bible #reader-controls > label:nth-child(3),
+.institute-app #bible #reader-controls > label:nth-child(4),
+.institute-app #bible #reader-controls > label:nth-child(5){
+  border:1px solid rgba(255,255,255,.32) !important;
+  background:rgba(255,255,255,.08) !important;
+  background-image:none !important;
+  color:#fff !important;
+  box-shadow:none !important;
+}
+
+.institute-app #bible #reader-controls > label > span,
+.institute-app #bible #reader-controls > label:nth-child(4) > span,
+.institute-app #bible #reader-controls > label:nth-child(5) > span{
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-canon,
+.institute-app #bible #reader-book,
+.institute-app #bible #reader-chapter,
+.institute-app #bible #reader-font-size,
+.institute-app #bible #reader-spacing{
+  border:1px solid rgba(255,255,255,.72) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.institute-app #bible #reader-canon option,
+.institute-app #bible #reader-book option,
+.institute-app #bible #reader-chapter option,
+.institute-app #bible #reader-font-size option,
+.institute-app #bible #reader-spacing option{
+  background:#fff !important;
+  color:#111827 !important;
+}
+
+.institute-app #bible .app-reader-nav{
+  border-color:rgba(219,228,238,.28) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.96), rgba(62,124,177,.92)),
+    var(--app-blue) !important;
+  color:#fff !important;
+}
+
+.institute-app #bible #reader-prev,
+.institute-app #bible #reader-next{
+  border:1px solid rgba(255,255,255,.72) !important;
+  background:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+.institute-app #bible #reader-prev:hover,
+.institute-app #bible #reader-next:hover,
+.institute-app #bible #reader-prev:focus-visible,
+.institute-app #bible #reader-next:focus-visible{
+  background:#f8fafc !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-controls,
+html[data-theme="dark"] .institute-app #bible .app-reader-nav{
+  border-color:rgba(129,164,205,.32) !important;
+  background:
+    linear-gradient(145deg, rgba(5,74,145,.9), rgba(7,17,31,.96)),
+    #07111f !important;
+  color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-controls > label,
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(1),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(2),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(3),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(4),
+html[data-theme="dark"] .institute-app #bible #reader-controls > label:nth-child(5){
+  border-color:rgba(129,164,205,.38) !important;
+  background:rgba(7,17,31,.34) !important;
+  background-image:none !important;
+  color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-canon,
+html[data-theme="dark"] .institute-app #bible #reader-book,
+html[data-theme="dark"] .institute-app #bible #reader-chapter,
+html[data-theme="dark"] .institute-app #bible #reader-font-size,
+html[data-theme="dark"] .institute-app #bible #reader-spacing,
+html[data-theme="dark"] .institute-app #bible #reader-prev,
+html[data-theme="dark"] .institute-app #bible #reader-next{
+  border-color:rgba(129,164,205,.46) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  box-shadow:none !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-canon option,
+html[data-theme="dark"] .institute-app #bible #reader-book option,
+html[data-theme="dark"] .institute-app #bible #reader-chapter option,
+html[data-theme="dark"] .institute-app #bible #reader-font-size option,
+html[data-theme="dark"] .institute-app #bible #reader-spacing option{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+/* App global dark mode reset */
+html[data-theme="dark"],
+html[data-theme="dark"] body{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app,
+html[data-theme="dark"] .institute-app *{
+  color-scheme:dark;
+}
+
+html[data-theme="dark"] .institute-app{
+  --app-bg:#07111f;
+  --app-surface:#0b1626;
+  --app-surface-strong:#111827;
+  --app-border:rgba(241,115,0,.34);
+  --app-text:#f8fafc;
+  --app-muted:#dbe4ee;
+  --app-orange:#f17300;
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-shell,
+  .app-main,
+  .app-content,
+  .app-screen,
+  .app-tab-panels,
+  .app-tab-panel,
+  .app-view,
+  .app-section,
+  #home,
+  #bible,
+  #study,
+  #ask,
+  #media,
+  #profile,
+  [data-app-panel],
+  [data-tab-panel]
+){
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-card,
+  .app-panel,
+  .app-hero,
+  .app-home-hero,
+  .app-feature,
+  .app-feature-card,
+  .app-reader-shell,
+  .app-reader-current,
+  .app-reader-controls,
+  .app-reader-nav,
+  .app-reader-search,
+  .app-reader-study-grid,
+  .app-reader-context,
+  .app-reader-study-actions,
+  .app-reader-related,
+  .app-study-chain,
+  .app-reader,
+  .app-full-library,
+  .app-search-shell,
+  .app-media-card,
+  .app-profile-card,
+  .app-saved-library,
+  .app-note-card,
+  .app-modal,
+  .app-dialog,
+  .app-bottom-sheet,
+  .app-toast,
+  [class*="card"],
+  [class*="panel"],
+  [class*="modal"],
+  [class*="sheet"]
+){
+  border-color:rgba(241,115,0,.34) !important;
+  background:#0b1626 !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  box-shadow:0 18px 45px rgba(0,0,0,.36) !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title
+){
+  color:inherit !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-section-head .app-label,
+  .app-reader-current .app-label
+){
+  color:#f17300 !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-muted,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-reader-search-status
+){
+  color:#dbe4ee !important;
+}
+
+html[data-theme="dark"] .institute-app a{
+  color:#f17300 !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+){
+  border-color:rgba(241,115,0,.5) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+)::placeholder{
+  color:#dbe4ee !important;
+  -webkit-text-fill-color:#dbe4ee !important;
+}
+
+html[data-theme="dark"] .institute-app option{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea,
+  button,
+  .app-btn,
+  a.app-btn
+):focus-visible{
+  outline:3px solid rgba(241,115,0,.45) !important;
+  outline-offset:2px;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button,
+  .app-btn,
+  a.app-btn
+):not(.primary){
+  border-color:rgba(241,115,0,.58) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button,
+  .app-btn,
+  a.app-btn
+):not(.primary):hover,
+html[data-theme="dark"] .institute-app :is(
+  button,
+  .app-btn,
+  a.app-btn
+):not(.primary):focus-visible{
+  border-color:#f17300 !important;
+  background:#111827 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button.primary,
+  .app-btn.primary,
+  a.app-btn.primary,
+  .primary
+){
+  border-color:#f17300 !important;
+  background:#f17300 !important;
+  background-image:none !important;
+  color:#07111f !important;
+  -webkit-text-fill-color:#07111f !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button.primary,
+  .app-btn.primary,
+  a.app-btn.primary,
+  .primary
+):hover,
+html[data-theme="dark"] .institute-app :is(
+  button.primary,
+  .app-btn.primary,
+  a.app-btn.primary,
+  .primary
+):focus-visible{
+  background:#ff8a1c !important;
+  border-color:#ff8a1c !important;
+  color:#07111f !important;
+  -webkit-text-fill-color:#07111f !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-bottom-tabs,
+  .app-nav,
+  .app-header,
+  .app-footer
+){
+  border-color:rgba(241,115,0,.3) !important;
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-tab,
+  .app-tab-button,
+  [role="tab"]
+){
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-tab[aria-selected="true"],
+  .app-tab-button[aria-selected="true"],
+  [role="tab"][aria-selected="true"],
+  .is-active,
+  .active
+){
+  border-color:#f17300 !important;
+  background:#f17300 !important;
+  color:#07111f !important;
+  -webkit-text-fill-color:#07111f !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-onboarding,
+  .app-onboarding-shell,
+  .app-onboarding-overlay,
+  .app-onboarding-backdrop,
+  .app-onboarding-wrap,
+  .app-onboarding-screen,
+  #app-onboarding,
+  #onboarding,
+  [class*="onboarding"]
+){
+  background:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-onboarding-panel,
+  .app-onboarding-modal,
+  .app-onboarding-card,
+  [class*="onboarding-card"],
+  [class*="onboarding-panel"],
+  [class*="onboarding-modal"]
+){
+  border-color:rgba(241,115,0,.38) !important;
+  background:#0b1626 !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+}
+
+/* App Bible reader dark backdrop hard reset */
+html[data-theme="dark"] .institute-app #bible,
+html[data-theme="dark"] .institute-app #bible::before,
+html[data-theme="dark"] .institute-app #bible::after,
+html[data-theme="dark"] .institute-app #bible .app-reader-shell,
+html[data-theme="dark"] .institute-app #bible .app-reader-shell::before,
+html[data-theme="dark"] .institute-app #bible .app-reader-shell::after{
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible :is(
+  .app-reader,
+  #reader-output,
+  .app-reader-current,
+  #reader-current-summary,
+  .app-reader-search,
+  #reader-chapter-search-panel,
+  .app-reader-related,
+  #reader-related,
+  .app-study-chain,
+  #study-chain,
+  .app-full-library,
+  .app-search-shell,
+  .app-reader-context,
+  #reader-context,
+  .app-reader-study-actions,
+  #reader-study-actions,
+  .app-reader-study-grid
+),
+html[data-theme="dark"] .institute-app #bible :is(
+  .app-reader,
+  #reader-output,
+  .app-reader-current,
+  #reader-current-summary,
+  .app-reader-search,
+  #reader-chapter-search-panel,
+  .app-reader-related,
+  #reader-related,
+  .app-study-chain,
+  #study-chain,
+  .app-full-library,
+  .app-search-shell,
+  .app-reader-context,
+  #reader-context,
+  .app-reader-study-actions,
+  #reader-study-actions,
+  .app-reader-study-grid
+)::before,
+html[data-theme="dark"] .institute-app #bible :is(
+  .app-reader,
+  #reader-output,
+  .app-reader-current,
+  #reader-current-summary,
+  .app-reader-search,
+  #reader-chapter-search-panel,
+  .app-reader-related,
+  #reader-related,
+  .app-study-chain,
+  #study-chain,
+  .app-full-library,
+  .app-search-shell,
+  .app-reader-context,
+  #reader-context,
+  .app-reader-study-actions,
+  #reader-study-actions,
+  .app-reader-study-grid
+)::after{
+  background:#0b1626 !important;
+  background-color:#0b1626 !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.34) !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls,
+html[data-theme="dark"] .institute-app #bible #reader-controls,
+html[data-theme="dark"] .institute-app #bible .app-reader-nav{
+  background:#0b1626 !important;
+  background-color:#0b1626 !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.34) !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible .app-reader-controls > label,
+html[data-theme="dark"] .institute-app #bible #reader-controls > label{
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.34) !important;
+  color:#f8fafc !important;
+}
+
+/* App dark mode white text correction */
+html[data-theme="dark"] .institute-app,
+html[data-theme="dark"] .institute-app :is(
+  h1,h2,h3,h4,h5,h6,
+  p,span,strong,em,small,
+  li,dt,dd,label,legend,
+  a,
+  button,
+  .app-btn,
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-title,
+  .app-heading,
+  .app-card-title,
+  .app-section-title,
+  .app-subtitle,
+  .app-description,
+  .app-helper,
+  .app-note,
+  .app-filter-note,
+  .app-search-status,
+  .app-reader-search-status,
+  .app-tab,
+  .app-tab-button,
+  [role="tab"]
+){
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  input,
+  select,
+  textarea
+)::placeholder{
+  color:#dbe4ee !important;
+  -webkit-text-fill-color:#dbe4ee !important;
+}
+
+html[data-theme="dark"] .institute-app option{
+  background:#07111f !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button,
+  .app-btn,
+  a.app-btn
+):not(.primary){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  button.primary,
+  .app-btn.primary,
+  a.app-btn.primary
+){
+  background:#f17300 !important;
+  border-color:#f17300 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-tab[aria-selected="true"],
+  .app-tab-button[aria-selected="true"],
+  [role="tab"][aria-selected="true"],
+  .is-active,
+  .active
+){
+  background:#f17300 !important;
+  border-color:#f17300 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app :is(
+  .app-label,
+  .app-kicker,
+  .app-eyebrow,
+  .app-section-head .app-label,
+  .app-reader-current .app-label
+){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+/* App reader verse actions dark mode fix */
+html[data-theme="dark"] .institute-app #bible #reader-output{
+  background:#0b1626 !important;
+  background-color:#0b1626 !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.34) !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .app-reader-verse,
+  .reader-verse,
+  .verse,
+  .verse-card,
+  .app-verse,
+  .app-verse-card,
+  [class*="verse"]
+){
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.26) !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .app-reader-verse-actions,
+  .reader-verse-actions,
+  .verse-actions,
+  .app-verse-actions,
+  .verse-tools,
+  .app-verse-tools,
+  .reader-actions,
+  [class*="verse-actions"],
+  [class*="verse-tools"]
+){
+  border-color:rgba(241,115,0,.3) !important;
+  background:#0b1626 !important;
+  background-color:#0b1626 !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .app-reader-verse-actions,
+  .reader-verse-actions,
+  .verse-actions,
+  .app-verse-actions,
+  .verse-tools,
+  .app-verse-tools,
+  .reader-actions,
+  [class*="verse-actions"],
+  [class*="verse-tools"]
+) :is(button,.app-btn,a.app-btn){
+  border:1px solid rgba(241,115,0,.58) !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .app-reader-verse-actions,
+  .reader-verse-actions,
+  .verse-actions,
+  .app-verse-actions,
+  .verse-tools,
+  .app-verse-tools,
+  .reader-actions,
+  [class*="verse-actions"],
+  [class*="verse-tools"]
+) :is(button,.app-btn,a.app-btn):hover,
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .app-reader-verse-actions,
+  .reader-verse-actions,
+  .verse-actions,
+  .app-verse-actions,
+  .verse-tools,
+  .app-verse-tools,
+  .reader-actions,
+  [class*="verse-actions"],
+  [class*="verse-tools"]
+) :is(button,.app-btn,a.app-btn):focus-visible{
+  border-color:#f17300 !important;
+  background:#111827 !important;
+  background-color:#111827 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+):is(
+  [aria-label*="Copy"],
+  [aria-label*="Bookmark"],
+  [aria-label*="Highlight"],
+  [aria-label*="Note"],
+  [aria-label*="Chain"]
+),
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-action],
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-reader-action],
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-verse-action]{
+  border:1px solid rgba(241,115,0,.58) !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+):is(
+  [aria-label*="Copy"],
+  [aria-label*="Bookmark"],
+  [aria-label*="Highlight"],
+  [aria-label*="Note"],
+  [aria-label*="Chain"]
+):hover,
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-action]:hover,
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-reader-action]:hover,
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  button,
+  .app-btn,
+  a.app-btn
+)[data-verse-action]:hover{
+  border-color:#f17300 !important;
+  background:#111827 !important;
+  background-color:#111827 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  .verse-number,
+  .app-verse-number,
+  .reader-verse-number,
+  [class*="verse-number"]
+){
+  color:#f17300 !important;
+  -webkit-text-fill-color:#f17300 !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-output :is(
+  p,span,strong,em,small,
+  .verse-text,
+  .app-verse-text,
+  .reader-verse-text,
+  [class*="verse-text"]
+){
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+/* App header dark mode nav text fix */
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):hover,
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  .site-nav,
+  .site-navigation,
+  .main-nav,
+  .nav-links,
+  .header-nav,
+  .desktop-nav,
+  .mobile-nav,
+  [data-site-header]
+) :is(
+  a,
+  button,
+  .nav-link,
+  .site-link,
+  .menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):focus-visible{
+  color:#f17300 !important;
+  -webkit-text-fill-color:#f17300 !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  [data-site-header]
+) :is(
+  .brand,
+  .site-brand,
+  .brand-link,
+  .site-logo,
+  .logo,
+  .wordmark
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] :is(
+  header,
+  .site-header,
+  [data-site-header]
+) :is(
+  .give-button,
+  .donate-button,
+  a[href*="donate"],
+  a[href*="donations"]
+){
+  border-color:#f17300 !important;
+  background:#f17300 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* App page site header dark link fix */
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):hover,
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  nav a,
+  .nav a,
+  .site-nav a,
+  .main-nav a,
+  .nav-links a,
+  .desktop-nav a,
+  .mobile-nav a,
+  .header-nav a,
+  a.nav-link,
+  a.site-link,
+  a.menu-link
+):not(.give-button):not(.donate-button):not(.primary):not(.app-btn):focus-visible{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  text-decoration-color:#f17300 !important;
+}
+
+html[data-theme="dark"] body:has(.institute-app) :is(
+  header,
+  .site-header,
+  .site-header-inner,
+  .main-header,
+  .header,
+  [data-include="header"],
+  [data-site-header]
+) :is(
+  .brand,
+  .brand a,
+  .site-brand,
+  .site-brand a,
+  .brand-link,
+  .logo,
+  .logo a,
+  .wordmark,
+  .wordmark a
+){
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+/* App study actions buttons dark mode fix */
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+){
+  border:1px solid rgba(241,115,0,.58) !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+  box-shadow:none !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+):hover,
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+):focus-visible{
+  border-color:#f17300 !important;
+  background:#111827 !important;
+  background-color:#111827 !important;
+  background-image:none !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+html[data-theme="dark"] .institute-app #bible #reader-study-actions :is(
+  a,
+  button,
+  .app-btn
+).primary{
+  border-color:#f17300 !important;
+  background:#07111f !important;
+  background-color:#07111f !important;
+  background-image:none !important;
+  color:#f8fafc !important;
+  -webkit-text-fill-color:#f8fafc !important;
+}
+
+/* App light mode outline contract */
+
+html:not([data-theme="dark"]) .institute-app,
+html:not([data-theme="dark"]) body.app-page.institute-app,
+html:not([data-theme="dark"]) .institute-app body,
+html:not([data-theme="dark"]) .institute-app main,
+html:not([data-theme="dark"]) .institute-app .app-shell,
+html:not([data-theme="dark"]) .institute-app .app-main,
+html:not([data-theme="dark"]) .institute-app .app-content{
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  color-scheme:light;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-topbar,
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-hero,
+  .app-section-head,
+  .app-shell-hero,
+  .app-screen-head,
+  .app-screen-hero,
+  .app-page-hero,
+  .app-section-hero,
+  .app-tab-hero,
+  .app-view-hero,
+  .app-bible-hero,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-profile-grid,
+  .app-profile-summary,
+  .app-profile-stats,
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat,
+  .profile-stat-card,
+  .app-library-controls,
+  .app-reader-shell,
+  .app-reader-controls,
+  .app-reader-nav,
+  .app-reader-search,
+  .app-reader-links,
+  .app-search-shell,
+  .reader-actions,
+  .app-ask-form,
+  .app-ai-disclaimer,
+  .app-ai-response,
+  .app-filter-note,
+  .app-study-path-card,
+  .app-study-paths,
+  .app-study-path-detail-card,
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #media .app-watch-grid > *,
+  #media .app-card,
+  #home .app-home-today-head,
+  #study .app-section-head,
+  #study .app-study-path-grid,
+  #study .app-study-path-detail,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #ask .app-card,
+  #media .app-section-head,
+  #media .app-filter-note,
+  #bible .app-reader-shell,
+  #bible .app-reader-controls,
+  #bible .app-reader-nav,
+  #bible .app-reader-search,
+  #bible .app-reader-links,
+  #bible .app-search-shell,
+  #bible .reader-actions,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  #profile .app-section-head,
+  #profile .app-panel,
+  #profile .app-card,
+  #profile .app-stat,
+  .app-onboarding-card
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  border-color:rgba(5,74,145,.2) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  box-shadow:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-topbar,
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-hero,
+  .app-section-head,
+  .app-shell-hero,
+  .app-screen-head,
+  .app-screen-hero,
+  .app-page-hero,
+  .app-section-hero,
+  .app-tab-hero,
+  .app-view-hero,
+  .app-bible-hero,
+  .app-connectivity,
+  .profile-connectivity,
+  .app-saved-library,
+  .saved-library-panel,
+  .app-profile-grid,
+  .app-profile-summary,
+  .app-profile-stats,
+  .app-stat-card,
+  .app-profile-stat,
+  .profile-stat,
+  .profile-stat-card,
+  .app-library-controls,
+  .app-reader-shell,
+  .app-reader-controls,
+  .app-reader-nav,
+  .app-reader-search,
+  .app-reader-links,
+  .app-search-shell,
+  .reader-actions,
+  .app-ask-form,
+  .app-ai-disclaimer,
+  .app-ai-response,
+  .app-filter-note,
+  .app-study-path-card,
+  .app-study-paths,
+  .app-study-path-detail-card,
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #media .app-watch-grid > *,
+  #media .app-card,
+  #home .app-home-today-head,
+  #study .app-section-head,
+  #study .app-study-path-grid,
+  #study .app-study-path-detail,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #ask .app-card,
+  #media .app-section-head,
+  #media .app-filter-note,
+  #bible .app-reader-shell,
+  #bible .app-reader-controls,
+  #bible .app-reader-nav,
+  #bible .app-reader-search,
+  #bible .app-reader-links,
+  #bible .app-search-shell,
+  #bible .reader-actions,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  #profile .app-section-head,
+  #profile .app-panel,
+  #profile .app-card,
+  #profile .app-stat,
+  .app-onboarding-card
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-card,
+  .app-panel,
+  .app-library-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-result-card,
+  .result-card,
+  .course-card,
+  .watch-card,
+  .lesson-detail-card,
+  .app-reader-search-result,
+  .app-reader-search-empty,
+  .app-related-card,
+  .app-related-empty,
+  .app-library-item,
+  .app-course-progress-row,
+  .app-library-empty,
+  .app-study-path-step,
+  .app-study-path-detail-card,
+  .app-search-result,
+  .app-search-result-card,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card,
+  .app-reader-search,
+  .reader-search,
+  .app-search-panel,
+  .app-search-shell,
+  .app-biblia-panel,
+  .app-biblia-hub,
+  .app-ai-response,
+  .app-ask-result,
+  .app-note-card,
+  .app-summary-card,
+  .app-today-card,
+  .app-daily-card,
+  .app-home-card,
+  .app-saved-detail,
+  .app-library-result,
+  .app-study-path-step,
+  .app-study-path-detail-card
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  border-color:rgba(5,74,145,.2) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  box-shadow:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-card,
+  .app-panel,
+  .app-library-card,
+  .app-saved-card,
+  .saved-card,
+  .saved-item,
+  .app-result-card,
+  .result-card,
+  .course-card,
+  .watch-card,
+  .lesson-detail-card,
+  .app-reader-search-result,
+  .app-reader-search-empty,
+  .app-related-card,
+  .app-related-empty,
+  .app-library-item,
+  .app-course-progress-row,
+  .app-library-empty,
+  .app-study-path-step,
+  .app-study-path-detail-card,
+  .app-search-result,
+  .app-search-result-card,
+  .reader-verse,
+  .app-reader-verse,
+  .verse-card,
+  .app-verse-card,
+  .app-reader-search,
+  .reader-search,
+  .app-search-panel,
+  .app-search-shell,
+  .app-biblia-panel,
+  .app-biblia-hub,
+  .app-ai-response,
+  .app-ask-result,
+  .app-note-card,
+  .app-summary-card,
+  .app-today-card,
+  .app-daily-card,
+  .app-home-card,
+  .app-saved-detail,
+  .app-library-result,
+  .app-study-path-step,
+  .app-study-path-detail-card
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  input,
+  select,
+  textarea
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  border-color:rgba(5,74,145,.22) !important;
+  box-shadow:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  input,
+  select,
+  textarea
+)::placeholder{
+  color:#4b5563 !important;
+  -webkit-text-fill-color:#4b5563 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  option,
+  optgroup
+){
+  background:#fff !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  border-color:#f17300 !important;
+  color:#f17300 !important;
+  -webkit-text-fill-color:#f17300 !important;
+  box-shadow:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+):is(:hover,:focus-visible){
+  background:#fff7ed !important;
+  border-color:#f17300 !important;
+  color:#c2410c !important;
+  -webkit-text-fill-color:#c2410c !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-btn,
+  button,
+  a.app-btn,
+  a.button,
+  .app-link-button,
+  .app-action,
+  .app-outline-button,
+  .app-secondary
+):not(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  border-color:rgba(5,74,145,.2) !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  box-shadow:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-btn,
+  button,
+  a.app-btn,
+  a.button,
+  .app-link-button,
+  .app-action,
+  .app-outline-button,
+  .app-secondary
+):not(
+  .app-primary,
+  .primary,
+  [data-variant="primary"],
+  .app-btn.primary,
+  .app-btn.app-primary,
+  button.primary,
+  button.app-primary,
+  a.primary,
+  a.app-primary,
+  .app-btn[data-variant="primary"]
+):is(:hover,:focus-visible){
+  background:#f8fafc !important;
+  border-color:rgba(5,74,145,.35) !important;
+  color:#054a91 !important;
+  -webkit-text-fill-color:#054a91 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  border-color:#dbe4ee !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab]){
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  border-color:transparent !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab]).is-active,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab])[aria-selected="true"]{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  border-color:#f17300 !important;
+  border-bottom-color:#f17300 !important;
+  background:#fff !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom,
+  .app-bottom-tabs,
+  .app-tabs,
+  .app-nav-tabs
+) :is(a,button,.app-tab,.app-tab-link,.app-tab-button,[role="tab"],[data-tab],[data-app-tab]) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #profile .app-library-controls,
+  #profile .app-profile-grid,
+  #profile .app-profile-summary,
+  #profile .app-profile-stats,
+  #profile .app-stat,
+  #profile .app-section-head,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  .app-study-path-card,
+  .app-study-path-detail-card,
+  .app-study-paths,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #media .app-card,
+  #media .app-watch-grid > *
+){
+  border:1px solid rgba(5,74,145,.2) !important;
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-reader-current,
+  #reader-current-summary,
+  #profile #offline-status-card,
+  #profile .app-library-controls,
+  #profile .app-profile-grid,
+  #profile .app-profile-summary,
+  #profile .app-profile-stats,
+  #profile .app-stat,
+  #profile .app-section-head,
+  #bible .app-reader-current,
+  #bible .app-reader-hero,
+  #bible .app-section-head.app-reader-title,
+  .app-study-path-card,
+  .app-study-path-detail-card,
+  .app-study-paths,
+  #ask .app-hero,
+  #ask .app-section-head,
+  #ask .app-panel,
+  #media .app-card,
+  #media .app-watch-grid > *
+) *{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+}
+
+html:not([data-theme="dark"]) .institute-app *{
+  -webkit-tap-highlight-color:transparent;
+}
+
+html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-verse.is-highlighted{
+  background:rgba(241,115,0,.12) !important;
+  background-color:rgba(241,115,0,.12) !important;
+  background-image:none !important;
+  border-color:rgba(241,115,0,.48) !important;
+  box-shadow:inset 0 0 0 1px rgba(241,115,0,.18) !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-verse.is-active.is-highlighted{
+  background:linear-gradient(135deg, rgba(219,228,238,.72), rgba(241,115,0,.14)) !important;
+  border-color:rgba(241,115,0,.55) !important;
+}
+
+html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-actions button[data-reader-action="highlight"][aria-pressed="true"],
+html:not([data-theme="dark"]) .institute-app #bible #reader-output .reader-actions button[data-reader-action="highlight"][data-active="true"]{
+  background:var(--app-orange, #F17300) !important;
+  background-color:var(--app-orange, #F17300) !important;
+  border-color:var(--app-orange, #F17300) !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+/* Website nav no color hover */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button
+),
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button
+):hover,
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button
+):active{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
+}
+
+/* Dropdown words also stay black in light mode, including hover. */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
+),
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
+):hover,
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .dropdown-menu,
+  .nav-dropdown,
+  .sub-menu,
+  [data-dropdown-menu]
+) :is(
+  a,
+  button,
+  .nav-link
+):active{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  text-decoration:none !important;
+}
+
+/* Keep keyboard focus accessible without creating a hover color wash. */
+html:not([data-theme="dark"]) :is(
+  .site-header,
+  header
+) :is(
+  .nav-link,
+  .site-nav a,
+  .site-nav button,
+  .nav-dropdown-trigger,
+  .dropdown-trigger,
+  .has-dropdown > a,
+  .has-dropdown > button
+):focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  outline:2px solid rgba(17,24,39,.35);
+  outline-offset:4px;
+}
+
+/* App tabbar no color hover */
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+),
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):hover,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):active,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):focus-visible,
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+).is-active{
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  text-decoration:none !important;
+}
+
+html:not([data-theme="dark"]) .institute-app :is(
+  .app-tabbar,
+  .app-tabbar-top,
+  .app-tabbar-bottom
+) :is(
+  .app-tab-link,
+  a,
+  button
+):focus-visible{
+  outline:2px solid rgba(17,24,39,.35);
+  outline-offset:4px;
+}

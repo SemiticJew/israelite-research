@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Israelite Encyclopedia — Semitic Jew</title>
+<meta name="description" content="Search the Israelite Encyclopedia for people, ethnonyms, groups, biblical identity terms, historical notes, and Scripture-connected reference entries."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Israelite Encyclopedia — Semitic Jew"/>
+<meta property="og:description" content="Search the Israelite Encyclopedia for people, ethnonyms, groups, biblical identity terms, historical notes, and Scripture-connected reference entries."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/encyclopedia.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Israelite Encyclopedia — Semitic Jew"/>
+<meta name="twitter:description" content="Search the Israelite Encyclopedia for people, ethnonyms, groups, biblical identity terms, historical notes, and Scripture-connected reference entries."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .container{max-width:1400px;margin:0 auto;padding:0 16px}
+
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+
+  .topbar-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 16px
+  }
+
+  .title{font-size:1.2rem;font-weight:800;margin:0}
+
+  .layout{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:16px;
+    margin:14px 0 32px
+  }
+
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr}
+    .panel-right{order:-1}
+  }
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px
+  }
+
+  .panel h3{
+    margin:10px 14px;
+    font-size:1rem;
+    color:var(--brand)
+  }
+
+  .facets{
+    border-bottom:1px solid var(--border);
+    padding:10px 12px
+  }
+
+  .az{
+    display:grid;
+    grid-template-columns:repeat(13,1fr);
+    gap:4px
+  }
+
+  .az button{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:6px;
+    padding:.3rem 0;
+    font:inherit;
+    cursor:pointer
+  }
+
+  .az button:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+  .results{
+    max-height:calc(100vh - 260px);
+    overflow:auto;
+    padding:8px 8px 12px
+  }
+
+  .card{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    margin:8px 4px;
+    cursor:pointer;
+    background:var(--surface);
+  }
+
+  .card:hover{
+    box-shadow:0 4px 12px rgba(0,0,0,.08)
+  }
+
+  .card .line1{
+    display:flex;
+    align-items:baseline;
+    gap:.5rem
+  }
+
+  .card .term{
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .card .abstract{
+    margin-top:.25rem;
+    font-size:.9rem;
+    color:var(--muted)
+  }
+
+  .reader{
+    padding:10px 14px
+  }
+
+  .reader .head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:8px
+  }
+
+  .reader .r-title{
+    margin:0;
+    font-size:1.4rem;
+    font-weight:800;
+    color:var(--ink);
+  }
+
+  .reader article{
+    line-height:1.55;
+    margin-top:10px
+  }
+
+  .empty{
+    padding:22px;
+    color:var(--muted)
+  }
+
+  .r-toolbar{
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    margin-top:8px
+  }
+
+  .r-toolbar input[type="search"]{
+    flex:1;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:.55rem .7rem;
+    font:inherit;
+    background:var(--surface);
+    color:var(--ink);
+  }
+
+  .r-toolbar .btn{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:8px;
+    padding:.5rem .7rem;
+    cursor:pointer;
+    color:var(--ink);
+  }
+
+  .r-toolbar .btn:hover{
+    background:var(--surface-alt, rgba(0,0,0,.04));
+  }
+
+/* Israelite Encyclopedia modern page polish */
+body.encyclopedia-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.encyclopedia-page .container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+.ency-main{
+  padding:40px 24px 80px !important;
+}
+
+.ency-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.ency-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.ency-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.ency-subtitle{
+  max-width:880px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.ency-intro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.ency-info-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:22px;
+}
+
+.ency-info-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ency-info-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.ency-tool-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.ency-section-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+
+.ency-section-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.ency-section-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+#encyCount{
+  color:var(--muted);
+  font-size:.9rem;
+  font-weight:800;
+}
+
+.ency-quick-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.ency-chip-label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.ency-chip{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  border-radius:999px;
+  padding:.45rem .72rem;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.ency-chip:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.encyclopedia-page .topbar{
+  display:none !important;
+}
+
+.encyclopedia-page .layout{
+  grid-template-columns:360px 1fr;
+  gap:18px;
+  margin:0;
+}
+
+.encyclopedia-page .panel{
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--border);
+  box-shadow:var(--shadow);
+}
+
+.encyclopedia-page .panel h3{
+  margin:0;
+  padding:16px 16px 12px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+  border-bottom:1px solid var(--border);
+}
+
+.encyclopedia-page .facets{
+  padding:14px;
+}
+
+.encyclopedia-page .az{
+  gap:6px;
+}
+
+.encyclopedia-page .az button{
+  border-radius:0;
+  font-weight:800;
+  color:var(--ink);
+}
+
+.encyclopedia-page .az button.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#111827;
+}
+
+.encyclopedia-page .results{
+  max-height:calc(100vh - 340px);
+  padding:10px;
+}
+
+.encyclopedia-page .card{
+  border-radius:0;
+  margin:8px 0;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+.encyclopedia-page .card:hover{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:var(--shadow-hover, 0 8px 20px rgba(0,0,0,.12));
+}
+
+.encyclopedia-page .card.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent) inset;
+}
+
+.encyclopedia-page .reader{
+  padding:18px;
+}
+
+.encyclopedia-page .reader .head{
+  align-items:flex-start;
+  flex-direction:column;
+  gap:12px;
+}
+
+.encyclopedia-page .reader .r-title{
+  font-size:clamp(1.6rem, 3vw, 2.25rem);
+  letter-spacing:-.04em;
+}
+
+.encyclopedia-page .r-toolbar{
+  width:100%;
+  margin:0;
+}
+
+.encyclopedia-page .r-toolbar input[type="search"],
+.encyclopedia-page .r-toolbar .btn{
+  border-radius:0;
+}
+
+.encyclopedia-page .reader article{
+  margin-top:16px;
+  color:var(--ink);
+  font-size:1.02rem;
+  line-height:1.75;
+}
+
+.encyclopedia-page .reader article p{
+  margin:0 0 1rem;
+}
+
+html[data-theme="dark"] .ency-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .ency-title,
+html[data-theme="dark"] .ency-info-card h2,
+html[data-theme="dark"] .ency-section-head h2,
+html[data-theme="dark"] .encyclopedia-page .panel h3,
+html[data-theme="dark"] .encyclopedia-page .reader .r-title{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .ency-info-card,
+html[data-theme="dark"] .ency-tool-shell,
+html[data-theme="dark"] .encyclopedia-page .panel,
+html[data-theme="dark"] .encyclopedia-page .card,
+html[data-theme="dark"] .ency-quick-row{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:980px){
+  .encyclopedia-page .layout{
+    grid-template-columns:1fr;
+  }
+
+  .encyclopedia-page .panel-right{
+    order:-1;
+  }
+
+  .encyclopedia-page .results{
+    max-height:none;
+  }
+
+  .ency-intro-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .ency-main{
+    padding:22px 20px 64px !important;
+    overflow-x:hidden;
+  }
+
+  .ency-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .ency-tool-shell{
+    padding:20px 16px;
+  }
+
+  .encyclopedia-page .az{
+    grid-template-columns:repeat(9,1fr);
+  }
+
+  .encyclopedia-page .r-toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+
+<body class="encyclopedia-page bib-refs" data-page="encyclopedia">
+
+<div id="site-header"></div>
+
+<main class="container ency-main">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Israelite Encyclopedia</span>
+  </nav>
+
+  <section class="ency-hero">
+    <div class="ency-kicker">People, Nations & Identity</div>
+    <h1 class="ency-title">Israelite Encyclopedia</h1>
+    <p class="ency-subtitle">
+      Search people, ethnonyms, groups, biblical identity terms, historical notes, complexion context, and Scripture-connected reference entries.
+    </p>
+  </section>
+
+  <section class="ency-intro-grid" aria-label="Israelite encyclopedia overview">
+    <article class="ency-info-card">
+      <h2>People & Groups</h2>
+      <p>Browse names, ethnonyms, regions, and groups connected to biblical history and identity.</p>
+    </article>
+    <article class="ency-info-card">
+      <h2>Contextual Notes</h2>
+      <p>Study definitions with historical, textual, and interpretive context connected to the entry.</p>
+    </article>
+    <article class="ency-info-card">
+      <h2>Cross-References</h2>
+      <p>Use linked references and see-also connections to move between related entries and sources.</p>
+    </article>
+  </section>
+
+  <section class="ency-tool-shell" aria-label="Israelite encyclopedia search tool">
+    <div class="ency-section-head">
+      <div>
+        <h2>Encyclopedia Search</h2>
+        <p>Search the encyclopedia or browse alphabetically.</p>
+      </div>
+      <div id="encyCount">Loading entries…</div>
+    </div>
+
+    <div class="ency-quick-row" aria-label="Quick encyclopedia searches">
+      <span class="ency-chip-label">Quick Search</span>
+      <button class="ency-chip" type="button" data-ency-query="israel">Israel</button>
+      <button class="ency-chip" type="button" data-ency-query="judeans">Judeans</button>
+      <button class="ency-chip" type="button" data-ency-query="gentiles">Gentiles</button>
+      <button class="ency-chip" type="button" data-ency-query="kushites">Kushites</button>
+      <button class="ency-chip" type="button" data-ency-query="hamites">Hamites</button>
+      <button class="ency-chip" type="button" data-ency-query="edom">Edom</button>
+    </div>
+
+    <div class="layout">
+  <section aria-label="Results and facets" class="panel panel-left">
+    <h3>Browse</h3>
+    <div class="facets">
+      <div aria-label="A–Z jump" class="az"></div>
+    </div>
+    <div aria-label="Search results" class="results" id="results" role="listbox">
+      <div class="empty">Type in the search or select a letter to browse.</div>
+    </div>
+  </section>
+
+  <aside aria-label="Reading panel" class="panel panel-right">
+    <div class="reader" id="reader">
+      <div class="head">
+        <h2 class="r-title">Select an entry</h2>
+        <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
+          <input aria-label="Search encyclopedia" id="q" name="q_ency"
+                 placeholder="Search (e.g., Judeans, Gentiles, Kushites)…"
+                 spellcheck="false" type="search"/>
+          <button class="btn" id="clearQ" type="button">Clear</button>
+        </form>
+      </div>
+
+      <article class="article-content">
+        <div class="empty">
+          Definitions will appear here when you select a result.
+        </div>
+      </article>
+    </div>
+  </aside>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<!-- Scripts -->
+<script src="/js/include.js" defer></script>
+<script src="/js/citations.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<script src="/js/encyclopedia.seealso.js" defer></script>
+<script src="/js/encyclopedia.seealso.autolink.js" defer></script>
+<script src="/js/encyclopedia.app.js" defer></script>
+<script src="/js/encyclopedia.seealso.render.js" defer></script>
+<script src="js/encyclopedia.linkify.js"></script>
+<script src="js/xref-rebind.js"></script>
+<script src="js/xref-url-override.js?v=1762745482"></script>
+
+</body>
+</html>

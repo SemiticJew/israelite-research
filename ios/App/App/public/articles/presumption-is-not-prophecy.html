@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<!--
+ARTICLE TEMPLATE STANDARD
+
+Use this file as the base for new Semitic Jew articles.
+
+Replace:
+ARTICLE_TITLE
+ARTICLE_DESCRIPTION
+ARTICLE_SLUG
+ARTICLE_IMAGE-700x394.jpg
+
+Image standard:
+700 × 394 px
+
+Bible references:
+Use regular text, not italics.
+Correct: Gen 1:1, Ex 20:8–11, John 17:17
+Avoid italicizing Bible references: Gen 1:1
+
+Recommended article order:
+1. Opening claim
+2. Pullquote
+3. Major section headings
+4. Conclusion
+5. Bibliography / footnotes
+-->
+
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness — Semitic Jew</title>
+
+<!-- Open Graph -->
+<meta property="og:title" content="The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness — Semitic Jew"/>
+<meta property="og:description" content="A covenant-centered Israelite critique of modern Zionism, colonial war, apartheidism, white supremacy, and the false claim that political nationalism equals biblical righteousness."/>
+<meta property="og:image" content="https://semiticjew.org/images/articles/presumption-is-not-prophecy-700x394.png"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://semiticjew.org/articles/presumption-is-not-prophecy.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness — Semitic Jew"/>
+<meta name="twitter:description" content="A covenant-centered Israelite critique of modern Zionism, colonial war, apartheidism, white supremacy, and the false claim that political nationalism equals biblical righteousness."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/articles/presumption-is-not-prophecy-700x394.png"/>
+<meta name="twitter:site" content="@semitic_jew"/>
+<meta name="twitter:creator" content="@semitic_jew"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Fullscreen modal */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:22px;
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;
+    align-items:stretch;
+    min-height:60vh;
+  }
+  @media (max-width: 720px){
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
+  }
+
+  /* Left column (centered vertically) */
+  .author-pane {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-right:12px; text-align:center;
+  }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{
+    display:inline-flex; align-items:center; justify-content:center;
+    text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
+  }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+
+  /* Right column */
+  .author-list{
+    display:flex; flex-direction:column; min-height:0; padding-left:12px;
+  }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{
+    margin:0; padding:.6rem 0;
+    border-top:1px solid #e6ebf2;
+  }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{
+    font-weight:700; text-decoration:none; display:inline-block;
+  }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{
+    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
+  }
+
+  /* Button centered at base of right column */
+  .more-by-btn{
+    margin-top:auto; display:inline-block;
+    padding:.55rem .9rem; border-radius:10px;
+    border:1px solid #e6ebf2; background:#fff;
+    text-decoration:none; font-weight:600;
+    align-self:center;
+  }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography styles */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{
+    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
+    border:1px solid #e6ebf2; border-radius:6px;
+  }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+  .footnote-ref a:hover{ text-decoration:none }
+
+  .article-abstract{
+    margin:0 0 1.2rem;
+    padding:1rem 1rem 1rem 1.1rem;
+    border-left:4px solid var(--accent, #F17300);
+    background:#f8fafc;
+    color:#111827;
+  }
+
+  .article-abstract h2{
+    margin:0 0 .45rem;
+    color:#111827;
+    font-size:1.02rem;
+    line-height:1.2;
+    letter-spacing:0;
+    text-transform:none;
+  }
+
+  .article-abstract p{
+    margin:0;
+    color:#111827;
+    line-height:1.65;
+  }
+
+  html[data-theme="dark"] .article-abstract{
+    background:#0f1a2b;
+    color:#f8fafc;
+    border-left-color:var(--accent, #F17300);
+  }
+
+  html[data-theme="dark"] .article-abstract h2,
+  html[data-theme="dark"] .article-abstract p{
+    color:#f8fafc;
+  }
+/* Article breadcrumb rhythm: breadcrumb inside article main */
+body.article-doc main.article-page{
+  padding-top:40px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs{
+  margin:0 auto 18px !important;
+  padding:0 16px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs + .article-shell{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.article-doc main.article-page{
+    padding-top:30px !important;
+  }
+
+  body.article-doc main.article-page > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+
+/* === Standard Article Template Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+
+<body class="article-doc" data-page="article">
+<div id="site-header"></div>
+
+<main class="article-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/articles.html">Articles</a>
+    <span class="sep">›</span>
+    <span class="current">The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness</span>
+  </nav>
+
+  <article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date"><time datetime="" id="pub-date" itemprop="datePublished"></time></p>
+    <h1 class="article-title" itemprop="headline">The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness</h1>
+  </header>
+
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="The War In The &quot;Middle East&quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness" height="394" src="/images/articles/presumption-is-not-prophecy-700x394.png" width="700"/>
+    <meta content="/images/articles/presumption-is-not-prophecy-700x394.png" itemprop="url"/>
+  </figure>
+
+  <div class="meta-row">
+    <div class="author-inline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/images/authors/semitic-jew.jpg" width="40"/>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <!-- Repaired Copy icon: overlapping rectangles -->
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
+      </button>
+          <a aria-label="Support the work" class="share-btn share-give-btn" href="/donate.html" title="Support the work">Give</a>
+</div>
+  </div>
+
+  <div class="article-content" itemprop="articleBody">
+    <p><strong>War is one of the clearest places where the difference between ancient Israelite covenant judgment and modern political Zionism becomes impossible to ignore.</strong> Today, the world watches a European political nation in the region colonial powers named the Middle East live in constant friction with its neighbors, surrounded by conflict, retaliation, occupation, military escalation, and geopolitical bargaining. Its defenders speak as though its wars are automatically righteous because the state uses the name “Israel.” But an Israelite, or any serious Bible reader, cannot accept that assumption. A nation does not become covenantal because it borrows covenant language. A state does not become holy because it claims ancient land. A military campaign does not become righteous because politicians wrap it in religious vocabulary.</p>
+
+    <aside class="article-pullquote" aria-label="Author highlight">
+      <p>A nation does not become covenantal because it borrows covenant language. Presumption is not prophecy.</p>
+      <span>Semitic Jew</span>
+    </aside>
+
+    <h2>War Under Covenant, Not National Appetite</h2>
+    <p>Ancient Israelites did not have permission to wage war because they felt entitled, insecure, ambitious, or offended. They were not given a blank check to expand, exploit, colonize, or prevent surrounding nations from prospering. When ancient Israelites went to war lawfully, it was because the Most High gave commandment, judgment, timing, and purpose. The sword of Israel was never supposed to be the sword of appetite. It was supposed to be the sword of divine judgment under covenant authority. This is why Deuteronomy 20 does not present war as reckless nationalism. It presents war under law, under priestly order, under fear of God, and under divine instruction. The priest was to speak unto the people before battle and say, “Hear, O Israel, ye approach this day unto battle against your enemies: let not your hearts faint, fear not, and do not tremble, neither be ye terrified because of them; for the LORD your God is he that goeth with you, to fight for you against your enemies, to save you” (Deuteronomy 20:3–4).<span class="footnote-ref"><a href="#fn1">1</a></span></p>
+
+    <p>That passage matters because it destroys the false idea that Israelite warfare was ordinary imperial violence. The power was not in Israel’s ambition, military identity, or fleshly imagination of superiority. The text says the LORD went with them. Without that, Israel had no righteous claim to war. When Israel obeyed, war was ordered by God. When Israel rebelled, war became human presumption. That distinction is one of the major differences between covenant and nationalism.</p>
+
+    <h2>Modern Zionism and Stolen Covenant Language</h2>
+    <p>The ancient Israelites, a Black covenant people, were also warned not to misread victory as proof of moral superiority. In Deuteronomy 9, Moses told Israel plainly, “Speak not thou in thine heart, after that the LORD thy God hath cast them out from before thee, saying, For my righteousness the LORD hath brought me in to possess this land” (Deuteronomy 9:4). That is a terrifying rebuke to every nation that uses God-talk to justify conquest. The Most High told Israel that their entrance into the land was not because of their own righteousness, but because of His covenant with Abraham, Isaac, and Jacob, and because of the wickedness of the nations being judged. So even ancient Israel could not turn divine judgment into national arrogance. If the natural seed under covenant could not boast, how much less can a modern political state claim righteousness while operating through occupation, foreign alliances, Western military backing, and political Zionism?<span class="footnote-ref"><a href="#fn2">2</a></span></p>
+
+    <p>This is why the modern Zionist project must be examined with sobriety. It is not enough for a nation to say “Israel.” It is not enough for a flag to contain biblical symbolism. It is not enough for public relations campaigns to use biblical language in the affirmative. It is not enough for evangelical Christians in America to point to the so-called Middle East and call that state the fulfillment of prophecy while ignoring captivity, slavery, scattering, and the condition of Black Americans. Scripture does not teach that Europeans can step into covenant identity by political force while the scattered Israelites are told to forget who they are. Scripture does not teach that white Christianity gets to erase the descendants of captivity, invent a white Jesus, sponsor a foreign state, and then call that biblical righteousness.</p>
+
+    <h2>The Captive Israelites and the False Image of Israel</h2>
+    <p>The prophets never separated Israelite identity from covenant judgment. They spoke of a people scattered, oppressed, hated, and made low among the nations. Deuteronomy 28 says that if Israelites broke the covenant, they would be removed into all the kingdoms of the earth, serve enemies in hunger, thirst, nakedness, and want of all things, and be brought into bondage by ships. That is not the story of modern European Zionism. That is the story written into the bones of Black Americans, whose history in this land bears the marks of captivity, forced labor, family destruction, legal humiliation, cultural theft, and spiritual warfare. The issue is not sentiment. The issue is textual evidence, historical reality, and covenant logic.<span class="footnote-ref"><a href="#fn3">3</a></span></p>
+
+    <p>That is why this article is not just about war in the region colonial powers call the Middle East. It is about the difference between covenant war and colonial war. It is about the difference between the Most High commanding judgment and men using God’s name to sanctify their blood-thirsty appetite. Ancient Israelites were not righteous because they had weapons. We were righteous when we obeyed the Most High. Ancient Israel did not have permission to become a predator nation. The law itself restrained the people. Deuteronomy 17 warned the king not to multiply horses, not to multiply wives, and not to multiply silver and gold to himself. In other words, even Israelite rulership had limits. The king was required to write a copy of the law, read it all the days of his life, fear the LORD, and not lift his heart above his brethren.<span class="footnote-ref"><a href="#fn4">4</a></span></p>
+
+    <h2>Wrestling Against Principalities</h2>
+    <p>When Paul wrote in Ephesians 6:12 that “we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world,” the Greek word translated “wrestle” is <em>palē</em>. It speaks to a struggle, a contest, a close conflict. Paul was not describing a casual disagreement. He was describing a real conflict with powers that rule through darkness. That matters for Israelites today because white supremacy was never merely a social attitude. It became a principality. It organized law, land, education, labor, religion, policing, banking, and theology. It gave the world a white or so-called Middle Eastern Jesus and then demanded that the captives bow before him. It took the Bible from the people it described, placed it in the hands of the oppressor, and told the oppressed that obedience meant submission to their own erasure.<span class="footnote-ref"><a href="#fn5">5</a></span></p>
+
+    <p>Modern empire does the opposite of Torah. It multiplies weapons, multiplies wealth, multiplies propaganda, and then calls that security. It uses fear to justify expansion. It uses suffering to excuse cruelty. It uses religion to make conquest appear holy. That is not the spirit of Torah. That is not the order of the Black Israelite prophets. That is not the pattern of righteous Israelite judgment.</p>
+
+    <h2>What Israelites Must Build as White Supremacy Falls</h2>
+    <p>The fall of white supremacy and the collapse of white Jesus theology create a moment of responsibility for Black Americans who understand themselves as Israelites. It is not enough to celebrate the exposure of lies. A people coming out of captivity must decide what they will build. If the Most High is tearing down idols, then Israelites must not replace one idol with another. We cannot simply inherit the institutions of our oppressors and decorate them with Hebrew language. We must reshape thought, family, education, economics, justice, and public life according to law, covenant, and righteous judgment.</p>
+
+    <p>That means our answer cannot be chaos. Our answer cannot be revenge without law. Our answer cannot be empty racial pride. The Most High did not give Israelites a religion in the shallow European sense. He gave us law, commandments, judgments, customs, discipline, memory, Sabbath, holy days, clean order, family structure, and national responsibility. If we are the people of the book, then our public life must become legible through the book. If we are the people of covenant, then our politics must be judged by covenant. If we are the people scattered under curses, then our restoration must begin with repentance, truth, obedience, and reconstruction.</p>
+
+    <p>America is vulnerable because its moral mythology is collapsing. The lie that this nation was built on righteousness is collapsing. The lie that white Christianity carried the true image of Christ is collapsing. The lie that Black Americans are merely a racial minority with no covenant history is collapsing. The lie that modern Zionism is automatically ancient Israel is collapsing. And as these lies fall, Israelites must be ready to speak with clarity. We are not called to imitate empire. We are called to testify against it. We are not called to worship the weapons of nations. We are called to return to the God of Abraham, Isaac, and Jacob.</p>
+
+    <h2>Conclusion</h2>
+    <p>The question is not whether a nation can win a war. Many wicked nations have won wars. The question is whether a nation is operating under righteous judgment. The question is whether its claims are lawful before the Most High. The question is whether its power reflects covenant order or imperial appetite. Ancient Israel, at its best, did not go to war because it wanted to steal resources, suppress neighbors, or build a mythology of entitlement. Ancient Israel went to war only when the Most High gave commandment and judgment. That is the standard. Everything else is nationalism wearing stolen garments.</p>
+
+    <p>So as we watch white supremacy lose its religious mask, and as we watch the image of white Jesus crack under the weight of Scripture, Israelites must recover the discipline to judge all nations by the word of the Most High. We must judge America. We must judge Europe. We must judge modern Zionism. We must judge ourselves. Because the restoration of Israelites will not be built by copying the violence of empire. It will be built by returning to the law, the prophets, the covenant, and the righteous judgment of the Most High.</p>
+  </div>
+
+  <hr class="biblio-divider"/>
+<section class="footnotes">
+    <div class="biblio-list">
+      <p id="fn1"><em>The Holy Bible</em> (KJV), public domain — Israelite war under divine command and covenant order: Deut 20:3–4. <a class="backref" href="#ref-fn1" aria-label="Back to citation 1"><span class="badge">1</span></a></p>
+      <p id="fn2">Israel warned against national boasting and false righteousness: Deut 9:4–6. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2"><span class="badge">2</span></a></p>
+      <p id="fn3">Covenant curses, scattering, bondage, and captivity: Deut 28:15, 36–37, 47–48, 64, 68. <a class="backref" href="#ref-fn3" aria-label="Back to citation 3"><span class="badge">3</span></a></p>
+      <p id="fn4">Limits on Israelite kingship and rulership: Deut 17:14–20. <a class="backref" href="#ref-fn4" aria-label="Back to citation 4"><span class="badge">4</span></a></p>
+      <p id="fn5">Spiritual conflict and the Greek term <em>palē</em>, “wrestle,” in Eph 6:12. See also Eph 6:10–18. <a class="backref" href="#ref-fn5" aria-label="Back to citation 5"><span class="badge">5</span></a></p>
+    </div>
+  </section>
+</article>
+</main>
+
+<!-- Modal -->
+<!-- Author modal (shared across articles) -->
+<div aria-hidden="true" aria-modal="true" aria-labelledby="sj-author-modal-title" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-card sj-author-page-modal" role="document" tabindex="-1">
+    <button aria-label="Close author information" class="modal-close sj-author-page-close" id="author-modal-close" type="button">
+      <svg aria-hidden="true" height="26" viewBox="0 0 24 24" width="26">
+        <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+      </svg>
+    </button>
+
+    <div class="modal-body sj-author-page-body">
+      <div class="sj-author-page-grid">
+        <section class="sj-author-page-left" aria-labelledby="sj-author-modal-title">
+          <div class="sj-author-page-top">
+            <img alt="Semitic Jew" class="sj-author-page-avatar" src="/images/authors/semitic-jew.jpg"/>
+            <p class="sj-author-page-kicker">Author</p>
+            <h2 id="sj-author-modal-title">Semitic Jew</h2>
+            <p class="sj-author-page-role">Founder | Teacher | Researcher</p>
+          </div>
+
+          <div class="sj-author-page-description">
+            <p>
+              Semitic Jew produces Scripture-driven teaching, logical analysis, Israelite research, and public educational resources rooted in covenant, history, and disciplined biblical study.
+            </p>
+            <a class="sj-author-social-btn" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Follow Semitic Jew on X">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+              </svg>
+              <span>Follow on X</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="sj-author-page-right" aria-label="Recent articles by Semitic Jew">
+          <h3>Recent Articles</h3>
+
+          <article>
+            <a href="/articles/250-years-of-christianity-against-god.html">250 Years of Christianity. 250 Years Against God.</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-07-02">Jul 2, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/christian-nationalism-not-biblical-righteousness.html">Christian Nationalism Is Not Biblical Righteousness</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/is-creation-logical.html">Is Creation Logical?</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/hamites-historicity.html">Israelites and Hamites: Recovering a Dark-Skinned Legacy</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+        </section>
+      </div>
+
+      <div class="sj-author-page-footer">
+        <a class="sj-author-page-more" href="/authors/semitic-jew.html">See more from Semitic Jew</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="site-footer"></div>
+
+<!-- External scripts -->
+<script src="/js/metadata.js" defer></script>
+<script src="/js/modal.js" defer></script>
+<script src="/js/biblio.js" defer></script>
+<script src="/js/articles.js" defer></script>
+<script src="/js/citations.js?v=20260531-footnotes2" defer></script>
+<script src="/js/article-xref-autowrap.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<script src="/js/include.js"></script>
+</body>
+</html>

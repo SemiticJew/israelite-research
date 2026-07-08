@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Scripture Reader — Semitic Jew</title>
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .page-header{padding:24px 0 8px}
+  .page-title{margin:0;font-size:2rem;font-weight:800}
+  .crumbs{color:var(--muted);font-size:.9rem;margin-top:4px}
+
+  .layout{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:16px 0 40px}
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px
+  }
+  .panel h3{margin:.2rem 0 0.6rem;font-size:1.05rem;color:var(--brand)}
+  .muted{color:var(--muted)}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  /* Verse rows */
+  #verses{display:flex;flex-direction:column}
+  .verse{display:flex;flex-direction:column;padding:12px 0}
+  .verse + .verse{border-top:1px solid var(--border)}
+  .vnum{font-weight:800;color:var(--brand)}
+  .vnum::after{content:" —";color:var(--muted);margin-left:.25rem}
+  .vtext{color:var(--ink);line-height:1.6}
+
+  /* Verse tools */
+  .v-tools{margin-top:6px;display:flex;gap:6px}
+  .tool-btn{
+    padding:.22rem .55rem;
+    font-size:.8rem;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    cursor:pointer
+  }
+  .tool-btn:hover{background:var(--surface-alt, rgba(0,0,0,.04))}
+
+  /* Panels under each verse */
+  .v-panel{
+    display:none;
+    margin-top:6px;
+    padding:8px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--surface-alt, rgba(0,0,0,.04))
+  }
+  .v-panel.open{display:block}
+  .v-panel.xr{font-size:.88rem}
+  .xr-line a{color:var(--brand);margin-right:4px}
+
+  /* Dictionary */
+  .dict-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.5rem;
+    margin-bottom:.4rem
+  }
+  .dict-title{font-weight:700;color:var(--ink)}
+  .icon-btn{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:8px;
+    padding:.35rem;
+    cursor:pointer
+  }
+  .icon-btn:hover{background:var(--surface-alt, rgba(0,0,0,.04))}
+  .dict-reveal{overflow:hidden;max-height:0;transition:max-height .2s ease}
+  .dict-input{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:.5rem .6rem;
+    font:inherit;
+    background:var(--surface);
+    color:var(--ink)
+  }
+  .dict-body{margin-top:.5rem;font-size:.95rem;line-height:1.5}
+
+  /* Toolbar */
+  .reader-toolbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:.5rem;
+    flex-wrap:wrap;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:.5rem;
+    margin:10px 0 16px;
+    box-shadow:var(--shadow)
+  }
+  .reader-toolbar .btn,
+  .reader-toolbar select{
+    padding:.45rem .6rem;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:10px;
+    font:inherit;
+    cursor:pointer
+  }
+  .reader-toolbar .btn:hover{background:var(--surface-alt, rgba(0,0,0,.04))}
+
+  /* Author modal visibility control */
+  #author-modal.modal-overlay{
+    display:none!important;
+    opacity:0;
+    visibility:hidden
+  }
+  #author-modal.modal-overlay.open{
+    display:flex!important;
+    opacity:1;
+    visibility:visible
+  }
+/* Modern shared Bible reader shell */
+body.reader-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+body.reader-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 24px 80px;
+}
+
+body.reader-page .page-header{
+  margin:18px 0 20px;
+  padding:46px 28px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+body.reader-page .page-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2rem, 5vw, 4rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+body.reader-page .crumbs{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:1rem;
+  font-weight:700;
+}
+
+body.reader-page .reader-toolbar{
+  top:12px;
+  z-index:80;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 0 20px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .reader-toolbar .btn,
+body.reader-page .reader-toolbar select{
+  min-height:42px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:800;
+}
+
+body.reader-page .reader-toolbar .btn:hover,
+body.reader-page .reader-toolbar select:hover{
+  border-color:var(--accent);
+}
+
+body.reader-page .layout{
+  grid-template-columns:minmax(0, 2fr) 360px;
+  gap:22px;
+  margin:18px 0 40px;
+  align-items:start;
+}
+
+body.reader-page .panel{
+  border:1px solid var(--border);
+  border-radius:0;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:0;
+  overflow:hidden;
+}
+
+body.reader-page .panel h3{
+  margin:0;
+  padding:16px 18px;
+  color:var(--ink);
+  font-size:.9rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+}
+
+body.reader-page #verses{
+  padding:6px 20px 20px;
+}
+
+body.reader-page .verse{
+  padding:18px 0;
+}
+
+body.reader-page .verse + .verse{
+  border-top:1px solid var(--border);
+}
+
+body.reader-page .vnum{
+  display:inline-flex;
+  align-self:flex-start;
+  margin-bottom:7px;
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+
+body.reader-page .vnum::after{
+  content:"";
+}
+
+body.reader-page .vtext{
+  color:var(--ink);
+  font-size:1.08rem;
+  line-height:1.82;
+}
+
+body.reader-page .v-tools{
+  margin-top:10px;
+}
+
+body.reader-page .tool-btn,
+body.reader-page .icon-btn{
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:800;
+}
+
+body.reader-page .tool-btn:hover,
+body.reader-page .icon-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--surface);
+}
+
+body.reader-page .v-panel{
+  border-radius:0;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+  color:var(--ink);
+}
+
+body.reader-page aside.panel{
+  position:sticky;
+  top:94px;
+}
+
+body.reader-page .dict-head{
+  margin:0;
+  padding:16px 18px;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+}
+
+body.reader-page .dict-title{
+  color:var(--ink);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:.9rem;
+}
+
+body.reader-page .dict-reveal{
+  padding:0 18px;
+}
+
+body.reader-page .dict-input{
+  margin-top:14px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+body.reader-page .dict-body{
+  padding:16px 18px 20px;
+  margin:0;
+  color:var(--muted);
+}
+
+html[data-theme="dark"] body.reader-page .page-header{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] body.reader-page .reader-toolbar{
+  background:rgba(15,23,42,.88);
+}
+
+html[data-theme="dark"] body.reader-page .page-title,
+html[data-theme="dark"] body.reader-page .panel h3,
+html[data-theme="dark"] body.reader-page .dict-title,
+html[data-theme="dark"] body.reader-page .vtext{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] body.reader-page .panel,
+html[data-theme="dark"] body.reader-page .reader-toolbar,
+html[data-theme="dark"] body.reader-page .reader-toolbar .btn,
+html[data-theme="dark"] body.reader-page .reader-toolbar select,
+html[data-theme="dark"] body.reader-page .dict-head,
+html[data-theme="dark"] body.reader-page .panel h3,
+html[data-theme="dark"] body.reader-page .dict-input{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:900px){
+  body.reader-page .layout{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page aside.panel{
+    position:relative;
+    top:auto;
+  }
+}
+
+@media(max-width:700px){
+  body.reader-page main.container{
+    padding:18px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  body.reader-page .page-header{
+    padding:38px 20px;
+  }
+
+  body.reader-page .reader-toolbar{
+    position:relative;
+    top:auto;
+    align-items:stretch;
+  }
+
+  body.reader-page .reader-toolbar .btn,
+  body.reader-page .reader-toolbar select{
+    flex:1 1 100%;
+    width:100%;
+  }
+
+  body.reader-page #verses{
+    padding:4px 16px 18px;
+  }
+}
+
+/* Reader refinement: premium scripture reading experience */
+body.reader-page .page-header{
+  margin:22px 0 22px;
+  padding:54px 30px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .page-title{
+  font-size:clamp(2.35rem, 5.8vw, 4.8rem);
+  font-weight:900;
+  letter-spacing:-.055em;
+}
+
+body.reader-page .crumbs{
+  max-width:780px;
+  margin:16px auto 0;
+  color:var(--muted);
+  font-size:1rem;
+  line-height:1.55;
+  font-weight:800;
+}
+
+body.reader-page .reader-toolbar{
+  display:grid;
+  grid-template-columns:auto minmax(150px, 1fr) minmax(150px, 1fr) minmax(120px, .7fr) auto;
+  align-items:center;
+  gap:10px;
+  margin:0 0 22px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .reader-toolbar select,
+body.reader-page .reader-toolbar .btn{
+  min-height:44px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:900;
+  box-shadow:none;
+}
+
+body.reader-page .reader-toolbar .btn{
+  padding:0 14px;
+}
+
+body.reader-page .reader-toolbar select:hover,
+body.reader-page .reader-toolbar .btn:hover,
+body.reader-page .reader-toolbar select:focus,
+body.reader-page .reader-toolbar .btn:focus{
+  border-color:var(--accent);
+  outline:none;
+}
+
+body.reader-page .layout{
+  grid-template-columns:minmax(0, 2.1fr) 340px;
+  gap:24px;
+}
+
+body.reader-page .panel{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .panel h3,
+body.reader-page .dict-head{
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+    var(--surface);
+}
+
+body.reader-page .panel h3,
+body.reader-page .dict-title{
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+
+body.reader-page #verses{
+  padding:4px 24px 26px;
+}
+
+body.reader-page .verse{
+  position:relative;
+  padding:22px 0 22px 0;
+  transition:background .16s ease;
+}
+
+body.reader-page .verse + .verse{
+  border-top:1px solid var(--border);
+}
+
+body.reader-page .verse:hover{
+  background:linear-gradient(90deg, rgba(241,115,0,.045), transparent 58%);
+}
+
+body.reader-page .vnum{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:34px;
+  height:26px;
+  margin:0 10px 8px 0;
+  padding:0 8px;
+  border:1px solid rgba(241,115,0,.28);
+  background:rgba(241,115,0,.08);
+  color:var(--accent);
+  font-size:.75rem;
+  font-weight:900;
+  line-height:1;
+  vertical-align:middle;
+}
+
+body.reader-page .vtext{
+  color:var(--ink);
+  font-family:Spectral, Georgia, serif;
+  font-size:1.16rem;
+  line-height:1.9;
+  letter-spacing:.002em;
+}
+
+body.reader-page .v-tools{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+body.reader-page .tool-btn,
+body.reader-page .icon-btn{
+  min-height:34px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface);
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  transition:transform .16s ease, border-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+body.reader-page .tool-btn:hover,
+body.reader-page .icon-btn:hover,
+body.reader-page .tool-btn:focus,
+body.reader-page .icon-btn:focus{
+  transform:translateY(-1px);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+body.reader-page .v-panel{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.06), transparent 40%),
+    rgba(5,74,145,.035);
+  color:var(--ink);
+}
+
+body.reader-page aside.panel{
+  position:sticky;
+  top:92px;
+}
+
+body.reader-page .dict-reveal{
+  padding:0 18px;
+}
+
+body.reader-page .dict-input{
+  min-height:42px;
+  border-radius:0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  font-weight:800;
+}
+
+body.reader-page .dict-body{
+  padding:16px 18px 20px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+body.reader-page .xref,
+body.reader-page a.xref{
+  color:var(--accent);
+  font-weight:900;
+  text-decoration:none;
+  border-bottom:1px dotted rgba(241,115,0,.5);
+}
+
+body.reader-page .xref:hover,
+body.reader-page a.xref:hover{
+  border-bottom-style:solid;
+}
+
+html[data-theme="dark"] body.reader-page .page-header{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] body.reader-page .reader-toolbar{
+  background:rgba(15,23,42,.88);
+}
+
+html[data-theme="dark"] body.reader-page .page-title,
+html[data-theme="dark"] body.reader-page .panel h3,
+html[data-theme="dark"] body.reader-page .dict-title,
+html[data-theme="dark"] body.reader-page .vtext{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] body.reader-page .panel,
+html[data-theme="dark"] body.reader-page .reader-toolbar,
+html[data-theme="dark"] body.reader-page .reader-toolbar select,
+html[data-theme="dark"] body.reader-page .reader-toolbar .btn,
+html[data-theme="dark"] body.reader-page .dict-head,
+html[data-theme="dark"] body.reader-page .dict-input,
+html[data-theme="dark"] body.reader-page .tool-btn,
+html[data-theme="dark"] body.reader-page .icon-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] body.reader-page .verse:hover{
+  background:linear-gradient(90deg, rgba(241,115,0,.08), transparent 58%);
+}
+
+html[data-theme="dark"] body.reader-page .v-panel{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+@media(max-width:980px){
+  body.reader-page .reader-toolbar{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  body.reader-page .reader-toolbar .btn,
+  body.reader-page .reader-toolbar select{
+    width:100%;
+  }
+
+  body.reader-page .layout{
+    grid-template-columns:1fr;
+  }
+
+  body.reader-page aside.panel{
+    position:relative;
+    top:auto;
+  }
+}
+
+@media(max-width:700px){
+  body.reader-page main.container{
+    padding:18px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  body.reader-page .page-header{
+    padding:42px 20px;
+  }
+
+  body.reader-page .reader-toolbar{
+    grid-template-columns:1fr;
+    position:relative;
+    top:auto;
+  }
+
+  body.reader-page #verses{
+    padding:2px 16px 20px;
+  }
+
+  body.reader-page .vtext{
+    font-size:1.08rem;
+    line-height:1.82;
+  }
+}
+
+/* Lexicon refinement: clearer word-study cards */
+body.reader-page aside.panel{
+  overflow:hidden;
+}
+
+body.reader-page .dict-head{
+  align-items:flex-start;
+  gap:14px;
+  padding:18px;
+  margin:0;
+}
+
+body.reader-page .dict-title{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+body.reader-page .dict-title::after{
+  content:"Search words, meanings, and Strong’s entries.";
+  color:var(--muted);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  line-height:1.35;
+}
+
+body.reader-page .dict-reveal{
+  padding:0 18px;
+}
+
+body.reader-page .dict-input{
+  margin-top:14px;
+  min-height:46px;
+  padding:0 13px;
+  font-size:.95rem;
+}
+
+body.reader-page .dict-body{
+  padding:16px 18px 20px;
+  margin:0;
+}
+
+body.reader-page .dict-body .muted{
+  margin:0;
+  padding:14px;
+  border:1px dashed var(--border);
+  background:rgba(5,74,145,.035);
+  color:var(--muted);
+  line-height:1.55;
+}
+
+body.reader-page .v-panel.st{
+  padding:14px;
+}
+
+body.reader-page .v-panel.st .strongs-list{
+  display:grid;
+  gap:12px;
+}
+
+body.reader-page .v-panel.st .strongs-item,
+body.reader-page .lex-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:14px;
+}
+
+body.reader-page .v-panel.st .strongs-item .head,
+body.reader-page .lex-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+
+body.reader-page .v-panel.st .strongs-item .code,
+body.reader-page .lex-code{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 8px;
+  border:1px solid rgba(241,115,0,.30);
+  background:rgba(241,115,0,.09);
+  color:var(--accent);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+body.reader-page .v-panel.st .strongs-item .lemma,
+body.reader-page .lex-lemma{
+  color:var(--ink);
+  font-size:1.15rem;
+  font-weight:900;
+  line-height:1.2;
+}
+
+body.reader-page .v-panel.st .strongs-item .tr,
+body.reader-page .v-panel.st .strongs-item .pos,
+body.reader-page .lex-meta{
+  color:var(--muted);
+  font-size:.86rem;
+  font-weight:800;
+  line-height:1.45;
+}
+
+body.reader-page .v-panel.st .strongs-item .gloss,
+body.reader-page .lex-gloss{
+  margin-top:10px;
+  color:var(--ink);
+  font-weight:800;
+  line-height:1.55;
+}
+
+body.reader-page .lex-fields{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+
+body.reader-page .lex-field{
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.025);
+  padding:11px 12px;
+}
+
+body.reader-page .lex-label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.10em;
+}
+
+body.reader-page .lex-value{
+  color:var(--ink);
+  line-height:1.58;
+}
+
+body.reader-page .v-panel.st details.more{
+  margin-top:12px;
+}
+
+body.reader-page .v-panel.st details.more summary{
+  cursor:pointer;
+  color:var(--accent);
+  font-weight:900;
+}
+
+body.reader-page .v-panel.st .defs{
+  margin:10px 0 0 18px;
+  color:var(--ink);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] body.reader-page .dict-body .muted,
+html[data-theme="dark"] body.reader-page .lex-field{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item,
+html[data-theme="dark"] body.reader-page .lex-card{
+  background:var(--surface);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item .lemma,
+html[data-theme="dark"] body.reader-page .lex-lemma,
+html[data-theme="dark"] body.reader-page .v-panel.st .strongs-item .gloss,
+html[data-theme="dark"] body.reader-page .lex-gloss,
+html[data-theme="dark"] body.reader-page .lex-value,
+html[data-theme="dark"] body.reader-page .v-panel.st .defs{
+  color:#ffffff !important;
+}
+
+/* Exposition refinement: clearer personal study notes */
+body.reader-page .v-panel.cm{
+  padding:14px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.06), transparent 40%),
+    rgba(5,74,145,.035);
+}
+
+body.reader-page .v-panel.cm::before{
+  content:"No Private Interpretation";
+  display:block;
+  margin:0 0 6px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+body.reader-page .v-panel.cm::after{
+  content:"Write your own verse notes, observations, or study thoughts. Notes are saved locally on this device.";
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:700;
+  line-height:1.45;
+}
+
+body.reader-page .exposition-text{
+  width:100%;
+  min-height:130px;
+  resize:vertical;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:13px 14px;
+  font:inherit;
+  font-size:.96rem;
+  line-height:1.65;
+  box-shadow:var(--shadow);
+}
+
+body.reader-page .exposition-text:focus{
+  border-color:var(--accent);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(241,115,0,.14);
+}
+
+body.reader-page .exposition-text::placeholder{
+  color:var(--muted);
+  opacity:.85;
+}
+
+html[data-theme="dark"] body.reader-page .v-panel.cm{
+  background:rgba(255,255,255,.035);
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.reader-page .exposition-text{
+  background:var(--surface);
+  color:#ffffff;
+  border-color:var(--border);
+}
+
+/* Reader bookmark button */
+body.reader-page .sj-bookmark-btn.saved,
+body.reader-page .sj-bookmark-btn[aria-pressed="true"]{
+  color:#ffffff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+/* Reader verse highlight tools */
+body.reader-page .sj-highlight-inline{
+  display:inline-flex;
+  margin-left:8px;
+}
+
+body.reader-page .sj-highlight-btn[aria-pressed="true"]{
+  color:#ffffff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+body.reader-page .sj-verse-highlighted{
+  background:
+    linear-gradient(90deg, rgba(241,115,0,.18), rgba(241,115,0,.07)) !important;
+  box-shadow:inset 4px 0 0 var(--accent);
+}
+
+html[data-theme="dark"] body.reader-page .sj-verse-highlighted{
+  background:
+    linear-gradient(90deg, rgba(241,115,0,.28), rgba(241,115,0,.10)) !important;
+}
+
+/* Reader highlight category colors */
+body.reader-page .sj-highlight-btn[data-highlight-category="key"]{
+  color:#ffffff;
+  background:#F17300;
+  border-color:#F17300;
+}
+
+body.reader-page .sj-highlight-btn[data-highlight-category="law"]{
+  color:#ffffff;
+  background:#B45309;
+  border-color:#B45309;
+}
+
+body.reader-page .sj-highlight-btn[data-highlight-category="prophecy"]{
+  color:#ffffff;
+  background:#054A91;
+  border-color:#054A91;
+}
+
+body.reader-page .sj-highlight-btn[data-highlight-category="question"]{
+  color:#ffffff;
+  background:#475569;
+  border-color:#475569;
+}
+
+body.reader-page .sj-highlight-key{
+  background:linear-gradient(90deg, rgba(241,115,0,.18), rgba(241,115,0,.07)) !important;
+  box-shadow:inset 4px 0 0 #F17300;
+}
+
+body.reader-page .sj-highlight-law{
+  background:linear-gradient(90deg, rgba(180,83,9,.18), rgba(180,83,9,.07)) !important;
+  box-shadow:inset 4px 0 0 #B45309;
+}
+
+body.reader-page .sj-highlight-prophecy{
+  background:linear-gradient(90deg, rgba(5,74,145,.18), rgba(5,74,145,.07)) !important;
+  box-shadow:inset 4px 0 0 #054A91;
+}
+
+body.reader-page .sj-highlight-question{
+  background:linear-gradient(90deg, rgba(71,85,105,.18), rgba(71,85,105,.07)) !important;
+  box-shadow:inset 4px 0 0 #475569;
+}
+
+/* Highlight safety: only actual verse targets receive highlight backgrounds */
+body.reader-page .sj-verse-highlighted:not(.sj-highlight-target){
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-key{
+  background:linear-gradient(90deg, rgba(241,115,0,.18), rgba(241,115,0,.07)) !important;
+  box-shadow:inset 4px 0 0 #F17300;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-law{
+  background:linear-gradient(90deg, rgba(180,83,9,.18), rgba(180,83,9,.07)) !important;
+  box-shadow:inset 4px 0 0 #B45309;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-prophecy{
+  background:linear-gradient(90deg, rgba(5,74,145,.18), rgba(5,74,145,.07)) !important;
+  box-shadow:inset 4px 0 0 #054A91;
+}
+
+body.reader-page .sj-highlight-target.sj-highlight-question{
+  background:linear-gradient(90deg, rgba(71,85,105,.18), rgba(71,85,105,.07)) !important;
+  box-shadow:inset 4px 0 0 #475569;
+}
+
+/* Reader breadcrumb rhythm: breadcrumb inside main before reader header */
+body.reader-page main.container > .breadcrumbs{
+  margin:0 0 18px !important;
+  padding:0 !important;
+}
+
+body.reader-page main.container > .breadcrumbs + .page-header{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.reader-page main.container > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+
+/* Word Study language clarity */
+body.reader-page .word-study-help{
+  margin:.45rem 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.5;
+}
+
+body.reader-page .lex-language{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:.16rem .45rem;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  background:rgba(5,74,145,.10);
+  color:var(--brand);
+}
+
+body.reader-page .lex-language.hebrew{
+  background:rgba(5,74,145,.12);
+  color:#054A91;
+}
+
+body.reader-page .lex-language.greek{
+  background:rgba(241,115,0,.15);
+  color:#9a4300;
+}
+
+body.reader-page .lex-language.unknown{
+  background:rgba(107,114,128,.14);
+  color:#4b5563;
+}
+
+body.reader-page .lex-note{
+  margin:.55rem 0 0;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+body.reader-page .strongs-item.missing{
+  border-style:dashed;
+  opacity:.92;
+}
+
+body.reader-page .lex-field{
+  margin:.7rem 0 0;
+}
+
+body.reader-page .lex-label{
+  display:block;
+  margin:0 0 .2rem;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+body.reader-page .lex-value{
+  color:var(--ink);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] body.reader-page .lex-language.hebrew,
+html[data-theme="dark"] body.reader-page .lex-language.greek,
+html[data-theme="dark"] body.reader-page .lex-language.unknown{
+  color:#ffffff;
+}
+
+
+/* Word Study accordion preview */
+body.reader-page .lex-accordion{
+  display:block;
+  padding:0 !important;
+  overflow:hidden;
+}
+
+body.reader-page .lex-accordion summary{
+  list-style:none;
+}
+
+body.reader-page .lex-accordion summary::-webkit-details-marker{
+  display:none;
+}
+
+body.reader-page .lex-summary{
+  display:grid;
+  gap:.55rem;
+  padding:14px;
+  cursor:pointer;
+  outline:none;
+}
+
+body.reader-page .lex-summary:focus-visible{
+  outline:3px solid rgba(241,115,0,.45);
+  outline-offset:-3px;
+}
+
+body.reader-page .lex-summary-main{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.45rem;
+}
+
+body.reader-page .lex-summary-main::after{
+  content:"+";
+  margin-left:auto;
+  width:1.65rem;
+  height:1.65rem;
+  display:inline-grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--accent);
+  font-weight:900;
+}
+
+body.reader-page .lex-accordion[open] .lex-summary-main::after{
+  content:"−";
+}
+
+body.reader-page .lex-summary-english{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  align-items:baseline;
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.45;
+}
+
+body.reader-page .lex-label-inline{
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+body.reader-page .lex-details{
+  padding:0 14px 14px;
+  border-top:1px solid var(--border);
+}
+
+body.reader-page .lex-selected-line{
+  margin:.7rem 0 0;
+}
+
+body.reader-page .lex-meta-line{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:.7rem 0 0;
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+
+<body class="reader-page">
+
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb" id="readerBreadcrumbs">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Loading…</span>
+  </nav>
+
+  <header class="page-header">
+    <h1 class="page-title" id="pageTitle">Bible Reader</h1>
+    <div class="crumbs" id="crumbs">Canon → Book → Chapter</div>
+  </header>
+
+  <div class="reader-toolbar" id="readerToolbar" role="navigation" aria-label="Chapter navigation">
+    <button class="btn prev" id="btnPrev">← Prev</button>
+
+    <select id="canonSelect">
+      <option value="tanakh">Tanakh</option>
+      <option value="newtestament">New Testament</option>
+      <option value="apocrypha">Apocrypha</option>
+    </select>
+
+    <select id="bookSelect"></select>
+    <select id="chSelect"></select>
+
+    <button class="btn next" id="btnNext">Next →</button>
+  </div>
+
+  <section class="layout">
+    <div class="panel">
+      <h3>Text</h3>
+      <div id="verses"><p class="muted">Loading…</p></div>
+    </div>
+
+    <aside class="panel">
+      <div class="dict-head">
+        <div class="dict-title">Word Study / Hebrew & Greek Lexicon</div>
+        <button class="icon-btn" id="dictToggle">
+          🔍
+        </button>
+      </div>
+      <div class="dict-reveal" id="dictReveal">
+        <input class="dict-input" id="dictQuery" type="search" placeholder="Search a word, H7225, or G3056">
+        <p class="word-study-help">H-numbers are Hebrew / Aramaic entries. G-numbers are Greek entries. Click a term to open or close full dictionary details.</p>
+      </div>
+      <div class="dict-body" id="dictBody"><p class="muted">No word selected yet. Open Word Study on a verse to see compact English sense previews, then click a Hebrew or Greek entry for full dictionary details.</p></div>
+    </aside>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<div id="hovercard" class="hovercard" role="dialog" aria-hidden="true"></div>
+
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const raw = (params.get("book") || "").trim().toLowerCase();
+
+  const aliases = {
+    "ps": "psalm",
+    "psa": "psalm",
+    "psal": "psalm",
+    "psalm": "psalm",
+    "psalms": "psalm",
+    "book-of-psalms": "psalm",
+    "the-psalms": "psalm"
+  };
+
+  if (aliases[raw] && raw !== aliases[raw]) {
+    params.set("book", aliases[raw]);
+    const next = window.location.pathname + "?" + params.toString() + window.location.hash;
+    window.history.replaceState(null, "", next);
+  }
+})();
+</script>
+
+<script src="/js/shims.js" defer></script>
+<script src="/js/canon-strongs.js" defer></script>
+<script src="/js/nt-chapter.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<script src="/js/theme-toggle.js" defer></script>
+<script src="/js/include.js" defer></script>
+<script src="/js/app-reading-history.js" defer></script>
+<script src="/js/reader-navigation.js" defer></script>
+<script src="/js/reader-progress.js" defer></script>
+<script src="/js/reader-preferences.js" defer></script>
+<script src="/js/reader-chapter-search.js" defer></script>
+<script src="/js/reader-share-tools.js" defer></script>
+<script src="/js/reader-shortcuts.js" defer></script>
+<script src="/js/app-data-schema.js" defer></script>
+<script src="/js/reader-offline-chapter.js" defer></script>
+<script src="/js/reader-verse-jump.js" defer></script>
+<script src="/js/app-bookmarks.js" defer></script>
+<script src="/js/app-highlights.js" defer></script>
+<script src="/js/app-expositions.js" defer></script>
+<script src="/js/reader-deep-link.js" defer></script>
+</body>
+</html>

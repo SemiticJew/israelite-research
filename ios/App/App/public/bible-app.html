@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bible App Preview — Semitic Jew</title>
+<meta name="description" content="Preview the future Semitic Jew Bible App experience for Scripture reading, notes, cross references, word study, highlights, and reading plans."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Bible App Preview — Semitic Jew"/>
+<meta property="og:description" content="Preview the future Semitic Jew Bible App experience for Scripture reading, notes, cross references, word study, highlights, and reading plans."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/bible-app.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Bible App Preview — Semitic Jew"/>
+<meta name="twitter:description" content="Preview the future Semitic Jew Bible App experience for Scripture reading, notes, cross references, word study, highlights, and reading plans."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+body.bible-app-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.bible-app-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.bible-app-hero{
+  margin:24px 0 34px;
+  padding:62px 30px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
+  box-shadow:var(--shadow);
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:28px;
+  align-items:center;
+}
+
+.bible-app-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.bible-app-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.45rem, 6vw, 5rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.055em;
+}
+
+.bible-app-subtitle{
+  max-width:760px;
+  margin:18px 0 0;
+  color:var(--muted);
+  font-size:1.06rem;
+  line-height:1.7;
+}
+
+.bible-app-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:26px;
+}
+
+.bible-app-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+
+.bible-app-btn.primary{
+  color:#ffffff;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+.bible-app-btn:hover,
+.bible-app-btn:focus-visible{
+  border-color:var(--accent);
+  color:var(--accent);
+  outline:none;
+}
+
+.bible-app-btn.primary:hover,
+.bible-app-btn.primary:focus-visible{
+  color:#ffffff;
+}
+
+.phone-preview{
+  max-width:360px;
+  margin:0 auto;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow-hover, 0 18px 42px rgba(0,0,0,.14));
+  padding:14px;
+}
+
+.phone-screen{
+  min-height:460px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 34%),
+    linear-gradient(180deg, rgba(5,74,145,.06), rgba(129,164,205,.04));
+  padding:18px;
+}
+
+.phone-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.phone-brand{
+  font-weight:900;
+  color:var(--ink);
+}
+
+.phone-pill{
+  border:1px solid rgba(241,115,0,.32);
+  background:rgba(241,115,0,.08);
+  color:var(--accent);
+  padding:5px 8px;
+  font-size:.7rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.phone-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.phone-card strong{
+  display:block;
+  margin-bottom:6px;
+  color:var(--ink);
+}
+
+.phone-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.92rem;
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin:28px 0;
+}
+
+.feature-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:20px;
+}
+
+.feature-card .label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.feature-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.12rem;
+  font-weight:900;
+}
+
+.feature-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.roadmap{
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:24px;
+}
+
+.roadmap h2{
+  margin:0 0 14px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+
+.roadmap-list{
+  display:grid;
+  gap:12px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.roadmap-list li{
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.025);
+  padding:14px;
+}
+
+.roadmap-list strong{
+  display:block;
+  margin-bottom:6px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.roadmap-list span{
+  color:var(--muted);
+  line-height:1.55;
+}
+
+html[data-theme="dark"] .bible-app-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.24), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .bible-app-title,
+html[data-theme="dark"] .phone-brand,
+html[data-theme="dark"] .phone-card strong,
+html[data-theme="dark"] .feature-card h2,
+html[data-theme="dark"] .roadmap h2{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .phone-preview,
+html[data-theme="dark"] .phone-screen,
+html[data-theme="dark"] .phone-card,
+html[data-theme="dark"] .feature-card,
+html[data-theme="dark"] .roadmap,
+html[data-theme="dark"] .roadmap-list li,
+html[data-theme="dark"] .bible-app-btn{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:950px){
+  .hero-grid,
+  .feature-grid{
+    grid-template-columns:1fr;
+  }
+
+  .bible-app-hero{
+    text-align:center;
+  }
+
+  .bible-app-subtitle{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .bible-app-actions{
+    justify-content:center;
+  }
+}
+
+@media(max-width:700px){
+  .bible-app-page main.container{
+    padding:22px 20px 64px;
+  }
+
+  .bible-app-hero{
+    margin:18px 0 28px;
+    padding:46px 20px;
+  }
+
+  .bible-app-actions{
+    align-items:stretch;
+  }
+
+  .bible-app-btn{
+    width:100%;
+  }
+
+  .phone-screen{
+    min-height:390px;
+  }
+}
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+
+<body class="bible-app-page">
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/app.html">App</a>
+    <span class="sep">›</span>
+    <span class="current">Bible App Preview</span>
+  </nav>
+
+  <section class="bible-app-hero">
+    <div class="hero-grid">
+      <div>
+        <div class="bible-app-kicker">Bible App Preview</div>
+        <h1 class="bible-app-title">A Scripture App Built from the Site</h1>
+        <p class="bible-app-subtitle">
+          The future Semitic Jew Bible App will grow from the Scripture reader, word study tools, cross references, articles, and study systems already built into the website.
+        </p>
+
+        <div class="bible-app-actions">
+          <a class="bible-app-btn primary" href="/biblia.html">Open Biblia</a>
+          <a class="bible-app-btn" href="/website-app.html">Install Website App</a>
+          <a class="bible-app-btn" href="/app.html">Back to App Hub</a>
+        </div>
+      </div>
+
+      <aside class="phone-preview" aria-label="Bible app preview mockup">
+        <div class="phone-screen">
+          <div class="phone-top">
+            <span class="phone-brand">Semitic Jew</span>
+            <span class="phone-pill">Preview</span>
+          </div>
+
+          <div class="phone-card">
+            <strong>Continue Reading</strong>
+            <p>1 Maccabees 1 — Resume your last chapter and study location.</p>
+          </div>
+
+          <div class="phone-card">
+            <strong>Word Study</strong>
+            <p>Open lexicon entries, definitions, and verse-level tools.</p>
+          </div>
+
+          <div class="phone-card">
+            <strong>Saved Notes</strong>
+            <p>Future local notes, highlights, bookmarks, and reading history.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="feature-grid" aria-label="Bible app feature preview">
+    <article class="feature-card">
+      <span class="label">Reader</span>
+      <h2>Scripture Navigation</h2>
+      <p>Tanakh, New Testament, and Apocrypha chapter access with the same reader system already on the site.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="label">Tools</span>
+      <h2>Verse-Level Study</h2>
+      <p>Word study, cross references, copy tools, verse anchors, and personal study notes.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="label">Future</span>
+      <h2>Saved Study Life</h2>
+      <p>Planned bookmarks, highlights, local notes, reading plans, and offline reading strategy.</p>
+    </article>
+  </section>
+
+  <section class="roadmap" aria-label="Bible app roadmap">
+    <h2>Bible App Roadmap</h2>
+    <ul class="roadmap-list">
+      <li>
+        <strong>Foundation</strong>
+        <span>Use the current Biblia system, Scripture data, chapter reader, lexicon presentation, and cross-reference behavior.</span>
+      </li>
+      <li>
+        <strong>Study Memory</strong>
+        <span>Add local bookmarks, continue reading, recently opened chapters, and saved notes.</span>
+      </li>
+      <li>
+        <strong>Offline Layer</strong>
+        <span>Cache reader shells, Scripture data, and key study pages for app-like reading when connection is limited.</span>
+      </li>
+      <li>
+        <strong>Native Path</strong>
+        <span>Once the PWA proves useful, package the same experience for App Store and Google Play consideration.</span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/include.js"></script>
+</body>
+</html>

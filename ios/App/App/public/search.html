@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Search — Semitic Jew</title>
+  <meta name="description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Search — Semitic Jew" />
+  <meta property="og:description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+  <meta property="og:image" content="https://semiticjew.org/images/social-preview.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://semiticjew.org/search.html" />
+  <meta property="og:site_name" content="Semitic Jew" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Search — Semitic Jew" />
+  <meta name="twitter:description" content="Search Semitic Jew articles, Bible tools, encyclopedia entries, map regions, study pages, and Scripture-connected resources." />
+  <meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png" />
+
+  <link href="/styles.css" rel="stylesheet" />
+  <style>
+    .page-shell{max-width:1200px;margin:0 auto;padding:0 16px}
+    .breadcrumbs{font-size:.9rem;color:#66708a;margin:16px 0}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+    .tab{display:inline-flex;align-items:center;gap:.45rem;padding:.5rem .75rem;border:1px solid var(--border,#e6ebf2);border-radius:999px;background:#fff;cursor:pointer;font-weight:600}
+    .tab[aria-selected="true"]{background:#054A91;color:#fff;border-color:#054A91}
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:24px;margin:12px 0 28px}
+    @media (max-width: 960px){.layout{grid-template-columns:1fr}}
+    .facet{border:1px solid var(--border,#e6ebf2);border-radius:12px;background:#fff;margin-bottom:14px}
+    .facet h3{margin:0;padding:12px 14px;font-size:1rem;border-bottom:1px solid var(--border,#e6ebf2)}
+    .facet .facet-body{padding:10px 14px;display:grid;gap:8px;max-height:280px;overflow:auto}
+    .facet .check{display:flex;align-items:center;gap:.55rem}
+    .facet .check input{width:16px;height:16px}
+    .facet .range{display:flex;gap:8px}
+    .facet .range input{flex:1;padding:8px;border:1px solid var(--border,#e6ebf2);border-radius:8px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}
+    .results-meta{color:#66708a}
+    .sorter select{padding:.5rem .6rem;border:1px solid var(--border,#e6ebf2);border-radius:8px;background:#fff}
+    .result-list{display:grid;gap:16px}
+    .result-item{display:grid;grid-template-columns:140px 1fr;gap:14px;border:1px solid var(--border,#e6ebf2);border-radius:12px;background:#fff;padding:10px}
+    .thumb{width:140px;height:100px;overflow:hidden;border-radius:10px;background:linear-gradient(180deg,#eef3f9,#dde7f4)}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .r-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .r-type{padding:.2rem .5rem;border-radius:6px;background:rgba(0,0,0,.06);font-size:.75rem;letter-spacing:.02em;text-transform:uppercase}
+    .r-title{font-size:1.05rem;margin:0}
+    .r-excerpt{margin:6px 0 0;color:#555}
+    .r-meta{margin-top:6px;color:#777;font-size:.9rem}
+    .empty{padding:28px;border:1px dashed #d7deea;border-radius:12px;background:#fbfcff}
+    .pager{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:18px 0 36px}
+    .page-btn{min-width:38px;height:38px;border:1px solid var(--border,#e6ebf2);border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;padding:0 .6rem;cursor:pointer}
+    .page-btn[aria-current="page"]{background:#054A91;border-color:#054A91;color:#fff;font-weight:700}
+    .search-bar{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:10px 0 6px}
+    .search-input{padding:.75rem .9rem;border:1px solid #e1e6ef;border-radius:10px;font-size:1rem}
+    .search-btn{padding:.75rem 1rem;border:1px solid #054A91;background:#054A91;color:#fff;border-radius:10px;cursor:pointer}
+
+    /* Modern Search Page */
+    body.search-page{
+      background:var(--surface);
+      color:var(--ink);
+    }
+
+    .search-page .page-shell{
+      max-width:1200px;
+      margin:0 auto;
+      padding:40px 24px 80px;
+    }
+
+    .search-hero{
+      margin:24px 0 30px;
+      padding:58px 30px;
+      text-align:center;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+        linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+    }
+
+    .search-kicker{
+      margin:0 0 12px;
+      color:var(--accent);
+      font-size:.78rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+
+    .search-title{
+      margin:0;
+      color:var(--ink);
+      font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.05em;
+    }
+
+    .search-subtitle{
+      max-width:860px;
+      margin:18px auto 0;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.7;
+    }
+
+    .search-page .search-bar{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      margin:0 0 18px;
+      padding:18px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+
+    .search-page .search-input{
+      min-height:48px;
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-size:1rem;
+    }
+
+    .search-page .search-btn{
+      min-height:48px;
+      border-radius:0;
+      border:1px solid var(--accent);
+      background:var(--accent);
+      color:#ffffff;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .search-page .tabs{
+      padding:14px;
+      border:1px solid var(--border);
+      background:rgba(5,74,145,.035);
+      margin:0 0 20px;
+    }
+
+    .search-page .tab{
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-weight:900;
+    }
+
+    .search-page .tab[aria-selected="true"]{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#ffffff;
+    }
+
+    .search-page .layout{
+      grid-template-columns:300px 1fr;
+      gap:24px;
+      margin:24px 0 28px;
+      align-items:start;
+    }
+
+    .search-page aside{
+      position:sticky;
+      top:92px;
+    }
+
+    .search-page .facet{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+
+    .search-page .facet h3{
+      color:var(--ink);
+      border-bottom:1px solid var(--border);
+      font-size:.9rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
+        var(--surface);
+    }
+
+    .search-page .facet .check{
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .search-page .facet .range input,
+    .search-page .sorter select{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+    }
+
+    .search-page .toolbar{
+      padding:0 0 14px;
+      border-bottom:1px solid var(--border);
+      margin:0 0 16px;
+    }
+
+    .search-page .results-meta{
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .search-page .result-list{
+      gap:18px;
+    }
+
+    .search-page .result-item{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+      padding:14px;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .search-page .result-item:hover{
+      transform:translateY(-3px);
+      border-color:var(--accent);
+      box-shadow:var(--shadow-hover, 0 10px 28px rgba(0,0,0,.12));
+    }
+
+    .search-page .thumb{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 40%),
+        linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+    }
+
+    .search-page .r-type{
+      background:rgba(241,115,0,.10);
+      color:var(--accent);
+      border:1px solid rgba(241,115,0,.25);
+      font-weight:900;
+    }
+
+    .search-page .r-title a{
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:900;
+    }
+
+    .search-page .r-title a:hover{
+      color:var(--accent);
+      text-decoration:none;
+    }
+
+    .search-page .r-excerpt,
+    .search-page .r-meta{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .search-page .empty{
+      border-radius:0;
+      border:1px dashed var(--border);
+      background:rgba(5,74,145,.035);
+      color:var(--muted);
+    }
+
+    .search-page .page-btn{
+      border-radius:0;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--ink);
+      font-weight:800;
+    }
+
+    .search-page .page-btn[aria-current="page"]{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#ffffff;
+    }
+
+    html[data-theme="dark"] .search-hero{
+      background:
+        radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+        linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+    }
+
+    html[data-theme="dark"] .search-title,
+    html[data-theme="dark"] .search-page .facet h3,
+    html[data-theme="dark"] .search-page .r-title a{
+      color:#ffffff !important;
+    }
+
+    html[data-theme="dark"] .search-page .search-bar,
+    html[data-theme="dark"] .search-page .search-input,
+    html[data-theme="dark"] .search-page .tabs,
+    html[data-theme="dark"] .search-page .tab,
+    html[data-theme="dark"] .search-page .facet,
+    html[data-theme="dark"] .search-page .facet h3,
+    html[data-theme="dark"] .search-page .facet .range input,
+    html[data-theme="dark"] .search-page .sorter select,
+    html[data-theme="dark"] .search-page .result-item,
+    html[data-theme="dark"] .search-page .page-btn{
+      background:var(--surface) !important;
+      border-color:var(--border) !important;
+    }
+
+    @media(max-width:960px){
+      .search-page .layout{
+        grid-template-columns:1fr;
+      }
+
+      .search-page aside{
+        position:relative;
+        top:auto;
+      }
+    }
+
+    @media(max-width:700px){
+      .search-page .page-shell{
+        padding:22px 20px 64px;
+        overflow-x:hidden;
+      }
+
+      .search-hero{
+        margin:18px 0 28px;
+        padding:42px 20px;
+      }
+
+      .search-page .search-bar{
+        grid-template-columns:1fr;
+      }
+
+      .search-page .result-item{
+        grid-template-columns:1fr;
+      }
+
+      .search-page .thumb{
+        width:100%;
+        height:150px;
+      }
+    }
+
+
+
+/* Search page refinement: quick actions and clearer filters */
+.search-page .search-assist{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:center;
+  margin:-4px 0 22px;
+  padding:16px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 42%),
+    var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.search-page .search-assist-text{
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.55;
+  font-weight:700;
+}
+
+.search-page .search-assist-text strong{
+  color:var(--ink);
+  font-weight:900;
+}
+
+.search-page .quick-searches{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.search-page .quick-chip{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  min-height:34px;
+  padding:0 11px;
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  cursor:pointer;
+  transition:transform .16s ease, border-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.search-page .quick-chip:hover,
+.search-page .quick-chip:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+.search-page .filter-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 12px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+
+.search-page .filter-head strong{
+  color:var(--ink);
+  font-size:.85rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.search-page .clear-filters{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  min-height:34px;
+  padding:0 10px;
+  font-size:.75rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+
+.search-page .clear-filters:hover,
+.search-page .clear-filters:focus-visible{
+  color:var(--accent);
+  border-color:var(--accent);
+  outline:none;
+}
+
+.search-page .facet .facet-body::-webkit-scrollbar{
+  width:8px;
+}
+
+.search-page .facet .facet-body::-webkit-scrollbar-thumb{
+  background:rgba(241,115,0,.35);
+}
+
+.search-page .facet .check{
+  padding:6px 0;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+
+.search-page .facet .check:last-child{
+  border-bottom:0;
+}
+
+.search-page .facet .check span{
+  line-height:1.35;
+}
+
+.search-page .result-item{
+  position:relative;
+  overflow:hidden;
+}
+
+.search-page .result-item::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .2s ease;
+}
+
+.search-page .result-item:hover::after{
+  transform:scaleY(1);
+}
+
+.search-page .empty p{
+  margin:0;
+  line-height:1.6;
+  font-weight:800;
+}
+
+html[data-theme="dark"] .search-page .search-assist,
+html[data-theme="dark"] .search-page .filter-head,
+html[data-theme="dark"] .search-page .quick-chip,
+html[data-theme="dark"] .search-page .clear-filters{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .search-page .search-assist-text strong,
+html[data-theme="dark"] .search-page .filter-head strong{
+  color:#ffffff !important;
+}
+
+@media(max-width:820px){
+  .search-page .search-assist{
+    grid-template-columns:1fr;
+  }
+
+  .search-page .quick-searches{
+    justify-content:flex-start;
+  }
+}
+
+
+
+/* === Archive-style search results === */
+.search-page .result-list{
+  gap:0 !important;
+  border-top:1px solid var(--border);
+}
+
+.search-page .result-item{
+  display:block !important;
+  grid-template-columns:none !important;
+  padding:22px 0 !important;
+  border:0 !important;
+  border-bottom:1px solid var(--border) !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  transition:background .18s ease, padding-left .18s ease;
+}
+
+.search-page .result-item:hover{
+  transform:none !important;
+  box-shadow:none !important;
+  border-color:var(--border) !important;
+  background:rgba(5,74,145,.035) !important;
+  padding-left:14px !important;
+}
+
+.search-page .result-item::after{
+  display:none !important;
+}
+
+.search-page .thumb{
+  display:none !important;
+}
+
+.search-page .r-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.search-page .r-type{
+  order:-1;
+  border:0 !important;
+  background:transparent !important;
+  color:var(--accent) !important;
+  padding:0 !important;
+  font-size:.72rem !important;
+  font-weight:900 !important;
+  letter-spacing:.14em !important;
+}
+
+.search-page .r-title{
+  margin:0 !important;
+  font-size:clamp(1.2rem, 2vw, 1.55rem) !important;
+  line-height:1.25 !important;
+}
+
+.search-page .r-title a{
+  color:var(--ink) !important;
+  text-decoration:none !important;
+}
+
+.search-page .r-title a:hover{
+  color:var(--accent) !important;
+}
+
+.search-page .r-excerpt{
+  max-width:850px;
+  margin:0 0 8px !important;
+  color:var(--muted) !important;
+  line-height:1.65 !important;
+}
+
+.search-page .r-meta{
+  margin:0 !important;
+  color:var(--muted) !important;
+  font-size:.82rem !important;
+  font-weight:800 !important;
+  letter-spacing:.04em !important;
+  text-transform:uppercase !important;
+}
+
+html[data-theme="dark"] .search-page .result-item:hover{
+  background:rgba(255,255,255,.04) !important;
+}
+
+@media(max-width:700px){
+  .search-page .result-item{
+    padding:20px 0 !important;
+  }
+
+  .search-page .result-item:hover{
+    padding-left:0 !important;
+  }
+
+  .search-page .r-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:6px;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="search-page">
+
+  <div id="site-header"></div>
+
+  <main class="page-shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/index.html">Home</a>
+      <span class="sep">›</span>
+      <span class="current">Search</span>
+    </nav>
+
+    <section class="search-hero">
+      <div class="search-kicker">Site Search</div>
+      <h1 class="search-title">Search Resources</h1>
+      <p class="search-subtitle">
+        Search articles, biblical references, encyclopedia entries, study pages, map regions, and Scripture-connected resources across Semitic Jew.
+      </p>
+    </section>
+
+    <form id="searchForm" class="search-bar" role="search">
+      <input id="q" name="q" class="search-input" type="search" placeholder="Search articles, Bible tools, encyclopedia entries, regions…" autocomplete="off" />
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+
+    <section class="search-assist" aria-label="Search help and quick searches">
+      <div class="search-assist-text">
+        <strong>Tip:</strong> Use quotes for exact phrases, use the tabs to narrow by resource type, or select a quick search below.
+      </div>
+      <div class="quick-searches">
+        <button class="quick-chip" type="button" data-query="dietary laws">Dietary Laws</button>
+        <button class="quick-chip" type="button" data-query="black history">Black History</button>
+        <button class="quick-chip" type="button" data-query="maccabees">Maccabees</button>
+        <button class="quick-chip" type="button" data-query="deuteronomy 28">Deuteronomy 28</button>
+      </div>
+    </section>
+
+    <div class="tabs" role="tablist" aria-label="Resource Types">
+      <button class="tab" role="tab" data-type="" aria-selected="true">All</button>
+      <button class="tab" role="tab" data-type="Article">Articles</button>
+      <button class="tab" role="tab" data-type="Encyclopedia">Encyclopedia</button>
+      <button class="tab" role="tab" data-type="Page">Pages</button>
+      <button class="tab" role="tab" data-type="Region">Regions</button>
+    </div>
+
+    <div class="layout">
+      <aside>
+        <div class="filter-head">
+          <strong>Refine Results</strong>
+          <button id="clearFilters" class="clear-filters" type="button">Clear</button>
+        </div>
+
+        <section class="facet" aria-labelledby="facet-type">
+          <h3 id="facet-type">Type</h3>
+          <div class="facet-body" id="facetType"></div>
+        </section>
+
+        <section class="facet" aria-labelledby="facet-tags">
+          <h3 id="facet-tags">Tags</h3>
+          <div class="facet-body" id="facetTags"></div>
+        </section>
+
+        <section class="facet" aria-labelledby="facet-date">
+          <h3 id="facet-date">Date</h3>
+          <div class="facet-body">
+            <div class="range">
+              <input id="dateFrom" type="date" />
+              <input id="dateTo" type="date" />
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section>
+        <div class="toolbar">
+          <div class="results-meta" id="resultsMeta"></div>
+          <div class="sorter">
+            <label for="sort" class="sr-only">Sort</label>
+            <select id="sort">
+              <option value="newest">Newest</option>
+              <option value="relevance">Relevance</option>
+              <option value="az">A–Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="results" class="result-list" aria-live="polite"></div>
+        <div id="emptyState" class="empty" hidden>
+          <p>No results. Try different words or fewer filters. Use quotes for exact phrases, minus to exclude (e.g., “law of logic” -fallacy).</p>
+        </div>
+
+        <nav class="pager" aria-label="Pagination" id="pager"></nav>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    const state={all:[],filtered:[],page:1,perPage:20,query:'',type:'',sort:'newest',tags:new Set(),active:{types:new Set(),tags:new Set()},dateFrom:'',dateTo:''};
+    const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+    const resultsEl=$('#results'),metaEl=$('#resultsMeta'),pagerEl=$('#pager');
+    const facetTypeEl=$('#facetType'),facetTagsEl=$('#facetTags'),sortEl=$('#sort'),inputEl=$('#q');
+    const dateFromEl=$('#dateFrom'),dateToEl=$('#dateTo');
+
+    function normalize(s){return (s||'').toString().toLowerCase()}
+    function tokenize(str){return normalize(str).match(/\\"[^\\"]+\\"|[^\\s]+/g)||[]}
+    function stripQuotes(s){return s.startsWith('"')&&s.endsWith('"')?s.slice(1,-1):s}
+    function levenshtein(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++){for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}}return d[m][n]}
+    function fuzzy(term,word){if(term.length<4)return word.includes(term);return word===term||word.includes(term)||levenshtein(term,word)<=1}
+    function score(doc,terms){let s=0;const title=normalize(doc.title),ex=normalize(doc.excerpt),tg=(doc.tags||[]).map(normalize);const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);
+      for(const t of terms){if(t.startsWith('-'))continue;const term=stripQuotes(t);if(!term)continue;if(title.includes(term))s+=12;if(tg.some(x=>x.includes(term)))s+=7;if(ex.includes(term))s+=3;const words=new Set((title+' '+ex+' '+tg.join(' ')).split(/[^a-z0-9]+/).filter(Boolean));for(const w of words){if(fuzzy(term,w))s+=2}}
+      for(const p of joined){if(title.includes(p))s+=10;if(ex.includes(p))s+=6}return s}
+
+    function apply(){
+      const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));
+      let pool=state.all.filter(d=>{
+        if(state.type && d.type!==state.type)return false;
+        if(state.active.types.size && !state.active.types.has(d.type))return false;
+        if(state.active.tags.size){const set=new Set((d.tags||[]).map(normalize));for(const t of state.active.tags){if(!set.has(t))return false}}
+        if(state.dateFrom){const ts=Date.parse(d.date||'');if(ts && ts < Date.parse(state.dateFrom))return false}
+        if(state.dateTo){const ts=Date.parse(d.date||'');if(ts && ts > Date.parse(state.dateTo))return false}
+        if(excludes.size){const hay=(normalize(d.title)+' '+normalize(d.excerpt)+' '+(d.tags||[]).map(normalize).join(' '));for(const ex of excludes){if(hay.includes(ex))return false}}
+        return true
+      });
+      if(terms.length){pool=pool.map(d=>({...d,_score:score(d,terms)}))}
+      switch(state.sort){
+        case 'az': pool.sort((a,b)=>a.title.localeCompare(b.title)); break;
+        case 'relevance': pool.sort((a,b)=>(b._score||0)-(a._score||0)); break;
+        default: pool.sort((a,b)=>(Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0));
+      }
+      state.filtered=pool;state.page=1;render()
+    }
+
+    function render(){
+      const total=state.filtered.length;metaEl.textContent=total?`${total} result${total===1?'':'s'}`:'';
+      const start=(state.page-1)*state.perPage,end=state.page*state.perPage,chunk=state.filtered.slice(start,end);
+      resultsEl.innerHTML=chunk.map(r=>{
+        const img=r.image?`<div class="thumb"><img src="${r.image}" alt=""></div>`:`<div class="thumb"></div>`;
+        const date=r.date?new Date(r.date).toLocaleDateString():'';
+        return `<article class="result-item">
+          ${img}
+          <div>
+            <div class="r-head">
+              <span class="r-type">${r.type||''}</span>
+              <h3 class="r-title"><a href="${r.url}">${r.title}</a></h3>
+            </div>
+            <p class="r-excerpt">${r.excerpt||''}</p>
+            <div class="r-meta">${date}</div>
+          </div>
+        </article>`;
+      }).join('');
+      $('#emptyState').hidden=!!total;
+      renderPager(total);
+    }
+
+    function renderPager(total){
+      const pages=Math.max(1,Math.ceil(total/state.perPage));
+      pagerEl.innerHTML='';
+      function btn(label,page,selected=false){const b=document.createElement('button');b.className='page-btn';b.textContent=label;b.setAttribute('type','button');if(selected)b.setAttribute('aria-current','page');b.addEventListener('click',()=>{state.page=page;render();syncURL()});pagerEl.appendChild(b)}
+      if(pages<=1)return;
+      btn('1',1,state.page===1);
+      const start=Math.max(2,state.page-1),end=Math.min(pages-1,state.page+1);
+      if(start>2){const span=document.createElement('span');span.textContent='…';pagerEl.appendChild(span)}
+      for(let p=start;p<=end;p++){btn(String(p),p,state.page===p)}
+      if(end<pages-1){const span=document.createElement('span');span.textContent='…';pagerEl.appendChild(span)}
+      if(pages>1){btn(String(pages),pages,state.page===pages)}
+      if(state.page<pages)btn('Next',state.page+1,false);
+    }
+
+    function populateFacets(){
+      const typeCounts=new Map(), tagCounts=new Map();
+      for(const d of state.all){
+        typeCounts.set(d.type,(typeCounts.get(d.type)||0)+1);
+        for(const t of d.tags||[]){const k=normalize(t);tagCounts.set(k,(tagCounts.get(k)||0)+1)}
+      }
+      facetTypeEl.innerHTML=[...typeCounts.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([t,c])=>{
+        const checked=state.active.types.has(t)?'checked':'';return `<label class="check"><input type="checkbox" value="${t}" ${checked}/> <span>${t} (${c})</span></label>`
+      }).join('');
+      facetTagsEl.innerHTML=[...tagCounts.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([t,c])=>{
+        const checked=state.active.tags.has(t)?'checked':'';return `<label class="check"><input type="checkbox" value="${t}" ${checked}/> <span>#${t} (${c})</span></label>`
+      }).join('');
+    }
+
+    function readURL(){
+      const p=new URLSearchParams(location.search);
+      state.query=p.get('q')||'';
+      state.type=p.get('type')||'';
+      state.sort=p.get('sort')||'newest';
+      state.perPage=parseInt(p.get('pp')||'20',10);
+      state.page=parseInt(p.get('page')||'1',10);
+      state.dateFrom=p.get('from')||'';
+      state.dateTo=p.get('to')||'';
+      const tags=(p.get('tags')||'').split(',').filter(Boolean).map(normalize);
+      state.active.tags=new Set(tags);
+      const tset=(p.get('types')||'').split(',').filter(Boolean);
+      state.active.types=new Set(tset);
+      inputEl.value=state.query;sortEl.value=state.sort;dateFromEl.value=state.dateFrom;dateToEl.value=state.dateTo;
+      $$('.tabs .tab').forEach(btn=>btn.setAttribute('aria-selected', String((btn.dataset.type||'')===state.type)));
+    }
+
+    function syncURL(){
+      const p=new URLSearchParams();
+      if(state.query)p.set('q',state.query);
+      if(state.type)p.set('type',state.type);
+      if(state.sort!=='newest')p.set('sort',state.sort);
+      if(state.page>1)p.set('page',String(state.page));
+      if(state.perPage!==20)p.set('pp',String(state.perPage));
+      if(state.active.types.size)p.set('types',[...state.active.types].join(','));
+      if(state.active.tags.size)p.set('tags',[...state.active.tags].join(','));
+      if(state.dateFrom)p.set('from',state.dateFrom);
+      if(state.dateTo)p.set('to',state.dateTo);
+      history.replaceState(null,'',`${location.pathname}?${p.toString()}`)
+    }
+
+    async function loadIndex(){
+      const res=await fetch('/search-index.json?v='+(Date.now()),{cache:'no-store'});
+      const json=await res.json();
+      state.all=json.map(d=>({type:d.type||'Page',title:d.title||'',url:d.url||'#',image:d.image||'',date:d.date||'',excerpt:d.excerpt||'',tags:d.tags||[]}));
+      populateFacets(); readURL(); apply();
+    }
+
+    document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();state.query=inputEl.value.trim();state.page=1;syncURL();apply()});
+    document.querySelectorAll('.quick-chip').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.query=btn.dataset.query||'';
+        inputEl.value=state.query;
+        state.page=1;
+        syncURL();
+        apply();
+      });
+    });
+
+    const clearFiltersBtn=document.getElementById('clearFilters');
+    if(clearFiltersBtn){
+      clearFiltersBtn.addEventListener('click',()=>{
+        state.query='';
+        state.type='';
+        state.sort='newest';
+        state.page=1;
+        state.dateFrom='';
+        state.dateTo='';
+        state.active.types.clear();
+        state.active.tags.clear();
+        inputEl.value='';
+        sortEl.value='newest';
+        dateFromEl.value='';
+        dateToEl.value='';
+        $$('.tabs .tab').forEach(btn=>btn.setAttribute('aria-selected', String((btn.dataset.type||'')==='')));
+        populateFacets();
+        syncURL();
+        apply();
+      });
+    }
+
+    sortEl.addEventListener('change',()=>{state.sort=sortEl.value;state.page=1;syncURL();apply()});
+    document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;state.type=b.dataset.type||'';$$('.tabs .tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');state.page=1;syncURL();apply()});
+    facetTypeEl.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')){const v=e.target.value;if(e.target.checked)state.active.types.add(v);else state.active.types.delete(v);state.page=1;syncURL();apply()}});
+    facetTagsEl.addEventListener('change',e=>{if(e.target.matches('input[type="checkbox"]')){const v=normalize(e.target.value);if(e.target.checked)state.active.tags.add(v);else state.active.tags.delete(v);state.page=1;syncURL();apply()}});
+    dateFromEl.addEventListener('change',()=>{state.dateFrom=dateFromEl.value;state.page=1;syncURL();apply()});
+    dateToEl.addEventListener('change',()=>{state.dateTo=dateToEl.value;state.page=1;syncURL();apply()});
+    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==inputEl){e.preventDefault();inputEl.focus()}});
+
+    loadIndex();
+  </script>
+<script src="/js/include.js"></script>
+</body>
+</html>
