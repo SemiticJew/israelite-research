@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+
+<html data-theme="" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Articles — Semitic Jew</title>
+<link href="/styles.css" rel="stylesheet"/>
+<style>
+/* Keep featured-left side-by-side on desktop, stacked on mobile */
+.featured-left a{
+  display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit;
+}
+.featured-left .card-body{
+  width:290px; height:450px; flex:0 0 290px;
+  display:flex; flex-direction:column; gap:8px; padding:12px 14px;
+}
+@media (max-width:1260px){
+  .featured-left a{ flex-direction:column; height:auto; }
+  .featured-left .card-body{ width:100%; height:auto; }
+}
+.card-body .meta-date{ margin-top:2px; }
+.card-body .muted{ margin-top:2px; }
+
+    .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+    .page-header{ padding:24px 0 8px; }
+    .page-title{ margin:0; font-size:2rem; font-weight:800; color:var(--ink); }
+
+    main.articles{ padding:8px 0 40px; }
+    .section{ margin:28px 0; }
+    .section h2{ margin:0 0 12px; font-size:1.25rem; font-weight:700; color:var(--ink); }
+
+    .boxed{
+      background:#fff;
+      border:1px solid var(--card-border);
+      box-shadow:var(--shadow);
+      border-radius:0;
+      overflow:hidden;
+      /* subtle interactivity upgrades */
+      transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
+    }
+    .boxed:hover{ transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#cdd8e6; }
+    .boxed:focus-within{ outline:3px solid rgba(5,74,145,.18); outline-offset:2px; }
+    .boxed a:focus-visible{ outline:none; }
+    .boxed a:focus-visible .card-body,
+    .boxed a:focus-visible .excerpt-block{ box-shadow:inset 0 0 0 2px rgba(5,74,145,.2); border-radius:8px; }
+
+    /* Resource label */
+    .resource-label{
+      background:var(--label-bg);
+      color:var(--label-ink);
+      width:70px; height:30px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.8rem; font-weight:700; text-transform:uppercase;
+      border-radius:0; letter-spacing:.02em; line-height:1;
+    }
+    .resource-in-image{ position:absolute; top:10px; left:10px; }
+    .resource-in-excerpt{ margin-bottom:6px; }
+
+    .muted{ color:var(--muted); font-size:.9rem; line-height:1.35; }
+    .meta-date{ display:block; margin-top:2px; font-size:.85rem; color:var(--muted); }
+
+    /* Card footer (no border-top anymore) */
+    .card-footer{
+      display:flex; align-items:center; gap:10px;
+      padding:12px 14px;
+      margin-top:auto;
+    }
+    .avatar{
+      width:30px; height:30px; object-fit:cover; display:block; border-radius:50%;
+    }
+    .author{ font-size:.9rem; color:var(--ink); font-weight:600; }
+
+    /* Featured split */
+    .featured-split{
+      display:grid;
+      grid-template-columns: 880px 290px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .featured-left{ width:880px; height:450px; display:block; }
+    .featured-left a{ display:flex; flex-direction:row; height:100%; text-decoration:none; color:inherit; }
+    .featured-left .image-block{ position:relative; width:590px; height:450px; flex:0 0 590px; overflow:hidden; }
+    .featured-left .image-block img{ width:590px; height:450px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .featured-left:hover .image-block img{ transform:scale(1.035); }
+
+    .featured-left .excerpt-wrap{ display:flex; flex-direction:column; width:290px; height:450px; flex:0 0 290px; }
+    .featured-left .excerpt-block{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+    .featured-left h3{ margin:.15rem 0 0; font-size:1.2rem; color:var(--ink); }
+
+    .featured-right{ width:290px; height:450px; display:flex; flex-direction:column; }
+    .featured-right a{ display:flex; flex-direction:column; height:100%; text-decoration:none; color:inherit; }
+    .featured-right .image-block{ position:relative; width:290px; height:163.13px; overflow:hidden; }
+    .featured-right .image-block img{ width:290px; height:163.13px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .featured-right:hover .image-block img{ transform:scale(1.035); }
+    .featured-right .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+
+/* Remove the divider line above the author area on article cards (this page only) */
+.articles-page .card-footer { border-top: none !important; }
+
+    .recent-grid{ display:flex; flex-wrap:wrap; gap:24px; }
+    .article-card{ width:290px; height:450px; display:flex; flex-direction:column; }
+    .article-card a{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
+    .article-card .image-block{ position:relative; width:290px; height:163.16px; overflow:hidden; }
+    .article-card .image-block img{ width:290px; height:163.16px; object-fit:cover; display:block; transform:scale(1); transition:transform .35s ease; }
+    .article-card:hover .image-block img{ transform:scale(1.035); }
+    .article-card .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+    .article-card h3{ margin:.4rem 0 0; font-size:1.1rem; color:var(--ink); }
+
+    /* "More articles" button */
+    .section-footer{ margin-top:18px; display:flex; justify-content:center; }
+    .more-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:12px 16px; border:1px solid var(--card-border);
+      border-radius:999px; background:#fff; color:var(--ink); text-decoration:none;
+      box-shadow:var(--shadow);
+      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+    }
+    .more-btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-hover); border-color:#cdd8e6; }
+    .more-btn svg{ width:18px; height:18px; }
+
+    @media (max-width:1260px){
+      .featured-split{ grid-template-columns: 1fr; }
+      .featured-left, .featured-right{ width:100%; height:auto; }
+      .featured-left a{ flex-direction:column; }
+      .featured-left .image-block, .featured-left .image-block img{ width:100%; height:auto; }
+      .featured-left .excerpt-wrap{ width:100%; height:auto; }
+    }
+
+    /* ================== HARD DARK-MODE OVERRIDES (page-scoped) ================== */
+    html[data-theme="dark"] body.articles-page{
+      background: var(--bg);
+      color:#FFFFFF !important;
+    }
+    /* containers */
+    html[data-theme="dark"] body.articles-page .boxed,
+    html[data-theme="dark"] body.articles-page .featured-left .excerpt-wrap,
+    html[data-theme="dark"] body.articles-page .featured-right .card-body,
+    html[data-theme="dark"] body.articles-page .card-footer{
+      background: var(--surface) !important;
+      border-color: var(--border) !important;
+      color:#FFFFFF !important;
+    }
+    /* headings & titles */
+    html[data-theme="dark"] body.articles-page h1,
+    html[data-theme="dark"] body.articles-page h2,
+    html[data-theme="dark"] body.articles-page h3,
+    html[data-theme="dark"] body.articles-page .section h2,
+    html[data-theme="dark"] body.articles-page .featured-left h3,
+    html[data-theme="dark"] body.articles-page .featured-right h3,
+    html[data-theme="dark"] body.articles-page .article-card h3{
+      color:#FFFFFF !important;
+    }
+    /* excerpts / paragraphs / meta */
+    html[data-theme="dark"] body.articles-page .muted,
+    html[data-theme="dark"] body.articles-page .article-card p,
+    html[data-theme="dark"] body.articles-page .featured-left .excerpt-block p,
+    html[data-theme="dark"] body.articles-page .featured-right .card-body p,
+    html[data-theme="dark"] body.articles-page .meta-date,
+    html[data-theme="dark"] body.articles-page .author,
+    html[data-theme="dark"] body.articles-page .card-footer,
+    html[data-theme="dark"] body.articles-page .card-footer *{
+      color:#FFFFFF !important;
+    }
+    /* links inside cards */
+    html[data-theme="dark"] body.articles-page .boxed a{
+      color:#FFFFFF !important;
+    }
+    /* keep resource label visible on dark */
+    html[data-theme="dark"] body.articles-page .resource-label{
+      background: rgba(129,164,205,.28) !important; /* soft-blue translucent */
+      color:#FFFFFF !important;
+      border:1px solid var(--border);
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .boxed, .featured-left .image-block img, .featured-right .image-block img,
+      .article-card .image-block img, .more-btn{ transition:none !important; transform:none !important; }
+    }
+
+
+/* Featured cards + editorial article label polish */
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-right.boxed,
+body.articles-page .article-card.boxed{
+  border:1px solid var(--border, #cfd8e3) !important;
+  background:var(--surface, #ffffff) !important;
+  box-shadow:0 8px 24px rgba(11,35,64,.08) !important;
+}
+
+body.articles-page .featured-left.boxed:hover,
+body.articles-page .featured-right.boxed:hover,
+body.articles-page .article-card.boxed:hover{
+  border-color:var(--accent, #F17300) !important;
+  box-shadow:0 14px 34px rgba(11,35,64,.14) !important;
+  text-decoration:none !important;
+}
+
+body.articles-page .featured-left a,
+body.articles-page .featured-right a,
+body.articles-page .article-card a,
+body.articles-page .featured-left a:hover,
+body.articles-page .featured-right a:hover,
+body.articles-page .article-card a:hover{
+  text-decoration:none !important;
+}
+
+/* Muted editorial label, similar to publication-style category text */
+body.articles-page .resource-label{
+  width:auto !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 0 4px !important;
+  background:transparent !important;
+  border:0 !important;
+  color:#8a8f98 !important;
+  font-size:.72rem !important;
+  font-weight:800 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.12em !important;
+  line-height:1.2 !important;
+}
+
+body.articles-page .resource-in-image{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:4px 7px !important;
+  background:rgba(255,255,255,.82) !important;
+  color:#7a808a !important;
+  border-radius:999px !important;
+}
+
+body.articles-page .resource-in-excerpt{
+  position:static !important;
+  display:inline-flex !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-label{
+  color:#aeb6c2 !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-in-image{
+  background:rgba(15,23,42,.82) !important;
+  color:#cbd5e1 !important;
+}
+
+/* Hide article label on primary featured card only; square labels everywhere else */
+body.articles-page .featured-left .resource-label{
+  display:none !important;
+}
+
+body.articles-page .resource-label,
+body.articles-page .resource-in-image,
+body.articles-page .resource-in-excerpt{
+  border-radius:0 !important;
+}
+
+body.articles-page .resource-in-image{
+  border-radius:0 !important;
+}
+
+/* Dark mode cleanup: remove outer enclosure around article sections */
+html[data-theme="dark"] body.articles-page main.articles,
+html[data-theme="dark"] body.articles-page .container,
+html[data-theme="dark"] body.articles-page .section,
+html[data-theme="dark"] body.articles-page .featured-split,
+html[data-theme="dark"] body.articles-page .recent-grid{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  outline:0 !important;
+}
+
+/* Keep only the individual cards visually boxed */
+body.articles-page .boxed,
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-right.boxed,
+body.articles-page .article-card.boxed{
+  border-radius:0 !important;
+}
+
+/* Prevent nested rounded panels inside featured cards */
+body.articles-page .card-body,
+body.articles-page .excerpt-wrap,
+body.articles-page .excerpt-block,
+body.articles-page .card-footer{
+  border-radius:0 !important;
+}
+
+.discovery-region{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  margin:34px 0 42px;
+  padding:26px 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.discovery-card{
+  min-height:220px;
+}
+
+.discovery-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+  color:#8a8f98;
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.discovery-card h3{
+  margin:0 0 14px;
+  color:var(--ink);
+  font-size:1.08rem;
+  font-weight:900;
+}
+
+.discovery-card ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:9px;
+}
+
+.discovery-card a{
+  color:var(--ink);
+  text-decoration:none !important;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.discovery-card a:hover,
+.discovery-card a:focus,
+.discovery-card a:focus-visible{
+  color:var(--accent);
+  text-decoration:none !important;
+}
+
+body.articles-page .recent-grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:24px !important;
+  align-items:stretch;
+}
+
+body.articles-page .article-card{
+  width:100% !important;
+  height:auto !important;
+  min-height:450px;
+}
+
+body.articles-page .article-card .image-block,
+body.articles-page .article-card .image-block img{
+  width:100% !important;
+}
+
+body.articles-page .more-btn{
+  border-radius:0 !important;
+  padding:13px 22px !important;
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+  box-shadow:none !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.82rem;
+  font-weight:900;
+}
+
+body.articles-page .more-btn:hover{
+  background:var(--accent) !important;
+  color:#ffffff !important;
+  border-color:var(--accent) !important;
+  transform:translateY(-1px);
+}
+
+html[data-theme="dark"] body.articles-page .discovery-region{
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] body.articles-page .discovery-kicker{
+  color:#aeb6c2;
+}
+
+html[data-theme="dark"] body.articles-page .discovery-card h3,
+html[data-theme="dark"] body.articles-page .discovery-card a{
+  color:#ffffff;
+}
+
+html[data-theme="dark"] body.articles-page .discovery-card a:hover{
+  color:var(--accent);
+}
+
+@media(max-width:1000px){
+  .discovery-region{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  body.articles-page .recent-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:620px){
+  .discovery-region{
+    grid-template-columns:1fr;
+    gap:26px;
+  }
+
+  body.articles-page .recent-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  body.articles-page .article-card{
+    min-height:0;
+  }
+}
+
+/* Support the Work callouts */
+.support-callout{
+  margin:56px auto;
+  padding:28px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
+    var(--surface);
+  color:var(--ink);
+  text-align:center;
+}
+
+.support-callout h2,
+.support-callout h3{
+  margin:0 0 10px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.support-callout p{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.support-callout .support-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 22px;
+  border:1px solid var(--accent);
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.support-callout .support-btn:hover,
+.support-callout .support-btn:focus,
+.support-callout .support-btn:focus-visible{
+  background:var(--ink);
+  border-color:var(--ink);
+  color:#fff;
+  text-decoration:none;
+}
+
+html[data-theme="dark"] .support-callout{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    var(--surface);
+}
+
+@media(max-width:760px){
+  .support-callout{
+    margin:42px auto;
+    padding:24px 18px;
+  }
+
+  .support-callout h2,
+  .support-callout h3{
+    font-size:1.25rem;
+  }
+}
+
+
+/* Mini-Batch: Featured card author footer alignment */
+body.articles-page .featured-left .card-body{
+  justify-content:flex-start;
+}
+
+body.articles-page .featured-left .card-footer{
+  margin-top:auto !important;
+  padding:12px 0 0 !important;
+  align-items:center !important;
+}
+
+body.articles-page .featured-left .card-footer .avatar{
+  flex:0 0 30px;
+}
+
+body.articles-page .featured-left .card-footer .author{
+  display:inline-flex;
+  align-items:center;
+  line-height:1;
+}
+
+
+/* === Mini-Batch: Editorial article tag glass polish === */
+body.articles-page .resource-label{
+  font-weight:600 !important;
+  letter-spacing:.14em !important;
+}
+
+body.articles-page .resource-in-image{
+  background:rgba(255,255,255,.74) !important;
+  border:1px solid rgba(255,255,255,.55) !important;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+html[data-theme="dark"] body.articles-page .resource-in-image{
+  background:rgba(15,23,42,.72) !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-label{
+  font-weight:600 !important;
+  letter-spacing:.14em !important;
+}
+
+
+/* === Mini-Batch: Article label normal editorial font === */
+body.articles-page .resource-label,
+body.articles-page .resource-in-image,
+body.articles-page .resource-in-excerpt{
+  font-family: Roboto, Arial, sans-serif !important;
+  font-weight:400 !important;
+  font-size:.68rem !important;
+  letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+  line-height:1.1 !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-label,
+html[data-theme="dark"] body.articles-page .resource-in-image,
+html[data-theme="dark"] body.articles-page .resource-in-excerpt{
+  font-family: Roboto, Arial, sans-serif !important;
+  font-weight:400 !important;
+}
+
+
+/* === Mini-Batch: Transparent glass article label holder === */
+body.articles-page .resource-in-image{
+  background:rgba(255,255,255,.62) !important;
+  border:1px solid rgba(255,255,255,.45) !important;
+  color:#6f7681 !important;
+  box-shadow:0 2px 8px rgba(11,35,64,.10) !important;
+  backdrop-filter:blur(6px) !important;
+  -webkit-backdrop-filter:blur(6px) !important;
+}
+
+body.articles-page .resource-label,
+body.articles-page .resource-in-image,
+body.articles-page .resource-in-excerpt{
+  font-family:Roboto, Arial, sans-serif !important;
+  font-weight:400 !important;
+  font-size:.68rem !important;
+  letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+}
+
+html[data-theme="dark"] body.articles-page .resource-in-image{
+  background:rgba(15,23,42,.58) !important;
+  border-color:rgba(255,255,255,.14) !important;
+  color:#cbd5e1 !important;
+  box-shadow:0 2px 10px rgba(0,0,0,.22) !important;
+}
+
+
+
+
+/* === Final featured-card fix: original geometry, correct image fit, protected footer === */
+
+/* Preserve original featured geometry */
+body.articles-page .featured-split{
+  grid-template-columns:880px 290px !important;
+  gap:24px !important;
+  align-items:start !important;
+}
+
+body.articles-page .featured-left{
+  width:880px !important;
+  height:450px !important;
+  display:block !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-left a{
+  display:flex !important;
+  flex-direction:row !important;
+  height:100% !important;
+}
+
+/* Left featured image: show the full 700x394 image inside the 590x450 slot */
+body.articles-page .featured-left .image-block{
+  width:590px !important;
+  height:450px !important;
+  flex:0 0 590px !important;
+  overflow:hidden !important;
+  background:#05070a !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+body.articles-page .featured-left .image-block img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  background:#05070a !important;
+  display:block !important;
+}
+
+/* Left featured text/footer: keep footer inside the original right column */
+body.articles-page .featured-left .excerpt-wrap{
+  width:290px !important;
+  height:450px !important;
+  flex:0 0 290px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-left .excerpt-block{
+  padding:12px 14px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-left .card-footer{
+  flex:0 0 auto !important;
+  min-height:54px !important;
+  margin-top:auto !important;
+  padding:12px 14px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+
+/* Right featured: original card dimensions */
+body.articles-page .featured-right{
+  width:290px !important;
+  height:450px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-right a{
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+
+/* Right featured image: fill its original allotted slot */
+body.articles-page .featured-right .image-block{
+  width:290px !important;
+  height:163.13px !important;
+  flex:0 0 163.13px !important;
+  overflow:hidden !important;
+  background:#05070a !important;
+}
+
+body.articles-page .featured-right .image-block img{
+  width:290px !important;
+  height:163.13px !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+
+/* Right featured text: clamp so it cannot eat the footer */
+body.articles-page .featured-right .card-body{
+  padding:12px 14px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:7px !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-right h3{
+  margin:.25rem 0 0 !important;
+  font-size:1.02rem !important;
+  line-height:1.22 !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:4 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+body.articles-page .featured-right .muted{
+  line-height:1.33 !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:3 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+/* Right featured footer: always visible */
+body.articles-page .featured-right .card-footer{
+  flex:0 0 auto !important;
+  min-height:54px !important;
+  margin-top:auto !important;
+  padding:12px 14px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+
+/* Make sure footer avatar never disappears */
+body.articles-page .featured-right .card-footer .avatar,
+body.articles-page .featured-left .card-footer .avatar{
+  display:block !important;
+  width:30px !important;
+  height:30px !important;
+  flex:0 0 30px !important;
+}
+
+/* Mobile: return to stacked, natural height */
+@media (max-width:1260px){
+  body.articles-page .featured-split{
+    grid-template-columns:1fr !important;
+  }
+
+  body.articles-page .featured-left,
+  body.articles-page .featured-right{
+    width:100% !important;
+    height:auto !important;
+  }
+
+  body.articles-page .featured-left a{
+    flex-direction:column !important;
+    height:auto !important;
+  }
+
+  body.articles-page .featured-left .image-block,
+  body.articles-page .featured-left .image-block img,
+  body.articles-page .featured-left .excerpt-wrap,
+  body.articles-page .featured-right .image-block,
+  body.articles-page .featured-right .image-block img{
+    width:100% !important;
+    height:auto !important;
+    flex:auto !important;
+  }
+
+  body.articles-page .featured-left .excerpt-wrap{
+    height:auto !important;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="articles-page" data-page="articles">
+<div id="site-header"></div>
+<main class="articles">
+<div class="container">
+<!-- Featured -->
+<section class="section" id="featured-articles">
+<h2>Featured</h2>
+<div class="featured-split">
+<!-- Left Featured -->
+<article class="featured-left boxed">
+  <a href="/articles/fallacies-of-charlie-kirk.html">
+    <div class="image-block">
+      <img alt="The Fallacies of Charlie Kirk: When Debate Becomes Propaganda" src="/images/articles/fallacies-of-charlie-kirk-700x394.jpg"/>
+    </div>
+
+    <div class="card-body">
+      <span class="resource-label resource-in-excerpt">Article</span>
+      <h3>The Fallacies of Charlie Kirk: When Debate Becomes Propaganda</h3>
+      <time class="meta-date"></time>
+      <p class="muted">Charlie Kirk is not persuasive because his arguments are sound. He is persuasive because speed, confidence, selective facts, and audience pressure can make weak arguments look strong.</p>
+
+      <div class="card-footer">
+        <img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+        <span class="author">Semitic Jew</span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<!-- Right Featured -->
+<article class="featured-right boxed">
+<a href="/articles/christian-nationalism-not-biblical-righteousness.html">
+<div class="image-block">
+<img alt="Christian Nationalism Is Not Biblical Righteousness" src="/images/articles/christian-nationalism-not-biblical-righteousness-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Christian Nationalism Is Not Biblical Righteousness</h3>
+<time class="meta-date" datetime="2026-06-23">Jun 23, 2026</time>
+<p class="muted">A biblical indictment of Christian nationalism, showing how America, patriotism, and Gentile empire are often confused with covenant righteousness.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+</div>
+</section>
+
+<section class="section discovery-region" id="article-discovery">
+  <div class="discovery-card">
+    <div class="discovery-kicker">Writers</div>
+    <h3>Semitic Jew Writers</h3>
+    <ul>
+      <li><a href="/authors/semitic-jew.html">Semitic Jew</a></li>
+      <li><a href="/articles.html">Latest Articles</a></li>
+      <li><a href="/articles-all.html">All Articles</a></li>
+      <li><a href="/about.html">About Semitic Jew Inc</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Books</div>
+    <h3>Bible Books</h3>
+    <ul>
+      <li><a href="/tanakh.html">Tanakh</a></li>
+      <li><a href="/newtestament.html">New Testament</a></li>
+      <li><a href="/apocrypha.html">Apocrypha</a></li>
+      <li><a href="/biblia.html">Biblia Library</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Themes</div>
+    <h3>Bible Themes</h3>
+    <ul>
+      <li><a href="/articles/three-laws-of-logic.html">Logic</a></li>
+      <li><a href="/articles/is-truth-reliable.html">Truth</a></li>
+      <li><a href="/articles/is-creation-logical.html">Creation</a></li>
+      <li><a href="/articles/gentiles.html">Nations</a></li>
+    </ul>
+  </div>
+
+  <div class="discovery-card">
+    <div class="discovery-kicker">Persons</div>
+    <h3>Bible Persons</h3>
+    <ul>
+      <li><a href="/tanakh/genesis.html">Adam</a></li>
+      <li><a href="/tanakh/exodus.html">Moses</a></li>
+      <li><a href="/newtestament/matthew.html">Jesus Christ</a></li>
+      <li><a href="/tanakh/daniel.html">Daniel</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- Recent -->
+<section class="section" id="recent-articles">
+<h2>Recent Articles</h2>
+<div class="recent-grid">
+<article class="article-card boxed">
+<a href="/articles/presumption-is-not-prophecy.html">
+<div class="image-block">
+<img alt="The War In The &amp;quot;Middle East&amp;quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness" src="/images/articles/presumption-is-not-prophecy-700x394.png"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>The War In The &amp;quot;Middle East&amp;quot; Is A War For Apartheidism and White Supremacy, Not Biblical Righteousness</h3>
+<time class="meta-date"></time>
+<p class="muted">Modern Zionism borrows the name Israel, but biblical Israelite warfare was never nationalism, conquest, or imperial appetite. Presumption is not prophecy.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+<article class="article-card boxed">
+<a href="/articles/250-years-of-christianity-against-god.html">
+<div class="image-block">
+<img alt="250 Years of Christianity. 250 Years Against God." src="/images/articles/christianity-250-years-against-god-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>250 Years of Christianity. 250 Years Against God.</h3>
+<time class="meta-date"></time>
+<p class="muted">A covenant-centered response to America’s 250-year Christian story, arguing that Scripture measures nations by justice, righteousness, and obedience — not religious branding.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+
+<article class="article-card boxed">
+<a href="/articles/adam-was-not-pale.html">
+<div class="image-block">
+<img alt="Adam Was Not Pale: How Ruddy, Melanin, and the Color of the First Man Became White" src="/images/articles/adam-was-not-pale-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Adam Was Not Pale: How Ruddy, Melanin, and the Color of the First Man Became White</h3>
+<time class="meta-date"></time>
+<p class="muted">A contextual, logical, and biological argument that Adam was not pale, but a deeply melanated dark brown-red first man capable of explaining the full range of mankind.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+
+<article class="article-card boxed">
+<a href="/articles/rage.html">
+<div class="image-block">
+<img alt="Rage" src="/images/articles/rage-700x394.png"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Rage</h3>
+<time class="meta-date"></time>
+<p class="muted">White supremacy is rage against creation, a worldview rooted in bigotry, hatred, false witness, and rebellion against the image of God in humanity.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+
+<article class="article-card boxed">
+<a href="/articles/christianitys-false-dichotomy.html">
+<div class="image-block">
+<img alt="Christianity’s False Dichotomy" src="/images/articles/christianitys-false-dichotomy-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Christianity’s False Dichotomy</h3>
+<time class="meta-date" datetime="2026-06-13">Jun 13, 2026</time>
+<p class="muted">A scriptural indictment of selective Christian ethics: why many Christians demand public justice for marriage, sexuality, religious liberty, and whiteness, but reject social justice when Black people are oppressed.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+
+<article class="article-card boxed">
+<a href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">
+<div class="image-block">
+<img alt="Who Gets Innocence?" src="/images/articles/karmelo-anthony-austin-metcalf-700x394.png"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Who Gets Innocence?</h3>
+<time class="meta-date"></time>
+<p class="muted">A scriptural critique of racial judgment, false witness, and how America distributes innocence and suspicion in the Karmelo Anthony and Austin Metcalf case.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+
+<article class="article-card boxed">
+<a href="/articles/is-scripture-and-logic-compatible.html">
+<div class="image-block">
+<img alt="Is Scripture &amp; Logic Compatible?" src="/images/articles/logic-compatibility-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Is Scripture &amp; Logic Compatible?</h3>
+<time class="meta-date"></time>
+<p class="muted">How sound reasoning complements rather than conflicts with Scripture.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+<article class="article-card boxed">
+<a href="/articles/is-creation-logical.html">
+<div class="image-block">
+<img alt="Is Creation Logical?" src="/images/articles/creation-logical-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Is Creation Logical?</h3>
+<time class="meta-date"></time>
+<p class="muted">Exploring the rational coherence of creation within a biblical worldview.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+
+<article class="article-card boxed">
+<a href="/articles/hamites-historicity.html">
+<div class="image-block">
+<img alt="The Historicity of the Hamites" src="/images/articles/hamites-historicity-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>The Historicity of the Hamites</h3>
+<time class="meta-date"></time>
+<p class="muted">Surveying historical claims around the descendants of Ham.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+<article class="article-card boxed">
+<a href="/articles/gentiles.html">
+<div class="image-block">
+<img alt="Who Are the “Gentiles”?" src="/images/articles/gentiles-meaning-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Who Are the “Gentiles”?</h3>
+<time class="meta-date"></time>
+<p class="muted">A study on terminology, context, and people groups.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+<article class="article-card boxed">
+<a href="/articles/three-laws-of-logic.html">
+<div class="image-block">
+<img alt="Three Laws of Logic" src="/images/articles/three-laws-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Three Laws of Logic</h3>
+<time class="meta-date"></time>
+<p class="muted">Identity, non-contradiction, and excluded middle explained.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+<article class="article-card boxed">
+<a href="/articles/is-truth-reliable.html">
+<div class="image-block">
+<img alt="Is Truth Reliable?" src="/images/articles/truth-reliable-700x394.jpg"/>
+<span class="resource-label resource-in-image">Article</span>
+</div>
+<div class="card-body">
+<h3>Is Truth Reliable?</h3>
+<time class="meta-date"></time>
+<p class="muted">Reliability, revelation, and reason.</p>
+</div>
+<div class="card-footer">
+<img alt="Author avatar" class="avatar" src="/images/authors/semitic-jew.jpg"/>
+<span class="author">Semitic Jew</span>
+</div>
+</a>
+</article>
+</div>
+
+<!-- More button -->
+<div class="section-footer">
+  <a class="more-btn" href="/articles-all.html" aria-label="Browse all articles">
+    More articles
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+</section>
+</div>
+
+<section class="support-callout" aria-label="Support the Work">
+  <h2>Support the Work</h2>
+  <p>
+    Semitic Jew Inc is a 501(c)(3) educational nonprofit. Your support helps us produce biblical research,
+    articles, media, and teaching resources rooted in Scripture, logic, and truth.
+  </p>
+  <a class="support-btn" href="/donate.html">Give / Support</a>
+</section>
+
+</main>
+<div id="site-footer"></div>
+<!-- Auto-fill today's date -->
+<script>
+    (function(){
+      var now = new Date();
+      var text = now.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+      document.querySelectorAll('.meta-date').forEach(function(el){
+        el.dateTime = now.toISOString().slice(0,10);
+        el.textContent = text;
+      });
+    })();
+  </script>
+<!-- Global Includes -->
+<script src="/js/include.js"></script>
+</body>
+</html>

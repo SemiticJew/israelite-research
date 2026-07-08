@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Support the Work — Semitic Jew</title>
+<meta name="description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, articles, media education, Bible-study tools, and teaching resources for public benefit."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Support the Work — Semitic Jew"/>
+<meta property="og:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources rooted in Scripture, logic, and truth."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/donate.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Support the Work — Semitic Jew"/>
+<meta name="twitter:description" content="Support Semitic Jew Inc, a 501(c)(3) educational nonprofit producing biblical research, media education, articles, Bible-study tools, and teaching resources rooted in Scripture, logic, and truth."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .donate-page{
+    max-width:1200px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  .donate-hero{
+    margin:24px 0 42px;
+    padding:58px 30px;
+    text-align:center;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+  }
+
+  .donate-kicker{
+    margin:0 0 12px;
+    color:var(--accent);
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+  }
+
+  .donate-title{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.5rem, 6vw, 5rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .donate-subtitle{
+    max-width:780px;
+    margin:18px auto 0;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  .donate-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+    gap:30px;
+    align-items:start;
+  }
+
+  .donate-panel,
+  .donate-card{
+    border:1px solid var(--border);
+    background:var(--surface);
+    padding:28px;
+  }
+
+  .donate-panel h2,
+  .donate-card h2,
+  .donate-card h3{
+    margin:0 0 12px;
+    color:var(--ink);
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .donate-panel p,
+  .donate-card p{
+    margin:0 0 16px;
+    color:var(--muted);
+    line-height:1.72;
+  }
+
+  .donate-list{
+    margin:18px 0 0;
+    padding:0;
+    list-style:none;
+    display:grid;
+    gap:14px;
+  }
+
+  .donate-list li{
+    padding-left:18px;
+    position:relative;
+    color:var(--ink);
+    line-height:1.6;
+    font-weight:650;
+  }
+
+  .donate-list li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:.72em;
+    width:7px;
+    height:7px;
+    background:var(--accent);
+  }
+
+  .donate-actions{
+    display:grid;
+    gap:12px;
+    margin-top:20px;
+  }
+
+  .donate-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 18px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.85rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .donate-btn:hover,
+  .donate-btn:focus,
+  .donate-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  .donate-btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--border);
+  }
+
+  .donate-btn.secondary:hover{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+
+  .verification-box{
+    margin-top:24px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:.95rem;
+    line-height:1.65;
+  }
+
+  .verification-box strong{
+    color:var(--ink);
+  }
+
+  .donate-note{
+    margin-top:22px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:rgba(241,115,0,.06);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:.95rem;
+  }
+
+
+  .impact-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+    margin-top:24px;
+  }
+
+  .impact-card{
+    border:1px solid var(--border);
+    background:rgba(5,74,145,.035);
+    padding:16px;
+  }
+
+  .impact-card strong{
+    display:block;
+    margin-bottom:6px;
+    color:var(--ink);
+    font-weight:900;
+  }
+
+  .impact-card span{
+    display:block;
+    color:var(--muted);
+    line-height:1.6;
+    font-size:.95rem;
+  }
+
+  .donate-clarity{
+    margin-top:22px;
+    padding:18px;
+    border:1px solid var(--border);
+    background:rgba(5,74,145,.045);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:.95rem;
+  }
+
+  .donate-clarity strong{
+    color:var(--ink);
+  }
+
+  .donate-mini-links{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .donate-mini-links a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    color:var(--ink);
+    text-decoration:none;
+    font-size:.78rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  .donate-mini-links a:hover,
+  .donate-mini-links a:focus,
+  .donate-mini-links a:focus-visible{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+    text-decoration:none;
+  }
+
+  html[data-theme="dark"] .impact-card,
+  html[data-theme="dark"] .donate-clarity{
+    background:rgba(255,255,255,.035);
+  }
+
+  @media(max-width:700px){
+    .impact-grid,
+    .donate-mini-links{
+      grid-template-columns:1fr;
+    }
+  }
+
+  html[data-theme="dark"] .donate-hero{
+    background:
+      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+  }
+
+  html[data-theme="dark"] .donate-panel h2,
+  html[data-theme="dark"] .donate-card h2,
+  html[data-theme="dark"] .donate-card h3,
+  html[data-theme="dark"] .donate-list li,
+  html[data-theme="dark"] .verification-box strong{
+    color:#fff;
+  }
+
+  @media(max-width:900px){
+    .donate-layout{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media(max-width:700px){
+    .donate-page{
+      padding:22px 20px 64px;
+      overflow-x:hidden;
+    }
+
+    .donate-hero{
+      margin:18px 0 32px;
+      padding:42px 20px;
+    }
+
+    .donate-panel,
+    .donate-card{
+      padding:22px 18px;
+    }
+  }
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+
+<body>
+<div id="site-header"></div>
+
+<main class="donate-page">
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Support the Work</span>
+  </nav>
+
+  <section class="donate-hero">
+    <div class="donate-kicker">501(c)(3) Educational Nonprofit</div>
+    <h1 class="donate-title">Support the Work</h1>
+    <p class="donate-subtitle">
+      Your support helps Semitic Jew Inc produce biblical research, educational articles, Bible-study tools, media teaching, and public learning resources rooted in Scripture, logic, and truth.
+    </p>
+  </section>
+
+  <section class="donate-layout">
+
+    <div class="donate-panel">
+      <h2>Why Support Semitic Jew Inc?</h2>
+      <p>
+        Semitic Jew Inc is a 501(c)(3) educational nonprofit serving the public through biblical research,
+        digital publishing, media education, Bible-study tools, and teaching resources. Donations help keep
+        this work accessible and strengthen the organization’s ability to produce consistent public education.
+      </p>
+
+      <ul class="donate-list">
+        <li>Produce Scripture-centered articles, studies, and media teachings.</li>
+        <li>Maintain and improve semiticjew.org as a public educational resource.</li>
+        <li>Develop Bible-study tools, research aids, and teaching materials.</li>
+        <li>Support lectures, public education, and future instructional programming.</li>
+      </ul>
+
+      <div class="impact-grid" aria-label="How donations support the work">
+        <div class="impact-card">
+          <strong>Biblical Research</strong>
+          <span>Supports research, writing, editing, documentation, and publication of educational articles and studies.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Media Education</strong>
+          <span>Supports video, podcast, and teaching content that explains Scripture, logic, history, and public issues.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Study Tools</strong>
+          <span>Supports Bible-study resources, digital tools, reader improvements, and public learning materials.</span>
+        </div>
+        <div class="impact-card">
+          <strong>Public Access</strong>
+          <span>Supports website hosting, accessibility improvements, outreach, and the continued availability of free resources.</span>
+        </div>
+      </div>
+
+      <div class="donate-note">
+        Semitic Jew Inc is organized for educational and public-benefit purposes. Contributions support the organization’s mission and programming.
+      </div>
+
+      <div class="donate-clarity">
+        <strong>Transparency:</strong> Gifts support educational programming, website operations, research, media production, and teaching resources. Donation receipts and records are provided through the giving platform when available.
+      </div>
+    </div>
+
+    <aside class="donate-card">
+      <h2>Give / Support</h2>
+      <p>
+        Use the giving link below to support the continued educational work of Semitic Jew Inc.
+      </p>
+
+      <div class="donate-actions">
+        <a class="donate-btn" href="https://www.zeffy.com/en-US/donation-form/expand-educational-media-and-production-capacity" target="_blank" rel="noopener">Give Now</a>
+        <a class="donate-btn secondary" href="/about.html#organization-verification">Verify Organization</a>
+        <a class="donate-btn secondary" href="/contact.html">Contact Us</a>
+      </div>
+
+      <div class="verification-box">
+        <strong>Legal Name:</strong> Semitic Jew Inc<br>
+        <strong>EIN:</strong> 93-4076422<br>
+        <strong>Primary Domain:</strong> semiticjew.org<br>
+        <strong>Status:</strong> 501(c)(3) educational nonprofit
+      </div>
+
+      <div class="donate-mini-links" aria-label="Explore the work">
+        <a href="/articles.html">Read Articles</a>
+        <a href="/media.html">Watch Media</a>
+        <a href="/biblia.html">Study Biblia</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </aside>
+
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/include.js"></script>
+</body>
+</html>

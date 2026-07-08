@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Extra-Biblical Sources — Semitic Jew</title>
+<meta name="description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Extra-Biblical Sources — Semitic Jew"/>
+<meta property="og:description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/extra-biblical-sources.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Extra-Biblical Sources — Semitic Jew"/>
+<meta name="twitter:description" content="Explore extra-biblical historical sources, regional notes, biblical references, scholarly claims, and interactive map evidence connected to the biblical world."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+  .container{max-width:1200px;margin:0 auto;padding:18px}
+  .page-title{margin:.2rem 0 1rem;font-size:1.6rem;font-weight:800}
+  .card{background:#fff;border:1px solid #e6ebf2;border-radius:14px;box-shadow:0 8px 24px var(--shadow);overflow:hidden}
+  .mapwrap{width:100%;height:80vh;min-height:520px}
+  .muted{color:#64748b}
+  .status{margin-top:10px;border:1px dashed #cbd5e1;border-radius:10px;padding:8px 10px;color:#334155;background:#f8fafc}
+  .status b{color:#0b2340}
+
+  .drawer{position:fixed;top:0;right:0;height:100vh;width:min(460px,92vw);background:var(--panel);
+          border-left:1px solid #e5e7eb;box-shadow:-12px 0 32px var(--shadow);transform:translateX(100%);
+          transition:transform .28s ease;z-index:9999;display:flex;flex-direction:column}
+  .drawer.open{transform:translateX(0)}
+  .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #eef2f7}
+  .drawer-title{margin:0;font-size:1.1rem;font-weight:800}
+  .drawer-body{padding:14px 16px;overflow:auto}
+  .section{margin:10px 0 14px}
+  .section h3{margin:.2rem 0 .5rem;font-size:1rem}
+  .ref{padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0;background:#fafafa}
+  .ref b{display:block;margin-bottom:4px}
+  .hist{padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0;background:#fff}
+  .hist .claim{margin:0 0 6px;font-weight:600}
+  .hist .meta{font-size:.85rem;color:#475569}
+  .hist a{color:#0b2340;text-decoration:underline}
+  .badge{display:inline-block;font-size:.72rem;border:1px solid #e5e7eb;border-radius:999px;padding:2px 6px;margin-left:6px;background:#f1f5f9;color:#0b2340}
+  .drawer-actions{display:flex;gap:8px;align-items:center;padding:8px 16px 14px;border-top:1px solid #eef2f7}
+  .btn{border:1px solid #d1d5db;background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}
+  .btn.primary{background:#0b2340;color:#fff;border-color:#0b2340}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .tag{font-size:.78rem;background:#eef2f7;border:1px solid #e5e7eb;border-radius:999px;padding:2px 8px}
+
+/* Extra-Biblical Sources modern page polish */
+body.extra-sources-page{
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page main.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+}
+
+.extra-sources-hero{
+  margin:24px 0 34px;
+  padding:58px 30px;
+  text-align:center;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
+}
+
+.extra-sources-kicker{
+  margin:0 0 12px;
+  color:var(--accent);
+  font-size:.78rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.extra-sources-title{
+  margin:0;
+  color:var(--ink);
+  font-size:clamp(2.35rem, 5.5vw, 4.8rem);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.05em;
+}
+
+.extra-sources-subtitle{
+  max-width:860px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:1.05rem;
+  line-height:1.7;
+}
+
+.extra-map-shell{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:26px;
+  margin:24px 0;
+}
+
+.extra-map-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+}
+
+.extra-map-head h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1.45rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.extra-map-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.extra-map-hint{
+  color:var(--muted);
+  font-size:.92rem;
+  font-weight:700;
+}
+
+.extra-sources-page .card{
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--border);
+  box-shadow:var(--shadow);
+}
+
+.extra-sources-page .status{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  align-items:center;
+  margin:16px 0 0;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:rgba(5,74,145,.035);
+  color:var(--muted);
+}
+
+.extra-sources-page .status b{
+  color:var(--ink);
+}
+
+.extra-sources-page .drawer{
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  box-shadow:-18px 0 50px rgba(0,0,0,.24);
+}
+
+.extra-sources-page .drawer-header,
+.extra-sources-page .drawer-actions{
+  border-color:var(--border);
+}
+
+.extra-sources-page .drawer-title,
+.extra-sources-page .section h3{
+  color:var(--ink);
+}
+
+.extra-sources-page .ref,
+.extra-sources-page .hist{
+  border-radius:0;
+  border-color:var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page .hist .meta,
+.extra-sources-page .muted{
+  color:var(--muted);
+}
+
+.extra-sources-page .badge,
+.extra-sources-page .tag{
+  border-color:var(--border);
+  background:rgba(5,74,145,.06);
+  color:var(--ink);
+}
+
+.extra-sources-page .btn{
+  border-color:var(--border);
+  background:var(--surface);
+  color:var(--ink);
+}
+
+.extra-sources-page .btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#111827;
+  font-weight:900;
+}
+
+html[data-theme="dark"] .extra-sources-hero{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
+    linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
+}
+
+html[data-theme="dark"] .extra-sources-title,
+html[data-theme="dark"] .extra-map-head h2,
+html[data-theme="dark"] .extra-sources-page .drawer-title,
+html[data-theme="dark"] .extra-sources-page .section h3,
+html[data-theme="dark"] .extra-sources-page .status b{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .extra-sources-page .card,
+html[data-theme="dark"] .extra-map-shell,
+html[data-theme="dark"] .extra-sources-page .status,
+html[data-theme="dark"] .extra-sources-page .drawer,
+html[data-theme="dark"] .extra-sources-page .ref,
+html[data-theme="dark"] .extra-sources-page .hist{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+@media(max-width:700px){
+  .extra-sources-page main.container{
+    padding:22px 20px 64px;
+    overflow-x:hidden;
+  }
+
+  .extra-sources-hero{
+    margin:18px 0 28px;
+    padding:42px 20px;
+  }
+
+  .extra-map-shell{
+    padding:18px 14px;
+  }
+
+  .mapwrap{
+    min-height:460px;
+    height:68vh;
+  }
+}
+
+/* Extra-Biblical drawer header polish */
+.extra-sources-page .drawer-header{
+  align-items:flex-start;
+  gap:16px;
+  padding:18px 18px 16px;
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.14), transparent 40%),
+    linear-gradient(135deg, rgba(5,74,145,.08), transparent);
+}
+
+.drawer-heading{
+  min-width:0;
+}
+
+.drawer-kicker{
+  margin:0 0 7px;
+  color:var(--accent);
+  font-size:.72rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+}
+
+.drawer-subtitle{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+
+.extra-sources-page .drawer-header .row{
+  flex:0 0 auto;
+}
+
+.extra-sources-page #copy-link{
+  border-radius:999px;
+  padding:.5rem .75rem;
+  font-weight:800;
+}
+
+.extra-sources-page #drawer-close{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  padding:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.35rem;
+  line-height:1;
+}
+
+html[data-theme="dark"] .extra-sources-page .drawer-header{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 40%),
+    linear-gradient(135deg, rgba(5,74,145,.22), rgba(15,23,42,.92));
+}
+
+/* Extra-Biblical map controls and legend */
+.extra-map-controls{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin:0 0 16px;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(5,74,145,.035);
+}
+
+.extra-region-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1 1 360px;
+}
+
+.extra-region-search label{
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+
+#regionSearch{
+  flex:1;
+  min-width:220px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:.62rem .75rem;
+  font:inherit;
+}
+
+.extra-map-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.extra-map-btn{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--ink);
+  padding:.58rem .85rem;
+  font:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.extra-map-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.extra-map-legend{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+}
+
+.extra-map-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.legend-dot{
+  width:12px;
+  height:12px;
+  border:1px solid var(--border);
+  display:inline-block;
+}
+
+.legend-dot.matched{ background:#F17300; }
+.legend-dot.selected{ background:#0b2340; }
+.legend-dot.unmatched{ background:#d8dee8; }
+
+html[data-theme="dark"] .extra-map-controls{
+  background:rgba(255,255,255,.035);
+}
+
+html[data-theme="dark"] #regionSearch,
+html[data-theme="dark"] .extra-map-btn{
+  background:var(--surface);
+  color:#ffffff;
+  border-color:var(--border);
+}
+
+html[data-theme="dark"] .legend-dot.unmatched{
+  background:#243044;
+}
+
+@media(max-width:700px){
+  .extra-region-search,
+  .extra-map-actions{
+    width:100%;
+  }
+
+  .extra-region-search{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  #regionSearch,
+  .extra-map-btn{
+    width:100%;
+  }
+}
+
+/* Extra-Biblical map usage guide */
+.extra-map-guide{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin:0 0 28px;
+}
+
+.extra-guide-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:18px;
+}
+
+.extra-guide-num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  margin:0 0 12px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#111827;
+  font-weight:900;
+}
+
+.extra-guide-card h2{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.extra-guide-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.93rem;
+}
+
+html[data-theme="dark"] .extra-guide-card{
+  background:var(--surface) !important;
+  border-color:var(--border) !important;
+}
+
+html[data-theme="dark"] .extra-guide-card h2{
+  color:#ffffff !important;
+}
+
+@media(max-width:900px){
+  .extra-map-guide{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:620px){
+  .extra-map-guide{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+  <script src="/js/capacitor-native-shell.js" defer></script>
+</head>
+<body class="extra-sources-page">
+<div id="site-header"></div>
+
+<main class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/biblia.html">Biblia</a>
+    <span class="sep">›</span>
+    <span class="current">Extra-Biblical Sources</span>
+  </nav>
+
+  <section class="extra-sources-hero">
+    <div class="extra-sources-kicker">History & Regional Evidence</div>
+    <h1 class="extra-sources-title">Extra-Biblical Sources</h1>
+    <p class="extra-sources-subtitle">
+      Explore regional notes, historical references, scholarly claims, and biblical connections through an interactive global map.
+    </p>
+  </section>
+
+  <section class="extra-map-guide" aria-label="How to use this map">
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">1</div>
+      <h2>Select a Region</h2>
+      <p>Use the dropdown or click a highlighted country on the globe.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">2</div>
+      <h2>Read the References</h2>
+      <p>Review biblical references connected to that region.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">3</div>
+      <h2>Compare the Sources</h2>
+      <p>Study historical notes, claims, books, and scholarly references.</p>
+    </article>
+
+    <article class="extra-guide-card">
+      <div class="extra-guide-num">4</div>
+      <h2>Share the Evidence</h2>
+      <p>Use Copy Link to share a direct region panel with others.</p>
+    </article>
+  </section>
+
+  <section class="extra-map-shell" aria-label="Interactive extra-biblical sources map">
+    <div class="extra-map-head">
+      <div>
+        <h2>Interactive Global Map</h2>
+        <p>Hover a country for a quick note. Click a highlighted region to open detailed information.</p>
+      </div>
+      <div class="extra-map-hint">Drag to rotate · Scroll to zoom</div>
+    </div>
+
+    <div class="extra-map-controls" aria-label="Map controls">
+      <div class="extra-region-search">
+        <label for="regionSearch">Find Region</label>
+        <select id="regionSearch" aria-label="Find a highlighted region">
+          <option value="">Select a highlighted region…</option>
+        </select>
+      </div>
+      <div class="extra-map-actions">
+        <button class="extra-map-btn" type="button" id="resetGlobe">Reset Globe</button>
+      </div>
+    </div>
+
+    <div class="card"><div id="chart-globe" class="mapwrap" aria-label="Interactive global map"></div></div>
+
+    <div class="extra-map-legend" aria-label="Map legend">
+      <span><i class="legend-dot matched"></i>Highlighted region</span>
+      <span><i class="legend-dot selected"></i>Selected region</span>
+      <span><i class="legend-dot unmatched"></i>Unmatched region</span>
+    </div>
+
+    <div class="status">
+      <span><b>Notes:</b> <span id="note-status">loading…</span></span>
+      <span><b>Keys:</b> <span id="note-keys">0</span></span>
+      <span><b>Matched Regions:</b> <span id="note-matched">0</span></span>
+      <span><b>Total Regions:</b> <span id="total-regions">0</span></span>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<aside id="drawer" class="drawer" aria-hidden="true" aria-labelledby="drawer-title" role="dialog">
+  <div class="drawer-header">
+    <div class="drawer-heading">
+      <div class="drawer-kicker">Region Evidence Panel</div>
+      <h2 id="drawer-title" class="drawer-title">Region</h2>
+      <p class="drawer-subtitle">Biblical, historical, and regional references.</p>
+    </div>
+    <div class="row">
+      <button id="copy-link" class="btn" title="Copy shareable link" type="button">Copy Link</button>
+      <button id="drawer-close" class="btn primary" aria-label="Close panel" type="button">×</button>
+    </div>
+  </div>
+  <div id="drawer-body" class="drawer-body"></div>
+  <div class="drawer-actions">
+    <div class="row"><span class="tag" id="drawer-region-id">—</span></div>
+  </div>
+</aside>
+
+<script src="/js/shims.js" defer></script>
+<script src="/js/include.js" defer></script>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+
+<script>
+const $ = id => document.getElementById(id);
+const noteStatusEl = $("note-status"), noteKeysEl = $("note-keys"),
+      noteMatchEl = $("note-matched"), totalRegionsEl = $("total-regions");
+let NOTES={}, NAME_INDEX={}, CURRENT_REGION=null;
+
+async function loadNotes(){
+  try{
+    const r=await fetch("data/region-notes.json?v="+Date.now(),{cache:"no-store"});
+    NOTES=await r.json();
+  }catch(e){NOTES={};}
+  NAME_INDEX={};
+  for(const[k,v]of Object.entries(NOTES)){
+    if(v&&v.title)NAME_INDEX[String(v.title).trim().toUpperCase()]=v;
+  }
+  const c=Object.keys(NOTES).length;
+  noteStatusEl.textContent=c?"loaded":"empty"; noteKeysEl.textContent=String(c);
+}
+
+function polyCode(mp){const di=mp?.dataItem;const ctx=di?.dataContext||{};const a=(ctx.id||ctx.iso_a2||ctx.iso_a3||"").toString().trim();return a.toUpperCase();}
+function polyName(mp){const ctx=mp?.dataItem?.dataContext||{};return(ctx.name||"").toString().trim();}
+
+function openDrawer(payload){
+  CURRENT_REGION = payload || {};
+  const drawer=$("drawer"),body=$("drawer-body"),title=$("drawer-title"),tag=$("drawer-region-id");
+  const regionTitle = payload.title||payload.name||"Region";
+  const regionId = payload.id||payload.code||"";
+  title.textContent=regionTitle;
+  tag.textContent=regionId||"—";
+  drawer.dataset.regionId = regionId;
+  drawer.dataset.regionTitle = regionTitle;
+  body.innerHTML="";
+  if(payload.summary){const s=document.createElement("div");s.className="section";s.innerHTML=`<h3>Summary</h3><p>${payload.summary}</p>`;body.appendChild(s);}
+  const bib=Array.isArray(payload.biblical_refs)?payload.biblical_refs:[]; if(bib.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Biblical References</h3>";bib.forEach(r=>{const div=document.createElement("div");div.className="ref";div.innerHTML=`<b>${r.verse||""}</b><p>${r.note||""}</p>`;sec.appendChild(div)});body.appendChild(sec);}
+  const hist=Array.isArray(payload.historical_refs)?payload.historical_refs:[]; if(hist.length){const sec=document.createElement("div");sec.className="section";sec.innerHTML="<h3>Historical & Scholarly Notes</h3>";
+    hist.forEach(h=>{
+      const div=document.createElement("div");div.className="hist";
+      div.innerHTML=`<p class="claim">${h.claim||""}</p>`;
+      let metaParts=[];if(h.source){const src=h.link?`<a href="${h.link}" target="_blank">${h.source}</a>`:h.source;metaParts.push(src);}
+      if(Number.isFinite(h.year)){const y=h.year<0?`${Math.abs(h.year)} BCE`:`${h.year} CE`;metaParts.push(`<span class="badge">${y}</span>`);}
+      if(h.confidence){metaParts.push(`<span class="badge">${h.confidence}</span>`);}
+      if(metaParts.length){div.innerHTML+=`<p class="meta">${metaParts.join(" ")}</p>`;}
+      if(h.book){const b=h.book;let bookHtml=`<div class="meta">`;if(b.cover_url){bookHtml+=`<img src="${b.cover_url}" alt="Cover" style="max-width:120px;margin:6px 0;">`;}
+        const info=[b.title,b.author,b.publisher,b.year,b.pages].filter(Boolean).join(", ");
+        bookHtml+=b.link?`<p><a href="${b.link}" target="_blank">${info}</a></p>`:`<p>${info}</p>`;bookHtml+="</div>";div.innerHTML+=bookHtml;}
+      if(Array.isArray(h.images)&&h.images.length){const g=document.createElement("div");g.className="row";h.images.forEach(im=>{const thumb=im.thumb||im.path||im.url;const full=im.full||im.url||im.path||thumb;const a=document.createElement("a");a.href=full;a.target="_blank";a.rel="noopener";const img=document.createElement("img");img.src=thumb;img.srcset=`${thumb} 1x, ${full} 2x`;img.loading="lazy";img.decoding="async";img.alt=im.alt||"image";img.style.width="120px";img.style.height="auto";img.style.border="1px solid #e5e7eb";img.style.borderRadius="8px";img.style.padding="2px";a.appendChild(img);g.appendChild(a)});div.appendChild(g);}
+      sec.appendChild(div);
+    });body.appendChild(sec);}
+  drawer.classList.add("open");drawer.setAttribute("aria-hidden","false");
+}
+function closeDrawer(){const d=$("drawer");d.classList.remove("open");d.setAttribute("aria-hidden","true");}
+
+am5.ready(async function(){
+  await loadNotes();
+  const root=am5.Root.new("chart-globe");root.setThemes([am5themes_Animated.new(root)]);
+  const chart=root.container.children.push(am5map.MapChart.new(root,{panX:"rotateX",panY:"rotateY",projection:am5map.geoOrthographic()}));
+  chart.chartContainer.set("background",am5.Rectangle.new(root,{fill:am5.color("#eef6ff")}));
+
+  try{
+    const graticule=chart.series.unshift(am5map.GraticuleSeries.new(root,{}));
+    graticule.mapLines.template.setAll({stroke:am5.color("#b9c7d8"),strokeOpacity:.32,strokeWidth:.6});
+  }catch(e){}
+
+  const world=chart.series.push(am5map.MapPolygonSeries.new(root,{geoJSON:am5geodata_worldLow,exclude:["AQ"]}));
+  world.mapPolygons.template.setAll({
+    tooltipText:"{name}",
+    interactive:true,
+    toggleKey:"active",
+    fill:am5.color("#d8dee8"),
+    stroke:am5.color("#9ca8ba"),
+    strokeWidth:0.65,
+    cursorOverStyle:"pointer"
+  });
+
+  world.mapPolygons.template.states.create("hover",{fill:am5.color("#fcd34d")});
+  world.mapPolygons.template.states.create("active",{fill:am5.color("#0b2340")});
+
+  const zoom=chart.set("zoomControl",am5map.ZoomControl.new(root,{}));
+  zoom.homeButton.set("visible",true);
+  zoom.homeButton.events.on("click",()=>chart.goHome());
+
+  const resetBtn=$("resetGlobe");
+  if(resetBtn) resetBtn.addEventListener("click",()=>chart.goHome());
+
+  const regionSearch=$("regionSearch");
+  const matchNote=mp=>{const code=polyCode(mp),name=polyName(mp);return(NOTES[code])||(NAME_INDEX[name.toUpperCase()])||null;}
+
+  function populateRegionSearch(){
+    if(!regionSearch) return;
+    const items=[];
+    world.mapPolygons.each(mp=>{
+      const hit=matchNote(mp);
+      if(hit){
+        items.push({
+          id:polyCode(mp),
+          name:hit.title||polyName(mp),
+          polygon:mp
+        });
+      }
+    });
+
+    items.sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    regionSearch.innerHTML='<option value="">Select a highlighted region…</option>';
+    items.forEach(item=>{
+      const opt=document.createElement("option");
+      opt.value=item.id;
+      opt.textContent=item.name;
+      regionSearch.appendChild(opt);
+    });
+  }
+
+  function openRegionById(id){
+    if(!id) return false;
+    let found=null;
+    world.mapPolygons.each(mp=>{
+      if(polyCode(mp)===String(id).toUpperCase()) found=mp;
+    });
+    if(!found) return false;
+
+    const hit=matchNote(found)||{};
+    const payload=Object.assign({},hit,{id:polyCode(found),name:polyName(found)});
+    world.mapPolygons.each(p=>p.set("active",p===found));
+    openDrawer(payload);
+    try{
+      chart.zoomToDataItem(found.dataItem);
+    }catch(e){}
+    return true;
+  }
+
+  if(regionSearch){
+    regionSearch.addEventListener("change",()=>{
+      openRegionById(regionSearch.value);
+    });
+  }
+
+  world.events.on("datavalidated",()=>{
+    let total=0,matched=0;
+    world.mapPolygons.each(mp=>{
+      total++;
+      const hit=matchNote(mp);
+      if(hit){
+        matched++;
+        mp.setAll({
+          fill:am5.color("#F17300"),
+          stroke:am5.color("#0b2340"),
+          strokeWidth:1.2
+        });
+      }
+    });
+    totalRegionsEl.textContent=String(total);
+    noteMatchEl.textContent=String(matched);
+    populateRegionSearch();
+
+    const hash=decodeURIComponent((location.hash||"").replace(/^#/,""));
+    const m=/^region=(.+)$/i.exec(hash);
+    if(m) setTimeout(()=>openRegionById(m[1]),450);
+  });
+  world.mapPolygons.template.adapters.add("tooltipText",(def,t)=>{
+    const h=matchNote(t);
+    if(h){
+      const name=h.title||polyName(t)||"{name}";
+      const bibCount=Array.isArray(h.biblical_refs)?h.biblical_refs.length:0;
+      const histCount=Array.isArray(h.historical_refs)?h.historical_refs.length:0;
+      return `${name}\nBiblical refs: ${bibCount} · Historical notes: ${histCount}\nClick to open evidence panel`;
+    }
+    return "{name}\nNo regional note loaded";
+  });
+  world.mapPolygons.template.events.on("click",ev=>{
+    const mp=ev.target;
+    const hit=matchNote(mp)||{};
+    const payload=Object.assign({},hit,{id:polyCode(mp),name:polyName(mp)});
+    world.mapPolygons.each(p=>p.set("active",p===mp));
+    openDrawer(payload);
+  });
+
+  $("drawer-close").addEventListener("click",()=>{world.mapPolygons.each(p=>p.set("active",false));closeDrawer();});
+
+  $("copy-link").addEventListener("click",async()=>{
+    const btn=$("copy-link");
+    const regionId=(CURRENT_REGION&&CURRENT_REGION.id)||$("drawer").dataset.regionId||"";
+    const regionTitle=(CURRENT_REGION&&CURRENT_REGION.title)||$("drawer").dataset.regionTitle||"Region";
+    const url=new URL(window.location.href);
+    if(regionId) url.hash="region="+encodeURIComponent(regionId);
+    const text=url.toString();
+
+    try{
+      await navigator.clipboard.writeText(text);
+      btn.textContent="Copied";
+      setTimeout(()=>btn.textContent="Copy Link",1400);
+    }catch(e){
+      window.prompt("Copy this link:",text);
+      btn.textContent="Copy Link";
+    }
+  });
+});
+</script>
+  <script src="/js/globe/all-outline.js?v=1761428678"></script>
+</body>
+</html>
