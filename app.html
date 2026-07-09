@@ -29,41 +29,23 @@
 </head>
 
 <body class="app-page institute-app">
-<div id="site-header"></div>
-
 <main class="app-shell" id="main-content" data-app-shell>
-  <nav class="breadcrumbs app-breadcrumbs" aria-label="Breadcrumb">
-    <a href="/index.html">Home</a>
-    <span class="sep">›</span>
-    <span class="current">App</span>
-  </nav>
-
   <header class="app-topbar" aria-label="App header">
     <div>
-      <p class="app-kicker">Semitic Jew</p>
-      <h1>Israelite Bible Institute</h1>
+      <p class="app-kicker">Semitic Jew Institute</p>
+      <h1>Scripture. Logic. Truth.</h1>
     </div>
-    <a class="app-install-link" href="/website-app.html">Install App</a>
   </header>
-
-  <nav class="app-tabbar app-tabbar-top" aria-label="App sections">
-    <a class="app-tab-link is-active" href="#home" data-app-tab-link="home">Home</a>
-    <a class="app-tab-link" href="#bible" data-app-tab-link="bible">Bible</a>
-    <a class="app-tab-link" href="#study" data-app-tab-link="study">Study</a>
-    <a class="app-tab-link" href="#ask" data-app-tab-link="ask">Ask</a>
-    <a class="app-tab-link" href="#media" data-app-tab-link="media">Media</a>
-    <a class="app-tab-link" href="#profile" data-app-tab-link="profile">Profile</a>
-  </nav>
 
   <div class="app-panels">
     <section class="app-panel is-active" id="home" data-app-panel="home" tabindex="-1" aria-labelledby="home-title">
       <div class="app-hero" aria-labelledby="home-title">
-        <p class="app-kicker">Scripture. Logic. History. Covenant identity.</p>
-        <h2 id="home-title">Not just a Bible app.</h2>
-        <p>An Israelite Bible institute in your pocket.</p>
+        <p class="app-kicker">Daily Study</p>
+        <h2 id="home-title">Open the Word first.</h2>
+        <p>A cleaner path for Scripture, articles, questions, and saved study.</p>
         <div class="app-actions">
-          <a class="app-btn primary" href="#study" data-app-tab-link="study">Start Study</a>
-          <a class="app-btn" href="#ask" data-app-tab-link="ask">Ask a Bible Question</a>
+          <a class="app-btn primary" href="#bible" data-app-tab-link="bible">Open Bible</a>
+          <a class="app-btn" href="#ask" data-app-tab-link="ask">Ask</a>
         </div>
       </div>
 
@@ -88,31 +70,31 @@
           </div>
         </article>
 
-        <article class="app-card app-continue-card" id="continue-course-card" aria-live="polite">
+        <article class="app-card app-continue-card app-home-secondary" id="continue-course-card" aria-live="polite">
           <span class="app-label">Recommended Path</span>
           <h3>Loading study paths...</h3>
           <p>Choose a guided path to continue.</p>
         </article>
 
-        <article class="app-card app-continue-card" id="latest-lesson-card" aria-live="polite">
+        <article class="app-card app-continue-card app-home-secondary" id="latest-lesson-card" aria-live="polite">
           <span class="app-label">Recent Saved Work</span>
           <h3>Loading saved work...</h3>
           <p>Your latest notes, bookmarks, highlights, and chains will appear here.</p>
         </article>
 
-        <article class="app-card app-continue-card" id="daily-prompt-card" aria-live="polite">
+        <article class="app-card app-continue-card app-home-secondary" id="daily-prompt-card" aria-live="polite">
           <span class="app-label">Daily Prompt</span>
           <h3>Loading prompt...</h3>
           <p>Study question will appear here.</p>
         </article>
 
-        <article class="app-card app-continue-card" id="today-progress-card" aria-live="polite">
+        <article class="app-card app-continue-card app-home-secondary" id="today-progress-card" aria-live="polite">
           <span class="app-label">Progress Summary</span>
           <h3>Loading progress...</h3>
           <p>Saved verses, chains, and path progress will appear here.</p>
         </article>
 
-        <section class="app-card app-practice-home" aria-labelledby="home-practice-title">
+        <section class="app-card app-practice-home app-home-secondary" aria-labelledby="home-practice-title">
           <div class="app-section-head compact">
             <span class="app-label">Practice</span>
             <h3 id="home-practice-title">Practice Progress</h3>
@@ -129,9 +111,9 @@
 
     <section class="app-panel" id="bible" data-app-panel="bible" tabindex="-1" aria-labelledby="bible-title" hidden>
       <div class="app-section-head app-reader-title">
-        <span class="app-label">Bible</span>
-        <h2 id="bible-title">Scripture Reader</h2>
-        <p>Open the Word first, then move into notes, saved study, search, and the full Biblia library.</p>
+        <span class="app-label">Biblia</span>
+        <h2 id="bible-title">Scripture Library</h2>
+        <p>Tanakh, Apocrypha, and New Testament organized in one reader.</p>
       </div>
 
       <section class="app-reader-shell" aria-label="Bible reader">
@@ -206,10 +188,10 @@
         <section class="app-full-library" aria-labelledby="full-library-title">
           <div class="app-section-head compact">
             <span class="app-label">Biblia</span>
-            <h3 id="full-library-title">Explore the Full Biblia Library</h3>
+            <h3 id="full-library-title">Scripture Domains</h3>
           </div>
           <div class="app-reader-links" aria-label="Scripture quick links">
-            <a class="app-btn primary" href="/biblia.html">Biblia Hub</a>
+            <a class="app-btn primary" href="/biblia.html">Biblia</a>
             <a class="app-btn" href="/tanakh.html">Tanakh</a>
             <a class="app-btn" href="/newtestament.html">New Testament</a>
             <a class="app-btn" href="/apocrypha.html">Apocrypha</a>
@@ -451,12 +433,11 @@
   </div>
 
   <nav class="app-tabbar app-tabbar-bottom" aria-label="Primary app navigation">
-    <a class="app-tab-link is-active" href="#home" data-app-tab-link="home">Home</a>
-    <a class="app-tab-link" href="#bible" data-app-tab-link="bible">Bible</a>
-    <a class="app-tab-link" href="#study" data-app-tab-link="study">Study</a>
-    <a class="app-tab-link" href="#ask" data-app-tab-link="ask">Ask</a>
-    <a class="app-tab-link" href="#media" data-app-tab-link="media">Media</a>
-    <a class="app-tab-link" href="#profile" data-app-tab-link="profile">Profile</a>
+    <a class="app-tab-link is-active" href="#home" data-app-tab-link="home"><span class="app-nav-icon" aria-hidden="true">⌂</span><span>Home</span></a>
+    <a class="app-tab-link" href="#bible" data-app-tab-link="bible"><span class="app-nav-icon" aria-hidden="true">▤</span><span>Bible</span></a>
+    <a class="app-tab-link" href="#study" data-app-tab-link="study"><span class="app-nav-icon" aria-hidden="true">⌐</span><span>Articles</span></a>
+    <a class="app-tab-link" href="#ask" data-app-tab-link="ask"><span class="app-nav-icon" aria-hidden="true">⌁</span><span>Ask</span></a>
+    <a class="app-tab-link" href="#profile" data-app-tab-link="profile"><span class="app-nav-icon" aria-hidden="true">◌</span><span>Profile</span></a>
   </nav>
 </main>
 
@@ -512,7 +493,6 @@
   </section>
 </div>
 
-<div id="site-footer"></div>
 
 <script src="/js/include.js"></script>
 <script src="/js/app-reading-history.js"></script>
