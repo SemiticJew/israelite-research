@@ -160,7 +160,7 @@ done < <(find "$OUT" -type f -name "*.html" -print0)
 echo "Built Capacitor web bundle at capacitor-www"
 
 printf 'Normalizing generated Capacitor text whitespace...\n'
-find "$OUT_DIR" -type f \( \
+find "$OUT" -type f \( \
   -name "*.html" -o \
   -name "*.css" -o \
   -name "*.js" -o \

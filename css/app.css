@@ -4569,3 +4569,82 @@ html:not([data-theme="dark"]) .institute-app :is(
   outline:2px solid rgba(17,24,39,.35);
   outline-offset:4px;
 }
+
+/* iOS App Polish Batch 1 — safe app-only overrides */
+body.institute-app{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+.institute-app,
+.institute-app *{
+  box-sizing:border-box;
+}
+
+.institute-app .app-breadcrumbs,
+.institute-app .app-tabbar-top,
+.institute-app .app-topbar .app-install-link,
+.institute-app .app-home-secondary{
+  display:none!important;
+}
+
+.institute-app .app-shell{
+  max-width:100%;
+  overflow-x:hidden;
+  padding-bottom:calc(118px + env(safe-area-inset-bottom, 0px));
+}
+
+.institute-app .app-panels,
+.institute-app .app-panel,
+.institute-app .app-card,
+.institute-app .app-hero,
+.institute-app .app-reader-shell,
+.institute-app .app-search-shell{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+.institute-app img,
+.institute-app video,
+.institute-app iframe,
+.institute-app table,
+.institute-app pre,
+.institute-app code,
+.institute-app svg{
+  max-width:100%;
+}
+
+.institute-app .app-tabbar-bottom{
+  position:fixed;
+  left:12px;
+  right:12px;
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index:90;
+  display:grid!important;
+  grid-template-columns:repeat(5, minmax(0, 1fr));
+  gap:4px;
+  padding:8px;
+  border-radius:24px;
+}
+
+.institute-app .app-tabbar-bottom .app-tab-link{
+  min-height:58px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  padding:7px 4px;
+  border-radius:18px;
+  font-size:.72rem;
+  line-height:1;
+  font-weight:800;
+  text-decoration:none;
+}
+
+.institute-app .app-tabbar-bottom .app-nav-icon{
+  display:block;
+  font-size:1.2rem;
+  line-height:1;
+}

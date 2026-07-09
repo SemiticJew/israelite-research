@@ -264,3 +264,4 @@ document.addEventListener("DOMContentLoaded", function articleFootnoteXrefs(){
     nodes.forEach(wrapNode);
   });
 });
+
