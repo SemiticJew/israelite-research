@@ -874,3 +874,1070 @@ svg{
     grid-template-columns:repeat(7, minmax(0, 1fr));
   }
 }
+
+
+/* =========================================================
+   Build 3D.1 — Home refinement and Biblia controls
+   ========================================================= */
+
+.sj-visually-hidden{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+
+
+/* Home branding */
+.sj-home-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  margin-bottom:34px;
+}
+
+.sj-home-brand-icon{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+
+  display:block;
+
+  border-radius:15px;
+  object-fit:cover;
+}
+
+.sj-home-brand-copy{
+  min-width:0;
+
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.sj-home-brand-copy strong{
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:1.3rem;
+  line-height:1.1;
+  letter-spacing:-.02em;
+}
+
+.sj-home-brand-copy span{
+  color:var(--sj-muted);
+  font-size:.82rem;
+  letter-spacing:.015em;
+}
+
+.sj-home-greeting{
+  margin-bottom:24px;
+}
+
+.sj-home-greeting h1{
+  max-width:none;
+  margin:0;
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:clamp(2.45rem, 10vw, 4rem);
+  line-height:.98;
+  letter-spacing:-.045em;
+}
+
+.sj-home-greeting::after{
+  content:"";
+
+  display:block;
+
+  width:58px;
+  height:3px;
+
+  margin-top:14px;
+
+  border-radius:999px;
+
+  background:var(--sj-orange);
+}
+
+
+/* Verse card */
+.sj-precept-card{
+  position:relative;
+}
+
+.sj-precept-card::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  z-index:0;
+
+  background:
+    radial-gradient(
+      circle at 85% 12%,
+      rgba(62,124,177,.22),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 75%,
+      rgba(5,74,145,.15),
+      transparent 38%
+    );
+
+  pointer-events:none;
+}
+
+.sj-precept-content,
+.sj-precept-actions,
+.sj-precept-daily{
+  position:relative;
+  z-index:1;
+}
+
+.sj-precept-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin:0 0 14px;
+
+  color:var(--sj-orange);
+
+  font-size:.83rem;
+  font-weight:800;
+}
+
+.sj-precept-label svg{
+  width:20px;
+  height:20px;
+}
+
+.sj-precept-reference{
+  display:block;
+
+  margin-bottom:20px;
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:clamp(1.8rem, 7.3vw, 2.8rem);
+  line-height:1;
+  letter-spacing:-.04em;
+
+  color:var(--sj-text);
+}
+
+.sj-precept-text{
+  margin:0;
+
+  font-size:clamp(1.45rem, 6.2vw, 2.25rem);
+  line-height:1.3;
+}
+
+.sj-precept-prompt{
+  margin-top:20px;
+}
+
+.sj-precept-actions{
+  grid-template-columns:repeat(4, 1fr);
+}
+
+.sj-precept-actions button{
+  gap:6px;
+  padding-left:0;
+  padding-right:0;
+}
+
+.sj-precept-actions button span{
+  font-size:.7rem;
+}
+
+.sj-precept-daily{
+  padding:0 12px 14px;
+}
+
+.sj-precept-daily button{
+  width:100%;
+  min-height:50px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+
+  border:0;
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      110deg,
+      #d69432,
+      #f1b866
+    );
+
+  color:#111;
+
+  font-weight:900;
+}
+
+.sj-precept-daily button svg{
+  width:20px;
+  height:20px;
+}
+
+
+/* 9:16 reel rail */
+.sj-section-heading-inline{
+  align-items:center;
+}
+
+.sj-section-link{
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  padding:0;
+
+  border:0;
+  background:transparent;
+
+  color:var(--sj-orange);
+
+  font-size:.9rem;
+  font-weight:800;
+}
+
+.sj-section-link span{
+  font-size:1.4rem;
+  line-height:1;
+}
+
+.sj-reel-rail{
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:min(63vw, 270px);
+  gap:12px;
+
+  margin-left:-20px;
+  margin-right:-20px;
+
+  padding:0 20px 6px;
+
+  overflow-x:auto;
+  scroll-snap-type:inline mandatory;
+  overscroll-behavior-inline:contain;
+  scrollbar-width:none;
+}
+
+.sj-reel-rail::-webkit-scrollbar{
+  display:none;
+}
+
+.sj-reel-card{
+  position:relative;
+
+  overflow:hidden;
+
+  aspect-ratio:9 / 16;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  padding:15px;
+
+  border:1px solid var(--sj-line);
+  border-radius:24px;
+
+  scroll-snap-align:start;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.9),
+      rgba(0,0,0,.18) 55%,
+      rgba(0,0,0,.35)
+    ),
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(241,115,0,.22),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #1c2630,
+      #101113 58%,
+      #24160e
+    );
+}
+
+.sj-reel-card-two{
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.9),
+      rgba(0,0,0,.15) 55%,
+      rgba(0,0,0,.3)
+    ),
+    radial-gradient(
+      circle at 60% 28%,
+      rgba(129,164,205,.28),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #151d24,
+      #252118,
+      #0c0d0f
+    );
+}
+
+.sj-reel-card-three{
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.92),
+      rgba(0,0,0,.15) 60%,
+      rgba(0,0,0,.32)
+    ),
+    radial-gradient(
+      circle at 70% 30%,
+      rgba(5,74,145,.4),
+      transparent 35%
+    ),
+    linear-gradient(
+      150deg,
+      #101a25,
+      #17181b,
+      #0a0a0b
+    );
+}
+
+.sj-reel-card-four{
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.92),
+      rgba(0,0,0,.18) 60%,
+      rgba(0,0,0,.32)
+    ),
+    radial-gradient(
+      circle at 65% 22%,
+      rgba(241,115,0,.3),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #21170f,
+      #15171a,
+      #090a0b
+    );
+}
+
+.sj-reel-topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.sj-reel-reference{
+  display:inline-flex;
+  align-items:center;
+
+  min-height:28px;
+
+  padding:0 9px;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+
+  background:rgba(0,0,0,.42);
+  color:#f5f5f1;
+
+  font-size:.7rem;
+  font-weight:800;
+}
+
+.sj-reel-duration{
+  color:#f5f5f1;
+
+  font-size:.72rem;
+  font-weight:700;
+}
+
+.sj-reel-copy{
+  margin-top:auto;
+  padding-top:60px;
+}
+
+.sj-reel-copy h3{
+  margin:0;
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:1.5rem;
+  line-height:1.04;
+  letter-spacing:-.035em;
+}
+
+.sj-reel-copy p{
+  margin:8px 0 0;
+
+  color:rgba(255,255,255,.75);
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:.88rem;
+  line-height:1.35;
+}
+
+.sj-reel-play{
+  width:48px;
+  height:48px;
+
+  display:grid;
+  place-items:center;
+
+  margin-top:18px;
+
+  border:1.5px solid rgba(255,255,255,.9);
+  border-radius:50%;
+
+  background:rgba(0,0,0,.25);
+  color:#fff;
+}
+
+.sj-reel-play svg{
+  width:20px;
+  height:20px;
+  margin-left:2px;
+}
+
+.sj-inline-status{
+  min-height:1.3em;
+
+  margin:8px 2px 0;
+
+  color:var(--sj-muted);
+
+  font-size:.78rem;
+}
+
+
+/* Podcast */
+.sj-podcast-section{
+  padding-bottom:8px;
+}
+
+.sj-podcast-card{
+  overflow:hidden;
+
+  border:1px solid var(--sj-line);
+  border-radius:24px;
+
+  background:var(--sj-surface);
+}
+
+.sj-podcast-art{
+  aspect-ratio:16 / 9;
+
+  overflow:hidden;
+
+  background:#111;
+}
+
+.sj-podcast-art img{
+  width:100%;
+  height:100%;
+
+  display:block;
+
+  object-fit:cover;
+}
+
+.sj-podcast-copy{
+  padding:18px;
+}
+
+.sj-podcast-copy h3{
+  margin:4px 0 10px;
+
+  font-size:1.35rem;
+  line-height:1.15;
+  letter-spacing:-.035em;
+}
+
+.sj-podcast-label{
+  color:var(--sj-orange);
+
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.sj-podcast-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+
+  margin-top:16px;
+}
+
+.sj-podcast-actions button,
+.sj-podcast-actions a{
+  min-height:44px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  padding:0 14px;
+
+  border:1px solid var(--sj-line);
+  border-radius:999px;
+
+  background:var(--sj-surface-2);
+  color:var(--sj-text);
+
+  text-decoration:none;
+
+  font-size:.8rem;
+  font-weight:800;
+}
+
+.sj-podcast-actions button{
+  border-color:var(--sj-orange);
+
+  background:var(--sj-orange);
+  color:#111;
+}
+
+.sj-podcast-player{
+  margin-top:14px;
+}
+
+.sj-podcast-player[hidden]{
+  display:none!important;
+}
+
+.sj-podcast-player iframe{
+  width:100%;
+  aspect-ratio:16 / 9;
+
+  display:block;
+
+  border:0;
+  border-radius:16px;
+}
+
+
+/* Biblia */
+.sj-biblia-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-bottom:14px;
+}
+
+.sj-biblia-control-group{
+  min-width:0;
+  flex:1 1 auto;
+
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+
+  overflow:hidden;
+
+  border:1px solid var(--sj-line);
+  border-radius:999px;
+
+  background:var(--sj-surface);
+}
+
+.sj-biblia-connected-control{
+  min-height:48px;
+
+  padding:0 16px;
+
+  border:0;
+  background:transparent;
+  color:var(--sj-text);
+
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.sj-biblia-version-control{
+  border-left:1px solid var(--sj-line);
+}
+
+.sj-biblia-top-actions{
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.sj-biblia-icon-button{
+  width:44px;
+  height:44px;
+
+  display:grid;
+  place-items:center;
+
+  padding:10px;
+
+  border:0;
+  border-radius:50%;
+
+  background:transparent;
+  color:var(--sj-text);
+}
+
+.sj-biblia-icon-button svg{
+  width:100%;
+  height:100%;
+}
+
+.sj-biblia-secondary-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+
+  padding:10px 0 14px;
+
+  border-bottom:1px solid var(--sj-line);
+}
+
+.sj-biblia-path{
+  min-width:0;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  overflow:hidden;
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:1rem;
+}
+
+.sj-biblia-path span{
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.sj-biblia-path .is-accent{
+  color:var(--sj-orange);
+}
+
+.sj-bible-browser{
+  margin-top:22px;
+}
+
+@media (max-width:390px){
+  .sj-biblia-connected-control{
+    padding-left:12px;
+    padding-right:12px;
+
+    font-size:.86rem;
+  }
+
+  .sj-biblia-icon-button{
+    width:40px;
+    height:40px;
+  }
+}
+
+@media (min-width:700px){
+  .sj-reel-rail{
+    margin-left:-34px;
+    margin-right:-34px;
+
+    padding-left:34px;
+    padding-right:34px;
+  }
+}
+
+
+/* =========================================================
+   Build 3D.2 — Focused visual refinement
+   ========================================================= */
+
+
+/* True 9:16 Precept Upon Precept reels */
+.sj-reel-rail{
+  grid-auto-columns:min(48vw, 190px);
+  gap:12px;
+}
+
+.sj-reel-card{
+  width:100%;
+  aspect-ratio:9 / 16;
+  min-height:0;
+  padding:13px;
+}
+
+.sj-reel-placeholder{
+  position:relative;
+}
+
+.sj-reel-placeholder::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.9) 0%,
+      rgba(0,0,0,.15) 48%,
+      rgba(0,0,0,.35) 100%
+    );
+
+  pointer-events:none;
+}
+
+.sj-reel-placeholder > *{
+  position:relative;
+  z-index:1;
+}
+
+.sj-reel-placeholder-center{
+  flex:1;
+
+  display:grid;
+  place-items:center;
+
+  padding:28px 0;
+}
+
+.sj-reel-coming-soon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:34px;
+
+  padding:0 12px;
+
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;
+
+  background:rgba(0,0,0,.45);
+  color:#fff;
+
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.sj-reel-copy{
+  margin-top:0;
+  padding-top:0;
+}
+
+.sj-reel-copy h3{
+  font-size:1.2rem;
+}
+
+.sj-reel-copy p{
+  font-size:.78rem;
+}
+
+.sj-reel-reference{
+  max-width:70%;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  font-size:.62rem;
+}
+
+.sj-reel-duration{
+  font-size:.64rem;
+  white-space:nowrap;
+}
+
+
+/* Ask open / close pill */
+.sj-ask-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
+}
+
+.sj-ask-toggle-icon{
+  width:22px;
+  height:22px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid currentColor;
+  border-radius:50%;
+
+  font-size:1rem;
+  line-height:1;
+
+  transition:transform .2s ease;
+}
+
+.sj-ask-toggle.is-open{
+  border:1px solid var(--sj-line);
+
+  background:var(--sj-surface);
+  color:var(--sj-text);
+}
+
+.sj-ask-toggle.is-open .sj-ask-toggle-icon{
+  transform:rotate(45deg);
+}
+
+
+/* Minimal podcast controls */
+.sj-podcast-actions{
+  gap:7px;
+  margin-top:13px;
+}
+
+.sj-podcast-actions button,
+.sj-podcast-actions a{
+  min-height:36px;
+
+  padding:0 11px;
+
+  border-radius:999px;
+
+  font-size:.72rem;
+  font-weight:800;
+}
+
+.sj-podcast-actions button{
+  border-color:var(--sj-orange);
+
+  background:transparent;
+  color:var(--sj-orange);
+}
+
+
+/* Canon menu driven by top Israelite Writings pill */
+.sj-biblia-canon-menu{
+  margin:10px 0 6px;
+
+  overflow:hidden;
+
+  border:1px solid var(--sj-line);
+  border-radius:20px;
+
+  background:var(--sj-surface);
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.28);
+}
+
+.sj-biblia-canon-menu[hidden],
+.sj-bible-browser[hidden]{
+  display:none!important;
+}
+
+.sj-canon-menu-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.sj-canon-menu-option{
+  width:100%;
+  min-height:64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+
+  padding:0 16px;
+
+  border:0;
+  border-bottom:1px solid var(--sj-line);
+
+  background:transparent;
+  color:var(--sj-text);
+
+  text-align:left;
+}
+
+.sj-canon-menu-option:last-child{
+  border-bottom:0;
+}
+
+.sj-canon-menu-option strong{
+  font-size:1rem;
+}
+
+.sj-canon-menu-option span{
+  color:var(--sj-muted);
+
+  font-size:.76rem;
+}
+
+.sj-canon-menu-option-arrow{
+  flex:0 0 auto;
+
+  color:var(--sj-muted);
+
+  font-size:1.45rem;
+}
+
+
+/* Reduce redundant spacing once canon is chosen */
+.sj-bible-browser{
+  margin-top:18px;
+}
+
+.sj-bible-browser-head{
+  margin-bottom:14px;
+}
+
+
+@media (min-width:520px){
+  .sj-reel-rail{
+    grid-auto-columns:min(40vw, 210px);
+  }
+}
+
+
+/* =========================================================
+   Build 3D.3 — Final Home and Biblia cleanup
+   ========================================================= */
+
+
+/* Precept Upon Precept: one-line heading, See All underneath */
+.sj-precept-section-heading{
+  display:block;
+  margin-bottom:14px;
+}
+
+.sj-precept-section-heading h2{
+  margin:0;
+  white-space:nowrap;
+
+  font-size:clamp(1.65rem, 7.2vw, 1.95rem);
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+
+.sj-precept-section-heading .sj-section-link{
+  margin-top:8px;
+}
+
+
+/* Ask toggle without extra icon */
+.sj-ask-toggle{
+  gap:0;
+}
+
+.sj-ask-toggle.is-open{
+  border:1px solid var(--sj-line);
+
+  background:var(--sj-surface);
+  color:var(--sj-text);
+}
+
+
+/* Biblia ellipsis menu */
+.sj-biblia-more-menu{
+  margin:8px 0 4px;
+
+  overflow:hidden;
+
+  border:1px solid var(--sj-line);
+  border-radius:18px;
+
+  background:var(--sj-surface);
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.28);
+}
+
+.sj-biblia-more-menu[hidden]{
+  display:none!important;
+}
+
+.sj-biblia-more-option{
+  width:100%;
+  min-height:68px;
+
+  display:flex;
+  align-items:center;
+  gap:13px;
+
+  padding:10px 14px;
+
+  border:0;
+
+  background:transparent;
+  color:var(--sj-text);
+
+  text-align:left;
+}
+
+.sj-biblia-more-option-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid var(--sj-line);
+  border-radius:50%;
+
+  color:var(--sj-orange);
+
+  font-size:1rem;
+  font-weight:800;
+}
+
+.sj-biblia-more-option-copy{
+  min-width:0;
+
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.sj-biblia-more-option-copy strong{
+  font-size:.92rem;
+}
+
+.sj-biblia-more-option-copy small{
+  color:var(--sj-muted);
+
+  font-size:.74rem;
+  line-height:1.35;
+}

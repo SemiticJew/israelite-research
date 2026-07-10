@@ -31,10 +31,24 @@
       data-v3-screen="home"
       aria-labelledby="home-title"
     >
-      <header class="sj-page-header sj-home-header">
-        <p class="sj-eyebrow">Semitic Jew Institute</p>
-        <h1 id="home-title">Shalom</h1>
+      <header class="sj-home-brand">
+        <img
+          class="sj-home-brand-icon"
+          src="/images/app/semitic-jew-official-app-icon.png"
+          alt="Semitic Jew app icon"
+        >
+
+        <div class="sj-home-brand-copy">
+          <strong>Semitic Jew</strong>
+          <span>Scripture • Logic • Truth</span>
+        </div>
       </header>
+
+      <section class="sj-home-greeting" aria-labelledby="home-title">
+        <h1 id="home-title">
+          Shalom, <span data-home-daypart>Evening</span>
+        </h1>
+      </section>
 
 
       <!-- PRECEPT VERSE -->
@@ -42,12 +56,12 @@
         class="sj-home-section sj-precept-section"
         aria-labelledby="sj-precept-heading"
       >
-        <div class="sj-section-heading">
-          <div>
-            <p class="sj-section-kicker">Precept Verse</p>
-            <h2 id="sj-precept-heading">Today's precept</h2>
-          </div>
-        </div>
+        <h2
+          class="sj-visually-hidden"
+          id="sj-precept-heading"
+        >
+          Verse of the Day
+        </h2>
 
         <article
           class="sj-precept-card"
@@ -64,20 +78,124 @@
         class="sj-home-section"
         aria-labelledby="sj-precept-video-heading"
       >
-        <div class="sj-section-heading">
-          <div>
-            <p class="sj-section-kicker">Watch</p>
-            <h2 id="sj-precept-video-heading">Precept Upon Precept</h2>
-          </div>
+        <div class="sj-section-heading sj-precept-section-heading">
+          <h2 id="sj-precept-video-heading">
+            Precept Upon Precept
+          </h2>
+
+          <button
+            class="sj-section-link"
+            type="button"
+            data-precept-see-all
+          >
+            See All
+            <span aria-hidden="true">›</span>
+          </button>
         </div>
 
         <div
-          class="sj-video-rail"
+          class="sj-reel-rail"
           id="sj-precept-videos"
-          aria-live="polite"
+          aria-label="Precept Upon Precept teachings"
         >
-          <div class="sj-home-loading">Loading Scripture teachings...</div>
+          <article class="sj-reel-card sj-reel-placeholder sj-reel-card-one">
+            <div class="sj-reel-topline">
+              <span class="sj-reel-reference">
+                2 Timothy 3:16–17
+              </span>
+
+              <span class="sj-reel-duration">
+                1–2 min
+              </span>
+            </div>
+
+            <div class="sj-reel-placeholder-center">
+              <span class="sj-reel-coming-soon">
+                Coming Soon
+              </span>
+            </div>
+
+            <div class="sj-reel-copy">
+              <h3>All Scripture Is God-Breathed</h3>
+              <p>Equipping for Every Good Work</p>
+            </div>
+          </article>
+
+          <article class="sj-reel-card sj-reel-placeholder sj-reel-card-two">
+            <div class="sj-reel-topline">
+              <span class="sj-reel-reference">
+                Isaiah 8:20
+              </span>
+
+              <span class="sj-reel-duration">
+                1–2 min
+              </span>
+            </div>
+
+            <div class="sj-reel-placeholder-center">
+              <span class="sj-reel-coming-soon">
+                Coming Soon
+              </span>
+            </div>
+
+            <div class="sj-reel-copy">
+              <h3>To the Law and to the Testimony</h3>
+              <p>The Sure Word for Our Walk</p>
+            </div>
+          </article>
+
+          <article class="sj-reel-card sj-reel-placeholder sj-reel-card-three">
+            <div class="sj-reel-topline">
+              <span class="sj-reel-reference">
+                Romans 3:31
+              </span>
+
+              <span class="sj-reel-duration">
+                1–2 min
+              </span>
+            </div>
+
+            <div class="sj-reel-placeholder-center">
+              <span class="sj-reel-coming-soon">
+                Coming Soon
+              </span>
+            </div>
+
+            <div class="sj-reel-copy">
+              <h3>Do We Make Void the Law?</h3>
+              <p>God Forbid</p>
+            </div>
+          </article>
+
+          <article class="sj-reel-card sj-reel-placeholder sj-reel-card-four">
+            <div class="sj-reel-topline">
+              <span class="sj-reel-reference">
+                Jeremiah 16:19
+              </span>
+
+              <span class="sj-reel-duration">
+                1–2 min
+              </span>
+            </div>
+
+            <div class="sj-reel-placeholder-center">
+              <span class="sj-reel-coming-soon">
+                Coming Soon
+              </span>
+            </div>
+
+            <div class="sj-reel-copy">
+              <h3>Our Fathers Inherited Lies</h3>
+              <p>Test Every Tradition</p>
+            </div>
+          </article>
         </div>
+
+        <p
+          class="sj-inline-status"
+          data-precept-placeholder-status
+          aria-live="polite"
+        ></p>
       </section>
 
 
@@ -116,11 +234,14 @@
         </p>
 
         <button
-          class="sj-primary-button"
+          class="sj-primary-button sj-ask-toggle"
           type="button"
           data-home-ask-open
+          aria-expanded="false"
         >
-          Write a Question
+          <span data-home-ask-toggle-label>
+            Write a Question
+          </span>
         </button>
 
         <div class="sj-home-ask-compose" data-home-ask-compose hidden>
@@ -147,6 +268,29 @@
           ></p>
         </div>
       </section>
+
+
+      <!-- LATEST PODCAST -->
+      <section
+        class="sj-home-section sj-podcast-section"
+        aria-labelledby="sj-latest-podcast-heading"
+      >
+        <div class="sj-section-heading">
+          <div>
+            <p class="sj-section-kicker">Listen</p>
+            <h2 id="sj-latest-podcast-heading">Latest Podcast</h2>
+          </div>
+        </div>
+
+        <div
+          id="sj-latest-podcast"
+          aria-live="polite"
+        >
+          <p class="sj-home-loading">
+            Loading latest podcast episode...
+          </p>
+        </div>
+      </section>
     </section>
 
 
@@ -158,44 +302,88 @@
       aria-labelledby="bible-title"
       hidden
     >
-      <header class="sj-page-header sj-bible-header">
-        <p class="sj-eyebrow">Biblia</p>
-        <h1 id="bible-title">Bible</h1>
+      <header class="sj-biblia-top">
+        <h1 id="bible-title" class="sj-visually-hidden">Biblia</h1>
+
+        <div
+          class="sj-biblia-control-group"
+          aria-label="Bible translation controls"
+        >
+          <button
+            class="sj-biblia-connected-control sj-biblia-writings-control"
+            type="button"
+            data-bible-open-canons
+          >
+            Israelite Writings
+          </button>
+
+          <button
+            class="sj-biblia-connected-control sj-biblia-version-control"
+            type="button"
+            data-bible-version
+          >
+            KJV
+          </button>
+        </div>
+
+        <div class="sj-biblia-top-actions">
+          <button
+            class="sj-biblia-icon-button"
+            type="button"
+            data-bible-search
+            aria-label="Search Scripture"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+          </button>
+
+          <button
+            class="sj-biblia-icon-button"
+            type="button"
+            data-bible-more
+            aria-label="More Bible options"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="5" cy="12" r="1"></circle>
+              <circle cx="12" cy="12" r="1"></circle>
+              <circle cx="19" cy="12" r="1"></circle>
+            </svg>
+          </button>
+        </div>
       </header>
 
-
-      <!-- BIBLE TOOLBAR -->
       <div
-        class="sj-bible-toolbar"
-        aria-label="Bible controls"
+        class="sj-biblia-more-menu"
+        data-bible-more-menu
+        hidden
       >
         <button
-          class="sj-bible-pill sj-bible-writings-pill"
-          type="button"
-          data-bible-open-canons
-        >
-          <span>Israelite Writings</span>
-          <span aria-hidden="true">⌄</span>
-        </button>
-
-        <button
-          class="sj-bible-pill"
-          type="button"
-          data-bible-version
-        >
-          <span>KJV</span>
-          <span aria-hidden="true">⌄</span>
-        </button>
-
-        <button
-          class="sj-bible-font-button"
+          class="sj-biblia-more-option"
           type="button"
           data-bible-font
-          aria-label="Change reader font size"
         >
-          Aa
+          <span
+            class="sj-biblia-more-option-icon"
+            aria-hidden="true"
+          >
+            Aa
+          </span>
+
+          <span class="sj-biblia-more-option-copy">
+            <strong>Text Size</strong>
+            <small>Adjust Scripture reader text</small>
+          </span>
         </button>
       </div>
+
+      <div
+        class="sj-biblia-canon-menu"
+        data-biblia-canon-menu
+        hidden
+        aria-label="Choose Israelite Writing canon"
+      ></div>
 
       <p
         class="sj-bible-notice"
@@ -207,7 +395,9 @@
       <!-- CANON / BOOK / CHAPTER BROWSER -->
       <section
         class="sj-bible-browser"
+        data-bible-browser
         aria-labelledby="sj-bible-stage-title"
+        hidden
       >
         <div class="sj-bible-browser-head">
 

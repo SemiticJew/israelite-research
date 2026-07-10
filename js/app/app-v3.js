@@ -150,18 +150,21 @@ function renderPrecept(precept){
 
   root.innerHTML = `
     <div class="sj-precept-content">
-      <div class="sj-precept-meta">
-        <p class="sj-precept-theme">
-          ${escapeHTML(precept.theme || "Scripture")}
-        </p>
+      <p class="sj-precept-label">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 5.5A3.5 3.5 0 0 1 6.5 2H11v17H6.5A3.5 3.5 0 0 0 3 22Z"></path>
+          <path d="M21 5.5A3.5 3.5 0 0 0 17.5 2H13v17h4.5A3.5 3.5 0 0 1 21 22Z"></path>
+        </svg>
 
-        <span class="sj-precept-reference">
-          ${escapeHTML(precept.reference || "")}
-        </span>
-      </div>
+        <span>Verse of the Day</span>
+      </p>
+
+      <span class="sj-precept-reference">
+        ${escapeHTML(precept.reference || "")}
+      </span>
 
       <blockquote class="sj-precept-text">
-        “${escapeHTML(precept.text || "")}”
+        ${escapeHTML(precept.text || "")}
       </blockquote>
 
       ${precept.prompt ? `
@@ -171,7 +174,7 @@ function renderPrecept(precept){
       ` : ""}
     </div>
 
-    <div class="sj-precept-actions" aria-label="Precept actions">
+    <div class="sj-precept-actions" aria-label="Verse actions">
       <button
         type="button"
         data-precept-action="like"
@@ -190,9 +193,22 @@ function renderPrecept(precept){
         class="${notes[key] ? "is-active" : ""}"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
+          <path d="M6 3h9l4 4v14H6Z"></path>
+          <path d="M14 3v5h5"></path>
+          <path d="M9 12h6"></path>
+          <path d="M9 16h6"></path>
         </svg>
         <span>Note</span>
+      </button>
+
+      <button
+        type="button"
+        data-precept-action="comment"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
+        </svg>
+        <span>Comment</span>
       </button>
 
       <button
@@ -200,13 +216,25 @@ function renderPrecept(precept){
         data-precept-action="share"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <path d="m8.6 10.5 6.8-4"></path>
-          <path d="m8.6 13.5 6.8 4"></path>
+          <path d="M12 16V3"></path>
+          <path d="m7 8 5-5 5 5"></path>
+          <path d="M5 12v9h14v-9"></path>
         </svg>
         <span>Share</span>
+      </button>
+    </div>
+
+    <div class="sj-precept-daily">
+      <button
+        type="button"
+        data-precept-action="daily"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+          <path d="M10 21h4"></path>
+        </svg>
+
+        <span>Send Me This Daily</span>
       </button>
     </div>
   `;
@@ -306,6 +334,22 @@ document
 
       writeObjectStorage(PRECEPT_NOTES_KEY, notes);
       button.classList.toggle("is-active", Boolean(cleaned));
+
+      return;
+    }
+
+    if(action === "comment"){
+      window.alert(
+        "Community comments are coming soon. No public comment was posted."
+      );
+
+      return;
+    }
+
+    if(action === "daily"){
+      window.alert(
+        "Daily verse reminders are coming soon. No notification was scheduled yet."
+      );
 
       return;
     }
@@ -468,12 +512,16 @@ async function loadLatestArticle(){
 
     const link = card.querySelector('a[href*="/articles/"]');
     const image = card.querySelector("img");
-    const title = cleanText(
-      card.querySelector("h2, h3")?.textContent
+    const title = decodeHTMLEntities(
+      cleanText(
+        card.querySelector("h2, h3")?.textContent
+      )
     );
 
-    const excerpt = cleanText(
-      card.querySelector("p.muted, p")?.textContent
+    const excerpt = decodeHTMLEntities(
+      cleanText(
+        card.querySelector("p.muted, p")?.textContent
+      )
     );
 
     const href = link?.getAttribute("href");
@@ -525,18 +573,44 @@ const QUESTION_DRAFTS_KEY = "sj_v3_question_drafts_v1";
 
 document
   .querySelector("[data-home-ask-open]")
-  ?.addEventListener("click", () => {
+  ?.addEventListener("click", event => {
+    const button = event.currentTarget;
+
     const composer = document.querySelector(
       "[data-home-ask-compose]"
     );
 
+    const label = button.querySelector(
+      "[data-home-ask-toggle-label]"
+    );
+
     if(!composer) return;
 
-    composer.hidden = false;
+    const willOpen = composer.hidden;
 
-    document
-      .getElementById("sj-home-ask-input")
-      ?.focus();
+    composer.hidden = !willOpen;
+
+    button.classList.toggle(
+      "is-open",
+      willOpen
+    );
+
+    button.setAttribute(
+      "aria-expanded",
+      String(willOpen)
+    );
+
+    if(label){
+      label.textContent = willOpen
+        ? "Close Question"
+        : "Write a Question";
+    }
+
+    if(willOpen){
+      document
+        .getElementById("sj-home-ask-input")
+        ?.focus();
+    }
   });
 
 
@@ -600,7 +674,6 @@ document
    ========================================================= */
 
 loadDailyPrecept();
-loadPreceptVideos();
 loadLatestArticle();
 
 
@@ -629,6 +702,29 @@ let bibleBrowserStage = "canons";
 let selectedBibleCanon = null;
 let selectedBibleBook = null;
 let selectedBibleChapter = null;
+
+
+function bibleCanonMenu(){
+  return document.querySelector(
+    "[data-biblia-canon-menu]"
+  );
+}
+
+
+function bibleBrowserShell(){
+  return document.querySelector(
+    "[data-bible-browser]"
+  );
+}
+
+
+function hideBibleCanonMenu(){
+  const menu = bibleCanonMenu();
+
+  if(menu){
+    menu.hidden = true;
+  }
+}
 
 
 function bibleBrowserContent(){
@@ -740,52 +836,45 @@ function readBibleLocation(){
 
 
 function renderBibleCanons(){
-  const root = bibleBrowserContent();
+  const menu = bibleCanonMenu();
 
-  if(!root || !scriptureCanonData) return;
+  if(!menu || !scriptureCanonData) return;
 
   bibleBrowserStage = "canons";
 
   selectedBibleCanon = null;
   selectedBibleBook = null;
+  selectedBibleChapter = null;
 
-  const title = bibleStageTitle();
-  const kicker = bibleStageKicker();
-  const back = bibleBackButton();
+  const browser = bibleBrowserShell();
 
-  if(title){
-    title.textContent = "Select a canon";
+  if(browser){
+    browser.hidden = true;
   }
 
-  if(kicker){
-    kicker.textContent = "Israelite Writings";
-  }
+  updateBibliaPath();
 
-  if(back){
-    back.hidden = true;
-  }
-
-  root.innerHTML = `
-    <div class="sj-canon-list">
+  menu.innerHTML = `
+    <div class="sj-canon-menu-list">
       ${scriptureCanonData.canons.map(
         canon => `
           <button
-            class="sj-canon-card"
+            class="sj-canon-menu-option"
             type="button"
             data-bible-canon="${escapeHTML(canon.slug)}"
           >
-            <span class="sj-canon-card-copy">
+            <span>
               <strong>
                 ${escapeHTML(canon.name)}
               </strong>
+            </span>
 
-              <small>
-                ${canon.books.length} books
-              </small>
+            <span>
+              ${canon.books.length} books
             </span>
 
             <span
-              class="sj-canon-card-arrow"
+              class="sj-canon-menu-option-arrow"
               aria-hidden="true"
             >
               ›
@@ -795,6 +884,8 @@ function renderBibleCanons(){
       ).join("")}
     </div>
   `;
+
+  menu.hidden = false;
 }
 
 
@@ -805,8 +896,20 @@ function renderBibleBooks(canonSlug){
   if(!root || !canon) return;
 
   bibleBrowserStage = "books";
+
   selectedBibleCanon = canon.slug;
   selectedBibleBook = null;
+  selectedBibleChapter = null;
+
+  hideBibleCanonMenu();
+
+  const browser = bibleBrowserShell();
+
+  if(browser){
+    browser.hidden = false;
+  }
+
+  updateBibliaPath();
 
   const title = bibleStageTitle();
   const kicker = bibleStageKicker();
@@ -878,6 +981,16 @@ function renderBibleChapters(
   selectedBibleCanon = canon.slug;
   selectedBibleBook = book.slug;
 
+  hideBibleCanonMenu();
+
+  const browser = bibleBrowserShell();
+
+  if(browser){
+    browser.hidden = false;
+  }
+
+  updateBibliaPath();
+
   const savedLocation = readBibleLocation();
 
   selectedBibleChapter =
@@ -895,7 +1008,8 @@ function renderBibleChapters(
   }
 
   if(kicker){
-    kicker.textContent = `${canon.name} · Select a chapter`;
+    kicker.textContent =
+      `${canon.name} · Select a chapter`;
   }
 
   if(back){
@@ -1030,7 +1144,18 @@ function goBackInBibleBrowser(){
   }
 
   if(bibleBrowserStage === "books"){
-    renderBibleCanons();
+    const browser = bibleBrowserShell();
+    const menu = bibleCanonMenu();
+
+    if(browser){
+      browser.hidden = true;
+    }
+
+    if(menu){
+      menu.hidden = true;
+    }
+
+    updateBibliaPath();
   }
 }
 
@@ -1146,6 +1271,16 @@ document
 
 
 document
+  .querySelector("[data-biblia-canon-menu]")
+  ?.addEventListener(
+    "click",
+    handleBibleBrowserClick
+  );
+
+
+
+
+document
   .querySelector("[data-bible-back]")
   ?.addEventListener(
     "click",
@@ -1155,10 +1290,25 @@ document
 
 document
   .querySelector("[data-bible-open-canons]")
-  ?.addEventListener(
-    "click",
-    renderBibleCanons
-  );
+  ?.addEventListener("click", () => {
+    const menu = bibleCanonMenu();
+
+    const moreMenu = document.querySelector(
+      "[data-bible-more-menu]"
+    );
+
+    if(!menu || !scriptureCanonData) return;
+
+    if(moreMenu){
+      moreMenu.hidden = true;
+    }
+
+    if(menu.hidden){
+      renderBibleCanons();
+    }else{
+      hideBibleCanonMenu();
+    }
+  });
 
 
 document
@@ -1180,3 +1330,331 @@ document
 
 restoreReaderFontPreference();
 loadBibleBrowser();
+
+
+/* =========================================================
+   Build 3D.1 — Home greeting, podcast, refined actions
+   ========================================================= */
+
+const PODCAST_DATA_URL =
+  "/data/youtube-podcast-videos.json";
+
+const APPLE_PODCASTS_URL =
+  "https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004";
+
+const SPOTIFY_PODCAST_URL =
+  "https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi";
+
+
+function setHomeDaypart(){
+  const target = document.querySelector(
+    "[data-home-daypart]"
+  );
+
+  if(!target) return;
+
+  const hour = new Date().getHours();
+
+  let daypart = "Evening";
+
+  if(hour >= 5 && hour < 12){
+    daypart = "Morning";
+  }else if(hour >= 12 && hour < 17){
+    daypart = "Afternoon";
+  }
+
+  target.textContent = daypart;
+}
+
+
+function decodeHTMLEntities(value = ""){
+  const textarea = document.createElement("textarea");
+
+  textarea.innerHTML = value;
+
+  return textarea.value;
+}
+
+
+function updateBibliaPath(){
+  const root = document.querySelector(
+    "[data-biblia-path]"
+  );
+
+  if(!root) return;
+
+  const canon = selectedBibleCanon
+    ? getBibleCanon(selectedBibleCanon)
+    : null;
+
+  const book =
+    selectedBibleCanon && selectedBibleBook
+      ? getBibleBook(
+          selectedBibleCanon,
+          selectedBibleBook
+        )
+      : null;
+
+  if(book && canon){
+    root.innerHTML = `
+      <span class="is-accent">
+        ${escapeHTML(canon.name)}
+      </span>
+
+      <span aria-hidden="true">›</span>
+
+      <span>
+        ${escapeHTML(book.name)}
+      </span>
+    `;
+
+    return;
+  }
+
+  if(canon){
+    root.innerHTML = `
+      <span class="is-accent">
+        ${escapeHTML(canon.name)}
+      </span>
+    `;
+
+    return;
+  }
+
+  root.innerHTML = `
+    <span>Israelite Writings</span>
+  `;
+}
+
+
+async function loadLatestPodcast(){
+  const root = document.getElementById(
+    "sj-latest-podcast"
+  );
+
+  if(!root) return;
+
+  try{
+    const payload = await fetchJSON(
+      PODCAST_DATA_URL
+    );
+
+    const videos = Array.isArray(payload)
+      ? payload
+      : Array.isArray(payload?.videos)
+        ? payload.videos
+        : [];
+
+    const episode = videos[0];
+
+    if(!episode){
+      throw new Error(
+        "No podcast episodes found."
+      );
+    }
+
+    const title = String(episode.title || "")
+      .replace(/^EP\s*/i, "EP ")
+      .trim();
+
+    root.innerHTML = `
+      <article class="sj-podcast-card">
+        <div class="sj-podcast-art">
+          <img
+            src="${escapeHTML(episode.thumbnail || "")}"
+            alt=""
+            loading="lazy"
+          >
+        </div>
+
+        <div class="sj-podcast-copy">
+          <span class="sj-podcast-label">
+            Latest Episode
+          </span>
+
+          <h3>${escapeHTML(title)}</h3>
+
+          <div class="sj-podcast-actions">
+            <button
+              type="button"
+              data-podcast-play
+              data-podcast-embed="${escapeHTML(
+                episode.embed || ""
+              )}"
+            >
+              <span aria-hidden="true">▶</span>
+              Play
+            </button>
+
+            <a
+              href="${APPLE_PODCASTS_URL}"
+              target="_blank"
+              rel="noopener"
+            >
+              Apple
+            </a>
+
+            <a
+              href="${SPOTIFY_PODCAST_URL}"
+              target="_blank"
+              rel="noopener"
+            >
+              Spotify
+            </a>
+          </div>
+
+          <div
+            class="sj-podcast-player"
+            data-podcast-player
+            hidden
+          ></div>
+        </div>
+      </article>
+    `;
+  }catch(error){
+    console.warn(
+      "Latest podcast failed.",
+      error
+    );
+
+    root.innerHTML = `
+      <p class="sj-home-loading">
+        The latest podcast episode is temporarily unavailable.
+      </p>
+    `;
+  }
+}
+
+
+document.addEventListener("click", event => {
+  const podcastButton = event.target.closest(
+    "[data-podcast-play]"
+  );
+
+  if(podcastButton){
+    const player = document.querySelector(
+      "[data-podcast-player]"
+    );
+
+    const embed = podcastButton.dataset.podcastEmbed;
+
+    if(!player || !embed) return;
+
+    if(player.hidden){
+      const joiner = embed.includes("?")
+        ? "&"
+        : "?";
+
+      player.innerHTML = `
+        <iframe
+          src="${escapeHTML(
+            `${embed}${joiner}autoplay=1`
+          )}"
+          title="Semitic Jew Podcast"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      `;
+
+      player.hidden = false;
+
+      podcastButton.innerHTML = `
+        <span aria-hidden="true">■</span>
+        Close
+      `;
+    }else{
+      player.hidden = true;
+      player.innerHTML = "";
+
+      podcastButton.innerHTML = `
+        <span aria-hidden="true">▶</span>
+        Play
+      `;
+    }
+
+    return;
+  }
+
+
+  const placeholderReel = event.target.closest(
+    "[data-placeholder-reel]"
+  );
+
+  if(placeholderReel){
+    const status = document.querySelector(
+      "[data-precept-placeholder-status]"
+    );
+
+    if(status){
+      status.textContent =
+        "Precept Upon Precept reel teachings are coming soon.";
+    }
+
+    return;
+  }
+
+
+  if(event.target.closest("[data-precept-see-all]")){
+    const status = document.querySelector(
+      "[data-precept-placeholder-status]"
+    );
+
+    if(status){
+      status.textContent =
+        "The complete Precept Upon Precept library is coming soon.";
+    }
+  }
+});
+
+
+document
+  .querySelector("[data-bible-search]")
+  ?.addEventListener("click", () => {
+    setBibleNotice(
+      "Scripture search will be connected in a later reader batch."
+    );
+  });
+
+
+document
+  .querySelector("[data-bible-more]")
+  ?.addEventListener("click", event => {
+    event.stopPropagation();
+
+    const menu = document.querySelector(
+      "[data-bible-more-menu]"
+    );
+
+    const canonMenu = bibleCanonMenu();
+
+    if(!menu) return;
+
+    if(canonMenu){
+      canonMenu.hidden = true;
+    }
+
+    menu.hidden = !menu.hidden;
+  });
+
+
+setHomeDaypart();
+loadLatestPodcast();
+updateBibliaPath();
+
+
+document.addEventListener("click", event => {
+  const moreMenu = document.querySelector(
+    "[data-bible-more-menu]"
+  );
+
+  if(
+    !moreMenu ||
+    moreMenu.hidden ||
+    event.target.closest("[data-bible-more]") ||
+    event.target.closest("[data-bible-more-menu]")
+  ){
+    return;
+  }
+
+  moreMenu.hidden = true;
+});
