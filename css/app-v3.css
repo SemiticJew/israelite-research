@@ -1941,3 +1941,67 @@ svg{
   font-size:.74rem;
   line-height:1.35;
 }
+
+
+/* =========================================================
+   Build 3D.4 — Final Home polish
+   ========================================================= */
+
+.sj-home-greeting h1{
+  font-size:clamp(1.65rem, 7.2vw, 1.95rem);
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+
+.sj-precept-section-heading .sj-section-link{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.sj-precept-section-heading h2{
+  margin:0;
+}
+
+
+/* =========================================================
+   Build 3D.5 — Final Home and Biblia polish
+   ========================================================= */
+
+
+/* Keep Ask About Scripture on one line */
+#sj-home-ask-heading{
+  white-space:nowrap;
+
+  font-size:clamp(1.55rem, 6.5vw, 1.95rem);
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+
+
+/* Stack each Biblia canon name and book count together */
+.sj-canon-menu-option{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  grid-template-rows:auto auto;
+  column-gap:14px;
+  row-gap:3px;
+}
+
+.sj-canon-menu-option > span:nth-child(1){
+  grid-column:1;
+  grid-row:1;
+}
+
+.sj-canon-menu-option > span:nth-child(2){
+  grid-column:1;
+  grid-row:2;
+
+  justify-self:start;
+}
+
+.sj-canon-menu-option .sj-canon-menu-option-arrow{
+  grid-column:2;
+  grid-row:1 / span 2;
+
+  align-self:center;
+}
