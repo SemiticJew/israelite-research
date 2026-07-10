@@ -1,514 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Semitic Jew App — Israelite Bible Institute</title>
-<meta name="description" content="The Semitic Jew app dashboard: an Israelite Bible institute in your pocket with Scripture, study paths, AI study aids, media, practice, and fellowship preparation."/>
+  <meta charset="utf-8">
 
-<meta property="og:title" content="Semitic Jew App — Israelite Bible Institute"/>
-<meta property="og:description" content="Not just a Bible app. An Israelite Bible institute in your pocket."/>
-<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://semiticjew.org/app.html"/>
-<meta property="og:site_name" content="Semitic Jew"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+  >
 
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Semitic Jew App — Israelite Bible Institute"/>
-<meta name="twitter:description" content="Scripture, logic, history, and covenant identity in a mobile-first study dashboard."/>
-<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
+  <title>Semitic Jew Institute</title>
 
-<link rel="stylesheet" href="/styles.css"/>
-<link rel="stylesheet" href="/css/app.css"/>
-<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-<link rel="manifest" href="/site.webmanifest"/>
-<meta name="theme-color" content="#054A91"/>
+  <meta
+    name="description"
+    content="Scripture, logic, truth, and Israelite-centered biblical research."
+  >
+
+  <meta name="theme-color" content="#0d0d0f">
+
+  <link rel="stylesheet" href="/css/app-v3.css">
 </head>
 
-<body class="app-page institute-app">
-<main class="app-shell" id="main-content" data-app-shell>
-  <header class="app-topbar" aria-label="App header">
-    <div>
-      <p class="app-kicker">Semitic Jew Institute</p>
-      <h1>Scripture. Logic. Truth.</h1>
-    </div>
-  </header>
+<body class="sj-app-v3">
 
-  <div class="app-panels">
-    <section class="app-panel is-active" id="home" data-app-panel="home" tabindex="-1" aria-labelledby="home-title">
-      <div class="app-hero" aria-labelledby="home-title">
-        <p class="app-kicker">Daily Study</p>
-        <h2 id="home-title">Open the Word first.</h2>
-        <p>A cleaner path for Scripture, articles, questions, and saved study.</p>
-        <div class="app-actions">
-          <a class="app-btn primary" href="#bible" data-app-tab-link="bible">Open Bible</a>
-          <a class="app-btn" href="#ask" data-app-tab-link="ask">Ask</a>
-        </div>
-      </div>
+  <main class="sj-app-shell" data-v3-app>
 
-      <div class="app-section-head compact app-home-today-head">
-        <span class="app-label">Today</span>
-        <h3>Daily Study</h3>
-        <p>Your daily study dashboard: open the Word, follow a path, and keep building your saved work.</p>
-      </div>
+    <!-- HOME -->
+    <section
+      class="sj-screen is-active"
+      id="home"
+      data-v3-screen="home"
+      aria-labelledby="home-title"
+    >
+      <header class="sj-page-header sj-home-header">
+        <p class="sj-eyebrow">Semitic Jew Institute</p>
+        <h1 id="home-title">Shalom</h1>
+      </header>
 
-      <div class="app-home-grid" aria-label="Home dashboard">
-        <article class="app-card app-precept-card" id="daily-precept" aria-live="polite">
-          <div class="app-loading">Loading today's precept...</div>
-        </article>
 
-        <article class="app-card app-continue-card" id="continue-reading-card" aria-live="polite">
-          <span class="app-label">Continue Reading</span>
-          <h3>Open the reader</h3>
-          <p>Start in Genesis 1 or return to Biblia for the full Scripture library.</p>
-          <div class="app-button-row">
-            <a class="app-btn primary" href="#bible" data-app-tab-link="bible">Open Reader</a>
-            <a class="app-btn" href="/biblia.html">Biblia</a>
+      <!-- PRECEPT VERSE -->
+      <section
+        class="sj-home-section sj-precept-section"
+        aria-labelledby="sj-precept-heading"
+      >
+        <div class="sj-section-heading">
+          <div>
+            <p class="sj-section-kicker">Precept Verse</p>
+            <h2 id="sj-precept-heading">Today's precept</h2>
           </div>
-        </article>
-
-        <article class="app-card app-continue-card app-home-secondary" id="continue-course-card" aria-live="polite">
-          <span class="app-label">Recommended Path</span>
-          <h3>Loading study paths...</h3>
-          <p>Choose a guided path to continue.</p>
-        </article>
-
-        <article class="app-card app-continue-card app-home-secondary" id="latest-lesson-card" aria-live="polite">
-          <span class="app-label">Recent Saved Work</span>
-          <h3>Loading saved work...</h3>
-          <p>Your latest notes, bookmarks, highlights, and chains will appear here.</p>
-        </article>
-
-        <article class="app-card app-continue-card app-home-secondary" id="daily-prompt-card" aria-live="polite">
-          <span class="app-label">Daily Prompt</span>
-          <h3>Loading prompt...</h3>
-          <p>Study question will appear here.</p>
-        </article>
-
-        <article class="app-card app-continue-card app-home-secondary" id="today-progress-card" aria-live="polite">
-          <span class="app-label">Progress Summary</span>
-          <h3>Loading progress...</h3>
-          <p>Saved verses, chains, and path progress will appear here.</p>
-        </article>
-
-        <section class="app-card app-practice-home app-home-secondary" aria-labelledby="home-practice-title">
-          <div class="app-section-head compact">
-            <span class="app-label">Practice</span>
-            <h3 id="home-practice-title">Practice Progress</h3>
-          </div>
-          <div class="app-practice-summary">
-            <strong id="practice-progress">0%</strong>
-            <span>completed today</span>
-            <button type="button" id="practice-reset">Reset today</button>
-          </div>
-          <div class="app-practice-grid" id="practice-grid" aria-live="polite"></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="app-panel" id="bible" data-app-panel="bible" tabindex="-1" aria-labelledby="bible-title" hidden>
-      <div class="app-section-head app-reader-title">
-        <span class="app-label">Biblia</span>
-        <h2 id="bible-title">Scripture Library</h2>
-        <p>Tanakh, Apocrypha, and New Testament organized in one reader.</p>
-      </div>
-
-      <section class="app-reader-shell" aria-label="Bible reader">
-        <div class="app-reader-current" id="reader-current-summary" aria-live="polite">
-          <span class="app-label">Continue Reading</span>
-          <h3>Loading reader...</h3>
         </div>
 
-        <form class="app-reader-controls" id="reader-controls">
-          <label>
-            <span>Canon</span>
-            <select id="reader-canon" name="canon">
-              <option value="tanakh">Tanakh</option>
-              <option value="newtestament">New Testament</option>
-              <option value="apocrypha">Apocrypha</option>
-            </select>
-          </label>
-          <label>
-            <span>Book</span>
-            <select id="reader-book" name="book"></select>
-          </label>
-          <label>
-            <span>Chapter</span>
-            <select id="reader-chapter" name="chapter"></select>
-          </label>
-          <label>
-            <span>Font</span>
-            <select id="reader-font-size" name="fontSize">
-              <option value="small">Small</option>
-              <option value="base">Base</option>
-              <option value="large">Large</option>
-            </select>
-          </label>
-          <label>
-            <span>Spacing</span>
-            <select id="reader-spacing" name="spacing">
-              <option value="comfortable">Comfortable</option>
-              <option value="compact">Compact</option>
-            </select>
-          </label>
-        </form>
+        <article
+          class="sj-precept-card"
+          id="sj-home-precept"
+          aria-live="polite"
+        >
+          <div class="sj-home-loading">Loading today's precept...</div>
+        </article>
+      </section>
 
-        <div class="app-reader-nav" aria-label="Chapter navigation">
-          <button class="app-btn" type="button" id="reader-prev">Previous chapter</button>
-          <button class="app-btn" type="button" id="reader-next">Next chapter</button>
+
+      <!-- PRECEPT UPON PRECEPT -->
+      <section
+        class="sj-home-section"
+        aria-labelledby="sj-precept-video-heading"
+      >
+        <div class="sj-section-heading">
+          <div>
+            <p class="sj-section-kicker">Watch</p>
+            <h2 id="sj-precept-video-heading">Precept Upon Precept</h2>
+          </div>
         </div>
 
-        <section class="app-reader-search" id="reader-chapter-search-panel" aria-labelledby="reader-chapter-search-title">
-          <div class="app-section-head compact app-reader-search-head">
-            <span class="app-label">Search</span>
-            <h3 id="reader-chapter-search-title">Chapter Search</h3>
+        <div
+          class="sj-video-rail"
+          id="sj-precept-videos"
+          aria-live="polite"
+        >
+          <div class="sj-home-loading">Loading Scripture teachings...</div>
+        </div>
+      </section>
+
+
+      <!-- LATEST ARTICLE -->
+      <section
+        class="sj-home-section"
+        aria-labelledby="sj-latest-article-heading"
+      >
+        <div class="sj-section-heading">
+          <div>
+            <p class="sj-section-kicker">Read</p>
+            <h2 id="sj-latest-article-heading">Latest Article</h2>
           </div>
-          <form class="app-reader-search-form" id="reader-chapter-search-form">
-            <label class="app-reader-search-input">
-              <span class="sr-only">Search words in this chapter</span>
-              <input id="reader-chapter-search" type="search" placeholder="Search words in this chapter..." autocomplete="off">
-            </label>
-            <button class="app-btn" type="button" id="reader-chapter-search-clear">Clear</button>
-          </form>
-          <p class="app-reader-search-status" id="reader-chapter-search-status" aria-live="polite">Search within the current chapter.</p>
-          <div class="app-reader-search-results" id="reader-chapter-search-results" aria-live="polite"></div>
-        </section>
+        </div>
 
-        <section class="app-study-chain" id="study-chain" aria-live="polite" aria-labelledby="study-chain-title" tabindex="-1">
-          <div class="app-loading">Loading study chain...</div>
-        </section>
+        <div id="sj-latest-article" aria-live="polite">
+          <div class="sj-home-loading">Loading latest article...</div>
+        </div>
+      </section>
 
-        <article class="app-reader" id="reader-output" aria-live="polite">
-          <div class="app-loading">Loading reader...</div>
-        </article>
 
-        <section class="app-full-library" aria-labelledby="full-library-title">
-          <div class="app-section-head compact">
-            <span class="app-label">Biblia</span>
-            <h3 id="full-library-title">Scripture Domains</h3>
-          </div>
-          <div class="app-reader-links" aria-label="Scripture quick links">
-            <a class="app-btn primary" href="/biblia.html">Biblia</a>
-            <a class="app-btn" href="/tanakh.html">Tanakh</a>
-            <a class="app-btn" href="/newtestament.html">New Testament</a>
-            <a class="app-btn" href="/apocrypha.html">Apocrypha</a>
-          </div>
-        </section>
+      <!-- ASK -->
+      <section
+        class="sj-home-section sj-home-ask"
+        aria-labelledby="sj-home-ask-heading"
+      >
+        <p class="sj-section-kicker">Ask</p>
 
-        <div class="app-search-shell" data-global-scripture-search>
-          <div class="app-section-head compact">
-            <span class="app-label">Search</span>
-            <h3>Search Scripture</h3>
-          </div>
+        <h2 id="sj-home-ask-heading">
+          Ask a Scripture-first question.
+        </h2>
 
-          <form class="app-search-form" data-global-scripture-search-form>
-            <label>
-              <span>Search Scripture</span>
-              <input id="global-scripture-search-input" type="search" placeholder="Search Tanakh, New Testament, and Apocrypha..." autocomplete="off" data-global-scripture-search-input>
-            </label>
+        <p>
+          Examine Scripture, covenant, history, and logic without forcing
+          inherited assumptions into the text.
+        </p>
 
-            <label>
-              <span>Filter Canon</span>
-              <select id="global-scripture-search-canon" data-global-scripture-search-canon>
-                <option value="all">All Scripture</option>
-                <option value="tanakh">Tanakh</option>
-                <option value="newtestament">New Testament</option>
-                <option value="apocrypha">Apocrypha</option>
-              </select>
-            </label>
+        <button
+          class="sj-primary-button"
+          type="button"
+          data-home-ask-open
+        >
+          Write a Question
+        </button>
 
-            <label>
-              <span>Book</span>
-              <select id="global-scripture-search-book" data-global-scripture-search-book>
-                <option value="all">All books</option>
-              </select>
-            </label>
+        <div class="sj-home-ask-compose" data-home-ask-compose hidden>
+          <label for="sj-home-ask-input">Your question</label>
 
-            <div class="app-search-actions">
-              <button type="submit">Search</button>
-              <button type="button" data-global-scripture-search-clear>Clear</button>
-            </div>
-          </form>
+          <textarea
+            id="sj-home-ask-input"
+            rows="5"
+            placeholder="Ask about Scripture, covenant, history, or logic..."
+          ></textarea>
 
-          <div class="app-search-status" data-global-scripture-search-status>Search Scripture across Tanakh, New Testament, and Apocrypha.</div>
-          <div class="app-search-results" data-global-scripture-search-results></div>
+          <button
+            class="sj-primary-button"
+            type="button"
+            data-home-ask-save
+          >
+            Save Question
+          </button>
+
+          <p
+            class="sj-home-ask-status"
+            data-home-ask-status
+            aria-live="polite"
+          ></p>
         </div>
       </section>
     </section>
 
-    <section class="app-panel" id="study" data-app-panel="study" tabindex="-1" aria-labelledby="study-title" hidden>
-      <div class="app-section-head">
-        <span class="app-label">Study</span>
-        <h2 id="study-title">Study Plans</h2>
-        <p>Structured pathways for rebuilding identity, doctrine, and reasoning after leaving inherited religious frameworks.</p>
+
+    <!-- BIBLE -->
+    <section
+      class="sj-screen"
+      id="bible"
+      data-v3-screen="bible"
+      aria-labelledby="bible-title"
+      hidden
+    >
+      <header class="sj-page-header sj-bible-header">
+        <p class="sj-eyebrow">Biblia</p>
+        <h1 id="bible-title">Bible</h1>
+      </header>
+
+
+      <!-- BIBLE TOOLBAR -->
+      <div
+        class="sj-bible-toolbar"
+        aria-label="Bible controls"
+      >
+        <button
+          class="sj-bible-pill sj-bible-writings-pill"
+          type="button"
+          data-bible-open-canons
+        >
+          <span>Israelite Writings</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+
+        <button
+          class="sj-bible-pill"
+          type="button"
+          data-bible-version
+        >
+          <span>KJV</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+
+        <button
+          class="sj-bible-font-button"
+          type="button"
+          data-bible-font
+          aria-label="Change reader font size"
+        >
+          Aa
+        </button>
       </div>
-      <section class="app-study-paths" aria-labelledby="study-paths-title">
-<div class="app-study-path-grid" id="study-path-grid" aria-live="polite" tabindex="-1">
-          <div class="app-loading">Loading study paths...</div>
+
+      <p
+        class="sj-bible-notice"
+        data-bible-notice
+        aria-live="polite"
+      ></p>
+
+
+      <!-- CANON / BOOK / CHAPTER BROWSER -->
+      <section
+        class="sj-bible-browser"
+        aria-labelledby="sj-bible-stage-title"
+      >
+        <div class="sj-bible-browser-head">
+
+          <button
+            class="sj-bible-back"
+            type="button"
+            data-bible-back
+            hidden
+            aria-label="Go back"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+
+          <div>
+            <p
+              class="sj-section-kicker"
+              data-bible-stage-kicker
+            >
+              Israelite Writings
+            </p>
+
+            <h2
+              id="sj-bible-stage-title"
+              data-bible-stage-title
+            >
+              Select a canon
+            </h2>
+          </div>
+
         </div>
-        <div class="app-study-path-detail" id="study-path-detail" aria-live="polite" tabindex="-1"></div>
+
+        <div
+          class="sj-bible-browser-content"
+          data-bible-browser-content
+          aria-live="polite"
+        >
+          <p class="sj-home-loading">
+            Loading Israelite Writings...
+          </p>
+        </div>
       </section>
-      <div class="app-course-grid" id="course-grid" aria-live="polite">
-        <div class="app-loading">Loading courses...</div>
-      </div>
-      <div class="app-lesson-detail" id="lesson-detail" tabindex="-1" aria-live="polite"></div>
     </section>
 
-    <section class="app-panel app-ask-section" id="ask" data-app-panel="ask" tabindex="-1" aria-labelledby="ask-title" hidden>
-      <div class="app-section-head">
-        <span class="app-label">Ask</span>
-        <h2 id="ask-title">Semitic Jew AI Study Companion</h2>
-        <p>Use this as a study aid for Scripture-first questions, doctrine testing, lesson building, and clean rebuttals.</p>
-      </div>
 
-      <div class="app-ai-disclaimer" role="note">
-        AI is a study aid; Scripture is the authority. Verify every claim in context.
-      </div>
+    <!-- ARTICLES -->
+    <section
+      class="sj-screen"
+      id="articles"
+      data-v3-screen="articles"
+      aria-labelledby="articles-title"
+      hidden
+    >
+      <header class="sj-page-header">
+        <p class="sj-eyebrow">Read & Examine</p>
+        <h1 id="articles-title">Articles</h1>
+      </header>
 
-      <form class="app-ask-form" id="ask-form">
-        <label for="ask-mode">Mode</label>
-        <select id="ask-mode" name="mode">
-          <option value="verse-explainer">Verse Explainer</option>
-          <option value="doctrine-detector">Doctrine Detector</option>
-          <option value="lesson-builder">Lesson Builder</option>
-          <option value="apologetics-mode">Apologetics Mode</option>
-        </select>
-
-        <label for="ask-question">Question</label>
-        <textarea id="ask-question" name="question" rows="5" placeholder="Ask a Scripture-first question..."></textarea>
-
-        <div class="app-example-prompts" aria-label="Example prompts">
-          <button type="button" data-prompt="Explain Matthew 24:31" data-mode="verse-explainer">Explain Matthew 24:31</button>
-          <button type="button" data-prompt="Does Paul teach we can eat unclean foods?" data-mode="doctrine-detector">Paul and unclean foods</button>
-          <button type="button" data-prompt="Build a 15-minute lesson on Sabbath obedience" data-mode="lesson-builder">Sabbath lesson</button>
-          <button type="button" data-prompt="Refute the claim that the Law is abolished" data-mode="apologetics-mode">Law abolished claim</button>
-        </div>
-
-        <button class="app-btn primary" type="submit">Generate Study Aid</button>
-      </form>
-
-      <div class="app-ai-response" id="ai-response" aria-live="polite"></div>
+      <section class="sj-placeholder">
+        <span class="sj-placeholder-label">Build 3H</span>
+        <h2>All Article Cards</h2>
+        <p>
+          The full Semitic Jew article library will appear here
+          in a clean, scrollable mobile interface.
+        </p>
+      </section>
     </section>
 
-    <section class="app-panel" id="media" data-app-panel="media" tabindex="-1" aria-labelledby="media-title" hidden>
-      <div class="app-section-head">
-        <span class="app-label">Media</span>
-        <h2 id="media-title">Latest Lessons</h2>
-        <p>Connect study paths to the Semitic Jew media ecosystem.</p>
-      </div>
-      <div class="app-filter-note">Playlist and category filtering are planned for the next media phase.</div>
-      <div class="app-watch-grid" id="watch-grid" aria-live="polite">
-        <div class="app-loading">Loading lessons...</div>
-      </div>
+
+    <!-- RESEARCH -->
+    <section
+      class="sj-screen"
+      id="research"
+      data-v3-screen="research"
+      aria-labelledby="research-title"
+      hidden
+    >
+      <header class="sj-page-header">
+        <p class="sj-eyebrow">Research Tool</p>
+        <h1 id="research-title">Israelite Encyclopedia</h1>
+      </header>
+
+      <section class="sj-placeholder">
+        <span class="sj-placeholder-label">Build 3I</span>
+        <h2>Research Scripture, history, and Israelite subjects.</h2>
+        <p>
+          Search the encyclopedia and open detailed research entries
+          from one dedicated tool.
+        </p>
+      </section>
     </section>
 
-    <section class="app-panel" id="profile" data-app-panel="profile" tabindex="-1" aria-labelledby="profile-title" hidden>
-      <div class="app-section-head">
-        <span class="app-label">Profile</span>
-        <h2 id="profile-title">Device Profile</h2>
-        <p>Reading, study, and settings saved locally on this device for now.</p>
-      </div>
 
-      <div class="app-profile-grid" aria-label="Local progress summary">
-        <article class="app-stat"><strong id="profile-reading-count">0</strong><span>Recent reads</span></article>
-        <article class="app-stat"><strong id="profile-bookmark-count">0</strong><span>Bookmarks</span></article>
-        <article class="app-stat"><strong id="profile-highlight-count">0</strong><span>Highlights</span></article>
-        <article class="app-stat"><strong id="profile-note-count">0</strong><span>Notes</span></article>
-        <article class="app-stat"><strong id="profile-practice-count">0</strong><span>Completed practice</span></article>
-        <article class="app-stat"><strong id="profile-chain-count">0</strong><span>Study chains</span></article>
-      </div>
+    <!-- PROFILE -->
+    <section
+      class="sj-screen"
+      id="profile"
+      data-v3-screen="profile"
+      aria-labelledby="profile-title"
+      hidden
+    >
+      <header class="sj-page-header">
+        <p class="sj-eyebrow">Account</p>
+        <h1 id="profile-title">Profile</h1>
+      </header>
 
-      <section class="app-card app-offline-card" id="offline-status-card" aria-labelledby="offline-status-title" aria-live="polite">
-        <div class="app-library-head">
-          <span class="app-label">Connectivity</span>
-          <span class="app-connectivity-badge" id="offline-status-badge">Checking status</span>
-          <h3 id="offline-status-title">Checking app status...</h3>
-          <p id="offline-status-text">Your device connectivity and cached Scripture access will appear here.</p>
+      <section class="sj-coming-soon">
+        <div class="sj-profile-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 22a8 8 0 0 1 16 0"></path>
+          </svg>
         </div>
-        <div class="app-offline-points" id="offline-availability-list">
-          <div class="app-offline-point">Saved verses, highlights, notes, study chains, and study path progress stay available locally.</div>
-          <div class="app-offline-point">Recently opened chapters can load offline when the browser or service worker has cached them.</div>
-          <div class="app-offline-point">Full Scripture search depends on the search index being cached or reachable.</div>
-        </div>
+
+        <span class="sj-placeholder-label">Coming Soon</span>
+
+        <h2>Your Semitic Jew Institute account.</h2>
+
+        <p>
+          Future account features will include synced highlights,
+          saved verses, notes, reading history, and personal study tools.
+        </p>
       </section>
-
-      <section class="app-card app-library-controls" aria-labelledby="saved-library-controls-title">
-        <div class="app-library-head">
-          <span class="app-label">Saved Library</span>
-          <h3 id="saved-library-controls-title">Search Saved Study</h3>
-          <p id="saved-library-count">Showing saved items on this device.</p>
-        </div>
-        <form class="app-library-filter-form" id="saved-library-filter-form">
-          <label class="app-library-search">
-            <span>Search saved items</span>
-            <input id="saved-library-search" name="query" type="search" placeholder="Search references, notes, or text..." autocomplete="off">
-          </label>
-          <label>
-            <span>Type</span>
-            <select id="saved-library-type" name="type">
-              <option value="all">All</option>
-              <option value="bookmark">Bookmarks</option>
-              <option value="highlight">Highlights</option>
-              <option value="note">Notes</option>
-              <option value="chain">Study Chains</option>
-              <option value="history">Reading History</option>
-            </select>
-          </label>
-          <label>
-            <span>Canon</span>
-            <select id="saved-library-canon" name="canon">
-              <option value="all">All</option>
-              <option value="tanakh">Tanakh</option>
-              <option value="newtestament">New Testament</option>
-              <option value="apocrypha">Apocrypha</option>
-            </select>
-          </label>
-          <label>
-            <span>Source</span>
-            <select id="saved-library-source" name="source">
-              <option value="all">All</option>
-              <option value="app">App</option>
-              <option value="site">Biblia / Site</option>
-            </select>
-          </label>
-          <label>
-            <span>Sort</span>
-            <select id="saved-library-sort" name="sort">
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="reference">Reference A-Z</option>
-              <option value="type">Type</option>
-            </select>
-          </label>
-          <button class="app-btn" type="button" id="saved-library-clear">Clear</button>
-        </form>
-      </section>
-
-      <div class="app-saved-library" aria-live="polite">
-        <section class="app-card app-library-section" id="profile-saved-verses" aria-labelledby="saved-verses-title"></section>
-        <section class="app-card app-library-section" id="profile-highlights" aria-labelledby="saved-highlights-title"></section>
-        <section class="app-card app-library-section" id="profile-notes" aria-labelledby="saved-notes-title"></section>
-          <section class="app-card app-library-section" id="profile-reading-history" aria-labelledby="reading-history-title"></section>
-          <section class="app-card app-library-section" id="profile-study-chains" aria-labelledby="saved-study-chains-title"></section>
-          <section class="app-card app-library-section" id="profile-study-progress" aria-labelledby="study-progress-title"></section>
-        </div>
-
-      <section class="app-card app-settings" aria-labelledby="settings-title">
-        <span class="app-label">Settings</span>
-        <h3 id="settings-title">Reader Settings</h3>
-        <form class="app-settings-form" id="profile-settings-form">
-          <label>
-            <span>Font size</span>
-            <select id="profile-font-size" name="fontSize">
-              <option value="small">Small</option>
-              <option value="base">Base</option>
-              <option value="large">Large</option>
-            </select>
-          </label>
-          <label>
-            <span>Reader spacing</span>
-            <select id="profile-spacing" name="spacing">
-              <option value="comfortable">Comfortable</option>
-              <option value="compact">Compact</option>
-            </select>
-          </label>
-          <label>
-            <span>Preferred canon</span>
-            <select id="profile-canon" name="canon">
-              <option value="tanakh">Tanakh</option>
-              <option value="newtestament">New Testament</option>
-              <option value="apocrypha">Apocrypha</option>
-            </select>
-          </label>
-        </form>
-        <p class="app-data-note">Saved on this device for now. Clearing browser data may remove saved notes, bookmarks, highlights, chains, progress, and onboarding status.</p>
-        <p class="app-data-note">No cloud sync is active in this build.</p>
-        <a class="app-btn primary" href="/website-app.html">Install App</a>
-        <button class="app-btn" type="button" data-restart-onboarding>Show App Introduction</button>
-      </section>
-    </div>
-  </div>
-
-  <nav class="app-tabbar app-tabbar-bottom" aria-label="Primary app navigation">
-    <a class="app-tab-link is-active" href="#home" data-app-tab-link="home"><span class="app-nav-icon" aria-hidden="true">⌂</span><span>Home</span></a>
-    <a class="app-tab-link" href="#bible" data-app-tab-link="bible"><span class="app-nav-icon" aria-hidden="true">▤</span><span>Bible</span></a>
-    <a class="app-tab-link" href="#study" data-app-tab-link="study"><span class="app-nav-icon" aria-hidden="true">⌐</span><span>Articles</span></a>
-    <a class="app-tab-link" href="#ask" data-app-tab-link="ask"><span class="app-nav-icon" aria-hidden="true">⌁</span><span>Ask</span></a>
-    <a class="app-tab-link" href="#profile" data-app-tab-link="profile"><span class="app-nav-icon" aria-hidden="true">◌</span><span>Profile</span></a>
-  </nav>
-</main>
-
-<div class="app-onboarding-overlay" id="app-onboarding" hidden>
-  <div class="app-onboarding-backdrop" data-onboarding-dismiss tabindex="-1" aria-hidden="true"></div>
-  <section
-    class="app-onboarding-card"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="onboarding-title"
-    aria-describedby="onboarding-description"
-  >
-    <div class="app-section-head compact">
-      <span class="app-label">Semitic Jew Institute</span>
-      <h2 id="onboarding-title">Scripture. Logic. History. Identity.</h2>
-      <p id="onboarding-description">
-        Semitic Jew is built for Israelite-centered study. Read Scripture, search Scripture, build study chains,
-        follow study paths, and save notes as you learn.
-      </p>
-    </div>
-
-    <div class="app-onboarding-points" aria-label="App introduction">
-      <div class="app-onboarding-point">
-        <strong>Scripture</strong>
-        <span>Read the Bible locally with chapter search, references, and study tools.</span>
-      </div>
-      <div class="app-onboarding-point">
-        <strong>Logic</strong>
-        <span>Search, compare, and build chains from connected verses and precepts.</span>
-      </div>
-      <div class="app-onboarding-point">
-        <strong>History</strong>
-        <span>Follow study paths and reference the biblical and historical record.</span>
-      </div>
-      <div class="app-onboarding-point">
-        <strong>Identity</strong>
-        <span>Use the app as a guide for covenant memory, correction, and restoration.</span>
-      </div>
-    </div>
-
-    <div class="app-onboarding-actions" aria-label="Start options">
-      <button class="app-btn primary" type="button" data-onboarding-action="bible" data-onboarding-primary>Start Reading Scripture</button>
-      <button class="app-btn" type="button" data-onboarding-action="search">Search Scripture</button>
-      <button class="app-btn" type="button" data-onboarding-action="study-paths">Follow a Study Path</button>
-      <button class="app-btn" type="button" data-onboarding-action="chain">Build a Study Chain</button>
-      <button class="app-btn" type="button" data-onboarding-action="library">View Saved Library</button>
-    </div>
-
-    <div class="app-onboarding-footer">
-      <button class="app-btn" type="button" data-onboarding-dismiss>Skip</button>
-      <button class="app-btn primary" type="button" data-onboarding-finish>Finish</button>
-    </div>
-  </section>
-</div>
+    </section>
 
 
-<script src="/js/include.js"></script>
-<script src="/js/app-reading-history.js"></script>
-<script src="/js/app-quick-actions.js"></script>
-<script src="/js/app-status.js"></script>
-<script src="/js/app-install-guide.js"></script>
-<script src="/js/app-offline-chapters.js"></script>
-<script src="/js/app-data-schema.js"></script>
-<script src="/js/app-bookmarks.js"></script>
-<script src="/js/app-highlights.js"></script>
-<script src="/js/app-expositions.js"></script>
-<script src="/js/app-data-tools.js"></script>
-<script src="/js/app-mobile-sections.js"></script>
-<script src="/js/app-changelog.js"></script>
-<script src="/js/app-study-trails.js"></script>
-<script src="/js/app-global-scripture-search.js" defer></script>
-<script type="module" src="/js/app/app-shell.js"></script>
+    <!-- FLOATING BOTTOM NAV -->
+    <nav class="sj-bottom-nav" aria-label="Primary app navigation">
+
+      <button
+        type="button"
+        class="is-active"
+        data-v3-nav="home"
+        aria-label="Home"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 11 9-8 9 8"></path>
+          <path d="M5 10v11h14V10"></path>
+        </svg>
+        <span>Home</span>
+      </button>
+
+      <button
+        type="button"
+        data-v3-nav="bible"
+        aria-label="Bible"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"></path>
+        </svg>
+        <span>Bible</span>
+      </button>
+
+      <button
+        type="button"
+        data-v3-nav="articles"
+        aria-label="Articles"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="8" cy="12" r="3"></circle>
+          <circle cx="16" cy="12" r="3"></circle>
+          <path d="M11 12h2"></path>
+          <path d="M5 12H3"></path>
+          <path d="M21 12h-2"></path>
+        </svg>
+        <span>Articles</span>
+      </button>
+
+      <button
+        type="button"
+        data-v3-nav="research"
+        aria-label="Research"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"></circle>
+          <path d="m16 16 5 5"></path>
+          <path d="M8 8h5"></path>
+          <path d="M8 11h4"></path>
+        </svg>
+        <span>Research</span>
+      </button>
+
+      <button
+        type="button"
+        data-v3-nav="profile"
+        aria-label="Profile"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 22a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>Profile</span>
+      </button>
+
+    </nav>
+
+  </main>
+
+  <script type="module" src="/js/app/app-v3.js"></script>
 </body>
 </html>
