@@ -1055,6 +1055,363 @@ function renderBibleChapters(
 }
 
 
+function bibleChapterDataURL(
+  book,
+  chapter
+){
+  return [
+    "",
+    "data",
+    book.dataCanon,
+    book.dataSlug,
+    `${chapter}.json`
+  ].join("/");
+}
+
+
+function renderBibleReaderLoading(
+  book,
+  chapter
+){
+  const root = bibleBrowserContent();
+
+  if(!root) return;
+
+  root.innerHTML = `
+    <section
+      class="sj-scripture-reader sj-scripture-reader-loading"
+      aria-live="polite"
+    >
+      <div class="sj-reader-loading-mark" aria-hidden="true"></div>
+
+      <p>
+        Loading
+        ${escapeHTML(book.name)}
+        ${chapter}...
+      </p>
+    </section>
+  `;
+}
+
+
+function renderBibleReaderError(
+  book,
+  chapter
+){
+  const root = bibleBrowserContent();
+
+  if(!root) return;
+
+  root.innerHTML = `
+    <section
+      class="sj-scripture-reader sj-scripture-reader-error"
+      role="alert"
+    >
+      <h2>
+        Unable to load
+        ${escapeHTML(book.name)}
+        ${chapter}
+      </h2>
+
+      <p>
+        This chapter could not be loaded right now.
+      </p>
+
+      <button
+        class="sj-reader-retry-button"
+        type="button"
+        data-reader-chapter="${chapter}"
+      >
+        Try Again
+      </button>
+    </section>
+  `;
+}
+
+
+function renderBibleReader(
+  canon,
+  book,
+  chapter,
+  payload
+){
+  const root = bibleBrowserContent();
+
+  if(!root) return;
+
+  const verses = Array.isArray(payload?.verses)
+    ? payload.verses
+    : [];
+
+  const previousChapter =
+    chapter > 1
+      ? chapter - 1
+      : null;
+
+  const nextChapter =
+    chapter < book.chapters
+      ? chapter + 1
+      : null;
+
+  const verseHTML = verses.map(verse => {
+    const verseNumber = Number(verse.v);
+
+    const strongs = Array.isArray(verse.s)
+      ? verse.s
+      : [];
+
+    return `
+      <p
+        class="sj-reader-verse"
+        id="verse-${verseNumber}"
+        data-reader-verse="${verseNumber}"
+        data-reader-strongs="${escapeHTML(
+          strongs.join(",")
+        )}"
+        tabindex="0"
+      >
+        <sup class="sj-reader-verse-number">
+          ${verseNumber}
+        </sup>
+
+        <span class="sj-reader-verse-text">
+          ${escapeHTML(verse.t || "")}
+        </span>
+      </p>
+    `;
+  }).join("");
+
+  root.innerHTML = `
+    <article
+      class="sj-scripture-reader"
+      aria-labelledby="sj-bible-stage-title"
+    >
+      <nav
+        class="sj-reader-chapter-nav sj-reader-chapter-nav-top"
+        aria-label="Chapter navigation"
+      >
+        ${
+          previousChapter
+            ? `
+              <button
+                type="button"
+                data-reader-chapter="${previousChapter}"
+                aria-label="Read ${escapeHTML(book.name)} chapter ${previousChapter}"
+              >
+                <span aria-hidden="true">‹</span>
+                <span>Chapter ${previousChapter}</span>
+              </button>
+            `
+            : `
+              <span
+                class="sj-reader-nav-spacer"
+                aria-hidden="true"
+              ></span>
+            `
+        }
+
+        <button
+          class="sj-reader-chapter-picker"
+          type="button"
+          data-reader-show-chapters
+          aria-label="Choose another chapter"
+        >
+          ${chapter}
+        </button>
+
+        ${
+          nextChapter
+            ? `
+              <button
+                type="button"
+                data-reader-chapter="${nextChapter}"
+                aria-label="Read ${escapeHTML(book.name)} chapter ${nextChapter}"
+              >
+                <span>Chapter ${nextChapter}</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            `
+            : `
+              <span
+                class="sj-reader-nav-spacer"
+                aria-hidden="true"
+              ></span>
+            `
+        }
+      </nav>
+
+      <div class="sj-reader-verses">
+        ${
+          verseHTML || `
+            <p class="sj-reader-empty">
+              No verse text was found for this chapter.
+            </p>
+          `
+        }
+      </div>
+
+      <nav
+        class="sj-reader-chapter-nav sj-reader-chapter-nav-bottom"
+        aria-label="Chapter navigation"
+      >
+        ${
+          previousChapter
+            ? `
+              <button
+                type="button"
+                data-reader-chapter="${previousChapter}"
+              >
+                <span aria-hidden="true">‹</span>
+                <span>Previous</span>
+              </button>
+            `
+            : `
+              <span
+                class="sj-reader-nav-spacer"
+                aria-hidden="true"
+              ></span>
+            `
+        }
+
+        <button
+          class="sj-reader-chapter-picker"
+          type="button"
+          data-reader-show-chapters
+        >
+          ${escapeHTML(book.name)} ${chapter}
+        </button>
+
+        ${
+          nextChapter
+            ? `
+              <button
+                type="button"
+                data-reader-chapter="${nextChapter}"
+              >
+                <span>Next</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            `
+            : `
+              <span
+                class="sj-reader-nav-spacer"
+                aria-hidden="true"
+              ></span>
+            `
+        }
+      </nav>
+    </article>
+  `;
+}
+
+
+async function openBibleReader(
+  canonSlug,
+  bookSlug,
+  chapter
+){
+  const canon = getBibleCanon(canonSlug);
+
+  const book = getBibleBook(
+    canonSlug,
+    bookSlug
+  );
+
+  const chapterNumber = Number(chapter);
+
+  if(
+    !canon ||
+    !book ||
+    !Number.isInteger(chapterNumber) ||
+    chapterNumber < 1 ||
+    chapterNumber > book.chapters
+  ){
+    return;
+  }
+
+  bibleBrowserStage = "reader";
+
+  selectedBibleCanon = canon.slug;
+  selectedBibleBook = book.slug;
+  selectedBibleChapter = chapterNumber;
+
+  saveBibleLocation();
+  hideBibleCanonMenu();
+
+  const browser = bibleBrowserShell();
+
+  if(browser){
+    browser.hidden = false;
+  }
+
+  const title = bibleStageTitle();
+  const kicker = bibleStageKicker();
+  const back = bibleBackButton();
+
+  if(title){
+    title.textContent = book.name;
+  }
+
+  if(kicker){
+    kicker.textContent = canon.name;
+  }
+
+  if(back){
+    back.hidden = false;
+  }
+
+  updateBibliaPath();
+
+  renderBibleReaderLoading(
+    book,
+    chapterNumber
+  );
+
+  try{
+    const payload = await fetchJSON(
+      bibleChapterDataURL(
+        book,
+        chapterNumber
+      )
+    );
+
+    if(
+      selectedBibleCanon !== canon.slug ||
+      selectedBibleBook !== book.slug ||
+      selectedBibleChapter !== chapterNumber
+    ){
+      return;
+    }
+
+    renderBibleReader(
+      canon,
+      book,
+      chapterNumber,
+      payload
+    );
+
+    setBibleNotice(
+      `${book.name} ${chapterNumber}`
+    );
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+  }catch(error){
+    console.warn(
+      "Scripture chapter failed to load.",
+      error
+    );
+
+    renderBibleReaderError(
+      book,
+      chapterNumber
+    );
+  }
+}
+
+
 function handleBibleBrowserClick(event){
   const canonButton = event.target.closest(
     "[data-bible-canon]"
@@ -1092,49 +1449,51 @@ function handleBibleBrowserClick(event){
     selectedBibleCanon &&
     selectedBibleBook
   ){
-    selectedBibleChapter = Number(
-      chapterButton.dataset.bibleChapter
-    );
-
-    saveBibleLocation();
-
-    document
-      .querySelectorAll(
-        "[data-bible-chapter]"
-      )
-      .forEach(button => {
-        button.classList.toggle(
-          "is-selected",
-          Number(
-            button.dataset.bibleChapter
-          ) === selectedBibleChapter
-        );
-      });
-
-    const book = getBibleBook(
+    openBibleReader(
       selectedBibleCanon,
-      selectedBibleBook
+      selectedBibleBook,
+      Number(chapterButton.dataset.bibleChapter)
     );
 
-    const status = document.querySelector(
-      "[data-bible-chapter-status]"
+    return;
+  }
+
+
+  const readerChapterButton = event.target.closest(
+    "[data-reader-chapter]"
+  );
+
+  if(
+    readerChapterButton &&
+    selectedBibleCanon &&
+    selectedBibleBook
+  ){
+    openBibleReader(
+      selectedBibleCanon,
+      selectedBibleBook,
+      Number(readerChapterButton.dataset.readerChapter)
     );
 
-    if(status && book){
-      status.textContent =
-        `${book.name} ${selectedBibleChapter} selected.`;
-    }
-
-    setBibleNotice(
-      book
-        ? `${book.name} ${selectedBibleChapter}`
-        : ""
-    );
+    return;
   }
 }
 
 
 function goBackInBibleBrowser(){
+  if(
+    bibleBrowserStage === "reader" &&
+    selectedBibleCanon &&
+    selectedBibleBook
+  ){
+    renderBibleChapters(
+      selectedBibleCanon,
+      selectedBibleBook
+    );
+
+    return;
+  }
+
+
   if(bibleBrowserStage === "chapters"){
     renderBibleBooks(
       selectedBibleCanon
@@ -1266,7 +1625,26 @@ document
   .querySelector("[data-bible-browser-content]")
   ?.addEventListener(
     "click",
-    handleBibleBrowserClick
+    event => {
+      const chapterPicker = event.target.closest(
+        "[data-reader-show-chapters]"
+      );
+
+      if(
+        chapterPicker &&
+        selectedBibleCanon &&
+        selectedBibleBook
+      ){
+        renderBibleChapters(
+          selectedBibleCanon,
+          selectedBibleBook
+        );
+
+        return;
+      }
+
+      handleBibleBrowserClick(event);
+    }
   );
 
 

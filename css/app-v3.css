@@ -2111,3 +2111,245 @@ svg{
 
   text-align:left;
 }
+
+
+/* =========================================================
+   Build 3E — Actual Scripture Reader
+   ========================================================= */
+
+.sj-scripture-reader{
+  width:100%;
+  max-width:760px;
+
+  margin:0 auto;
+  padding-bottom:28px;
+}
+
+
+.sj-reader-heading{
+  padding:8px 0 20px;
+
+  border-bottom:1px solid var(--sj-line);
+}
+
+
+.sj-reader-canon-name{
+  margin:0 0 6px;
+
+  color:var(--sj-orange);
+
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+
+.sj-reader-heading h2{
+  margin:0;
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:clamp(2.1rem, 9vw, 3.2rem);
+  line-height:1;
+  letter-spacing:-.045em;
+
+  color:var(--sj-text);
+}
+
+
+.sj-reader-chapter-nav{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items:center;
+  gap:8px;
+
+  padding:14px 0;
+}
+
+
+.sj-reader-chapter-nav button{
+  min-height:40px;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  padding:0;
+
+  border:0;
+  background:transparent;
+  color:var(--sj-muted);
+
+  font-size:.76rem;
+  font-weight:800;
+}
+
+
+.sj-reader-chapter-nav button:first-child{
+  justify-self:start;
+}
+
+
+.sj-reader-chapter-nav button:last-child{
+  justify-self:end;
+}
+
+
+.sj-reader-chapter-nav .sj-reader-chapter-picker{
+  min-width:42px;
+  min-height:42px;
+
+  justify-self:center;
+  justify-content:center;
+
+  padding:0 12px;
+
+  border:1px solid var(--sj-line);
+  border-radius:999px;
+
+  background:var(--sj-surface);
+  color:var(--sj-text);
+
+  font-size:.78rem;
+}
+
+
+.sj-reader-nav-spacer{
+  min-width:1px;
+}
+
+
+.sj-reader-verses{
+  padding:20px 0 10px;
+}
+
+
+.sj-reader-verse{
+  margin:0 0 20px;
+
+  color:var(--sj-text);
+
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:clamp(1.28rem, 5.2vw, 1.7rem);
+  line-height:1.65;
+  letter-spacing:-.012em;
+}
+
+
+.sj-reader-verse:last-child{
+  margin-bottom:0;
+}
+
+
+.sj-reader-verse-number{
+  position:relative;
+  top:-.12em;
+
+  margin-right:5px;
+
+  color:var(--sj-orange);
+
+  font-family:inherit;
+  font-size:.58em;
+  font-weight:800;
+  line-height:1;
+  vertical-align:baseline;
+}
+
+
+.sj-reader-verse-text{
+  color:inherit;
+}
+
+
+.sj-reader-verse:focus-visible{
+  outline:2px solid var(--sj-orange);
+  outline-offset:6px;
+
+  border-radius:4px;
+}
+
+
+.sj-reader-chapter-nav-bottom{
+  margin-top:26px;
+  padding-top:18px;
+
+  border-top:1px solid var(--sj-line);
+}
+
+
+.sj-scripture-reader-loading,
+.sj-scripture-reader-error{
+  min-height:300px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+}
+
+
+.sj-scripture-reader-loading p,
+.sj-scripture-reader-error p{
+  color:var(--sj-muted);
+}
+
+
+.sj-reader-loading-mark{
+  width:34px;
+  height:34px;
+
+  margin-bottom:14px;
+
+  border:3px solid var(--sj-line);
+  border-top-color:var(--sj-orange);
+  border-radius:50%;
+
+  animation:sj-reader-spin .7s linear infinite;
+}
+
+
+@keyframes sj-reader-spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+
+.sj-scripture-reader-error h2{
+  margin:0 0 8px;
+
+  font-family:Georgia, "Times New Roman", serif;
+}
+
+
+.sj-reader-retry-button{
+  min-height:42px;
+
+  margin-top:12px;
+  padding:0 16px;
+
+  border:1px solid var(--sj-orange);
+  border-radius:999px;
+
+  background:transparent;
+  color:var(--sj-orange);
+
+  font-weight:800;
+}
+
+
+.sj-reader-empty{
+  color:var(--sj-muted);
+
+  text-align:center;
+}
+
+
+@media (min-width:700px){
+  .sj-reader-verse{
+    font-size:1.55rem;
+  }
+}
