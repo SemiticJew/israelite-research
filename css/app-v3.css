@@ -2353,3 +2353,385 @@ svg{
     font-size:1.55rem;
   }
 }
+
+
+/* =========================================================
+   Build 3F.2 — Verse selection and real reader tools
+   ========================================================= */
+
+.sj-reader-verse{
+  position:relative;
+
+  border-radius:8px;
+
+  transition:
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.sj-reader-verse.is-selected{
+  background:rgba(129,164,205,.09);
+
+  box-shadow:
+    0 0 0 1px rgba(129,164,205,.22);
+}
+
+
+.sj-reader-highlight-red{
+  background:rgba(239,68,68,.2);
+}
+
+.sj-reader-highlight-orange{
+  background:rgba(241,115,0,.22);
+}
+
+.sj-reader-highlight-yellow{
+  background:rgba(250,204,21,.2);
+}
+
+.sj-reader-highlight-green{
+  background:rgba(34,197,94,.18);
+}
+
+.sj-reader-highlight-blue{
+  background:rgba(59,130,246,.2);
+}
+
+.sj-reader-highlight-indigo{
+  background:rgba(99,102,241,.2);
+}
+
+.sj-reader-highlight-violet{
+  background:rgba(168,85,247,.2);
+}
+
+
+.sj-reader-verse.is-selected.sj-reader-highlight-red,
+.sj-reader-verse.is-selected.sj-reader-highlight-orange,
+.sj-reader-verse.is-selected.sj-reader-highlight-yellow,
+.sj-reader-verse.is-selected.sj-reader-highlight-green,
+.sj-reader-verse.is-selected.sj-reader-highlight-blue,
+.sj-reader-verse.is-selected.sj-reader-highlight-indigo,
+.sj-reader-verse.is-selected.sj-reader-highlight-violet{
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.22);
+}
+
+
+.sj-reader-action-tray{
+  position:fixed;
+  right:12px;
+  bottom:calc(
+    92px + env(safe-area-inset-bottom)
+  );
+  left:12px;
+
+  z-index:90;
+
+  max-width:520px;
+
+  margin:0 auto;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;
+
+  background:
+    rgba(20,21,23,.96);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55);
+
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+
+
+.sj-reader-action-tray[hidden]{
+  display:none!important;
+}
+
+
+.sj-reader-action-tray-head{
+  min-height:42px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  padding:8px 12px 4px;
+}
+
+
+.sj-reader-action-tray-head strong{
+  overflow:hidden;
+
+  color:var(--sj-text);
+
+  font-size:.76rem;
+  font-weight:900;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+.sj-reader-action-close{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+
+  display:grid;
+  place-items:center;
+
+  padding:0;
+
+  border:0;
+  border-radius:50%;
+
+  background:transparent;
+  color:var(--sj-muted);
+
+  font-size:1.35rem;
+  line-height:1;
+}
+
+
+.sj-reader-tool-row{
+  display:grid;
+  grid-template-columns:repeat(5, minmax(58px, 1fr));
+
+  overflow-x:auto;
+
+  padding:4px 8px 10px;
+
+  scrollbar-width:none;
+}
+
+
+.sj-reader-tool-row::-webkit-scrollbar{
+  display:none;
+}
+
+
+.sj-reader-tool-row button{
+  min-width:58px;
+  min-height:58px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+
+  padding:6px 4px;
+
+  border:0;
+  border-radius:12px;
+
+  background:transparent;
+  color:var(--sj-muted);
+
+  font-size:.62rem;
+  font-weight:800;
+}
+
+
+.sj-reader-tool-row button svg{
+  width:21px;
+  height:21px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+
+.sj-reader-tool-row button.is-active{
+  background:rgba(241,115,0,.1);
+  color:var(--sj-orange);
+}
+
+
+.sj-reader-highlight-palette{
+  display:grid;
+  grid-template-columns:repeat(8, 1fr);
+  gap:7px;
+
+  padding:10px 12px 13px;
+
+  border-top:1px solid var(--sj-line);
+}
+
+
+.sj-reader-highlight-palette[hidden]{
+  display:none!important;
+}
+
+
+.sj-reader-highlight-palette button{
+  aspect-ratio:1;
+
+  min-width:0;
+
+  border:2px solid rgba(255,255,255,.18);
+  border-radius:50%;
+}
+
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="red"]{
+  background:#ef4444;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="orange"]{
+  background:#f17300;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="yellow"]{
+  background:#facc15;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="green"]{
+  background:#22c55e;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="blue"]{
+  background:#3b82f6;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="indigo"]{
+  background:#6366f1;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color="violet"]{
+  background:#a855f7;
+}
+
+
+.sj-reader-highlight-palette
+.sj-reader-highlight-clear{
+  display:grid;
+  place-items:center;
+
+  background:transparent;
+  color:var(--sj-text);
+
+  font-size:1rem;
+}
+
+
+body.sj-reader-tray-open .sj-scripture-reader{
+  padding-bottom:170px;
+}
+
+
+@media (min-width:600px){
+  .sj-reader-action-tray{
+    right:24px;
+    left:24px;
+  }
+}
+
+
+/* =========================================================
+   Build 3F.3 — Stronger highlighter contrast
+   ========================================================= */
+
+/*
+  Highlighted verses use stronger, denser colors
+  with dark Scripture text for a true highlighter effect.
+*/
+
+.sj-reader-highlight-red{
+  background:#f0a3a3;
+  color:#111317;
+}
+
+.sj-reader-highlight-orange{
+  background:#f2ad67;
+  color:#111317;
+}
+
+.sj-reader-highlight-yellow{
+  background:#e6d45a;
+  color:#111317;
+}
+
+.sj-reader-highlight-green{
+  background:#8acb8a;
+  color:#111317;
+}
+
+.sj-reader-highlight-blue{
+  background:#8bb7e6;
+  color:#111317;
+}
+
+.sj-reader-highlight-indigo{
+  background:#9ca2eb;
+  color:#111317;
+}
+
+.sj-reader-highlight-violet{
+  background:#c08fe0;
+  color:#111317;
+}
+
+
+/* Keep all text dark inside a highlighted verse */
+.sj-reader-highlight-red .sj-reader-verse-text,
+.sj-reader-highlight-orange .sj-reader-verse-text,
+.sj-reader-highlight-yellow .sj-reader-verse-text,
+.sj-reader-highlight-green .sj-reader-verse-text,
+.sj-reader-highlight-blue .sj-reader-verse-text,
+.sj-reader-highlight-indigo .sj-reader-verse-text,
+.sj-reader-highlight-violet .sj-reader-verse-text{
+  color:#111317;
+}
+
+
+/* Verse number also turns dark */
+.sj-reader-highlight-red .sj-reader-verse-number,
+.sj-reader-highlight-orange .sj-reader-verse-number,
+.sj-reader-highlight-yellow .sj-reader-verse-number,
+.sj-reader-highlight-green .sj-reader-verse-number,
+.sj-reader-highlight-blue .sj-reader-verse-number,
+.sj-reader-highlight-indigo .sj-reader-verse-number,
+.sj-reader-highlight-violet .sj-reader-verse-number{
+  color:#111317;
+}
+
+
+/* Add slight breathing room so the highlight feels intentional */
+.sj-reader-verse[class*="sj-reader-highlight-"]{
+  padding:5px 7px;
+
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+
+
+/* Selected highlighted verse gets a stronger outline */
+.sj-reader-verse.is-selected.sj-reader-highlight-red,
+.sj-reader-verse.is-selected.sj-reader-highlight-orange,
+.sj-reader-verse.is-selected.sj-reader-highlight-yellow,
+.sj-reader-verse.is-selected.sj-reader-highlight-green,
+.sj-reader-verse.is-selected.sj-reader-highlight-blue,
+.sj-reader-verse.is-selected.sj-reader-highlight-indigo,
+.sj-reader-verse.is-selected.sj-reader-highlight-violet{
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.32),
+    0 8px 24px rgba(0,0,0,.22);
+}

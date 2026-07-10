@@ -698,10 +698,21 @@ const READER_FONT_SIZES = [
 
 let scriptureCanonData = null;
 
+const READER_BOOKMARKS_KEY =
+  "sj_scripture_bookmarks_v1";
+
+const READER_HIGHLIGHTS_KEY =
+  "sj_verse_highlights_v1";
+
+const READER_NOTES_KEY =
+  "sj_v3_verse_notes_v1";
+
+
 let bibleBrowserStage = "canons";
 let selectedBibleCanon = null;
 let selectedBibleBook = null;
 let selectedBibleChapter = null;
+let selectedReaderVerse = null;
 
 
 function bibleCanonMenu(){
@@ -1055,6 +1066,631 @@ function renderBibleChapters(
 }
 
 
+function readReaderArray(key){
+  try{
+    const value = JSON.parse(
+      localStorage.getItem(key) || "[]"
+    );
+
+    return Array.isArray(value)
+      ? value
+      : [];
+  }catch(error){
+    console.warn(
+      `Unable to read reader data: ${key}`,
+      error
+    );
+
+    return [];
+  }
+}
+
+
+function writeReaderArray(
+  key,
+  value
+){
+  try{
+    localStorage.setItem(
+      key,
+      JSON.stringify(
+        Array.isArray(value)
+          ? value
+          : []
+      )
+    );
+
+    return true;
+  }catch(error){
+    console.warn(
+      `Unable to save reader data: ${key}`,
+      error
+    );
+
+    return false;
+  }
+}
+
+
+function readReaderNotes(){
+  try{
+    const value = JSON.parse(
+      localStorage.getItem(
+        READER_NOTES_KEY
+      ) || "{}"
+    );
+
+    return (
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    )
+      ? value
+      : {};
+  }catch(error){
+    console.warn(
+      "Unable to read reader notes.",
+      error
+    );
+
+    return {};
+  }
+}
+
+
+function writeReaderNotes(value){
+  try{
+    localStorage.setItem(
+      READER_NOTES_KEY,
+      JSON.stringify(
+        value &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+          ? value
+          : {}
+      )
+    );
+
+    return true;
+  }catch(error){
+    console.warn(
+      "Unable to save reader notes.",
+      error
+    );
+
+    return false;
+  }
+}
+
+
+function readerVerseKey(
+  canonSlug,
+  bookSlug,
+  chapter,
+  verse
+){
+  return [
+    canonSlug,
+    bookSlug,
+    chapter,
+    verse
+  ].join(":");
+}
+
+
+function getReaderBookmark(key){
+  return readReaderArray(
+    READER_BOOKMARKS_KEY
+  ).find(item => (
+    item?.key === key
+  )) || null;
+}
+
+
+function getReaderHighlight(key){
+  return readReaderArray(
+    READER_HIGHLIGHTS_KEY
+  ).find(item => (
+    item?.key === key
+  )) || null;
+}
+
+
+function readerHighlightClass(color){
+  const allowed = new Set([
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+  ]);
+
+  return allowed.has(color)
+    ? `sj-reader-highlight-${color}`
+    : "";
+}
+
+
+function clearReaderHighlightClasses(
+  verseElement
+){
+  if(!verseElement) return;
+
+  [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+  ].forEach(color => {
+    verseElement.classList.remove(
+      `sj-reader-highlight-${color}`
+    );
+  });
+}
+
+
+function closeReaderActionTray(){
+  selectedReaderVerse = null;
+
+  document
+    .querySelectorAll(".sj-reader-verse.is-selected")
+    .forEach(verse => {
+      verse.classList.remove("is-selected");
+    });
+
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  if(tray){
+    tray.hidden = true;
+  }
+
+  document.body.classList.remove(
+    "sj-reader-tray-open"
+  );
+}
+
+
+function updateReaderActionTray(){
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  if(!tray || !selectedReaderVerse){
+    return;
+  }
+
+  const reference = tray.querySelector(
+    "[data-reader-action-reference]"
+  );
+
+  if(reference){
+    reference.textContent =
+      selectedReaderVerse.ref;
+  }
+
+  const saveButton = tray.querySelector(
+    '[data-reader-tool="save"]'
+  );
+
+  const noteButton = tray.querySelector(
+    '[data-reader-tool="note"]'
+  );
+
+  const highlightButton = tray.querySelector(
+    '[data-reader-tool="highlight"]'
+  );
+
+  const bookmark = getReaderBookmark(
+    selectedReaderVerse.key
+  );
+
+  const notes = readReaderNotes();
+
+  const note = notes[
+    selectedReaderVerse.key
+  ];
+
+  const highlight = getReaderHighlight(
+    selectedReaderVerse.key
+  );
+
+  if(saveButton){
+    saveButton.classList.toggle(
+      "is-active",
+      Boolean(bookmark)
+    );
+
+    saveButton.setAttribute(
+      "aria-pressed",
+      String(Boolean(bookmark))
+    );
+
+    const label = saveButton.querySelector(
+      ".sj-reader-tool-label"
+    );
+
+    if(label){
+      label.textContent = bookmark
+        ? "Saved"
+        : "Save";
+    }
+  }
+
+  if(noteButton){
+    noteButton.classList.toggle(
+      "is-active",
+      Boolean(note?.note)
+    );
+  }
+
+  if(highlightButton){
+    highlightButton.classList.toggle(
+      "is-active",
+      Boolean(highlight)
+    );
+
+    highlightButton.dataset.highlightColor =
+      highlight?.category || "";
+  }
+
+  const palette = tray.querySelector(
+    "[data-reader-highlight-palette]"
+  );
+
+  if(palette){
+    palette.hidden = true;
+  }
+}
+
+
+function selectReaderVerse(
+  verseElement
+){
+  if(!verseElement) return;
+
+  const book = getBibleBook(
+    selectedBibleCanon,
+    selectedBibleBook
+  );
+
+  if(
+    !book ||
+    !selectedBibleCanon ||
+    !selectedBibleBook ||
+    !selectedBibleChapter
+  ){
+    return;
+  }
+
+  const verseNumber = Number(
+    verseElement.dataset.readerVerse
+  );
+
+  const text = (
+    verseElement.querySelector(
+      ".sj-reader-verse-text"
+    )?.textContent || ""
+  ).trim();
+
+  const strongs = (
+    verseElement.dataset.readerStrongs || ""
+  )
+    .split(",")
+    .filter(Boolean);
+
+  const key = readerVerseKey(
+    selectedBibleCanon,
+    selectedBibleBook,
+    selectedBibleChapter,
+    verseNumber
+  );
+
+  const ref =
+    `${book.name} ${selectedBibleChapter}:${verseNumber}`;
+
+  const isSameVerse =
+    selectedReaderVerse?.key === key;
+
+  if(isSameVerse){
+    closeReaderActionTray();
+    return;
+  }
+
+  document
+    .querySelectorAll(".sj-reader-verse.is-selected")
+    .forEach(verse => {
+      verse.classList.remove("is-selected");
+    });
+
+  verseElement.classList.add(
+    "is-selected"
+  );
+
+  selectedReaderVerse = {
+    key,
+    ref,
+    text,
+    verse:verseNumber,
+    chapter:selectedBibleChapter,
+    canon:selectedBibleCanon,
+    book:selectedBibleBook,
+    strongs
+  };
+
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  if(tray){
+    tray.hidden = false;
+  }
+
+  document.body.classList.add(
+    "sj-reader-tray-open"
+  );
+
+  updateReaderActionTray();
+}
+
+
+function toggleReaderBookmark(){
+  if(!selectedReaderVerse) return;
+
+  const bookmarks = readReaderArray(
+    READER_BOOKMARKS_KEY
+  );
+
+  const exists = bookmarks.some(
+    item => (
+      item?.key === selectedReaderVerse.key
+    )
+  );
+
+  const next = exists
+    ? bookmarks.filter(
+        item => (
+          item?.key !== selectedReaderVerse.key
+        )
+      )
+    : [
+        {
+          key:selectedReaderVerse.key,
+          ref:selectedReaderVerse.ref,
+          text:selectedReaderVerse.text,
+          canon:selectedReaderVerse.canon,
+          book:selectedReaderVerse.book,
+          chapter:selectedReaderVerse.chapter,
+          verse:selectedReaderVerse.verse,
+          url:
+            `/app.html?canon=${
+              encodeURIComponent(
+                selectedReaderVerse.canon
+              )
+            }&book=${
+              encodeURIComponent(
+                selectedReaderVerse.book
+              )
+            }&chapter=${
+              selectedReaderVerse.chapter
+            }&verse=${
+              selectedReaderVerse.verse
+            }#bible`,
+          savedAt:new Date().toISOString()
+        },
+        ...bookmarks.filter(
+          item => (
+            item?.key !== selectedReaderVerse.key
+          )
+        )
+      ];
+
+  writeReaderArray(
+    READER_BOOKMARKS_KEY,
+    next.slice(0, 300)
+  );
+
+  updateReaderActionTray();
+}
+
+
+function editReaderNote(){
+  if(!selectedReaderVerse) return;
+
+  const notes = readReaderNotes();
+
+  const existing = notes[
+    selectedReaderVerse.key
+  ]?.note || "";
+
+  const next = window.prompt(
+    `Note for ${selectedReaderVerse.ref}`,
+    existing
+  );
+
+  if(next === null){
+    return;
+  }
+
+  const trimmed = next.trim();
+
+  if(trimmed){
+    notes[selectedReaderVerse.key] = {
+      key:selectedReaderVerse.key,
+      ref:selectedReaderVerse.ref,
+      text:selectedReaderVerse.text,
+      note:trimmed,
+      savedAt:new Date().toISOString()
+    };
+  }else{
+    delete notes[selectedReaderVerse.key];
+  }
+
+  writeReaderNotes(notes);
+  updateReaderActionTray();
+}
+
+
+async function copySelectedReaderVerse(){
+  if(!selectedReaderVerse) return;
+
+  const value =
+    `${selectedReaderVerse.ref} — ${
+      selectedReaderVerse.text
+    }`;
+
+  try{
+    await navigator.clipboard.writeText(
+      value
+    );
+
+    setBibleNotice(
+      `${selectedReaderVerse.ref} copied.`
+    );
+  }catch(error){
+    console.warn(
+      "Unable to copy selected verse.",
+      error
+    );
+
+    window.prompt(
+      "Copy this verse:",
+      value
+    );
+  }
+}
+
+
+async function shareSelectedReaderVerse(){
+  if(!selectedReaderVerse) return;
+
+  const value =
+    `${selectedReaderVerse.ref}\n\n${
+      selectedReaderVerse.text
+    }\n\nSemitic Jew Institute`;
+
+  if(navigator.share){
+    try{
+      await navigator.share({
+        title:selectedReaderVerse.ref,
+        text:value
+      });
+
+      return;
+    }catch(error){
+      if(error?.name === "AbortError"){
+        return;
+      }
+
+      console.warn(
+        "Native verse share failed.",
+        error
+      );
+    }
+  }
+
+  try{
+    await navigator.clipboard.writeText(
+      value
+    );
+
+    setBibleNotice(
+      `${selectedReaderVerse.ref} copied for sharing.`
+    );
+  }catch(error){
+    console.warn(
+      "Verse share fallback failed.",
+      error
+    );
+  }
+}
+
+
+function saveReaderHighlight(color){
+  if(!selectedReaderVerse) return;
+
+  const highlights = readReaderArray(
+    READER_HIGHLIGHTS_KEY
+  );
+
+  const withoutCurrent = highlights.filter(
+    item => (
+      item?.key !== selectedReaderVerse.key
+    )
+  );
+
+  const allowed = new Set([
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+  ]);
+
+  const next = allowed.has(color)
+    ? [
+        {
+          key:selectedReaderVerse.key,
+          ref:selectedReaderVerse.ref,
+          text:selectedReaderVerse.text,
+          canon:selectedReaderVerse.canon,
+          book:selectedReaderVerse.book,
+          chapter:selectedReaderVerse.chapter,
+          verse:selectedReaderVerse.verse,
+          category:color,
+          savedAt:new Date().toISOString()
+        },
+        ...withoutCurrent
+      ]
+    : withoutCurrent;
+
+  writeReaderArray(
+    READER_HIGHLIGHTS_KEY,
+    next.slice(0, 300)
+  );
+
+  const selectedElement = document.querySelector(
+    `[data-reader-key="${
+      CSS.escape(selectedReaderVerse.key)
+    }"]`
+  );
+
+  clearReaderHighlightClasses(
+    selectedElement
+  );
+
+  if(
+    selectedElement &&
+    allowed.has(color)
+  ){
+    selectedElement.classList.add(
+      `sj-reader-highlight-${color}`
+    );
+  }
+
+  updateReaderActionTray();
+}
+
+
+function toggleReaderHighlightPalette(){
+  const palette = document.querySelector(
+    "[data-reader-highlight-palette]"
+  );
+
+  if(!palette) return;
+
+  palette.hidden = !palette.hidden;
+}
+
+
 function bibleChapterDataURL(
   book,
   chapter
@@ -1160,15 +1796,42 @@ function renderBibleReader(
       ? verse.s
       : [];
 
+    const key = readerVerseKey(
+      canon.slug,
+      book.slug,
+      chapter,
+      verseNumber
+    );
+
+    const highlight = getReaderHighlight(
+      key
+    );
+
+    const highlightClass =
+      readerHighlightClass(
+        highlight?.category || ""
+      );
+
     return `
       <p
-        class="sj-reader-verse"
+        class="sj-reader-verse${
+          highlightClass
+            ? ` ${highlightClass}`
+            : ""
+        }"
         id="verse-${verseNumber}"
         data-reader-verse="${verseNumber}"
+        data-reader-key="${escapeHTML(key)}"
         data-reader-strongs="${escapeHTML(
           strongs.join(",")
         )}"
         tabindex="0"
+        role="button"
+        aria-label="${
+          escapeHTML(
+            `${book.name} ${chapter}:${verseNumber}`
+          )
+        }"
       >
         <sup class="sj-reader-verse-number">
           ${verseNumber}
@@ -1301,6 +1964,168 @@ function renderBibleReader(
         }
       </nav>
     </article>
+
+    <aside
+      class="sj-reader-action-tray"
+      data-reader-action-tray
+      aria-label="Selected verse tools"
+      hidden
+    >
+      <div class="sj-reader-action-tray-head">
+        <strong data-reader-action-reference>
+          Selected verse
+        </strong>
+
+        <button
+          class="sj-reader-action-close"
+          type="button"
+          data-reader-action-close
+          aria-label="Close verse tools"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="sj-reader-tool-row">
+        <button
+          type="button"
+          data-reader-tool="highlight"
+          aria-label="Highlight selected verse"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m4 20 5-1 10-10-4-4L5 15Z"></path>
+            <path d="m13 7 4 4"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Highlight
+          </span>
+        </button>
+
+        <button
+          type="button"
+          data-reader-tool="save"
+          aria-label="Save selected verse"
+          aria-pressed="false"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h12v18l-6-4-6 4Z"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Save
+          </span>
+        </button>
+
+        <button
+          type="button"
+          data-reader-tool="note"
+          aria-label="Add note to selected verse"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h9l4 4v14H6Z"></path>
+            <path d="M14 3v5h5"></path>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h4"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Note
+          </span>
+        </button>
+
+        <button
+          type="button"
+          data-reader-tool="copy"
+          aria-label="Copy selected verse"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="8" y="8" width="11" height="12" rx="2"></rect>
+            <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Copy
+          </span>
+        </button>
+
+        <button
+          type="button"
+          data-reader-tool="share"
+          aria-label="Share selected verse"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16V3"></path>
+            <path d="m7 8 5-5 5 5"></path>
+            <path d="M5 12v9h14v-9"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Share
+          </span>
+        </button>
+      </div>
+
+      <div
+        class="sj-reader-highlight-palette"
+        data-reader-highlight-palette
+        hidden
+      >
+        <button
+          type="button"
+          data-reader-highlight-color="red"
+          aria-label="Red highlight"
+          title="Red"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="orange"
+          aria-label="Orange highlight"
+          title="Orange"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="yellow"
+          aria-label="Yellow highlight"
+          title="Yellow"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="green"
+          aria-label="Green highlight"
+          title="Green"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="blue"
+          aria-label="Blue highlight"
+          title="Blue"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="indigo"
+          aria-label="Indigo highlight"
+          title="Indigo"
+        ></button>
+
+        <button
+          type="button"
+          data-reader-highlight-color="violet"
+          aria-label="Violet highlight"
+          title="Violet"
+        ></button>
+
+        <button
+          class="sj-reader-highlight-clear"
+          type="button"
+          data-reader-highlight-color="clear"
+          aria-label="Remove highlight"
+          title="Clear highlight"
+        >
+          ×
+        </button>
+      </div>
+    </aside>
   `;
 }
 
@@ -1330,6 +2155,9 @@ async function openBibleReader(
   }
 
   bibleBrowserStage = "reader";
+
+  selectedReaderVerse = null;
+  closeReaderActionTray();
 
   selectedBibleCanon = canon.slug;
   selectedBibleBook = book.slug;
@@ -2035,4 +2863,97 @@ document.addEventListener("click", event => {
   }
 
   moreMenu.hidden = true;
+});
+
+
+
+/* =========================================================
+   Build 3F.2 — Verse selection and real reader tools
+   ========================================================= */
+
+document.addEventListener("click", event => {
+  const verse = event.target.closest(
+    ".sj-reader-verse[data-reader-verse]"
+  );
+
+  if(verse){
+    selectReaderVerse(verse);
+    return;
+  }
+
+
+  if(
+    event.target.closest(
+      "[data-reader-action-close]"
+    )
+  ){
+    closeReaderActionTray();
+    return;
+  }
+
+
+  const colorButton = event.target.closest(
+    "[data-reader-highlight-color]"
+  );
+
+  if(colorButton){
+    saveReaderHighlight(
+      colorButton.dataset.readerHighlightColor
+    );
+
+    return;
+  }
+
+
+  const toolButton = event.target.closest(
+    "[data-reader-tool]"
+  );
+
+  if(!toolButton) return;
+
+  const tool = toolButton.dataset.readerTool;
+
+  if(tool === "highlight"){
+    toggleReaderHighlightPalette();
+    return;
+  }
+
+  if(tool === "save"){
+    toggleReaderBookmark();
+    return;
+  }
+
+  if(tool === "note"){
+    editReaderNote();
+    return;
+  }
+
+  if(tool === "copy"){
+    copySelectedReaderVerse();
+    return;
+  }
+
+  if(tool === "share"){
+    shareSelectedReaderVerse();
+  }
+});
+
+
+document.addEventListener("keydown", event => {
+  if(
+    event.key !== "Enter" &&
+    event.key !== " "
+  ){
+    return;
+  }
+
+  const verse = event.target.closest(
+    ".sj-reader-verse[data-reader-verse]"
+  );
+
+  if(!verse) return;
+
+  event.preventDefault();
+
+  selectReaderVerse(verse);
 });
