@@ -483,13 +483,19 @@
         <h1 id="research-title">Israelite Encyclopedia</h1>
       </header>
 
-      <section class="sj-placeholder">
-        <span class="sj-placeholder-label">Build 3I</span>
-        <h2>Research Scripture, history, and Israelite subjects.</h2>
-        <p>
-          Search the encyclopedia and open detailed research entries
-          from one dedicated tool.
-        </p>
+      <section
+        class="sj-research-browser"
+        data-research-browser
+        aria-live="polite"
+      >
+        <div class="sj-research-loading">
+          <span
+            class="sj-articles-loading-ring"
+            aria-hidden="true"
+          ></span>
+
+          <p>Loading the encyclopedia...</p>
+        </div>
       </section>
     </section>
 

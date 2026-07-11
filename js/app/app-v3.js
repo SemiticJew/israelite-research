@@ -4763,3 +4763,1165 @@ document.addEventListener("click", event => {
     shareActiveArticle();
   }
 });
+
+
+/* =========================================================
+   Build 3I.3 — Native Research browser
+   ========================================================= */
+
+let researchEntries = [];
+let researchSearchTerm = "";
+let researchActiveLetter = "";
+let researchVisibleCount = 24;
+let researchLoaded = false;
+
+
+function researchBrowserRoot(){
+  return document.querySelector(
+    "[data-research-browser]"
+  );
+}
+
+
+function normalizeResearchSearchText(value){
+  return String(
+    value ?? ""
+  )
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .toLowerCase()
+    .replace(
+      /[’‘]/g,
+      "'"
+    )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+}
+
+
+function researchEntryCompletenessScore(entry){
+  if(
+    !entry ||
+    typeof entry !== "object"
+  ){
+    return 0;
+  }
+
+  let score = 0;
+
+  const textFields = [
+    "headword",
+    "pos",
+    "definition",
+    "usage_notes",
+    "syllables",
+    "etymology"
+  ];
+
+  textFields.forEach(field => {
+    const value = cleanText(
+      entry[field]
+    );
+
+    if(value){
+      score += 1;
+
+      score += Math.min(
+        value.length / 120,
+        4
+      );
+    }
+  });
+
+  const listFields = [
+    "variants",
+    "see_also",
+    "bible_refs"
+  ];
+
+  listFields.forEach(field => {
+    const values = Array.isArray(
+      entry[field]
+    )
+      ? entry[field]
+      : [];
+
+    score += Math.min(
+      values.length,
+      8
+    );
+  });
+
+  return score;
+}
+
+
+function dedupeResearchEntries(rawEntries){
+  const byId = new Map();
+
+  rawEntries.forEach(
+    (
+      entry,
+      index
+    ) => {
+      if(
+        !entry ||
+        typeof entry !== "object"
+      ){
+        return;
+      }
+
+      const id = cleanText(
+        entry.id
+      );
+
+      const headword = cleanText(
+        entry.headword
+      );
+
+      if(
+        !id ||
+        !headword
+      ){
+        return;
+      }
+
+      const normalized = {
+        ...entry,
+        id,
+        headword,
+        letter:cleanText(
+          entry.letter
+        ).toUpperCase(),
+        pos:cleanText(
+          entry.pos
+        ),
+        definition:cleanText(
+          entry.definition
+        ),
+        usage_notes:cleanText(
+          entry.usage_notes
+        ),
+        syllables:cleanText(
+          entry.syllables
+        ),
+        etymology:cleanText(
+          entry.etymology
+        ),
+        variants:Array.isArray(
+          entry.variants
+        )
+          ? entry.variants.filter(Boolean)
+          : [],
+        see_also:Array.isArray(
+          entry.see_also
+        )
+          ? entry.see_also.filter(Boolean)
+          : [],
+        bible_refs:Array.isArray(
+          entry.bible_refs
+        )
+          ? entry.bible_refs.filter(Boolean)
+          : [],
+        _sourceIndex:index
+      };
+
+      const existing = byId.get(
+        id
+      );
+
+      if(!existing){
+        byId.set(
+          id,
+          normalized
+        );
+
+        return;
+      }
+
+      if(
+        researchEntryCompletenessScore(
+          normalized
+        ) >
+        researchEntryCompletenessScore(
+          existing
+        )
+      ){
+        byId.set(
+          id,
+          normalized
+        );
+      }
+    }
+  );
+
+  return Array.from(
+    byId.values()
+  ).sort(
+    (
+      a,
+      b
+    ) => {
+      return a.headword.localeCompare(
+        b.headword,
+        undefined,
+        {
+          sensitivity:"base"
+        }
+      );
+    }
+  );
+}
+
+
+function researchEntryReferences(entry){
+  return (
+    Array.isArray(
+      entry?.bible_refs
+    )
+      ? entry.bible_refs
+      : []
+  ).filter(ref => {
+    return cleanText(
+      ref?.label
+    );
+  });
+}
+
+
+function researchEntryHaystack(entry){
+  const variants = Array.isArray(
+    entry?.variants
+  )
+    ? entry.variants.join(" ")
+    : "";
+
+  const related = Array.isArray(
+    entry?.see_also
+  )
+    ? entry.see_also.join(" ")
+    : "";
+
+  const references = researchEntryReferences(
+    entry
+  )
+    .map(
+      ref => ref.label
+    )
+    .join(" ");
+
+  return normalizeResearchSearchText(
+    [
+      entry?.id,
+      entry?.headword,
+      entry?.pos,
+      entry?.definition,
+      entry?.usage_notes,
+      entry?.syllables,
+      entry?.etymology,
+      variants,
+      related,
+      references
+    ].join(" ")
+  );
+}
+
+
+function researchSearchRank(
+  entry,
+  query
+){
+  const headword =
+    normalizeResearchSearchText(
+      entry.headword
+    );
+
+  const variants =
+    normalizeResearchSearchText(
+      (
+        entry.variants || []
+      ).join(" ")
+    );
+
+  const definition =
+    normalizeResearchSearchText(
+      entry.definition
+    );
+
+  if(headword === query){
+    return 0;
+  }
+
+  if(
+    headword.startsWith(
+      query
+    )
+  ){
+    return 1;
+  }
+
+  if(
+    headword.includes(
+      query
+    )
+  ){
+    return 2;
+  }
+
+  if(
+    variants.includes(
+      query
+    )
+  ){
+    return 3;
+  }
+
+  if(
+    definition.includes(
+      query
+    )
+  ){
+    return 4;
+  }
+
+  return 5;
+}
+
+
+function filteredResearchEntries(){
+  const query =
+    normalizeResearchSearchText(
+      researchSearchTerm
+    );
+
+  const terms = query
+    ? query.split(/\s+/)
+    : [];
+
+  let entries = researchEntries.filter(
+    entry => {
+      if(
+        researchActiveLetter &&
+        entry.letter !==
+          researchActiveLetter
+      ){
+        return false;
+      }
+
+      if(!terms.length){
+        return true;
+      }
+
+      const haystack =
+        researchEntryHaystack(
+          entry
+        );
+
+      return terms.every(
+        term => {
+          return haystack.includes(
+            term
+          );
+        }
+      );
+    }
+  );
+
+  if(query){
+    entries = entries.sort(
+      (
+        a,
+        b
+      ) => {
+        const rankDifference =
+          researchSearchRank(
+            a,
+            query
+          ) -
+          researchSearchRank(
+            b,
+            query
+          );
+
+        if(rankDifference){
+          return rankDifference;
+        }
+
+        return a.headword.localeCompare(
+          b.headword,
+          undefined,
+          {
+            sensitivity:"base"
+          }
+        );
+      }
+    );
+  }
+
+  return entries;
+}
+
+
+function availableResearchLetters(){
+  return Array.from(
+    new Set(
+      researchEntries
+        .map(
+          entry => entry.letter
+        )
+        .filter(Boolean)
+    )
+  ).sort();
+}
+
+
+function findResearchEntryById(id){
+  const needle =
+    normalizeResearchSearchText(
+      id
+    );
+
+  if(!needle){
+    return null;
+  }
+
+  return (
+    researchEntries.find(
+      entry => {
+        return (
+          normalizeResearchSearchText(
+            entry.id
+          ) === needle ||
+          normalizeResearchSearchText(
+            entry.headword
+          ) === needle
+        );
+      }
+    ) || null
+  );
+}
+
+
+function featuredResearchEntry(){
+  const preferred = [
+    "israelites",
+    "gentiles",
+    "logic",
+    "abraham",
+    "jacob-israel"
+  ];
+
+  for(
+    const id
+    of preferred
+  ){
+    const entry =
+      findResearchEntryById(
+        id
+      );
+
+    if(entry){
+      return entry;
+    }
+  }
+
+  return (
+    researchEntries.find(
+      entry => {
+        return (
+          entry.definition &&
+          entry.bible_refs.length
+        );
+      }
+    ) ||
+    researchEntries[0] ||
+    null
+  );
+}
+
+
+function researchReferenceChipsHTML(
+  entry,
+  limit = 3
+){
+  const references =
+    researchEntryReferences(
+      entry
+    ).slice(
+      0,
+      limit
+    );
+
+  if(!references.length){
+    return "";
+  }
+
+  return `
+    <div class="sj-research-reference-chips">
+      ${
+        references.map(
+          ref => {
+            return `
+              <span>
+                ${escapeHTML(
+                  ref.label
+                )}
+              </span>
+            `;
+          }
+        ).join("")
+      }
+    </div>
+  `;
+}
+
+
+function researchEntryCardHTML(entry){
+  const references =
+    researchReferenceChipsHTML(
+      entry,
+      2
+    );
+
+  return `
+    <a
+      class="sj-research-entry-card"
+      href="/encyclopedia.html#${encodeURIComponent(
+        entry.id
+      )}"
+      data-research-entry-link
+      data-research-entry-id="${escapeHTML(
+        entry.id
+      )}"
+    >
+      <div class="sj-research-entry-card-top">
+        <span class="sj-research-entry-letter">
+          ${escapeHTML(
+            entry.letter || "•"
+          )}
+        </span>
+
+        <span
+          class="sj-research-entry-arrow"
+          aria-hidden="true"
+        >
+          ›
+        </span>
+      </div>
+
+      <div class="sj-research-entry-heading">
+        <h3>
+          ${escapeHTML(
+            entry.headword
+          )}
+        </h3>
+
+        ${
+          entry.pos
+            ? `
+              <span>
+                ${escapeHTML(
+                  entry.pos
+                )}
+              </span>
+            `
+            : ""
+        }
+      </div>
+
+      <p>
+        ${escapeHTML(
+          entry.definition
+        )}
+      </p>
+
+      ${references}
+    </a>
+  `;
+}
+
+
+function renderResearchBrowserLoading(){
+  const root =
+    researchBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="sj-research-loading">
+      <span
+        class="sj-articles-loading-ring"
+        aria-hidden="true"
+      ></span>
+
+      <p>
+        Loading the encyclopedia...
+      </p>
+    </div>
+  `;
+}
+
+
+function renderResearchBrowserError(){
+  const root =
+    researchBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  root.innerHTML = `
+    <section class="sj-research-error">
+      <span class="sj-placeholder-label">
+        Research
+      </span>
+
+      <h2>
+        The encyclopedia could not be loaded.
+      </h2>
+
+      <p>
+        Please reload the Research tab and try again.
+      </p>
+
+      <button
+        type="button"
+        data-research-reload
+      >
+        Reload Encyclopedia
+      </button>
+    </section>
+  `;
+}
+
+
+function renderResearchBrowserShell(){
+  const root =
+    researchBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  const featured =
+    featuredResearchEntry();
+
+  const letters =
+    availableResearchLetters();
+
+  root.innerHTML = `
+    <section class="sj-research-intro">
+      <p class="sj-research-kicker">
+        Semitic Jew Institute
+      </p>
+
+      <h2>
+        Search the Institute.
+      </h2>
+
+      <p class="sj-research-intro-copy">
+        Explore Scripture, history, logic, people,
+        nations, places, prophecy, and Israelite subjects.
+      </p>
+
+      <div class="sj-research-search-shell">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle
+            cx="10.5"
+            cy="10.5"
+            r="6.5"
+          ></circle>
+
+          <path
+            d="m16 16 5 5"
+          ></path>
+        </svg>
+
+        <input
+          type="search"
+          placeholder="Abraham, Gentiles, Logic, Edom..."
+          aria-label="Search the Israelite Encyclopedia"
+          autocomplete="off"
+          spellcheck="false"
+          data-research-search
+        >
+
+        <button
+          type="button"
+          aria-label="Clear research search"
+          data-research-clear
+          hidden
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="sj-research-stats">
+        <span>
+          <strong>
+            ${researchEntries.length}
+          </strong>
+          unique entries
+        </span>
+
+        <span aria-hidden="true">•</span>
+
+        <span>
+          <strong>
+            ${letters.length}
+          </strong>
+          indexed letters
+        </span>
+      </div>
+    </section>
+
+    ${
+      featured
+        ? `
+          <section class="sj-research-featured">
+            <p class="sj-section-kicker">
+              Featured Research
+            </p>
+
+            <a
+              class="sj-research-featured-card"
+              href="/encyclopedia.html#${encodeURIComponent(
+                featured.id
+              )}"
+              data-research-entry-link
+              data-research-entry-id="${escapeHTML(
+                featured.id
+              )}"
+            >
+              <div class="sj-research-featured-top">
+                <span>
+                  ${escapeHTML(
+                    featured.letter || "•"
+                  )}
+                </span>
+
+                ${
+                  featured.pos
+                    ? `
+                      <small>
+                        ${escapeHTML(
+                          featured.pos
+                        )}
+                      </small>
+                    `
+                    : ""
+                }
+              </div>
+
+              <h3>
+                ${escapeHTML(
+                  featured.headword
+                )}
+              </h3>
+
+              <p>
+                ${escapeHTML(
+                  featured.definition
+                )}
+              </p>
+
+              ${researchReferenceChipsHTML(
+                featured,
+                3
+              )}
+
+              <strong class="sj-research-open-label">
+                Open entry
+                <span aria-hidden="true">›</span>
+              </strong>
+            </a>
+          </section>
+        `
+        : ""
+    }
+
+    <section class="sj-research-library">
+      <div class="sj-research-library-heading">
+        <div>
+          <p class="sj-section-kicker">
+            Research Library
+          </p>
+
+          <h2>
+            Browse the Encyclopedia
+          </h2>
+        </div>
+
+        <span
+          class="sj-research-results-summary"
+          data-research-results-summary
+        ></span>
+      </div>
+
+      <div
+        class="sj-research-alphabet"
+        aria-label="Filter research entries by letter"
+      >
+        <button
+          class="is-active"
+          type="button"
+          data-research-letter=""
+        >
+          All
+        </button>
+
+        ${
+          letters.map(
+            letter => {
+              return `
+                <button
+                  type="button"
+                  data-research-letter="${escapeHTML(
+                    letter
+                  )}"
+                >
+                  ${escapeHTML(
+                    letter
+                  )}
+                </button>
+              `;
+            }
+          ).join("")
+        }
+      </div>
+
+      <div
+        class="sj-research-results"
+        data-research-results
+      ></div>
+    </section>
+  `;
+
+  renderResearchResults();
+}
+
+
+function renderResearchResults(){
+  const root =
+    researchBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  const resultsRoot =
+    root.querySelector(
+      "[data-research-results]"
+    );
+
+  const summary =
+    root.querySelector(
+      "[data-research-results-summary]"
+    );
+
+  const clearButton =
+    root.querySelector(
+      "[data-research-clear]"
+    );
+
+  if(!resultsRoot){
+    return;
+  }
+
+  const filtered =
+    filteredResearchEntries();
+
+  const visible =
+    filtered.slice(
+      0,
+      researchVisibleCount
+    );
+
+  if(summary){
+    summary.textContent = `${
+      filtered.length
+    } ${
+      filtered.length === 1
+        ? "entry"
+        : "entries"
+    }`;
+  }
+
+  if(clearButton){
+    clearButton.hidden =
+      !researchSearchTerm;
+  }
+
+  root.querySelectorAll(
+    "[data-research-letter]"
+  ).forEach(button => {
+    const letter =
+      cleanText(
+        button.dataset.researchLetter
+      );
+
+    button.classList.toggle(
+      "is-active",
+      letter ===
+        researchActiveLetter
+    );
+  });
+
+  if(!filtered.length){
+    resultsRoot.innerHTML = `
+      <div class="sj-research-empty">
+        <span aria-hidden="true">
+          ?
+        </span>
+
+        <h3>
+          No entries found.
+        </h3>
+
+        <p>
+          Try another word, related term,
+          Scripture reference, or letter.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  resultsRoot.innerHTML = `
+    <div class="sj-research-entry-list">
+      ${
+        visible.map(
+          researchEntryCardHTML
+        ).join("")
+      }
+    </div>
+
+    ${
+      visible.length <
+      filtered.length
+        ? `
+          <button
+            class="sj-research-load-more"
+            type="button"
+            data-research-load-more
+          >
+            Load More
+
+            <span>
+              ${
+                filtered.length -
+                visible.length
+              } remaining
+            </span>
+          </button>
+        `
+        : `
+          <p class="sj-research-list-end">
+            Showing all ${
+              filtered.length
+            } ${
+              filtered.length === 1
+                ? "entry"
+                : "entries"
+            }.
+          </p>
+        `
+    }
+  `;
+}
+
+
+async function loadResearchBrowser(){
+  const root =
+    researchBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  if(
+    researchLoaded &&
+    researchEntries.length
+  ){
+    renderResearchBrowserShell();
+
+    return;
+  }
+
+  renderResearchBrowserLoading();
+
+  try{
+    const payload = await fetchJSON(
+      "/data/israelite_dictionary.json"
+    );
+
+    const rawEntries =
+      Array.isArray(
+        payload?.entries
+      )
+        ? payload.entries
+        : [];
+
+    if(!rawEntries.length){
+      throw new Error(
+        "No Israelite encyclopedia entries were found."
+      );
+    }
+
+    researchEntries =
+      dedupeResearchEntries(
+        rawEntries
+      );
+
+    if(!researchEntries.length){
+      throw new Error(
+        "No usable Israelite encyclopedia entries were found."
+      );
+    }
+
+    researchLoaded = true;
+
+    console.info(
+      "[Build 3I] Research entries:",
+      {
+        raw:rawEntries.length,
+        unique:researchEntries.length
+      }
+    );
+
+    renderResearchBrowserShell();
+
+  }catch(error){
+    console.warn(
+      "Native Research browser failed.",
+      error
+    );
+
+    renderResearchBrowserError();
+  }
+}
+
+
+document.addEventListener(
+  "input",
+  event => {
+    const input =
+      event.target.closest(
+        "[data-research-search]"
+      );
+
+    if(!input){
+      return;
+    }
+
+    researchSearchTerm =
+      input.value;
+
+    researchVisibleCount = 24;
+
+    renderResearchResults();
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  event => {
+    const letterButton =
+      event.target.closest(
+        "[data-research-letter]"
+      );
+
+    if(letterButton){
+      event.preventDefault();
+
+      researchActiveLetter =
+        cleanText(
+          letterButton.dataset
+            .researchLetter
+        );
+
+      researchVisibleCount = 24;
+
+      renderResearchResults();
+
+      return;
+    }
+
+
+    const clearButton =
+      event.target.closest(
+        "[data-research-clear]"
+      );
+
+    if(clearButton){
+      event.preventDefault();
+
+      researchSearchTerm = "";
+
+      researchVisibleCount = 24;
+
+      const input =
+        researchBrowserRoot()
+          ?.querySelector(
+            "[data-research-search]"
+          );
+
+      if(input){
+        input.value = "";
+        input.focus();
+      }
+
+      renderResearchResults();
+
+      return;
+    }
+
+
+    const loadMoreButton =
+      event.target.closest(
+        "[data-research-load-more]"
+      );
+
+    if(loadMoreButton){
+      event.preventDefault();
+
+      researchVisibleCount += 24;
+
+      renderResearchResults();
+
+      return;
+    }
+
+
+    const reloadButton =
+      event.target.closest(
+        "[data-research-reload]"
+      );
+
+    if(reloadButton){
+      event.preventDefault();
+
+      researchLoaded = false;
+
+      researchEntries = [];
+
+      loadResearchBrowser();
+    }
+  }
+);
+
+
+loadResearchBrowser();
