@@ -674,7 +674,336 @@ document
    ========================================================= */
 
 loadDailyPrecept();
+/* =========================================================
+   Build 3H.3 — Actual Articles Browser
+   ========================================================= */
+
+function articleBrowserRoot(){
+  return document.querySelector(
+    "[data-articles-browser]"
+  );
+}
+
+
+function normalizeArticleImageURL(value){
+  const image = cleanText(value);
+
+  if(!image){
+    return "";
+  }
+
+  return image
+    .replace(
+      /^https?:\/\/(?:www\.)?semiticjew\.org/i,
+      ""
+    )
+    .replace(
+      /^\/israelite-research\//,
+      "/"
+    );
+}
+
+
+function parseArticleCard(card){
+  if(!card){
+    return null;
+  }
+
+  const link = card.querySelector(
+    'a[href*="/articles/"]'
+  );
+
+  const title = card.querySelector(
+    ".card-body h3, h3"
+  );
+
+  const excerpt = card.querySelector(
+    ".card-body p, p.muted"
+  );
+
+  const image = card.querySelector(
+    ".image-block img, img"
+  );
+
+  const author = card.querySelector(
+    ".author"
+  );
+
+  const href = cleanText(
+    link?.getAttribute("href")
+  );
+
+  const titleText = decodeHTMLEntities(
+    cleanText(title?.textContent)
+  );
+
+  const excerptText = decodeHTMLEntities(
+    cleanText(excerpt?.textContent)
+  );
+
+  const imageURL = normalizeArticleImageURL(
+    image?.getAttribute("src")
+  );
+
+  const authorText = decodeHTMLEntities(
+    cleanText(author?.textContent)
+  ) || "Semitic Jew";
+
+  if(
+    !href ||
+    !titleText
+  ){
+    return null;
+  }
+
+  return {
+    href,
+    title:titleText,
+    excerpt:excerptText,
+    image:imageURL,
+    author:authorText
+  };
+}
+
+
+function renderArticlesBrowserError(){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  root.innerHTML = `
+    <section class="sj-articles-error">
+      <span class="sj-article-label">
+        Articles
+      </span>
+
+      <h2>
+        Articles could not be loaded.
+      </h2>
+
+      <p>
+        Please try again.
+      </p>
+
+      <button
+        type="button"
+        data-reload-articles
+      >
+        Reload
+      </button>
+    </section>
+  `;
+}
+
+
+function renderArticlesBrowser(articles){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  if(!Array.isArray(articles) || !articles.length){
+    renderArticlesBrowserError();
+    return;
+  }
+
+  const [featured, ...remaining] = articles;
+
+  root.innerHTML = `
+    <section
+      class="sj-articles-featured-section"
+      aria-labelledby="sj-articles-latest-title"
+    >
+      <div class="sj-articles-section-head">
+        <span class="sj-article-label">
+          Latest
+        </span>
+
+        <h2 id="sj-articles-latest-title">
+          Latest Article
+        </h2>
+      </div>
+
+      <a
+        class="sj-articles-featured-card"
+        href="${escapeHTML(featured.href)}"
+        data-app-article-link
+      >
+        ${
+          featured.image
+            ? `
+              <div class="sj-articles-featured-image">
+                <img
+                  src="${escapeHTML(featured.image)}"
+                  alt=""
+                  loading="eager"
+                >
+              </div>
+            `
+            : ""
+        }
+
+        <div class="sj-articles-featured-copy">
+          <h3>
+            ${escapeHTML(featured.title)}
+          </h3>
+
+          ${
+            featured.excerpt
+              ? `
+                <p>
+                  ${escapeHTML(featured.excerpt)}
+                </p>
+              `
+              : ""
+          }
+
+          <span class="sj-articles-author">
+            By ${escapeHTML(featured.author)}
+          </span>
+        </div>
+      </a>
+    </section>
+
+    <section
+      class="sj-articles-library-section"
+      aria-labelledby="sj-articles-library-title"
+    >
+      <div class="sj-articles-section-head">
+        <span class="sj-article-label">
+          Library
+        </span>
+
+        <h2 id="sj-articles-library-title">
+          All Articles
+        </h2>
+      </div>
+
+      <div class="sj-articles-list">
+        ${remaining.map(article => `
+          <a
+            class="sj-articles-list-card"
+            href="${escapeHTML(article.href)}"
+            data-app-article-link
+          >
+            ${
+              article.image
+                ? `
+                  <div class="sj-articles-list-image">
+                    <img
+                      src="${escapeHTML(article.image)}"
+                      alt=""
+                      loading="lazy"
+                    >
+                  </div>
+                `
+                : ""
+            }
+
+            <div class="sj-articles-list-copy">
+              <h3>
+                ${escapeHTML(article.title)}
+              </h3>
+
+              ${
+                article.excerpt
+                  ? `
+                    <p>
+                      ${escapeHTML(article.excerpt)}
+                    </p>
+                  `
+                  : ""
+              }
+
+              <span>
+                ${escapeHTML(article.author)}
+              </span>
+            </div>
+          </a>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+
+async function loadArticlesBrowser(){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  try{
+    const response = await fetch(
+      `/articles.html?appArticles=${Date.now()}`
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `articles.html returned ${response.status}`
+      );
+    }
+
+    const html = await response.text();
+
+    const doc = new DOMParser().parseFromString(
+      html,
+      "text/html"
+    );
+
+    const cards = [
+      doc.querySelector(".featured-left"),
+      doc.querySelector(".featured-right"),
+      ...Array.from(
+        doc.querySelectorAll(
+          ".article-card"
+        )
+      )
+    ].filter(Boolean);
+
+    const articles = [];
+    const seen = new Set();
+
+    cards.forEach(card => {
+      const article = parseArticleCard(card);
+
+      if(
+        !article ||
+        seen.has(article.href)
+      ){
+        return;
+      }
+
+      seen.add(article.href);
+      articles.push(article);
+    });
+
+    if(!articles.length){
+      throw new Error(
+        "No article cards were found."
+      );
+    }
+
+    renderArticlesBrowser(articles);
+
+  }catch(error){
+    console.warn(
+      "Articles browser failed.",
+      error
+    );
+
+    renderArticlesBrowserError();
+  }
+}
+
+
 loadLatestArticle();
+
+loadArticlesBrowser();
 
 
 /* =========================================================
@@ -3780,4 +4109,37 @@ document.addEventListener("keydown", event => {
   if(modal && !modal.hidden){
     closeReaderWordStudy();
   }
+});
+
+
+
+/* =========================================================
+   Build 3H.3 — Articles browser events
+   ========================================================= */
+
+document.addEventListener("click", event => {
+  const reload = event.target.closest(
+    "[data-reload-articles]"
+  );
+
+  if(!reload){
+    return;
+  }
+
+  const root = articleBrowserRoot();
+
+  if(root){
+    root.innerHTML = `
+      <div class="sj-articles-loading">
+        <span
+          class="sj-articles-loading-ring"
+          aria-hidden="true"
+        ></span>
+
+        <p>Loading articles...</p>
+      </div>
+    `;
+  }
+
+  loadArticlesBrowser();
 });

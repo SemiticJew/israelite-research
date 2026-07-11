@@ -453,13 +453,19 @@
         <h1 id="articles-title">Articles</h1>
       </header>
 
-      <section class="sj-placeholder">
-        <span class="sj-placeholder-label">Build 3H</span>
-        <h2>All Article Cards</h2>
-        <p>
-          The full Semitic Jew article library will appear here
-          in a clean, scrollable mobile interface.
-        </p>
+      <section
+        class="sj-articles-browser"
+        data-articles-browser
+        aria-live="polite"
+      >
+        <div class="sj-articles-loading">
+          <span
+            class="sj-articles-loading-ring"
+            aria-hidden="true"
+          ></span>
+
+          <p>Loading articles...</p>
+        </div>
       </section>
     </section>
 
