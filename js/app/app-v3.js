@@ -5454,6 +5454,9 @@ function renderResearchBrowserShell(){
           aria-label="Search the Israelite Encyclopedia"
           autocomplete="off"
           spellcheck="false"
+          value="${escapeHTML(
+            researchSearchTerm
+          )}"
           data-research-search
         >
 
@@ -5925,3 +5928,518 @@ document.addEventListener(
 
 
 loadResearchBrowser();
+
+
+/* =========================================================
+   Build 3I.4 — Native in-app Research reader
+   ========================================================= */
+
+let activeResearchEntryId = null;
+
+
+function researchRelatedDisplayLabel(value){
+  const clean = cleanText(
+    value
+  );
+
+  if(!clean){
+    return "";
+  }
+
+  const entry =
+    findResearchEntryById(
+      clean
+    );
+
+  if(entry){
+    return entry.headword;
+  }
+
+  return clean
+    .replace(
+      /[-_]+/g,
+      " "
+    )
+    .replace(
+      /\b\w/g,
+      character => {
+        return character.toUpperCase();
+      }
+    );
+}
+
+
+function researchCanonLabel(canon){
+  const value = cleanText(
+    canon
+  ).toLowerCase();
+
+  if(value === "tanakh"){
+    return "Tanakh";
+  }
+
+  if(value === "newtestament"){
+    return "New Testament";
+  }
+
+  if(value === "apocrypha"){
+    return "Apocrypha";
+  }
+
+  return "";
+}
+
+
+function researchReaderTextSection(
+  label,
+  value,
+  className = ""
+){
+  const text = cleanText(
+    value
+  );
+
+  if(!text){
+    return "";
+  }
+
+  return `
+    <section
+      class="sj-research-reader-section ${
+        className
+      }"
+    >
+      <p class="sj-research-reader-label">
+        ${escapeHTML(label)}
+      </p>
+
+      <p class="sj-research-reader-copy">
+        ${escapeHTML(text)}
+      </p>
+    </section>
+  `;
+}
+
+
+function researchReaderVariantsHTML(entry){
+  const variants = Array.isArray(
+    entry?.variants
+  )
+    ? entry.variants
+        .map(cleanText)
+        .filter(Boolean)
+    : [];
+
+  if(!variants.length){
+    return "";
+  }
+
+  return `
+    <section class="sj-research-reader-section">
+      <p class="sj-research-reader-label">
+        Variants
+      </p>
+
+      <div class="sj-research-reader-inline-list">
+        ${
+          variants.map(
+            value => {
+              return `
+                <span>
+                  ${escapeHTML(value)}
+                </span>
+              `;
+            }
+          ).join("")
+        }
+      </div>
+    </section>
+  `;
+}
+
+
+function researchReaderReferencesHTML(entry){
+  const references =
+    researchEntryReferences(
+      entry
+    );
+
+  if(!references.length){
+    return "";
+  }
+
+  return `
+    <section class="sj-research-reader-section">
+      <p class="sj-research-reader-label">
+        Bible References
+      </p>
+
+      <div class="sj-research-reader-references">
+        ${
+          references.map(
+            ref => {
+              const canonLabel =
+                researchCanonLabel(
+                  ref.canon
+                );
+
+              return `
+                <div class="sj-research-reader-reference">
+                  <span>
+                    ${escapeHTML(
+                      cleanText(
+                        ref.label
+                      )
+                    )}
+                  </span>
+
+                  ${
+                    canonLabel
+                      ? `
+                        <small>
+                          ${escapeHTML(
+                            canonLabel
+                          )}
+                        </small>
+                      `
+                      : ""
+                  }
+                </div>
+              `;
+            }
+          ).join("")
+        }
+      </div>
+    </section>
+  `;
+}
+
+
+function researchReaderRelatedHTML(entry){
+  const rawRelated = Array.isArray(
+    entry?.see_also
+  )
+    ? entry.see_also
+    : [];
+
+  const seen = new Set();
+
+  const related = rawRelated
+    .map(value => {
+      const clean = cleanText(
+        value
+      );
+
+      if(!clean){
+        return null;
+      }
+
+      const key =
+        normalizeResearchSearchText(
+          clean
+        );
+
+      if(
+        !key ||
+        seen.has(key)
+      ){
+        return null;
+      }
+
+      seen.add(key);
+
+      const target =
+        findResearchEntryById(
+          clean
+        );
+
+      return {
+        value:clean,
+        target,
+        label:target?.headword ||
+          researchRelatedDisplayLabel(
+            clean
+          )
+      };
+    })
+    .filter(Boolean);
+
+  if(!related.length){
+    return "";
+  }
+
+  return `
+    <section class="sj-research-reader-section">
+      <p class="sj-research-reader-label">
+        See Also
+      </p>
+
+      <div class="sj-research-reader-related">
+        ${
+          related.map(
+            item => {
+              if(item.target){
+                return `
+                  <button
+                    type="button"
+                    data-research-related-entry="${escapeHTML(
+                      item.target.id
+                    )}"
+                  >
+                    <span>
+                      ${escapeHTML(
+                        item.label
+                      )}
+                    </span>
+
+                    <span aria-hidden="true">
+                      ›
+                    </span>
+                  </button>
+                `;
+              }
+
+              return `
+                <span class="sj-research-reader-related-missing">
+                  ${escapeHTML(
+                    item.label
+                  )}
+                </span>
+              `;
+            }
+          ).join("")
+        }
+      </div>
+    </section>
+  `;
+}
+
+
+function renderResearchReader(entry){
+  const root =
+    researchBrowserRoot();
+
+  if(
+    !root ||
+    !entry
+  ){
+    return;
+  }
+
+  activeResearchEntryId =
+    entry.id;
+
+  const definition =
+    cleanText(
+      entry.definition
+    );
+
+  root.innerHTML = `
+    <article
+      class="sj-research-reader"
+      data-research-reader
+    >
+      <div class="sj-research-reader-topbar">
+        <button
+          class="sj-research-reader-back"
+          type="button"
+          data-research-reader-back
+        >
+          <span aria-hidden="true">
+            ‹
+          </span>
+
+          <span>
+            Research
+          </span>
+        </button>
+      </div>
+
+      <header class="sj-research-reader-head">
+        <p class="sj-research-reader-kicker">
+          Semitic Jew Institute
+        </p>
+
+        <div class="sj-research-reader-title-row">
+          <h2>
+            ${escapeHTML(
+              entry.headword
+            )}
+          </h2>
+
+          ${
+            entry.pos
+              ? `
+                <span>
+                  ${escapeHTML(
+                    entry.pos
+                  )}
+                </span>
+              `
+              : ""
+          }
+        </div>
+      </header>
+
+      ${
+        definition
+          ? `
+            <p class="sj-research-reader-definition">
+              ${escapeHTML(
+                definition
+              )}
+            </p>
+          `
+          : ""
+      }
+
+      <div class="sj-research-reader-details">
+        ${researchReaderVariantsHTML(
+          entry
+        )}
+
+        ${researchReaderTextSection(
+          "Syllables",
+          entry.syllables
+        )}
+
+        ${researchReaderTextSection(
+          "Etymology",
+          entry.etymology
+        )}
+
+        ${researchReaderTextSection(
+          "Usage",
+          entry.usage_notes,
+          "sj-research-reader-usage"
+        )}
+
+        ${researchReaderReferencesHTML(
+          entry
+        )}
+
+        ${researchReaderRelatedHTML(
+          entry
+        )}
+      </div>
+
+      <footer class="sj-research-reader-end">
+        <span aria-hidden="true"></span>
+
+        <p>
+          Scripture. Logic. Truth.
+        </p>
+
+        <button
+          type="button"
+          data-research-reader-back
+        >
+          Back to Research
+        </button>
+      </footer>
+    </article>
+  `;
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+}
+
+
+function openResearchEntry(entryId){
+  const entry =
+    findResearchEntryById(
+      entryId
+    );
+
+  if(!entry){
+    console.warn(
+      "Research entry could not be found.",
+      entryId
+    );
+
+    return;
+  }
+
+  renderResearchReader(
+    entry
+  );
+}
+
+
+function closeResearchReader(){
+  activeResearchEntryId = null;
+
+  renderResearchBrowserShell();
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+}
+
+
+document.addEventListener(
+  "click",
+  event => {
+    const entryLink =
+      event.target.closest(
+        "[data-research-entry-link]"
+      );
+
+    if(entryLink){
+      const entryId =
+        cleanText(
+          entryLink.dataset
+            .researchEntryId
+        );
+
+      if(entryId){
+        event.preventDefault();
+
+        openResearchEntry(
+          entryId
+        );
+      }
+
+      return;
+    }
+
+
+    const relatedEntry =
+      event.target.closest(
+        "[data-research-related-entry]"
+      );
+
+    if(relatedEntry){
+      const entryId =
+        cleanText(
+          relatedEntry.dataset
+            .researchRelatedEntry
+        );
+
+      if(entryId){
+        event.preventDefault();
+
+        openResearchEntry(
+          entryId
+        );
+      }
+
+      return;
+    }
+
+
+    const backButton =
+      event.target.closest(
+        "[data-research-reader-back]"
+      );
+
+    if(backButton){
+      event.preventDefault();
+
+      closeResearchReader();
+    }
+  }
+);
