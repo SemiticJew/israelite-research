@@ -714,6 +714,13 @@ let selectedBibleBook = null;
 let selectedBibleChapter = null;
 let selectedReaderVerse = null;
 
+let readerWordStudyOrderCache = null;
+let readerHebrewLexiconCache = null;
+let readerGreekLexiconCache = null;
+
+let activeReaderWordStudyTerms = [];
+let activeReaderWordStudyIndex = 0;
+
 
 function bibleCanonMenu(){
   return document.querySelector(
@@ -1691,6 +1698,687 @@ function toggleReaderHighlightPalette(){
 }
 
 
+function readerWordStudyModal(){
+  return document.querySelector(
+    "[data-reader-word-study-modal]"
+  );
+}
+
+
+function readerWordStudyContent(){
+  return document.querySelector(
+    "[data-reader-word-study-content]"
+  );
+}
+
+
+function readerWordStudyWordStrip(){
+  return document.querySelector(
+    "[data-reader-word-study-words]"
+  );
+}
+
+
+function readerWordStudyStatus(){
+  return document.querySelector(
+    "[data-reader-word-study-status]"
+  );
+}
+
+
+function readerWordStudyReference(){
+  return document.querySelector(
+    "[data-reader-word-study-reference]"
+  );
+}
+
+
+async function loadReaderWordStudyOrder(){
+  if(readerWordStudyOrderCache){
+    return readerWordStudyOrderCache;
+  }
+
+  readerWordStudyOrderCache = await fetchJSON(
+    "/data/lexicon/verse-strongs-order.json"
+  );
+
+  return readerWordStudyOrderCache;
+}
+
+
+async function loadReaderHebrewLexicon(){
+  if(readerHebrewLexiconCache){
+    return readerHebrewLexiconCache;
+  }
+
+  readerHebrewLexiconCache = await fetchJSON(
+    "/data/lexicon/strongs-hebrew.json"
+  );
+
+  return readerHebrewLexiconCache;
+}
+
+
+async function loadReaderGreekLexicon(){
+  if(readerGreekLexiconCache){
+    return readerGreekLexiconCache;
+  }
+
+  readerGreekLexiconCache = await fetchJSON(
+    "/data/lexicon/strongs-greek.json"
+  );
+
+  return readerGreekLexiconCache;
+}
+
+
+function cleanWordStudyText(value){
+  return typeof value === "string"
+    ? value.trim()
+    : "";
+}
+
+
+function usefulWordStudyText(value){
+  const text = cleanWordStudyText(value);
+
+  if(!text){
+    return "";
+  }
+
+  const rejected = new Set([
+    "or",
+    "n.",
+    "vb.",
+    "adj.",
+    "adv.",
+    "prep.",
+    "conj.",
+    "pron."
+  ]);
+
+  return rejected.has(text.toLowerCase())
+    ? ""
+    : text;
+}
+
+
+function usefulWordStudyList(value){
+  if(!Array.isArray(value)){
+    return [];
+  }
+
+  return value
+    .map(usefulWordStudyText)
+    .filter(Boolean);
+}
+
+
+function wordStudyLexiconForCode(code){
+  if(
+    code.startsWith("H") &&
+    readerHebrewLexiconCache
+  ){
+    return readerHebrewLexiconCache[code] || null;
+  }
+
+  if(
+    code.startsWith("G") &&
+    readerGreekLexiconCache
+  ){
+    return readerGreekLexiconCache[code] || null;
+  }
+
+  return null;
+}
+
+
+function wordStudyOrderKey(verse){
+  if(!verse){
+    return "";
+  }
+
+  return [
+    verse.canon,
+    verse.book,
+    verse.chapter,
+    verse.verse
+  ].join("/");
+}
+
+
+function renderReaderWordStudyLoading(){
+  const content = readerWordStudyContent();
+  const strip = readerWordStudyWordStrip();
+  const status = readerWordStudyStatus();
+
+  if(strip){
+    strip.innerHTML = "";
+    strip.hidden = true;
+  }
+
+  if(status){
+    status.hidden = false;
+    status.textContent =
+      "Loading original-language study data...";
+  }
+
+  if(content){
+    content.innerHTML = `
+      <div class="sj-word-study-loading">
+        <span
+          class="sj-word-study-spinner"
+          aria-hidden="true"
+        ></span>
+
+        <p>
+          Loading Word Study...
+        </p>
+      </div>
+    `;
+  }
+}
+
+
+function renderReaderWordStudyEmpty(message){
+  const content = readerWordStudyContent();
+  const strip = readerWordStudyWordStrip();
+  const status = readerWordStudyStatus();
+
+  activeReaderWordStudyTerms = [];
+  activeReaderWordStudyIndex = 0;
+
+  if(strip){
+    strip.innerHTML = "";
+    strip.hidden = true;
+  }
+
+  if(status){
+    status.hidden = true;
+  }
+
+  if(content){
+    content.innerHTML = `
+      <div class="sj-word-study-empty">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5Z"></path>
+          <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z"></path>
+        </svg>
+
+        <h3>Word Study unavailable</h3>
+
+        <p>
+          ${escapeHTML(message)}
+        </p>
+      </div>
+    `;
+  }
+}
+
+
+function renderReaderWordStudyWords(){
+  const strip = readerWordStudyWordStrip();
+
+  if(!strip){
+    return;
+  }
+
+  strip.hidden = false;
+
+  strip.innerHTML = activeReaderWordStudyTerms
+    .map((term, index) => {
+      const word = usefulWordStudyText(term.word);
+
+      const label = word || term.code;
+
+      return `
+        <button
+          type="button"
+          class="sj-word-study-word${
+            index === activeReaderWordStudyIndex
+              ? " is-active"
+              : ""
+          }"
+          data-reader-word-study-word="${index}"
+          aria-pressed="${
+            index === activeReaderWordStudyIndex
+              ? "true"
+              : "false"
+          }"
+        >
+          <span>
+            ${escapeHTML(label)}
+          </span>
+
+          <small>
+            ${escapeHTML(term.code)}
+          </small>
+        </button>
+      `;
+    })
+    .join("");
+}
+
+
+function renderReaderWordStudyDetail(index){
+  const content = readerWordStudyContent();
+
+  if(!content){
+    return;
+  }
+
+  const term = activeReaderWordStudyTerms[index];
+
+  if(!term){
+    renderReaderWordStudyEmpty(
+      "No original-language entry was found for this term."
+    );
+
+    return;
+  }
+
+  activeReaderWordStudyIndex = index;
+
+  renderReaderWordStudyWords();
+
+  const entry = term.lexicon || {};
+
+  const word = usefulWordStudyText(term.word);
+  const lemma = usefulWordStudyText(entry.lemma);
+  const translit = usefulWordStudyText(entry.translit);
+  const gloss = usefulWordStudyText(entry.gloss);
+
+  const definitions = usefulWordStudyList(
+    entry.defs
+  );
+
+  const refs = usefulWordStudyList(
+    entry.refs
+  );
+
+  const strongsDefinition = usefulWordStudyText(
+    entry.strongs_def
+  );
+
+  const kjvDefinition = usefulWordStudyText(
+    entry.kjv_def
+  );
+
+  const derivation = usefulWordStudyText(
+    entry.derivation
+  );
+
+  const isHebrew = term.code.startsWith("H");
+
+  const hasLexiconContent = Boolean(
+    lemma ||
+    translit ||
+    gloss ||
+    definitions.length ||
+    strongsDefinition ||
+    kjvDefinition ||
+    derivation ||
+    refs.length
+  );
+
+  if(!hasLexiconContent){
+    content.innerHTML = `
+      <div class="sj-word-study-empty">
+        <h3>
+          ${escapeHTML(word || term.code)}
+        </h3>
+
+        <p>
+          ${escapeHTML(term.code)} is attached to this verse,
+          but no usable lexicon entry is currently available.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  content.innerHTML = `
+    <article class="sj-word-study-detail">
+      <header class="sj-word-study-term-head">
+        <div>
+          ${
+            word
+              ? `
+                <p class="sj-word-study-english-word">
+                  ${escapeHTML(word)}
+                </p>
+              `
+              : ""
+          }
+
+          <span class="sj-word-study-code">
+            ${escapeHTML(term.code)}
+          </span>
+        </div>
+
+        ${
+          lemma
+            ? `
+              <h2
+                class="sj-word-study-lemma"
+                ${
+                  isHebrew
+                    ? 'dir="rtl" lang="he"'
+                    : 'lang="grc"'
+                }
+              >
+                ${escapeHTML(lemma)}
+              </h2>
+            `
+            : ""
+        }
+
+        ${
+          translit
+            ? `
+              <p class="sj-word-study-translit">
+                ${escapeHTML(translit)}
+              </p>
+            `
+            : ""
+        }
+
+        ${
+          gloss
+            ? `
+              <p class="sj-word-study-gloss">
+                ${escapeHTML(gloss)}
+              </p>
+            `
+            : ""
+        }
+      </header>
+
+      ${
+        definitions.length
+          ? `
+            <section class="sj-word-study-section">
+              <h3>Definitions</h3>
+
+              <ul>
+                ${definitions.map(definition => `
+                  <li>
+                    ${escapeHTML(definition)}
+                  </li>
+                `).join("")}
+              </ul>
+            </section>
+          `
+          : ""
+      }
+
+      ${
+        strongsDefinition
+          ? `
+            <section class="sj-word-study-section">
+              <h3>Strong's Definition</h3>
+
+              <p>
+                ${escapeHTML(strongsDefinition)}
+              </p>
+            </section>
+          `
+          : ""
+      }
+
+      ${
+        kjvDefinition
+          ? `
+            <section class="sj-word-study-section">
+              <h3>KJV Usage</h3>
+
+              <p>
+                ${escapeHTML(kjvDefinition)}
+              </p>
+            </section>
+          `
+          : ""
+      }
+
+      ${
+        derivation
+          ? `
+            <section class="sj-word-study-section">
+              <h3>Derivation</h3>
+
+              <p>
+                ${escapeHTML(derivation)}
+              </p>
+            </section>
+          `
+          : ""
+      }
+
+      ${
+        refs.length
+          ? `
+            <section class="sj-word-study-section">
+              <h3>Reference Examples</h3>
+
+              <div class="sj-word-study-reference-list">
+                ${refs.map(ref => `
+                  <span>
+                    ${escapeHTML(ref)}
+                  </span>
+                `).join("")}
+              </div>
+            </section>
+          `
+          : ""
+      }
+    </article>
+  `;
+}
+
+
+async function openReaderWordStudy(){
+  if(!selectedReaderVerse){
+    return;
+  }
+
+  const modal = readerWordStudyModal();
+
+  if(!modal){
+    return;
+  }
+
+  const selectedKey = selectedReaderVerse.key;
+
+  const reference = readerWordStudyReference();
+
+  if(reference){
+    reference.textContent =
+      selectedReaderVerse.ref;
+  }
+
+  modal.hidden = false;
+
+  document.body.classList.add(
+    "sj-word-study-open"
+  );
+
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  if(tray){
+    tray.hidden = true;
+  }
+
+  document.body.classList.remove(
+    "sj-reader-tray-open"
+  );
+
+  renderReaderWordStudyLoading();
+
+  try{
+    const orderData =
+      await loadReaderWordStudyOrder();
+
+    if(
+      !selectedReaderVerse ||
+      selectedReaderVerse.key !== selectedKey
+    ){
+      return;
+    }
+
+    const orderKey = wordStudyOrderKey(
+      selectedReaderVerse
+    );
+
+    const orderedTerms = Array.isArray(
+      orderData?.entries?.[orderKey]
+    )
+      ? orderData.entries[orderKey]
+      : [];
+
+    const fallbackCodes = Array.from(
+      new Set(
+        Array.isArray(selectedReaderVerse.strongs)
+          ? selectedReaderVerse.strongs
+          : []
+      )
+    )
+      .filter(code => (
+        typeof code === "string" &&
+        /^[HG]\d+$/.test(code)
+      ));
+
+    const rawTerms = orderedTerms.length
+      ? orderedTerms
+      : fallbackCodes.map(code => ({
+          word:"",
+          code
+        }));
+
+    if(!rawTerms.length){
+      renderReaderWordStudyEmpty(
+        selectedReaderVerse.canon === "apocrypha"
+          ? "No verified word-level Strong's alignment is currently available for this Apocrypha verse."
+          : "No Strong's data is currently attached to this verse."
+      );
+
+      return;
+    }
+
+    const needsHebrew = rawTerms.some(
+      term => term?.code?.startsWith("H")
+    );
+
+    const needsGreek = rawTerms.some(
+      term => term?.code?.startsWith("G")
+    );
+
+    const loads = [];
+
+    if(needsHebrew){
+      loads.push(loadReaderHebrewLexicon());
+    }
+
+    if(needsGreek){
+      loads.push(loadReaderGreekLexicon());
+    }
+
+    await Promise.all(loads);
+
+    if(
+      !selectedReaderVerse ||
+      selectedReaderVerse.key !== selectedKey
+    ){
+      return;
+    }
+
+    activeReaderWordStudyTerms = rawTerms
+      .filter(term => (
+        term &&
+        typeof term.code === "string"
+      ))
+      .map(term => ({
+        word:cleanWordStudyText(term.word),
+        code:term.code,
+        lexicon:wordStudyLexiconForCode(
+          term.code
+        )
+      }));
+
+    activeReaderWordStudyIndex = 0;
+
+    const status = readerWordStudyStatus();
+
+    if(status){
+      if(orderedTerms.length){
+        status.hidden = true;
+      }else{
+        status.hidden = false;
+        status.textContent =
+          "Exact word-order alignment is unavailable for this verse. Showing attached Strong's entries without claiming word-by-word alignment.";
+      }
+    }
+
+    if(!activeReaderWordStudyTerms.length){
+      renderReaderWordStudyEmpty(
+        "No usable Strong's entries were found for this verse."
+      );
+
+      return;
+    }
+
+    renderReaderWordStudyWords();
+    renderReaderWordStudyDetail(0);
+
+  }catch(error){
+    console.warn(
+      "Unable to load Word Study data.",
+      error
+    );
+
+    renderReaderWordStudyEmpty(
+      "Word Study data could not be loaded. Please try again."
+    );
+  }
+}
+
+
+function closeReaderWordStudy(){
+  const modal = readerWordStudyModal();
+
+  if(modal){
+    modal.hidden = true;
+  }
+
+  document.body.classList.remove(
+    "sj-word-study-open"
+  );
+
+  if(!selectedReaderVerse){
+    return;
+  }
+
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  if(tray){
+    tray.hidden = false;
+  }
+
+  document.body.classList.add(
+    "sj-reader-tray-open"
+  );
+
+  updateReaderActionTray();
+}
+
+
 function bibleChapterDataURL(
   book,
   chapter
@@ -2059,6 +2747,22 @@ function renderBibleReader(
             Share
           </span>
         </button>
+
+        <button
+          type="button"
+          data-reader-tool="word-study"
+          aria-label="Open Word Study for selected verse"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5Z"></path>
+            <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z"></path>
+            <circle cx="17" cy="8" r="2.5"></circle>
+            <path d="m19 10 2 2"></path>
+          </svg>
+          <span class="sj-reader-tool-label">
+            Word Study
+          </span>
+        </button>
       </div>
 
       <div
@@ -2126,6 +2830,73 @@ function renderBibleReader(
         </button>
       </div>
     </aside>
+
+    <div
+      class="sj-word-study-modal"
+      data-reader-word-study-modal
+      hidden
+    >
+      <button
+        class="sj-word-study-backdrop"
+        type="button"
+        data-reader-word-study-backdrop
+        aria-label="Close Word Study"
+      ></button>
+
+      <section
+        class="sj-word-study-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sj-word-study-title"
+      >
+        <div
+          class="sj-word-study-handle"
+          aria-hidden="true"
+        ></div>
+
+        <header class="sj-word-study-sheet-head">
+          <div>
+            <p
+              class="sj-word-study-reference"
+              data-reader-word-study-reference
+            >
+              Selected verse
+            </p>
+
+            <h2 id="sj-word-study-title">
+              Word Study
+            </h2>
+          </div>
+
+          <button
+            class="sj-word-study-close"
+            type="button"
+            data-reader-word-study-close
+            aria-label="Close Word Study"
+          >
+            ×
+          </button>
+        </header>
+
+        <p
+          class="sj-word-study-status"
+          data-reader-word-study-status
+          hidden
+        ></p>
+
+        <div
+          class="sj-word-study-words"
+          data-reader-word-study-words
+          hidden
+        ></div>
+
+        <div
+          class="sj-word-study-content"
+          data-reader-word-study-content
+          aria-live="polite"
+        ></div>
+      </section>
+    </div>
   `;
 }
 
@@ -2905,6 +3676,36 @@ document.addEventListener("click", event => {
   }
 
 
+  if(
+    event.target.closest(
+      "[data-reader-word-study-close]"
+    ) ||
+    event.target.closest(
+      "[data-reader-word-study-backdrop]"
+    )
+  ){
+    closeReaderWordStudy();
+    return;
+  }
+
+
+  const wordStudyWord = event.target.closest(
+    "[data-reader-word-study-word]"
+  );
+
+  if(wordStudyWord){
+    const index = Number(
+      wordStudyWord.dataset.readerWordStudyWord
+    );
+
+    if(Number.isInteger(index)){
+      renderReaderWordStudyDetail(index);
+    }
+
+    return;
+  }
+
+
   const toolButton = event.target.closest(
     "[data-reader-tool]"
   );
@@ -2935,6 +3736,11 @@ document.addEventListener("click", event => {
 
   if(tool === "share"){
     shareSelectedReaderVerse();
+    return;
+  }
+
+  if(tool === "word-study"){
+    openReaderWordStudy();
   }
 });
 
@@ -2956,4 +3762,22 @@ document.addEventListener("keydown", event => {
   event.preventDefault();
 
   selectReaderVerse(verse);
+});
+
+
+
+/* =========================================================
+   Build 3G.3 — Word Study keyboard controls
+   ========================================================= */
+
+document.addEventListener("keydown", event => {
+  if(event.key !== "Escape"){
+    return;
+  }
+
+  const modal = readerWordStudyModal();
+
+  if(modal && !modal.hidden){
+    closeReaderWordStudy();
+  }
 });
