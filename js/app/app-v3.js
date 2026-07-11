@@ -6443,3 +6443,444 @@ document.addEventListener(
     }
   }
 );
+
+
+function profileShell(){
+  return document.querySelector(
+    "[data-profile-shell]"
+  );
+}
+
+
+function profileDisplayBookName(value){
+  return cleanText(
+    value
+  )
+    .replace(
+      /[-_]+/g,
+      " "
+    )
+    .replace(
+      /\b\w/g,
+      character => {
+        return character.toUpperCase();
+      }
+    );
+}
+
+
+function profileStudyData(){
+  const bookmarks = readReaderArray(
+    READER_BOOKMARKS_KEY
+  );
+
+  const highlights = readReaderArray(
+    READER_HIGHLIGHTS_KEY
+  );
+
+  const noteMap = readReaderNotes();
+
+  const notes = Object.values(
+    noteMap
+  ).filter(
+    item => {
+      return Boolean(
+        cleanText(
+          item?.note
+        )
+      );
+    }
+  );
+
+  const location = readBibleLocation();
+
+  return {
+    bookmarks,
+    highlights,
+    notes,
+    location
+  };
+}
+
+
+function profileContinueReadingHTML(location){
+  if(
+    !location ||
+    !location.book ||
+    !location.chapter
+  ){
+    return "";
+  }
+
+  const bookName =
+    profileDisplayBookName(
+      location.book
+    );
+
+  return `
+    <section class="sj-profile-continue">
+      <p class="sj-section-kicker">
+        Continue Reading
+      </p>
+
+      <button
+        type="button"
+        data-profile-continue-reading
+      >
+        <span class="sj-profile-continue-icon">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 5.5A3.5 3.5 0 0 1 6.5 2H11v17H6.5A3.5 3.5 0 0 0 3 22Z"
+            ></path>
+
+            <path
+              d="M21 5.5A3.5 3.5 0 0 0 17.5 2H13v17h4.5A3.5 3.5 0 0 1 21 22Z"
+            ></path>
+          </svg>
+        </span>
+
+        <span class="sj-profile-continue-copy">
+          <strong>
+            ${escapeHTML(
+              bookName
+            )} ${
+              Number(
+                location.chapter
+              )
+            }
+          </strong>
+
+          <small>
+            Return to your latest Scripture location
+          </small>
+        </span>
+
+        <span
+          class="sj-profile-continue-arrow"
+          aria-hidden="true"
+        >
+          ›
+        </span>
+      </button>
+    </section>
+  `;
+}
+
+
+function renderProfileScreen(){
+  const root = profileShell();
+
+  if(!root){
+    return;
+  }
+
+  const study = profileStudyData();
+
+  root.innerHTML = `
+    <section class="sj-profile-hero">
+      <div
+        class="sj-profile-brand-stack"
+        aria-hidden="true"
+      >
+        <div class="sj-profile-brand-card is-scripture">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3.5 5.5A3.5 3.5 0 0 1 7 2h4v17H7a3.5 3.5 0 0 0-3.5 3Z"
+            ></path>
+
+            <path
+              d="M20.5 5.5A3.5 3.5 0 0 0 17 2h-4v17h4a3.5 3.5 0 0 1 3.5 3Z"
+            ></path>
+
+            <path
+              d="M7 6h2"
+            ></path>
+
+            <path
+              d="M15 6h2"
+            ></path>
+          </svg>
+
+          <strong>
+            Scripture
+          </strong>
+
+          <span>
+            Know what is written.
+          </span>
+        </div>
+
+        <div class="sj-profile-brand-card is-logic">
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            ></circle>
+
+            <path
+              d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"
+            ></path>
+          </svg>
+
+          <strong>
+            Logic
+          </strong>
+
+          <span>
+            Learn how to reason.
+          </span>
+        </div>
+
+        <div class="sj-profile-brand-card is-truth">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 10h18"
+            ></path>
+
+            <path
+              d="M5 10v9"
+            ></path>
+
+            <path
+              d="M10 10v9"
+            ></path>
+
+            <path
+              d="M14 10v9"
+            ></path>
+
+            <path
+              d="M19 10v9"
+            ></path>
+
+            <path
+              d="M2 19h20"
+            ></path>
+
+            <path
+              d="m12 3 9 5H3Z"
+            ></path>
+          </svg>
+
+          <strong>
+            Truth
+          </strong>
+
+          <span>
+            Build what can endure.
+          </span>
+        </div>
+      </div>
+
+      <p class="sj-profile-institute-label">
+        Semitic Jew Institute
+      </p>
+
+      <h2>
+        Your Study
+        <span>Starts Here</span>
+      </h2>
+
+      <p class="sj-profile-hero-copy">
+        Study Scripture. Train your reasoning.
+        Build institutions rooted in truth.
+        Your study data stays on this device for now.
+        Account sync is coming soon.
+      </p>
+
+      <div class="sj-profile-account-actions">
+        <button
+          class="sj-profile-account-primary"
+          type="button"
+          data-profile-account-action="create"
+        >
+          <span>Create Account</span>
+          <small>Coming Soon</small>
+        </button>
+
+        <button
+          class="sj-profile-account-secondary"
+          type="button"
+          data-profile-account-action="signin"
+        >
+          <span>Sign In</span>
+          <small>Coming Soon</small>
+        </button>
+      </div>
+
+      <p
+        class="sj-profile-account-notice"
+        data-profile-account-notice
+        hidden
+      >
+        Account creation and cross-device sync are
+        coming soon. Your current Scripture study data
+        remains stored on this device.
+      </p>
+    </section>
+
+    <section class="sj-profile-study-summary">
+      <div class="sj-profile-section-heading">
+        <p class="sj-section-kicker">
+          Your Study
+        </p>
+
+        <h2>
+          Your personal Scripture library
+        </h2>
+      </div>
+
+      <div class="sj-profile-study-stats">
+        <div>
+          <strong>
+            ${study.bookmarks.length}
+          </strong>
+
+          <span>
+            Saved Verses
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            ${study.highlights.length}
+          </strong>
+
+          <span>
+            Highlights
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            ${study.notes.length}
+          </strong>
+
+          <span>
+            Notes
+          </span>
+        </div>
+      </div>
+    </section>
+
+    ${profileContinueReadingHTML(
+      study.location
+    )}
+  `;
+}
+
+
+function showProfileAccountNotice(){
+  const notice = document.querySelector(
+    "[data-profile-account-notice]"
+  );
+
+  if(!notice){
+    return;
+  }
+
+  notice.hidden = false;
+
+  notice.scrollIntoView({
+    block:"nearest",
+    behavior:"smooth"
+  });
+}
+
+
+document.addEventListener(
+  "click",
+  event => {
+    const profileNav =
+      event.target.closest(
+        '[data-v3-nav="profile"]'
+      );
+
+    if(profileNav){
+      requestAnimationFrame(
+        renderProfileScreen
+      );
+
+      return;
+    }
+
+
+    const accountAction =
+      event.target.closest(
+        "[data-profile-account-action]"
+      );
+
+    if(accountAction){
+      event.preventDefault();
+
+      showProfileAccountNotice();
+
+      return;
+    }
+
+
+    const continueButton =
+      event.target.closest(
+        "[data-profile-continue-reading]"
+      );
+
+    if(continueButton){
+      event.preventDefault();
+
+      const location =
+        readBibleLocation();
+
+      if(
+        !location ||
+        !location.canon ||
+        !location.book ||
+        !location.chapter
+      ){
+        return;
+      }
+
+      const bibleNav =
+        document.querySelector(
+          '[data-v3-nav="bible"]'
+        );
+
+      if(bibleNav){
+        bibleNav.click();
+      }
+
+      openBibleReader(
+        location.canon,
+        location.book,
+        Number(
+          location.chapter
+        )
+      );
+    }
+  }
+);
+
+
+window.addEventListener(
+  "storage",
+  event => {
+    if(
+      [
+        READER_BOOKMARKS_KEY,
+        READER_HIGHLIGHTS_KEY,
+        READER_NOTES_KEY,
+        READER_LOCATION_KEY
+      ].includes(
+        event.key
+      )
+    ){
+      renderProfileScreen();
+    }
+  }
+);
+
+
+renderProfileScreen();

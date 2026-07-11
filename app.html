@@ -513,22 +513,19 @@
         <h1 id="profile-title">Profile</h1>
       </header>
 
-      <section class="sj-coming-soon">
-        <div class="sj-profile-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 22a8 8 0 0 1 16 0"></path>
-          </svg>
+      <section
+        class="sj-profile-shell"
+        data-profile-shell
+        aria-live="polite"
+      >
+        <div class="sj-profile-loading">
+          <span
+            class="sj-articles-loading-ring"
+            aria-hidden="true"
+          ></span>
+
+          <p>Loading your study space...</p>
         </div>
-
-        <span class="sj-placeholder-label">Coming Soon</span>
-
-        <h2>Your Semitic Jew Institute account.</h2>
-
-        <p>
-          Future account features will include synced highlights,
-          saved verses, notes, reading history, and personal study tools.
-        </p>
       </section>
     </section>
 
