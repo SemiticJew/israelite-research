@@ -678,6 +678,10 @@ loadDailyPrecept();
    Build 3H.3 — Actual Articles Browser
    ========================================================= */
 
+let articleBrowserCache = [];
+let activeArticleReaderURL = null;
+
+
 function articleBrowserRoot(){
   return document.querySelector(
     "[data-articles-browser]"
@@ -930,6 +934,569 @@ function renderArticlesBrowser(articles){
 }
 
 
+
+
+/* =========================================================
+   Build 3H.4.2 — Actual in-app Article reader
+   ========================================================= */
+
+function articleReaderTitle(doc){
+  return decodeHTMLEntities(
+    cleanText(
+      doc.querySelector(
+        ".article-title"
+      )?.textContent
+    )
+  );
+}
+
+
+function articleReaderDate(doc){
+  const date = doc.querySelector(
+    ".article-date time, .article-date"
+  );
+
+  return decodeHTMLEntities(
+    cleanText(
+      date?.textContent
+    )
+  );
+}
+
+
+function articleReaderAuthor(doc){
+  return decodeHTMLEntities(
+    cleanText(
+      doc.querySelector(
+        ".byline-name"
+      )?.textContent
+    )
+  ) || "Semitic Jew";
+}
+
+
+function articleReaderHero(doc){
+  const image = doc.querySelector(
+    ".hero-image img, img.hero-image"
+  );
+
+  if(!image){
+    return null;
+  }
+
+  return {
+    src:normalizeArticleImageURL(
+      image.getAttribute("src")
+    ),
+    alt:decodeHTMLEntities(
+      cleanText(
+        image.getAttribute("alt")
+      )
+    )
+  };
+}
+
+
+function prepareArticleReaderFragment(
+  source,
+  articleURL
+){
+  if(!source){
+    return "";
+  }
+
+  const clone = source.cloneNode(true);
+
+  clone.querySelectorAll(
+    "script, style, iframe, form"
+  ).forEach(element => {
+    element.remove();
+  });
+
+  const baseURL = new URL(
+    articleURL,
+    window.location.origin
+  );
+
+  clone.querySelectorAll(
+    "[src]"
+  ).forEach(element => {
+    const value = cleanText(
+      element.getAttribute("src")
+    );
+
+    if(!value){
+      return;
+    }
+
+    try{
+      const resolved = new URL(
+        value,
+        baseURL
+      );
+
+      element.setAttribute(
+        "src",
+        resolved.pathname +
+          resolved.search +
+          resolved.hash
+      );
+    }catch(error){
+      console.warn(
+        "Could not normalize article image URL.",
+        value,
+        error
+      );
+    }
+  });
+
+  clone.querySelectorAll(
+    "a[href]"
+  ).forEach(link => {
+    const value = cleanText(
+      link.getAttribute("href")
+    );
+
+    if(!value){
+      return;
+    }
+
+    if(value.startsWith("#")){
+      return;
+    }
+
+    try{
+      const resolved = new URL(
+        value,
+        baseURL
+      );
+
+      const sameOrigin =
+        resolved.origin ===
+        window.location.origin;
+
+      if(
+        sameOrigin &&
+        resolved.pathname.startsWith(
+          "/articles/"
+        )
+      ){
+        link.setAttribute(
+          "href",
+          resolved.pathname +
+            resolved.search +
+            resolved.hash
+        );
+
+        link.setAttribute(
+          "data-app-article-link",
+          ""
+        );
+
+        return;
+      }
+
+      link.setAttribute(
+        "href",
+        resolved.href
+      );
+
+      if(!sameOrigin){
+        link.setAttribute(
+          "target",
+          "_blank"
+        );
+
+        link.setAttribute(
+          "rel",
+          "noopener noreferrer"
+        );
+      }
+
+    }catch(error){
+      console.warn(
+        "Could not normalize article link.",
+        value,
+        error
+      );
+    }
+  });
+
+  return clone.innerHTML;
+}
+
+
+function renderArticleReaderLoading(){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  root.innerHTML = `
+    <section class="sj-app-article-reader">
+      <button
+        class="sj-app-article-back"
+        type="button"
+        data-app-article-back
+      >
+        <span aria-hidden="true">‹</span>
+        <span>Articles</span>
+      </button>
+
+      <div class="sj-app-article-loading">
+        <span
+          class="sj-articles-loading-ring"
+          aria-hidden="true"
+        ></span>
+
+        <p>Loading article...</p>
+      </div>
+    </section>
+  `;
+}
+
+
+function renderArticleReaderError(){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  root.innerHTML = `
+    <section class="sj-app-article-reader">
+      <button
+        class="sj-app-article-back"
+        type="button"
+        data-app-article-back
+      >
+        <span aria-hidden="true">‹</span>
+        <span>Articles</span>
+      </button>
+
+      <div class="sj-app-article-error">
+        <span class="sj-article-label">
+          Article
+        </span>
+
+        <h2>
+          This article could not be loaded.
+        </h2>
+
+        <p>
+          Return to the Articles library and try again.
+        </p>
+      </div>
+    </section>
+  `;
+}
+
+
+function renderArticleReader(
+  articleURL,
+  doc
+){
+  const root = articleBrowserRoot();
+
+  if(!root){
+    return;
+  }
+
+  const title = articleReaderTitle(doc);
+  const date = articleReaderDate(doc);
+  const author = articleReaderAuthor(doc);
+  const hero = articleReaderHero(doc);
+
+  const content = doc.querySelector(
+    ".article-content"
+  );
+
+  const footnotes = doc.querySelector(
+    ".footnotes"
+  );
+
+  if(
+    !title ||
+    !content
+  ){
+    throw new Error(
+      "Article title or article content is missing."
+    );
+  }
+
+  const contentHTML =
+    prepareArticleReaderFragment(
+      content,
+      articleURL
+    );
+
+  const footnotesHTML =
+    footnotes
+      ? prepareArticleReaderFragment(
+          footnotes,
+          articleURL
+        )
+      : "";
+
+  root.innerHTML = `
+    <article
+      class="sj-app-article-reader"
+      data-app-article-reader
+    >
+      <div class="sj-app-article-reader-topbar">
+        <button
+          class="sj-app-article-back"
+          type="button"
+          data-app-article-back
+        >
+          <span aria-hidden="true">‹</span>
+          <span>Articles</span>
+        </button>
+
+        <button
+          class="sj-app-article-share"
+          type="button"
+          data-app-article-share
+          aria-label="Share this article"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 13v6h14v-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+          <span>Share</span>
+        </button>
+      </div>
+
+      <header class="sj-app-article-head">
+        <p class="sj-app-article-kicker">
+          Semitic Jew Institute
+        </p>
+
+        <h2>
+          ${escapeHTML(title)}
+        </h2>
+
+        <div class="sj-app-article-meta">
+          <span>
+            By ${escapeHTML(author)}
+          </span>
+
+          ${
+            date
+              ? `
+                <span aria-hidden="true">•</span>
+                <time>
+                  ${escapeHTML(date)}
+                </time>
+              `
+              : ""
+          }
+        </div>
+      </header>
+
+      ${
+        hero?.src
+          ? `
+            <figure class="sj-app-article-hero">
+              <img
+                src="${escapeHTML(hero.src)}"
+                alt="${escapeHTML(hero.alt || "")}"
+              >
+            </figure>
+          `
+          : ""
+      }
+
+      <div class="sj-app-article-body">
+        ${contentHTML}
+      </div>
+
+      ${
+        footnotesHTML
+          ? `
+            <hr class="sj-app-article-divider">
+
+            <section
+              class="sj-app-article-footnotes"
+              aria-label="References and footnotes"
+            >
+              <p class="sj-app-article-reference-label">
+                References
+              </p>
+
+              ${footnotesHTML}
+            </section>
+          `
+          : ""
+      }
+
+      <div class="sj-app-article-end">
+        <span aria-hidden="true"></span>
+
+        <p>
+          Scripture. Logic. Truth.
+        </p>
+
+        <button
+          type="button"
+          data-app-article-back
+        >
+          Back to Articles
+        </button>
+      </div>
+    </article>
+  `;
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+}
+
+
+async function openArticleReader(articleURL){
+  const href = cleanText(articleURL);
+
+  if(!href){
+    return;
+  }
+
+  activeArticleReaderURL = href;
+
+  renderArticleReaderLoading();
+
+  try{
+    const response = await fetch(
+      `${href}${
+        href.includes("?")
+          ? "&"
+          : "?"
+      }appReader=${Date.now()}`
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Article returned ${response.status}`
+      );
+    }
+
+    const html = await response.text();
+
+    const doc = new DOMParser().parseFromString(
+      html,
+      "text/html"
+    );
+
+    renderArticleReader(
+      href,
+      doc
+    );
+
+  }catch(error){
+    console.warn(
+      "In-app Article reader failed.",
+      error
+    );
+
+    renderArticleReaderError();
+  }
+}
+
+
+function closeArticleReader(){
+  activeArticleReaderURL = null;
+
+  if(articleBrowserCache.length){
+    renderArticlesBrowser(
+      articleBrowserCache
+    );
+  }else{
+    loadArticlesBrowser();
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+}
+
+
+async function shareActiveArticle(){
+  if(!activeArticleReaderURL){
+    return;
+  }
+
+  const title = cleanText(
+    document.querySelector(
+      ".sj-app-article-head h2"
+    )?.textContent
+  ) || "Semitic Jew Article";
+
+  const shareURL = new URL(
+    activeArticleReaderURL,
+    "https://semiticjew.org"
+  ).href;
+
+  try{
+    if(navigator.share){
+      await navigator.share({
+        title,
+        url:shareURL
+      });
+
+      return;
+    }
+
+    await navigator.clipboard.writeText(
+      shareURL
+    );
+
+    const button = document.querySelector(
+      "[data-app-article-share]"
+    );
+
+    if(button){
+      const label = button.querySelector(
+        "span"
+      );
+
+      if(label){
+        const original = label.textContent;
+
+        label.textContent = "Copied";
+
+        setTimeout(() => {
+          label.textContent = original;
+        }, 1600);
+      }
+    }
+
+  }catch(error){
+    if(error?.name === "AbortError"){
+      return;
+    }
+
+    console.warn(
+      "Article sharing failed.",
+      error
+    );
+  }
+}
+
+
+
+
 async function loadArticlesBrowser(){
   const root = articleBrowserRoot();
 
@@ -987,6 +1554,8 @@ async function loadArticlesBrowser(){
         "No article cards were found."
       );
     }
+
+    articleBrowserCache = articles;
 
     renderArticlesBrowser(articles);
 
@@ -4142,4 +4711,55 @@ document.addEventListener("click", event => {
   }
 
   loadArticlesBrowser();
+});
+
+
+/* =========================================================
+   Build 3H.4.2 — In-app Article reader events
+   ========================================================= */
+
+document.addEventListener("click", event => {
+  const articleLink = event.target.closest(
+    "[data-app-article-link]"
+  );
+
+  if(articleLink){
+    const href = cleanText(
+      articleLink.getAttribute("href")
+    );
+
+    if(href){
+      event.preventDefault();
+
+      openArticleReader(
+        href
+      );
+    }
+
+    return;
+  }
+
+
+  const back = event.target.closest(
+    "[data-app-article-back]"
+  );
+
+  if(back){
+    event.preventDefault();
+
+    closeArticleReader();
+
+    return;
+  }
+
+
+  const share = event.target.closest(
+    "[data-app-article-share]"
+  );
+
+  if(share){
+    event.preventDefault();
+
+    shareActiveArticle();
+  }
 });
