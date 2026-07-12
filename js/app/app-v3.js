@@ -96,16 +96,6 @@ window.addEventListener("hashchange", () => {
 });
 
 
-const initialScreen = location.hash.replace("#", "");
-
-showScreen(
-  validScreens.has(initialScreen)
-    ? initialScreen
-    : "home",
-  { updateHash:false }
-);
-
-
 /* =========================================================
    Home: Precept Verse
    ========================================================= */
@@ -8067,3 +8057,13 @@ window.addEventListener(
 
 
 renderProfileScreen();
+
+
+const initialScreen = location.hash.replace("#", "");
+
+showScreen(
+  validScreens.has(initialScreen)
+    ? initialScreen
+    : "home",
+  { updateHash:false }
+);
