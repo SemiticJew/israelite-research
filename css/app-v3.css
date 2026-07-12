@@ -5739,3 +5739,258 @@ button > span:last-child{
   letter-spacing:-.02em;
   line-height:1.04;
 }
+
+.sj-bottom-nav button{
+  position:relative;
+  isolation:isolate;
+
+  transition:
+    color .26s ease,
+    transform .26s cubic-bezier(.2,.8,.2,1);
+}
+
+.sj-bottom-nav button::before{
+  content:"";
+
+  position:absolute;
+  left:50%;
+  top:42%;
+  z-index:0;
+
+  width:48px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(241,115,0,.3) 0%,
+      rgba(241,115,0,.14) 34%,
+      rgba(241,115,0,.055) 56%,
+      transparent 76%
+    );
+
+  filter:blur(6px);
+
+  opacity:0;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.7);
+
+  transition:
+    opacity .3s ease,
+    transform .34s cubic-bezier(.2,.8,.2,1);
+
+  pointer-events:none;
+}
+
+.sj-bottom-nav button svg,
+.sj-bottom-nav button span{
+  position:relative;
+  z-index:1;
+}
+
+.sj-bottom-nav button svg{
+  width:27px;
+  height:27px;
+
+  stroke-width:1.75;
+
+  transition:
+    transform .3s cubic-bezier(.2,.8,.2,1),
+    filter .28s ease;
+}
+
+.sj-bottom-nav button span{
+  transition:
+    color .26s ease,
+    opacity .26s ease;
+}
+
+.sj-bottom-nav button.is-active::before{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+}
+
+.sj-bottom-nav button.is-active svg{
+  transform:translateY(-1px) scale(1.04);
+
+  filter:
+    drop-shadow(0 0 8px rgba(241,115,0,.38));
+}
+
+#home .sj-home-brand-copy strong{
+  font-size:1.15rem;
+}
+
+#home .sj-home-brand-copy span{
+  font-size:.72rem;
+}
+
+#home .sj-home-greeting h1{
+  font-size:clamp(1.45rem, 6.2vw, 1.7rem);
+  line-height:1.06;
+}
+
+#home .sj-section-heading h2{
+  font-size:1.55rem;
+}
+
+#home .sj-section-kicker{
+  font-size:.67rem;
+}
+
+#home .sj-latest-article-copy h3,
+#home .sj-podcast-copy h3{
+  font-size:1.15rem;
+}
+
+#home .sj-latest-article-copy p,
+#home .sj-home-ask > p:not(.sj-section-kicker){
+  font-size:.86rem;
+}
+
+#sj-home-ask-heading{
+  font-size:clamp(1.35rem, 5.8vw, 1.6rem);
+}
+
+#home .sj-precept-card{
+  border-radius:22px;
+}
+
+#home .sj-precept-content{
+  padding:18px 18px 14px;
+}
+
+#home .sj-precept-label{
+  gap:7px;
+
+  margin-bottom:10px;
+
+  font-size:.74rem;
+}
+
+#home .sj-precept-label svg{
+  width:18px;
+  height:18px;
+}
+
+#home .sj-precept-reference{
+  margin-bottom:13px;
+
+  font-size:clamp(1.35rem, 5.8vw, 1.8rem);
+}
+
+#home .sj-precept-text{
+  font-size:clamp(1.12rem, 4.8vw, 1.45rem);
+  line-height:1.38;
+}
+
+#home .sj-precept-prompt{
+  margin-top:14px;
+
+  font-size:.82rem;
+  line-height:1.48;
+}
+
+#home .sj-precept-actions{
+  gap:7px;
+
+  padding:9px 10px 10px;
+}
+
+#home .sj-precept-actions button{
+  min-height:54px;
+
+  flex-direction:column;
+  gap:5px;
+
+  padding:7px 2px;
+
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.015)
+    );
+
+  color:rgba(248,248,246,.64);
+
+  transition:
+    color .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    transform .18s ease;
+}
+
+#home .sj-precept-actions button svg{
+  width:19px;
+  height:19px;
+
+  stroke-width:1.9;
+
+  transition:
+    transform .22s ease,
+    filter .22s ease;
+}
+
+#home .sj-precept-actions button span{
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.01em;
+}
+
+#home .sj-precept-actions button.is-active{
+  border-color:rgba(241,115,0,.2);
+
+  background:rgba(241,115,0,.09);
+  color:var(--sj-orange);
+
+  box-shadow:
+    0 0 16px rgba(241,115,0,.07);
+}
+
+#home .sj-precept-actions button.is-active svg{
+  filter:
+    drop-shadow(0 0 6px rgba(241,115,0,.28));
+}
+
+#home .sj-precept-actions button:active{
+  transform:scale(.97);
+}
+
+#home .sj-precept-daily{
+  padding:0 10px 11px;
+}
+
+#home .sj-precept-daily button{
+  min-height:42px;
+
+  font-size:.82rem;
+  letter-spacing:.01em;
+}
+
+#home .sj-precept-daily button svg{
+  width:18px;
+  height:18px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sj-bottom-nav button,
+  .sj-bottom-nav button::before,
+  .sj-bottom-nav button svg,
+  .sj-bottom-nav button span,
+  #home .sj-precept-actions button,
+  #home .sj-precept-actions button svg{
+    transition:none;
+  }
+}

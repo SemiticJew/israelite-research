@@ -234,7 +234,7 @@ function renderPrecept(precept){
           <path d="M10 21h4"></path>
         </svg>
 
-        <span>Send Me This Daily</span>
+        <span>Daily Reminder</span>
       </button>
     </div>
   `;
