@@ -6048,3 +6048,2458 @@ button > span:last-child{
   }
 }
 
+/* Batch 3A — Inline Scripture notes */
+
+.sj-reader-tool-row{
+  grid-template-columns:
+    repeat(5, minmax(56px, 1fr));
+}
+
+.sj-reader-action-tray{
+  border-radius:20px;
+
+  background:
+    rgba(18,19,21,.97);
+
+  box-shadow:
+    0 18px 54px rgba(0,0,0,.58);
+}
+
+.sj-reader-note-indicator{
+  width:20px;
+  height:20px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-left:7px;
+
+  position:relative;
+  top:3px;
+
+  color:var(--sj-orange);
+
+  opacity:.92;
+}
+
+.sj-reader-note-indicator svg{
+  width:16px;
+  height:16px;
+
+  stroke-width:1.9;
+}
+
+.sj-reader-verse[class*="sj-reader-highlight-"]
+.sj-reader-note-indicator{
+  color:#111317;
+}
+
+.sj-reader-inline-note{
+  margin:-5px 0 24px;
+  padding:13px;
+
+  border:1px solid rgba(129,164,205,.24);
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(129,164,205,.09),
+      rgba(255,255,255,.025)
+    ),
+    #121316;
+
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.28);
+
+  animation:
+    sj-reader-note-enter
+    .22s
+    cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes sj-reader-note-enter{
+  from{
+    opacity:0;
+    transform:translateY(-6px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.sj-reader-inline-note-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-bottom:10px;
+}
+
+.sj-reader-inline-note-head > div{
+  min-width:0;
+
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.sj-reader-inline-note-kicker{
+  color:var(--sj-orange);
+
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.sj-reader-inline-note-head strong{
+  overflow:hidden;
+
+  color:var(--sj-text);
+
+  font-size:.82rem;
+  font-weight:850;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.sj-reader-inline-note-close{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+
+  display:grid;
+  place-items:center;
+
+  padding:0;
+
+  border:0;
+  border-radius:50%;
+
+  background:rgba(255,255,255,.055);
+  color:var(--sj-muted);
+
+  font-size:1.25rem;
+  line-height:1;
+}
+
+.sj-reader-inline-note textarea{
+  width:100%;
+  min-height:96px;
+
+  display:block;
+
+  resize:vertical;
+
+  padding:12px 13px;
+
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;
+
+  outline:none;
+
+  background:#0d0d0f;
+  color:var(--sj-text);
+
+  font:inherit;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  font-size:.88rem;
+  line-height:1.5;
+
+  caret-color:var(--sj-orange);
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.sj-reader-inline-note textarea::placeholder{
+  color:rgba(158,158,163,.7);
+}
+
+.sj-reader-inline-note textarea:focus{
+  border-color:rgba(241,115,0,.5);
+
+  box-shadow:
+    0 0 0 3px rgba(241,115,0,.09);
+}
+
+.sj-reader-inline-note-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+
+  margin-top:10px;
+}
+
+.sj-reader-inline-note-status{
+  min-width:0;
+
+  color:var(--sj-muted);
+
+  font-size:.68rem;
+  font-weight:700;
+}
+
+.sj-reader-inline-note-actions{
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.sj-reader-inline-note-actions button{
+  min-height:36px;
+
+  padding:0 12px;
+
+  border-radius:999px;
+
+  font-size:.72rem;
+  font-weight:850;
+}
+
+.sj-reader-inline-note-delete{
+  border:1px solid rgba(255,255,255,.1);
+
+  background:transparent;
+  color:var(--sj-muted);
+}
+
+.sj-reader-inline-note-save{
+  border:1px solid var(--sj-orange);
+
+  background:var(--sj-orange);
+  color:#111;
+}
+
+.sj-reader-inline-note-delete[hidden]{
+  display:none!important;
+}
+
+@media (max-width:370px){
+  .sj-reader-inline-note-footer{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .sj-reader-inline-note-actions{
+    width:100%;
+    justify-content:flex-end;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sj-reader-inline-note{
+    animation:none;
+  }
+}
+
+/* Batch 3A.1 — Native annotation refinements */
+
+/* Join the selected-verse tray directly to the floating bottom nav */
+.sj-reader-action-tray{
+  right:auto;
+  left:50%;
+
+  width:min(calc(100% - 28px), 520px);
+
+  bottom:
+    calc(
+      13px
+      + var(--sj-nav-height)
+      + var(--sj-safe-bottom)
+    );
+
+  transform:translateX(-50%);
+
+  border-bottom-right-radius:16px;
+  border-bottom-left-radius:16px;
+}
+
+
+/* Let the Scholar Note visually roll out from beneath its verse */
+.sj-reader-verse.is-selected{
+  z-index:3;
+
+  margin-bottom:0;
+
+  border-bottom-right-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.sj-reader-verse.is-selected
++ .sj-reader-inline-note{
+  position:relative;
+  z-index:2;
+
+  margin-top:-1px;
+  margin-bottom:24px;
+
+  padding-top:18px;
+
+  border-top-color:rgba(129,164,205,.12);
+
+  border-top-left-radius:0;
+  border-top-right-radius:0;
+
+  transform-origin:top center;
+
+  will-change:
+    opacity,
+    transform,
+    clip-path;
+
+  animation:
+    sj-reader-note-rollout
+    .32s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+.sj-reader-verse.is-selected
++ .sj-reader-inline-note::before{
+  content:"";
+
+  position:absolute;
+  top:0;
+  right:16px;
+  left:16px;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(129,164,205,.28),
+      transparent
+    );
+
+  pointer-events:none;
+}
+
+@keyframes sj-reader-note-rollout{
+  from{
+    opacity:0;
+
+    clip-path:
+      inset(
+        0 0 100% 0
+        round 0 0 17px 17px
+      );
+
+    transform:
+      translateY(-14px)
+      scaleY(.94);
+  }
+
+  to{
+    opacity:1;
+
+    clip-path:
+      inset(
+        0 0 0 0
+        round 0 0 17px 17px
+      );
+
+    transform:
+      translateY(0)
+      scaleY(1);
+  }
+}
+
+
+/* Modern saved-note badge */
+.sj-reader-note-indicator{
+  width:18px;
+  height:18px;
+
+  margin-left:6px;
+
+  top:2px;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ff8a1f,
+      var(--sj-orange)
+    );
+
+  color:#fff;
+
+  box-shadow:
+    0 0 0 2px rgba(241,115,0,.1),
+    0 3px 10px rgba(241,115,0,.3);
+
+  opacity:1;
+}
+
+.sj-reader-note-indicator svg{
+  width:11px;
+  height:11px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.65;
+}
+
+.sj-reader-note-indicator svg circle{
+  fill:currentColor;
+  stroke:none;
+}
+
+.sj-reader-verse[class*="sj-reader-highlight-"]
+.sj-reader-note-indicator{
+  color:#fff;
+}
+
+
+/* Stacked color-circle highlighter control */
+.sj-reader-color-stack{
+  position:relative;
+
+  width:28px;
+  height:22px;
+
+  display:block;
+}
+
+.sj-reader-color-dot{
+  position:absolute;
+
+  width:14px;
+  height:14px;
+
+  border:1.5px solid rgba(255,255,255,.58);
+  border-radius:50%;
+
+  box-shadow:
+    0 0 0 2px #121315;
+
+  transition:
+    transform .24s cubic-bezier(.2,.8,.2,1),
+    box-shadow .2s ease;
+}
+
+.sj-reader-color-dot-yellow{
+  top:0;
+  left:1px;
+
+  z-index:1;
+
+  background:#facc15;
+}
+
+.sj-reader-color-dot-blue{
+  top:6px;
+  right:1px;
+
+  z-index:2;
+
+  background:#3b82f6;
+}
+
+.sj-reader-color-dot-orange{
+  bottom:0;
+  left:7px;
+
+  z-index:3;
+
+  background:#f17300;
+}
+
+[data-reader-tool="highlight"][aria-expanded="true"]
+.sj-reader-color-dot-yellow{
+  transform:translate(-3px,-2px);
+}
+
+[data-reader-tool="highlight"][aria-expanded="true"]
+.sj-reader-color-dot-blue{
+  transform:translate(3px,-1px);
+}
+
+[data-reader-tool="highlight"][aria-expanded="true"]
+.sj-reader-color-dot-orange{
+  transform:translateY(3px);
+}
+
+
+/* Make the full palette unfold when the stacked circles are tapped */
+.sj-reader-highlight-palette:not([hidden]){
+  animation:
+    sj-reader-palette-open
+    .22s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-reader-palette-open{
+  from{
+    opacity:0;
+
+    transform:
+      translateY(-8px)
+      scale(.97);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.sj-reader-highlight-palette button{
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.sj-reader-highlight-palette button:active{
+  transform:scale(.88);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sj-reader-verse.is-selected
+  + .sj-reader-inline-note,
+  .sj-reader-highlight-palette:not([hidden]){
+    animation:none;
+  }
+
+  .sj-reader-color-dot{
+    transition:none;
+  }
+}
+
+.sj-reader-tool-row{
+  grid-template-columns:
+    repeat(6, minmax(48px, 1fr));
+}
+
+.sj-reader-tool-row button{
+  min-width:48px;
+}
+
+.sj-reader-scholar-note-icon{
+  width:22px!important;
+  height:22px!important;
+}
+
+.sj-reader-verse.is-selected{
+  z-index:4;
+
+  margin-bottom:20px;
+
+  border-radius:8px;
+}
+
+.sj-reader-verse.is-selected.has-inline-note-open{
+  margin-bottom:0;
+
+  border-bottom-right-radius:0;
+  border-bottom-left-radius:0;
+}
+
+.sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note{
+  position:relative;
+  z-index:2;
+
+  margin-top:-10px;
+  margin-bottom:24px;
+
+  padding-top:24px;
+
+  overflow:hidden;
+
+  border-top-color:rgba(129,164,205,.11);
+  border-top-left-radius:0;
+  border-top-right-radius:0;
+
+  opacity:0;
+
+  clip-path:
+    inset(
+      0 0 100% 0
+      round 0 0 17px 17px
+    );
+
+  transform:
+    translateY(-18px)
+    scaleY(.96);
+
+  transform-origin:top center;
+
+  animation:none;
+
+  transition:
+    max-height .42s cubic-bezier(.2,.82,.2,1),
+    opacity .24s ease,
+    transform .42s cubic-bezier(.2,.82,.2,1),
+    clip-path .42s cubic-bezier(.2,.82,.2,1);
+}
+
+.sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note.is-open{
+  opacity:1;
+
+  clip-path:
+    inset(
+      0 0 0 0
+      round 0 0 17px 17px
+    );
+
+  transform:
+    translateY(0)
+    scaleY(1);
+}
+
+.sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note::before{
+  top:9px;
+}
+
+.sj-reader-note-indicator{
+  width:20px;
+  height:20px;
+
+  margin-left:7px;
+
+  top:3px;
+
+  border-radius:0;
+
+  background:transparent;
+  color:var(--sj-orange);
+
+  box-shadow:none;
+
+  opacity:1;
+}
+
+.sj-reader-note-indicator svg{
+  width:16px;
+  height:16px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+}
+
+.sj-reader-note-indicator svg circle{
+  fill:currentColor;
+  stroke:none;
+}
+
+.sj-reader-verse[class*="sj-reader-highlight-"]
+.sj-reader-note-indicator{
+  color:var(--sj-orange);
+}
+
+.sj-reader-action-tray:not([hidden]){
+  animation:
+    sj-reader-tray-intelligent-enter
+    .23s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-reader-tray-intelligent-enter{
+  from{
+    opacity:0;
+
+    transform:
+      translate(-50%, 10px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translate(-50%, 0)
+      scale(1);
+  }
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-tool-row{
+  display:none;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  min-height:68px;
+
+  grid-template-columns:
+    repeat(9, minmax(0, 1fr));
+
+  align-items:center;
+  gap:4px;
+
+  padding:8px 10px 10px;
+
+  border-top:0;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette button{
+  width:30px;
+  height:30px;
+
+  justify-self:center;
+
+  margin:0;
+}
+
+.sj-reader-highlight-tools{
+  display:grid!important;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,.16)!important;
+
+  background:rgba(255,255,255,.045)!important;
+  color:var(--sj-text)!important;
+
+  font-size:1rem!important;
+  font-weight:900;
+  letter-spacing:.04em;
+  line-height:1;
+}
+
+.sj-reader-highlight-tools span{
+  position:relative;
+  top:-2px;
+}
+
+@media (max-width:370px){
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette{
+    gap:3px;
+    padding-right:8px;
+    padding-left:8px;
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette button{
+    width:28px;
+    height:28px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sj-reader-action-tray:not([hidden]){
+    animation:none;
+  }
+
+  .sj-reader-verse.is-selected.has-inline-note-open
+  + .sj-reader-inline-note{
+    transition:none;
+  }
+}
+
+.sj-biblia-more-menu{
+  position:fixed;
+  z-index:280;
+
+  margin:0;
+
+  max-width:calc(100vw - 28px);
+
+  background:#18181b;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.58);
+
+  animation:
+    sj-bible-more-enter
+    .2s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-bible-more-enter{
+  from{
+    opacity:0;
+
+    transform:
+      translateY(-6px)
+      scale(.98);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+html[data-sj-reader-font="base"]
+#bible .sj-reader-verse{
+  font-size:1.28rem;
+  line-height:1.65;
+}
+
+html[data-sj-reader-font="large"]
+#bible .sj-reader-verse{
+  font-size:1.5rem;
+  line-height:1.62;
+}
+
+html[data-sj-reader-font="xlarge"]
+#bible .sj-reader-verse{
+  font-size:1.78rem;
+  line-height:1.58;
+}
+
+#bible .sj-reader-verse.is-selected{
+  padding:
+    8px
+    10px;
+}
+
+#bible .sj-reader-verse.is-selected.has-inline-note-open{
+  position:relative;
+  z-index:6;
+
+  margin-bottom:0;
+
+  padding-bottom:10px;
+
+  background:#17191d;
+
+  box-shadow:
+    0 0 0 1px rgba(129,164,205,.26),
+    0 9px 18px rgba(0,0,0,.34);
+}
+
+#bible .sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note{
+  z-index:3;
+
+  margin-top:-12px;
+
+  padding-top:27px;
+
+  border-color:rgba(129,164,205,.24);
+  border-top-color:#17191d;
+
+  background:#15171a;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 16px 38px rgba(0,0,0,.38);
+}
+
+#bible .sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note::before{
+  top:10px;
+  right:12px;
+  left:12px;
+
+  height:2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(129,164,205,.32),
+      transparent
+    );
+}
+
+body.sj-reader-tray-open .sj-bottom-nav{
+  width:min(
+    calc(100% - 52px),
+    330px
+  );
+
+  height:50px;
+
+  bottom:
+    calc(
+      10px
+      + var(--sj-safe-bottom)
+    );
+
+  padding:5px 7px;
+
+  border-radius:18px;
+
+  transition:
+    width .28s cubic-bezier(.2,.82,.2,1),
+    height .28s cubic-bezier(.2,.82,.2,1),
+    bottom .28s cubic-bezier(.2,.82,.2,1),
+    border-radius .28s ease;
+}
+
+body.sj-reader-tray-open
+.sj-bottom-nav button{
+  gap:0;
+
+  padding:3px 2px;
+}
+
+body.sj-reader-tray-open
+.sj-bottom-nav button svg{
+  width:23px;
+  height:23px;
+}
+
+body.sj-reader-tray-open
+.sj-bottom-nav button > span{
+  max-height:0;
+
+  overflow:hidden;
+
+  opacity:0;
+
+  transform:translateY(4px);
+
+  pointer-events:none;
+}
+
+body.sj-reader-tray-open
+.sj-reader-action-tray{
+  bottom:
+    calc(
+      70px
+      + var(--sj-safe-bottom)
+    );
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  transform-origin:left center;
+
+  animation:
+    sj-reader-highlight-panel-roll
+    .28s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-reader-highlight-panel-roll{
+  from{
+    opacity:0;
+
+    clip-path:
+      inset(
+        0 82% 0 0
+        round 14px
+      );
+
+    transform:
+      translateX(-8px)
+      scaleX(.96);
+  }
+
+  to{
+    opacity:1;
+
+    clip-path:
+      inset(
+        0 0 0 0
+        round 14px
+      );
+
+    transform:
+      translateX(0)
+      scaleX(1);
+  }
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-clear,
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  width:26px!important;
+  height:32px!important;
+
+  aspect-ratio:auto!important;
+
+  padding:0!important;
+
+  border:0!important;
+  border-radius:0!important;
+
+  background:transparent!important;
+
+  box-shadow:none!important;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-clear{
+  color:var(--sj-muted)!important;
+
+  font-size:1.3rem;
+  font-weight:500;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  color:var(--sj-muted)!important;
+
+  font-size:1.05rem!important;
+  letter-spacing:.08em;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools span{
+  top:-3px;
+}
+
+.sj-reader-scholar-note-icon{
+  width:23px!important;
+  height:23px!important;
+
+  stroke-width:1.65!important;
+}
+
+[data-reader-tool="scholar-note"].is-active
+.sj-reader-scholar-note-icon{
+  filter:
+    drop-shadow(
+      0 0 6px
+      rgba(241,115,0,.28)
+    );
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sj-biblia-more-menu,
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette{
+    animation:none;
+  }
+
+  body.sj-reader-tray-open .sj-bottom-nav{
+    transition:none;
+  }
+}
+
+/* Batch 3A.4 — Scholar note and toolbar refinement */
+
+/* Slightly smaller reader typography */
+html[data-sj-reader-font="base"]
+#bible .sj-reader-verse{
+  font-size:1.18rem;
+}
+
+html[data-sj-reader-font="large"]
+#bible .sj-reader-verse{
+  font-size:1.4rem;
+}
+
+html[data-sj-reader-font="xlarge"]
+#bible .sj-reader-verse{
+  font-size:1.68rem;
+}
+
+
+/* Cleaner modern pen */
+.sj-reader-scholar-note-icon{
+  width:24px!important;
+  height:24px!important;
+
+  stroke-width:1.55!important;
+}
+
+[data-reader-tool="scholar-note"]
+.sj-reader-scholar-note-icon{
+  transform:rotate(-2deg);
+}
+
+
+/* Logos lightbulb */
+.sj-reader-logos-icon{
+  width:23px!important;
+  height:23px!important;
+
+  stroke-width:1.65!important;
+}
+
+
+/* Save Note now sits directly beside the Scripture reference */
+.sj-reader-inline-note-heading{
+  min-width:0;
+  flex:1 1 auto;
+
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.sj-reader-inline-note-reference-row{
+  min-width:0;
+
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.sj-reader-inline-note-reference-row strong{
+  min-width:0;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.sj-reader-inline-note-save-compact{
+  min-height:30px;
+
+  flex:0 0 auto;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:0 10px;
+
+  border:1px solid var(--sj-orange);
+  border-radius:999px;
+
+  background:var(--sj-orange);
+  color:#111;
+
+  font-size:.68rem;
+  font-weight:900;
+}
+
+.sj-reader-inline-note-footer{
+  min-height:32px;
+}
+
+.sj-reader-inline-note-footer
+.sj-reader-inline-note-delete{
+  min-height:30px;
+
+  flex:0 0 auto;
+
+  padding:0 10px;
+
+  border:0;
+
+  background:transparent;
+  color:var(--sj-muted);
+
+  font-size:.68rem;
+  font-weight:800;
+}
+
+
+/* Keep every highlight control on one line */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  flex-wrap:nowrap;
+
+  gap:4px;
+
+  overflow:hidden;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette
+button[data-reader-highlight-color]{
+  width:28px;
+  height:28px;
+
+  flex:0 0 28px;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-clear{
+  width:20px!important;
+  height:30px!important;
+
+  flex:0 0 20px;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  width:28px!important;
+  height:30px!important;
+
+  flex:0 0 28px;
+}
+
+
+/* Scholar Note gets visual priority while the verse tray minimizes */
+.sj-reader-action-tray.is-scholar-note-mode{
+  width:min(
+    calc(100% - 72px),
+    310px
+  );
+
+  border-radius:16px;
+}
+
+.sj-reader-action-tray.is-scholar-note-mode
+.sj-reader-tool-row,
+.sj-reader-action-tray.is-scholar-note-mode
+.sj-reader-highlight-palette{
+  display:none!important;
+}
+
+.sj-reader-action-tray.is-scholar-note-mode
+.sj-reader-action-head{
+  min-height:46px;
+
+  padding-top:9px;
+  padding-bottom:9px;
+}
+
+.sj-reader-action-tray.is-scholar-note-mode
+.sj-reader-action-reference{
+  font-size:.78rem;
+}
+
+@media (max-width:370px){
+  .sj-reader-inline-note-reference-row{
+    gap:7px;
+  }
+
+  .sj-reader-inline-note-save-compact{
+    padding-right:8px;
+    padding-left:8px;
+
+    font-size:.64rem;
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette{
+    gap:3px;
+
+    padding-right:7px;
+    padding-left:7px;
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette
+  button[data-reader-highlight-color]{
+    width:26px;
+    height:26px;
+
+    flex-basis:26px;
+  }
+}
+
+/* Batch 3A.5 — Detached scholar note and uploaded Bible icon */
+
+/* Slightly larger Save Note pill beside the Scripture reference */
+.sj-reader-inline-note-save-compact{
+  min-height:34px;
+
+  padding-right:13px;
+  padding-left:13px;
+
+  font-size:.72rem;
+  line-height:1;
+}
+
+
+/* No empty footer space when there is no Delete action */
+.sj-reader-inline-note-footer[hidden]{
+  display:none!important;
+}
+
+.sj-reader-inline-note-footer{
+  justify-content:flex-end;
+
+  min-height:0;
+  margin-top:9px;
+}
+
+
+/* Selected verse becomes its own complete surface again */
+#bible .sj-reader-verse.is-selected.has-inline-note-open{
+  margin-bottom:10px;
+
+  border-radius:10px;
+
+  background:#17191d;
+}
+
+
+/* Scholar Note is now a detached card beneath the verse */
+#bible .sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note{
+  position:relative;
+  z-index:3;
+
+  margin-top:0;
+  margin-bottom:24px;
+
+  padding-top:15px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(129,164,205,.24);
+  border-radius:18px;
+
+  background:#15171a;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 16px 38px rgba(0,0,0,.38);
+
+  opacity:0;
+
+  clip-path:
+    inset(
+      0 0 100% 0
+      round 18px
+    );
+
+  transform:
+    translateY(-15px)
+    scale(.985);
+
+  transform-origin:top center;
+
+  transition:
+    max-height .42s cubic-bezier(.2,.82,.2,1),
+    opacity .24s ease,
+    transform .42s cubic-bezier(.2,.82,.2,1),
+    clip-path .42s cubic-bezier(.2,.82,.2,1);
+}
+
+#bible .sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note.is-open{
+  opacity:1;
+
+  clip-path:
+    inset(
+      0 0 0 0
+      round 18px
+    );
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+#bible .sj-reader-verse.is-selected.has-inline-note-open
++ .sj-reader-inline-note::before{
+  display:none;
+}
+
+
+/* Uploaded three-books design, traced as inline SVG */
+.sj-bottom-nav button[data-v3-nav="bible"]
+.sj-bottom-nav-books-icon{
+  width:27px;
+  height:27px;
+
+  overflow:visible;
+
+  fill:currentColor;
+  stroke:none;
+}
+
+.sj-bottom-nav button[data-v3-nav="bible"]
+.sj-bottom-nav-books-icon path{
+  fill:currentColor;
+  stroke:none;
+}
+
+body.sj-reader-tray-open
+.sj-bottom-nav button[data-v3-nav="bible"]
+.sj-bottom-nav-books-icon{
+  width:23px;
+  height:23px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  #bible .sj-reader-verse.is-selected.has-inline-note-open
+  + .sj-reader-inline-note{
+    transition:none;
+  }
+}
+
+/* Batch 3A.6 — Uniform tools, centered highlighter, dynamic book pill */
+
+/* Keep the current book name clean inside the sticky writings pill */
+#bible .sj-biblia-writings-control{
+  min-width:0;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  transition:
+    color .2s ease,
+    opacity .2s ease;
+}
+
+
+/* Remove the selected-verse text row from the interactive tray */
+.sj-reader-action-tray-head{
+  min-height:34px;
+
+  justify-content:flex-end;
+
+  padding:
+    7px
+    10px
+    0;
+}
+
+
+/* Give every normal verse tool the same visual icon footprint */
+.sj-reader-tool-row button{
+  align-items:center;
+  justify-content:center;
+
+  gap:5px;
+}
+
+.sj-reader-tool-row button > svg,
+.sj-reader-tool-row .sj-reader-color-stack{
+  width:24px!important;
+  height:24px!important;
+
+  flex:0 0 24px;
+}
+
+.sj-reader-tool-row button > svg{
+  stroke-width:1.7!important;
+}
+
+.sj-reader-scholar-note-icon,
+.sj-reader-logos-icon{
+  width:24px!important;
+  height:24px!important;
+
+  stroke-width:1.7!important;
+}
+
+.sj-reader-color-stack{
+  position:relative;
+
+  transform:scale(.92);
+  transform-origin:center;
+}
+
+
+/* Highlighter becomes one centered, intelligent rollout */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  width:100%;
+  min-height:68px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  flex-wrap:nowrap;
+
+  gap:5px;
+
+  padding:
+    10px
+    12px
+    11px;
+
+  overflow:hidden;
+
+  transform-origin:center center;
+
+  animation:
+    sj-reader-highlight-centered-rollout
+    .4s
+    cubic-bezier(.18,.82,.22,1);
+}
+
+@keyframes sj-reader-highlight-centered-rollout{
+  0%{
+    opacity:0;
+
+    clip-path:
+      inset(
+        0 50% 0 50%
+        round 18px
+      );
+
+    transform:
+      translateY(7px)
+      scaleX(.72);
+  }
+
+  62%{
+    opacity:1;
+
+    clip-path:
+      inset(
+        0 0 0 0
+        round 18px
+      );
+
+    transform:
+      translateY(-1px)
+      scaleX(1.025);
+  }
+
+  100%{
+    opacity:1;
+
+    clip-path:
+      inset(
+        0 0 0 0
+        round 18px
+      );
+
+    transform:
+      translateY(0)
+      scaleX(1);
+  }
+}
+
+
+/* Seven colors stay perfectly centered */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette
+button[data-reader-highlight-color]{
+  width:27px;
+  height:27px;
+
+  flex:
+    0
+    0
+    27px;
+
+  margin:0;
+}
+
+
+/* Bare clear and ellipsis controls stay inline with the colors */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-clear{
+  width:20px!important;
+  height:30px!important;
+
+  flex:
+    0
+    0
+    20px;
+
+  margin:0!important;
+
+  border:0!important;
+  border-radius:0!important;
+
+  background:transparent!important;
+
+  box-shadow:none!important;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  width:26px!important;
+  height:30px!important;
+
+  flex:
+    0
+    0
+    26px;
+
+  margin:0!important;
+
+  border:0!important;
+  border-radius:0!important;
+
+  background:transparent!important;
+
+  box-shadow:none!important;
+}
+
+
+/* Make the ellipsis optically centered */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools span{
+  position:relative;
+
+  top:-3px;
+
+  display:block;
+
+  text-align:center;
+}
+
+
+/* Prevent previous highlight animations from competing */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette.is-open{
+  animation:
+    sj-reader-highlight-centered-rollout
+    .4s
+    cubic-bezier(.18,.82,.22,1);
+}
+
+
+@media (max-width:370px){
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette{
+    gap:4px;
+
+    padding-right:8px;
+    padding-left:8px;
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette
+  button[data-reader-highlight-color]{
+    width:26px;
+    height:26px;
+
+    flex-basis:26px;
+  }
+}
+
+
+@media (prefers-reduced-motion:reduce){
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette,
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette.is-open{
+    animation:none;
+  }
+}
+
+/* Batch 3A.7 — Compact verse interaction tray */
+
+.sj-reader-action-tray{
+  width:min(
+    calc(100% - 40px),
+    324px
+  );
+
+  border-radius:18px;
+}
+
+.sj-reader-action-tray-head{
+  min-height:28px;
+
+  padding:
+    6px
+    9px
+    0;
+}
+
+.sj-reader-action-close{
+  width:28px;
+  height:28px;
+}
+
+.sj-reader-tool-row{
+  gap:1px;
+
+  padding:
+    5px
+    5px
+    8px;
+}
+
+.sj-reader-tool-row button{
+  min-width:0;
+  min-height:54px;
+
+  gap:4px;
+
+  padding:
+    5px
+    1px;
+}
+
+.sj-reader-tool-row button > svg,
+.sj-reader-tool-row .sj-reader-color-stack,
+.sj-reader-scholar-note-icon,
+.sj-reader-logos-icon{
+  width:22px!important;
+  height:22px!important;
+
+  flex:0 0 22px;
+}
+
+.sj-reader-tool-label{
+  font-size:.63rem;
+  line-height:1.05;
+}
+
+
+/* Keep the highlighter rollout inside the same compact tray */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  min-height:60px;
+
+  padding:
+    7px
+    8px
+    8px;
+}
+
+
+/* Scholar Note mode stays intentionally smaller than normal tray */
+.sj-reader-action-tray.is-scholar-note-mode{
+  width:min(
+    calc(100% - 76px),
+    292px
+  );
+}
+
+
+@media (max-width:370px){
+  .sj-reader-action-tray{
+    width:min(
+      calc(100% - 32px),
+      318px
+    );
+  }
+
+  .sj-reader-tool-label{
+    font-size:.61rem;
+  }
+}
+
+/* Batch 3A.8 — Final compact tray and selected verse readability */
+
+
+/* Remove the now-empty top portion of the verse interaction tray */
+.sj-reader-action-tray-head:empty{
+  display:none;
+}
+
+
+/* Make the interaction tray closely fit the six tools */
+body.sj-reader-tray-open
+.sj-reader-action-tray:not(.is-highlight-mode):not(.is-scholar-note-mode){
+  width:min(
+    calc(100% - 64px),
+    300px
+  );
+
+  max-width:300px;
+
+  padding:0;
+
+  border-radius:18px;
+}
+
+
+/* Six evenly housed tools with minimal overhang */
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row{
+  width:100%;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+
+  align-items:center;
+
+  gap:0;
+
+  padding:
+    7px
+    6px
+    8px;
+}
+
+
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row button{
+  width:100%;
+  min-width:0;
+  min-height:54px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:4px;
+
+  padding:
+    5px
+    1px;
+
+  border-radius:12px;
+}
+
+
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row button > svg,
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row .sj-reader-color-stack,
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-scholar-note-icon,
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-logos-icon{
+  width:22px!important;
+  height:22px!important;
+
+  flex:0 0 22px;
+}
+
+
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-label{
+  font-size:.62rem;
+  line-height:1;
+}
+
+
+/* Selected Scripture must remain readable while its tool tray is open */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected{
+  color:var(--sj-text)!important;
+}
+
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected
+.sj-reader-verse-text{
+  color:var(--sj-text)!important;
+}
+
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected
+.sj-reader-verse-number{
+  color:var(--sj-orange)!important;
+}
+
+
+/* Keep the saved Scholar Note icon orange while selected */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected
+.sj-reader-note-indicator{
+  color:var(--sj-orange)!important;
+}
+
+
+/* Preserve the compact centered highlighter tray */
+.sj-reader-action-tray.is-highlight-mode{
+  width:min(
+    calc(100% - 48px),
+    316px
+  );
+
+  max-width:316px;
+}
+
+
+@media (max-width:370px){
+  body.sj-reader-tray-open
+  .sj-reader-action-tray:not(.is-highlight-mode):not(.is-scholar-note-mode){
+    width:min(
+      calc(100% - 48px),
+      296px
+    );
+  }
+
+  .sj-reader-action-tray:not(.is-highlight-mode)
+  .sj-reader-tool-row{
+    padding-right:5px;
+    padding-left:5px;
+  }
+}
+
+.sj-reader-inline-note-head{
+  align-items:flex-start;
+}
+
+.sj-reader-inline-note-heading{
+  width:100%;
+}
+
+.sj-reader-inline-note-reference-row{
+  width:100%;
+
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  align-items:center;
+  gap:12px;
+}
+
+.sj-reader-inline-note-save-compact{
+  justify-self:end;
+  margin-left:auto;
+}
+
+#bible .sj-reader-verse{
+  transition:
+    background-color .3s cubic-bezier(.2,.82,.2,1),
+    color .22s ease,
+    box-shadow .3s cubic-bezier(.2,.82,.2,1),
+    transform .3s cubic-bezier(.2,.82,.2,1);
+}
+
+#bible
+.sj-reader-verse.sj-reader-highlight-preview-live{
+  animation:
+    sj-reader-highlight-preview-motion
+    .34s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-reader-highlight-preview-motion{
+  0%{
+    transform:scale(.992);
+  }
+
+  58%{
+    transform:scale(1.008);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected[class*="sj-reader-highlight-"],
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected[class*="sj-reader-highlight-"]
+.sj-reader-verse-text{
+  color:var(--sj-text)!important;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color]{
+  transition:
+    transform .2s cubic-bezier(.2,.82,.2,1),
+    box-shadow .2s ease,
+    opacity .2s ease;
+}
+
+.sj-reader-highlight-palette
+button[data-reader-highlight-color].is-previewing{
+  transform:scale(1.16);
+
+  box-shadow:
+    0 0 0 2px #121315,
+    0 0 0 4px rgba(255,255,255,.38),
+    0 7px 18px rgba(0,0,0,.3);
+}
+
+.sj-bottom-nav button::before{
+  background:
+    radial-gradient(
+      circle,
+      rgba(241,115,0,.16) 0%,
+      rgba(241,115,0,.075) 34%,
+      rgba(241,115,0,.028) 58%,
+      transparent 78%
+    );
+
+  filter:blur(7px);
+}
+
+.sj-bottom-nav button.is-active::before{
+  opacity:.62;
+}
+
+@media (prefers-reduced-motion:reduce){
+  #bible
+  .sj-reader-verse.sj-reader-highlight-preview-live{
+    animation:none;
+  }
+}
+
+/* Batch 3A.9 — Remove tray overhead and balance canon counts */
+
+
+/* The verse tool tray no longer needs a separate header region */
+.sj-reader-action-tray-head{
+  display:none!important;
+}
+
+
+/* Normal verse interaction panel tightly hugs its six tools */
+body.sj-reader-tray-open
+.sj-reader-action-tray:not(.is-highlight-mode):not(.is-scholar-note-mode){
+  width:min(
+    calc(100% - 64px),
+    300px
+  );
+
+  max-width:300px;
+
+  padding:0;
+
+  border-radius:18px;
+}
+
+
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row{
+  width:100%;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+
+  align-items:center;
+
+  gap:0;
+
+  padding:
+    6px
+    5px
+    7px;
+}
+
+
+.sj-reader-action-tray:not(.is-highlight-mode)
+.sj-reader-tool-row button{
+  min-height:55px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:4px;
+
+  padding:
+    4px
+    1px;
+}
+
+
+/* Highlighter uses the same compact panel geometry */
+.sj-reader-action-tray.is-highlight-mode{
+  width:min(
+    calc(100% - 48px),
+    316px
+  );
+
+  max-width:316px;
+
+  padding:0;
+
+  border-radius:18px;
+}
+
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette{
+  width:100%;
+  min-height:58px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  flex-wrap:nowrap;
+
+  gap:5px;
+
+  padding:
+    7px
+    8px;
+
+  overflow:hidden;
+}
+
+
+/* Keep all seven color circles centered */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette
+button[data-reader-highlight-color]:not(
+  .sj-reader-highlight-clear
+){
+  width:27px;
+  height:27px;
+
+  flex:
+    0
+    0
+    27px;
+
+  margin:0;
+}
+
+
+/* Remove the X completely from the highlighter panel */
+.sj-reader-highlight-clear{
+  display:none!important;
+}
+
+
+/* Keep the ellipsis inline and optically centered */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  width:26px!important;
+  height:30px!important;
+
+  flex:
+    0
+    0
+    26px;
+
+  display:grid!important;
+  place-items:center;
+
+  margin:0!important;
+  padding:0!important;
+
+  border:0!important;
+  border-radius:0!important;
+
+  background:transparent!important;
+  color:var(--sj-muted)!important;
+
+  box-shadow:none!important;
+}
+
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools span{
+  position:relative;
+
+  top:-3px;
+
+  display:block;
+
+  font-size:1.05rem;
+  line-height:1;
+
+  text-align:center;
+}
+
+
+/* Canon book counts now visually match the canon titles */
+.sj-canon-menu-option > span:nth-child(2){
+  font-size:1rem;
+  font-weight:800;
+  line-height:1.15;
+
+  color:var(--sj-muted);
+}
+
+
+.sj-canon-menu-option strong{
+  font-size:1rem;
+  font-weight:800;
+  line-height:1.15;
+}
+
+
+@media (max-width:390px){
+  .sj-canon-menu-option > span:nth-child(2){
+    font-size:1rem;
+  }
+}
+
+
+@media (max-width:370px){
+  body.sj-reader-tray-open
+  .sj-reader-action-tray:not(.is-highlight-mode):not(.is-scholar-note-mode){
+    width:min(
+      calc(100% - 48px),
+      296px
+    );
+  }
+
+  .sj-reader-action-tray.is-highlight-mode{
+    width:min(
+      calc(100% - 38px),
+      310px
+    );
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette{
+    gap:4px;
+
+    padding-right:6px;
+    padding-left:6px;
+  }
+
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette
+  button[data-reader-highlight-color]:not(
+    .sj-reader-highlight-clear
+  ){
+    width:26px;
+    height:26px;
+
+    flex-basis:26px;
+  }
+}
+
+/* Batch 3A.10 — Highlighter ellipsis breathing room */
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools{
+  width:34px!important;
+  height:30px!important;
+
+  flex:
+    0
+    0
+    34px;
+
+  margin-left:5px!important;
+  margin-right:3px!important;
+
+  padding:0 3px!important;
+}
+
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-tools span{
+  top:-3px;
+
+  letter-spacing:.12em;
+}
+
+@media (max-width:370px){
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-tools{
+    width:32px!important;
+
+    flex-basis:32px;
+
+    margin-left:4px!important;
+    margin-right:2px!important;
+  }
+}
+
+/* Batch 3A.11 — Softer highlighter rollout and live color preview */
+
+
+/* Softer palette entrance */
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette,
+.sj-reader-action-tray.is-highlight-mode
+.sj-reader-highlight-palette.is-open{
+  animation:
+    sj-reader-highlight-soft-rollout
+    .28s
+    cubic-bezier(.2,.78,.24,1);
+}
+
+
+@keyframes sj-reader-highlight-soft-rollout{
+  0%{
+    opacity:.72;
+
+    transform:
+      translateY(3px)
+      scale(.975);
+  }
+
+  68%{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1.006);
+  }
+
+  100%{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* Let the actual verse display every color change live */
+#bible .sj-reader-verse{
+  transition:
+    background-color .24s ease,
+    color .2s ease,
+    box-shadow .24s ease,
+    border-color .24s ease;
+}
+
+
+#bible
+.sj-reader-verse.sj-reader-highlight-preview-live{
+  animation:none!important;
+  transform:none!important;
+}
+
+
+/* Keep live color changes readable while the verse tray is open */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected[class*="sj-reader-highlight-"]{
+  transition:
+    background-color .24s ease,
+    color .2s ease,
+    box-shadow .24s ease,
+    border-color .24s ease;
+}
+
+
+/* Subtle selected-color feedback without overpowering motion */
+.sj-reader-highlight-palette
+button[data-reader-highlight-color].is-previewing{
+  transform:scale(1.08);
+
+  box-shadow:
+    0 0 0 2px #121315,
+    0 0 0 3px rgba(255,255,255,.25),
+    0 5px 13px rgba(0,0,0,.24);
+}
+
+
+@media (prefers-reduced-motion:reduce){
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette,
+  .sj-reader-action-tray.is-highlight-mode
+  .sj-reader-highlight-palette.is-open{
+    animation:none;
+  }
+
+  #bible .sj-reader-verse{
+    transition:none;
+  }
+}
+
+/* Batch 3A.13 — Visible live highlight colors while tray is open */
+
+/*
+  The selected-verse surface was visually overriding the active
+  highlight while the interaction tray remained open. These rules
+  keep the actual color visible immediately during live preview.
+*/
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-red{
+  background:#f84c4c!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-orange{
+  background:#ff7a0b!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-yellow{
+  background:#facc15!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-green{
+  background:#22c55e!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-blue{
+  background:#3b82f6!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-indigo{
+  background:#6366f1!important;
+}
+
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-violet{
+  background:#a855f7!important;
+}
+
+
+/* Keep highlighted Scripture legible during live color preview */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected[class*="sj-reader-highlight-"],
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected[class*="sj-reader-highlight-"]
+.sj-reader-verse-text{
+  color:#111317!important;
+}
+
+
+/* Smoothly wash from one live color into the next */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected{
+  transition:
+    background-color .28s cubic-bezier(.2,.82,.2,1),
+    color .2s ease,
+    border-color .24s ease,
+    box-shadow .24s ease!important;
+}
+
+
+/* A subtle visual response each time another color is previewed */
+body.sj-reader-tray-open
+#bible
+.sj-reader-verse.is-selected.sj-reader-highlight-color-change{
+  animation:
+    sj-reader-live-highlight-wash
+    .3s
+    cubic-bezier(.2,.82,.2,1);
+}
+
+@keyframes sj-reader-live-highlight-wash{
+  0%{
+    filter:brightness(.94);
+  }
+
+  55%{
+    filter:brightness(1.07);
+  }
+
+  100%{
+    filter:brightness(1);
+  }
+}
+
+
+@media (prefers-reduced-motion:reduce){
+  body.sj-reader-tray-open
+  #bible
+  .sj-reader-verse.is-selected.sj-reader-highlight-color-change{
+    animation:none;
+  }
+}

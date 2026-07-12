@@ -39,6 +39,10 @@ function showScreen(name, options = {}){
     name = "home";
   }
 
+  if(name !== "bible"){
+    closeReaderActionTray();
+  }
+
   screens.forEach(screen => {
     const isActive = screen.dataset.v3Screen === name;
 
@@ -1618,6 +1622,7 @@ let selectedBibleCanon = null;
 let selectedBibleBook = null;
 let selectedBibleChapter = null;
 let selectedReaderVerse = null;
+let readerHighlightPreviewOriginal = null;
 
 let readerWordStudyOrderCache = null;
 let readerHebrewLexiconCache = null;
@@ -2147,6 +2152,9 @@ function clearReaderHighlightClasses(
 
 
 function closeReaderActionTray(){
+  restoreReaderHighlightPreview();
+  removeReaderInlineNoteEditor();
+
   selectedReaderVerse = null;
 
   document
@@ -2191,27 +2199,25 @@ function updateReaderActionTray(){
     '[data-reader-tool="save"]'
   );
 
-  const noteButton = tray.querySelector(
-    '[data-reader-tool="note"]'
-  );
-
   const highlightButton = tray.querySelector(
     '[data-reader-tool="highlight"]'
+  );
+
+  const scholarNoteButton = tray.querySelector(
+    '[data-reader-tool="scholar-note"]'
   );
 
   const bookmark = getReaderBookmark(
     selectedReaderVerse.key
   );
 
-  const notes = readReaderNotes();
-
-  const note = notes[
-    selectedReaderVerse.key
-  ];
-
   const highlight = getReaderHighlight(
     selectedReaderVerse.key
   );
+
+  const note = readReaderNotes()[
+    selectedReaderVerse.key
+  ]?.note || "";
 
   if(saveButton){
     saveButton.classList.toggle(
@@ -2235,13 +2241,6 @@ function updateReaderActionTray(){
     }
   }
 
-  if(noteButton){
-    noteButton.classList.toggle(
-      "is-active",
-      Boolean(note?.note)
-    );
-  }
-
   if(highlightButton){
     highlightButton.classList.toggle(
       "is-active",
@@ -2252,12 +2251,41 @@ function updateReaderActionTray(){
       highlight?.category || "";
   }
 
+  if(scholarNoteButton){
+    const noteIsActive = Boolean(
+      note.trim() ||
+      readerInlineNoteEditor()
+    );
+
+    scholarNoteButton.classList.toggle(
+      "is-active",
+      noteIsActive
+    );
+
+    scholarNoteButton.setAttribute(
+      "aria-pressed",
+      String(noteIsActive)
+    );
+  }
+
   const palette = tray.querySelector(
     "[data-reader-highlight-palette]"
   );
 
   if(palette){
     palette.hidden = true;
+    palette.classList.remove("is-open");
+  }
+
+  tray.classList.remove(
+    "is-highlight-mode"
+  );
+
+  if(highlightButton){
+    highlightButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
   }
 }
 
@@ -2315,6 +2343,8 @@ function selectReaderVerse(
     return;
   }
 
+  removeReaderInlineNoteEditor();
+
   document
     .querySelectorAll(".sj-reader-verse.is-selected")
     .forEach(verse => {
@@ -2349,6 +2379,10 @@ function selectReaderVerse(
   );
 
   updateReaderActionTray();
+
+  positionReaderVerseIntelligently(
+    verseElement
+  );
 }
 
 
@@ -2412,8 +2446,240 @@ function toggleReaderBookmark(){
 }
 
 
-function editReaderNote(){
-  if(!selectedReaderVerse) return;
+/* Batch 3A — Inline Scripture notes */
+
+function readerInlineNoteEditor(){
+  return document.querySelector(
+    "[data-reader-inline-note]"
+  );
+}
+
+
+function removeReaderInlineNoteEditor(){
+  document
+    .querySelectorAll(
+      ".sj-reader-verse.has-inline-note-open"
+    )
+    .forEach(verse => {
+      verse.classList.remove(
+        "has-inline-note-open"
+      );
+    });
+
+  document
+    .querySelector(
+      "[data-reader-action-tray]"
+    )
+    ?.classList.remove(
+      "is-scholar-note-mode"
+    );
+
+  readerInlineNoteEditor()?.remove();
+}
+
+
+/* Batch 3A.1 — Native annotation refinements */
+
+function readerNoteIndicatorMarkup(){
+  return `
+    <span
+      class="sj-reader-note-indicator"
+      data-reader-note-indicator
+      aria-label="This verse has a saved scholar note"
+      title="Scholar note saved"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6.5 5h11A2.5 2.5 0 0 1 20 7.5v5a2.5 2.5 0 0 1-2.5 2.5H11l-5 3v-3.3A2.5 2.5 0 0 1 4 12.5v-5A2.5 2.5 0 0 1 6.5 5Z"></path>
+        <circle cx="8" cy="10" r=".7"></circle>
+        <circle cx="12" cy="10" r=".7"></circle>
+        <circle cx="16" cy="10" r=".7"></circle>
+      </svg>
+    </span>
+  `;
+}
+
+
+function updateReaderVerseNoteIndicator(key){
+  if(!key) return;
+
+  const verse = document.querySelector(
+    `[data-reader-key="${CSS.escape(key)}"]`
+  );
+
+  if(!verse) return;
+
+  const existing = verse.querySelector(
+    "[data-reader-note-indicator]"
+  );
+
+  const note = readReaderNotes()[key]?.note || "";
+
+  if(note.trim()){
+    if(!existing){
+      verse.insertAdjacentHTML(
+        "beforeend",
+        readerNoteIndicatorMarkup()
+      );
+    }
+
+    return;
+  }
+
+  existing?.remove();
+}
+
+
+function readerAnnotationViewportBounds(){
+  const stickyControls = document.querySelector(
+    "#bible .sj-biblia-top"
+  );
+
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  const stickyRect =
+    stickyControls?.getBoundingClientRect();
+
+  const trayRect = (
+    tray &&
+    !tray.hidden
+  )
+    ? tray.getBoundingClientRect()
+    : null;
+
+  return {
+    top:
+      stickyRect
+        ? stickyRect.bottom + 14
+        : 14,
+
+    bottom:
+      trayRect
+        ? trayRect.top - 14
+        : window.innerHeight - 24
+  };
+}
+
+
+function positionReaderVerseIntelligently(
+  verseElement
+){
+  if(!verseElement) return;
+
+  requestAnimationFrame(() => {
+    const bounds =
+      readerAnnotationViewportBounds();
+
+    const rect =
+      verseElement.getBoundingClientRect();
+
+    const availableHeight =
+      bounds.bottom - bounds.top;
+
+    let scrollDelta = 0;
+
+    if(rect.height > availableHeight){
+      scrollDelta =
+        rect.top -
+        bounds.top;
+    }else if(rect.bottom > bounds.bottom){
+      scrollDelta =
+        rect.bottom -
+        bounds.bottom +
+        16;
+    }else if(rect.top < bounds.top){
+      scrollDelta =
+        rect.top -
+        bounds.top -
+        10;
+    }
+
+    if(Math.abs(scrollDelta) > 1){
+      window.scrollBy({
+        top:scrollDelta,
+        behavior:"smooth"
+      });
+    }
+  });
+}
+
+
+function positionReaderNoteIntelligently(
+  verseElement,
+  editor,
+  targetHeight
+){
+  if(
+    !verseElement ||
+    !editor
+  ){
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    const bounds =
+      readerAnnotationViewportBounds();
+
+    const verseRect =
+      verseElement.getBoundingClientRect();
+
+    const editorRect =
+      editor.getBoundingClientRect();
+
+    const projectedBottom =
+      editorRect.top +
+      targetHeight;
+
+    let scrollDelta = 0;
+
+    if(verseRect.top < bounds.top){
+      scrollDelta =
+        verseRect.top -
+        bounds.top -
+        8;
+    }else if(projectedBottom > bounds.bottom){
+      const needed =
+        projectedBottom -
+        bounds.bottom +
+        18;
+
+      const maximumSafeScroll =
+        Math.max(
+          0,
+          verseRect.top -
+          bounds.top -
+          8
+        );
+
+      scrollDelta =
+        Math.min(
+          needed,
+          maximumSafeScroll
+        );
+    }
+
+    if(Math.abs(scrollDelta) > 1){
+      window.scrollBy({
+        top:scrollDelta,
+        behavior:"smooth"
+      });
+    }
+  });
+}
+
+
+function renderReaderInlineNoteEditor(
+  verseElement
+){
+  removeReaderInlineNoteEditor();
+
+  if(
+    !verseElement ||
+    !selectedReaderVerse
+  ){
+    return;
+  }
 
   const notes = readReaderNotes();
 
@@ -2421,16 +2687,165 @@ function editReaderNote(){
     selectedReaderVerse.key
   ]?.note || "";
 
-  const next = window.prompt(
-    `Note for ${selectedReaderVerse.ref}`,
-    existing
+  const editor = document.createElement("section");
+
+  editor.className = "sj-reader-inline-note";
+  editor.dataset.readerInlineNote = "";
+  editor.dataset.readerInlineNoteKey =
+    selectedReaderVerse.key;
+
+  editor.innerHTML = `
+    <header class="sj-reader-inline-note-head">
+      <div class="sj-reader-inline-note-heading">
+        <span class="sj-reader-inline-note-kicker">
+          Scholar Note
+        </span>
+
+        <div class="sj-reader-inline-note-reference-row">
+          <strong>
+            ${escapeHTML(selectedReaderVerse.ref)}
+          </strong>
+
+          <button
+            type="button"
+            class="sj-reader-inline-note-save sj-reader-inline-note-save-compact"
+            data-reader-inline-note-save
+          >
+            Save Note
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <textarea
+      data-reader-inline-note-input
+      rows="4"
+      maxlength="5000"
+      placeholder="Write your note, observation, precept, or research connection..."
+      aria-label="Note for ${escapeHTML(selectedReaderVerse.ref)}"
+    >${escapeHTML(existing)}</textarea>
+
+    <footer
+      class="sj-reader-inline-note-footer"
+      data-reader-inline-note-footer
+      ${
+        existing.trim()
+          ? ""
+          : "hidden"
+      }
+    >
+      <button
+        type="button"
+        class="sj-reader-inline-note-delete"
+        data-reader-inline-note-delete
+      >
+        Delete
+      </button>
+    </footer>
+  `;
+
+  verseElement.classList.add(
+    "has-inline-note-open"
   );
 
-  if(next === null){
+  verseElement.insertAdjacentElement(
+    "afterend",
+    editor
+  );
+
+  document
+    .querySelector(
+      "[data-reader-action-tray]"
+    )
+    ?.classList.add(
+      "is-scholar-note-mode"
+    );
+
+  editor.style.maxHeight = "0px";
+
+  const targetHeight = editor.scrollHeight;
+
+  const handleTransitionEnd = event => {
+    if(
+      event.propertyName !== "max-height" ||
+      !editor.classList.contains("is-open")
+    ){
+      return;
+    }
+
+    editor.style.maxHeight = "none";
+    editor.style.overflow = "visible";
+
+    editor.removeEventListener(
+      "transitionend",
+      handleTransitionEnd
+    );
+  };
+
+  editor.addEventListener(
+    "transitionend",
+    handleTransitionEnd
+  );
+
+  requestAnimationFrame(() => {
+    editor.style.maxHeight =
+      `${targetHeight}px`;
+
+    editor.classList.add(
+      "is-open"
+    );
+
+    positionReaderNoteIntelligently(
+      verseElement,
+      editor,
+      targetHeight
+    );
+  });
+}
+
+
+function openReaderScholarNote(){
+  if(!selectedReaderVerse) return;
+
+  const existingEditor =
+    readerInlineNoteEditor();
+
+  if(existingEditor){
+    removeReaderInlineNoteEditor();
+    updateReaderActionTray();
     return;
   }
 
-  const trimmed = next.trim();
+  const verseElement = document.querySelector(
+    `[data-reader-key="${
+      CSS.escape(selectedReaderVerse.key)
+    }"]`
+  );
+
+  if(!verseElement) return;
+
+  renderReaderInlineNoteEditor(
+    verseElement
+  );
+
+  updateReaderActionTray();
+}
+
+
+function saveReaderInlineNote(){
+  if(!selectedReaderVerse) return;
+
+  const editor = readerInlineNoteEditor();
+
+  const input = editor?.querySelector(
+    "[data-reader-inline-note-input]"
+  );
+
+  if(!editor || !input) return;
+
+  const notes = readReaderNotes();
+
+  const trimmed = input.value.trim();
 
   if(trimmed){
     notes[selectedReaderVerse.key] = {
@@ -2444,8 +2859,90 @@ function editReaderNote(){
     delete notes[selectedReaderVerse.key];
   }
 
-  writeReaderNotes(notes);
-  updateReaderActionTray();
+  if(!writeReaderNotes(notes)){
+    return;
+  }
+
+  updateReaderVerseNoteIndicator(
+    selectedReaderVerse.key
+  );
+
+  const status = editor.querySelector(
+    "[data-reader-inline-note-status]"
+  );
+
+  if(status){
+    status.textContent = trimmed
+      ? "Note saved"
+      : "Empty note removed";
+  }
+
+  const deleteButton = editor.querySelector(
+    "[data-reader-inline-note-delete]"
+  );
+
+  if(deleteButton){
+    deleteButton.hidden = !trimmed;
+  }
+
+  const footer = editor.querySelector(
+    "[data-reader-inline-note-footer]"
+  );
+
+  if(footer){
+    footer.hidden = !trimmed;
+  }
+}
+
+
+function deleteReaderInlineNote(){
+  if(!selectedReaderVerse) return;
+
+  const notes = readReaderNotes();
+
+  delete notes[selectedReaderVerse.key];
+
+  if(!writeReaderNotes(notes)){
+    return;
+  }
+
+  updateReaderVerseNoteIndicator(
+    selectedReaderVerse.key
+  );
+
+  const editor = readerInlineNoteEditor();
+
+  const input = editor?.querySelector(
+    "[data-reader-inline-note-input]"
+  );
+
+  const status = editor?.querySelector(
+    "[data-reader-inline-note-status]"
+  );
+
+  const deleteButton = editor?.querySelector(
+    "[data-reader-inline-note-delete]"
+  );
+
+  if(input){
+    input.value = "";
+  }
+
+  if(status){
+    status.textContent = "Note deleted";
+  }
+
+  if(deleteButton){
+    deleteButton.hidden = true;
+  }
+
+  const footer = editor?.querySelector(
+    "[data-reader-inline-note-footer]"
+  );
+
+  if(footer){
+    footer.hidden = true;
+  }
 }
 
 
@@ -2592,6 +3089,223 @@ function saveReaderHighlight(color){
 }
 
 
+function selectedReaderHighlightVerseElement(){
+  if(!selectedReaderVerse){
+    return null;
+  }
+
+  return document.querySelector(
+    `[data-reader-key="${
+      CSS.escape(selectedReaderVerse.key)
+    }"]`
+  );
+}
+
+
+function previewReaderHighlight(color){
+  const verse =
+    selectedReaderHighlightVerseElement();
+
+  if(!verse){
+    return;
+  }
+
+  const allowed = new Set([
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+  ]);
+
+  const requested = String(
+    color || ""
+  ).trim();
+
+  const normalized =
+    requested === "clear"
+      ? ""
+      : requested;
+
+  if(
+    normalized &&
+    !allowed.has(normalized)
+  ){
+    return;
+  }
+
+  clearReaderHighlightClasses(
+    verse
+  );
+
+  if(normalized){
+    verse.classList.add(
+      `sj-reader-highlight-${normalized}`
+    );
+  }
+
+  verse.dataset.readerPreviewColor =
+    normalized;
+
+  verse.classList.add(
+    "sj-reader-highlight-preview-live"
+  );
+
+  document
+    .querySelectorAll(
+      "[data-reader-highlight-color]"
+    )
+    .forEach(button => {
+      button.classList.toggle(
+        "is-previewing",
+        button.dataset.readerHighlightColor ===
+          requested
+      );
+    });
+}
+
+
+function restoreReaderHighlightPreview(){
+  if(
+    readerHighlightPreviewOriginal === null
+  ){
+    return;
+  }
+
+  previewReaderHighlight(
+    readerHighlightPreviewOriginal ||
+    "clear"
+  );
+
+  readerHighlightPreviewOriginal = null;
+}
+
+
+function previewReaderHighlightFromEvent(
+  event
+){
+  const colorButton = event.target.closest(
+    "[data-reader-highlight-color]"
+  );
+
+  if(!colorButton){
+    return;
+  }
+
+  const tray = colorButton.closest(
+    "[data-reader-action-tray]"
+  );
+
+  if(
+    !tray?.classList.contains(
+      "is-highlight-mode"
+    )
+  ){
+    return;
+  }
+
+  previewReaderHighlight(
+    colorButton.dataset.readerHighlightColor
+  );
+}
+
+
+
+function previewReaderHighlightFromPoint(
+  clientX,
+  clientY
+){
+  const target = document.elementFromPoint(
+    clientX,
+    clientY
+  );
+
+  const colorButton = target?.closest(
+    "[data-reader-highlight-color]"
+  );
+
+  if(!colorButton){
+    return;
+  }
+
+  const tray = colorButton.closest(
+    "[data-reader-action-tray]"
+  );
+
+  if(
+    !tray?.classList.contains(
+      "is-highlight-mode"
+    )
+  ){
+    return;
+  }
+
+  previewReaderHighlight(
+    colorButton.dataset.readerHighlightColor
+  );
+}
+
+
+function setReaderHighlightMode(isOpen){
+  const tray = document.querySelector(
+    "[data-reader-action-tray]"
+  );
+
+  const palette = document.querySelector(
+    "[data-reader-highlight-palette]"
+  );
+
+  const button = document.querySelector(
+    '[data-reader-tool="highlight"]'
+  );
+
+  if(
+    !tray ||
+    !palette
+  ){
+    return;
+  }
+
+  if(
+    isOpen &&
+    selectedReaderVerse
+  ){
+    readerHighlightPreviewOriginal =
+      getReaderHighlight(
+        selectedReaderVerse.key
+      )?.category || "";
+  }
+
+  if(
+    !isOpen &&
+    readerHighlightPreviewOriginal !== null
+  ){
+    restoreReaderHighlightPreview();
+  }
+
+  palette.hidden = !isOpen;
+
+  palette.classList.toggle(
+    "is-open",
+    isOpen
+  );
+
+  tray.classList.toggle(
+    "is-highlight-mode",
+    isOpen
+  );
+
+  if(button){
+    button.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+  }
+}
+
+
 function toggleReaderHighlightPalette(){
   const palette = document.querySelector(
     "[data-reader-highlight-palette]"
@@ -2599,7 +3313,9 @@ function toggleReaderHighlightPalette(){
 
   if(!palette) return;
 
-  palette.hidden = !palette.hidden;
+  setReaderHighlightMode(
+    palette.hidden
+  );
 }
 
 
@@ -3382,6 +4098,8 @@ function renderBibleReader(
       ? chapter + 1
       : null;
 
+  const readerNotes = readReaderNotes();
+
   const verseHTML = verses.map(verse => {
     const verseNumber = Number(verse.v);
 
@@ -3404,6 +4122,10 @@ function renderBibleReader(
       readerHighlightClass(
         highlight?.category || ""
       );
+
+    const hasNote = Boolean(
+      readerNotes[key]?.note?.trim()
+    );
 
     return `
       <p
@@ -3433,6 +4155,12 @@ function renderBibleReader(
         <span class="sj-reader-verse-text">
           ${escapeHTML(verse.t || "")}
         </span>
+
+        ${
+          hasNote
+            ? readerNoteIndicatorMarkup()
+            : ""
+        }
       </p>
     `;
   }).join("");
@@ -3565,32 +4293,54 @@ function renderBibleReader(
       hidden
     >
       <div class="sj-reader-action-tray-head">
-        <strong data-reader-action-reference>
-          Selected verse
-        </strong>
-
-        <button
-          class="sj-reader-action-close"
-          type="button"
-          data-reader-action-close
-          aria-label="Close verse tools"
-        >
-          ×
-        </button>
       </div>
 
       <div class="sj-reader-tool-row">
         <button
           type="button"
           data-reader-tool="highlight"
-          aria-label="Highlight selected verse"
+          aria-label="Choose highlight color"
+          aria-expanded="false"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m4 20 5-1 10-10-4-4L5 15Z"></path>
-            <path d="m13 7 4 4"></path>
-          </svg>
+          <span
+            class="sj-reader-color-stack"
+            aria-hidden="true"
+          >
+            <span
+              class="sj-reader-color-dot sj-reader-color-dot-yellow"
+            ></span>
+            <span
+              class="sj-reader-color-dot sj-reader-color-dot-blue"
+            ></span>
+            <span
+              class="sj-reader-color-dot sj-reader-color-dot-orange"
+            ></span>
+          </span>
+
           <span class="sj-reader-tool-label">
             Highlight
+          </span>
+        </button>
+
+        <button
+          type="button"
+          data-reader-tool="scholar-note"
+          aria-label="Open Scholar Note for selected verse"
+          aria-pressed="false"
+        >
+                    <svg
+            class="sj-reader-scholar-note-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M5.2 18.8 6.6 14l9.5-9.5a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L10 17.4Z"></path>
+            <path d="m14.7 5.9 3.4 3.4"></path>
+            <path d="M5.2 18.8 10 17.4"></path>
+            <path d="M3.5 21c3.2-1.3 6.4-1.4 9.6-.2"></path>
+          </svg>
+
+          <span class="sj-reader-tool-label">
+            Note
           </span>
         </button>
 
@@ -3605,22 +4355,6 @@ function renderBibleReader(
           </svg>
           <span class="sj-reader-tool-label">
             Save
-          </span>
-        </button>
-
-        <button
-          type="button"
-          data-reader-tool="note"
-          aria-label="Add note to selected verse"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 3h9l4 4v14H6Z"></path>
-            <path d="M14 3v5h5"></path>
-            <path d="M9 12h6"></path>
-            <path d="M9 16h4"></path>
-          </svg>
-          <span class="sj-reader-tool-label">
-            Note
           </span>
         </button>
 
@@ -3656,16 +4390,22 @@ function renderBibleReader(
         <button
           type="button"
           data-reader-tool="word-study"
-          aria-label="Open Word Study for selected verse"
+          aria-label="Open Logos word study for selected verse"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5Z"></path>
-            <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z"></path>
-            <circle cx="17" cy="8" r="2.5"></circle>
-            <path d="m19 10 2 2"></path>
+                    <svg
+            class="sj-reader-logos-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M8.4 14.8C7.5 13.8 7 12.5 7 11a5 5 0 1 1 10 0c0 1.5-.5 2.8-1.4 3.8-.9.9-1.4 1.7-1.6 2.7h-4c-.2-1-.7-1.8-1.6-2.7Z"></path>
+            <path d="M9.5 18.5h5"></path>
+            <path d="M10.5 21h3"></path>
+            <path d="M12 2V1"></path>
+            <path d="m5.6 4.6-.8-.8"></path>
+            <path d="m18.4 4.6.8-.8"></path>
           </svg>
           <span class="sj-reader-tool-label">
-            Word Study
+            Logos
           </span>
         </button>
       </div>
@@ -3732,6 +4472,18 @@ function renderBibleReader(
           title="Clear highlight"
         >
           ×
+        </button>
+
+        <button
+          class="sj-reader-highlight-tools"
+          type="button"
+          data-reader-highlight-tools
+          aria-label="Show other verse tools"
+          title="More verse tools"
+        >
+          <span aria-hidden="true">
+            •••
+          </span>
         </button>
       </div>
     </aside>
@@ -3999,6 +4751,8 @@ async function openBibleReader(
   selectedBibleBook = book.slug;
   selectedBibleChapter = chapterNumber;
 
+  updateBibliaWritingsPill();
+
   if(shouldSaveLocation){
     saveBibleLocation();
   }
@@ -4193,6 +4947,31 @@ function goBackInBibleBrowser(){
 }
 
 
+function readerFontLabel(size){
+  return {
+    base:"Standard",
+    large:"Large",
+    xlarge:"Extra Large"
+  }[size] || "Standard";
+}
+
+
+function updateReaderFontMenuLabel(){
+  const status = document.querySelector(
+    "[data-bible-font] small"
+  );
+
+  if(!status) return;
+
+  const current =
+    document.documentElement.dataset.sjReaderFont ||
+    "base";
+
+  status.textContent =
+    `${readerFontLabel(current)} Scripture text`;
+}
+
+
 function restoreReaderFontPreference(){
   let savedSize = "base";
 
@@ -4215,6 +4994,8 @@ function restoreReaderFontPreference(){
 
   document.documentElement.dataset.sjReaderFont =
     savedSize;
+
+  updateReaderFontMenuLabel();
 }
 
 
@@ -4247,14 +5028,10 @@ function cycleReaderFontPreference(){
     );
   }
 
-  const label = {
-    base:"Standard",
-    large:"Large",
-    xlarge:"Extra large"
-  }[next];
+  updateReaderFontMenuLabel();
 
   setBibleNotice(
-    `Reader text size: ${label}.`
+    `Reader text size: ${readerFontLabel(next)}.`
   );
 }
 
@@ -4450,7 +5227,38 @@ function decodeHTMLEntities(value = ""){
 }
 
 
+function updateBibliaWritingsPill(){
+  const control = document.querySelector(
+    "[data-bible-open-canons]"
+  );
+
+  if(!control) return;
+
+  const book =
+    selectedBibleCanon &&
+    selectedBibleBook
+      ? getBibleBook(
+          selectedBibleCanon,
+          selectedBibleBook
+        )
+      : null;
+
+  const label = book?.name || "Israelite Writings";
+
+  control.textContent = label;
+
+  control.setAttribute(
+    "aria-label",
+    book
+      ? `Open Israelite Writings menu. Current book: ${book.name}.`
+      : "Open Israelite Writings menu."
+  );
+}
+
+
 function updateBibliaPath(){
+  updateBibliaWritingsPill();
+
   const root = document.querySelector(
     "[data-biblia-path]"
   );
@@ -4690,6 +5498,49 @@ document
   });
 
 
+function positionBibleMoreMenu(){
+  const menu = document.querySelector(
+    "[data-bible-more-menu]"
+  );
+
+  const trigger = document.querySelector(
+    "[data-bible-more]"
+  );
+
+  if(
+    !menu ||
+    !trigger
+  ){
+    return;
+  }
+
+  const rect = trigger.getBoundingClientRect();
+
+  const menuWidth = Math.min(
+    286,
+    window.innerWidth - 28
+  );
+
+  menu.style.width =
+    `${menuWidth}px`;
+
+  menu.style.top =
+    `${Math.round(rect.bottom + 8)}px`;
+
+  menu.style.right =
+    `${
+      Math.max(
+        14,
+        Math.round(
+          window.innerWidth - rect.right
+        )
+      )
+    }px`;
+
+  menu.style.left = "auto";
+}
+
+
 document
   .querySelector("[data-bible-more]")
   ?.addEventListener("click", event => {
@@ -4707,8 +5558,28 @@ document
       canonMenu.hidden = true;
     }
 
-    menu.hidden = !menu.hidden;
+    const willOpen = menu.hidden;
+
+    menu.hidden = !willOpen;
+
+    if(willOpen){
+      positionBibleMoreMenu();
+    }
   });
+
+
+window.addEventListener("resize", () => {
+  const menu = document.querySelector(
+    "[data-bible-more-menu]"
+  );
+
+  if(
+    menu &&
+    !menu.hidden
+  ){
+    positionBibleMoreMenu();
+  }
+});
 
 
 setHomeDaypart();
@@ -4733,6 +5604,62 @@ document.addEventListener("click", event => {
   moreMenu.hidden = true;
 });
 
+
+
+document.addEventListener(
+  "pointerover",
+  previewReaderHighlightFromEvent
+);
+
+document.addEventListener(
+  "pointerdown",
+  previewReaderHighlightFromEvent
+);
+
+document.addEventListener(
+  "pointermove",
+  event => {
+    if(
+      event.pointerType === "mouse" &&
+      event.buttons === 0
+    ){
+      previewReaderHighlightFromEvent(
+        event
+      );
+
+      return;
+    }
+
+    previewReaderHighlightFromPoint(
+      event.clientX,
+      event.clientY
+    );
+  }
+);
+
+document.addEventListener(
+  "touchmove",
+  event => {
+    const touch = event.touches?.[0];
+
+    if(!touch){
+      return;
+    }
+
+    previewReaderHighlightFromPoint(
+      touch.clientX,
+      touch.clientY
+    );
+  },
+  {
+    passive:true
+  }
+);
+
+document.addEventListener(
+  "focusin",
+  previewReaderHighlightFromEvent
+);
 
 
 /* =========================================================
@@ -4765,9 +5692,29 @@ document.addEventListener("click", event => {
   );
 
   if(colorButton){
-    saveReaderHighlight(
-      colorButton.dataset.readerHighlightColor
+    const color =
+      colorButton.dataset.readerHighlightColor;
+
+    previewReaderHighlight(
+      color
     );
+
+    saveReaderHighlight(
+      color
+    );
+
+    readerHighlightPreviewOriginal =
+      color === "clear"
+        ? ""
+        : color;
+
+    requestAnimationFrame(() => {
+      setReaderHighlightMode(true);
+
+      previewReaderHighlight(
+        color
+      );
+    });
 
     return;
   }
@@ -4803,6 +5750,43 @@ document.addEventListener("click", event => {
   }
 
 
+  if(
+    event.target.closest(
+      "[data-reader-inline-note-close]"
+    )
+  ){
+    removeReaderInlineNoteEditor();
+    updateReaderActionTray();
+    return;
+  }
+
+  if(
+    event.target.closest(
+      "[data-reader-inline-note-save]"
+    )
+  ){
+    saveReaderInlineNote();
+    return;
+  }
+
+  if(
+    event.target.closest(
+      "[data-reader-inline-note-delete]"
+    )
+  ){
+    deleteReaderInlineNote();
+    return;
+  }
+
+  if(
+    event.target.closest(
+      "[data-reader-highlight-tools]"
+    )
+  ){
+    setReaderHighlightMode(false);
+    return;
+  }
+
   const toolButton = event.target.closest(
     "[data-reader-tool]"
   );
@@ -4816,13 +5800,13 @@ document.addEventListener("click", event => {
     return;
   }
 
-  if(tool === "save"){
-    toggleReaderBookmark();
+  if(tool === "scholar-note"){
+    openReaderScholarNote();
     return;
   }
 
-  if(tool === "note"){
-    editReaderNote();
+  if(tool === "save"){
+    toggleReaderBookmark();
     return;
   }
 
