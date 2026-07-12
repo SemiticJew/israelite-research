@@ -72,7 +72,13 @@ function showScreen(name, options = {}){
 
 navButtons.forEach(button => {
   button.addEventListener("click", () => {
-    showScreen(button.dataset.v3Nav);
+    const screen = button.dataset.v3Nav;
+
+    showScreen(screen);
+
+    if(screen === "bible"){
+      openDailyPreceptInBible();
+    }
   });
 });
 
@@ -1595,6 +1601,7 @@ const READER_FONT_SIZES = [
 ];
 
 let scriptureCanonData = null;
+let bibleBrowserLoadPromise = null;
 
 const READER_BOOKMARKS_KEY =
   "sj_scripture_bookmarks_v1";
@@ -3799,10 +3806,163 @@ function renderBibleReader(
 }
 
 
+function normalizedDailyPreceptBookName(value = ""){
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+  return normalized === "psalm"
+    ? "psalms"
+    : normalized;
+}
+
+
+function dailyPreceptReaderTarget(precept){
+  const reference = String(
+    precept?.reference || ""
+  ).trim();
+
+  const match = reference.match(
+    /^(.+?)\s+(\d+):(\d+)$/
+  );
+
+  if(!match || !scriptureCanonData){
+    return null;
+  }
+
+  const bookName =
+    normalizedDailyPreceptBookName(match[1]);
+
+  const chapter = Number(match[2]);
+  const verse = Number(match[3]);
+
+  if(
+    !bookName ||
+    !Number.isInteger(chapter) ||
+    chapter < 1 ||
+    !Number.isInteger(verse) ||
+    verse < 1
+  ){
+    return null;
+  }
+
+  for(const canon of scriptureCanonData.canons || []){
+    const book = (canon.books || []).find(
+      candidate => (
+        normalizedDailyPreceptBookName(
+          candidate.name
+        ) === bookName
+      )
+    );
+
+    if(!book){
+      continue;
+    }
+
+    if(chapter > Number(book.chapters)){
+      return null;
+    }
+
+    return {
+      canon:canon.slug,
+      book:book.slug,
+      chapter,
+      verse
+    };
+  }
+
+  return null;
+}
+
+
+function scrollBibleReaderToVerse(verseNumber){
+  const number = Number(verseNumber);
+
+  if(
+    !Number.isInteger(number) ||
+    number < 1
+  ){
+    return false;
+  }
+
+  const verse = document.getElementById(
+    `verse-${number}`
+  );
+
+  if(!verse){
+    return false;
+  }
+
+  verse.scrollIntoView({
+    block:"center",
+    behavior:"auto"
+  });
+
+  return true;
+}
+
+
+async function openDailyPreceptInBible(){
+  try{
+    if(!currentPrecept){
+      await loadDailyPrecept();
+    }
+
+    if(!currentPrecept){
+      setBibleNotice(
+        "Verse of the Day is unavailable."
+      );
+
+      return;
+    }
+
+    if(!scriptureCanonData){
+      await loadBibleBrowser();
+    }
+
+    const target = dailyPreceptReaderTarget(
+      currentPrecept
+    );
+
+    if(!target){
+      setBibleNotice(
+        `${
+          currentPrecept.reference ||
+          "Verse of the Day"
+        } is unavailable in the local reader.`
+      );
+
+      return;
+    }
+
+    await openBibleReader(
+      target.canon,
+      target.book,
+      target.chapter,
+      {
+        focusVerse:target.verse,
+        saveLocation:false
+      }
+    );
+  }catch(error){
+    console.warn(
+      "Could not open the Verse of the Day in the Bible reader.",
+      error
+    );
+
+    setBibleNotice(
+      "Verse of the Day could not be opened right now."
+    );
+  }
+}
+
+
 async function openBibleReader(
   canonSlug,
   bookSlug,
-  chapter
+  chapter,
+  options = {}
 ){
   const canon = getBibleCanon(canonSlug);
 
@@ -3812,6 +3972,13 @@ async function openBibleReader(
   );
 
   const chapterNumber = Number(chapter);
+
+  const focusVerse = Number(
+    options.focusVerse
+  );
+
+  const shouldSaveLocation =
+    options.saveLocation !== false;
 
   if(
     !canon ||
@@ -3832,7 +3999,10 @@ async function openBibleReader(
   selectedBibleBook = book.slug;
   selectedBibleChapter = chapterNumber;
 
-  saveBibleLocation();
+  if(shouldSaveLocation){
+    saveBibleLocation();
+  }
+
   hideBibleCanonMenu();
 
   const browser = bibleBrowserShell();
@@ -3887,14 +4057,21 @@ async function openBibleReader(
       payload
     );
 
+    const focusedVerse =
+      scrollBibleReaderToVerse(focusVerse);
+
     setBibleNotice(
-      `${book.name} ${chapterNumber}`
+      focusedVerse
+        ? `${book.name} ${chapterNumber}:${focusVerse}`
+        : `${book.name} ${chapterNumber}`
     );
 
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+    if(!focusedVerse){
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+    }
   }catch(error){
     console.warn(
       "Scripture chapter failed to load.",
@@ -4085,36 +4262,58 @@ function cycleReaderFontPreference(){
 async function loadBibleBrowser(){
   const root = bibleBrowserContent();
 
-  if(!root) return;
+  if(!root) return null;
 
-  try{
-    scriptureCanonData = await fetchJSON(
-      SCRIPTURE_CANON_URL
-    );
-
-    if(
-      !Array.isArray(
-        scriptureCanonData?.canons
-      )
-    ){
-      throw new Error(
-        "Invalid Scripture canon metadata."
-      );
-    }
-
-    renderBibleCanons();
-  }catch(error){
-    console.warn(
-      "Bible navigation failed.",
-      error
-    );
-
-    root.innerHTML = `
-      <p class="sj-home-loading">
-        Israelite Writings are temporarily unavailable.
-      </p>
-    `;
+  if(scriptureCanonData){
+    return scriptureCanonData;
   }
+
+  if(bibleBrowserLoadPromise){
+    return bibleBrowserLoadPromise;
+  }
+
+  bibleBrowserLoadPromise = (async () => {
+    try{
+      scriptureCanonData = await fetchJSON(
+        SCRIPTURE_CANON_URL
+      );
+
+      if(
+        !Array.isArray(
+          scriptureCanonData?.canons
+        )
+      ){
+        throw new Error(
+          "Invalid Scripture canon metadata."
+        );
+      }
+
+      renderBibleCanons();
+
+      return scriptureCanonData;
+    }catch(error){
+      scriptureCanonData = null;
+
+      console.warn(
+        "Bible navigation failed.",
+        error
+      );
+
+      root.innerHTML = `
+        <p class="sj-home-loading">
+          Israelite Writings are temporarily unavailable.
+        </p>
+      `;
+
+      return null;
+    }
+  })();
+
+  const result = await bibleBrowserLoadPromise;
+
+  bibleBrowserLoadPromise = null;
+
+  return result;
 }
 
 

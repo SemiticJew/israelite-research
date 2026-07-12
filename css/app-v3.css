@@ -5994,3 +5994,57 @@ button > span:last-child{
     transition:none;
   }
 }
+
+/* Batch 2 — Persistent opaque Biblia controls */
+#bible .sj-biblia-top{
+  position:sticky;
+  top:calc(env(safe-area-inset-top, 0px) + 6px);
+  z-index:200;
+
+  margin-top:-8px;
+  margin-right:-20px;
+  margin-bottom:8px;
+  margin-left:-20px;
+
+  padding:
+    8px
+    20px
+    12px;
+
+  background:#0d0d0f;
+
+  box-shadow:
+    0 8px 0 #0d0d0f,
+    0 14px 22px rgba(13,13,15,.88);
+
+  isolation:isolate;
+}
+
+#bible .sj-biblia-top::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+  z-index:-1;
+
+  background:#0d0d0f;
+
+  pointer-events:none;
+}
+
+#bible .sj-biblia-writings-control{
+  font-size:1.1rem;
+  font-weight:850;
+  letter-spacing:-.02em;
+}
+
+@media (min-width:700px){
+  #bible .sj-biblia-top{
+    margin-right:-34px;
+    margin-left:-34px;
+
+    padding-right:34px;
+    padding-left:34px;
+  }
+}
+
