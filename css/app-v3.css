@@ -8649,3 +8649,14 @@ body.sj-reader-tray-open
 .sj-reader-verse-number{
   color:var(--sj-orange)!important;
 }
+
+/* Articles release polish — floating navigation clearance */
+
+#articles [data-articles-browser]{
+  padding-bottom:
+    calc(
+      var(--sj-nav-height)
+      + var(--sj-safe-bottom)
+      + 72px
+    );
+}
