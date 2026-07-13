@@ -3179,13 +3179,28 @@ function saveReaderHighlight(color){
     selectedElement
   );
 
-  if(
-    selectedElement &&
-    allowed.has(color)
-  ){
-    selectedElement.classList.add(
-      `sj-reader-highlight-${color}`
+  applyReaderTransparentVerseText(
+    selectedElement,
+    !allowed.has(color)
+  );
+
+  if(selectedElement){
+    selectedElement.classList.remove(
+      "sj-reader-highlight-cleared",
+      "sj-reader-highlight-preview-live"
     );
+
+    delete selectedElement.dataset.readerPreviewColor;
+
+    if(allowed.has(color)){
+      selectedElement.classList.add(
+        `sj-reader-highlight-${color}`
+      );
+    }else{
+      selectedElement.classList.add(
+        "sj-reader-highlight-cleared"
+      );
+    }
   }
 
   updateReaderActionTray();
@@ -3201,6 +3216,68 @@ function selectedReaderHighlightVerseElement(){
     `[data-reader-key="${
       CSS.escape(selectedReaderVerse.key)
     }"]`
+  );
+}
+
+
+function applyReaderTransparentVerseText(
+  verse,
+  isTransparent
+){
+  if(!verse){
+    return;
+  }
+
+  const text = verse.querySelector(
+    ".sj-reader-verse-text"
+  );
+
+  const number = verse.querySelector(
+    ".sj-reader-verse-number"
+  );
+
+  if(isTransparent){
+    verse.style.setProperty(
+      "background",
+      "transparent",
+      "important"
+    );
+
+    verse.style.setProperty(
+      "color",
+      "#fff",
+      "important"
+    );
+
+    text?.style.setProperty(
+      "color",
+      "#fff",
+      "important"
+    );
+
+    number?.style.setProperty(
+      "color",
+      "var(--sj-orange)",
+      "important"
+    );
+
+    return;
+  }
+
+  verse.style.removeProperty(
+    "background"
+  );
+
+  verse.style.removeProperty(
+    "color"
+  );
+
+  text?.style.removeProperty(
+    "color"
+  );
+
+  number?.style.removeProperty(
+    "color"
   );
 }
 
@@ -3241,6 +3318,11 @@ function previewReaderHighlight(color){
 
   clearReaderHighlightClasses(
     verse
+  );
+
+  applyReaderTransparentVerseText(
+    verse,
+    !normalized
   );
 
   if(normalized){
@@ -4568,13 +4650,13 @@ function renderBibleReader(
         ></button>
 
         <button
-          class="sj-reader-highlight-clear"
+          class="sj-reader-highlight-clear sj-reader-highlight-transparent"
           type="button"
           data-reader-highlight-color="clear"
-          aria-label="Remove highlight"
-          title="Clear highlight"
+          aria-label="Remove highlight and return verse to normal background"
+          title="No highlight"
         >
-          ×
+          <span class="sj-reader-transparent-checker" aria-hidden="true"></span>
         </button>
 
         <button
