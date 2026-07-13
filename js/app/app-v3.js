@@ -137,6 +137,29 @@ function preceptKey(precept){
 }
 
 
+function updateHomeDaypartGreeting(){
+  const target = document.querySelector(
+    "[data-home-daypart]"
+  );
+
+  if(!target){
+    return;
+  }
+
+  const hour = new Date().getHours();
+
+  let greeting = "Good Evening.";
+
+  if(hour < 12){
+    greeting = "Good Morning.";
+  }else if(hour < 17){
+    greeting = "Good Afternoon.";
+  }
+
+  target.textContent = greeting;
+}
+
+
 function renderPrecept(precept){
   const root = document.getElementById("sj-home-precept");
 
@@ -510,25 +533,109 @@ async function loadLatestArticle(){
       throw new Error("No recent article card found");
     }
 
-    const link = card.querySelector('a[href*="/articles/"]');
+    const link = card.querySelector(
+      'a[href*="/articles/"]'
+    );
+
     const image = card.querySelector("img");
-    const title = decodeHTMLEntities(
+
+    const href = cleanText(
+      link?.getAttribute("href")
+    );
+
+    let title = decodeHTMLEntities(
       cleanText(
-        card.querySelector("h2, h3")?.textContent
+        card.querySelector(
+          "h2, h3"
+        )?.textContent
       )
     );
 
-    const excerpt = decodeHTMLEntities(
+    let excerpt = decodeHTMLEntities(
       cleanText(
-        card.querySelector("p.muted, p")?.textContent
+        card.querySelector(
+          "p.muted, p"
+        )?.textContent
       )
     );
 
-    const href = link?.getAttribute("href");
-    const imageSrc = image?.getAttribute("src");
+    let imageSrc = normalizeArticleImageURL(
+      image?.getAttribute("src")
+    );
 
-    if(!href || !title){
-      throw new Error("Incomplete latest article data");
+    if(!href){
+      throw new Error(
+        "Latest article link is missing."
+      );
+    }
+
+    try{
+      const articleResponse = await fetch(
+        `${href}${
+          href.includes("?")
+            ? "&"
+            : "?"
+        }homeLatest=${Date.now()}`
+      );
+
+      if(articleResponse.ok){
+        const articleHTML =
+          await articleResponse.text();
+
+        const articleDoc =
+          new DOMParser().parseFromString(
+            articleHTML,
+            "text/html"
+          );
+
+        const actualTitle =
+          decodeHTMLEntities(
+            cleanText(
+              articleDoc.querySelector(
+                ".article-title"
+              )?.textContent
+            )
+          );
+
+        const actualHero =
+          articleDoc.querySelector(
+            ".hero-image img, img.hero-image"
+          );
+
+        const actualExcerpt =
+          decodeHTMLEntities(
+            cleanText(
+              articleDoc.querySelector(
+                ".article-subtitle, .article-deck, .dek, .article-summary, .lead"
+              )?.textContent
+            )
+          );
+
+        if(actualTitle){
+          title = actualTitle;
+        }
+
+        if(actualHero){
+          imageSrc = normalizeArticleImageURL(
+            actualHero.getAttribute("src")
+          );
+        }
+
+        if(actualExcerpt){
+          excerpt = actualExcerpt;
+        }
+      }
+    }catch(error){
+      console.warn(
+        "Could not verify the latest Article card against its source article.",
+        error
+      );
+    }
+
+    if(!title){
+      throw new Error(
+        "Latest article title is missing."
+      );
     }
 
     root.innerHTML = `
@@ -603,7 +710,7 @@ document
     if(label){
       label.textContent = willOpen
         ? "Close Question"
-        : "Write a Question";
+        : "Save a Question";
     }
 
     if(willOpen){
@@ -1760,6 +1867,8 @@ function renderBibleCanons(){
 
   bibleBrowserStage = "canons";
 
+  setBibleNotice("");
+
   selectedBibleCanon = null;
   selectedBibleBook = null;
   selectedBibleChapter = null;
@@ -1814,6 +1923,8 @@ function renderBibleBooks(canonSlug){
   if(!root || !canon) return;
 
   bibleBrowserStage = "books";
+
+  setBibleNotice("");
 
   selectedBibleCanon = canon.slug;
   selectedBibleBook = null;
@@ -1895,6 +2006,8 @@ function renderBibleChapters(
   if(!root || !canon || !book) return;
 
   bibleBrowserStage = "chapters";
+
+  setBibleNotice("");
 
   selectedBibleCanon = canon.slug;
   selectedBibleBook = book.slug;
@@ -8067,3 +8180,5 @@ showScreen(
     : "home",
   { updateHash:false }
 );
+
+updateHomeDaypartGreeting();
