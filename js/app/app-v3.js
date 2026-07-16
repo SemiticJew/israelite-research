@@ -174,9 +174,38 @@ function renderPrecept(precept){
   root.innerHTML = `
     <div class="sj-precept-content">
       <p class="sj-precept-label">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 5.5A3.5 3.5 0 0 1 6.5 2H11v17H6.5A3.5 3.5 0 0 0 3 22Z"></path>
-          <path d="M21 5.5A3.5 3.5 0 0 0 17.5 2H13v17h4.5A3.5 3.5 0 0 1 21 22Z"></path>
+        <svg
+          class="sj-precept-books-icon"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+        >
+          <rect
+            x="3.5"
+            y="6"
+            width="7"
+            height="21"
+            rx="2"
+            fill="currentColor"
+            stroke="none"
+          ></rect>
+          <rect
+            x="12.5"
+            y="3.5"
+            width="7"
+            height="23.5"
+            rx="2"
+            fill="currentColor"
+            stroke="none"
+          ></rect>
+          <rect
+            x="21.5"
+            y="7.5"
+            width="7"
+            height="19.5"
+            rx="2"
+            fill="currentColor"
+            stroke="none"
+          ></rect>
         </svg>
 
         <span>Verse of the Day</span>
@@ -257,7 +286,7 @@ function renderPrecept(precept){
           <path d="M10 21h4"></path>
         </svg>
 
-        <span>Daily Reminder</span>
+        <span>Remind Me Daily</span>
       </button>
     </div>
   `;

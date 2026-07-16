@@ -8660,3 +8660,324 @@ body.sj-reader-tray-open
       + 72px
     );
 }
+
+/* Home Verse of the Day — immersive release refinement */
+
+#home,
+#home button,
+#home input,
+#home textarea{
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+#home .sj-home-brand-copy strong,
+#home .sj-home-greeting h1,
+#home .sj-section-heading h2,
+#home .sj-home-ask h2,
+#home .sj-latest-article-copy h3{
+  letter-spacing:-.035em;
+}
+
+#home .sj-precept-card{
+  position:relative;
+  isolation:isolate;
+
+  min-height:450px;
+
+  border:
+    1px solid
+    rgba(129,164,205,.25);
+
+  border-radius:30px;
+
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(219,228,238,.28),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 10% 88%,
+      rgba(5,74,145,.5),
+      transparent 45%
+    ),
+    linear-gradient(
+      155deg,
+      #81a4cd 0%,
+      #3e7cb1 38%,
+      #12324d 72%,
+      #11161d 100%
+    );
+
+  box-shadow:
+    0 22px 55px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+#home .sj-precept-card::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+  z-index:-1;
+
+  border-radius:inherit;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.02) 0%,
+      rgba(0,0,0,.04) 42%,
+      rgba(0,0,0,.46) 100%
+    );
+
+  pointer-events:none;
+}
+
+#home .sj-precept-content{
+  min-height:298px;
+  padding:28px 26px 20px;
+}
+
+#home .sj-precept-label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin:0 0 8px;
+
+  color:rgba(255,255,255,.9);
+
+  font-size:.9rem;
+  font-weight:500;
+  letter-spacing:-.015em;
+}
+
+#home .sj-precept-label svg{
+  width:22px;
+  height:22px;
+}
+
+#home .sj-precept-reference{
+  display:block;
+
+  color:#fff;
+
+  font-size:1.12rem;
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+
+#home .sj-precept-text{
+  max-width:19ch;
+
+  margin:54px 0 18px;
+
+  color:#fff;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size:
+    clamp(
+      1.72rem,
+      6.7vw,
+      2.45rem
+    );
+
+  font-weight:520;
+  line-height:1.2;
+  letter-spacing:-.035em;
+}
+
+#home .sj-precept-prompt{
+  color:rgba(255,255,255,.72);
+}
+
+#home .sj-precept-actions{
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap:2px;
+
+  padding:6px 14px 10px;
+
+  border-top:0;
+}
+
+#home .sj-precept-actions button{
+  min-width:0;
+  min-height:64px;
+
+  flex-direction:column;
+  gap:7px;
+
+  padding:7px 2px;
+
+  color:rgba(255,255,255,.88);
+
+  font-size:.66rem;
+  font-weight:600;
+}
+
+#home .sj-precept-actions button svg{
+  width:25px;
+  height:25px;
+
+  stroke-width:1.75;
+}
+
+#home .sj-precept-actions button.is-active{
+  color:#fff;
+}
+
+#home .sj-precept-actions button.is-active svg{
+  fill:rgba(255,255,255,.16);
+}
+
+#home .sj-precept-daily{
+  padding:4px 20px 22px;
+}
+
+#home .sj-precept-daily button{
+  width:100%;
+  min-height:54px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#f8f8f6;
+  color:#111114;
+
+  font-size:.95rem;
+  font-weight:750;
+  letter-spacing:-.02em;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.2);
+}
+
+#home .sj-precept-daily button svg{
+  width:23px;
+  height:23px;
+  stroke-width:2;
+}
+
+#home .sj-precept-daily button:active{
+  transform:scale(.985);
+}
+
+@media (max-width:390px){
+  #home .sj-precept-content{
+    padding-right:22px;
+    padding-left:22px;
+  }
+
+  #home .sj-precept-text{
+    margin-top:46px;
+  }
+
+  #home .sj-precept-actions button{
+    font-size:.62rem;
+  }
+}
+
+/* Home typography unification — controlled refinement */
+
+#home .sj-home-brand-copy strong,
+#home .sj-home-brand-copy span,
+#home .sj-home-greeting h1,
+#home .sj-home-greeting h1 span,
+#home .sj-section-heading h2,
+#home .sj-section-link,
+#home .sj-section-kicker,
+#home .sj-precept-reference,
+#home .sj-reel-reference,
+#home .sj-reel-duration,
+#home .sj-reel-copy h3,
+#home .sj-reel-copy p,
+#home .sj-reel-coming-soon,
+#home .sj-latest-article-copy h3,
+#home .sj-latest-article-copy p,
+#home .sj-home-ask h2,
+#home .sj-home-ask p,
+#home .sj-home-ask label,
+#home .sj-home-ask textarea,
+#home .sj-home-ask button,
+#home .sj-podcast-copy h3,
+#home .sj-podcast-copy span,
+#home .sj-podcast-actions button,
+#home .sj-podcast-actions a{
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+#home .sj-home-brand-copy strong{
+  font-weight:800;
+  letter-spacing:-.03em;
+}
+
+#home .sj-home-brand-copy span{
+  letter-spacing:.01em;
+}
+
+#home .sj-home-greeting h1{
+  font-weight:800;
+  letter-spacing:-.045em;
+}
+
+#home .sj-precept-reference{
+  font-weight:800;
+  letter-spacing:-.025em;
+}
+
+#home .sj-reel-copy h3{
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+
+#home .sj-reel-copy p{
+  line-height:1.35;
+  letter-spacing:-.01em;
+}
+
+#home .sj-reel-reference,
+#home .sj-reel-duration,
+#home .sj-reel-coming-soon{
+  font-weight:750;
+  letter-spacing:.015em;
+}
+
+#home .sj-section-heading h2,
+#home .sj-home-ask h2,
+#home .sj-latest-article-copy h3,
+#home .sj-podcast-copy h3{
+  font-weight:800;
+  letter-spacing:-.04em;
+}
