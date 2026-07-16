@@ -8981,3 +8981,159 @@ body.sj-reader-tray-open
   font-weight:800;
   letter-spacing:-.04em;
 }
+
+#home .sj-scripture-lesson-list{
+  display:grid;
+  gap:12px;
+}
+
+#home .sj-scripture-lesson-card{
+  position:relative;
+
+  width:100%;
+  min-height:112px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  overflow:hidden;
+
+  padding:18px 16px 18px 20px;
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(241,115,0,.12),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #1b1b1f 0%,
+      #121215 100%
+    );
+
+  color:var(--sj-text);
+
+  text-align:left;
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.16);
+
+  cursor:pointer;
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease;
+}
+
+#home .sj-scripture-lesson-card::before{
+  content:"";
+
+  position:absolute;
+  top:18px;
+  bottom:18px;
+  left:0;
+
+  width:3px;
+
+  border-radius:0 999px 999px 0;
+
+  background:var(--sj-orange);
+}
+
+#home .sj-scripture-lesson-card:active{
+  transform:scale(.99);
+}
+
+#home .sj-scripture-lesson-card:focus-visible{
+  outline:2px solid var(--sj-orange);
+  outline-offset:3px;
+}
+
+#home .sj-scripture-lesson-copy{
+  min-width:0;
+  flex:1;
+
+  display:block;
+}
+
+#home .sj-scripture-lesson-reference{
+  display:block;
+
+  margin-bottom:7px;
+
+  color:var(--sj-orange);
+
+  font-size:.72rem;
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:.025em;
+}
+
+#home .sj-scripture-lesson-title{
+  display:block;
+
+  max-width:28ch;
+
+  font-size:clamp(1rem, 4.4vw, 1.14rem);
+  font-weight:800;
+  line-height:1.23;
+  letter-spacing:-.025em;
+}
+
+#home .sj-scripture-lesson-meta{
+  flex:0 0 60px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  color:var(--sj-muted);
+
+  font-size:.67rem;
+  font-weight:750;
+  line-height:1;
+  white-space:nowrap;
+}
+
+#home .sj-scripture-lesson-play{
+  width:34px;
+  height:34px;
+
+  display:grid;
+  place-items:center;
+
+  padding-left:2px;
+
+  border:1px solid rgba(241,115,0,.55);
+  border-radius:50%;
+
+  background:rgba(241,115,0,.08);
+  color:var(--sj-orange);
+
+  font-size:.7rem;
+}
+
+@media (max-width:390px){
+  #home .sj-scripture-lesson-card{
+    gap:12px;
+    padding-right:13px;
+    padding-left:18px;
+  }
+
+  #home .sj-scripture-lesson-meta{
+    flex-basis:54px;
+  }
+
+  #home .sj-scripture-lesson-title{
+    font-size:.98rem;
+  }
+}

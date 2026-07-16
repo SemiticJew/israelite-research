@@ -435,95 +435,102 @@ document
 
 
 /* =========================================================
-   Home: Precept Upon Precept
+   Home: Line Upon Line
    ========================================================= */
 
-const SCRIPTURE_VIDEO_TERMS = [
-  "bible",
-  "scripture",
-  "deuteronomy",
-  "genesis",
-  "exodus",
-  "leviticus",
-  "jesus",
-  "christ",
-  "messiah",
-  "israelite",
-  "israelites",
-  "covenant",
-  "ham",
-  "psalm",
-  "jeremiah",
-  "isaiah",
-  "god"
+const HOME_SCRIPTURE_LESSONS = [
+  {
+    id:"001-precept-upon-precept",
+    reference:"Isaiah 28:9–10",
+    title:"What Does “Precept Upon Precept” Mean?",
+    duration:"2–3 min"
+  },
+  {
+    id:"002-did-god-choose-every-nation",
+    reference:"Amos 3:2",
+    title:"Did God Choose Every Nation?",
+    duration:"2–3 min"
+  },
+  {
+    id:"003-israel-lose-identity",
+    reference:"Deuteronomy 28:64",
+    title:"Did God Prophesy Israel Would Lose Their Identity?",
+    duration:"2–3 min"
+  }
 ];
 
 
-function isScriptureTeachingVideo(video){
-  const title = String(video?.title || "").toLowerCase();
+function homeLineUponLineLesson(){
+  const today = new Date();
 
-  return SCRIPTURE_VIDEO_TERMS.some(term =>
-    title.includes(term)
+  const localDay = Math.floor(
+    Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    ) / 86400000
   );
+
+  const rotationStartDay = Math.floor(
+    Date.UTC(2026, 6, 16) / 86400000
+  );
+
+  const dayOffset = Math.max(
+    0,
+    localDay - rotationStartDay
+  );
+
+  return HOME_SCRIPTURE_LESSONS[
+    dayOffset % HOME_SCRIPTURE_LESSONS.length
+  ];
 }
 
 
-async function loadPreceptVideos(){
-  const root = document.getElementById("sj-precept-videos");
+function renderHomeLineUponLine(){
+  const root = document.getElementById(
+    "sj-line-upon-line"
+  );
 
-  if(!root) return;
-
-  try{
-    const payload = await fetchJSON("/data/youtube-videos.json");
-
-    const videos = Array.isArray(payload)
-      ? payload
-      : Array.isArray(payload?.videos)
-        ? payload.videos
-        : [];
-
-    const scriptureVideos = videos
-      .filter(isScriptureTeachingVideo)
-      .slice(0, 5);
-
-    if(!scriptureVideos.length){
-      throw new Error("No Scripture teaching videos found");
-    }
-
-    root.innerHTML = scriptureVideos.map(video => `
-      <a
-        class="sj-video-card"
-        href="${escapeHTML(video.url || "#")}"
-        target="_blank"
-        rel="noopener"
-      >
-        <div class="sj-video-frame">
-          <img
-            src="${escapeHTML(video.thumbnail || "")}"
-            alt=""
-            loading="lazy"
-          >
-
-          <span class="sj-video-play" aria-hidden="true">
-            ▶
-          </span>
-        </div>
-
-        <div class="sj-video-copy">
-          <h3>${escapeHTML(video.title || "Scripture teaching")}</h3>
-        </div>
-      </a>
-    `).join("");
-  }catch(error){
-    console.warn("Precept Upon Precept videos failed.", error);
-
-    root.innerHTML = `
-      <p class="sj-home-loading">
-        Scripture teachings are temporarily unavailable.
-      </p>
-    `;
+  if(!root){
+    return;
   }
+
+  const lesson = homeLineUponLineLesson();
+
+  root.innerHTML = `
+    <button
+      class="sj-scripture-lesson-card"
+      type="button"
+      data-placeholder-reel
+      data-scripture-lesson-id="${escapeHTML(lesson.id)}"
+      aria-label="Play ${escapeHTML(lesson.title)}"
+    >
+      <span class="sj-scripture-lesson-copy">
+        <span class="sj-scripture-lesson-reference">
+          ${escapeHTML(lesson.reference)}
+        </span>
+
+        <span class="sj-scripture-lesson-title">
+          ${escapeHTML(lesson.title)}
+        </span>
+      </span>
+
+      <span class="sj-scripture-lesson-meta">
+        <span
+          class="sj-scripture-lesson-play"
+          aria-hidden="true"
+        >
+          ▶
+        </span>
+
+        <span>${escapeHTML(lesson.duration)}</span>
+      </span>
+    </button>
+  `;
 }
+
+
+renderHomeLineUponLine();
 
 
 /* =========================================================
@@ -5683,7 +5690,7 @@ document.addEventListener("click", event => {
 
     if(status){
       status.textContent =
-        "Precept Upon Precept reel teachings are coming soon.";
+        "Scripture Explained lesson playback is coming soon.";
     }
 
     return;
@@ -5697,7 +5704,7 @@ document.addEventListener("click", event => {
 
     if(status){
       status.textContent =
-        "The complete Precept Upon Precept library is coming soon.";
+        "The complete Scripture Explained library is coming soon.";
     }
   }
 });
