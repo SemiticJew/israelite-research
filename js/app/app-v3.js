@@ -62,6 +62,16 @@ function showScreen(name, options = {}){
     }
   });
 
+  if(name === "bible"){
+    resumeHomeChapterTracker();
+  }else{
+    pauseHomeChapterTracker();
+  }
+
+  if(name === "home"){
+    renderHomeStudyOnHomeEntry();
+  }
+
   if(updateHash){
     history.replaceState(null, "", `#${name}`);
   }
@@ -443,36 +453,840 @@ const HOME_SCRIPTURE_LESSONS = [
     id:"001-precept-upon-precept",
     reference:"Isaiah 28:9–10",
     title:"What Does “Precept Upon Precept” Mean?",
-    duration:"2–3 min"
+    duration:"2–3 min",
+    video:"/media/scripture-explained/001-precept-upon-precept.mp4",
+    poster:"/images/app/scripture-explained/001-precept-upon-precept.jpg"
   },
   {
     id:"002-did-god-choose-every-nation",
     reference:"Amos 3:2",
     title:"Did God Choose Every Nation?",
-    duration:"2–3 min"
+    duration:"2–3 min",
+    video:"/media/scripture-explained/002-did-god-choose-every-nation.mp4",
+    poster:"/images/app/scripture-explained/002-did-god-choose-every-nation.jpg"
   },
   {
     id:"003-israel-lose-identity",
     reference:"Deuteronomy 28:64",
     title:"Did God Prophesy Israel Would Lose Their Identity?",
-    duration:"2–3 min"
+    duration:"2–3 min",
+    video:"/media/scripture-explained/003-israel-lose-identity.mp4",
+    poster:"/images/app/scripture-explained/003-israel-lose-identity.jpg"
   }
 ];
+
+const HOME_STUDY_PROGRESS_KEY =
+  "sj_home_daily_study_progress_v1";
+
+const HOME_STUDY_STREAK_KEY =
+  "sj_home_daily_study_streak_v1";
+
+const HOME_STUDY_PENDING_ANIMATION_KEY =
+  "sj_home_study_pending_animation_v1";
+
+let homeChapterObserver = null;
+let homeChapterTracker = null;
+
+
+function localDateKey(date = new Date()){
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1)
+    .padStart(2, "0");
+  const day = String(date.getDate())
+    .padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+function localDayNumber(date = new Date()){
+  return Math.floor(
+    new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    ).getTime() / 86400000
+  );
+}
+
+
+function readHomeStudyProgress(){
+  return readObjectStorage(
+    HOME_STUDY_PROGRESS_KEY
+  );
+}
+
+
+function writeHomeStudyProgress(progress){
+  writeObjectStorage(
+    HOME_STUDY_PROGRESS_KEY,
+    progress
+  );
+}
+
+
+function readHomeStudyStreak(){
+  const fallback = {
+    currentStreak:0,
+    lastCompletedDate:"",
+    longestStreak:0
+  };
+
+  try{
+    const value = JSON.parse(
+      localStorage.getItem(HOME_STUDY_STREAK_KEY) || "{}"
+    );
+
+    return value && typeof value === "object"
+      ? {
+          currentStreak:Number(value.currentStreak) || 0,
+          lastCompletedDate:String(value.lastCompletedDate || ""),
+          longestStreak:Math.max(
+            Number(value.longestStreak) || 0,
+            Number(value.currentStreak) || 0
+          )
+        }
+      : fallback;
+  }catch(error){
+    console.warn(
+      "Could not read Home study streak.",
+      error
+    );
+    return fallback;
+  }
+}
+
+
+function writeHomeStudyStreak(streak){
+  try{
+    localStorage.setItem(
+      HOME_STUDY_STREAK_KEY,
+      JSON.stringify(streak)
+    );
+  }catch(error){
+    console.warn(
+      "Could not write Home study streak.",
+      error
+    );
+  }
+}
+
+
+function todayHomeStudyRecord(){
+  const progress = readHomeStudyProgress();
+  const dateKey = localDateKey();
+  const record =
+    progress[dateKey] &&
+    typeof progress[dateKey] === "object"
+      ? progress[dateKey]
+      : {};
+
+  return {
+    progress,
+    dateKey,
+    record:{
+      lessonId:String(record.lessonId || ""),
+      lessonCompleted:Boolean(record.lessonCompleted),
+      chapters:Array.isArray(record.chapters)
+        ? record.chapters.filter(Boolean)
+        : [],
+      completed:Boolean(record.completed)
+    }
+  };
+}
+
+
+function homeStudyChapterKey(canonSlug, bookSlug, chapter){
+  return [
+    canonSlug,
+    bookSlug,
+    Number(chapter)
+  ].join(":");
+}
+
+
+function didCompleteHomeLessonToday(record){
+  const lesson = homeLineUponLineLesson();
+
+  return (
+    record.lessonCompleted &&
+    record.lessonId === lesson.id
+  );
+}
+
+
+function homeStudyGoalCount(record){
+  let count = 0;
+
+  if(didCompleteHomeLessonToday(record)){
+    count += 1;
+  }
+
+  if(record.chapters.length >= 4){
+    count += 1;
+  }
+
+  return count;
+}
+
+
+function displayHomeStudyStreak(streak){
+  const today = localDateKey();
+  const yesterday = previousLocalDateKey(today);
+
+  return (
+    streak.lastCompletedDate === today ||
+    streak.lastCompletedDate === yesterday
+  )
+    ? streak.currentStreak
+    : 0;
+}
+
+
+function homeScreenIsActive(){
+  const homeScreen = document.querySelector(
+    '[data-v3-screen="home"]'
+  );
+
+  return Boolean(
+    homeScreen?.classList.contains("is-active") &&
+    !homeScreen.hidden &&
+    !document.body.classList.contains(
+      "sj-lesson-player-open"
+    )
+  );
+}
+
+
+function readHomeStudyPendingAnimation(){
+  try{
+    const value = JSON.parse(
+      sessionStorage.getItem(
+        HOME_STUDY_PENDING_ANIMATION_KEY
+      ) || "null"
+    );
+
+    return value && typeof value === "object"
+      ? value
+      : null;
+  }catch(error){
+    console.warn(
+      "Could not read pending Home study animation.",
+      error
+    );
+    return null;
+  }
+}
+
+
+function writeHomeStudyPendingAnimation(value){
+  try{
+    sessionStorage.setItem(
+      HOME_STUDY_PENDING_ANIMATION_KEY,
+      JSON.stringify(value)
+    );
+  }catch(error){
+    console.warn(
+      "Could not queue Home study animation.",
+      error
+    );
+  }
+}
+
+
+function clearHomeStudyPendingAnimation(){
+  try{
+    sessionStorage.removeItem(
+      HOME_STUDY_PENDING_ANIMATION_KEY
+    );
+  }catch(error){
+    console.warn(
+      "Could not clear pending Home study animation.",
+      error
+    );
+  }
+}
+
+
+function validHomeStudyAnimationPayload(payload){
+  if(!payload || payload.dateKey !== localDateKey()){
+    return false;
+  }
+
+  const previousCompletedGoals =
+    Number(payload.previousCompletedGoals) || 0;
+  const newCompletedGoals =
+    Number(payload.newCompletedGoals) || 0;
+  const previousChapterCount =
+    Number(payload.previousChapterCount) || 0;
+  const newChapterCount =
+    Number(payload.newChapterCount) || 0;
+
+  return (
+    newCompletedGoals > previousCompletedGoals ||
+    newChapterCount > previousChapterCount ||
+    Boolean(payload.lessonChanged)
+  );
+}
+
+
+function mergeHomeStudyPendingAnimation(update){
+  if(!validHomeStudyAnimationPayload(update)){
+    return;
+  }
+
+  const existing = readHomeStudyPendingAnimation();
+
+  if(
+    !existing ||
+    existing.dateKey !== update.dateKey ||
+    !validHomeStudyAnimationPayload(existing)
+  ){
+    writeHomeStudyPendingAnimation(update);
+    return;
+  }
+
+  writeHomeStudyPendingAnimation({
+    dateKey:update.dateKey,
+    previousCompletedGoals:Math.min(
+      Number(existing.previousCompletedGoals) || 0,
+      Number(update.previousCompletedGoals) || 0
+    ),
+    newCompletedGoals:Math.max(
+      Number(existing.newCompletedGoals) || 0,
+      Number(update.newCompletedGoals) || 0
+    ),
+    previousChapterCount:Math.min(
+      Number(existing.previousChapterCount) || 0,
+      Number(update.previousChapterCount) || 0
+    ),
+    newChapterCount:Math.max(
+      Number(existing.newChapterCount) || 0,
+      Number(update.newChapterCount) || 0
+    ),
+    chapterChanged:Boolean(
+      existing.chapterChanged ||
+      update.chapterChanged
+    ),
+    lessonChanged:Boolean(
+      existing.lessonChanged ||
+      update.lessonChanged
+    )
+  });
+}
+
+
+function playHomeStudyProgressAnimation(payload){
+  if(!validHomeStudyAnimationPayload(payload)){
+    return;
+  }
+
+  const card = document.querySelector(
+    "[data-home-study-card]"
+  );
+
+  if(!card || !homeScreenIsActive()){
+    return;
+  }
+
+  const progress = card.querySelector(
+    ".sj-home-study-progress"
+  );
+  const shouldPop =
+    Number(payload.newCompletedGoals) >
+    Number(payload.previousCompletedGoals);
+
+  card.classList.remove("is-progressing");
+
+  if(progress){
+    progress.classList.remove(
+      "sj-home-study-progress-pop"
+    );
+  }
+
+  requestAnimationFrame(() => {
+    card.classList.add("is-progressing");
+
+    if(shouldPop && progress){
+      progress.classList.add(
+        "sj-home-study-progress-pop"
+      );
+    }
+
+    window.setTimeout(() => {
+      card.classList.remove("is-progressing");
+
+      if(progress){
+        progress.classList.remove(
+          "sj-home-study-progress-pop"
+        );
+      }
+    }, 900);
+  });
+}
+
+
+function queueOrPlayHomeStudyProgressAnimation(update){
+  if(!validHomeStudyAnimationPayload(update)){
+    return;
+  }
+
+  renderHomeStudyStreak();
+
+  if(homeScreenIsActive()){
+    requestAnimationFrame(() => {
+      playHomeStudyProgressAnimation(update);
+    });
+    return;
+  }
+
+  mergeHomeStudyPendingAnimation(update);
+}
+
+
+function consumeHomeStudyPendingAnimation(){
+  const pending = readHomeStudyPendingAnimation();
+
+  if(!pending){
+    return;
+  }
+
+  if(!validHomeStudyAnimationPayload(pending)){
+    clearHomeStudyPendingAnimation();
+    return;
+  }
+
+  clearHomeStudyPendingAnimation();
+  playHomeStudyProgressAnimation(pending);
+}
+
+
+function renderHomeStudyOnHomeEntry(){
+  renderHomeStudyStreak();
+
+  requestAnimationFrame(() => {
+    consumeHomeStudyPendingAnimation();
+  });
+}
+
+
+function previousLocalDateKey(dateKey){
+  const [year, month, day] = dateKey
+    .split("-")
+    .map(Number);
+
+  if(!year || !month || !day){
+    return "";
+  }
+
+  const date = new Date(year, month - 1, day);
+  date.setDate(date.getDate() - 1);
+
+  return localDateKey(date);
+}
+
+
+function completeHomeStudyIfReady(record, dateKey){
+  if(record.completed || homeStudyGoalCount(record) < 2){
+    return false;
+  }
+
+  const streak = readHomeStudyStreak();
+  const previousDate = previousLocalDateKey(dateKey);
+  const wasYesterday =
+    streak.lastCompletedDate === previousDate;
+  const nextStreak = wasYesterday
+    ? streak.currentStreak + 1
+    : 1;
+
+  record.completed = true;
+
+  writeHomeStudyStreak({
+    currentStreak:nextStreak,
+    lastCompletedDate:dateKey,
+    longestStreak:Math.max(
+      streak.longestStreak || 0,
+      nextStreak
+    )
+  });
+
+  return true;
+}
+
+
+function saveHomeStudyRecord(record, dateKey, progress){
+  progress[dateKey] = record;
+  writeHomeStudyProgress(progress);
+}
+
+
+function markHomeLessonComplete(lessonId){
+  const lesson = homeLineUponLineLesson();
+
+  if(lessonId !== lesson.id){
+    return;
+  }
+
+  const {
+    progress,
+    dateKey,
+    record
+  } = todayHomeStudyRecord();
+
+  if(record.lessonCompleted && record.lessonId === lesson.id){
+    return;
+  }
+
+  const previousCompletedGoals =
+    homeStudyGoalCount(record);
+  const previousChapterCount = record.chapters.length;
+
+  record.lessonId = lesson.id;
+  record.lessonCompleted = true;
+
+  completeHomeStudyIfReady(
+    record,
+    dateKey
+  );
+
+  saveHomeStudyRecord(record, dateKey, progress);
+  queueOrPlayHomeStudyProgressAnimation({
+    dateKey,
+    previousCompletedGoals,
+    newCompletedGoals:homeStudyGoalCount(record),
+    previousChapterCount,
+    newChapterCount:record.chapters.length,
+    chapterChanged:false,
+    lessonChanged:true
+  });
+}
+
+
+function markHomeChapterComplete(canonSlug, bookSlug, chapter){
+  const chapterKey = homeStudyChapterKey(
+    canonSlug,
+    bookSlug,
+    chapter
+  );
+
+  const {
+    progress,
+    dateKey,
+    record
+  } = todayHomeStudyRecord();
+
+  if(record.chapters.includes(chapterKey)){
+    return;
+  }
+
+  const previousCompletedGoals =
+    homeStudyGoalCount(record);
+  const previousChapterCount = record.chapters.length;
+
+  record.chapters.push(chapterKey);
+
+  completeHomeStudyIfReady(
+    record,
+    dateKey
+  );
+
+  saveHomeStudyRecord(record, dateKey, progress);
+  queueOrPlayHomeStudyProgressAnimation({
+    dateKey,
+    previousCompletedGoals,
+    newCompletedGoals:homeStudyGoalCount(record),
+    previousChapterCount,
+    newChapterCount:record.chapters.length,
+    chapterChanged:true,
+    lessonChanged:false
+  });
+}
+
+
+function renderHomeStudyStreak(){
+  const root = document.querySelector(
+    "[data-home-study-card]"
+  );
+
+  if(!root) return;
+
+  const { record } = todayHomeStudyRecord();
+  const streak = readHomeStudyStreak();
+  const completedGoals = homeStudyGoalCount(record);
+  const lessonComplete = didCompleteHomeLessonToday(record);
+  const chaptersComplete = record.chapters.length >= 4;
+  const isComplete = completedGoals >= 2;
+
+  root.classList.toggle(
+    "is-complete",
+    isComplete
+  );
+
+  root.innerHTML = `
+    <div class="sj-home-study-layout">
+      <div
+        class="sj-home-study-streak"
+        aria-label="${displayHomeStudyStreak(streak)}-day study streak"
+      >
+        <button
+          class="sj-home-study-flame"
+          type="button"
+          data-home-study-streak-open
+          aria-label="Open study streak details."
+        >
+          <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <path d="M16.4 29c-5 0-9-3.6-9-8.7 0-3.1 1.6-5.8 4.6-8.6 1.8-1.7 2.5-3.6 2.2-6.7 3.7 1.6 6.5 4.8 6.5 8.7 1.2-.9 2-2.3 2.2-4 1.8 1.8 2.8 4.6 2.8 7.6 0 6.7-4.4 11.7-9.3 11.7Z"></path>
+            <path d="M16.2 25.4c-2.2 0-4-1.6-4-3.8 0-1.6.9-2.8 2.2-4 1-.9 1.5-1.8 1.4-3.2 2.1 1.1 3.6 2.9 3.6 5 1-.5 1.6-1.2 1.9-2.1.6 1 .9 2.1.9 3.4 0 2.8-2.5 4.7-6 4.7Z"></path>
+          </svg>
+        </button>
+
+        <span class="sj-home-study-number">
+          ${displayHomeStudyStreak(streak)}
+        </span>
+      </div>
+
+      <div class="sj-home-study-goals">
+        <p class="sj-home-study-kicker">
+          ${isComplete ? "Study Complete" : "Today’s Study"}
+        </p>
+
+        <div class="sj-home-study-goal${lessonComplete ? " is-complete" : ""}">
+          <span class="sj-home-study-check" aria-hidden="true">
+            <svg viewBox="0 0 18 18" focusable="false">
+              <path
+                d="M5 9 L8 12 L14 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </span>
+          <span class="sj-visually-hidden">
+            ${lessonComplete ? "Completed:" : "Not completed:"}
+          </span>
+          <span>Line Upon Line</span>
+        </div>
+
+        <div class="sj-home-study-goal${chaptersComplete ? " is-complete" : ""}">
+          <span class="sj-home-study-check" aria-hidden="true">
+            <svg viewBox="0 0 18 18" focusable="false">
+              <path
+                d="M5 9 L8 12 L14 6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </span>
+          <span class="sj-visually-hidden">
+            ${chaptersComplete ? "Completed:" : "Not completed:"}
+          </span>
+          <span>Read 4 Chapters</span>
+        </div>
+      </div>
+
+      <div
+        class="sj-home-study-progress"
+        aria-label="${completedGoals} of 2 daily goals completed"
+      >
+        <strong>
+          <span>${completedGoals}</span>
+          <i aria-hidden="true"></i>
+          <span>2</span>
+        </strong>
+      </div>
+    </div>
+  `;
+}
+
+
+function dateFromLocalKey(dateKey){
+  const [year, month, day] = String(dateKey)
+    .split("-")
+    .map(Number);
+
+  return year && month && day
+    ? new Date(year, month - 1, day)
+    : null;
+}
+
+
+function completedHomeStudyDatesThisWeek(progress){
+  const today = new Date();
+  const weekStart = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  weekStart.setDate(
+    weekStart.getDate() - weekStart.getDay()
+  );
+
+  return Object.entries(progress)
+    .filter(([dateKey, record]) => {
+      if(!record?.completed){
+        return false;
+      }
+
+      const date = dateFromLocalKey(dateKey);
+
+      return date && date >= weekStart && date <= today;
+    })
+    .length;
+}
+
+
+function recentHomeStudyDays(progress){
+  const today = new Date();
+
+  return Array.from({ length:7 }, (_, index) => {
+    const date = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+    date.setDate(date.getDate() - (6 - index));
+
+    const dateKey = localDateKey(date);
+
+    return {
+      dateKey,
+      label:date.toLocaleDateString(undefined, {
+        weekday:"short"
+      }),
+      completed:Boolean(progress[dateKey]?.completed)
+    };
+  });
+}
+
+
+function homeStudyStreakShelfRoot(){
+  let root = document.querySelector(
+    "[data-home-study-streak-sheet]"
+  );
+
+  if(root){
+    return root;
+  }
+
+  root = document.createElement("div");
+  root.className = "sj-study-streak-sheet";
+  root.dataset.homeStudyStreakSheet = "";
+  root.hidden = true;
+
+  document.body.append(root);
+
+  return root;
+}
+
+
+function openHomeStudyStreakShelf(){
+  const root = homeStudyStreakShelfRoot();
+  const progress = readHomeStudyProgress();
+  const streak = readHomeStudyStreak();
+  const currentStreak = displayHomeStudyStreak(streak);
+  const completedThisWeek =
+    completedHomeStudyDatesThisWeek(progress);
+  const recentDays = recentHomeStudyDays(progress);
+
+  root.hidden = false;
+  root.innerHTML = `
+    <button
+      class="sj-study-streak-backdrop"
+      type="button"
+      data-home-study-streak-close
+      aria-label="Close Study Streaks"
+    ></button>
+
+    <section
+      class="sj-study-streak-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sj-study-streak-title"
+    >
+      <header class="sj-study-streak-head">
+        <h2 id="sj-study-streak-title">
+          Study Streaks
+        </h2>
+
+        <button
+          type="button"
+          data-home-study-streak-close
+        >
+          Close
+        </button>
+      </header>
+
+      <div class="sj-study-streak-stats">
+        <div>
+          <span>Current Streak</span>
+          <strong>${currentStreak}</strong>
+        </div>
+
+        <div>
+          <span>Longest Streak</span>
+          <strong>${streak.longestStreak || 0}</strong>
+        </div>
+
+        <div>
+          <span>Completed This Week</span>
+          <strong>${completedThisWeek}</strong>
+        </div>
+      </div>
+
+      <section
+        class="sj-study-streak-recent"
+        aria-labelledby="sj-study-streak-recent-title"
+      >
+        <h3 id="sj-study-streak-recent-title">
+          Recent 7 Days
+        </h3>
+
+        <div class="sj-study-streak-days">
+          ${recentDays.map(day => `
+            <span
+              class="sj-study-streak-day${day.completed ? " is-complete" : ""}"
+              aria-label="${escapeHTML(day.label)} ${day.completed ? "completed" : "not completed"}"
+            >
+              <span aria-hidden="true"></span>
+              <em>${escapeHTML(day.label)}</em>
+            </span>
+          `).join("")}
+        </div>
+      </section>
+    </section>
+  `;
+
+  document.body.classList.add(
+    "sj-study-streak-sheet-open"
+  );
+}
+
+
+function closeHomeStudyStreakShelf(){
+  const root = homeStudyStreakShelfRoot();
+
+  root.hidden = true;
+  root.innerHTML = "";
+
+  document.body.classList.remove(
+    "sj-study-streak-sheet-open"
+  );
+}
 
 
 function homeLineUponLineLesson(){
   const today = new Date();
 
-  const localDay = Math.floor(
-    Date.UTC(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate()
-    ) / 86400000
-  );
-
-  const rotationStartDay = Math.floor(
-    Date.UTC(2026, 6, 16) / 86400000
+  const localDay = localDayNumber(today);
+  const rotationStartDay = localDayNumber(
+    new Date(2026, 6, 16)
   );
 
   const dayOffset = Math.max(
@@ -501,10 +1315,18 @@ function renderHomeLineUponLine(){
     <button
       class="sj-scripture-lesson-card"
       type="button"
-      data-placeholder-reel
+      data-scripture-lesson-open
       data-scripture-lesson-id="${escapeHTML(lesson.id)}"
       aria-label="Play ${escapeHTML(lesson.title)}"
     >
+      <span class="sj-scripture-lesson-image">
+        <img
+          src="${escapeHTML(lesson.poster)}"
+          alt=""
+          loading="lazy"
+        >
+      </span>
+
       <span class="sj-scripture-lesson-copy">
         <span class="sj-scripture-lesson-reference">
           ${escapeHTML(lesson.reference)}
@@ -531,6 +1353,284 @@ function renderHomeLineUponLine(){
 
 
 renderHomeLineUponLine();
+renderHomeStudyStreak();
+
+
+function homeLessonById(lessonId){
+  return HOME_SCRIPTURE_LESSONS.find(
+    lesson => lesson.id === lessonId
+  ) || HOME_SCRIPTURE_LESSONS[0];
+}
+
+
+function nextHomeLesson(lessonId){
+  const index = HOME_SCRIPTURE_LESSONS.findIndex(
+    lesson => lesson.id === lessonId
+  );
+
+  return HOME_SCRIPTURE_LESSONS[
+    (Math.max(0, index) + 1) %
+    HOME_SCRIPTURE_LESSONS.length
+  ];
+}
+
+
+function homeLessonPlayerRoot(){
+  let root = document.querySelector(
+    "[data-scripture-lesson-player]"
+  );
+
+  if(root){
+    return root;
+  }
+
+  root = document.createElement("div");
+  root.className = "sj-lesson-player";
+  root.dataset.scriptureLessonPlayer = "";
+  root.hidden = true;
+
+  document.body.append(root);
+
+  return root;
+}
+
+
+function openHomeLessonPlayer(lessonId){
+  const lesson = homeLessonById(lessonId);
+  const nextLesson = nextHomeLesson(lesson.id);
+  const root = homeLessonPlayerRoot();
+
+  root.hidden = false;
+  root.innerHTML = `
+    <button
+      class="sj-lesson-player-backdrop"
+      type="button"
+      data-scripture-lesson-close
+      aria-label="Close lesson player"
+    ></button>
+
+    <section
+      class="sj-lesson-player-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sj-lesson-player-title"
+    >
+      <header class="sj-lesson-player-topbar">
+        <button
+          class="sj-lesson-player-close"
+          type="button"
+          data-scripture-lesson-close
+        >
+          Back
+        </button>
+
+        <button
+          class="sj-lesson-player-share"
+          type="button"
+          data-scripture-lesson-share
+          data-scripture-lesson-id="${escapeHTML(lesson.id)}"
+        >
+          Share
+        </button>
+      </header>
+
+      <video
+        class="sj-lesson-video"
+        controls
+        playsinline
+        poster="${escapeHTML(lesson.poster)}"
+        data-scripture-lesson-video
+        data-scripture-lesson-id="${escapeHTML(lesson.id)}"
+      >
+        <source
+          src="${escapeHTML(lesson.video)}"
+          type="video/mp4"
+        >
+      </video>
+
+      <div class="sj-lesson-player-copy">
+        <p class="sj-lesson-player-reference">
+          ${escapeHTML(lesson.reference)}
+        </p>
+
+        <h2 id="sj-lesson-player-title">
+          ${escapeHTML(lesson.title)}
+        </h2>
+
+        <div class="sj-lesson-author-row">
+          <div>
+            <strong>Semitic Jew</strong>
+            <span>Founder</span>
+          </div>
+
+          <button
+            type="button"
+            data-scripture-lesson-follow
+          >
+            Follow
+          </button>
+        </div>
+
+        <p
+          class="sj-lesson-player-status"
+          data-scripture-lesson-status
+          hidden
+        ></p>
+
+        <button
+          class="sj-lesson-next"
+          type="button"
+          data-scripture-lesson-open
+          data-scripture-lesson-id="${escapeHTML(nextLesson.id)}"
+        >
+          Continue Learning
+        </button>
+      </div>
+    </section>
+  `;
+
+  document.body.classList.add("sj-lesson-player-open");
+}
+
+
+function openHomeLessonLibrary(){
+  const root = homeLessonPlayerRoot();
+
+  root.hidden = false;
+  root.innerHTML = `
+    <button
+      class="sj-lesson-player-backdrop"
+      type="button"
+      data-scripture-lesson-close
+      aria-label="Close lesson library"
+    ></button>
+
+    <section
+      class="sj-lesson-player-sheet sj-lesson-library-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sj-lesson-library-title"
+    >
+      <header class="sj-lesson-player-topbar">
+        <button
+          class="sj-lesson-player-close"
+          type="button"
+          data-scripture-lesson-close
+        >
+          Back
+        </button>
+      </header>
+
+      <div class="sj-lesson-player-copy">
+        <p class="sj-lesson-player-reference">
+          Scripture Explained
+        </p>
+
+        <h2 id="sj-lesson-library-title">
+          Line Upon Line
+        </h2>
+
+        <div class="sj-lesson-library-list">
+          ${HOME_SCRIPTURE_LESSONS.map(lesson => `
+            <button
+              class="sj-lesson-library-card"
+              type="button"
+              data-scripture-lesson-open
+              data-scripture-lesson-id="${escapeHTML(lesson.id)}"
+            >
+              <img
+                src="${escapeHTML(lesson.poster)}"
+                alt=""
+                loading="lazy"
+              >
+
+              <span>
+                <span class="sj-lesson-library-reference">
+                  ${escapeHTML(lesson.reference)}
+                </span>
+
+                <strong>
+                  ${escapeHTML(lesson.title)}
+                </strong>
+
+                <em>${escapeHTML(lesson.duration)}</em>
+              </span>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+
+  document.body.classList.add("sj-lesson-player-open");
+}
+
+
+function closeHomeLessonPlayer(){
+  const root = homeLessonPlayerRoot();
+  const video = root.querySelector("video");
+
+  if(video){
+    video.pause();
+  }
+
+  root.hidden = true;
+  root.innerHTML = "";
+  document.body.classList.remove(
+    "sj-lesson-player-open"
+  );
+
+  if(homeScreenIsActive()){
+    renderHomeStudyOnHomeEntry();
+  }
+}
+
+
+async function shareHomeLesson(lessonId){
+  const lesson = homeLessonById(lessonId);
+  const text = `${lesson.reference} — ${lesson.title}`;
+
+  if(navigator.share){
+    try{
+      await navigator.share({
+        title:lesson.title,
+        text
+      });
+      return;
+    }catch(error){
+      if(error.name === "AbortError") return;
+    }
+  }
+
+  try{
+    await navigator.clipboard.writeText(text);
+    window.alert("Lesson copied for sharing.");
+  }catch(error){
+    console.warn("Could not share lesson.", error);
+  }
+}
+
+
+function updateHomeLessonWatchProgress(video){
+  const lessonId = video.dataset.scriptureLessonId;
+  const duration = Number(video.duration);
+
+  if(
+    !lessonId ||
+    !Number.isFinite(duration) ||
+    duration <= 0
+  ){
+    return;
+  }
+
+  const watched = video.ended
+    ? 1
+    : Number(video.currentTime) / duration;
+
+  if(watched >= .85){
+    markHomeLessonComplete(lessonId);
+  }
+}
 
 
 /* =========================================================
@@ -1902,6 +3002,7 @@ function renderBibleCanons(){
   if(!menu || !scriptureCanonData) return;
 
   bibleBrowserStage = "canons";
+  stopHomeChapterTracker();
 
   setBibleNotice("");
 
@@ -1959,6 +3060,7 @@ function renderBibleBooks(canonSlug){
   if(!root || !canon) return;
 
   bibleBrowserStage = "books";
+  stopHomeChapterTracker();
 
   setBibleNotice("");
 
@@ -2042,6 +3144,7 @@ function renderBibleChapters(
   if(!root || !canon || !book) return;
 
   bibleBrowserStage = "chapters";
+  stopHomeChapterTracker();
 
   setBibleNotice("");
 
@@ -4876,6 +5979,451 @@ function scrollBibleReaderToVerse(verseNumber){
 }
 
 
+function homeChapterMinimumSeconds(verseCount){
+  return Math.min(
+    90,
+    Math.max(20, Number(verseCount) * 2)
+  );
+}
+
+
+function homeBibleScreenIsActive(){
+  const bibleScreen = document.querySelector(
+    '[data-v3-screen="bible"]'
+  );
+
+  return Boolean(
+    bibleScreen?.classList.contains("is-active") &&
+    bibleBrowserStage === "reader"
+  );
+}
+
+
+function homeChapterTrackerMatchesRenderedReader(
+  tracker = homeChapterTracker
+){
+  if(!tracker){
+    return false;
+  }
+
+  if(
+    selectedBibleCanon !== tracker.canonSlug ||
+    selectedBibleBook !== tracker.bookSlug ||
+    selectedBibleChapter !== tracker.chapter
+  ){
+    return false;
+  }
+
+  const verses = Array.from(
+    document.querySelectorAll(
+      ".sj-reader-verse[data-reader-verse]"
+    )
+  );
+
+  if(verses.length !== tracker.totalVerseCount){
+    return false;
+  }
+
+  const finalVerse = verses.at(-1);
+
+  return Boolean(
+    finalVerse &&
+    finalVerse.isConnected &&
+    finalVerse.dataset.readerVerse ===
+      String(tracker.finalVerseNumber)
+  );
+}
+
+
+function homeChapterCanAccumulateTime(){
+  return Boolean(
+    homeChapterTracker &&
+    !homeChapterTracker.completed &&
+    homeChapterTracker.dateKey === localDateKey() &&
+    document.visibilityState === "visible" &&
+    homeBibleScreenIsActive() &&
+    homeChapterTrackerMatchesRenderedReader()
+  );
+}
+
+
+function homeChapterCurrentActiveMs(){
+  if(!homeChapterTracker){
+    return 0;
+  }
+
+  const runningMs =
+    homeChapterTracker.activeStartedAt === null
+      ? 0
+      : performance.now() -
+        homeChapterTracker.activeStartedAt;
+
+  return homeChapterTracker.activeMs + runningMs;
+}
+
+
+function pauseHomeChapterTracker(){
+  if(
+    !homeChapterTracker ||
+    homeChapterTracker.activeStartedAt === null
+  ){
+    return;
+  }
+
+  homeChapterTracker.activeMs +=
+    performance.now() -
+    homeChapterTracker.activeStartedAt;
+
+  homeChapterTracker.activeStartedAt = null;
+}
+
+
+function resumeHomeChapterTracker(){
+  if(!homeChapterTracker || homeChapterTracker.completed){
+    return;
+  }
+
+  if(!homeChapterCanAccumulateTime()){
+    pauseHomeChapterTracker();
+    return;
+  }
+
+  if(homeChapterTracker.activeStartedAt === null){
+    homeChapterTracker.activeStartedAt = performance.now();
+  }
+}
+
+
+function stopHomeChapterTracker(){
+  pauseHomeChapterTracker();
+
+  if(homeChapterObserver){
+    homeChapterObserver.disconnect();
+    homeChapterObserver = null;
+  }
+
+  if(homeChapterTracker?.onScroll){
+    window.removeEventListener(
+      "scroll",
+      homeChapterTracker.onScroll
+    );
+  }
+
+  if(homeChapterTracker?.progressTimer){
+    window.clearInterval(
+      homeChapterTracker.progressTimer
+    );
+  }
+
+  homeChapterTracker = null;
+}
+
+
+function stopHomeChapterTracking(){
+  stopHomeChapterTracker();
+}
+
+
+function homeChapterVisibleRatio(element){
+  if(!element?.isConnected){
+    return 0;
+  }
+
+  const rect = element.getBoundingClientRect();
+  const viewportHeight =
+    window.innerHeight ||
+    document.documentElement.clientHeight;
+  const viewportWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth;
+
+  if(
+    rect.width <= 0 ||
+    rect.height <= 0 ||
+    rect.bottom <= 0 ||
+    rect.top >= viewportHeight ||
+    rect.right <= 0 ||
+    rect.left >= viewportWidth
+  ){
+    return 0;
+  }
+
+  const visibleHeight =
+    Math.min(rect.bottom, viewportHeight) -
+    Math.max(rect.top, 0);
+  const visibleWidth =
+    Math.min(rect.right, viewportWidth) -
+    Math.max(rect.left, 0);
+
+  return Math.max(
+    0,
+    Math.min(
+      1,
+      (visibleHeight * visibleWidth) /
+      (rect.height * rect.width)
+    )
+  );
+}
+
+
+function recordVisibleHomeVerse(verse){
+  if(
+    !homeChapterTracker ||
+    homeChapterTracker.completed ||
+    !verse?.matches?.(".sj-reader-verse[data-reader-verse]") ||
+    !verse.isConnected
+  ){
+    return;
+  }
+
+  if(!homeChapterTrackerMatchesRenderedReader()){
+    pauseHomeChapterTracker();
+    return;
+  }
+
+  const verseNumber = Number(verse.dataset.readerVerse);
+
+  if(!Number.isInteger(verseNumber)){
+    return;
+  }
+
+  if(homeChapterVisibleRatio(verse) < .45){
+    return;
+  }
+
+  homeChapterTracker.seenVerses.add(verseNumber);
+
+  if(verseNumber === homeChapterTracker.finalVerseNumber){
+    homeChapterTracker.finalVerseReached = true;
+  }
+
+  completeTrackedHomeChapter();
+}
+
+
+function recordCurrentlyVisibleHomeVerses(){
+  if(!homeChapterTracker || homeChapterTracker.completed){
+    return;
+  }
+
+  homeChapterTracker.verseElements.forEach(verse => {
+    recordVisibleHomeVerse(verse);
+  });
+}
+
+
+function homeChapterAlreadyCompletedToday(chapterKey){
+  const { record } = todayHomeStudyRecord();
+
+  return record.chapters.includes(chapterKey);
+}
+
+
+function homeChapterReadingQualified(){
+  if(
+    !homeChapterTracker ||
+    homeChapterTracker.completed ||
+    homeChapterTracker.dateKey !== localDateKey() ||
+    !homeChapterTrackerMatchesRenderedReader() ||
+    homeChapterAlreadyCompletedToday(
+      homeChapterTracker.chapterKey
+    )
+  ){
+    return false;
+  }
+
+  const activeSeconds =
+    homeChapterCurrentActiveMs() / 1000;
+  const traversalRatio =
+    homeChapterTracker.totalVerseCount > 0
+      ? homeChapterTracker.seenVerses.size /
+        homeChapterTracker.totalVerseCount
+      : 0;
+
+  return (
+    activeSeconds >= homeChapterTracker.minimumSeconds &&
+    traversalRatio >= .6 &&
+    homeChapterTracker.finalVerseReached
+  );
+}
+
+
+function completeTrackedHomeChapter(){
+  if(
+    !homeChapterTracker ||
+    homeChapterTracker.completed ||
+    !homeChapterReadingQualified()
+  ){
+    return;
+  }
+
+  const {
+    canonSlug,
+    bookSlug,
+    chapter
+  } = homeChapterTracker;
+
+  pauseHomeChapterTracker();
+
+  markHomeChapterComplete(
+    canonSlug,
+    bookSlug,
+    chapter
+  );
+
+  homeChapterTracker.completed = true;
+  stopHomeChapterTracker();
+}
+
+
+function checkTrackedHomeChapterProgress(){
+  if(!homeChapterTracker){
+    return;
+  }
+
+  if(homeChapterTracker.dateKey !== localDateKey()){
+    stopHomeChapterTracker();
+    return;
+  }
+
+  if(!homeChapterTrackerMatchesRenderedReader()){
+    stopHomeChapterTracker();
+    return;
+  }
+
+  if(homeChapterCanAccumulateTime()){
+    resumeHomeChapterTracker();
+  }else{
+    pauseHomeChapterTracker();
+  }
+
+  recordCurrentlyVisibleHomeVerses();
+  completeTrackedHomeChapter();
+}
+
+
+function startHomeChapterTracker(
+  canon,
+  book,
+  chapter
+){
+  stopHomeChapterTracker();
+
+  const verses = Array.from(
+    document.querySelectorAll(
+      ".sj-reader-verse[data-reader-verse]"
+    )
+  );
+
+  const finalVerse = verses.at(-1);
+  const chapterNumber = Number(chapter);
+
+  if(
+    !canon?.slug ||
+    !book?.slug ||
+    !Number.isInteger(chapterNumber) ||
+    !finalVerse
+  ){
+    return;
+  }
+
+  const finalVerseNumber = Number(
+    finalVerse.dataset.readerVerse
+  );
+  const chapterKey = homeStudyChapterKey(
+    canon.slug,
+    book.slug,
+    chapterNumber
+  );
+
+  if(
+    !Number.isInteger(finalVerseNumber) ||
+    homeChapterAlreadyCompletedToday(chapterKey)
+  ){
+    return;
+  }
+
+  homeChapterTracker = {
+    canonSlug:canon.slug,
+    bookSlug:book.slug,
+    chapter:chapterNumber,
+    chapterKey,
+    dateKey:localDateKey(),
+    verseElements:verses,
+    totalVerseCount:verses.length,
+    finalVerseNumber,
+    seenVerses:new Set(),
+    finalVerseReached:false,
+    minimumSeconds:homeChapterMinimumSeconds(verses.length),
+    activeMs:0,
+    activeStartedAt:null,
+    completed:false,
+    onScroll:null,
+    progressTimer:null
+  };
+
+  if("IntersectionObserver" in window){
+    homeChapterObserver =
+      new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(
+            entry.isIntersecting &&
+            entry.intersectionRatio >= .5
+          ){
+            recordVisibleHomeVerse(entry.target);
+          }
+        });
+      }, {
+        threshold:[0, .45, .5, .75, 1]
+      });
+
+    verses.forEach(verse => {
+      homeChapterObserver.observe(verse);
+    });
+  }
+
+  homeChapterTracker.onScroll = () => {
+    recordCurrentlyVisibleHomeVerses();
+    completeTrackedHomeChapter();
+  };
+
+  window.addEventListener(
+    "scroll",
+    homeChapterTracker.onScroll,
+    { passive:true }
+  );
+
+  homeChapterTracker.progressTimer = window.setInterval(
+    checkTrackedHomeChapterProgress,
+    1000
+  );
+
+  resumeHomeChapterTracker();
+
+  window.requestAnimationFrame(() => {
+    checkTrackedHomeChapterProgress();
+  });
+}
+
+
+function trackHomeChapterReading(
+  canon,
+  book,
+  chapter
+){
+  startHomeChapterTracker(canon, book, chapter);
+}
+
+
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible"){
+    resumeHomeChapterTracker();
+  }else{
+    pauseHomeChapterTracker();
+  }
+});
+
+
 async function openDailyPreceptInBible(){
   try{
     if(!currentPrecept){
@@ -4964,6 +6512,7 @@ async function openBibleReader(
   }
 
   bibleBrowserStage = "reader";
+  stopHomeChapterTracker();
 
   selectedReaderVerse = null;
   closeReaderActionTray();
@@ -5030,6 +6579,12 @@ async function openBibleReader(
       book,
       chapterNumber,
       payload
+    );
+
+    trackHomeChapterReading(
+      canon,
+      book,
+      chapterNumber
     );
 
     const focusedVerse =
@@ -5630,6 +7185,78 @@ async function loadLatestPodcast(){
 
 
 document.addEventListener("click", event => {
+  if(event.target.closest("[data-home-study-streak-open]")){
+    event.preventDefault();
+
+    openHomeStudyStreakShelf();
+
+    return;
+  }
+
+
+  if(event.target.closest("[data-home-study-streak-close]")){
+    event.preventDefault();
+
+    closeHomeStudyStreakShelf();
+
+    return;
+  }
+
+
+  const lessonOpen = event.target.closest(
+    "[data-scripture-lesson-open]"
+  );
+
+  if(lessonOpen){
+    event.preventDefault();
+
+    openHomeLessonPlayer(
+      lessonOpen.dataset.scriptureLessonId
+    );
+
+    return;
+  }
+
+
+  if(event.target.closest("[data-scripture-lesson-close]")){
+    event.preventDefault();
+
+    closeHomeLessonPlayer();
+
+    return;
+  }
+
+
+  const lessonShare = event.target.closest(
+    "[data-scripture-lesson-share]"
+  );
+
+  if(lessonShare){
+    event.preventDefault();
+
+    shareHomeLesson(
+      lessonShare.dataset.scriptureLessonId
+    );
+
+    return;
+  }
+
+
+  if(event.target.closest("[data-scripture-lesson-follow]")){
+    const status = document.querySelector(
+      "[data-scripture-lesson-status]"
+    );
+
+    if(status){
+      status.hidden = false;
+      status.textContent =
+        "Profiles and following are coming soon.";
+    }
+
+    return;
+  }
+
+
   const podcastButton = event.target.closest(
     "[data-podcast-play]"
   );
@@ -5679,35 +7306,42 @@ document.addEventListener("click", event => {
   }
 
 
-  const placeholderReel = event.target.closest(
-    "[data-placeholder-reel]"
-  );
-
-  if(placeholderReel){
-    const status = document.querySelector(
-      "[data-precept-placeholder-status]"
-    );
-
-    if(status){
-      status.textContent =
-        "Scripture Explained lesson playback is coming soon.";
-    }
-
-    return;
-  }
-
-
   if(event.target.closest("[data-precept-see-all]")){
-    const status = document.querySelector(
-      "[data-precept-placeholder-status]"
-    );
+    event.preventDefault();
 
-    if(status){
-      status.textContent =
-        "The complete Scripture Explained library is coming soon.";
-    }
+    openHomeLessonLibrary();
   }
 });
+
+
+document.addEventListener(
+  "timeupdate",
+  event => {
+    const video = event.target.closest(
+      "[data-scripture-lesson-video]"
+    );
+
+    if(video){
+      updateHomeLessonWatchProgress(video);
+    }
+  },
+  true
+);
+
+
+document.addEventListener(
+  "ended",
+  event => {
+    const video = event.target.closest(
+      "[data-scripture-lesson-video]"
+    );
+
+    if(video){
+      updateHomeLessonWatchProgress(video);
+    }
+  },
+  true
+);
 
 
 document
