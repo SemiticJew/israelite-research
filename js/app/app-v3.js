@@ -2451,6 +2451,12 @@ function articleBrowserRoot(){
 }
 
 
+function isNativeCapacitorRuntime(){
+  return Boolean(window.Capacitor) ||
+    window.location.protocol === "capacitor:";
+}
+
+
 function normalizedAppArticleURL(value){
   const href = cleanText(value);
 
@@ -2479,13 +2485,20 @@ function normalizedAppArticleURL(value){
       );
 
     if(isSemiticJewArticle || isLocalArticle){
-      return resolved.pathname +
+      const articlePath =
+        resolved.pathname +
         resolved.search +
         resolved.hash;
+
+      return isNativeCapacitorRuntime()
+        ? `https://semiticjew.org${articlePath}`
+        : articlePath;
     }
   }catch(error){
     if(href.startsWith("/articles/")){
-      return href;
+      return isNativeCapacitorRuntime()
+        ? `https://semiticjew.org${href}`
+        : href;
     }
   }
 
@@ -8432,6 +8445,8 @@ document.addEventListener("click", event => {
 
     if(href){
       event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
 
       openArticleReader(
         href
@@ -8440,8 +8455,10 @@ document.addEventListener("click", event => {
 
     return;
   }
+}, true);
 
 
+document.addEventListener("click", event => {
   const back = event.target.closest(
     "[data-app-article-back]"
   );

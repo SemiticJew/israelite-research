@@ -67,8 +67,12 @@ cat > "$OUT/js/capacitor-native-shell.js" <<'JS'
 
     try {
       const url = new URL(href, location.href);
+      const isSemiticJewArticle =
+        /^(www\.)?semiticjew\.org$/i.test(url.hostname) &&
+        url.pathname.startsWith("/articles/");
 
       return (
+        isSemiticJewArticle ||
         url.protocol === "capacitor:" ||
         url.protocol === "file:" ||
         url.hostname === location.hostname ||
