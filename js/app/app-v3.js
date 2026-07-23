@@ -2290,7 +2290,11 @@ async function loadLatestArticle(){
     }
 
     root.innerHTML = `
-      <a class="sj-latest-article-card" href="${escapeHTML(href)}">
+      <a
+        class="sj-latest-article-card"
+        href="${escapeHTML(href)}"
+        data-app-article-link
+      >
         ${imageSrc ? `
           <div class="sj-latest-article-image">
             <img
@@ -2444,6 +2448,48 @@ function articleBrowserRoot(){
   return document.querySelector(
     "[data-articles-browser]"
   );
+}
+
+
+function normalizedAppArticleURL(value){
+  const href = cleanText(value);
+
+  if(!href){
+    return "";
+  }
+
+  try{
+    const resolved = new URL(
+      href,
+      window.location.origin
+    );
+
+    const isSemiticJewArticle =
+      /^(?:www\.)?semiticjew\.org$/i.test(
+        resolved.hostname
+      ) &&
+      resolved.pathname.startsWith(
+        "/articles/"
+      );
+
+    const isLocalArticle =
+      resolved.origin === window.location.origin &&
+      resolved.pathname.startsWith(
+        "/articles/"
+      );
+
+    if(isSemiticJewArticle || isLocalArticle){
+      return resolved.pathname +
+        resolved.search +
+        resolved.hash;
+    }
+  }catch(error){
+    if(href.startsWith("/articles/")){
+      return href;
+    }
+  }
+
+  return href;
 }
 
 
@@ -2908,12 +2954,20 @@ function prepareArticleReaderFragment(
         return;
       }
 
+      const isSemiticJewArticle =
+        /^(?:www\.)?semiticjew\.org$/i.test(
+          resolved.hostname
+        ) &&
+        resolved.pathname.startsWith(
+          "/articles/"
+        );
+
       const sameOrigin =
         resolved.origin ===
         window.location.origin;
 
       if(
-        sameOrigin &&
+        (sameOrigin || isSemiticJewArticle) &&
         resolved.pathname.startsWith(
           "/articles/"
         )
@@ -3203,7 +3257,9 @@ function renderArticleReader(
 
 
 async function openArticleReader(articleURL){
-  const href = cleanText(articleURL);
+  const href = normalizedAppArticleURL(
+    articleURL
+  );
 
   if(!href){
     return;
@@ -8370,7 +8426,7 @@ document.addEventListener("click", event => {
   );
 
   if(articleLink){
-    const href = cleanText(
+    const href = normalizedAppArticleURL(
       articleLink.getAttribute("href")
     );
 
