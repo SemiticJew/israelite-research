@@ -1,0 +1,53 @@
+name: Update app content feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+  push:
+    branches: [ main ]
+    paths:
+      - "articles.html"
+      - "articles/**"
+      - "data/app/line-upon-line.json"
+      - "tools/update_app_content_feed.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-app-content-feed
+  cancel-in-progress: true
+
+jobs:
+  update-app-content-feed:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Regenerate app content feed
+        run: python3 tools/update_app_content_feed.py
+
+      - name: Validate app content feed
+        run: python3 -m json.tool data/app/content-feed.json >/dev/null
+
+      - name: Commit content feed changes
+        run: |
+          if git diff --quiet -- data/app/content-feed.json; then
+            echo "No app content feed changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/app/content-feed.json
+          git commit -m "Update app content feed"
+          git push

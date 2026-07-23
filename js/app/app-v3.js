@@ -7741,20 +7741,6 @@ async function loadLatestPodcast(){
           }
 
           <div class="sj-podcast-actions">
-            ${
-              episode.episodeUrl
-                ? `
-                  <a
-                    href="${escapeHTML(episode.episodeUrl)}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Episode
-                  </a>
-                `
-                : ""
-            }
-
             <a
               href="${APPLE_PODCASTS_URL}"
               target="_blank"
