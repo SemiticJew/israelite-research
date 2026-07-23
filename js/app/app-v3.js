@@ -70,6 +70,11 @@ function showScreen(name, options = {}){
 
   if(name === "home"){
     renderHomeStudyOnHomeEntry();
+    refreshAppContentFeedIfNeeded();
+  }
+
+  if(name === "articles"){
+    refreshAppContentFeedIfNeeded();
   }
 
   if(updateHash){
@@ -484,8 +489,26 @@ const HOME_STUDY_STREAK_KEY =
 const HOME_STUDY_PENDING_ANIMATION_KEY =
   "sj_home_study_pending_animation_v1";
 
+const APP_CONTENT_FEED_REMOTE_URL =
+  "https://semiticjew.org/data/app/content-feed.json";
+
+const APP_CONTENT_FEED_LOCAL_URL =
+  "/data/app/content-feed.json";
+
+const APP_CONTENT_FEED_CACHE_KEY =
+  "sj_app_content_feed_cache_v1";
+
+const APP_CONTENT_FEED_REFRESH_MS =
+  15 * 60 * 1000;
+
+const APP_CONTENT_FEED_TIMEOUT_MS =
+  8000;
+
 let homeChapterObserver = null;
 let homeChapterTracker = null;
+let appContentFeedState = null;
+let appContentFeedLoadedAt = 0;
+let appContentFeedRequest = null;
 
 
 function localDateKey(date = new Date()){
@@ -508,6 +531,517 @@ function localDayNumber(date = new Date()){
     ).getTime() / 86400000
   );
 }
+
+
+function localContentPath(value){
+  const path = String(value || "")
+    .split("#")[0]
+    .split("?")[0];
+
+  return path.startsWith("/") &&
+    !path.startsWith("//");
+}
+
+
+function validAppContentURL(value){
+  const url = cleanText(value);
+
+  if(!url){
+    return "";
+  }
+
+  if(localContentPath(url)){
+    return url;
+  }
+
+  try{
+    const parsed = new URL(url);
+
+    return parsed.protocol === "https:"
+      ? parsed.href
+      : "";
+  }catch(error){
+    return "";
+  }
+}
+
+
+function appContentSortNewest(items){
+  return [...items].sort((first, second) => {
+    const firstTime = Date.parse(
+      first.publishedAt || ""
+    ) || 0;
+    const secondTime = Date.parse(
+      second.publishedAt || ""
+    ) || 0;
+
+    return secondTime - firstTime;
+  });
+}
+
+
+function fallbackAppContentFeed(){
+  return {
+    schemaVersion:1,
+    updatedAt:"",
+    articles:[],
+    podcasts:[],
+    lessons:HOME_SCRIPTURE_LESSONS.map(lesson => ({
+      id:lesson.id,
+      reference:lesson.reference,
+      title:lesson.title,
+      description:"",
+      publishedAt:"",
+      duration:lesson.duration,
+      posterUrl:lesson.poster,
+      videoUrl:lesson.video,
+      poster:lesson.poster,
+      video:lesson.video
+    }))
+  };
+}
+
+
+function normalizeContentArticle(entry){
+  const id = cleanText(entry?.id);
+  const title = cleanText(entry?.title);
+  const articleUrl = validAppContentURL(
+    entry?.articleUrl
+  );
+
+  if(!id || !title || !articleUrl){
+    return null;
+  }
+
+  const imageUrl = validAppContentURL(
+    entry?.imageUrl
+  );
+
+  return {
+    id,
+    title,
+    excerpt:cleanText(entry?.excerpt),
+    author:cleanText(entry?.author) || "Semitic Jew",
+    publishedAt:cleanText(entry?.publishedAt),
+    imageUrl,
+    articleUrl,
+    href:articleUrl,
+    image:imageUrl
+  };
+}
+
+
+function normalizeContentPodcast(entry){
+  const id = cleanText(entry?.id);
+  const title = cleanText(entry?.title);
+
+  if(!id || !title){
+    return null;
+  }
+
+  const imageUrl = validAppContentURL(
+    entry?.imageUrl
+  );
+  const audioUrl = validAppContentURL(
+    entry?.audioUrl
+  );
+  const episodeUrl = validAppContentURL(
+    entry?.episodeUrl
+  );
+
+  if(entry?.audioUrl && !audioUrl){
+    return null;
+  }
+
+  if(entry?.episodeUrl && !episodeUrl){
+    return null;
+  }
+
+  return {
+    id,
+    title,
+    description:cleanText(entry?.description),
+    publishedAt:cleanText(entry?.publishedAt),
+    duration:cleanText(entry?.duration),
+    imageUrl,
+    audioUrl,
+    episodeUrl
+  };
+}
+
+
+function normalizeContentLesson(entry){
+  const id = cleanText(entry?.id);
+  const reference = cleanText(entry?.reference);
+  const title = cleanText(entry?.title);
+  const posterUrl = validAppContentURL(
+    entry?.posterUrl
+  );
+  const videoUrl = validAppContentURL(
+    entry?.videoUrl
+  );
+
+  if(
+    !id ||
+    !reference ||
+    !title ||
+    !posterUrl ||
+    !videoUrl
+  ){
+    return null;
+  }
+
+  return {
+    id,
+    reference,
+    title,
+    description:cleanText(entry?.description),
+    publishedAt:cleanText(entry?.publishedAt),
+    duration:cleanText(entry?.duration),
+    posterUrl,
+    videoUrl,
+    poster:posterUrl,
+    video:videoUrl
+  };
+}
+
+
+function validateContentCategory(entries, normalize){
+  const valid = [];
+  const seen = new Set();
+
+  entries.forEach(entry => {
+    const normalized = normalize(entry);
+
+    if(!normalized || seen.has(normalized.id)){
+      return;
+    }
+
+    seen.add(normalized.id);
+    valid.push(normalized);
+  });
+
+  return valid;
+}
+
+
+function validateAppContentFeed(payload){
+  if(
+    !payload ||
+    Number(payload.schemaVersion) !== 1 ||
+    !Array.isArray(payload.articles) ||
+    !Array.isArray(payload.podcasts) ||
+    !Array.isArray(payload.lessons)
+  ){
+    throw new Error(
+      "Unsupported app content feed schema."
+    );
+  }
+
+  const fallback = fallbackAppContentFeed();
+  const lessons = validateContentCategory(
+    payload.lessons,
+    normalizeContentLesson
+  );
+
+  return {
+    schemaVersion:1,
+    updatedAt:cleanText(payload.updatedAt),
+    articles:appContentSortNewest(
+      validateContentCategory(
+        payload.articles,
+        normalizeContentArticle
+      )
+    ),
+    podcasts:appContentSortNewest(
+      validateContentCategory(
+        payload.podcasts,
+        normalizeContentPodcast
+      )
+    ),
+    lessons:lessons.length
+      ? lessons
+      : fallback.lessons
+  };
+}
+
+
+function readCachedAppContentFeed(){
+  try{
+    const cached = JSON.parse(
+      localStorage.getItem(
+        APP_CONTENT_FEED_CACHE_KEY
+      ) || "null"
+    );
+
+    if(
+      !cached ||
+      Number(cached.schemaVersion) !== 1 ||
+      !cached.manifest
+    ){
+      return null;
+    }
+
+    return {
+      manifest:validateAppContentFeed(
+        cached.manifest
+      ),
+      fetchedAt:Number(cached.fetchedAt) || 0,
+      sourceUrl:cleanText(cached.sourceUrl),
+      schemaVersion:1
+    };
+  }catch(error){
+    console.warn(
+      "Could not read cached app content feed.",
+      error
+    );
+    return null;
+  }
+}
+
+
+function writeCachedAppContentFeed(
+  manifest,
+  sourceUrl
+){
+  try{
+    localStorage.setItem(
+      APP_CONTENT_FEED_CACHE_KEY,
+      JSON.stringify({
+        schemaVersion:1,
+        fetchedAt:Date.now(),
+        sourceUrl,
+        manifest
+      })
+    );
+  }catch(error){
+    console.warn(
+      "Could not cache app content feed.",
+      error
+    );
+  }
+}
+
+
+async function fetchAppContentFeed(sourceUrl){
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => {
+    controller.abort();
+  }, APP_CONTENT_FEED_TIMEOUT_MS);
+
+  try{
+    const response = await fetch(sourceUrl, {
+      cache:"no-store",
+      signal:controller.signal
+    });
+
+    if(!response.ok){
+      throw new Error(
+        `${sourceUrl} returned ${response.status}`
+      );
+    }
+
+    return validateAppContentFeed(
+      await response.json()
+    );
+  }finally{
+    window.clearTimeout(timeout);
+  }
+}
+
+
+function isLocalAppPreview(){
+  return (
+    ["http:", "https:"].includes(
+      window.location.protocol
+    ) &&
+    [
+      "localhost",
+      "127.0.0.1",
+      "::1"
+    ].includes(window.location.hostname)
+  );
+}
+
+
+function setAppContentFeedState(
+  manifest,
+  sourceUrl
+){
+  appContentFeedState = {
+    manifest,
+    sourceUrl,
+    fetchedAt:Date.now()
+  };
+  appContentFeedLoadedAt = Date.now();
+
+  return appContentFeedState;
+}
+
+
+async function loadAppContentFeed(options = {}){
+  const forceRefresh = Boolean(options.forceRefresh);
+
+  if(
+    appContentFeedState &&
+    !forceRefresh &&
+    Date.now() - appContentFeedLoadedAt <
+      APP_CONTENT_FEED_REFRESH_MS
+  ){
+    return appContentFeedState;
+  }
+
+  if(appContentFeedRequest){
+    return appContentFeedRequest;
+  }
+
+  appContentFeedRequest = (async () => {
+    const localPreview = isLocalAppPreview();
+
+    if(localPreview){
+      try{
+        const manifest = await fetchAppContentFeed(
+          APP_CONTENT_FEED_LOCAL_URL
+        );
+
+        return setAppContentFeedState(
+          manifest,
+          APP_CONTENT_FEED_LOCAL_URL
+        );
+      }catch(error){
+        console.warn(
+          "Local app content feed failed.",
+          error
+        );
+      }
+    }else{
+      try{
+        const manifest = await fetchAppContentFeed(
+          APP_CONTENT_FEED_REMOTE_URL
+        );
+
+        writeCachedAppContentFeed(
+          manifest,
+          APP_CONTENT_FEED_REMOTE_URL
+        );
+
+        return setAppContentFeedState(
+          manifest,
+          APP_CONTENT_FEED_REMOTE_URL
+        );
+      }catch(error){
+        console.warn(
+          "Remote app content feed failed.",
+          error
+        );
+      }
+    }
+
+    const cached = readCachedAppContentFeed();
+
+    if(cached?.manifest){
+      return setAppContentFeedState(
+        cached.manifest,
+        cached.sourceUrl || "cache"
+      );
+    }
+
+    if(!localPreview){
+      try{
+        const manifest = await fetchAppContentFeed(
+          APP_CONTENT_FEED_LOCAL_URL
+        );
+
+        return setAppContentFeedState(
+          manifest,
+          APP_CONTENT_FEED_LOCAL_URL
+        );
+      }catch(error){
+        console.warn(
+          "Bundled app content feed failed.",
+          error
+        );
+      }
+    }
+
+    return setAppContentFeedState(
+      fallbackAppContentFeed(),
+      "emergency-fallback"
+    );
+  })();
+
+  try{
+    return await appContentFeedRequest;
+  }finally{
+    appContentFeedRequest = null;
+  }
+}
+
+
+function currentAppContentFeed(){
+  return appContentFeedState?.manifest ||
+    fallbackAppContentFeed();
+}
+
+
+function currentHomeLessons(){
+  const lessons = currentAppContentFeed().lessons;
+
+  return lessons.length
+    ? lessons
+    : fallbackAppContentFeed().lessons;
+}
+
+
+function rerenderLiveContent(){
+  renderHomeLineUponLine();
+  loadLatestArticle();
+  loadArticlesBrowser();
+  loadLatestPodcast();
+}
+
+
+async function refreshAppContentFeedIfNeeded(){
+  if(
+    appContentFeedState &&
+    Date.now() - appContentFeedLoadedAt <
+      APP_CONTENT_FEED_REFRESH_MS
+  ){
+    return appContentFeedState;
+  }
+
+  const previousUpdatedAt =
+    currentAppContentFeed().updatedAt;
+  const previousSource =
+    appContentFeedState?.sourceUrl || "";
+  const state = await loadAppContentFeed({
+    forceRefresh:true
+  });
+
+  if(
+    state?.manifest &&
+    (
+      state.manifest.updatedAt !== previousUpdatedAt ||
+      state.sourceUrl !== previousSource
+    )
+  ){
+    rerenderLiveContent();
+  }
+
+  return state;
+}
+
+
+loadAppContentFeed()
+  .then(() => {
+    rerenderLiveContent();
+  })
+  .catch(error => {
+    console.warn(
+      "Initial app content feed load failed.",
+      error
+    );
+  });
 
 
 function readHomeStudyProgress(){
@@ -1283,6 +1817,7 @@ function closeHomeStudyStreakShelf(){
 
 function homeLineUponLineLesson(){
   const today = new Date();
+  const lessons = currentHomeLessons();
 
   const localDay = localDayNumber(today);
   const rotationStartDay = localDayNumber(
@@ -1294,8 +1829,8 @@ function homeLineUponLineLesson(){
     localDay - rotationStartDay
   );
 
-  return HOME_SCRIPTURE_LESSONS[
-    dayOffset % HOME_SCRIPTURE_LESSONS.length
+  return lessons[
+    dayOffset % lessons.length
   ];
 }
 
@@ -1321,7 +1856,7 @@ function renderHomeLineUponLine(){
     >
       <span class="sj-scripture-lesson-image">
         <img
-          src="${escapeHTML(lesson.poster)}"
+          src="${escapeHTML(lesson.posterUrl || lesson.poster)}"
           alt=""
           loading="lazy"
         >
@@ -1357,20 +1892,23 @@ renderHomeStudyStreak();
 
 
 function homeLessonById(lessonId){
-  return HOME_SCRIPTURE_LESSONS.find(
+  const lessons = currentHomeLessons();
+
+  return lessons.find(
     lesson => lesson.id === lessonId
-  ) || HOME_SCRIPTURE_LESSONS[0];
+  ) || lessons[0];
 }
 
 
 function nextHomeLesson(lessonId){
-  const index = HOME_SCRIPTURE_LESSONS.findIndex(
+  const lessons = currentHomeLessons();
+  const index = lessons.findIndex(
     lesson => lesson.id === lessonId
   );
 
-  return HOME_SCRIPTURE_LESSONS[
+  return lessons[
     (Math.max(0, index) + 1) %
-    HOME_SCRIPTURE_LESSONS.length
+    lessons.length
   ];
 }
 
@@ -1438,12 +1976,12 @@ function openHomeLessonPlayer(lessonId){
         class="sj-lesson-video"
         controls
         playsinline
-        poster="${escapeHTML(lesson.poster)}"
+        poster="${escapeHTML(lesson.posterUrl || lesson.poster)}"
         data-scripture-lesson-video
         data-scripture-lesson-id="${escapeHTML(lesson.id)}"
       >
         <source
-          src="${escapeHTML(lesson.video)}"
+          src="${escapeHTML(lesson.videoUrl || lesson.video)}"
           type="video/mp4"
         >
       </video>
@@ -1495,6 +2033,7 @@ function openHomeLessonPlayer(lessonId){
 
 function openHomeLessonLibrary(){
   const root = homeLessonPlayerRoot();
+  const lessons = currentHomeLessons();
 
   root.hidden = false;
   root.innerHTML = `
@@ -1531,7 +2070,7 @@ function openHomeLessonLibrary(){
         </h2>
 
         <div class="sj-lesson-library-list">
-          ${HOME_SCRIPTURE_LESSONS.map(lesson => `
+          ${lessons.map(lesson => `
             <button
               class="sj-lesson-library-card"
               type="button"
@@ -1539,7 +2078,7 @@ function openHomeLessonLibrary(){
               data-scripture-lesson-id="${escapeHTML(lesson.id)}"
             >
               <img
-                src="${escapeHTML(lesson.poster)}"
+                src="${escapeHTML(lesson.posterUrl || lesson.poster)}"
                 alt=""
                 loading="lazy"
               >
@@ -1650,54 +2189,25 @@ async function loadLatestArticle(){
   if(!root) return;
 
   try{
-    const response = await fetch("/articles.html");
+    await loadAppContentFeed();
 
-    if(!response.ok){
-      throw new Error(`articles.html returned ${response.status}`);
+    let [article] = currentAppContentFeed()
+      .articles;
+
+    if(!article){
+      [article] = await loadBundledArticles();
     }
 
-    const html = await response.text();
-
-    const doc = new DOMParser()
-      .parseFromString(html, "text/html");
-
-    const card = doc.querySelector(
-      ".recent-grid .article-card"
-    );
-
-    if(!card){
-      throw new Error("No recent article card found");
+    if(!article){
+      throw new Error(
+        "No latest article is available."
+      );
     }
 
-    const link = card.querySelector(
-      'a[href*="/articles/"]'
-    );
-
-    const image = card.querySelector("img");
-
-    const href = cleanText(
-      link?.getAttribute("href")
-    );
-
-    let title = decodeHTMLEntities(
-      cleanText(
-        card.querySelector(
-          "h2, h3"
-        )?.textContent
-      )
-    );
-
-    let excerpt = decodeHTMLEntities(
-      cleanText(
-        card.querySelector(
-          "p.muted, p"
-        )?.textContent
-      )
-    );
-
-    let imageSrc = normalizeArticleImageURL(
-      image?.getAttribute("src")
-    );
+    const href = article.href || article.articleUrl;
+    let title = article.title;
+    let excerpt = article.excerpt;
+    let imageSrc = article.image || article.imageUrl;
 
     if(!href){
       throw new Error(
@@ -1706,12 +2216,17 @@ async function loadLatestArticle(){
     }
 
     try{
+      const readerURL = new URL(
+        href,
+        window.location.origin
+      );
+      readerURL.searchParams.set(
+        "homeLatest",
+        String(Date.now())
+      );
+
       const articleResponse = await fetch(
-        `${href}${
-          href.includes("?")
-            ? "&"
-            : "?"
-        }homeLatest=${Date.now()}`
+        readerURL.href
       );
 
       if(articleResponse.ok){
@@ -2013,6 +2528,55 @@ function parseArticleCard(card){
 }
 
 
+async function loadBundledArticles(){
+  const response = await fetch(
+    `/articles.html?appArticles=${Date.now()}`
+  );
+
+  if(!response.ok){
+    throw new Error(
+      `articles.html returned ${response.status}`
+    );
+  }
+
+  const html = await response.text();
+
+  const doc = new DOMParser().parseFromString(
+    html,
+    "text/html"
+  );
+
+  const cards = [
+    doc.querySelector(".featured-left"),
+    doc.querySelector(".featured-right"),
+    ...Array.from(
+      doc.querySelectorAll(
+        ".recent-grid .article-card, .article-card"
+      )
+    )
+  ].filter(Boolean);
+
+  const articles = [];
+  const seen = new Set();
+
+  cards.forEach(card => {
+    const article = parseArticleCard(card);
+
+    if(
+      !article ||
+      seen.has(article.href)
+    ){
+      return;
+    }
+
+    seen.add(article.href);
+    articles.push(article);
+  });
+
+  return articles;
+}
+
+
 function renderArticlesBrowserError(){
   const root = articleBrowserRoot();
 
@@ -2251,7 +2815,7 @@ function prepareArticleReaderFragment(
   const clone = source.cloneNode(true);
 
   clone.querySelectorAll(
-    "script, style, iframe, form"
+    "script, style, iframe, form, object, embed"
   ).forEach(element => {
     element.remove();
   });
@@ -2260,6 +2824,16 @@ function prepareArticleReaderFragment(
     articleURL,
     window.location.origin
   );
+
+  clone.querySelectorAll(
+    "*"
+  ).forEach(element => {
+    Array.from(element.attributes).forEach(attribute => {
+      if(/^on/i.test(attribute.name)){
+        element.removeAttribute(attribute.name);
+      }
+    });
+  });
 
   clone.querySelectorAll(
     "[src]"
@@ -2278,11 +2852,22 @@ function prepareArticleReaderFragment(
         baseURL
       );
 
+      if(
+        !["http:", "https:"].includes(
+          resolved.protocol
+        )
+      ){
+        element.removeAttribute("src");
+        return;
+      }
+
       element.setAttribute(
         "src",
-        resolved.pathname +
-          resolved.search +
-          resolved.hash
+        resolved.origin === window.location.origin
+          ? resolved.pathname +
+            resolved.search +
+            resolved.hash
+          : resolved.href
       );
     }catch(error){
       console.warn(
@@ -2313,6 +2898,15 @@ function prepareArticleReaderFragment(
         value,
         baseURL
       );
+
+      if(
+        !["http:", "https:"].includes(
+          resolved.protocol
+        )
+      ){
+        link.removeAttribute("href");
+        return;
+      }
 
       const sameOrigin =
         resolved.origin ===
@@ -2748,49 +3342,21 @@ async function loadArticlesBrowser(){
   }
 
   try{
-    const response = await fetch(
-      `/articles.html?appArticles=${Date.now()}`
-    );
+    await loadAppContentFeed();
 
-    if(!response.ok){
-      throw new Error(
-        `articles.html returned ${response.status}`
-      );
+    let articles = currentAppContentFeed()
+      .articles
+      .map(article => ({
+        href:article.articleUrl || article.href,
+        title:article.title,
+        excerpt:article.excerpt,
+        image:article.imageUrl || article.image,
+        author:article.author || "Semitic Jew"
+      }));
+
+    if(!articles.length){
+      articles = await loadBundledArticles();
     }
-
-    const html = await response.text();
-
-    const doc = new DOMParser().parseFromString(
-      html,
-      "text/html"
-    );
-
-    const cards = [
-      doc.querySelector(".featured-left"),
-      doc.querySelector(".featured-right"),
-      ...Array.from(
-        doc.querySelectorAll(
-          ".article-card"
-        )
-      )
-    ].filter(Boolean);
-
-    const articles = [];
-    const seen = new Set();
-
-    cards.forEach(card => {
-      const article = parseArticleCard(card);
-
-      if(
-        !article ||
-        seen.has(article.href)
-      ){
-        return;
-      }
-
-      seen.add(article.href);
-      articles.push(article);
-    });
 
     if(!articles.length){
       throw new Error(
@@ -7003,6 +7569,24 @@ function decodeHTMLEntities(value = ""){
 }
 
 
+function contentDisplayDate(value = ""){
+  const time = Date.parse(value);
+
+  if(!time){
+    return "";
+  }
+
+  return new Date(time).toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+}
+
+
 function updateBibliaWritingsPill(){
   const control = document.querySelector(
     "[data-bible-open-canons]"
@@ -7093,37 +7677,42 @@ async function loadLatestPodcast(){
   if(!root) return;
 
   try{
-    const payload = await fetchJSON(
-      PODCAST_DATA_URL
-    );
+    await loadAppContentFeed();
 
-    const videos = Array.isArray(payload)
-      ? payload
-      : Array.isArray(payload?.videos)
-        ? payload.videos
-        : [];
-
-    const episode = videos[0];
+    const episode = currentAppContentFeed()
+      .podcasts[0];
 
     if(!episode){
-      throw new Error(
-        "No podcast episodes found."
-      );
+      root.innerHTML = `
+        <p class="sj-home-loading">
+          The latest podcast episode will appear here
+          when it is available.
+        </p>
+      `;
+
+      return;
     }
 
-    const title = String(episode.title || "")
-      .replace(/^EP\s*/i, "EP ")
-      .trim();
+    const title = cleanText(episode.title)
+      .replace(/^EP\s*/i, "EP ");
+    const publishedAt =
+      contentDisplayDate(episode.publishedAt);
 
     root.innerHTML = `
       <article class="sj-podcast-card">
-        <div class="sj-podcast-art">
-          <img
-            src="${escapeHTML(episode.thumbnail || "")}"
-            alt=""
-            loading="lazy"
-          >
-        </div>
+        ${
+          episode.imageUrl
+            ? `
+              <div class="sj-podcast-art">
+                <img
+                  src="${escapeHTML(episode.imageUrl)}"
+                  alt=""
+                  loading="lazy"
+                >
+              </div>
+            `
+            : ""
+        }
 
         <div class="sj-podcast-copy">
           <span class="sj-podcast-label">
@@ -7132,17 +7721,39 @@ async function loadLatestPodcast(){
 
           <h3>${escapeHTML(title)}</h3>
 
+          ${
+            publishedAt || episode.duration
+              ? `
+                <p>
+                  ${[
+                    publishedAt,
+                    episode.duration
+                  ].filter(Boolean).map(escapeHTML).join(" · ")}
+                </p>
+              `
+              : ""
+          }
+
+          ${
+            episode.description
+              ? `<p>${escapeHTML(episode.description)}</p>`
+              : ""
+          }
+
           <div class="sj-podcast-actions">
-            <button
-              type="button"
-              data-podcast-play
-              data-podcast-embed="${escapeHTML(
-                episode.embed || ""
-              )}"
-            >
-              <span aria-hidden="true">▶</span>
-              Play
-            </button>
+            ${
+              episode.episodeUrl
+                ? `
+                  <a
+                    href="${escapeHTML(episode.episodeUrl)}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Episode
+                  </a>
+                `
+                : ""
+            }
 
             <a
               href="${APPLE_PODCASTS_URL}"
@@ -7161,11 +7772,22 @@ async function loadLatestPodcast(){
             </a>
           </div>
 
-          <div
-            class="sj-podcast-player"
-            data-podcast-player
-            hidden
-          ></div>
+          ${
+            episode.audioUrl
+              ? `
+                <div
+                  class="sj-podcast-player"
+                  data-podcast-player
+                >
+                  <audio
+                    controls
+                    preload="none"
+                    src="${escapeHTML(episode.audioUrl)}"
+                  ></audio>
+                </div>
+              `
+              : ""
+          }
         </div>
       </article>
     `;
