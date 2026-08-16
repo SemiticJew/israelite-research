@@ -146,6 +146,7 @@
 
   gtag("js", new Date());
   gtag("config", "G-32TJCG51NH");
+  gtag("config", "AW-18308821309");
 })();
 
 
