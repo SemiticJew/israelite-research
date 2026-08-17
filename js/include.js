@@ -150,6 +150,53 @@
 })();
 
 
+// Google Ads Donate conversion
+(function(){
+  const CONVERSION_TARGET = "AW-18308821309/ncTeCOnh4eIcEL3iqZpE";
+  const FALLBACK_DELAY = 1000;
+
+  window.gtag_report_conversion = function(url) {
+    var hasUrl = typeof(url) != "undefined";
+    var didNavigate = false;
+    var callback = function () {
+      if (hasUrl && !didNavigate) {
+        didNavigate = true;
+        window.location = url;
+      }
+    };
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+          "send_to": CONVERSION_TARGET,
+          "event_callback": callback
+      });
+
+      if (hasUrl) {
+        window.setTimeout(callback, FALLBACK_DELAY);
+      }
+    } else {
+      callback();
+    }
+
+    return false;
+  };
+
+  document.addEventListener("click", function(event){
+    const link = event.target.closest('[data-google-ads-conversion="donate"]');
+    if (!link) return;
+
+    const opensNewContext = link.target && link.target.toLowerCase() !== "_self";
+    if (opensNewContext || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      window.gtag_report_conversion();
+      return;
+    }
+
+    event.preventDefault();
+    window.gtag_report_conversion(link.href);
+  });
+})();
+
+
 // Sync header/footer logos with saved theme on page load
 (function(){
   const DARK_LOGO = "/images/white-logo-letters.png";
