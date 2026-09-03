@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Genesis 1 Order Complete | Semitic Jew</title>
+<meta name="description" content="Secure order confirmation page for the Genesis 1 digital study guide by Semitic Jew Inc."/>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="canonical" href="https://semiticjew.org/study-guides/order-complete.html"/>
+
+<meta property="og:title" content="Genesis 1 Order Complete - Semitic Jew"/>
+<meta property="og:description" content="Secure order confirmation for Genesis 1: Creation, Order &amp; the Beginning of All Things."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://semiticjew.org/study-guides/order-complete.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+  .order-page{
+    max-width:980px;
+    margin:0 auto;
+    padding:42px 24px 84px;
+  }
+
+  .order-panel{
+    margin-top:24px;
+    padding:36px;
+    border:1px solid var(--border);
+    background:
+      radial-gradient(circle at top right, rgba(241,115,0,.12), transparent 30%),
+      var(--surface);
+  }
+
+  .order-kicker{
+    margin:0 0 10px;
+    color:var(--accent);
+    font-size:.76rem;
+    font-weight:900;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+
+  .order-panel h1{
+    margin:0;
+    color:var(--ink);
+    font-size:clamp(2.4rem, 5vw, 4.4rem);
+    line-height:.98;
+    font-weight:900;
+  }
+
+  .order-title{
+    margin:16px 0 0;
+    color:var(--ink);
+    font-size:1.35rem;
+    line-height:1.3;
+    font-weight:900;
+  }
+
+  .order-message{
+    max-width:720px;
+    margin:18px 0 0;
+    color:var(--muted);
+    font-size:1.05rem;
+    line-height:1.7;
+  }
+
+  .order-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:26px;
+  }
+
+  .order-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:50px;
+    padding:0 18px;
+    border:1px solid var(--accent);
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:.82rem;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .order-btn.secondary{
+    background:transparent;
+    border-color:var(--border);
+    color:var(--ink);
+  }
+
+  .order-btn:hover,
+  .order-btn:focus,
+  .order-btn:focus-visible{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+    text-decoration:none;
+    outline:none;
+  }
+
+  html[data-theme="dark"] .order-panel h1,
+  html[data-theme="dark"] .order-title{
+    color:#fff;
+  }
+
+  [hidden]{
+    display:none !important;
+  }
+
+  @media(max-width:700px){
+    .order-page{
+      padding:28px 20px 64px;
+    }
+
+    .order-panel{
+      padding:24px 18px;
+    }
+
+    .order-btn{
+      width:100%;
+    }
+  }
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+</head>
+
+<body>
+<div id="site-header"></div>
+
+<main class="order-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="/study-guides.html">Study Guides</a>
+    <span class="sep">/</span>
+    <a href="/study-guides/genesis-1.html">Genesis 1</a>
+    <span class="sep">/</span>
+    <span class="current">Order Complete</span>
+  </nav>
+
+  <section class="order-panel" aria-labelledby="order-title">
+    <p class="order-kicker">Genesis 1 Study Guide</p>
+    <h1 id="order-title" data-order-heading>Confirming Your Order</h1>
+    <p class="order-title">Genesis 1: Creation, Order &amp; the Beginning of All Things</p>
+
+    <div data-order-checking>
+      <p class="order-message">
+        We are confirming your payment. Refresh this page in a moment.
+      </p>
+    </div>
+
+    <div data-order-complete hidden>
+      <p class="order-message">
+        Your study guide is ready. Use the button below to download Genesis 1.
+      </p>
+      <div class="order-actions">
+        <a class="order-btn" data-order-download>Download Genesis 1</a>
+        <a class="order-btn secondary" href="/study-guides.html">Return to Study Guides</a>
+      </div>
+    </div>
+
+    <div data-order-unverified hidden>
+      <p class="order-message" data-order-unverified-message>
+        We could not verify this purchase. Please contact Semitic Jew support if you completed checkout.
+      </p>
+      <div class="order-actions">
+        <a class="order-btn secondary" href="/study-guides/genesis-1.html">Return to Genesis 1</a>
+        <a class="order-btn secondary" href="/contact.html">Contact Semitic Jew</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/include.js"></script>
+<script src="/js/study-guides-order.js"></script>
+</body>
+</html>

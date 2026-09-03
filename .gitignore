@@ -5,6 +5,11 @@
 # Node modules (if you ever add a package.json)
 node_modules/
 
+# Local secrets and deployment configuration
+.env
+.env.*
+!.env.example
+
 # Log files
 *.log
 
