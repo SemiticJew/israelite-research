@@ -42,11 +42,19 @@
       const fallback = fallbackId ? document.getElementById(fallbackId) : null;
       if (!src) return;
 
+      img.addEventListener("load", function(){
+        img.hidden = false;
+        if (fallback) fallback.hidden = true;
+      });
+
+      img.addEventListener("error", function(){
+        img.hidden = true;
+        if (fallback) fallback.hidden = false;
+      });
+
       assetExists(src).then(function(exists){
         if (!exists) return;
         img.src = src;
-        img.hidden = false;
-        if (fallback) fallback.hidden = true;
       });
     });
   }
