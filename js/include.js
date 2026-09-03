@@ -283,6 +283,13 @@
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-label', 'Open navigation menu');
     });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Escape') return;
+      header.classList.remove('mobile-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open navigation menu');
+    });
   }
 
   document.addEventListener('DOMContentLoaded', setupMobileNav);
@@ -380,6 +387,9 @@
 
       toggle.addEventListener('click', function(e){
         if(!window.matchMedia('(max-width: 920px)').matches) return;
+
+        const rect = toggle.getBoundingClientRect();
+        if(e.clientX && e.clientX < rect.right - 44) return;
 
         e.preventDefault();
 
