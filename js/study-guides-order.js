@@ -8,6 +8,10 @@
     product_slug: "genesis-1"
   };
 
+  const MAX_VERIFY_ATTEMPTS = 6;
+  const VERIFY_RETRY_MS = 2500;
+  const FULFILLMENT_ENDPOINT = "https://semitic-jew-study-guide-fulfillment.semiticjew.workers.dev/api/order/verify";
+
   function qs(selector){
     return document.querySelector(selector);
   }
@@ -28,7 +32,7 @@
   }
 
   function endpoint(){
-    return document.body?.dataset?.fulfillmentEndpoint || window.SEMITIC_JEW_FULFILLMENT_ENDPOINT || "";
+    return document.body?.dataset?.fulfillmentEndpoint || window.SEMITIC_JEW_FULFILLMENT_ENDPOINT || FULFILLMENT_ENDPOINT;
   }
 
   function checkoutSessionId(){
@@ -90,7 +94,8 @@
     fireVerifiedPurchase(data.checkout_session_id || sessionId);
   }
 
-  function verify(){
+  function verify(attempt){
+    attempt = attempt || 1;
     const sessionId = checkoutSessionId();
     const verifier = endpoint();
 
@@ -123,6 +128,13 @@
       .then(function(data){
         if (data.status === "processing") {
           showProcessing();
+          if (attempt < MAX_VERIFY_ATTEMPTS) {
+            window.setTimeout(function(){
+              verify(attempt + 1);
+            }, VERIFY_RETRY_MS);
+            return;
+          }
+          showUnverified("We are still confirming your payment. Refresh this page in a moment.");
           return;
         }
 

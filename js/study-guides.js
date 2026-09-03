@@ -7,6 +7,8 @@
     currency: "USD"
   };
 
+  const CHECKOUT_URL = "https://donate.semiticjew.org/b/bJe9AN8Wq8s1biZ8oscbC01";
+
   function sendGuideEvent(name, extra){
     if (typeof window.gtag !== "function") return;
 
@@ -112,16 +114,15 @@
       const checkout = event.target.closest("[data-study-guide-checkout]");
       if (!checkout) return;
 
+      event.preventDefault();
       sendGuideEvent("begin_checkout", { checkout_context: checkout.dataset.checkoutContext || "study_guides_placeholder" });
 
-      const noticeId = checkout.getAttribute("aria-describedby");
-      const notice = noticeId ? document.getElementById(noticeId) : null;
-      if (notice) {
-        notice.hidden = false;
-        notice.focus({ preventScroll: true });
-      }
+      const checkoutUrl = checkout.dataset.checkoutUrl || checkout.getAttribute("href") || CHECKOUT_URL;
+      announce("Opening secure checkout for Genesis 1.");
 
-      announce("Online checkout is being finalized. Genesis 1 will be available for purchase here shortly.");
+      window.setTimeout(function(){
+        window.location.assign(checkoutUrl);
+      }, 180);
     });
   }
 

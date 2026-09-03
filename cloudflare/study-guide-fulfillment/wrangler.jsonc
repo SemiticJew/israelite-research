@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "semitic-jew-study-guide-fulfillment",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-03",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ALLOWED_ORIGIN": "https://semiticjew.org",
+    "R2_ACCOUNT_ID": "34ffea6946005b8b81242b9dee3ae93f",
+    "R2_BUCKET_NAME": "semitic-jew-study-guides-private",
+    "GENESIS_PAYMENT_LINK_ID": "plink_1UBeRz9hNc2IU49VhLNd8EVS",
+    "GENESIS_PRICE_ID": "price_1UBeRh9hNc2IU49VZrBLmmZp",
+    "GENESIS_PRODUCT_SLUG": "genesis-1"
+  },
+  "r2_buckets": [
+    {
+      "binding": "STUDY_GUIDES_BUCKET",
+      "bucket_name": "semitic-jew-study-guides-private"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "FULFILLMENT_DB",
+      "database_name": "semitic-jew-study-guide-fulfillment",
+      "database_id": "db9c01d4-8acf-44ae-9020-aaff9f922089"
+    }
+  ]
+}
