@@ -6,13 +6,15 @@ The first storefront version is static and intentionally does not complete purch
 
 - Storefront page: `/study-guides.html`
 - Genesis 1 product page: `/study-guides/genesis-1.html`
-- Future free sample route reserved: `/study-guides/genesis-1-preview.html`
+- Genesis 1 free sample page: `/study-guides/genesis-1-preview.html`
+- Public sample PDF path: `/assets/study-guides/genesis-1/genesis-1-sample.pdf`
 - Frontend analytics events:
   - `view_item`
   - `select_item`
   - `begin_checkout`
 - No `purchase` event is fired by the static pages.
 - The Genesis 1 paid PDF is not stored in a public site path.
+- The sample PDF is intentionally public when supplied; the complete paid PDF must remain private.
 
 ## Production-Safe Recommendation
 

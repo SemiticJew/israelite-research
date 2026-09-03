@@ -8,6 +8,7 @@ Expected public assets:
 
 - `assets/study-guides/genesis-1/cover.jpg` - final Genesis 1 product cover image for storefront display.
 - `assets/study-guides/genesis-1/preview-cover.jpg` - optional cover or image for a future free preview page.
+- `assets/study-guides/genesis-1/genesis-1-sample.pdf` - public selected-page sample PDF for the free preview page.
 
 Expected private fulfillment asset:
 

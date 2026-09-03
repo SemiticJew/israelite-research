@@ -29,10 +29,71 @@
     live.textContent = message;
   }
 
+  function assetExists(url){
+    return fetch(url, { method: "HEAD", cache: "no-store" })
+      .then(response => response.ok)
+      .catch(() => false);
+  }
+
+  function setupCoverImages(){
+    document.querySelectorAll("[data-study-guide-cover]").forEach(function(img){
+      const src = img.dataset.coverSrc;
+      const fallbackId = img.dataset.coverFallback;
+      const fallback = fallbackId ? document.getElementById(fallbackId) : null;
+      if (!src) return;
+
+      assetExists(src).then(function(exists){
+        if (!exists) return;
+        img.src = src;
+        img.hidden = false;
+        if (fallback) fallback.hidden = true;
+      });
+    });
+  }
+
+  function setupSamplePdf(){
+    const sample = document.querySelector("[data-study-guide-sample]");
+    if (!sample) return;
+
+    sendGuideEvent("view_study_guide_sample", { item_list_name: "Genesis 1 Sample" });
+
+    const src = sample.dataset.sampleSrc;
+    const available = document.querySelector("[data-sample-available]");
+    const pending = document.querySelector("[data-sample-pending]");
+    const frame = document.querySelector("[data-sample-frame]");
+    const links = document.querySelectorAll("[data-sample-link]");
+    if (!src) return;
+
+    assetExists(src).then(function(exists){
+      if (!exists) return;
+
+      if (pending) pending.hidden = true;
+      if (available) available.hidden = false;
+      if (frame) {
+        frame.src = src;
+        frame.hidden = false;
+      }
+      links.forEach(function(link){
+        link.href = src;
+        link.removeAttribute("aria-disabled");
+        link.hidden = false;
+      });
+    });
+
+    document.addEventListener("click", function(event){
+      const download = event.target.closest("[data-sample-download]");
+      if (!download || download.getAttribute("aria-disabled") === "true") return;
+      sendGuideEvent("download_study_guide_sample", { sample_format: "pdf" });
+    });
+  }
+
   function setup(){
     if (document.body?.dataset?.studyGuide === "genesis-1") {
       sendGuideEvent("view_item");
     }
+
+    setupCoverImages();
+    setupSamplePdf();
 
     document.addEventListener("click", function(event){
       const itemLink = event.target.closest("[data-study-guide-event='select_item']");

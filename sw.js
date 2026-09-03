@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v171';
+const CACHE_VERSION = 'sj-pwa-v172';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -14,6 +14,7 @@ const APP_SHELL_ASSETS = [
   '/apocrypha.html',
   '/study-guides.html',
   '/study-guides/genesis-1.html',
+  '/study-guides/genesis-1-preview.html',
   '/v/index.html',
   '/styles.css',
   '/css/app.css',
@@ -89,6 +90,7 @@ const APP_SHELL = [
   '/apocrypha.html',
   '/study-guides.html',
   '/study-guides/genesis-1.html',
+  '/study-guides/genesis-1-preview.html',
   '/ologies.html',
   '/website-app.html',
   '/bible-app.html',

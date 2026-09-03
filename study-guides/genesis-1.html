@@ -83,7 +83,14 @@
   .product-cover-image{
     width:min(100%, 330px);
     height:auto;
+    max-height:530px;
+    object-fit:contain;
     box-shadow:0 28px 46px rgba(0,0,0,.3);
+  }
+
+  .product-cover-image[hidden],
+  .product-cover[hidden]{
+    display:none;
   }
 
   .product-summary{
@@ -471,10 +478,9 @@
 
   <section class="product-hero">
     <div class="product-cover-panel" aria-label="Genesis 1 digital study guide cover preview">
-      <!-- When cover.jpg is available, replace the temporary cover below with:
-      <img class="product-cover-image" src="/assets/study-guides/genesis-1/cover.jpg" alt="Genesis 1: Creation, Order & the Beginning of All Things study guide cover">
-      -->
-      <div class="product-cover">
+      <!-- Real cover image slot: /assets/study-guides/genesis-1/cover.jpg -->
+      <img class="product-cover-image" data-study-guide-cover data-cover-src="/assets/study-guides/genesis-1/cover.jpg" data-cover-fallback="genesis-1-cover-fallback-product" alt="Genesis 1: Creation, Order &amp; the Beginning of All Things study guide cover" hidden>
+      <div class="product-cover" id="genesis-1-cover-fallback-product">
         <small>36-Page Digital PDF</small>
         <strong>Genesis 1</strong>
         <span>Creation, Order &amp; the Beginning of All Things<br/>Semitic Jew</span>
@@ -552,7 +558,7 @@
     </article>
 
     <article class="product-section">
-      <h2>Built for Serious Readers</h2>
+      <h2>For Readers Who Intend to Study the Text</h2>
       <ul class="study-list">
         <li>Students of Scripture who want careful argumentation, not surface commentary</li>
         <li>Readers studying Genesis creation without vast-age assumptions</li>
@@ -583,7 +589,7 @@
           <p>
             The free sample is being prepared for readers who want to inspect the guide before buying.
           </p>
-          <button class="product-btn is-disabled" type="button" disabled>READ A FREE SAMPLE</button>
+          <a class="product-btn secondary" href="/study-guides/genesis-1-preview.html" data-study-guide-event="select_item" data-item-list-name="Genesis 1 Sample">READ A FREE SAMPLE</a>
         </div>
       </div>
     </article>

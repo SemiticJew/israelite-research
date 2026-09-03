@@ -127,7 +127,14 @@
   .guide-cover-image{
     width:min(100%, 290px);
     height:auto;
+    max-height:435px;
+    object-fit:contain;
     box-shadow:0 24px 40px rgba(0,0,0,.28);
+  }
+
+  .guide-cover-image[hidden],
+  .guide-cover[hidden]{
+    display:none;
   }
 
   .guide-body h2{
@@ -403,10 +410,9 @@
 
   <section class="featured-guide" aria-labelledby="featured-guide-title">
     <div class="guide-cover-frame" aria-label="Genesis 1 digital study guide cover preview">
-      <!-- When cover.jpg is available, replace the temporary cover below with:
-      <img class="guide-cover-image" src="/assets/study-guides/genesis-1/cover.jpg" alt="Genesis 1: Creation, Order & the Beginning of All Things study guide cover">
-      -->
-      <div class="guide-cover">
+      <!-- Real cover image slot: /assets/study-guides/genesis-1/cover.jpg -->
+      <img class="guide-cover-image" data-study-guide-cover data-cover-src="/assets/study-guides/genesis-1/cover.jpg" data-cover-fallback="genesis-1-cover-fallback-storefront" alt="Genesis 1: Creation, Order &amp; the Beginning of All Things study guide cover" hidden>
+      <div class="guide-cover" id="genesis-1-cover-fallback-storefront">
         <small>Scripture-First Study Guide</small>
         <strong>Genesis 1</strong>
         <span>Creation, Order &amp; the Beginning of All Things<br/>Semitic Jew</span>
@@ -443,6 +449,7 @@
 
       <div class="guide-actions">
         <a class="study-btn secondary" href="/study-guides/genesis-1.html" data-study-guide-event="select_item" data-item-list-name="Featured Guide">View Study Guide</a>
+        <a class="study-btn secondary" href="/study-guides/genesis-1-preview.html" data-study-guide-event="select_item" data-item-list-name="Genesis 1 Sample">Read a Free Sample</a>
         <button class="study-btn" type="button" data-study-guide-checkout data-checkout-context="storefront_featured" aria-describedby="checkout-note-storefront">Buy Digital Guide - $9.99</button>
         <p class="checkout-note" id="checkout-note-storefront" hidden tabindex="-1">
           Online checkout is being finalized. Genesis 1 will be available for purchase here shortly.
