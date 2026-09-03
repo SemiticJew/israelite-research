@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v170';
+const CACHE_VERSION = 'sj-pwa-v171';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -12,10 +12,13 @@ const APP_SHELL_ASSETS = [
   '/tanakh.html',
   '/newtestament.html',
   '/apocrypha.html',
+  '/study-guides.html',
+  '/study-guides/genesis-1.html',
   '/v/index.html',
   '/styles.css',
   '/css/app.css',
   '/js/include.js',
+  '/js/study-guides.js',
   '/js/app/app-shell.js',
   '/js/app/ai-mock.js',
   '/js/app-status.js',
@@ -72,6 +75,7 @@ const APP_SHELL = [
   '/styles.css',
   '/css/app.css',
   '/js/include.js',
+  '/js/study-guides.js',
   '/js/app/app-shell.js',
   '/js/app/ai-mock.js',
   '/search.html',
@@ -83,6 +87,8 @@ const APP_SHELL = [
   '/tanakh.html',
   '/newtestament.html',
   '/apocrypha.html',
+  '/study-guides.html',
+  '/study-guides/genesis-1.html',
   '/ologies.html',
   '/website-app.html',
   '/bible-app.html',
