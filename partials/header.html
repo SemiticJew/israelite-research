@@ -13,17 +13,17 @@
       max-width:1200px;
       margin:0 auto;
       padding:14px 28px;
-      display:flex;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
       align-items:center;
-      justify-content:space-between;
       gap:18px;
     }
 
     #site-header .brand{
       display:inline-flex;
       align-items:center;
-      flex:0 0 auto;
       min-width:0;
+      justify-self:start;
     }
 
     #site-header .brand img{
@@ -35,9 +35,8 @@
     #site-header nav.primary{
       display:flex;
       align-items:center;
-      gap:6px;
-      margin-left:18px;
-      margin-right:auto;
+      gap:4px;
+      justify-self:center;
       font-family:Georgia, serif;
       font-size:1rem;
       line-height:1.1;
@@ -69,7 +68,7 @@
     #site-header .nav-dd.is-open > .nav-dd-toggle,
     #site-header .nav-dd-toggle:hover{
       color:var(--ink, #0b2340);
-      background:rgba(5,74,145,.045);
+      background:rgba(11,35,64,.035);
       opacity:.9;
     }
 
@@ -114,14 +113,14 @@
       top:100%;
       left:0;
       z-index:1001;
-      min-width:214px;
+      min-width:190px;
       width:max-content;
-      max-width:245px;
-      padding:6px 0;
+      max-width:215px;
+      padding:6px;
       border:1px solid var(--border, #e6ebf2);
-      border-radius:3px;
+      border-radius:4px;
       background:var(--surface, #ffffff);
-      box-shadow:0 8px 18px rgba(15,23,42,.08);
+      box-shadow:0 8px 22px rgba(0,0,0,.08);
       opacity:0;
       visibility:hidden;
       transform:translateY(2px);
@@ -138,12 +137,12 @@
 
     #site-header .nav-dd-menu a{
       display:block;
-      padding:9px 14px;
+      padding:7px 11px;
       color:var(--ink, #0b2340);
       font-family:Georgia, serif;
       font-size:.94rem;
       font-weight:400;
-      line-height:1.25;
+      line-height:1.2;
       white-space:nowrap;
       background:transparent;
       border-radius:0;
@@ -153,9 +152,9 @@
 
     #site-header .nav-dd-menu a:hover,
     #site-header .nav-dd-menu a:focus-visible{
-      background:rgba(5,74,145,.045);
+      background:rgba(11,35,64,.035);
       color:var(--ink, #0b2340);
-      opacity:.92;
+      opacity:.95;
       text-decoration:none;
     }
 
@@ -163,8 +162,7 @@
       display:flex;
       align-items:center;
       gap:10px;
-      flex:0 0 auto;
-      margin-left:8px;
+      justify-self:end;
     }
 
     #site-header .mobile-menu-toggle,
@@ -261,8 +259,7 @@
       }
 
       #site-header nav.primary{
-        gap:2px;
-        margin-left:8px;
+        gap:1px;
         font-size:.96rem;
       }
 
@@ -503,14 +500,8 @@
         <div class="nav-dd-menu" aria-label="Ologies submenu">
           <a href="/ologies.html">Ologies Hub</a>
           <a href="/ologies/bibliology.html">Bibliology</a>
-          <a href="/ologies/elology.html">Elology</a>
           <a href="/ologies/christology.html">Christology</a>
-          <a href="/ologies/pneumatology.html">Pneumatology</a>
-          <a href="/ologies/anthropology.html">Anthropology</a>
-          <a href="/ologies/hamartiology.html">Hamartiology</a>
-          <a href="/ologies/soteriology.html">Soteriology</a>
           <a href="/ologies/israelology.html">Israelology</a>
-          <a href="/ologies/ecclesiology.html">Ecclesiology</a>
           <a href="/ologies/eschatology.html">Eschatology</a>
         </div>
       </div>

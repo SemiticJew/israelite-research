@@ -2,22 +2,22 @@
 <header id="site-header" class="site-header-bar">
   <style>
     #site-header{background:var(--surface,#fff);color:var(--ink,#0b2340);border-bottom:1px solid var(--border,#e6ebf2);position:relative;z-index:1000}
-    #site-header .header-inner{max-width:1200px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-    #site-header .brand{display:inline-flex;align-items:center;flex:0 0 auto;min-width:0}
+    #site-header .header-inner{max-width:1200px;margin:0 auto;padding:14px 28px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px}
+    #site-header .brand{display:inline-flex;align-items:center;min-width:0;justify-self:start}
     #site-header .brand img{height:52px;width:auto;display:block}
-    #site-header nav.primary{display:flex;align-items:center;gap:6px;margin-left:18px;margin-right:auto;font-family:Georgia,serif;font-size:1rem;line-height:1.1;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+    #site-header nav.primary{display:flex;align-items:center;gap:4px;justify-self:center;font-family:Georgia,serif;font-size:1rem;line-height:1.1;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
     #site-header nav.primary a{color:var(--ink,#0b2340);text-decoration:none}
     #site-header nav.primary>a,#site-header .nav-dd-toggle{display:inline-flex;align-items:center;min-height:36px;padding:8px 9px;font-weight:500;background:transparent;border-radius:2px;transition:color .14s ease,opacity .14s ease,background-color .14s ease}
-    #site-header nav.primary>a:hover,#site-header .nav-dd:hover>.nav-dd-toggle,#site-header .nav-dd:focus-within>.nav-dd-toggle,#site-header .nav-dd.is-open>.nav-dd-toggle,#site-header .nav-dd-toggle:hover{color:var(--ink,#0b2340);background:rgba(5,74,145,.045);opacity:.9}
+    #site-header nav.primary>a:hover,#site-header .nav-dd:hover>.nav-dd-toggle,#site-header .nav-dd:focus-within>.nav-dd-toggle,#site-header .nav-dd.is-open>.nav-dd-toggle,#site-header .nav-dd-toggle:hover{color:var(--ink,#0b2340);background:rgba(11,35,64,.035);opacity:.9}
     #site-header nav.primary>a:focus-visible,#site-header .nav-dd-toggle:focus-visible,#site-header .nav-dd-menu a:focus-visible,#site-header .mobile-menu-toggle:focus-visible,#site-header .icon-btn:focus-visible,#site-header .theme-btn:focus-visible,#site-header .give-btn:focus-visible{outline:2px solid rgba(5,74,145,.36);outline-offset:3px}
     #site-header .nav-dd{position:relative;display:inline-flex;align-items:center}
     #site-header .nav-dd-toggle::after{content:"";width:6px;height:6px;margin-left:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.58;transition:transform .14s ease}
     #site-header .nav-dd:hover .nav-dd-toggle::after,#site-header .nav-dd:focus-within .nav-dd-toggle::after,#site-header .nav-dd.is-open .nav-dd-toggle::after,#site-header .nav-dd.mobile-subopen .nav-dd-toggle::after{transform:rotate(225deg) translate(-2px,-1px)}
-    #site-header .nav-dd-menu{position:absolute;top:100%;left:0;z-index:1001;min-width:214px;width:max-content;max-width:245px;padding:6px 0;border:1px solid var(--border,#e6ebf2);border-radius:3px;background:var(--surface,#fff);box-shadow:0 8px 18px rgba(15,23,42,.08);opacity:0;visibility:hidden;transform:translateY(2px);transition:opacity .12s ease,transform .12s ease,visibility .12s ease}
+    #site-header .nav-dd-menu{position:absolute;top:100%;left:0;z-index:1001;min-width:190px;width:max-content;max-width:215px;padding:6px;border:1px solid var(--border,#e6ebf2);border-radius:4px;background:var(--surface,#fff);box-shadow:0 8px 22px rgba(0,0,0,.08);opacity:0;visibility:hidden;transform:translateY(2px);transition:opacity .12s ease,transform .12s ease,visibility .12s ease}
     #site-header .nav-dd:hover .nav-dd-menu,#site-header .nav-dd:focus-within .nav-dd-menu,#site-header .nav-dd.is-open .nav-dd-menu{opacity:1;visibility:visible;transform:translateY(0)}
-    #site-header .nav-dd-menu a{display:block;padding:9px 14px;color:var(--ink,#0b2340);font-family:Georgia,serif;font-size:.94rem;font-weight:400;line-height:1.25;white-space:nowrap;background:transparent;border-radius:0;box-shadow:none;transition:background-color .12s ease,opacity .12s ease}
-    #site-header .nav-dd-menu a:hover,#site-header .nav-dd-menu a:focus-visible{background:rgba(5,74,145,.045);color:var(--ink,#0b2340);opacity:.92;text-decoration:none}
-    #site-header .tools{display:flex;align-items:center;gap:10px;flex:0 0 auto;margin-left:8px}
+    #site-header .nav-dd-menu a{display:block;padding:7px 11px;color:var(--ink,#0b2340);font-family:Georgia,serif;font-size:.94rem;font-weight:400;line-height:1.2;white-space:nowrap;background:transparent;border-radius:0;box-shadow:none;transition:background-color .12s ease,opacity .12s ease}
+    #site-header .nav-dd-menu a:hover,#site-header .nav-dd-menu a:focus-visible{background:rgba(11,35,64,.035);color:var(--ink,#0b2340);opacity:.95;text-decoration:none}
+    #site-header .tools{display:flex;align-items:center;gap:10px;justify-self:end}
     #site-header .mobile-menu-toggle,#site-header .icon-btn{width:38px;height:38px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--ink,#0b2340);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;transition:background-color .14s ease,border-color .14s ease,color .14s ease}
     #site-header .mobile-menu-toggle{display:none;border-color:var(--border,#e6ebf2)}
     #site-header .mobile-menu-toggle svg,#site-header .icon-btn svg{width:19px;height:19px}
@@ -28,7 +28,7 @@
     html[data-theme="dark"] #site-header nav.primary a,html[data-theme="dark"] #site-header .mobile-menu-toggle,html[data-theme="dark"] #site-header .icon-btn{color:var(--ink,#f1f5f9)}
     html[data-theme="dark"] #site-header nav.primary>a:hover,html[data-theme="dark"] #site-header .nav-dd:hover>.nav-dd-toggle,html[data-theme="dark"] #site-header .nav-dd:focus-within>.nav-dd-toggle,html[data-theme="dark"] #site-header .nav-dd.is-open>.nav-dd-toggle,html[data-theme="dark"] #site-header .nav-dd-toggle:hover,html[data-theme="dark"] #site-header .nav-dd-menu a:hover,html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible,html[data-theme="dark"] #site-header .icon-btn:hover,html[data-theme="dark"] #site-header .mobile-menu-toggle:hover{background:rgba(255,255,255,.06);color:var(--ink,#f1f5f9)}
     html[data-theme="dark"] #site-header .nav-dd-menu{background:var(--surface,#0f172a);border-color:var(--border,#1e293b);box-shadow:0 8px 18px rgba(0,0,0,.26)}
-    @media(max-width:1040px){#site-header .header-inner{padding-inline:20px;gap:12px}#site-header nav.primary{gap:2px;margin-left:8px;font-size:.96rem}#site-header nav.primary>a,#site-header .nav-dd-toggle{padding-inline:7px}}
+    @media(max-width:1040px){#site-header .header-inner{padding-inline:20px;gap:12px}#site-header nav.primary{gap:1px;font-size:.96rem}#site-header nav.primary>a,#site-header .nav-dd-toggle{padding-inline:7px}}
     @media(max-width:920px){#site-header .header-inner{display:grid;grid-template-columns:minmax(80px,1fr) auto;align-items:center;gap:8px;padding:12px 14px}#site-header .brand{grid-column:1;overflow:hidden}#site-header .brand img{height:44px;max-width:150px;object-fit:contain}#site-header .tools{grid-column:2;gap:5px;margin-left:0;min-width:max-content}#site-header .mobile-menu-toggle{display:inline-flex}#site-header .mobile-menu-toggle,#site-header .icon-btn{width:34px;height:34px;min-width:34px;padding:0}#site-header .mobile-menu-toggle svg,#site-header .icon-btn svg{width:18px;height:18px}#site-header .give-btn{min-height:34px;height:34px;padding:0 9px;font-size:.76rem;line-height:1;white-space:nowrap}#site-header nav.primary{grid-column:1/-1;display:none;width:100%;margin:6px 0 0;padding:8px 0 10px;border-top:1px solid var(--border,#e6ebf2);gap:0}#site-header.mobile-open nav.primary{display:grid;grid-template-columns:1fr;max-height:calc(100vh - 74px);overflow:auto;-webkit-overflow-scrolling:touch}#site-header nav.primary>a,#site-header .nav-dd,#site-header .nav-dd-toggle{width:100%;max-width:100%;box-sizing:border-box}#site-header nav.primary>a,#site-header .nav-dd-toggle{min-height:38px;justify-content:space-between;padding:9px 2px;font-size:.96rem;font-weight:500;background:transparent}#site-header nav.primary>a:hover,#site-header .nav-dd:hover>.nav-dd-toggle,#site-header .nav-dd:focus-within>.nav-dd-toggle,#site-header .nav-dd.is-open>.nav-dd-toggle,#site-header .nav-dd-toggle:hover{background:transparent}#site-header .nav-dd{display:block;position:relative}#site-header .nav-dd-menu{position:static;display:none;width:100%;min-width:0;max-width:none;margin:0;padding:0 0 6px 14px;border:0;background:transparent;box-shadow:none;opacity:1;visibility:visible;transform:none}#site-header .nav-dd:hover .nav-dd-menu,#site-header .nav-dd:focus-within .nav-dd-menu{display:none}#site-header .nav-dd.mobile-subopen .nav-dd-menu{display:grid}#site-header .nav-dd-menu a{min-height:30px;padding:5px 0;font-size:.88rem;line-height:1.3;color:var(--muted,#5f6b7a);white-space:normal}#site-header .nav-dd-menu a:hover,#site-header .nav-dd-menu a:focus-visible{background:transparent;color:var(--ink,#0b2340);opacity:1}html[data-theme="dark"] #site-header nav.primary{border-top-color:var(--border,#1e293b)}html[data-theme="dark"] #site-header .nav-dd-menu a{color:var(--muted,#94a3b8)}}
     @media(max-width:430px){#site-header .header-inner{grid-template-columns:minmax(64px,1fr) auto;padding-inline:10px}#site-header .brand img{height:38px;max-width:112px}#site-header .tools{gap:4px}#site-header .mobile-menu-toggle,#site-header .icon-btn{width:32px;height:32px;min-width:32px}#site-header .give-btn{height:32px;min-height:32px;padding:0 7px;font-size:.7rem}}
     @media(max-width:360px){#site-header .brand img{max-width:96px}#site-header .mobile-menu-toggle,#site-header .icon-btn{width:30px;height:30px;min-width:30px}#site-header .give-btn{height:30px;min-height:30px;padding:0 6px;font-size:.68rem}}
@@ -56,14 +56,8 @@
         <div class="nav-dd-menu" aria-label="Ologies submenu">
           <a href="/ologies.html">Ologies Hub</a>
           <a href="/ologies/bibliology.html">Bibliology</a>
-          <a href="/ologies/elology.html">Elology</a>
           <a href="/ologies/christology.html">Christology</a>
-          <a href="/ologies/pneumatology.html">Pneumatology</a>
-          <a href="/ologies/anthropology.html">Anthropology</a>
-          <a href="/ologies/hamartiology.html">Hamartiology</a>
-          <a href="/ologies/soteriology.html">Soteriology</a>
           <a href="/ologies/israelology.html">Israelology</a>
-          <a href="/ologies/ecclesiology.html">Ecclesiology</a>
           <a href="/ologies/eschatology.html">Eschatology</a>
         </div>
       </div>
