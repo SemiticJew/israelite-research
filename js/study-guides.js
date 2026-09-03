@@ -52,7 +52,7 @@
         notice.focus({ preventScroll: true });
       }
 
-      announce("Checkout is being connected. This button records checkout intent only; no purchase has been completed.");
+      announce("Online checkout is being finalized. Genesis 1 will be available for purchase here shortly.");
     });
   }
 

@@ -80,6 +80,12 @@
     font-weight:700;
   }
 
+  .product-cover-image{
+    width:min(100%, 330px);
+    height:auto;
+    box-shadow:0 28px 46px rgba(0,0,0,.3);
+  }
+
   .product-summary{
     padding:36px;
     border:1px solid var(--border);
@@ -193,6 +199,14 @@
     color:var(--ink);
   }
 
+  .product-btn[disabled],
+  .product-btn.is-disabled{
+    border-color:var(--border);
+    background:rgba(5,74,145,.07);
+    color:var(--muted);
+    cursor:not-allowed;
+  }
+
   .product-btn:hover,
   .product-btn:focus,
   .product-btn:focus-visible{
@@ -201,6 +215,19 @@
     color:#fff;
     text-decoration:none;
     outline:none;
+  }
+
+  .product-btn[disabled]:hover,
+  .product-btn[disabled]:focus,
+  .product-btn[disabled]:focus-visible,
+  .product-btn.is-disabled:hover,
+  .product-btn.is-disabled:focus,
+  .product-btn.is-disabled:focus-visible{
+    border-color:var(--border);
+    background:rgba(5,74,145,.07);
+    color:var(--muted);
+    outline:2px solid rgba(17,24,39,.25);
+    outline-offset:3px;
   }
 
   .checkout-note{
@@ -444,6 +471,9 @@
 
   <section class="product-hero">
     <div class="product-cover-panel" aria-label="Genesis 1 digital study guide cover preview">
+      <!-- When cover.jpg is available, replace the temporary cover below with:
+      <img class="product-cover-image" src="/assets/study-guides/genesis-1/cover.jpg" alt="Genesis 1: Creation, Order & the Beginning of All Things study guide cover">
+      -->
       <div class="product-cover">
         <small>36-Page Digital PDF</small>
         <strong>Genesis 1</strong>
@@ -456,7 +486,7 @@
       <h1>Genesis 1</h1>
       <h2>Creation, Order &amp; the Beginning of All Things</h2>
       <p class="product-desc">
-        A premium Scripture-first Genesis 1 Bible study PDF for readers who want to examine creation through Scripture, Hebrew word study, logical argumentation, cross-references, and historical context. The guide defends creation week as seven consecutive 24-hour periods and treats the Sabbath as the rest commanded by The Most High, Yah, for His covenant people.
+        A 36-page Scripture-first PDF study of Genesis 1 through the chapter's language, order, repeated patterns, Hebrew terms, biblical cross-references, and logical argumentation. The guide defends creation week as seven consecutive 24-hour periods, rejects reading the creation days as vast ages, and treats the Sabbath as the rest commanded by The Most High, Yah, for His covenant people.
       </p>
 
       <div class="product-meta" aria-label="Product details">
@@ -475,7 +505,7 @@
         <button class="product-btn" type="button" data-study-guide-checkout data-checkout-context="product_page_primary" aria-describedby="checkout-note-product">Buy Digital Guide - $9.99</button>
         <a class="product-btn secondary" href="/study-guides.html">Digital Study Library</a>
         <p class="checkout-note" id="checkout-note-product" hidden tabindex="-1">
-          Checkout is not connected yet. This button records checkout intent only; no payment is collected here, no purchase conversion is fired, and no paid PDF is exposed.
+          Online checkout is being finalized. Genesis 1 will be available for purchase here shortly.
         </p>
       </div>
     </div>
@@ -483,12 +513,15 @@
 
   <section class="product-grid">
     <article class="product-section wide">
-      <h2>Strong Description</h2>
+      <h2>Genesis 1, Read on Its Own Terms</h2>
       <p>
-        Genesis 1 is not treated as a loose religious poem or as a container for later scientific assumptions. This guide studies the chapter as written: The Most High creates, orders, divides, names, fills, blesses, and gives dominion. It distinguishes the created authority given to man from the self-existent supremacy of The Most High, while respecting passages such as Psalm 82 where humans and Israelites can be addressed as "gods" in a delegated judicial sense.
+        Genesis 1 must first be read according to its own language, structure, literary context, and biblical cross-references. This guide does not force later scientific, philosophical, denominational, or cultural assumptions back into the chapter. It follows the text as The Most High creates, orders, divides, names, fills, blesses, and gives dominion.
       </p>
       <p>
-        The study also handles common interpretive errors including anachronism, etymological fallacy, context neglect, and illegitimate totality transfer. When Israel is discussed, the guide distinguishes the biblical ethnic Israelites from the modern State of Israel wherever the term could be ambiguous.
+        The study argues for seven consecutive 24-hour creation periods and rejects treating the creation days as vast geological ages. It presents mature creation as an interpretive and theological argument, distinguishes man's created dependence from the self-existent supremacy of The Most High, and respects Psalm 82 where appointed rulers or Israelites may be called "gods" in a delegated or judicial sense.
+      </p>
+      <p>
+        It also guards against anachronism, etymological fallacy, context neglect, and illegitimate totality transfer. Where "Israel" could be ambiguous, biblical ethnic Israel is not automatically conflated with the modern State of Israel.
       </p>
     </article>
 
@@ -502,7 +535,7 @@
         <li>Male and female, dominion, and the institution of marriage</li>
         <li>Later biblical law that regulates households involving multiple wives</li>
         <li>Image and likeness without confusing man with The Most High</li>
-        <li>Logic, fallacies, and careful interpretation</li>
+        <li>Anachronism, etymological fallacy, context neglect, and illegitimate totality transfer</li>
       </ul>
     </article>
 
@@ -515,12 +548,11 @@
         <li>Study questions</li>
         <li>Answer key</li>
         <li>Bibliography and further study</li>
-        <li>Future architecture for a free Genesis 1 sample page</li>
       </ul>
     </article>
 
     <article class="product-section">
-      <h2>Who This Guide Is For</h2>
+      <h2>Built for Serious Readers</h2>
       <ul class="study-list">
         <li>Students of Scripture who want careful argumentation, not surface commentary</li>
         <li>Readers studying Genesis creation without vast-age assumptions</li>
@@ -541,16 +573,17 @@
     </article>
 
     <article class="product-section wide">
-      <h2>Preview</h2>
+      <h2>Read Before You Buy</h2>
       <div class="preview-panel">
         <p>
-          A future free sample is reserved for `/study-guides/genesis-1-preview.html`. That preview should include selected pages only and must never expose the complete paid guide. The full PDF should be fulfilled only after verified payment through secure or expiring download access.
+          Selected pages from Genesis 1 will be available to read before purchase. The sample will show the study format, argument style, cross-reference work, and question layout without giving away the full guide.
         </p>
         <div class="preview-card">
-          <strong>Future Sample Architecture</strong>
+          <strong>Sample Coming Soon</strong>
           <p>
-            Public preview page, limited excerpt, separate from the private paid PDF fulfillment path.
+            The free sample is being prepared for readers who want to inspect the guide before buying.
           </p>
+          <button class="product-btn is-disabled" type="button" disabled>READ A FREE SAMPLE</button>
         </div>
       </div>
     </article>
