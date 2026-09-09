@@ -31,19 +31,6 @@
       data-v3-screen="home"
       aria-labelledby="home-title"
     >
-      <header class="sj-home-brand">
-        <img
-          class="sj-home-brand-icon"
-          src="/images/app/semitic-jew-official-app-icon.png"
-          alt="Semitic Jew app icon"
-        >
-
-        <div class="sj-home-brand-copy">
-          <strong>Semitic Jew</strong>
-          <span>Scripture • Logic • Truth</span>
-        </div>
-      </header>
-
       <section class="sj-home-greeting" aria-labelledby="home-title">
         <h1 id="home-title">
           Shalom. <span data-home-daypart>Good Evening.</span>
@@ -92,77 +79,6 @@
         >
           <div class="sj-home-loading">Loading today’s study...</div>
         </article>
-      </section>
-
-
-      <!-- LINE UPON LINE -->
-      <section
-        class="sj-home-section"
-        aria-labelledby="sj-line-upon-line-heading"
-      >
-        <div class="sj-section-heading sj-precept-section-heading">
-          <button
-            class="sj-section-link"
-            type="button"
-            data-precept-see-all
-          >
-            See All
-            <span aria-hidden="true">›</span>
-          </button>
-
-          <h2 id="sj-line-upon-line-heading">
-            Line Upon Line
-          </h2>
-        </div>
-
-        <div
-          class="sj-scripture-lesson-list"
-          id="sj-line-upon-line"
-          aria-label="Today’s Line Upon Line lesson"
-          aria-live="polite"
-        ></div>
-
-      </section>
-
-
-      <!-- LATEST ARTICLE -->
-      <section
-        class="sj-home-section"
-        aria-labelledby="sj-latest-article-heading"
-      >
-        <div class="sj-section-heading">
-          <div>
-            <p class="sj-section-kicker">Read</p>
-            <h2 id="sj-latest-article-heading">Latest Article</h2>
-          </div>
-        </div>
-
-        <div id="sj-latest-article" aria-live="polite">
-          <div class="sj-home-loading">Loading latest article...</div>
-        </div>
-      </section>
-
-
-      <!-- LATEST PODCAST -->
-      <section
-        class="sj-home-section sj-podcast-section"
-        aria-labelledby="sj-latest-podcast-heading"
-      >
-        <div class="sj-section-heading">
-          <div>
-            <p class="sj-section-kicker">Listen</p>
-            <h2 id="sj-latest-podcast-heading">Latest Podcast</h2>
-          </div>
-        </div>
-
-        <div
-          id="sj-latest-podcast"
-          aria-live="polite"
-        >
-          <p class="sj-home-loading">
-            Loading latest podcast episode...
-          </p>
-        </div>
       </section>
 
 
@@ -366,36 +282,6 @@
     </section>
 
 
-    <!-- ARTICLES -->
-    <section
-      class="sj-screen"
-      id="articles"
-      data-v3-screen="articles"
-      aria-labelledby="articles-title"
-      hidden
-    >
-      <header class="sj-page-header">
-        <p class="sj-eyebrow">Read & Examine</p>
-        <h1 id="articles-title">Articles</h1>
-      </header>
-
-      <section
-        class="sj-articles-browser"
-        data-articles-browser
-        aria-live="polite"
-      >
-        <div class="sj-articles-loading">
-          <span
-            class="sj-articles-loading-ring"
-            aria-hidden="true"
-          ></span>
-
-          <p>Loading articles...</p>
-        </div>
-      </section>
-    </section>
-
-
     <!-- RESEARCH -->
     <section
       class="sj-screen"
@@ -458,6 +344,7 @@
 
     <!-- FLOATING BOTTOM NAV -->
     <nav class="sj-bottom-nav" aria-label="Primary app navigation">
+      <span class="sj-bottom-nav-bubble" aria-hidden="true"></span>
 
       <button
         type="button"
@@ -514,19 +401,6 @@
           ></rect>
         </svg>
         <span>Bible</span>
-      </button>
-
-      <button
-        type="button"
-        data-v3-nav="articles"
-        aria-label="Articles"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="7.3" cy="12.2" r="3.4"></circle>
-          <circle cx="16.7" cy="12.2" r="3.4"></circle>
-          <path d="M10.7 12.2h2.6"></path>
-        </svg>
-        <span>Articles</span>
       </button>
 
       <button

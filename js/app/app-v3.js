@@ -6,9 +6,38 @@ const navButtons = Array.from(
   document.querySelectorAll("[data-v3-nav]")
 );
 
+const navBubble = document.querySelector(
+  ".sj-bottom-nav-bubble"
+);
+
 const validScreens = new Set(
   screens.map(screen => screen.dataset.v3Screen)
 );
+
+
+function updateBottomNavBubble(activeButton){
+  if(!navBubble || !activeButton){
+    return;
+  }
+
+  const nav = activeButton.closest(".sj-bottom-nav");
+
+  if(!nav){
+    return;
+  }
+
+  const navRect = nav.getBoundingClientRect();
+  const buttonRect = activeButton.getBoundingClientRect();
+  const x =
+    buttonRect.left -
+    navRect.left +
+    (buttonRect.width / 2);
+
+  navBubble.style.width = `${Math.round(buttonRect.width)}px`;
+  navBubble.style.transform =
+    `translate3d(${Math.round(x)}px, -50%, 0) translateX(-50%)`;
+  navBubble.style.opacity = "1";
+}
 
 
 function escapeHTML(value = ""){
@@ -60,6 +89,10 @@ function showScreen(name, options = {}){
     }else{
       button.removeAttribute("aria-current");
     }
+
+    if(isActive){
+      updateBottomNavBubble(button);
+    }
   });
 
   if(name === "bible"){
@@ -70,10 +103,6 @@ function showScreen(name, options = {}){
 
   if(name === "home"){
     renderHomeStudyOnHomeEntry();
-    refreshAppContentFeedIfNeeded();
-  }
-
-  if(name === "articles"){
     refreshAppContentFeedIfNeeded();
   }
 
@@ -99,6 +128,15 @@ navButtons.forEach(button => {
       openDailyPreceptInBible();
     }
   });
+});
+
+
+window.addEventListener("resize", () => {
+  updateBottomNavBubble(
+    navButtons.find(button =>
+      button.classList.contains("is-active")
+    )
+  );
 });
 
 
@@ -994,10 +1032,7 @@ function currentHomeLessons(){
 
 
 function rerenderLiveContent(){
-  renderHomeLineUponLine();
-  loadLatestArticle();
-  loadArticlesBrowser();
-  loadLatestPodcast();
+  renderHomeStudyStreak();
 }
 
 
@@ -1140,27 +1175,14 @@ function homeStudyChapterKey(canonSlug, bookSlug, chapter){
 
 
 function didCompleteHomeLessonToday(record){
-  const lesson = homeLineUponLineLesson();
-
-  return (
-    record.lessonCompleted &&
-    record.lessonId === lesson.id
-  );
+  return false;
 }
 
 
 function homeStudyGoalCount(record){
-  let count = 0;
-
-  if(didCompleteHomeLessonToday(record)){
-    count += 1;
-  }
-
-  if(record.chapters.length >= 4){
-    count += 1;
-  }
-
-  return count;
+  return record.chapters.length >= 4
+    ? 1
+    : 0;
 }
 
 
@@ -1421,7 +1443,7 @@ function previousLocalDateKey(dateKey){
 
 
 function completeHomeStudyIfReady(record, dateKey){
-  if(record.completed || homeStudyGoalCount(record) < 2){
+  if(record.completed || homeStudyGoalCount(record) < 1){
     return false;
   }
 
@@ -1547,9 +1569,8 @@ function renderHomeStudyStreak(){
   const { record } = todayHomeStudyRecord();
   const streak = readHomeStudyStreak();
   const completedGoals = homeStudyGoalCount(record);
-  const lessonComplete = didCompleteHomeLessonToday(record);
   const chaptersComplete = record.chapters.length >= 4;
-  const isComplete = completedGoals >= 2;
+  const isComplete = completedGoals >= 1;
 
   root.classList.toggle(
     "is-complete",
@@ -1584,25 +1605,6 @@ function renderHomeStudyStreak(){
           ${isComplete ? "Study Complete" : "Today’s Study"}
         </p>
 
-        <div class="sj-home-study-goal${lessonComplete ? " is-complete" : ""}">
-          <span class="sj-home-study-check" aria-hidden="true">
-            <svg viewBox="0 0 18 18" focusable="false">
-              <path
-                d="M5 9 L8 12 L14 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-            </svg>
-          </span>
-          <span class="sj-visually-hidden">
-            ${lessonComplete ? "Completed:" : "Not completed:"}
-          </span>
-          <span>Line Upon Line</span>
-        </div>
-
         <div class="sj-home-study-goal${chaptersComplete ? " is-complete" : ""}">
           <span class="sj-home-study-check" aria-hidden="true">
             <svg viewBox="0 0 18 18" focusable="false">
@@ -1625,12 +1627,12 @@ function renderHomeStudyStreak(){
 
       <div
         class="sj-home-study-progress"
-        aria-label="${completedGoals} of 2 daily goals completed"
+        aria-label="${completedGoals} of 1 daily goals completed"
       >
         <strong>
           <span>${completedGoals}</span>
           <i aria-hidden="true"></i>
-          <span>2</span>
+          <span>1</span>
         </strong>
       </div>
     </div>
@@ -1887,7 +1889,6 @@ function renderHomeLineUponLine(){
 }
 
 
-renderHomeLineUponLine();
 renderHomeStudyStreak();
 
 
@@ -2207,7 +2208,10 @@ async function loadLatestArticle(){
     const href = article.href || article.articleUrl;
     let title = article.title;
     let excerpt = article.excerpt;
-    let imageSrc = article.image || article.imageUrl;
+    const author = article.author || "Semitic Jew";
+    const publishedAt = contentDisplayDate(
+      article.publishedAt
+    );
 
     if(!href){
       throw new Error(
@@ -2248,11 +2252,6 @@ async function loadLatestArticle(){
             )
           );
 
-        const actualHero =
-          articleDoc.querySelector(
-            ".hero-image img, img.hero-image"
-          );
-
         const actualExcerpt =
           decodeHTMLEntities(
             cleanText(
@@ -2264,12 +2263,6 @@ async function loadLatestArticle(){
 
         if(actualTitle){
           title = actualTitle;
-        }
-
-        if(actualHero){
-          imageSrc = normalizeArticleImageURL(
-            actualHero.getAttribute("src")
-          );
         }
 
         if(actualExcerpt){
@@ -2294,21 +2287,15 @@ async function loadLatestArticle(){
         class="sj-latest-article-card"
         href="${escapeHTML(href)}"
         data-app-article-link
+        aria-label="Open latest article: ${escapeHTML(title)}"
       >
-        ${imageSrc ? `
-          <div class="sj-latest-article-image">
-            <img
-              src="${escapeHTML(imageSrc)}"
-              alt=""
-              loading="lazy"
-            >
-          </div>
-        ` : ""}
-
         <div class="sj-latest-article-copy">
           <span class="sj-article-label">Latest Article</span>
           <h3>${escapeHTML(title)}</h3>
           ${excerpt ? `<p>${escapeHTML(excerpt)}</p>` : ""}
+          <span class="sj-latest-article-meta">
+            By ${escapeHTML(author)}${publishedAt ? ` · ${escapeHTML(publishedAt)}` : ""}
+          </span>
         </div>
       </a>
     `;
@@ -2681,6 +2668,9 @@ function renderArticlesBrowser(articles){
   }
 
   const [featured, ...remaining] = articles;
+  const featuredPublishedAt = contentDisplayDate(
+    featured.publishedAt
+  );
 
   root.innerHTML = `
     <section
@@ -2702,20 +2692,6 @@ function renderArticlesBrowser(articles){
         href="${escapeHTML(featured.href)}"
         data-app-article-link
       >
-        ${
-          featured.image
-            ? `
-              <div class="sj-articles-featured-image">
-                <img
-                  src="${escapeHTML(featured.image)}"
-                  alt=""
-                  loading="eager"
-                >
-              </div>
-            `
-            : ""
-        }
-
         <div class="sj-articles-featured-copy">
           <h3>
             ${escapeHTML(featured.title)}
@@ -2732,7 +2708,7 @@ function renderArticlesBrowser(articles){
           }
 
           <span class="sj-articles-author">
-            By ${escapeHTML(featured.author)}
+            By ${escapeHTML(featured.author)}${featuredPublishedAt ? ` · ${escapeHTML(featuredPublishedAt)}` : ""}
           </span>
         </div>
       </a>
@@ -2759,20 +2735,6 @@ function renderArticlesBrowser(articles){
             href="${escapeHTML(article.href)}"
             data-app-article-link
           >
-            ${
-              article.image
-                ? `
-                  <div class="sj-articles-list-image">
-                    <img
-                      src="${escapeHTML(article.image)}"
-                      alt=""
-                      loading="lazy"
-                    >
-                  </div>
-                `
-                : ""
-            }
-
             <div class="sj-articles-list-copy">
               <h3>
                 ${escapeHTML(article.title)}
@@ -2789,7 +2751,7 @@ function renderArticlesBrowser(articles){
               }
 
               <span>
-                ${escapeHTML(article.author)}
+                ${escapeHTML(article.author)}${contentDisplayDate(article.publishedAt) ? ` · ${escapeHTML(contentDisplayDate(article.publishedAt))}` : ""}
               </span>
             </div>
           </a>
@@ -2841,28 +2803,6 @@ function articleReaderAuthor(doc){
 }
 
 
-function articleReaderHero(doc){
-  const image = doc.querySelector(
-    ".hero-image img, img.hero-image"
-  );
-
-  if(!image){
-    return null;
-  }
-
-  return {
-    src:normalizeArticleImageURL(
-      image.getAttribute("src")
-    ),
-    alt:decodeHTMLEntities(
-      cleanText(
-        image.getAttribute("alt")
-      )
-    )
-  };
-}
-
-
 function prepareArticleReaderFragment(
   source,
   articleURL
@@ -2872,6 +2812,46 @@ function prepareArticleReaderFragment(
   }
 
   const clone = source.cloneNode(true);
+
+  clone.querySelectorAll(
+    [
+      "figure",
+      "picture",
+      ".hero-image",
+      ".image-block",
+      ".article-image",
+      ".article-hero",
+      ".thumbnail",
+      ".wp-caption"
+    ].join(", ")
+  ).forEach(element => {
+    if(
+      element.matches("picture") ||
+      element.querySelector("img, picture, source") ||
+      element.matches(
+        ".hero-image, .image-block, .article-image, .article-hero, .thumbnail, .wp-caption"
+      )
+    ){
+      element.remove();
+    }
+  });
+
+  clone.querySelectorAll(
+    [
+      "img",
+      "source",
+      "figcaption",
+      ".caption",
+      ".image-caption",
+      ".photo-caption",
+      ".wp-caption-text",
+      ".image-credit",
+      ".photo-credit",
+      "[class*='caption']"
+    ].join(", ")
+  ).forEach(element => {
+    element.remove();
+  });
 
   clone.querySelectorAll(
     "script, style, iframe, form, object, embed"
@@ -3110,7 +3090,6 @@ function renderArticleReader(
   const title = articleReaderTitle(doc);
   const date = articleReaderDate(doc);
   const author = articleReaderAuthor(doc);
-  const hero = articleReaderHero(doc);
 
   const content = doc.querySelector(
     ".article-content"
@@ -3208,19 +3187,6 @@ function renderArticleReader(
           }
         </div>
       </header>
-
-      ${
-        hero?.src
-          ? `
-            <figure class="sj-app-article-hero">
-              <img
-                src="${escapeHTML(hero.src)}"
-                alt="${escapeHTML(hero.alt || "")}"
-              >
-            </figure>
-          `
-          : ""
-      }
 
       <div class="sj-app-article-body">
         ${contentHTML}
@@ -3448,11 +3414,6 @@ async function loadArticlesBrowser(){
 }
 
 
-loadLatestArticle();
-
-loadArticlesBrowser();
-
-
 /* =========================================================
    Build 3D — Bible canon / book / chapter navigation
    ========================================================= */
@@ -3631,7 +3592,60 @@ function readBibleLocation(){
 }
 
 
-function renderBibleCanons(){
+function activeBibleScrollContainer(){
+  const bibleScreen = document.querySelector(
+    '[data-v3-screen="bible"]'
+  );
+
+  const candidates = [
+    bibleScreen,
+    document.querySelector(".sj-app-shell")
+  ].filter(Boolean);
+
+  const scrollable = candidates.find(element => {
+    const style = window.getComputedStyle(element);
+
+    return (
+      /(auto|scroll|overlay)/.test(style.overflowY) &&
+      element.scrollHeight > element.clientHeight
+    );
+  });
+
+  return scrollable ||
+    document.scrollingElement ||
+    document.documentElement;
+}
+
+
+function resetActiveBibleScrollToTop(){
+  requestAnimationFrame(() => {
+    const scrollContainer =
+      activeBibleScrollContainer();
+
+    if(
+      scrollContainer === document.scrollingElement ||
+      scrollContainer === document.documentElement ||
+      scrollContainer === document.body
+    ){
+      window.scrollTo({
+        top:0,
+        left:0,
+        behavior:"auto"
+      });
+
+      return;
+    }
+
+    scrollContainer.scrollTo({
+      top:0,
+      left:0,
+      behavior:"auto"
+    });
+  });
+}
+
+
+function renderBibleCanons(options = {}){
   const menu = bibleCanonMenu();
 
   if(!menu || !scriptureCanonData) return;
@@ -3685,10 +3699,14 @@ function renderBibleCanons(){
   `;
 
   menu.hidden = false;
+
+  if(options.resetScroll){
+    resetActiveBibleScrollToTop();
+  }
 }
 
 
-function renderBibleBooks(canonSlug){
+function renderBibleBooks(canonSlug, options = {}){
   const root = bibleBrowserContent();
   const canon = getBibleCanon(canonSlug);
 
@@ -3760,12 +3778,17 @@ function renderBibleBooks(canonSlug){
       ).join("")}
     </div>
   `;
+
+  if(options.resetScroll){
+    resetActiveBibleScrollToTop();
+  }
 }
 
 
 function renderBibleChapters(
   canonSlug,
-  bookSlug
+  bookSlug,
+  options = {}
 ){
   const root = bibleBrowserContent();
 
@@ -3857,6 +3880,10 @@ function renderBibleChapters(
       }
     </p>
   `;
+
+  if(options.resetScroll){
+    resetActiveBibleScrollToTop();
+  }
 }
 
 
@@ -7258,7 +7285,10 @@ function handleBibleBrowserClick(event){
 
   if(canonButton){
     renderBibleBooks(
-      canonButton.dataset.bibleCanon
+      canonButton.dataset.bibleCanon,
+      {
+        resetScroll:true
+      }
     );
 
     return;
@@ -7272,7 +7302,10 @@ function handleBibleBrowserClick(event){
   if(bookButton && selectedBibleCanon){
     renderBibleChapters(
       selectedBibleCanon,
-      bookButton.dataset.bibleBook
+      bookButton.dataset.bibleBook,
+      {
+        resetScroll:true
+      }
     );
 
     return;
@@ -7326,7 +7359,10 @@ function goBackInBibleBrowser(){
   ){
     renderBibleChapters(
       selectedBibleCanon,
-      selectedBibleBook
+      selectedBibleBook,
+      {
+        resetScroll:true
+      }
     );
 
     return;
@@ -7335,7 +7371,10 @@ function goBackInBibleBrowser(){
 
   if(bibleBrowserStage === "chapters"){
     renderBibleBooks(
-      selectedBibleCanon
+      selectedBibleCanon,
+      {
+        resetScroll:true
+      }
     );
 
     return;
@@ -7354,6 +7393,7 @@ function goBackInBibleBrowser(){
     }
 
     updateBibliaPath();
+    resetActiveBibleScrollToTop();
   }
 }
 
@@ -7521,7 +7561,10 @@ document
       ){
         renderBibleChapters(
           selectedBibleCanon,
-          selectedBibleBook
+          selectedBibleBook,
+          {
+            resetScroll:true
+          }
         );
 
         return;
@@ -7566,7 +7609,9 @@ document
     }
 
     if(menu.hidden){
-      renderBibleCanons();
+      renderBibleCanons({
+        resetScroll:true
+      });
     }else{
       hideBibleCanonMenu();
     }
@@ -7983,11 +8028,6 @@ document.addEventListener("click", event => {
   }
 
 
-  if(event.target.closest("[data-precept-see-all]")){
-    event.preventDefault();
-
-    openHomeLessonLibrary();
-  }
 });
 
 
@@ -8439,6 +8479,14 @@ document.addEventListener("click", event => {
   );
 
   if(articleLink){
+    const articlesScreen = document.querySelector(
+      '[data-v3-screen="articles"]'
+    );
+
+    if(!articlesScreen){
+      return;
+    }
+
     const href = normalizedAppArticleURL(
       articleLink.getAttribute("href")
     );
@@ -8447,6 +8495,10 @@ document.addEventListener("click", event => {
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
+
+      if(articlesScreen?.hidden){
+        showScreen("articles");
+      }
 
       openArticleReader(
         href
