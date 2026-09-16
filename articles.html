@@ -803,7 +803,7 @@ body.articles-page .featured-left .card-footer .avatar{
     <div class="card-body">
       <span class="resource-label resource-in-excerpt">Article</span>
       <h3>God Loves Black People</h3>
-      <time class="meta-date"></time>
+      <time class="meta-date" datetime="2026-09-15">Sep 15, 2026</time>
       <p class="muted">A Scripture-first examination of God’s love for the people later called Black, framed through Semitic lineage, ruddy complexion, covenant, chastening, captivity, and restoration.</p>
 
       <div class="card-footer">
@@ -823,7 +823,7 @@ body.articles-page .featured-left .card-footer .avatar{
 </div>
 <div class="card-body">
 <h3>Black People “Hanging from Trees”: A European Euphemism for Racism</h3>
-<time class="meta-date"></time>
+<time class="meta-date" datetime="2026-09-03">Sep 3, 2026</time>
 <p class="muted">“Hanging from trees” can make racial terror sound passive, almost accidental. Black Americans were lynched by people, protected by systems, and Scripture teaches that innocent blood is neither forgotten nor left unavenged.</p>
 </div>
 <div class="card-footer">
@@ -911,7 +911,7 @@ body.articles-page .featured-left .card-footer .avatar{
 </div>
 <div class="card-body">
 <h3>Black People Cannot Be Racist: Racism, in the Colonial Sense, Is European in Origin</h3>
-<time class="meta-date"></time>
+<time class="meta-date" datetime="2026-06-20">Jun 20, 2026</time>
 <p class="muted">A historical and biblical argument that racism, in the colonial sense, is not mere prejudice but racial power organized through law, violence, theology, and social order.</p>
 </div>
 <div class="card-footer">
@@ -984,7 +984,7 @@ body.articles-page .featured-left .card-footer .avatar{
 </div>
 <div class="card-body">
 <h3>250 Years of Christianity. 250 Years Against God.</h3>
-<time class="meta-date"></time>
+<time class="meta-date" datetime="2026-07-02">Jul 2, 2026</time>
 <p class="muted">A covenant-centered response to America’s 250-year Christian story, arguing that Scripture measures nations by justice, righteousness, and obedience — not religious branding.</p>
 </div>
 <div class="card-footer">
@@ -1003,7 +1003,7 @@ body.articles-page .featured-left .card-footer .avatar{
 </div>
 <div class="card-body">
 <h3>Adam Was Not Pale: How Ruddy, Melanin, and the Color of the First Man Became White</h3>
-<time class="meta-date"></time>
+<time class="meta-date" datetime="2026-06-17">Jun 17, 2026</time>
 <p class="muted">A contextual, logical, and biological argument that Adam was not pale, but a deeply melanated dark brown-red first man capable of explaining the full range of mankind.</p>
 </div>
 <div class="card-footer">
@@ -1022,7 +1022,7 @@ body.articles-page .featured-left .card-footer .avatar{
 </div>
 <div class="card-body">
 <h3>Rage</h3>
-<time class="meta-date"></time>
+<time class="meta-date" datetime="2026-06-15">Jun 15, 2026</time>
 <p class="muted">White supremacy is rage against creation, a worldview rooted in bigotry, hatred, false witness, and rebellion against the image of God in humanity.</p>
 </div>
 <div class="card-footer">
@@ -1200,17 +1200,6 @@ body.articles-page .featured-left .card-footer .avatar{
 
 </main>
 <div id="site-footer"></div>
-<!-- Auto-fill today's date -->
-<script>
-    (function(){
-      var now = new Date();
-      var text = now.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
-      document.querySelectorAll('.meta-date').forEach(function(el){
-        el.dateTime = now.toISOString().slice(0,10);
-        el.textContent = text;
-      });
-    })();
-  </script>
 <!-- Global Includes -->
 <script src="/js/include.js"></script>
 </body>
