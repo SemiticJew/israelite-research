@@ -46,29 +46,46 @@
   max-width:420px;
 }
 
-/* Match Kit form to your theme */
-.formkit-form{
-  background:transparent !important;
-  box-shadow:none !important;
-  max-width:100% !important;
+/* Zeffy newsletter form */
+.newsletter-signup-form{
+  width:100%;
+  max-width:720px;
+  margin:28px auto 0;
 }
 
-.formkit-input{
-  border-radius:10px !important;
-  border:1px solid var(--border) !important;
-  background:var(--surface) !important;
-  color:var(--ink) !important;
+.newsletter-signup-form [data-zeffy-embed],
+.newsletter-signup-form [data-zeffy-embed-fallback],
+.zeffy-embed-frame{
+  width:100%;
 }
 
-.formkit-submit{
-  border-radius:999px !important;
-  background:var(--accent) !important;
-  font-weight:700 !important;
+.zeffy-embed-frame{
+  position:relative;
+  overflow:hidden;
+  min-height:460px;
 }
 
-/* Hide Kit branding */
-.formkit-powered-by-convertkit-container{
-  display:none !important;
+.zeffy-embed-frame iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+@media(max-width:620px){
+  .newsletter-hero{
+    min-height:auto;
+    padding:56px 16px 48px;
+  }
+
+  .newsletter-hero h1{
+    font-size:1.8rem;
+  }
+
+  .zeffy-embed-frame{
+    min-height:500px;
+  }
 }
 
 .newsletter-note{
@@ -102,10 +119,21 @@
       delivered directly to your inbox.
     </p>
 
-    <!-- ✅ INLINE KIT FORM -->
-     <div class="newsletter-form">
-    <script async data-uid="b0439d2e03" src="https://semitic-jew-inc.kit.com/b0439d2e03/index.js"></script>
-  </div>
+    <div class="newsletter-form newsletter-signup-form">
+      <div
+        data-zeffy-embed
+        data-form-url="/en-US/embed/newsletter-form/subscribe-to-get-notified-about-new-events-92942">
+      </div>
+      <div data-zeffy-embed-fallback style="display:none;">
+        <div class="zeffy-embed-frame">
+          <iframe
+            title="Join the Semitic Jew Newsletter for Weekly Updates"
+            data-zeffy-embed-src="https://www.zeffy.com/en-US/embed/newsletter-form/subscribe-to-get-notified-about-new-events-92942"
+            allowtransparency="true">
+          </iframe>
+        </div>
+      </div>
+    </div>
 
     <p class="newsletter-note">
       No spam. Unsubscribe anytime.
@@ -118,6 +146,10 @@
 <div id="site-footer"></div>
 
 <script src="/js/include.js"></script>
+<script
+  src="https://www.zeffy.com/embed/v2/zeffy-embed.js"
+  onerror="document.querySelectorAll('[data-zeffy-embed-fallback]').forEach(function(el){el.style.display='block';el.querySelectorAll('iframe[data-zeffy-embed-src]').forEach(function(f){f.src=f.getAttribute('data-zeffy-embed-src');});});">
+</script>
 
 </body>
 </html>

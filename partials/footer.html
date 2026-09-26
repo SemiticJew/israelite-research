@@ -201,7 +201,89 @@ html[data-theme="dark"] #site-footer h4.footer-heading{
       color:#ffffff;
     }
 
+
+    /* Compact newsletter form */
+    #site-footer .footer-newsletter-compact{
+      max-width:1200px;
+      margin:0 auto;
+      padding:24px 16px 22px;
+      display:grid;
+      grid-template-columns:minmax(0,.8fr) minmax(320px,1.2fr);
+      gap:28px;
+      align-items:center;
+      border-bottom:1px solid var(--border, #e6ebf2);
+    }
+
+    #site-footer .footer-newsletter-copy h3{
+      margin:0 0 8px;
+      color:var(--ink);
+      font-size:1.15rem;
+    }
+
+    #site-footer .footer-newsletter-copy p{
+      margin:0 0 10px;
+      max-width:48ch;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:.92rem;
+    }
+
+    #site-footer .footer-newsletter-copy a{
+      color:var(--accent);
+      font-weight:700;
+      text-decoration:none;
+    }
+
+    #site-footer .footer-newsletter-frame{
+      position:relative;
+      overflow:hidden;
+      width:100%;
+      height:280px;
+      border-radius:6px;
+    }
+
+    #site-footer .footer-newsletter-frame iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    html[data-theme="dark"] #site-footer .footer-newsletter-copy h3{
+      color:#ffffff;
+    }
+
+    @media(max-width:760px){
+      #site-footer .footer-newsletter-compact{
+        grid-template-columns:1fr;
+        gap:16px;
+        padding:22px 16px 18px;
+      }
+
+      #site-footer .footer-newsletter-frame{
+        height:300px;
+      }
+    }
+
   </style>
+
+  <section class="footer-newsletter-compact" aria-labelledby="footerNewsletterTitle">
+    <div class="footer-newsletter-copy">
+      <h3 id="footerNewsletterTitle">Join the Newsletter</h3>
+      <p>Get Scripture-first teaching, new studies, media, and Semitic Jew project updates.</p>
+      <a href="/newsletter.html">Open the full newsletter page →</a>
+    </div>
+
+    <div class="footer-newsletter-frame">
+      <iframe
+        title="Join the Semitic Jew Newsletter for Weekly Updates"
+        src="https://www.zeffy.com/en-US/embed/newsletter-form/subscribe-to-get-notified-about-new-events-92942"
+        loading="lazy"
+        allowtransparency="true">
+      </iframe>
+    </div>
+  </section>
 
   <div class="footer-inner">
 
