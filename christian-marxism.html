@@ -12,49 +12,72 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/styles.css">
 <style>
-.book-page{--paper:#f4efe3;--gold:#d9b878;background:#101010;color:var(--paper);font-family:Arial,sans-serif}
-.book-wrap{max-width:1160px;margin:auto;padding:0 28px}.book-hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:80px;padding:80px 0 90px}
-.book-kicker{text-transform:uppercase;letter-spacing:.18em;font-size:.75rem;color:var(--gold);font-weight:700}
-.book-page h1{font-family:Georgia,serif;font-size:clamp(3rem,6vw,5.7rem);line-height:1.02;letter-spacing:-.04em;margin:22px 0}
-.book-subtitle{font-family:Georgia,serif;font-size:1.6rem;line-height:1.35}.book-author{margin:18px 0 32px;color:#c9c3b8}
-.book-intro{font-size:1.12rem;line-height:1.75;max-width:540px}.book-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
-.book-button{display:inline-flex;justify-content:center;align-items:center;padding:16px 22px;background:var(--paper);color:#111!important;text-decoration:none;border:1px solid var(--paper);font-weight:700;border-radius:3px;line-height:1.4}
-.book-button.secondary{background:transparent;color:var(--paper)!important;border-color:#777}
-.book-button:hover{background:var(--gold);color:#111!important}.book-button:focus-visible,.book-page a:focus-visible{outline:3px solid var(--gold);outline-offset:5px}
-.book-cover{width:100%;max-width:380px;margin:auto;box-shadow:18px 24px 55px #000;border:1px solid #36332e}
-.book-note{font-size:.85rem;color:#bbb5aa;line-height:1.6}.book-section{border-top:1px solid #39352e;padding:64px 0}
-.book-page h2{font-family:Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);line-height:1.2;margin:12px 0 28px;max-width:820px}
-.book-copy{max-width:760px;font-size:1.1rem;line-height:1.85}.book-formats{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.book-format{border:1px solid #494239;padding:30px}.book-format h3{font-size:1.6rem;margin:12px 0}.book-price{font-family:Georgia,serif;font-size:2.6rem;margin:18px 0}
-.book-chapters{list-style:none;padding:0;margin:0;counter-reset:chapter}.book-chapters li{counter-increment:chapter;display:flex;gap:24px;border-bottom:1px solid #36332e;padding:20px 0;font-size:1.1rem;line-height:1.5}
-.book-chapters li:before{content:"0" counter(chapter);color:var(--gold);font-size:.85rem;min-width:24px;padding-top:4px}
-.book-quote{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,3rem);line-height:1.4;margin:0 0 16px}
-@media(max-width:760px){.book-wrap{padding:0 22px}.book-hero{grid-template-columns:1fr;gap:38px;padding:44px 0 55px}.book-hero figure{grid-row:1;margin:0}.book-cover{max-width:230px}.book-formats{grid-template-columns:1fr}.book-section{padding:42px 0}.book-button{width:100%}}
+.book-page{max-width:1200px;margin:0 auto;padding:40px 24px 80px;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.book-page *{box-sizing:border-box}.book-wrap{width:100%}
+.book-banner{margin:24px 0 42px;padding:58px 30px;text-align:center;border:1px solid var(--border);background:radial-gradient(circle at top left,rgba(241,115,0,.16),transparent 34%),linear-gradient(135deg,rgba(5,74,145,.10),rgba(129,164,205,.08))}
+.book-kicker{margin:0 0 12px;color:var(--accent);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.book-page h1{margin:0;color:var(--ink);font-size:clamp(2.5rem,6vw,5rem);line-height:1.05;font-weight:900;letter-spacing:-.05em}
+.book-subtitle{margin:18px auto 0;color:var(--muted);font-size:1.1rem;line-height:1.7}.book-author{margin:10px 0 0;color:var(--muted);font-size:.95rem}
+.book-hero{display:grid;grid-template-columns:280px minmax(0,1fr);gap:56px;align-items:center;max-width:960px;margin:0 auto;padding:12px 0 42px}
+.book-hero figure{margin:0;grid-column:1;grid-row:1;text-align:center}.book-overview{grid-column:2;grid-row:1}
+.book-cover{display:block;width:100%;max-width:260px;height:auto;margin:auto;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.book-page h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.65rem,3vw,2.35rem);line-height:1.25;font-weight:700;letter-spacing:-.02em;max-width:36ch;text-wrap:balance;margin:0 0 24px;color:var(--ink)}
+.book-intro,.book-copy{font-size:1rem;line-height:1.8;color:var(--muted)}.book-copy{max-width:760px}.book-copy p{margin:0 0 16px}
+.book-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:24px}
+.book-button{display:inline-flex;justify-content:center;align-items:center;padding:12px 20px;background:var(--ink);color:var(--surface);text-decoration:none;border:1px solid var(--ink);font-weight:600;border-radius:6px;line-height:1.4;min-height:44px}
+.book-button.secondary{background:transparent;color:var(--ink);border-color:var(--border)}.book-button:hover{opacity:.85}
+.book-page a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.book-text-link{color:var(--ink);font-weight:600;text-underline-offset:5px}
+.book-note{font-size:.85rem;color:var(--muted);line-height:1.7}.book-section{border-top:1px solid var(--border);padding:40px 0}
+.book-formats{display:grid;grid-template-columns:1fr 1fr;gap:24px}.book-format{border:1px solid var(--border);padding:28px;background:var(--surface);display:flex;flex-direction:column;align-items:flex-start}
+.book-format h3{font-size:1.3rem;font-weight:600;margin:0;color:var(--ink)}.book-format p{line-height:1.7;color:var(--muted)}.book-format .book-kicker{color:var(--accent)}.book-format .book-price{font-size:2rem;color:var(--ink);margin:16px 0 4px}.book-price small{font-size:.85rem;font-weight:400;color:var(--muted)}.book-format .book-button{margin-top:auto}
+.book-chapters{padding:0;margin:0;list-style:none;counter-reset:chapter}.book-chapters li{counter-increment:chapter;display:flex;gap:20px;border-bottom:1px solid var(--border);padding:16px 0;font-size:1rem;line-height:1.6;color:var(--ink)}.book-chapters li:before{content:counter(chapter,decimal-leading-zero);color:var(--accent);font-size:.85rem;min-width:24px;padding-top:2px}
+.book-quote{font-size:clamp(1.3rem,3vw,1.8rem);line-height:1.5;margin:0 0 12px;color:var(--ink)}
+html[data-theme="dark"] .book-banner{background:radial-gradient(circle at top left,rgba(241,115,0,.22),transparent 34%),linear-gradient(135deg,rgba(5,74,145,.24),rgba(15,23,42,.92))}
+@media(max-width:760px){.book-page{padding:22px 20px 48px}.book-banner{margin:18px 0 32px;padding:42px 20px}.book-hero{grid-template-columns:1fr;gap:28px;padding-bottom:32px}.book-hero figure,.book-overview{grid-column:auto;grid-row:auto}.book-hero figure{order:-1}.book-cover{max-width:210px}.book-formats{grid-template-columns:1fr}.book-section{padding:28px 0}.book-page h2{font-size:1.65rem}}
+
+/* Retain the original edition and closing-quote presentation. */
+.book-page .book-original-region{background:var(--surface);color:var(--ink);padding:40px 0;border-color:var(--border);font-family:Arial,sans-serif}
+.book-original-region .book-kicker{color:var(--accent);letter-spacing:.12em;font-size:.78rem;font-weight:700}
+.book-page .book-original-region h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.65rem,3vw,2.35rem);line-height:1.25;font-weight:700;letter-spacing:-.02em;margin:0 0 24px;color:var(--ink)}
+.book-original-region .book-format{border:1px solid var(--border);padding:30px;background:transparent;display:block}
+.book-original-region .book-format h3{font-size:1.6rem;margin:12px 0;color:var(--ink);font-weight:700}
+.book-original-region .book-format p{color:var(--ink);line-height:1.6}
+.book-original-region .book-format .book-kicker{color:var(--accent)}
+.book-original-region .book-format .book-price{font-family:Georgia,serif;font-size:2.6rem;margin:18px 0;color:var(--ink)}
+.book-original-region .book-price small{font-size:.8333em;color:inherit}
+.book-original-region .book-button{padding:16px 22px;background:var(--ink);color:var(--surface);border:1px solid var(--ink);font-weight:700;border-radius:3px;line-height:1.4}
+.book-original-region .book-button.secondary{background:transparent;color:var(--ink);border-color:var(--border)}
+.book-original-region .book-button:hover{background:var(--ink);color:var(--surface);opacity:.85}
+.book-original-region a:focus-visible{outline-color:var(--accent)}
+.book-original-region .book-note{color:var(--muted);font-size:.85rem;line-height:1.6}
+.book-original-region .book-quote{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,3rem);line-height:1.4;margin:0 0 16px;color:var(--ink)}
+.book-original-region .book-actions{gap:14px;margin-top:30px}
+@media(max-width:760px){.book-page .book-original-region{padding:28px 0}.book-original-region .book-button{width:100%}.book-original-region .book-format{padding:24px}}
+.book-page .book-section > .book-kicker{margin:0 0 14px;line-height:1.5}
 </style>
 </head>
 <body>
 <div id="site-header"></div>
 <main class="book-page" id="main-content"><div class="book-wrap">
-<section class="book-hero" aria-labelledby="book-title">
-<div><p class="book-kicker">A new book · November 17, 2026</p>
-<h1 id="book-title">Christian<br>Marxism</h1>
-<p class="book-subtitle">The Fallacies That Shaped a Nation</p><p class="book-author">By Semitic Jew</p>
-<p class="book-intro">What happens when power speaks the language of morality? Examine the relationship between religious institutions, economic power, and the stories a nation tells about itself.</p>
-<div class="book-actions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Preorder the ebook — $6.99</a><a class="book-button secondary" href="#formats">Explore both editions</a></div>
-<p class="book-note">Kindle preorder available now. Paperback scheduled for November 17.</p></div>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a><span class="sep">›</span><span class="current" aria-current="page">Christian Marxism</span></nav>
+<section class="book-banner" aria-labelledby="book-title"><p class="book-kicker">A book by Semitic Jew</p><h1 id="book-title">Christian Marxism</h1><p class="book-subtitle">The Fallacies That Shaped a Nation</p><p class="book-author">By Semitic Jew</p></section>
+<section class="book-hero" aria-labelledby="book-overview-title">
+<div class="book-overview"><h2 id="book-overview-title">Whose interests do our beliefs serve?</h2><p class="book-intro">Christian Marxism examines how a Eurocentric version of Christianity gives moral cover to economic exploitation while demands for justice are dismissed as Marxist. Through Scripture, historical sources, and logical examination, Semitic Jew asks what a nation owes the people whose labor helped build its wealth.</p>
+<div class="book-actions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Preorder the ebook — $6.99</a><a class="book-text-link" href="#formats">Compare editions</a></div>
+<p class="book-note">Kindle releases November 17, 2026. Paperback can be ordered on November 16 at 7 PM ET.</p></div>
 <figure><img class="book-cover" src="/book-assets/christian-marxism-cover.png" width="1024" height="1536" alt="Christian Marxism: The Fallacies That Shaped a Nation. Black cover with rising American flag bars and a chalk graph ending at Judgment." fetchpriority="high"></figure>
 </section>
-<section class="book-section"><p class="book-kicker">The question behind the book</p><h2>Whose interests do our beliefs serve?</h2>
+<section class="book-section"><p class="book-kicker">The question behind the book</p><h2>Calling a nation Christian does not prove its practices are just.</h2>
 <div class="book-copy"><p>Christian Marxism examines the relationship between religious institutions, economic power, and national identity—and asks how the language of righteousness can be used to justify exploitation.</p>
 <p>Moving through questions of biblical identity, empire, capitalism, and conscience, this book challenges readers to examine the assumptions behind the stories a nation tells about itself.</p>
 <p>What do we accept as truth? Whose interests do those beliefs serve? And what does justice require of us?</p></div></section>
-<section class="book-section" id="formats"><p class="book-kicker">Choose your edition</p><h2>Read it your way.</h2><div class="book-formats">
+<section class="book-section book-original-region" id="formats"><p class="book-kicker">Choose your edition</p><h2>Read it your way.</h2><div class="book-formats">
 <div class="book-format"><p class="book-kicker">Preorder available</p><h3>Kindle ebook</h3><p class="book-price">$6.99 <small>USD</small></p><p>Release date: November 17, 2026.</p><p>Read in the Kindle app or on your Kindle device.</p><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Preorder on Amazon</a></div>
-<div class="book-format"><p class="book-kicker">Coming November 17</p><h3>Paperback</h3><p class="book-price">$16.99 <small>USD</small></p><p>142 pages · Matte cover · Cream paper</p><p>Paperback orders open on release. Join our newsletter for book and ministry updates.</p><a class="book-button secondary" href="/index.html#newsletter">Get release updates</a></div>
+<div class="book-format"><p class="book-kicker">Paperback release</p><h3>Paperback</h3><p class="book-price">$16.99 <small>USD</small></p><p>142 pages · Matte cover · Cream paper</p><p>Orders open November 16, 2026 at 7 PM ET (November 17 at 00:00 GMT).</p><a class="book-button secondary" href="/index.html#newsletter">Get release updates</a></div>
 </div><p class="book-note">U.S. prices shown. Check Amazon for current local pricing, taxes, and availability. The paperback is not available for preorder.</p></section>
 <section class="book-section"><p class="book-kicker">Inside the book</p><h2>Seven chapters. One demand for examination.</h2><ol class="book-chapters">
 <li>The People, the Law, and the Land</li><li>The Business of Captivity</li><li>Rome Claimed God Too</li><li>Who Profits from the System?</li><li>Justice Until It Costs Something</li><li>Christian Marxism: Faith as Cover for Exploitation</li><li>Truth Demands More Than Agreement</li>
 </ol></section>
-<section class="book-section"><blockquote class="book-quote">“We cannot correct what we refuse to examine.”</blockquote><p class="book-note">From the preface to Christian Marxism</p><div class="book-actions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Reserve your Kindle edition</a><a class="book-button secondary" href="/about.html">About Semitic Jew</a></div></section>
+<section class="book-section book-original-region book-closing"><blockquote class="book-quote">“We cannot correct what we refuse to examine.”</blockquote><p class="book-note">From the preface to Christian Marxism</p><div class="book-actions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Reserve your Kindle edition</a><a class="book-button secondary" href="/about.html">About Semitic Jew</a></div></section>
 </div></main><div id="site-footer"></div><script src="/js/include.js"></script>
 </body></html>
