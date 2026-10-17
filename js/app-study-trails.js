@@ -115,7 +115,7 @@
                     }).join("")}
                   </div>
 
-                  <a class="trail-main" href="${escapeHTML(trail.url)}">Open Trail →</a>
+                  <a class="trail-main" href="${escapeHTML(trail.url)}">Open Trail</a>
                 </article>
               `;
             }).join("")}

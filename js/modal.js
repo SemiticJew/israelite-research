@@ -1,9 +1,10 @@
 (function () {
   function ready(fn){ if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){
+  function wire(){
     var trigger = document.getElementById('author-info');
     var overlay = document.getElementById('author-modal');
-    if (!overlay) return;
+    if (!overlay || overlay.dataset.modalWired) return;
+    overlay.dataset.modalWired='true';
 
     var card = overlay.querySelector('.modal-card, .modal-panel') || overlay;
     var closeBtn = document.getElementById('author-modal-close') || overlay.querySelector('.modal-close');
@@ -48,5 +49,8 @@
     overlay.addEventListener('click', function(e){
       if (e.target === overlay || (e.target && e.target.hasAttribute('data-close'))) closeM(e);
     });
-  });
+  }
+  ready(wire);
+  const observer=new MutationObserver(function(){wire();if(document.getElementById('author-modal')?.dataset.modalWired)observer.disconnect();});
+  observer.observe(document.documentElement,{childList:true,subtree:true});
 })();

@@ -16,7 +16,15 @@
     fetch(path, { cache: "no-store" })
       .then(r => r.ok ? r.text() : Promise.reject(r.status))
       .then(html => {
-        host.innerHTML = html;
+        // A page with its own signup must not receive a second footer form.
+        if (id === "site-footer" && document.getElementById("newsletter")) {
+          const template = document.createElement("template");
+          template.innerHTML = html;
+          template.content.querySelectorAll(".footer-newsletter-compact").forEach(el => el.remove());
+          host.replaceChildren(template.content);
+        } else {
+          host.innerHTML = html;
+        }
       })
       .catch(err => console.error("Include failed:", path, err));
   }
@@ -65,7 +73,14 @@
       temp.innerHTML = html.trim();
 
       const modal = temp.firstElementChild;
-      if (modal) document.body.appendChild(modal);
+      if (modal) {
+        document.body.appendChild(modal);
+        if (!document.querySelector('script[src="/js/modal.js"]')) {
+          const script = document.createElement('script');
+          script.src = '/js/modal.js';
+          document.head.appendChild(script);
+        }
+      }
     })
     .catch(err => console.error("Author modal include failed:", err));
 })();
@@ -438,3 +453,10 @@
   script.defer = true;
   document.head.appendChild(script);
 })();
+
+// Load the live author article catalog after the shared includes.
+if(window.isArticlePage()) {
+ const catalog=document.createElement('script');catalog.src='/js/article-catalog.js';
+ catalog.onload=()=>{const recent=document.createElement('script');recent.src='/js/author-recent.js';document.head.append(recent);};
+ document.head.append(catalog);
+}
