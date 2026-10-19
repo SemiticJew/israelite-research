@@ -1,0 +1,17 @@
+{
+  "name": "semitic-jew-book-readers",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://semiticjew.org,https://www.semiticjew.org"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "semitic-jew-book-readers",
+      "database_id": "413945f6-234f-4bee-9021-f89cca229a64",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
