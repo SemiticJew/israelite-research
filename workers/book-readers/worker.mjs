@@ -8,10 +8,14 @@ export function signup(value) {
 export default {
  async fetch(request, env) {
   const origin = request.headers.get('Origin');
-  const allowed = (env.ALLOWED_ORIGINS || '').split(',');
+  const allowed = (env.ALLOWED_ORIGINS || '').split(',').map(value=>value.trim()).filter(Boolean);
+  const reference=crypto.randomUUID();
   const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Vary': 'Origin' };
   if (allowed.includes(origin)) headers['Access-Control-Allow-Origin'] = origin;
-  const reply = (body, status = 200) => new Response(JSON.stringify(body), { status, headers });
+  const reply = (body, status = 200) => {
+   if(request.method==='POST') console.log(JSON.stringify({event:'book_signup',reference,status,result:status===200?'accepted':body.error}));
+   return new Response(JSON.stringify(status>=400?{...body,reference}:body), {status,headers});
+  };
   if (origin && !allowed.includes(origin)) return reply({error:'Origin not allowed'},403);
   const path = new URL(request.url).pathname;
   if (request.method === 'OPTIONS') return new Response(null,{status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type'}});
@@ -42,7 +46,8 @@ export default {
    if(!check.success || check.action !== 'book-signup' || !hosts.includes(check.hostname)) return reply({error:'Please retry the spam check'},400);
    // Never alter an existing person's preferences without verifying ownership.
    // Duplicate submissions have the same generic response and do not increment totals.
-   await env.DB.prepare('INSERT OR IGNORE INTO readers(email,ebook,paperback) VALUES(?,?,?)').bind(data.email,data.ebook,data.paperback).run();
+   const saved=await env.DB.prepare('INSERT OR IGNORE INTO readers(email,ebook,paperback) VALUES(?,?,?)').bind(data.email,data.ebook,data.paperback).run();
+   if(!saved.success) return reply({error:'Signup could not be recorded'},503);
    return reply({ok:true});
   } catch { return reply({error:'Please try again shortly'},503); }
  }
