@@ -7966,33 +7966,6 @@ body.articles-page .article-card.boxed:hover,
 }
 /* === End Hard Stop Article Image Hover Motion === */
 
-/* === Primary Featured Article Image Fit === */
-/*
-  Only the large left featured card.
-  Keep the full 700x394 image visible without cropping.
-  Do not affect right featured or recent article cards.
-*/
-body.articles-page .featured-left .image-block{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  background:#f8fafc !important;
-}
-
-body.articles-page .featured-left .image-block img{
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  transform:none !important;
-}
- 
-body.articles-page .featured-left:hover .image-block img{
-  object-fit:contain !important;
-  transform:none !important;
-}
-/* === End Primary Featured Article Image Fit === */
-
 /* Shared button feedback: theme colors, no link underlines. */
 :root {
   --sj-button-hover-bg: #054A91;
@@ -8028,20 +8001,29 @@ html body :is(button, input[type="button"], input[type="submit"], input[type="re
   html body :is(button, input[type="button"], input[type="submit"], input[type="reset"], a[role="button"], a.btn, a.btn-primary, a.btn-ghost, a.btn-danger, a.program-btn, a.program-main-btn, a.about-btn, a.contact-btn, a.book-button, a.legal-btn, a.support-btn, a.donate-btn, a.study-btn, a.media-btn, a.home-button, a.subscribe-button, a.mission-btn, a.more-btn, a.give-btn, a.extra-map-btn, a.sj-primary-button, a.sj-author-social-btn) { transition: none !important; }
 }
 
-/* Keep only the large Articles-page feature completely stationary on hover. */
-body.articles-page .featured-left.boxed,
-body.articles-page .featured-left.boxed:hover,
-body.articles-page .featured-left.boxed:focus-within {
-  transform: none !important;
+/* Keep the large Articles-page feature and its image fixed in every state. */
+body.articles-page .featured-left .image-block {
+  overflow: hidden !important;
 }
 
-body.articles-page .featured-left .image-block,
-body.articles-page .featured-left:hover .image-block,
 body.articles-page .featured-left .image-block img,
-body.articles-page .featured-left:hover .image-block img {
+body.articles-page .featured-left:hover .image-block img,
+body.articles-page .featured-left:focus-within .image-block img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
   transform: none !important;
   scale: 1 !important;
   translate: none !important;
   animation: none !important;
   transition: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-left.boxed:hover,
+body.articles-page .featured-left.boxed:focus-within {
+  transform: none !important;
 }
