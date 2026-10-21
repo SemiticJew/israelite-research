@@ -8027,3 +8027,21 @@ html body :is(button, input[type="button"], input[type="submit"], input[type="re
 @media (prefers-reduced-motion: reduce) {
   html body :is(button, input[type="button"], input[type="submit"], input[type="reset"], a[role="button"], a.btn, a.btn-primary, a.btn-ghost, a.btn-danger, a.program-btn, a.program-main-btn, a.about-btn, a.contact-btn, a.book-button, a.legal-btn, a.support-btn, a.donate-btn, a.study-btn, a.media-btn, a.home-button, a.subscribe-button, a.mission-btn, a.more-btn, a.give-btn, a.extra-map-btn, a.sj-primary-button, a.sj-author-social-btn) { transition: none !important; }
 }
+
+/* Keep only the large Articles-page feature completely stationary on hover. */
+body.articles-page .featured-left.boxed,
+body.articles-page .featured-left.boxed:hover,
+body.articles-page .featured-left.boxed:focus-within {
+  transform: none !important;
+}
+
+body.articles-page .featured-left .image-block,
+body.articles-page .featured-left:hover .image-block,
+body.articles-page .featured-left .image-block img,
+body.articles-page .featured-left:hover .image-block img {
+  transform: none !important;
+  scale: 1 !important;
+  translate: none !important;
+  animation: none !important;
+  transition: none !important;
+}
