@@ -252,11 +252,6 @@ def render_card(path: Path, record: VerseRecord) -> None:
         "/System/Library/Fonts/Supplemental/Georgia.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf",
     ])
-    sans_path = first_font([
-        "/System/Library/Fonts/SFNS.ttf",
-        "/System/Library/Fonts/Helvetica.ttc",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    ])
     sans_bold_path = first_font([
         "/System/Library/Fonts/SFNS.ttf",
         "/System/Library/Fonts/Helvetica.ttc",
@@ -272,7 +267,6 @@ def render_card(path: Path, record: VerseRecord) -> None:
 
     brand_font = ImageFont.truetype(sans_bold_path, 28)
     reference_font = ImageFont.truetype(sans_bold_path, 42)
-    footer_font = ImageFont.truetype(sans_path, 24)
     draw.text((112, 98), "SEMITIC JEW", font=brand_font, fill="#054A91")
     draw.text((1088, 98), "KJV", font=brand_font, fill="#3E7CB1", anchor="ra")
 
@@ -305,8 +299,6 @@ def render_card(path: Path, record: VerseRecord) -> None:
     draw.multiline_text((135, text_y), wrapped, font=chosen_font, fill="#0B2340", spacing=14)
     draw.rectangle((112, 175, 120, 175 + max_text_height), fill="#F17300")
     draw.text((112, 492), record.ref, font=reference_font, fill="#054A91")
-    draw.text((1088, 514), "Scripture. Logic. Truth.", font=footer_font, fill="#526579", anchor="ra")
-    draw.text((1088, 544), "semiticjew.org", font=footer_font, fill="#526579", anchor="ra")
 
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, format="PNG", optimize=True)
