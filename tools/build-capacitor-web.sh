@@ -24,7 +24,7 @@ find "$ROOT" -maxdepth 1 -type f \( \
   ! -name "*.tmp" \
   -exec cp {} "$OUT/" \;
 
-for dir in assets css data images js partials articles tanakh newtestament apocrypha fonts icons media; do
+for dir in assets css data images js partials articles tanakh newtestament apocrypha fonts icons media v; do
   if [ -d "$ROOT/$dir" ]; then
     rsync -a \
       --exclude ".DS_Store" \

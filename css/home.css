@@ -49,6 +49,13 @@ html[data-theme="dark"] .app-panel .app-emblem{background:#054A91;color:#fff}
 .home-page .verse-reference strong{font-size:1.5rem;line-height:1.3;font-weight:600}
 .home-page .verse-reference span{font-size:1rem}
 .home-page .verse-panel blockquote{font-size:1.2rem;line-height:1.65;margin:22px 0}
+.home-page .verse-share{margin:0 0 20px}
+.home-page .verse-share-toggle,.home-page .verse-share-actions a,.home-page .verse-share-actions button{appearance:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid #7c8b9c;border-radius:5px;background:transparent;color:var(--ink);font:600 .9rem/1.25 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none;cursor:pointer}
+.home-page .verse-share-toggle:hover,.home-page .verse-share-actions a:hover,.home-page .verse-share-actions button:hover{border-color:var(--accent);background:rgba(241,115,0,.08)}
+.home-page .verse-share-toggle:focus-visible,.home-page .verse-share-actions a:focus-visible,.home-page .verse-share-actions button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.home-page .verse-share-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.home-page .verse-share-actions[hidden]{display:none}
+.home-page .verse-share-status{min-height:1.4em;margin:10px 0 0;color:var(--muted);font-size:.86rem;line-height:1.4}
 .home-page .subscribe-region{border-top:1px solid var(--border);padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 .home-page .subscribe-label{font-size:.9rem;margin:0 0 10px;font-weight:600}
 .home-page .subscribe-notice{font-size:.78rem;line-height:1.45;margin:0;color:var(--muted)}
@@ -76,7 +83,7 @@ html[data-theme="dark"] .home-page .verse-panel{background:#18283e;border-color:
 .home-page .cover-pending{color:var(--muted);font-size:.95rem;background:transparent}
 .home-page .books .home-button{margin-top:auto;align-self:flex-start}
 .home-page .book-release{font-size:.88rem;margin:14px 0 0}
-@media(max-width:800px){.home-page .subscribe-region{grid-template-columns:1fr}.home-page .section-head h2,.home-page #app-heading{font-size:1.5rem}.home-page .cover-display,.home-page .cover-display .book-cover{height:320px}}
+@media(max-width:800px){.home-page .subscribe-region{grid-template-columns:1fr}.home-page .section-head h2,.home-page #app-heading{font-size:1.5rem}.home-page .cover-display,.home-page .cover-display .book-cover{height:320px}.home-page .verse-share-actions{display:grid;grid-template-columns:1fr}.home-page .verse-share-actions a,.home-page .verse-share-actions button{width:100%}}
 
 /* Minimal signup row and smaller centered book presentation. */
 .home-page .subscribe-region{display:block}
