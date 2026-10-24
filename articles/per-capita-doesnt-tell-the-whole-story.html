@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<!--
+ARTICLE TEMPLATE STANDARD
+
+Use this file as the base for new Semitic Jew articles.
+
+Replace:
+Per Capita Doesn’t Tell the Whole Story
+Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion.
+per-capita-doesnt-tell-the-whole-story
+but-per-capita-700x394.png
+
+Image standard:
+700 × 394 px
+
+Bible references:
+Use regular text, not italics.
+Correct: Gen 1:1, Ex 20:8–11, John 17:17
+Avoid italicizing Bible references: Gen 1:1
+
+Recommended article order:
+1. Opening claim
+2. Pullquote
+3. Major section headings
+4. Conclusion
+5. Bibliography / footnotes
+-->
+
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Per Capita Doesn’t Tell the Whole Story — Semitic Jew</title>
+<meta name="description" content="Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Per Capita Doesn’t Tell the Whole Story — Semitic Jew"/>
+<meta property="og:description" content="Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion."/>
+<meta property="og:image" content="https://semiticjew.org/images/articles/but-per-capita-700x394.png"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://semiticjew.org/articles/per-capita-doesnt-tell-the-whole-story.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+<meta property="article:published_time" content="2026-10-24"/>
+<link rel="canonical" href="https://semiticjew.org/articles/per-capita-doesnt-tell-the-whole-story.html"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Per Capita Doesn’t Tell the Whole Story — Semitic Jew"/>
+<meta name="twitter:description" content="Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/articles/but-per-capita-700x394.png"/>
+<meta name="twitter:site" content="@semitic_jew"/>
+<meta name="twitter:creator" content="@semitic_jew"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Fullscreen modal */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:22px;
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;
+    align-items:stretch;
+    min-height:60vh;
+  }
+  @media (max-width: 720px){
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
+  }
+
+  /* Left column (centered vertically) */
+  .author-pane {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-right:12px; text-align:center;
+  }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{
+    display:inline-flex; align-items:center; justify-content:center;
+    text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
+  }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+
+  /* Right column */
+  .author-list{
+    display:flex; flex-direction:column; min-height:0; padding-left:12px;
+  }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{
+    margin:0; padding:.6rem 0;
+    border-top:1px solid #e6ebf2;
+  }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{
+    font-weight:700; text-decoration:none; display:inline-block;
+  }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{
+    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
+  }
+
+  /* Button centered at base of right column */
+  .more-by-btn{
+    margin-top:auto; display:inline-block;
+    padding:.55rem .9rem; border-radius:10px;
+    border:1px solid #e6ebf2; background:#fff;
+    text-decoration:none; font-weight:600;
+    align-self:center;
+  }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography styles */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{
+    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
+    border:1px solid #e6ebf2; border-radius:6px;
+  }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+  .footnote-ref a:hover{ text-decoration:none }
+
+  .article-abstract{
+    margin:0 0 1.2rem;
+    padding:1rem 1rem 1rem 1.1rem;
+    border-left:4px solid var(--accent, #F17300);
+    background:#f8fafc;
+    color:#111827;
+  }
+
+  .article-abstract h2{
+    margin:0 0 .45rem;
+    color:#111827;
+    font-size:1.02rem;
+    line-height:1.2;
+    letter-spacing:0;
+    text-transform:none;
+  }
+
+  .article-abstract p{
+    margin:0;
+    color:#111827;
+    line-height:1.65;
+  }
+
+  html[data-theme="dark"] .article-abstract{
+    background:#0f1a2b;
+    color:#f8fafc;
+    border-left-color:var(--accent, #F17300);
+  }
+
+  html[data-theme="dark"] .article-abstract h2,
+  html[data-theme="dark"] .article-abstract p{
+    color:#f8fafc;
+  }
+/* Article breadcrumb rhythm: breadcrumb inside article main */
+body.article-doc main.article-page{
+  padding-top:40px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs{
+  margin:0 auto 18px !important;
+  padding:0 16px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs + .article-shell{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.article-doc main.article-page{
+    padding-top:30px !important;
+  }
+
+  body.article-doc main.article-page > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+
+/* === Standard Article Template Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+</head>
+
+<body class="article-doc" data-page="article">
+<div id="site-header"></div>
+
+<main class="article-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/articles.html">Articles</a>
+    <span class="sep">›</span>
+    <span class="current">Per Capita Doesn’t Tell the Whole Story</span>
+  </nav>
+
+  <article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date"><time datetime="2026-10-24" id="pub-date" itemprop="datePublished">October 24, 2026</time></p>
+    <h1 class="article-title" itemprop="headline">Per Capita Doesn’t Tell the Whole Story</h1>
+  </header>
+
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="Per Capita Doesn’t Tell the Whole Story" height="394" src="/images/articles/but-per-capita-700x394.png" width="700"/>
+    <meta content="/images/articles/but-per-capita-700x394.png" itemprop="url"/>
+  </figure>
+
+  <div class="meta-row">
+    <div class="author-inline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/images/authors/semitic-jew.jpg" width="40"/>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <!-- Repaired Copy icon: overlapping rectangles -->
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
+      </button>
+          <a aria-label="Support the work" class="share-btn share-give-btn" href="/donate.html" title="Support the work">Give</a>
+</div>
+  </div>
+
+  <div class="article-content" itemprop="articleBody">
+<p>“But per capita.”</p>
+<p>In arguments about race and crime, those three words often arrive as though they settle everything. Someone questions the records, the categories, or the conclusion, and the response is that the numbers have already been adjusted for population.</p>
+<p>That adjustment answers one question. It does not answer every question.</p>
+<p><strong>Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion.</strong></p>
+<p>Per capita means per person. If a hypothetical community of 10,000 residents records 100 arrests in a year, its annual arrest rate is 10 arrests per 1,000 residents. The arithmetic gives us a way to express recorded arrests relative to population size.</p>
+<p>It does not tell us that 100 different people were arrested. It does not establish that everyone arrested committed an offense. It does not explain why the arrests occurred. And it does not tell us that the population’s racial identity caused them.</p>
+<p>Those are additional claims. Each requires additional evidence. Answering before hearing the matter reverses the order of sound judgment (Proverbs 18:13); hearing the first account does not complete the examination (Proverbs 18:17).</p>
+<p>The FBI’s explanation of its 2018 Uniform Crime Reporting arrest figures makes an important distinction: the totals count separate arrest events, including repeat arrests of the same person. They do not count unique individuals.<sup class="footnote-ref" id="ref-fn1"><a href="#fn1">1</a></sup> Turning an arrest rate into the percentage of a population that commits crime changes the meaning of the measurement.</p>
+<p>Consider the hypothetical 100 arrests again. They might involve 100 people arrested once, or 20 people arrested five times each. Both produce the same arrest rate. They describe different distributions of arrests among people. The rate alone cannot tell you which occurred.</p>
+<p><strong>Who defined the people being counted?</strong></p>
+<p>Before accepting a racial comparison, we must ask: <strong>Per capita of whom?</strong></p>
+<p>Modern American racial categories are not the Bible’s system for identifying peoples. Genesis describes peoples through families, languages, lands, and nations (Genesis 10:5, <a class="xref-trigger xref" data-ref="Genesis 10:20" data-xref="Genesis 10:20" href="/tanakh/chapter.html?book=genesis&amp;ch=10#v20" title="Genesis 10:20">20</a>, <a class="xref-trigger xref" data-ref="Genesis 10:31-32" data-xref="Genesis 10:31-32" href="/tanakh/chapter.html?book=genesis&amp;ch=10#v31" title="Genesis 10:31-32">31–32</a>). Israel’s census identifies people through tribes, families, and fathers’ houses (Numbers 1:18). These categories cannot simply be replaced with “Black” and “White.”</p>
+<p>American racial classifications reflect social and administrative definitions. The Census Bureau itself distinguishes them from biological, anthropological, or genetic definitions.<sup class="footnote-ref" id="ref-fn2"><a href="#fn2">2</a></sup> Recording someone as “Black” therefore establishes how that record categorizes the person; it does not independently establish ancestry or disprove Israelite descent. The same limitation applies to “White” and other racial labels.</p>
+<p>A geographical description, a racial classification, and a genealogical identity answer different questions. Establishing someone’s lineage requires evidence beyond the label.</p>
+<p><strong>Before calculating a rate for a people, establish whether the category actually identifies the people you claim to describe.</strong></p>
+<p>Labels such as “Black” and “White” can look precise in a table while concealing questions about who belongs in each category. Does the record use self-identification? An observer’s classification? Can someone select more than one race? Are the population figures using the same rules as the arrest records?</p>
+<p>The government’s own forms illustrate how it groups identities. In 2010, the Census offered a combined response labeled “Black, African Am., or Negro.”<sup class="footnote-ref" id="ref-fn3"><a href="#fn3">3</a></sup> That tells us how the form collected responses. It does not establish that everyone counted under that heading shares an identical history, culture, or ancestry.</p>
+<p>Likewise, “Native” cannot simply be substituted for “Black,” nor can either label settle someone’s lineage. A claim about reclassification must be established through the relevant records. The question is who assigned the label, what it meant in that setting, and whether the same definition was used throughout the comparison.</p>
+<p>Misclassification is a documented measurement problem. A CDC study of American Indian and Alaska Native homicides identified racial misclassification on death certificates and investigative reports as a possible source of undercounting. It noted that classification can be based on appearance or surname.<sup class="footnote-ref" id="ref-fn4"><a href="#fn4">4</a></sup></p>
+<p>That finding concerns homicide victims in a particular study. Its relevance here is concrete: the identity entered into an official record can affect which population receives the count.</p>
+<p>For a hypothetical example, suppose 20 of 100 events belonging to one defined population are mistakenly assigned elsewhere. Dividing the remaining 80 by that population does not restore the missing 20. The result may be calculated perfectly while understating the rate we intended to measure.</p>
+<p>Scripture’s requirement for honest weights and measures concerns actual commercial practices (Leviticus 19:35–36; Deuteronomy 25:13–16). Applied here as an ethical principle, it calls for honest measurement and consistent standards, not for treating modern statistics as something those passages directly discuss.</p>
+<p>The numerator and denominator must also fit together. If the top number includes people classified one way while the bottom number includes people classified another way, their shared label does not guarantee compatibility. Geography and time must align too. Counts from participating jurisdictions cannot simply be divided by a broader population and presented as though coverage were complete.</p>
+<p>The next problem is explanation. Adjusting for population size does not adjust for age, economic conditions, differences in reporting, or enforcement practices. The FBI’s own guidance on interpreting crime figures directs researchers to consider demographic, economic, and other local conditions.<sup class="footnote-ref" id="ref-fn5"><a href="#fn5">5</a></sup></p>
+<p>Those factors require investigation. Their existence does not automatically explain every difference, but a population denominator does not eliminate them.</p>
+<p>Imagine two equally sized communities with different age distributions. Dividing each community’s arrests by its total population adjusts for size. It leaves the age difference in place. A person who then attributes the entire difference to race has supplied a conclusion that the division never established.</p>
+<p>This is where “but per capita” becomes a failure of reasoning: a limited adjustment is treated as a complete explanation.</p>
+<p>Public mass shootings also deserve examination. In Table 4 of James Alan Fox’s NIJ-funded final research report, 106 of the 168 perpetrators with recorded race were classified as White: <strong>63.1%</strong>, compared with 19.6% classified as Black.<sup class="footnote-ref" id="ref-fn11"><a href="#fn11">11</a></sup> The report defines mass public shootings as incidents in which at least four victims, excluding the assailants, are killed by gunfire in a public setting within 24 hours, excluding associated criminal activity such as robbery or gang conflict. It is a research compilation using multiple sources, including news coverage, not a standalone FBI table.</p>
+<p>The earlier NIJ-supported study reported 52.3% under its own dataset.<sup class="footnote-ref" id="ref-fn9"><a href="#fn9">9</a></sup> These are different research results, not interchangeable estimates. The 63.1% figure establishes a numerical majority within the Fox report’s defined sample, not a population-adjusted rate or an inherited disposition toward violence. Comparing the two also demonstrates this article’s central concern: definitions and case selection shape the number presented to the public.</p>
+<p>Justice requires the same evidentiary standard whichever population is being discussed. Scripture forbids favoring the powerful or the poor in judgment and requires impartial hearing (Leviticus 19:15; Deuteronomy 1:16–17). No racial category should receive either collective condemnation or automatic exemption.</p>
+<p>Familicide means killing multiple members of one’s family, but researchers do not always use the same victim threshold or family relationships. The Fegadel and Heide study examined a particular form: offspring killing a parent and at least one other type of family member, rather than the more frequently discussed scenario of a parent killing a partner and children.<sup class="footnote-ref" id="ref-fn10"><a href="#fn10">10</a></sup></p>
+<p>Using FBI NIBRS records from 1991–2010, the researchers identified 14 qualifying incidents and supplemented the records with newspaper accounts. They described the typical offender as a White male approximately 26 years old; only one incident involved a female offender, and firearms predominated. The study described NIBRS coverage as about one-quarter of the U.S. population at that time. Its 14 cases therefore cannot be read as the total number of such killings nationwide.</p>
+<p>This matters because a narrow family-homicide subtype, all family homicides, and all murders are different measurements. The study documents White perpetrators within that subtype, but does not calculate a national racial ranking for all familicide. Its proper use is to examine a form of violence that broad racial accusations can overlook, while holding each perpetrator responsible for the acts established against that person (Deuteronomy 24:16; Ezekiel 18:20).</p>
+<p>The boundaries of the dataset matter just as much as the denominator. A claim about recorded domestic crime is narrower than a claim about which people are violent. If someone broadens the claim, the evidence must broaden with it.</p>
+<p>Consider war, including the American Civil War. Combat deaths are not interchangeable with ordinary murder statistics. CDC’s violent-death reporting definitions explicitly exclude combat deaths and acts of war from its homicide category.<sup class="footnote-ref" id="ref-fn6"><a href="#fn6">6</a></sup> That boundary helps define the measurement. It also means the resulting homicide rate cannot represent every form of lethal violence.</p>
+<p>The Civil War illustrates the scale of what a narrow comparison leaves outside its scope. The National Park Service discusses hundreds of thousands of military deaths, while distinguishing deaths from disease from deaths in battle.<sup class="footnote-ref" id="ref-fn7"><a href="#fn7">7</a></sup> Those deaths cannot all be relabeled murders or assigned collectively to a modern racial population. But a sweeping claim about a people’s supposed peacefulness cannot be established by a dataset that never examined warfare in the first place.</p>
+<p><strong>You cannot use a narrow definition to collect the evidence and a broad definition to deliver the accusation.</strong></p>
+<p>Familicide followed by suicide exposes another distinction: victims, offenders, arrests, and incidents are different units. Suppose someone kills three family members and then himself. That is three homicide victims and one suicide death. It is not four suicides, and the offender’s death can mean there is no arrest to count.</p>
+<p>CDC’s National Violent Death Reporting System explicitly links homicides followed by a suspect’s suicide within the same incident.<sup class="footnote-ref" id="ref-fn8"><a href="#fn8">8</a></sup> The family members’ deaths are not ordinarily converted into suicides because the perpetrator killed himself. The problem for an arrest-based argument is that a fatal attack can occur without producing an arrest of the perpetrator.</p>
+<p>These examples expose a mismatch between the claim and the measure. A homicide-victim count, an arrest count, a suicide count, and a count of war deaths answer different questions. Selecting one and calling it a complete measure of a population’s violence exceeds what it establishes.</p>
+<p>There is another leap when a group rate becomes an accusation against an individual. A stranger does not become guilty because someone assigned him to a demographic category. Evidence concerning other people cannot establish that he committed an act.</p>
+<p>The same standard of reasoning applies when someone responds to criticism of enslavement with “everyone participated in slavery.” Even if participation by many societies is established, widespread participation does not make an act just. The premise concerns how common a practice was; the conclusion concerns whether it was right. One does not establish the other. Exodus 23:2 expressly rejects following a multitude to do evil. The participation of others cannot supply moral permission.</p>
+<p>Nor does participation elsewhere erase the responsibility of the particular people, governments, and institutions under examination. Establishing responsibility requires identifying their actions and the system they maintained. Whether particular enslaved people were Israelites is a separate historical and genealogical question. Neither “everyone did it” nor the administrative label “African” settles that question.</p>
+<p>There is a double standard when a speaker treats wrongdoing as collective racial character in one discussion, then invokes complexity and widespread participation to excuse wrongdoing in another. The response is to apply the same rules of evidence and responsibility throughout. <strong>The number of participants does not determine the justice of an act.</strong> Scripture also condemns oppressive decrees and the denial of justice to the vulnerable (Isaiah 10:1–2). Institutional approval does not settle whether an institution acted justly.</p>
+<p>The biblical demand for judgment is more exacting. Proverbs 18:13 condemns answering a matter before hearing it. Deuteronomy 19:15–19 requires testimony and diligent inquiry when an accusation is contested. These passages address hearing and establishing a matter; their principle challenges the practice of treating a broad racial statistic as sufficient evidence against a particular person.</p>
+<p>A table does not relieve us of the responsibility to investigate what it means.</p>
+<p>Statistics helps us reason with uncertainty. Its usefulness depends on definitions, records, methods, and the limits placed on conclusions. Missing facts remain missing after division. An uncertain classification remains uncertain after multiplication by 100,000. More decimal places cannot supply knowledge that was never collected.</p>
+<p>When a rate is presented as proof, ask what was counted, who was included, which records were missing, and whether the conclusion follows. Those questions examine the evidence itself.</p>
+<p>“But per capita” is the beginning of that examination. It cannot be its substitute.</p>
+<p><strong>Dividing by population cannot repair a misidentified population, an incomplete record, or an unsupported conclusion.</strong></p>
+  </div>
+
+  <hr class="biblio-divider"/>
+<section class="footnotes" aria-labelledby="sources-title">
+  <h2 id="sources-title">Sources</h2>
+  <div class="biblio-list">
+    <p id="fn1">FBI, <a href="https://ucr.fbi.gov/crime-in-the-u.s/2018/crime-in-the-u.s.-2018/topic-pages/persons-arrested" rel="noopener" target="_blank">Persons Arrested, Crime in the United States, 2018</a>. <a class="backref" href="#ref-fn1" aria-label="Back to citation 1"><span class="badge">↩</span></a></p>
+    <p id="fn2">U.S. Census Bureau, <a href="https://www.census.gov/topics/population/race/about.html" rel="noopener" target="_blank">About the Topic of Race</a>. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2"><span class="badge">↩</span></a></p>
+    <p id="fn3">U.S. Census Bureau, <a href="https://www.census.gov/newsroom/blogs/director/2010/01/the-word-negro.html" rel="noopener" target="_blank">The Word “Negro”</a>, January 19, 2010. <a class="backref" href="#ref-fn3" aria-label="Back to citation 3"><span class="badge">↩</span></a></p>
+    <p id="fn4">CDC, <a href="https://www.cdc.gov/mmwr/volumes/70/ss/ss7008a1.htm" rel="noopener" target="_blank">Homicides of American Indians/Alaska Natives — National Violent Death Reporting System, United States, 2003–2018</a>, 2021. <a class="backref" href="#ref-fn4" aria-label="Back to citation 4"><span class="badge">↩</span></a></p>
+    <p id="fn5">FBI, <a href="https://ucr.fbi.gov/hate-crime/2011/resources/variables-affecting-crime" rel="noopener" target="_blank">Variables Affecting Crime</a>, Hate Crime Statistics, 2011. <a class="backref" href="#ref-fn5" aria-label="Back to citation 5"><span class="badge">↩</span></a></p>
+    <p id="fn6">CDC, <a href="https://www.cdc.gov/mmwr/preview/mmwrhtml/ss6106a1.htm" rel="noopener" target="_blank">National Violent Death Reporting System, 16 States, 2009</a>, homicide case definition. <a class="backref" href="#ref-fn6" aria-label="Back to citation 6"><span class="badge">↩</span></a></p>
+    <p id="fn7">National Park Service, <a href="https://www.nps.gov/articles/death-and-dying.htm" rel="noopener" target="_blank">Death and Dying</a>. <a class="backref" href="#ref-fn7" aria-label="Back to citation 7"><span class="badge">↩</span></a></p>
+    <p id="fn8">CDC, <a href="https://www.cdc.gov/nvdrs/faq/index.html" rel="noopener" target="_blank">NVDRS Frequently Asked Questions</a>. <a class="backref" href="#ref-fn8" aria-label="Back to citation 8"><span class="badge">↩</span></a></p>
+    <p id="fn9">National Institute of Justice, <a href="https://nij.ojp.gov/topics/articles/public-mass-shootings-database-amasses-details-half-century-us-mass-shootings" rel="noopener" target="_blank">Public Mass Shootings: Database Amasses Details of a Half Century of U.S. Mass Shootings with Firearms</a>, February 3, 2022. NIJ-supported research using mixed open sources; not an FBI-only count. <a class="backref" href="#ref-fn9" aria-label="Back to citation 9"><span class="badge">↩</span></a></p>
+    <p id="fn10">Averi R. Fegadel and Kathleen M. Heide, <a href="https://pubmed.ncbi.nlm.nih.gov/26063541/" rel="noopener" target="_blank">Offspring-Perpetrated Familicide: Examining Family Homicides Involving Parents as Victims</a>, published online June 10, 2015; journal issue January 2017. FBI NIBRS-based study, supplemented by newspapers. <a class="backref" href="#ref-fn10" aria-label="Back to citation 10"><span class="badge">↩</span></a></p>
+    <p id="fn11">James Alan Fox, <a href="https://www.ojp.gov/pdffiles1/nij/grants/304453.pdf" rel="noopener" target="_blank">The Nature, Trends, Correlates, and Prevention of Mass Public Shootings in America, 1976–2018</a>, final report dated December 31, 2021, received by OJP March 2022; Table 4, printed page 22. The project updated its data beyond the years in its title. <a class="backref" href="#ref-fn11" aria-label="Back to citation 11"><span class="badge">↩</span></a></p>
+  </div>
+</section>
+</article>
+</main>
+
+<!-- Modal -->
+<!-- Author modal (shared across articles) -->
+<div aria-hidden="true" aria-modal="true" aria-labelledby="sj-author-modal-title" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-card sj-author-page-modal" role="document" tabindex="-1">
+    <button aria-label="Close author information" class="modal-close sj-author-page-close" id="author-modal-close" type="button">
+      <svg aria-hidden="true" height="26" viewBox="0 0 24 24" width="26">
+        <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+      </svg>
+    </button>
+
+    <div class="modal-body sj-author-page-body">
+      <div class="sj-author-page-grid">
+        <section class="sj-author-page-left" aria-labelledby="sj-author-modal-title">
+          <div class="sj-author-page-top">
+            <img alt="Semitic Jew" class="sj-author-page-avatar" src="/images/authors/semitic-jew.jpg"/>
+            <p class="sj-author-page-kicker">Author</p>
+            <h2 id="sj-author-modal-title">Semitic Jew</h2>
+            <p class="sj-author-page-role">Founder | Teacher | Researcher</p>
+          </div>
+
+          <div class="sj-author-page-description">
+            <p>
+              Semitic Jew produces Scripture-driven teaching, logical analysis, Israelite research, and public educational resources rooted in covenant, history, and disciplined biblical study.
+            </p>
+            <a class="sj-author-social-btn" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Follow Semitic Jew on X">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+              </svg>
+              <span>Follow on X</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="sj-author-page-right" aria-label="Recent articles by Semitic Jew">
+          <h3>Recent Articles</h3>
+
+          <article>
+            <a href="/articles/250-years-of-christianity-against-god.html">250 Years of Christianity. 250 Years Against God.</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-07-02">Jul 2, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/christian-nationalism-not-biblical-righteousness.html">Christian Nationalism Is Not Biblical Righteousness</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/is-creation-logical.html">Is Creation Logical?</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/hamites-historicity.html">Israelites and Hamites: Recovering a Dark-Skinned Legacy</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+        </section>
+      </div>
+
+      <div class="sj-author-page-footer">
+        <a class="sj-author-page-more" href="/authors/semitic-jew.html">See more from Semitic Jew</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="site-footer"></div>
+
+<!-- External scripts -->
+<script src="/js/metadata.js" defer></script>
+<script src="/js/modal.js" defer></script>
+<script src="/js/biblio.js" defer></script>
+<script src="/js/articles.js" defer></script>
+<script src="/js/citations.js?v=20260531-footnotes2" defer></script>
+<script src="/js/article-xref-autowrap.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<script src="/js/include.js"></script>
+</body>
+</html>
