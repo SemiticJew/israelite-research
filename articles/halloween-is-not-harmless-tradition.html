@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<!--
+ARTICLE TEMPLATE STANDARD
+
+Use this file as the base for new Semitic Jew articles.
+
+Replace:
+Halloween Is Not Harmless Tradition
+A Scripture-first examination of Halloween, Celtic traditions, commercial promotion, and the money that sustains participation.
+halloween-is-not-harmless-tradition
+halloween-harmless-tradition-700x394.png
+
+Image standard:
+700 × 394 px
+
+Bible references:
+Use regular text, not italics.
+Correct: Gen 1:1, Ex 20:8–11, John 17:17
+Avoid italicizing Bible references: Gen 1:1
+
+Recommended article order:
+1. Opening claim
+2. Pullquote
+3. Major section headings
+4. Conclusion
+5. Bibliography / footnotes
+-->
+
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Halloween Is Not Harmless Tradition — Semitic Jew</title>
+<meta name="keywords" content="Halloween, Scripture, Samhain, tradition, witchcraft, capitalism, spending"/>
+<meta name="description" content="A Scripture-first examination of Halloween, Celtic traditions, commercial promotion, and the money that sustains participation."/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Halloween Is Not Harmless Tradition — Semitic Jew"/>
+<meta property="og:description" content="A Scripture-first examination of Halloween, Celtic traditions, commercial promotion, and the money that sustains participation."/>
+<meta property="og:image" content="https://semiticjew.org/images/articles/halloween-harmless-tradition-social.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Jack-o’-lantern with a receipt and the words Harmless Tradition?"/>
+<meta name="twitter:image:alt" content="Jack-o’-lantern with a receipt and the words Harmless Tradition?"/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://semiticjew.org/articles/halloween-is-not-harmless-tradition.html"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+<meta property="article:published_time" content="2026-10-26"/>
+<link rel="canonical" href="https://semiticjew.org/articles/halloween-is-not-harmless-tradition.html"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Halloween Is Not Harmless Tradition — Semitic Jew"/>
+<meta name="twitter:description" content="A Scripture-first examination of Halloween, Celtic traditions, commercial promotion, and the money that sustains participation."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/articles/halloween-harmless-tradition-social.png"/>
+<meta name="twitter:site" content="@semitic_jew"/>
+<meta name="twitter:creator" content="@semitic_jew"/>
+
+<link rel="stylesheet" href="/styles.css"/>
+
+<style>
+  .article-head { text-align:center; margin:0 0 .75rem }
+  .article-date { color:#6b7280; margin:.25rem 0 0; font-size:.95rem }
+  .article-title { margin:.25rem 0 0 }
+
+  .meta-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin:.75rem 0 1.25rem }
+  .author-inline { display:flex; align-items:center; gap:.6rem }
+  .author-avatar { border-radius:999px; flex:0 0 auto }
+  .byline-name { font-weight:600 }
+  .byline-meta { color:#6b7280 }
+  .author-info-btn { background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; cursor:pointer; color:inherit }
+  .author-info-btn svg { width:18px; height:18px; display:block }
+
+  .share-min { display:flex; gap:.5rem; margin-left:auto }
+  .share-btn { display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem; border-radius:10px; border:1px solid #e6ebf2; background:#fff }
+  .share-btn:hover { background:#f8fafc }
+
+  /* Fullscreen modal */
+  .modal-overlay{ position:fixed; inset:0; display:none; background:rgba(17,24,39,.6); z-index:1000 }
+  .modal-overlay[aria-hidden="false"]{ display:block }
+  .modal-card{
+    position:relative; margin:6vh auto; width:min(92vw, 900px); max-height:88vh;
+    background:#fff; border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.35);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px;
+    border:0; background:transparent; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:50%;
+  }
+  .modal-close:hover{ background:#f3f4f6 }
+
+  .modal-body{
+    padding:22px;
+    overflow:auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:32px;
+    align-items:stretch;
+    min-height:60vh;
+  }
+  @media (max-width: 720px){
+    .modal-body{ grid-template-columns:1fr; min-height:unset; }
+  }
+
+  /* Left column (centered vertically) */
+  .author-pane {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding-right:12px; text-align:center;
+  }
+  .ap-avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; display:block; margin:0 auto .6rem }
+  .ap-name-row{ display:inline-flex; align-items:center; gap:.5rem; justify-content:center; margin:0 auto .25rem; }
+  .ap-name{ font-weight:700; font-size:1.1rem }
+  .author-x-head{
+    display:inline-flex; align-items:center; justify-content:center;
+    text-decoration:none; color: var(--brand-accent, var(--brand-primary, #054A91));
+  }
+  .author-x-head svg{ width:18px; height:18px }
+  .ap-text{ color:#0b2340; line-height:1.55; margin:.5rem auto 0; max-width:42ch }
+
+  /* Right column */
+  .author-list{
+    display:flex; flex-direction:column; min-height:0; padding-left:12px;
+  }
+  .author-list h4{ margin:.25rem 0 .5rem; font-size:1rem }
+  .author-list ul{ list-style:none; padding:0; margin:0; flex:1 1 auto; }
+  .author-list li{
+    margin:0; padding:.6rem 0;
+    border-top:1px solid #e6ebf2;
+  }
+  .author-list li:first-child{ border-top:0; }
+  .ra-title{
+    font-weight:700; text-decoration:none; display:inline-block;
+  }
+  .ra-title:hover{ text-decoration:underline; }
+  .ra-meta{
+    display:block; margin-top:.15rem; font-size:.9rem; color:#6b7280;
+  }
+
+  /* Button centered at base of right column */
+  .more-by-btn{
+    margin-top:auto; display:inline-block;
+    padding:.55rem .9rem; border-radius:10px;
+    border:1px solid #e6ebf2; background:#fff;
+    text-decoration:none; font-weight:600;
+    align-self:center;
+  }
+  .more-by-btn:hover{ text-decoration:none; }
+
+  /* Bibliography styles */
+  .footnotes{ font-size:.92rem }
+  .biblio-list p{ margin:.5rem 0; }
+  .footnotes .backref{ text-decoration:none; border-bottom:0; margin-left:.4rem; }
+  .footnotes .backref .badge{
+    display:inline-block; font-size:.8rem; line-height:1; padding:.18rem .38rem;
+    border:1px solid #e6ebf2; border-radius:6px;
+  }
+  .biblio-divider{ border:0; height:1px; background:#e6ebf2; margin:1.2rem 0 .8rem }
+
+  /* Also ensure inline citation refs (if present) are un-underlined */
+  .footnote-ref a{ text-decoration:none; border-bottom:0 }
+  .footnote-ref a:hover{ text-decoration:none }
+
+  .article-abstract{
+    margin:0 0 1.2rem;
+    padding:1rem 1rem 1rem 1.1rem;
+    border-left:4px solid var(--accent, #F17300);
+    background:#f8fafc;
+    color:#111827;
+  }
+
+  .article-abstract h2{
+    margin:0 0 .45rem;
+    color:#111827;
+    font-size:1.02rem;
+    line-height:1.2;
+    letter-spacing:0;
+    text-transform:none;
+  }
+
+  .article-abstract p{
+    margin:0;
+    color:#111827;
+    line-height:1.65;
+  }
+
+  html[data-theme="dark"] .article-abstract{
+    background:#0f1a2b;
+    color:#f8fafc;
+    border-left-color:var(--accent, #F17300);
+  }
+
+  html[data-theme="dark"] .article-abstract h2,
+  html[data-theme="dark"] .article-abstract p{
+    color:#f8fafc;
+  }
+/* Article breadcrumb rhythm: breadcrumb inside article main */
+body.article-doc main.article-page{
+  padding-top:40px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs{
+  margin:0 auto 18px !important;
+  padding:0 16px !important;
+}
+
+body.article-doc main.article-page > .breadcrumbs + .article-shell{
+  margin-top:0 !important;
+}
+
+@media(max-width:700px){
+  body.article-doc main.article-page{
+    padding-top:30px !important;
+  }
+
+  body.article-doc main.article-page > .breadcrumbs{
+    margin:0 0 14px !important;
+    padding:0 2px 8px !important;
+  }
+}
+
+
+/* === Standard Article Template Modal Refinement === */
+.modal-card{
+  border:1px solid rgba(230,235,242,.95);
+}
+
+.modal-close{
+  color:#0b2340;
+}
+
+.modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 32%),
+    #ffffff;
+}
+
+.author-pane{
+  border-right:1px solid #e6ebf2;
+}
+
+.ap-avatar{
+  border:3px solid #ffffff;
+  box-shadow:0 12px 28px rgba(5,74,145,.16);
+}
+
+.ap-name{
+  color:#0b2340;
+  font-weight:900;
+}
+
+.ap-role{
+  display:block;
+  margin:.15rem 0 .45rem;
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.author-list h4{
+  color:#0b2340;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+
+.ra-title{
+  color:#0b2340;
+}
+
+.ra-title:hover{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.more-by-btn{
+  color:#0b2340;
+}
+
+.more-by-btn:hover{
+  color:var(--accent);
+}
+
+html[data-theme="dark"] .modal-card{
+  background:#07111f;
+  border-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .modal-body{
+  background:
+    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
+    #07111f;
+}
+
+html[data-theme="dark"] .modal-close,
+html[data-theme="dark"] .ap-name,
+html[data-theme="dark"] .author-list h4,
+html[data-theme="dark"] .ra-title,
+html[data-theme="dark"] .more-by-btn{
+  color:#ffffff !important;
+}
+
+html[data-theme="dark"] .author-pane{
+  border-right-color:rgba(255,255,255,.14);
+}
+
+html[data-theme="dark"] .ap-text,
+html[data-theme="dark"] .ap-role,
+html[data-theme="dark"] .ra-meta{
+  color:rgba(255,255,255,.72) !important;
+}
+
+html[data-theme="dark"] .more-by-btn{
+  background:#0f1a2b;
+  border-color:rgba(255,255,255,.16);
+}
+
+@media(max-width:720px){
+  .author-pane{
+    border-right:0;
+    border-bottom:1px solid #e6ebf2;
+    padding:0 0 18px;
+  }
+
+  html[data-theme="dark"] .author-pane{
+    border-bottom-color:rgba(255,255,255,.14);
+  }
+}
+
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#054A91"/>
+
+</head>
+
+<body class="article-doc" data-page="article">
+<div id="site-header"></div>
+
+<main class="article-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="/articles.html">Articles</a>
+    <span class="sep">›</span>
+    <span class="current">Halloween Is Not Harmless Tradition</span>
+  </nav>
+
+  <article class="article-shell" itemscope itemtype="https://schema.org/Article">
+  <header class="article-head">
+    <p class="article-date"><time datetime="2026-10-26" id="pub-date" itemprop="datePublished">October 26, 2026</time></p>
+    <h1 class="article-title" itemprop="headline">Halloween Is Not Harmless Tradition</h1>
+  </header>
+
+  <figure class="hero-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <img alt="Halloween Is Not Harmless Tradition" height="394" src="/images/articles/halloween-harmless-tradition-700x394.png" width="700"/>
+    <meta content="https://semiticjew.org/images/articles/halloween-harmless-tradition-700x394.png" itemprop="url"/>
+  </figure>
+
+  <div class="meta-row">
+    <div class="author-inline">
+      <img alt="Semitic Jew" class="author-avatar" height="40" src="/images/authors/semitic-jew.jpg" width="40"/>
+      <span class="byline-name">Semitic Jew</span>
+      <span class="byline-meta">• Article</span>
+      <button aria-label="About the author" class="author-info-btn" id="author-info" type="button">
+        <svg aria-hidden="true" viewBox="0 0 20 20">
+          <g fill="currentColor" fill-rule="evenodd" stroke="none">
+            <path d="M6,6 L3,6 L3,7 L6,7 L6,13 L7,13 L7,7 L13,7 L13,6 L7,6 L7,4 L6,4 L6,6 Z
+                     M14,13 L14,6 L13,6 L13,13 L6,13 L6,14 L13,14 L13,16 L14,16 L14,14 L17,14 L17,13 L14,13 Z
+                     M3,16 L14,16 L14,17 L3,17 L3,16 Z
+                     M3,7 L4,7 L4,16 L3,16 L3,7 Z
+                     M6,3 L16,3 L16,4 L6,4 L6,3 Z
+                     M16,3 L17,3 L17,13 L16,13 L16,3 Z"></path>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <div aria-label="Share" class="share-min">
+      <a aria-label="Share on X" class="share-btn" href="#" id="share-x" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>
+      </a>
+      <a aria-label="Share on Facebook" class="share-btn" href="#" id="share-fb" rel="noopener" target="_blank">
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16"><path d="M15 3h-2.2A3.8 3.8 0 009 6.8V9H7v4h2v8h4v-8h3l1-4h-4V7a1 1 0 011-1H16V3h-1z" fill="currentColor"></path></svg>
+      </a>
+      <button aria-label="Copy link" class="share-btn" id="share-copy" type="button" title="Copy link">
+        <!-- Repaired Copy icon: overlapping rectangles -->
+        <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+          <path d="M9 3h9a2 2 0 0 1 2 2v9h-2V5H9V3z" fill="currentColor"></path>
+          <rect x="4" y="8" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        </svg>
+      </button>
+          <a aria-label="Support the work" class="share-btn share-give-btn" href="/donate.html" title="Support the work">Give</a>
+</div>
+  </div>
+
+  <div class="article-content" itemprop="articleBody">
+<p>Before people defend a tradition, they are often taught to enjoy it.</p>
+<p>The decorations arrive. The movies return. Children anticipate costumes and candy. Stores turn their aisles into seasonal displays, and entertainment turns October into an extended celebration. By the time someone asks whether participation agrees with Scripture, an emotional attachment may already exist.</p>
+<p>Then comes the familiar answer: “It’s no big deal.”</p>
+<p>That is a conclusion. Where is the examination?</p>
+<p><strong>A tradition does not become harmless because it is familiar, profitable, or widely accepted. Those who claim to follow Scripture must examine what they participate in.</strong></p>
+<h2>Whose tradition are we keeping?</h2>
+<p>Halloween’s history includes Celtic seasonal traditions, Christian observances surrounding the dead, and later American customs. The Library of Congress describes its development through the mingling of pre-Christian and Christian beliefs. Its name comes from All Hallows’ Eve, the evening before All Saints’ Day on November 1.<sup class="footnote-ref" id="ref-fn1"><a href="#fn1">1</a></sup></p>
+<p>Samhain belongs in that history. University of Kentucky folklorist Jeanmarie Rouhier-Willoughby describes traditions concerning encounters with the otherworld and returning ancestral spirits. She also identifies an important limit: surviving written accounts in Irish sagas date from the ninth through twelfth centuries. They do not give us an uninterrupted eyewitness record of ancient practice.<sup class="footnote-ref" id="ref-fn2"><a href="#fn2">2</a></sup></p>
+<p>That history supports examining the holiday’s religious inheritance. It does not require pretending that every modern costume or candy exchange reproduces one specific ancient ceremony.</p>
+<p>The biblical question is more direct: what are we celebrating, and what authority are we using to justify it?</p>
+<p>Halloween is not among the appointed observances given to Israel in Leviticus 23. Its absence alone is not a blanket prohibition on every ordinary gathering. But neither its popularity nor its place in a later church calendar makes it an Israelite commandment.</p>
+<p>European church tradition must be examined by Scripture, just as any other tradition must be. It cannot appoint itself the standard.</p>
+<h2>Scripture does not treat sorcery as harmless</h2>
+<p>Deuteronomy 18:9–14 prohibits Israel from adopting practices including divination, enchantment, witchcraft, consulting spirits, and seeking the dead. Leviticus 19:31 likewise warns against turning to mediums and spiritists. Isaiah 8:19 challenges the practice of seeking the dead on behalf of the living.</p>
+<p>These passages concern actual practices. A fictional witch on a screen is not automatically evidence that the viewer has performed sorcery. Yet there remains a serious question about making entertainment and celebration out of things Scripture condemns.</p>
+<p>What are we teaching ourselves to admire, imitate, or dismiss?</p>
+<p>Scripture calls for examining what pleases God and refusing fellowship with works of darkness (Ephesians 5:10–11). It directs attention toward what is true, just, and pure (Philippians 4:8). Those standards concern our formation as well as our explicit acts of worship.</p>
+<p>For that reason, my objection to Halloween includes the annual celebration of occult imagery, not only the possibility of someone performing an actual spell.</p>
+<h2>The promotion is public</h2>
+<p>We do not need a secret document to establish that Halloween participation is being promoted.</p>
+<p>Walmart’s Halloween shopping pages organize costumes, decorations, candy, and party supplies into a complete seasonal experience. Target announced more than 1,500 new Halloween items on August 11, 2025, and its current Halloween storefront includes witch decorations alongside costumes and other merchandise.<sup class="footnote-ref" id="ref-fn3"><a href="#fn3">3</a></sup><sup class="footnote-ref" id="ref-fn4"><a href="#fn4">4</a></sup></p>
+<p>The invitation continues on screens. Super Simple publishes Halloween songs for children on YouTube. Freeform’s 2026 “31 Nights of Halloween” schedule makes themed films a month-long programming event.<sup class="footnote-ref" id="ref-fn5"><a href="#fn5">5</a></sup><sup class="footnote-ref" id="ref-fn6"><a href="#fn6">6</a></sup></p>
+<p>The National Retail Federation’s 2026 consumer survey projects $13.5 billion in Halloween spending, with 74% planning to celebrate. These are survey-based expectations, not final sales totals. They nevertheless show the scale of the commercial interest.<sup class="footnote-ref" id="ref-fn7"><a href="#fn7">7</a></sup></p>
+<p>Each example demonstrates promotion. Together, they provide the basis for my argument about normalization: shopping, music, entertainment, and social expectation repeatedly present participation as desirable and ordinary.</p>
+<p>The store supplies the objects. The screen supplies the stories. The annual calendar supplies the expectation that we will do it again.</p>
+<p>That is what I mean by cultural programming. Calling it propaganda is a criticism of this persuasive environment, not evidence that every retailer and filmmaker shares a hidden religious agenda. Commercial incentives alone give businesses a reason to encourage participation.</p>
+<h2>Spending is part of the participation</h2>
+<p>Halloween is also a business. Its commercial success depends on people repeatedly purchasing the objects, experiences, and entertainment that sustain the celebration.</p>
+<p>Under a profit-driven capitalist model, a tradition becomes a recurring revenue opportunity. Businesses have an incentive to extend the season, introduce new merchandise, and encourage customers to participate again. The question of whether an observance agrees with Scripture can disappear behind the question of whether it sells.</p>
+<p>But profitability is not moral permission.</p>
+<p>Acts 19:23–27 gives a direct biblical example of religious devotion joined to commercial interest. Demetrius and other craftsmen earned their income from silver shrines associated with Diana, or Artemis. When Paul’s teaching threatened that trade, Demetrius appealed to both their prosperity and the goddess’s honor. The financial interest and the religious defense reinforced each other.</p>
+<p>That account does not make modern Halloween merchandise identical to Ephesian shrines. It exposes a principle worth applying: people can defend a religious custom partly because their livelihood depends on its continuation. We should examine who profits when a tradition is declared beyond criticism.</p>
+<p>The responsibility also reaches the purchaser. Buying decorations specifically for the celebration, paying admission to Halloween attractions, and purchasing merchandise that celebrates sorcery are material ways of sustaining the observance. A purchase supplies revenue whether or not the buyer has studied the tradition’s history.</p>
+<p>“I do not believe in witchcraft” does not answer the separate question, “What am I paying to promote?”</p>
+<p>On the biblical grounds already established, I condemn deliberately financing the celebration and glamorization of practices Scripture rejects. That condemnation includes businesses that market those practices for profit and participants who knowingly fund them. Ordinary food or a pumpkin is not inherently condemned; the issue is the purpose and activity the spending supports.</p>
+<p>Jesus warns that we cannot serve both God and mammon (Matthew 6:24). Paul identifies the love of money as a source of evil and connects covetousness with idolatry (1 Timothy 6:9–10; Colossians 3:5). These passages judge the pursuit of profit; they do not allow profit to judge the commandments.</p>
+<p>There is also the question of what our resources could accomplish instead. Scripture commands generosity toward the poor and describes work as a means of having something to share with those in need (Deuteronomy 15:7–11; Ephesians 4:28). A household’s budget expresses priorities, just as its calendar does.</p>
+<p><strong>If we conclude that a practice should be rejected, our spending should reflect that conclusion. We cannot consistently condemn its promotion while paying to sustain it.</strong></p>
+<h2>A ritual can outlast its explanation</h2>
+<p>A ritual can be a repeated, socially organized observance; it need not mean that every participant consciously invokes a spirit.</p>
+<p>People can inherit actions before they investigate the ideas attached to them. They know when to decorate, what to purchase, and what children are expected to do. They may know very little about how those expectations developed.</p>
+<p>That does not turn an unwitting participant into a deliberate occult practitioner. It does mean that “I never thought about it” cannot substitute for an answer after the question has been raised.</p>
+<p>Deuteronomy 6:6–9 makes instruction an ongoing responsibility. Parents should be able to explain the practices they teach, including why they choose some celebrations and decline others.</p>
+<h2>“It’s just for the children”</h2>
+<p>Children can enjoy food, costumes, stories, and time with neighbors without making Halloween the framework for those experiences. Declining the holiday does not require rejecting generosity or imagination.</p>
+<p>Nor does a Christian label settle the issue. In Mark 7:6–13, Jesus challenges traditions that displace God’s commandments. He does not condemn every inherited custom; he denies tradition the authority to override obedience.</p>
+<p>Paul also distinguishes ordinary food from participation in idolatrous worship (1 Corinthians 10:14–21, 25–29). That distinction matters: an object’s associations and a person’s actual participation must be examined carefully. “Everything is automatically worship” and “nothing matters if I mean well” both avoid that examination.</p>
+<p>My conclusion is that families seeking an Israelite, Scripture-first way of life should decline Halloween and build their celebrations around what they can affirm before God. That is a theological application of the passages above, not a claim that Scripture names October 31.</p>
+<p>Popularity does not supply permission (Exodus 23:2). Familiarity does not supply truth. A retailer’s seasonal calendar does not supply covenant authority.</p>
+<p><strong>Before teaching our children to keep a tradition, we should be able to explain why it deserves to be kept.</strong></p>
+</div>
+<hr class="biblio-divider"/><section class="footnotes" aria-labelledby="sources-title"><h2 id="sources-title">Sources</h2><div class="biblio-list">
+<p id="fn1">Library of Congress, <a href="https://guides.loc.gov/halloween/" rel="noopener" target="_blank">Halloween &amp; Día de Muertos Resources</a>. See also Stephen Winick’s <a href="https://blogs.loc.gov/folklife/2013/10/welcome-to-folklife-today/" rel="noopener" target="_blank">2013 discussion of historical uncertainties</a>. <a class="backref" href="#ref-fn1" aria-label="Back to citation 1">↩</a></p>
+<p id="fn2">University of Kentucky, <a href="https://research.uky.edu/news/uk-folklorist-explains-spellbinding-history-halloween" rel="noopener" target="_blank">“UK folklorist explains the spellbinding history of Halloween”</a>. <a class="backref" href="#ref-fn2" aria-label="Back to citation 2">↩</a></p>
+<p id="fn3">Walmart, <a href="https://www.walmart.com/cp/halloween/9516159" rel="noopener" target="_blank">Halloween shopping page</a>. <a class="backref" href="#ref-fn3" aria-label="Back to citation 3">↩</a></p>
+<p id="fn4">Target, <a href="https://corporate.target.com/news-features/article/2025/08/halloween" rel="noopener" target="_blank">August 11, 2025 announcement</a> and <a href="https://www.target.com/c/halloween/-/N-5xt2o" rel="noopener" target="_blank">Halloween storefront</a>. <a class="backref" href="#ref-fn4" aria-label="Back to citation 4">↩</a></p>
+<p id="fn5">Super Simple Songs, <a href="https://www.youtube.com/watch?v=5zXtxtrGKEw" rel="noopener" target="_blank">“Six Little Ghosts | + More Halloween Songs for Kids”</a>. <a class="backref" href="#ref-fn5" aria-label="Back to citation 5">↩</a></p>
+<p id="fn6">Freeform, <a href="https://www.freeform.com/news/9cf35c19-f0cd-4104-afbf-31bb9b8e0d18/category/3444024" rel="noopener" target="_blank">2026 “31 Nights of Halloween” schedule</a>. <a class="backref" href="#ref-fn6" aria-label="Back to citation 6">↩</a></p>
+<p id="fn7">National Retail Federation, <a href="https://nrf.com/research-insights/holiday-data-and-trends/halloween" rel="noopener" target="_blank">Halloween Data and Trends, 2026</a>. <a class="backref" href="#ref-fn7" aria-label="Back to citation 7">↩</a></p>
+<p>Historical and commercial sources checked October 26, 2026. Biblical judgments and applications are my argument; the cited institutions do not necessarily endorse my arguments. Since those institutions are not Israelite institutions</p>
+</div></section>
+</article>
+</main>
+
+<!-- Modal -->
+<!-- Author modal (shared across articles) -->
+<div aria-hidden="true" aria-modal="true" aria-labelledby="sj-author-modal-title" class="modal-overlay" id="author-modal" role="dialog">
+  <div class="modal-card sj-author-page-modal" role="document" tabindex="-1">
+    <button aria-label="Close author information" class="modal-close sj-author-page-close" id="author-modal-close" type="button">
+      <svg aria-hidden="true" height="26" viewBox="0 0 24 24" width="26">
+        <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+      </svg>
+    </button>
+
+    <div class="modal-body sj-author-page-body">
+      <div class="sj-author-page-grid">
+        <section class="sj-author-page-left" aria-labelledby="sj-author-modal-title">
+          <div class="sj-author-page-top">
+            <img alt="Semitic Jew" class="sj-author-page-avatar" src="/images/authors/semitic-jew.jpg"/>
+            <p class="sj-author-page-kicker">Author</p>
+            <h2 id="sj-author-modal-title">Semitic Jew</h2>
+            <p class="sj-author-page-role">Founder | Teacher | Researcher</p>
+          </div>
+
+          <div class="sj-author-page-description">
+            <p>
+              Semitic Jew produces Scripture-driven teaching, logical analysis, Israelite research, and public educational resources rooted in covenant, history, and disciplined biblical study.
+            </p>
+            <a class="sj-author-social-btn" href="https://x.com/semitic_jew" rel="noopener" target="_blank" aria-label="Follow Semitic Jew on X">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 4l16 16M20 4L4 20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+              </svg>
+              <span>Follow on X</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="sj-author-page-right" aria-label="Recent articles by Semitic Jew">
+          <h3>Recent Articles</h3>
+
+          <article>
+            <a href="/articles/250-years-of-christianity-against-god.html">250 Years of Christianity. 250 Years Against God.</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-07-02">Jul 2, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/christian-nationalism-not-biblical-righteousness.html">Christian Nationalism Is Not Biblical Righteousness</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/who-gets-innocence-karmelo-anthony-austin-metcalf.html">Who Gets Innocence? Karmelo Anthony, Austin Metcalf, and America’s Racial Judgment</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/is-creation-logical.html">Is Creation Logical?</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+
+          <article>
+            <a href="/articles/hamites-historicity.html">Israelites and Hamites: Recovering a Dark-Skinned Legacy</a>
+            <p>Semitic Jew <span>•</span> <time datetime="2026-06-23">Jun 23, 2026</time></p>
+          </article>
+        </section>
+      </div>
+
+      <div class="sj-author-page-footer">
+        <a class="sj-author-page-more" href="/authors/semitic-jew.html">See more from Semitic Jew</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="site-footer"></div>
+
+<!-- External scripts -->
+<script src="/js/metadata.js" defer></script>
+<script src="/js/modal.js" defer></script>
+<script src="/js/biblio.js" defer></script>
+<script src="/js/articles.js" defer></script>
+<script src="/js/citations.js?v=20260531-footnotes2" defer></script>
+<script src="/js/article-xref-autowrap.js" defer></script>
+<script src="/js/xref-hover.js" defer></script>
+<script src="/js/include.js"></script>
+</body>
+</html>
