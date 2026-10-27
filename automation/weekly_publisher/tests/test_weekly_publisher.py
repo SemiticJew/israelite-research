@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from automation.weekly_publisher.collectors import dedupe_records, in_period
+from automation.weekly_publisher.collectors import collect_project_journal, dedupe_records, in_period
 from automation.weekly_publisher.integrations import (
     GoogleAnalyticsAdapter,
     ZeffyAdapter,
@@ -67,6 +67,30 @@ class WeeklyPublisherTests(unittest.TestCase):
     def test_deduplication_preserves_first_record(self) -> None:
         records = [{"id": "one", "value": 1}, {"id": "one", "value": 2}, {"id": "two", "value": 3}]
         self.assertEqual(dedupe_records(records, "id"), [records[0], records[2]])
+
+    def test_project_journal_includes_end_calendar_date(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            journal = root / "automation/weekly_publisher/project-status.json"
+            journal.parent.mkdir(parents=True)
+            journal.write_text(json.dumps({"entries": [{
+                "project": "Milestone",
+                "confirmedUpdate": "Verified on the report date.",
+                "status": "active",
+                "date": "2026-10-27",
+                "publicLink": "",
+                "metrics": {},
+                "blocker": "",
+                "nextAction": "Record the next milestone.",
+                "subscriberAppropriate": True,
+            }]}))
+            zone = ZoneInfo("America/New_York")
+            result = collect_project_journal(
+                root,
+                datetime(2026, 10, 20, 9, 49, tzinfo=zone),
+                datetime(2026, 10, 27, 9, 49, tzinfo=zone),
+            )
+        self.assertEqual([entry["project"] for entry in result["entries"]], ["Milestone"])
 
     def test_optional_integrations_are_unavailable_without_credentials(self) -> None:
         self.assertEqual(GoogleAnalyticsAdapter({}).collect(datetime(2026, 1, 1).date(), datetime(2026, 1, 2).date())["status"], "unavailable")
@@ -147,6 +171,38 @@ class WeeklyPublisherTests(unittest.TestCase):
             for index in range(6)
         ]
         self.assertEqual(len(newsletter_model(snapshot)["updates"]), 5)
+
+    def test_newsletter_guarantees_subscriber_project_milestones(self) -> None:
+        snapshot = sample_snapshot()
+        snapshot["articles"] = [
+            {
+                "title": f"Article {index}",
+                "description": f"Summary {index}.",
+                "url": f"https://semiticjew.org/articles/article-{index}.html",
+                "changeType": "published",
+            }
+            for index in range(5)
+        ]
+        snapshot["projects"]["entries"] = [
+            {
+                "project": "Watchmen of Israel",
+                "confirmedUpdate": "The gaming map for the Watchmen of Israel tower-defense game is completed.",
+                "publicLink": "",
+                "subscriberAppropriate": True,
+            },
+            {
+                "project": "Little Hebrews",
+                "confirmedUpdate": "Little Hebrews is published in the Apple App Store for iPhone and iPad.",
+                "publicLink": "https://apps.apple.com/us/app/little-hebrews/id6816817782",
+                "subscriberAppropriate": True,
+            },
+        ]
+
+        model = newsletter_model(snapshot)
+        titles = [update["title"] for update in model["updates"]]
+        self.assertEqual(len(model["updates"]), 5)
+        self.assertIn("Watchmen of Israel", titles)
+        self.assertIn("Little Hebrews", titles)
 
     def test_all_four_outputs_are_written(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

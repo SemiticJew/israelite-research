@@ -18,6 +18,16 @@ def _link(label: str, url: str) -> str:
 
 def _newsletter_updates(snapshot: dict[str, Any], limit: int = 5) -> list[dict[str, str]]:
     updates: list[dict[str, str]] = []
+    for entry in snapshot.get("projects", {}).get("entries", []):
+        if not entry.get("subscriberAppropriate") or not entry.get("confirmedUpdate"):
+            continue
+        updates.append(
+            {
+                "title": entry.get("project", "Project update"),
+                "summary": entry.get("confirmedUpdate", ""),
+                "url": entry.get("publicLink", ""),
+            }
+        )
     for article in snapshot.get("articles", []):
         updates.append(
             {
@@ -32,16 +42,6 @@ def _newsletter_updates(snapshot: dict[str, Any], limit: int = 5) -> list[dict[s
                 "title": release.get("title", "New release"),
                 "summary": "A new Semitic Jew video or podcast release is available.",
                 "url": release.get("url", ""),
-            }
-        )
-    for entry in snapshot.get("projects", {}).get("entries", []):
-        if not entry.get("subscriberAppropriate") or not entry.get("confirmedUpdate"):
-            continue
-        updates.append(
-            {
-                "title": entry.get("project", "Project update"),
-                "summary": entry.get("confirmedUpdate", ""),
-                "url": entry.get("publicLink", ""),
             }
         )
     unique: list[dict[str, str]] = []

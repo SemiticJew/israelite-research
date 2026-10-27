@@ -258,7 +258,9 @@ def collect_project_journal(root: Path, start: datetime, end: datetime) -> dict[
         if not isinstance(entry["subscriberAppropriate"], bool):
             raise ValueError(f"project journal entry {index} subscriberAppropriate must be boolean")
         entry_date = entry.get("date")
-        if entry_date is None or start.date() <= date.fromisoformat(entry_date) < end.date():
+        # Journal dates have calendar-day precision, so include the report's
+        # ending calendar day even though timestamped sources remain end-exclusive.
+        if entry_date is None or start.date() <= date.fromisoformat(entry_date) <= end.date():
             entries.append(entry)
     entries.sort(key=lambda item: (item.get("date") or "", item.get("project", "")), reverse=True)
     return {"status": "available", "entries": entries, "source": str(path.relative_to(root))}
