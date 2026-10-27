@@ -224,7 +224,7 @@ def load_articles() -> list[dict[str, Any]]:
         article = parse_article_page(path, href)
         if article:
             articles.append(article)
-    return articles
+    return sorted(articles, key=sort_key, reverse=True)
 
 
 def rss_child_text(item: ElementTree.Element, names: list[str]) -> str:
