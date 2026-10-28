@@ -127,6 +127,33 @@
     margin-top:20px;
   }
 
+  .candid-seal-featured{
+    margin:0 0 24px;
+    padding:22px;
+    border:1px solid var(--border);
+    background:rgba(5,74,145,.045);
+    text-align:center;
+  }
+
+  .candid-seal-featured a{
+    display:inline-block;
+    max-width:100%;
+  }
+
+  .candid-seal-featured img{
+    display:block;
+    width:clamp(150px, 52vw, 210px);
+    max-width:100%;
+    height:auto;
+    margin:0 auto;
+  }
+
+  .candid-seal-featured p{
+    margin:14px auto 0;
+    max-width:34ch;
+    font-size:.9rem;
+  }
+
   .donate-btn{
     display:flex;
     align-items:center;
@@ -259,7 +286,8 @@
   }
 
   html[data-theme="dark"] .impact-card,
-  html[data-theme="dark"] .donate-clarity{
+  html[data-theme="dark"] .donate-clarity,
+  html[data-theme="dark"] .candid-seal-featured{
     background:rgba(255,255,255,.035);
   }
 
@@ -385,6 +413,20 @@
       <p>
         Use the giving link below to support the continued educational work of Semitic Jew Inc.
       </p>
+
+      <div class="candid-seal-featured">
+        <a
+          aria-label="View Semitic Jew Inc’s Candid nonprofit profile"
+          href="https://app.candid.org/profile/16555230/semitic-jew-inc-93-4076422/?pkId=f20e9490-a9e6-4d49-b90f-4499ffc77ab9"
+          target="_blank"
+          rel="noopener noreferrer">
+          <img
+            src="https://widgets.guidestar.org/prod/v1/pdp/transparency-seal/16555230/svg"
+            alt="Semitic Jew Inc — Candid Gold Transparency Seal 2026"
+            loading="lazy">
+        </a>
+        <p>Our Candid Gold Seal reflects our commitment to nonprofit transparency.</p>
+      </div>
 
       <div class="donate-actions">
         <a class="donate-btn" href="https://www.zeffy.com/en-US/donation-form/expand-educational-media-and-production-capacity" target="_blank" rel="noopener" data-google-ads-conversion="donate">Give Now</a>
