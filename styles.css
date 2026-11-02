@@ -5834,93 +5834,95 @@ html[data-theme="dark"] .hero-image img{
 }
 
 
-/* Article standard: editorial author pull quote */
-.article-doc .article-pullquote{
-  position:relative;
-  margin:clamp(2.5rem, 6vw, 4.5rem) auto;
-  padding:clamp(1.6rem, 4vw, 2.6rem) clamp(1rem, 4vw, 2.75rem);
+/* Shared article quotations: one quiet treatment in light and dark themes.
+   Keep these selectors stronger than legacy mobile and dark-mode rules. */
+html:root body.article-doc .article-content blockquote,
+html:root body.article-doc .article-content .article-scripture-quote{
+  margin:2rem 0 !important;
+  padding:.2rem 0 .2rem 1.25rem !important;
+  border:0 !important;
+  border-left:2px solid var(--accent) !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:inherit !important;
+}
+
+html:root body.article-doc .article-content .article-scripture-quote blockquote{
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+
+html:root body.article-doc .article-content blockquote p{
+  margin:0 0 .75rem !important;
+  font-family:Spectral, Georgia, serif;
+  font-size:clamp(1.15rem, 1.8vw, 1.4rem);
+  font-weight:400;
+  line-height:1.6;
+  letter-spacing:normal;
+  text-align:left;
+  text-indent:0 !important;
+  color:inherit !important;
+}
+
+html:root body.article-doc .article-content blockquote p:last-child{
+  margin-bottom:0 !important;
+}
+
+html:root body.article-doc .article-scripture-quote figcaption{
+  margin-top:.75rem;
+  font-family:inherit;
+  font-size:.85rem;
+  font-weight:500;
+  line-height:1.5;
+  letter-spacing:normal;
+  color:var(--muted);
+}
+
+html:root body.article-doc .article-pullquote{
+  margin:2.25rem 0;
+  padding:1.25rem 0;
   border:0;
-  border-top:2px solid var(--accent);
-  border-bottom:1px solid rgba(5,74,145,.24);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  border-radius:0;
   background:transparent;
   box-shadow:none;
 }
 
-.article-doc .article-pullquote p{
-  max-width:32ch;
+html:root body.article-doc .article-pullquote p{
+  max-width:38ch;
   margin:0 auto !important;
-  color:#10243a;
   font-family:Spectral, Georgia, serif;
-  font-size:clamp(1.55rem, 3.2vw, 2.25rem);
-  font-weight:700;
-  line-height:1.32;
-  letter-spacing:-.018em;
+  font-size:clamp(1.3rem, 2.2vw, 1.75rem);
+  font-weight:500;
+  line-height:1.5;
+  letter-spacing:normal;
   text-align:center;
   text-indent:0 !important;
+  color:inherit !important;
 }
 
-/* Scripture quotations are quieter and keep their reference visible. */
-.article-doc .article-scripture-quote{
-  margin:clamp(2rem, 5vw, 3.5rem) auto;
-  padding:clamp(1.35rem, 3vw, 2rem) clamp(1.25rem, 4vw, 2.5rem);
-  border-left:3px solid var(--accent);
-  background:rgba(5,74,145,.055);
-}
-
-.article-doc .article-scripture-quote blockquote{
-  margin:0;
-  padding:0;
-  border:0;
-  background:transparent;
-  color:inherit;
-}
-
-.article-doc .article-scripture-quote blockquote p{
-  margin:0 !important;
-  color:#10243a;
-  font-family:Spectral, Georgia, serif;
-  font-size:clamp(1.25rem, 2.5vw, 1.7rem);
-  line-height:1.5;
+html:root body.article-doc .article-content p{
   text-indent:0 !important;
-}
-
-.article-doc .article-scripture-quote figcaption{
-  margin-top:1rem;
-  color:#38516b;
-  font-size:.88rem;
-  font-weight:700;
-  letter-spacing:.025em;
-}
-
-html[data-theme="dark"] .article-doc .article-pullquote{
-  border-bottom-color:rgba(255,255,255,.2);
-}
-
-html[data-theme="dark"] .article-doc .article-pullquote p{
-  color:#ffffff;
-}
-
-html[data-theme="dark"] .article-doc .article-scripture-quote{
-  background:rgba(129,164,205,.12);
-}
-
-html[data-theme="dark"] .article-doc .article-scripture-quote blockquote p{
-  color:#f5f8fc;
-}
-
-html[data-theme="dark"] .article-doc .article-scripture-quote figcaption{
-  color:#b9cbe0;
 }
 
 @media(max-width:700px){
-  .article-doc .article-pullquote{
-    margin:2.25rem auto;
-    padding:1.45rem .35rem 1.6rem;
+  html:root body.article-doc .article-content blockquote,
+  html:root body.article-doc .article-content .article-scripture-quote{
+    margin:1.5rem 0 !important;
+    padding-left:1rem !important;
   }
 
-  .article-doc .article-scripture-quote{
-    margin:1.9rem auto;
-    padding:1.25rem 1.1rem;
+  html:root body.article-doc .article-content .article-scripture-quote blockquote{
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  html:root body.article-doc .article-pullquote{
+    margin:1.75rem 0;
+    padding:1rem 0;
   }
 }
 
