@@ -31,7 +31,7 @@
   const counts=await request('counts');
   for(const key of ['total','ebook','paperback']) if(!Number.isSafeInteger(counts[key])||counts[key]<0) throw new Error('Invalid counts');
   for(const key of ['total','ebook','paperback']) document.getElementById(`reader-${key}`).textContent=counts[key].toLocaleString();
-  const bar=document.getElementById('reader-progress');bar.value=Math.min(counts.total,10000);bar.hidden=false;
+  const bar=document.getElementById('reader-progress');bar.value=Math.min(counts.total,bar.max);bar.hidden=false;
   updates.textContent='Updated '+new Date().toLocaleTimeString()+'. Totals refresh every 30 seconds while this page is open.';
   } catch(error) {
    updates.textContent='Live totals are temporarily unavailable. Retrying automatically.';
