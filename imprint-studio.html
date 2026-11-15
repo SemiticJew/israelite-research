@@ -48,12 +48,24 @@
 
   @media(max-width:850px){.hero,.storyGrid{grid-template-columns:1fr;gap:35px}.hero{padding:60px 0}.portraitPanel{max-width:550px}.navbar nav a:not(.btn){display:none}.steps{grid-template-columns:1fr 1fr}}
   @media(max-width:600px){.container{width:min(var(--max),calc(100% - 30px))}.navbar{padding:18px 0}.navbar .logo{font-size:19px}.navbar .btn{font-size:11px;padding:9px}.hero{padding:52px 0 67px}.portraitPanel img{height:340px}.section{padding:65px 0}.triple{gap:6px}.styleImage{aspect-ratio:9/15}.styleImage .overlay{left:3px;right:3px;top:7%}.one .overlay{font-size:clamp(12px,3.8vw,20px)}.two .overlay{font-size:clamp(11px,2.7vw,17px)}.three .overlay{font-size:clamp(11px,3.4vw,19px)}.styleLabel{font-size:9px;letter-spacing:.04em}.steps{grid-template-columns:1fr}.behind-head .depth-copy{font-size:clamp(10px,2.25vw,17px)}.storyGrid img{max-height:430px}.footer{flex-direction:column;text-align:center}.signup{padding:80px 0}}
-  </style>
+
+  .type-showcase{margin-top:27px;border:1px solid #d9e3ed;background:#f7f9fc;padding:25px;border-radius:9px}
+  .type-showcase-header h3{font-size:clamp(22px,3vw,30px);letter-spacing:-.035em;line-height:1.15;margin:5px 0 5px}
+  .type-showcase-header p{color:#455564;font-size:14px;margin:0 0 19px}
+  .type-samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .type-samples span{display:flex;align-items:center;justify-content:center;min-height:84px;text-align:center;padding:12px;border-radius:5px;overflow:hidden}
+  .sample-modern{font:900 clamp(16px,2.4vw,28px)/1.1 Arial,sans-serif;letter-spacing:-.06em;background:#054A91;color:white}
+  .sample-editorial{font:italic 600 clamp(18px,2.35vw,28px)/1.15 Georgia,serif;background:#DBE4EE;color:#054A91}
+  .sample-handwritten{font:italic 400 clamp(19px,2.5vw,30px)/1.2 "Segoe Script","Bradley Hand",cursive;background:white;border:1px solid #d9e3ed;color:#054A91}
+  .sample-highlight{font:800 clamp(13px,1.75vw,21px)/1.2 Arial,sans-serif;background:#000;color:white;letter-spacing:-.03em}
+  .sample-highlight mark{background:#F17300;color:#000;padding:3px 5px;margin-right:5px}
+  @media(max-width:600px){.type-showcase{padding:17px}.type-samples{grid-template-columns:1fr 1fr;gap:6px}.type-samples span{min-height:76px;padding:7px}.sample-highlight mark{padding:2px}}
+</style>
 </head>
 <body>
   <header class="container navbar">
     <a href="#top" class="logo">IMPRINT <span>STUDIO</span></a>
-    <nav><a href="#styles">Three styles</a><a href="#story">Our story</a><a href="#features">Features</a><a href="#waitlist" class="btn">JOIN WAITLIST</a></nav>
+    <nav><a href="#styles">Caption styles</a><a href="#story">Our story</a><a href="#features">Features</a><a href="#waitlist" class="btn">JOIN WAITLIST</a></nav>
   </header>
   <main id="top">
     <section class="container hero">
@@ -69,14 +81,24 @@
     <section class="section" id="styles">
       <div class="container">
         <div class="section-head"><div class="eyebrow">Your look, your choice</div>
-          <h2>Same clip. Three looks.</h2>
-          <p class="desc">Your message stays the same. Your presentation can change. Explore three approaches to caption design, including dimensional text behind the subject.</p></div>
+          <h2>Your captions. Your creative direction.</h2>
+          <p class="desc">These are just three examples—not three limits. Think bold headlines, elegant serif type, handwritten lettering, modern minimal captions, animated words, colorful highlights, or text layered behind the subject. The vision is a flexible caption and video-editing studio where you decide how your message looks.</p></div>
         <div class="triple">
           <div><div class="styleImage one"><img src="assets/imprint-studio/style-wide.jpg" alt="Founder photo with a bold white text treatment"><div class="overlay">YOUR VOICE<br>YOUR STYLE</div></div><div class="styleLabel">01 — BOLD</div></div>
           <div><div class="styleImage two"><img src="assets/imprint-studio/style-wide.jpg" alt="Same founder photo with light handwritten cursive captions"><div class="overlay">your voice,<br><em>your style</em></div></div><div class="styleLabel">02 — HANDWRITTEN</div></div>
           <div><div class="styleImage three behind-head"><img src="assets/imprint-studio/style-wide.jpg" alt="Founder portrait with lettering positioned behind his head"><div class="depth-copy" aria-hidden="true">YOUR VOICE<br>YOUR STYLE</div><img src="assets/imprint-studio/style-head-foreground.png" class="head-cutout" alt="" aria-hidden="true"></div><div class="styleLabel">03 — DEPTH</div></div>
         </div>
-        <p class="note">One photograph. Three ways to make your message stand out.</p>
+        <p class="note"><strong>Three examples. Not a three-style limit.</strong> Fonts, sizes, colors, placement, timing, and visual effects are all part of the creative flexibility we’re designing for.</p>
+        <div class="type-showcase" aria-label="Typography possibilities">
+          <div class="type-showcase-header"><span class="eyebrow">Beyond the presets</span><h3>Make the words look like you.</h3><p>Choose the character of your captions—from quiet and polished to bold and attention-grabbing.</p></div>
+          <div class="type-samples" aria-hidden="true">
+            <span class="sample-modern">MODERN &amp; BOLD</span>
+            <span class="sample-editorial">Editorial &amp; Elegant</span>
+            <span class="sample-handwritten">your own style</span>
+            <span class="sample-highlight"><mark>HIGHLIGHT</mark> THE MOMENT</span>
+          </div>
+        </div>
+
       </div>
     </section>
     <section class="section blueSection" id="story"><div class="container storyGrid">
@@ -89,16 +111,16 @@
       </div></div></section>
     <section class="section" id="features"><div class="container"><div class="section-head">
       <div class="eyebrow">What makes it different</div><h2>Less editing busywork. More creative freedom.</h2>
-      <p class="desc">A creative workflow shaped around the things that matter: your time, your style, and your final say.</p></div>
+      <p class="desc">More than a caption preset picker: we’re building toward a place to create, customize, and refine your entire video presentation—without handing over your voice or creative control.</p></div>
       <div class="steps">
         <div class="step"><span class="index">01 / CLEAN UP</span><h3>Trim the unnecessary.</h3><p>Less time spent on retakes, filler words, and long pauses. More time spent on your message.</p></div>
-        <div class="step"><span class="index">02 / MAKE IT YOURS</span><h3>Remember your style.</h3><p>Build reusable visual preferences for captions, fonts, hooks, and effects that match your work.</p></div>
+        <div class="step"><span class="index">02 / MAKE IT YOURS</span><h3>Find your font. Build your look.</h3><p>Explore different typefaces, font weights, sizes, colors, outlines, backgrounds, and highlighted words. Save a consistent look for each series or try something entirely new.</p></div>
         <div class="step"><span class="index">03 / FINAL SAY</span><h3>Review. Refine. Export.</h3><p>A visual workspace designed to put the final decisions in your hands.</p></div>
       </div>
       <div class="steps extras" aria-label="Creative styling features">
-          <div class="step"><span class="index">04 / DEPTH</span><h3>Text behind the subject.</h3><p>Layered typography with a sense of depth, like words tucked behind the creator.</p></div>
-          <div class="step"><span class="index">05 / TOUCH</span><h3>Pinch to resize captions.</h3><p>Move and scale on-screen captions so they fit the shot and your style.</p></div>
-          <div class="step"><span class="index">06 / INDIVIDUALITY</span><h3>Different looks. Same voice.</h3><p>Choose bold, light handwritten, or highlighted modern text to fit your content and your identity.</p></div>
+          <div class="step"><span class="index">04 / DEPTH & MOTION</span><h3>Make words part of the scene.</h3><p>Design captions that appear word by word, highlight a key phrase, move with the moment, or sit visually behind the subject.</p></div>
+          <div class="step"><span class="index">05 / CONTROL</span><h3>Adjust every detail.</h3><p>Position, resize, and time your captions. Correct the words, control line breaks, and preview changes before approving the finished video.</p></div>
+          <div class="step"><span class="index">06 / CREATIVE RANGE</span><h3>One studio. Your possibilities.</h3><p>From clean educational videos to energetic reels, podcast clips, and promotional content, build the editing style that suits the message—not a fixed set of three templates.</p></div>
       </div>
     </div></section>
     <section class="section price"><div class="container"><div class="section-head">
@@ -111,7 +133,7 @@
       <details><summary>Is Imprint Studio ready to download?</summary><p>Not yet. Join the free waitlist to be first to hear about availability and early access.</p></details>
       <details><summary>Is the early-access waitlist free?</summary><p>Yes. Joining the waitlist costs nothing and does not obligate you to buy.</p></details>
       <details><summary>Will the software require Claude?</summary><p>Some workflows may require a separate Claude subscription. We’ll publish the requirements before purchases open.</p></details>
-      <details><summary>Can it match my editing style?</summary><p>Personalized creative styles are central to the Imprint Studio experience. Watch for feature demos and availability details through the waitlist.</p></details>
+      <details><summary>Am I limited to the three caption looks shown?</summary><p>No. Those three images demonstrate a few visual directions, not the full vision. We’re designing for flexible typography, caption styling, placement, timing, and reusable creative preferences. Features will be confirmed as they’re developed and tested.</p></details>
     </div></section>
     <section id="waitlist" class="signup"><div class="container"><div class="eyebrow">Be first to know</div>
       <h2>Your content. Your voice. Your imprint.</h2>
