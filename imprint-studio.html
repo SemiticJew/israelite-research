@@ -164,6 +164,7 @@
       <button class="primary" id="savePlacement" type="button">Save</button>
       <button id="resetCurrent" type="button">Reset current</button>
       <button id="resetAll" type="button">Reset all</button>
+      <button id="importPositions" type="button">Import saved positions</button>
       <button id="closeEditor" type="button">Close</button>
     </div>
     <div class="editor-note">Tip: after saving, your placements will stay put on this device using local storage.</div>
@@ -196,6 +197,7 @@
   const savePlacement = document.getElementById('savePlacement');
   const resetCurrent = document.getElementById('resetCurrent');
   const resetAll = document.getElementById('resetAll');
+  const importPositions = document.getElementById('importPositions');
 
   function getConfig(id){
     return Object.assign({}, defaultConfigs[id] || {x:0,y:0,scale:1}, state[id] || {});
@@ -268,6 +270,20 @@
     localStorage.removeItem(STORAGE_KEY);
     applyAll();
     syncControls();
+  });
+
+  importPositions.addEventListener('click', () => {
+    const pasted = prompt('Paste saved placement JSON from your original edited page:');
+    if (!pasted) return;
+    try {
+      const obj = JSON.parse(pasted);
+      Object.keys(defaultConfigs).forEach(k => {
+        if (obj[k] && [obj[k].x,obj[k].y,obj[k].scale].every(Number.isFinite) && obj[k].scale > 0) state[k] = obj[k];
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      applyAll(); syncControls();
+      alert('Photo positions imported and saved in this browser.');
+    } catch(e) {alert('Invalid placement settings. Nothing imported.');}
   });
 
   // initialize
