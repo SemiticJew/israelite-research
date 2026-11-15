@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#054A91">
+  <meta name="description" content="Imprint Studio — a creative video editing experience built around your voice and visual style. Join the free early-access waitlist.">
+  <title>Imprint Studio | Your content. Your voice. Your imprint.</title>
+  <style>
+  :root{--blue:#054A91;--mid:#3E7CB1;--pale:#DBE4EE;--soft:#81A4CD;--orange:#F17300;--ink:#000;--paper:#fff;--max:1080px}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 Inter,Arial,Helvetica,sans-serif}
+  a{color:inherit}button,input,select{font:inherit}img{display:block;max-width:100%}.container{width:min(var(--max),calc(100% - 44px));margin-inline:auto}
+  .eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  .navbar{display:flex;align-items:center;justify-content:space-between;padding:25px 0;gap:14px;border-bottom:1px solid #e9eef3}
+  .logo{text-decoration:none;font-size:22px;letter-spacing:-.045em;font-weight:900;line-height:1}.logo span{color:var(--blue)}.navbar nav{display:flex;gap:28px;align-items:center}
+  .navbar nav a{text-decoration:none;font-size:12px;font-weight:700}.navbar nav a:hover{color:var(--blue)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;background:var(--blue);color:white;border-radius:4px;font-size:13px;font-weight:800;text-decoration:none;border:2px solid var(--blue);transition:background .15s;cursor:pointer}
+  .btn:hover{background:#003a79}.btn.orange{background:var(--orange);border-color:var(--orange);color:black}.btn.orange:hover{background:#ff922f}
+  .hero{padding:92px 0 108px;display:grid;grid-template-columns:1.06fr .94fr;align-items:center;gap:65px}
+  h1,h2,h3,p{margin-top:0}h1{font-size:clamp(49px,6.1vw,83px);line-height:1.04;letter-spacing:-.066em;margin:20px 0 25px;font-weight:850}
+  h1 em{font-style:normal;color:var(--blue)}.intro{font-size:19px;line-height:1.62;max-width:550px;color:#364451}.hero .small{color:#607080;font-size:12px;margin-top:12px}
+  .portraitPanel{background:var(--pale);padding:20px 20px 0;position:relative;overflow:hidden}
+  .portraitPanel:before{content:"";position:absolute;top:24px;right:-10px;width:120px;height:120px;border:18px solid #81A4CD;opacity:.45;border-radius:50%}
+  .portraitPanel img{width:100%;height:480px;object-fit:cover;object-position:center 49%;position:relative;filter:saturate(.93)}
+  .portraitPanel .corner{position:absolute;left:0;bottom:0;background:var(--blue);color:white;padding:12px 18px;font-size:11px;letter-spacing:.09em;font-weight:800;z-index:1}
+  .section{padding:86px 0;border-top:1px solid #e8edf2}.section-head{max-width:790px;margin-bottom:40px}.section h2{font-size:clamp(32px,4.5vw,55px);line-height:1.13;letter-spacing:-.045em;margin:12px 0 14px;font-weight:800}
+  .section .desc{color:#455564;font-size:17px;max-width:690px}
+  .triple{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.styleImage{position:relative;overflow:hidden;background:#edf2f6;aspect-ratio:9/14}
+  .styleImage img{width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(.91)}
+  .overlay{position:absolute;left:10px;right:10px;top:8%;text-align:center;line-height:1.06}
+  .one .overlay{color:white;font-size:clamp(19px,2.8vw,39px);font-weight:900;text-shadow:0 2px 6px #0008}
+  .two .overlay{color:#fff;font-family:"Segoe Script","Bradley Hand","Apple Chancery",cursive;font-style:italic;font-weight:400;font-size:clamp(18px,2.05vw,29px);line-height:1.45;letter-spacing:.01em;text-shadow:0 2px 6px #0008}
+  .two .overlay em{color:#DBE4EE;font-weight:400}
+  .three .overlay{color:#050505;font-size:clamp(18px,2.6vw,37px);font-weight:700;letter-spacing:-.05em}.three mark{background:var(--orange);color:#000;padding:0 5px}
+  .styleLabel{padding:14px 0 0;text-align:center;font-size:12px;letter-spacing:.16em;font-weight:800}
+  .note{font-size:12px;color:#5f7080;margin-top:20px}
+  .blueSection{background:var(--blue);color:white;border-top:0}.blueSection .eyebrow{color:#c7d9ea}.blueSection .desc{color:#e0eafa}
+  .storyGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:66px;align-items:center}.storyGrid img{width:100%;aspect-ratio:4/4.8;object-fit:cover;object-position:center 46%;border:12px solid #ffffff1a}
+  .storyGrid p{font-size:17px;color:#edf4fa}.storyGrid h2{max-width:530px}.signature{font-weight:800;font-size:13px;letter-spacing:.06em;margin-top:20px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.step{border-top:3px solid var(--blue);padding:22px 0}.step .index{color:var(--mid);font-size:12px;font-weight:900}.step h3{font-size:23px;line-height:1.2;letter-spacing:-.03em;margin:13px 0}.step p{font-size:14px;color:#4e5d6c}
+  .steps.extras{margin-top:28px}
+  .behind-head .depth-copy{position:absolute;top:10%;left:0;width:100%;padding:0 7px;font-weight:900;font-size:clamp(15px,2.15vw,31px);letter-spacing:-.045em;line-height:1.13;text-align:center;color:#fff;text-shadow:0 2px 5px #0008;z-index:1;pointer-events:none;white-space:nowrap}
+  .behind-head .head-cutout{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:2;pointer-events:none}
+  .extras{margin-top:28px}.price{background:var(--pale)}.pricePanel{border-left:5px solid var(--orange);padding-left:28px;max-width:750px}.pricePanel strong{font-size:24px;letter-spacing:-.02em}.pricePanel p{color:#344655}
+  .faq{max-width:850px}.faq details{padding:20px 0;border-bottom:1px solid #d7e0e8}.faq summary{font-weight:800;cursor:pointer}.faq p{color:#516170;margin:12px 0 0}
+  .signup{background:#071b31;color:#fff;text-align:center;padding:95px 0 100px}.signup h2{font-size:clamp(36px,5vw,63px);line-height:1.1;letter-spacing:-.05em;margin:13px auto;max-width:730px}.signup p{max-width:620px;margin:12px auto 26px;color:#d3e4f2}.signup .eyebrow{color:#9bc4e9}.signup .fine{font-size:12px;color:#b9cad9;max-width:600px;margin:17px auto 0}
+  .footer{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:28px 0;color:#53677b;font-size:12px}
+
+  .editable-photo{will-change:transform;transform-origin:center center;transition:transform .1s linear}
+  .editor-launch{position:fixed;right:18px;bottom:18px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+  .editor-panel{position:fixed;right:18px;bottom:78px;width:min(360px,calc(100% - 28px));background:#fff;border:1px solid #d8e2ea;border-radius:14px;box-shadow:0 18px 48px rgba(0,0,0,.18);padding:18px;z-index:31;display:none}
+  .editor-panel.open{display:block}.editor-panel h3{margin:0 0 6px;font-size:18px;letter-spacing:-.02em}.editor-panel p{font-size:13px;color:#58697a;margin:0 0 14px}
+  .editor-grid{display:grid;gap:12px}.field label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4f6478;margin-bottom:6px}
+  .field select,.field input[type=range]{width:100%}.field select{padding:11px 12px;border:1px solid #cfd9e2;border-radius:10px;background:#fff}
+  .range-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;font-weight:700}
+  .range-head span:last-child{color:#607080}
+  .editor-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.editor-actions button{border:1px solid #d0dae4;background:#fff;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
+  .editor-actions .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .editor-note{margin-top:10px;font-size:11px;color:#738496}
+
+  @media(max-width:850px){.hero,.storyGrid{grid-template-columns:1fr;gap:35px}.hero{padding:60px 0}.portraitPanel{max-width:550px}.navbar nav a:not(.btn){display:none}.steps{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.container{width:min(var(--max),calc(100% - 30px))}.navbar{padding:18px 0}.navbar .logo{font-size:19px}.navbar .btn{font-size:11px;padding:9px}.hero{padding:52px 0 67px}.portraitPanel img{height:340px}.section{padding:65px 0}.triple{gap:6px}.styleImage{aspect-ratio:9/15}.styleImage .overlay{left:3px;right:3px;top:7%}.one .overlay{font-size:clamp(12px,3.8vw,20px)}.two .overlay{font-size:clamp(11px,2.7vw,17px)}.three .overlay{font-size:clamp(11px,3.4vw,19px)}.styleLabel{font-size:9px;letter-spacing:.04em}.steps{grid-template-columns:1fr}.behind-head .depth-copy{font-size:clamp(10px,2.25vw,17px)}.storyGrid img{max-height:430px}.footer{flex-direction:column;text-align:center}.signup{padding:80px 0}.editor-panel{right:14px;bottom:70px}.editor-launch{right:14px;bottom:14px}}
+  </style>
+</head>
+<body>
+  <header class="container navbar">
+    <a href="#top" class="logo">IMPRINT <span>STUDIO</span></a>
+    <nav><a href="#styles">Three styles</a><a href="#story">Our story</a><a href="#features">Features</a><a href="#waitlist" class="btn">JOIN WAITLIST</a></nav>
+  </header>
+  <main id="top">
+    <section class="container hero">
+      <div><div class="eyebrow">A creative studio for creators</div>
+        <h1>Your content.<br>Your voice.<br><em>Your imprint.</em></h1>
+        <p class="intro">You already work all day. Editing shouldn't be another shift.</p>
+        <p>I'm building Imprint Studio for educators, working parents, entrepreneurs, and creators who want to make great content without giving up all their free time.</p>
+        <a href="#waitlist" class="btn">JOIN THE FREE WAITLIST</a>
+        <div class="small">Free to join · No purchase required · Early access updates</div>
+      </div>
+      <div class="portraitPanel"><img src="assets/imprint-studio/style-source.jpg" alt="Imprint Studio founder smiling and looking into the camera" class="editable-photo" data-photo-id="hero-photo" data-default-x="14" data-default-y="0" data-default-scale="1.075"><div class="corner">CREATED BY SEMITIC JEW</div></div>
+    </section>
+    <section class="section" id="styles">
+      <div class="container">
+        <div class="section-head"><div class="eyebrow">Your look, your choice</div>
+          <h2>Same clip. Three looks.</h2>
+          <p class="desc">Your message stays the same. Your presentation can change. Explore three approaches to caption design, including dimensional text behind the subject.</p></div>
+        <div class="triple">
+          <div><div class="styleImage one"><img src="assets/imprint-studio/style-wide.jpg" alt="Founder photo with a bold white text treatment" class="editable-photo" data-photo-id="style-1-photo" data-default-x="0" data-default-y="0" data-default-scale="1"><div class="overlay">YOUR VOICE<br>YOUR STYLE</div></div><div class="styleLabel">01 — BOLD</div></div>
+          <div><div class="styleImage two"><img src="assets/imprint-studio/style-wide.jpg" alt="Same founder photo with light handwritten cursive captions" class="editable-photo" data-photo-id="style-2-photo" data-default-x="0" data-default-y="0" data-default-scale="1"><div class="overlay">your voice,<br><em>your style</em></div></div><div class="styleLabel">02 — HANDWRITTEN</div></div>
+          <div><div class="styleImage three behind-head"><img src="assets/imprint-studio/style-wide.jpg" alt="Founder portrait with lettering positioned behind his head" class="editable-photo" data-photo-id="style-3-photo" data-default-x="0" data-default-y="0" data-default-scale="1"><div class="depth-copy" aria-hidden="true">YOUR VOICE<br>YOUR STYLE</div><img src="assets/imprint-studio/style-head-foreground.png" class="head-cutout editable-photo" alt="" aria-hidden="true" data-photo-id="style-3-photo" data-default-x="0" data-default-y="0" data-default-scale="1"></div><div class="styleLabel">03 — DEPTH</div></div>
+        </div>
+        <p class="note">One photograph. Three ways to make your message stand out.</p>
+      </div>
+    </section>
+    <section class="section blueSection" id="story"><div class="container storyGrid">
+      <img src="assets/imprint-studio/founder.jpg" alt="Founder of Imprint Studio wearing an orange-red knit cap" class="editable-photo" data-photo-id="founder-photo" data-default-x="0" data-default-y="0" data-default-scale="1">
+      <div><div class="eyebrow">Why I'm building this</div><h2>Creating content shouldn't become your second full-time job.</h2>
+        <p>I'm an educator of 10 years, and I love God and I love God's people. I'm also a father and the creator behind Semitic Jew. I know how it feels to finish a full day of work and still have videos to edit, captions to write, and content to publish.</p>
+        <p>Sometimes a side project is about creativity. Sometimes it's also about finding another way to support your family. Either way, spending your entire evening editing is a real cost.</p>
+        <p>Imprint Studio is the tool I'm setting out to build: one that helps with the repetitive work while leaving the message, decisions, and final approval with the creator.</p>
+        <div class="signature">— SEMITIC JEW</div>
+      </div></div></section>
+    <section class="section" id="features"><div class="container"><div class="section-head">
+      <div class="eyebrow">What makes it different</div><h2>Less editing busywork. More creative freedom.</h2>
+      <p class="desc">A creative workflow shaped around the things that matter: your time, your style, and your final say.</p></div>
+      <div class="steps">
+        <div class="step"><span class="index">01 / CLEAN UP</span><h3>Trim the unnecessary.</h3><p>Less time spent on retakes, filler words, and long pauses. More time spent on your message.</p></div>
+        <div class="step"><span class="index">02 / MAKE IT YOURS</span><h3>Remember your style.</h3><p>Build reusable visual preferences for captions, fonts, hooks, and effects that match your work.</p></div>
+        <div class="step"><span class="index">03 / FINAL SAY</span><h3>Review. Refine. Export.</h3><p>A visual workspace designed to put the final decisions in your hands.</p></div>
+      </div>
+      <div class="steps extras" aria-label="Creative styling features">
+          <div class="step"><span class="index">04 / DEPTH</span><h3>Text behind the subject.</h3><p>Layered typography with a sense of depth, like words tucked behind the creator.</p></div>
+          <div class="step"><span class="index">05 / TOUCH</span><h3>Pinch to resize captions.</h3><p>Move and scale on-screen captions so they fit the shot and your style.</p></div>
+          <div class="step"><span class="index">06 / INDIVIDUALITY</span><h3>Different looks. Same voice.</h3><p>Choose bold, light handwritten, or highlighted modern text to fit your content and your identity.</p></div>
+      </div>
+    </div></section>
+    <section class="section price"><div class="container"><div class="section-head">
+      <div class="eyebrow">Designed for working creators</div><h2>Another subscription? You probably have enough of those.</h2></div>
+      <div class="pricePanel"><strong>A simpler approach to creative software.</strong>
+        <p>Imprint Studio is being designed around a one-time purchase rather than another recurring software bill. Full pricing and any third-party access requirements will be shared ahead of release.</p>
+      </div>
+    </div></section>
+    <section class="section"><div class="container faq"><div class="eyebrow">Good to know</div><h2>Questions before you join?</h2>
+      <details><summary>Is Imprint Studio ready to download?</summary><p>Not yet. Join the free waitlist to be first to hear about availability and early access.</p></details>
+      <details><summary>Is the early-access waitlist free?</summary><p>Yes. Joining the waitlist costs nothing and does not obligate you to buy.</p></details>
+      <details><summary>Will the software require Claude?</summary><p>Some workflows may require a separate Claude subscription. We’ll publish the requirements before purchases open.</p></details>
+      <details><summary>Can it match my editing style?</summary><p>Personalized creative styles are central to the Imprint Studio experience. Watch for feature demos and availability details through the waitlist.</p></details>
+    </div></section>
+    <section id="waitlist" class="signup"><div class="container"><div class="eyebrow">Be first to know</div>
+      <h2>Your content. Your voice. Your imprint.</h2>
+      <p>Join the free waitlist for product updates, beta opportunities, launch information, and behind-the-scenes demonstrations.</p>
+      <a id="waitlist-link" class="btn orange" href="https://semitic-jew.kit.com/2f5bc5f26a" target="_blank" rel="noopener">OPEN KIT WAITLIST</a>
+      <p class="fine">Free to join. No purchase required.</p>
+    </div></section>
+  </main>
+
+  <button class="btn editor-launch" id="editorToggle" type="button">EDIT PHOTO PLACEMENT</button>
+  <aside class="editor-panel" id="editorPanel" aria-hidden="true">
+    <h3>Photo Placement Editor</h3>
+    <p>Choose a photo, then use the sliders to manually move and scale it. Save keeps your placements in this browser.</p>
+    <div class="editor-grid">
+      <div class="field">
+        <label for="photoTarget">Photo target</label>
+        <select id="photoTarget">
+          <option value="hero-photo">Hero image</option>
+          <option value="style-1-photo">Style card 1</option>
+          <option value="style-2-photo">Style card 2</option>
+          <option value="style-3-photo">Style card 3 / behind-head</option>
+          <option value="founder-photo">Founder story image</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="range-head"><label for="offsetX">Horizontal</label><span id="offsetXValue">0px</span></div>
+        <input id="offsetX" type="range" min="-220" max="220" step="1" value="0">
+      </div>
+      <div class="field">
+        <div class="range-head"><label for="offsetY">Vertical</label><span id="offsetYValue">0px</span></div>
+        <input id="offsetY" type="range" min="-220" max="220" step="1" value="0">
+      </div>
+      <div class="field">
+        <div class="range-head"><label for="zoom">Zoom</label><span id="zoomValue">100%</span></div>
+        <input id="zoom" type="range" min="70" max="155" step="1" value="100">
+      </div>
+    </div>
+    <div class="editor-actions">
+      <button class="primary" id="savePlacement" type="button">Save</button>
+      <button id="resetCurrent" type="button">Reset current</button>
+      <button id="resetAll" type="button">Reset all</button>
+      <button id="closeEditor" type="button">Close</button>
+    </div>
+    <div class="editor-note">Tip: after saving, your placements will stay put on this device using local storage.</div>
+  </aside>
+
+  <footer class="container footer"><strong>IMPRINT STUDIO</strong><span>Created by Semitic Jew</span><span>© 2026 Imprint Studio</span></footer>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'imprintStudioPhotoPlacementV7';
+  const defaultConfigs = {
+    'hero-photo': {x:14,y:0,scale:1.075},
+    'style-1-photo': {x:0,y:0,scale:1},
+    'style-2-photo': {x:0,y:0,scale:1},
+    'style-3-photo': {x:0,y:0,scale:1},
+    'founder-photo': {x:0,y:0,scale:1}
+  };
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const allEditable = Array.from(document.querySelectorAll('.editable-photo[data-photo-id]'));
+  const select = document.getElementById('photoTarget');
+  const offsetX = document.getElementById('offsetX');
+  const offsetY = document.getElementById('offsetY');
+  const zoom = document.getElementById('zoom');
+  const offsetXValue = document.getElementById('offsetXValue');
+  const offsetYValue = document.getElementById('offsetYValue');
+  const zoomValue = document.getElementById('zoomValue');
+  const editorPanel = document.getElementById('editorPanel');
+  const editorToggle = document.getElementById('editorToggle');
+  const closeEditor = document.getElementById('closeEditor');
+  const savePlacement = document.getElementById('savePlacement');
+  const resetCurrent = document.getElementById('resetCurrent');
+  const resetAll = document.getElementById('resetAll');
+
+  function getConfig(id){
+    return Object.assign({}, defaultConfigs[id] || {x:0,y:0,scale:1}, state[id] || {});
+  }
+
+  function applyToId(id){
+    const cfg = getConfig(id);
+    document.querySelectorAll('[data-photo-id="'+id+'"]').forEach(el => {
+      el.style.transform = `translate(${cfg.x}px, ${cfg.y}px) scale(${cfg.scale})`;
+    });
+  }
+
+  function applyAll(){
+    Object.keys(defaultConfigs).forEach(applyToId);
+  }
+
+  function syncControls(){
+    const id = select.value;
+    const cfg = getConfig(id);
+    offsetX.value = Math.round(cfg.x);
+    offsetY.value = Math.round(cfg.y);
+    zoom.value = Math.round(cfg.scale * 100);
+    offsetXValue.textContent = `${Math.round(cfg.x)}px`;
+    offsetYValue.textContent = `${Math.round(cfg.y)}px`;
+    zoomValue.textContent = `${Math.round(cfg.scale * 100)}%`;
+  }
+
+  function updateCurrentFromControls(){
+    const id = select.value;
+    state[id] = {
+      x: parseInt(offsetX.value, 10),
+      y: parseInt(offsetY.value, 10),
+      scale: parseInt(zoom.value, 10) / 100
+    };
+    applyToId(id);
+    syncControls();
+  }
+
+  function openEditor(){
+    editorPanel.classList.add('open');
+    editorPanel.setAttribute('aria-hidden','false');
+    syncControls();
+  }
+
+  function closeEditorPanel(){
+    editorPanel.classList.remove('open');
+    editorPanel.setAttribute('aria-hidden','true');
+  }
+
+  select.addEventListener('change', syncControls);
+  [offsetX, offsetY, zoom].forEach(input => input.addEventListener('input', updateCurrentFromControls));
+  editorToggle.addEventListener('click', () => editorPanel.classList.contains('open') ? closeEditorPanel() : openEditor());
+  closeEditor.addEventListener('click', closeEditorPanel);
+
+  savePlacement.addEventListener('click', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    savePlacement.textContent = 'Saved';
+    setTimeout(() => savePlacement.textContent = 'Save', 1200);
+  });
+
+  resetCurrent.addEventListener('click', () => {
+    const id = select.value;
+    delete state[id];
+    applyToId(id);
+    syncControls();
+  });
+
+  resetAll.addEventListener('click', () => {
+    Object.keys(state).forEach(key => delete state[key]);
+    localStorage.removeItem(STORAGE_KEY);
+    applyAll();
+    syncControls();
+  });
+
+  // initialize
+  applyAll();
+  syncControls();
+})();
+</script>
+</body></html>
