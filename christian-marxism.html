@@ -115,6 +115,14 @@ html[data-theme="dark"] .book-banner{background:radial-gradient(circle at top le
 .book-page .book-section > .book-kicker{margin:0 0 14px;line-height:1.5}
 .book-button:disabled{opacity:.65;cursor:not-allowed}
 #paperback-edition,#hardcover-edition{scroll-margin-top:100px}
+/* Edition controls share a row; each format card reserves its bottom edge for the purchase link. */
+.book-overview .book-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.book-overview .book-button{min-width:0;padding:10px 4px;text-align:center;font-size:clamp(.82rem,1.2vw,1rem)}
+.book-original-region .book-format{display:flex;flex-direction:column;align-items:stretch}
+.book-original-region .book-format .book-button{margin-top:auto;text-align:center;padding:12px 8px}
+.book-section details summary{cursor:pointer;color:var(--ink);font-weight:600;padding:14px 0}
+.book-page summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(min-width:761px){.book-formats{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <link rel="stylesheet" href="/css/book-readers.css">
 </head>
@@ -125,7 +133,8 @@ html[data-theme="dark"] .book-banner{background:radial-gradient(circle at top le
 <section class="book-banner" aria-labelledby="book-title"><p class="book-kicker">A book by Semitic Jew</p><h1 id="book-title">Christian Marxism</h1><p class="book-subtitle">The Fallacies That Shaped a Nation</p><p class="book-author">By Semitic Jew</p></section>
 <section class="book-hero" aria-labelledby="book-overview-title">
 <div class="book-overview"><h2 id="book-overview-title">Whose interests do our beliefs serve?</h2><p class="book-intro">Christian Marxism examines how a Eurocentric version of Christianity gives moral cover to economic exploitation while demands for justice are dismissed as Marxist. Through Scripture, historical sources, and logical examination, Semitic Jew asks what a nation owes the people whose labor helped build its wealth.</p>
-<div class="book-actions" aria-label="Book editions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Buy Kindle — $6.99</a><a class="book-button secondary" href="#paperback-edition">Paperback — $16.99</a><a class="book-button secondary" href="#hardcover-edition">Hardcover — $21.99</a></div>
+<p class="book-note"><strong>#1 Best Seller in History of Sociology</strong><br>Amazon.com paperback ranking · <time datetime="2026-11-18">November 18, 2026</time></p>
+<div class="book-actions" aria-label="Book editions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Kindle — $6.99</a><a class="book-button secondary" href="https://www.amazon.com/dp/B0HNJDZ9D5" target="_blank" rel="noopener">Paperback — $16.99</a><a class="book-button secondary" href="https://www.amazon.com/dp/B0HPPJNLCL" target="_blank" rel="noopener">Hardcover — $21.99</a></div>
 <p class="book-note">Available now in all three formats: Kindle ebook, paperback, and hardcover.</p></div>
 <figure><img class="book-cover" src="/book-assets/christian-marxism-cover.png" width="1024" height="1536" alt="Christian Marxism: The Fallacies That Shaped a Nation. Black cover with rising American flag bars and a chalk graph ending at Judgment." fetchpriority="high"></figure>
 </section>
@@ -140,12 +149,12 @@ html[data-theme="dark"] .book-banner{background:radial-gradient(circle at top le
 <p>What do we accept as truth? Whose interests do those beliefs serve? And what does justice require of us?</p></div></section>
 <section class="book-section book-original-region" id="formats"><p class="book-kicker">Choose your edition</p><h2>Read it your way.</h2><div class="book-formats">
 <div class="book-format"><p class="book-kicker">Available now</p><h3>Kindle ebook</h3><p class="book-price">$6.99 <small>USD</small></p><p>Published November 17, 2026.</p><p>Read in the Kindle app or on your Kindle device.</p><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Buy Kindle on Amazon</a></div>
-<div class="book-format" id="paperback-edition"><p class="book-kicker">Available now</p><h3>Paperback</h3><p class="book-price">$16.99 <small>USD</small></p><p>142 pages · Matte cover · Cream paper</p><p>Available to order on Amazon.</p><a class="book-button secondary" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Choose paperback on Amazon</a></div>
-<div class="book-format" id="hardcover-edition"><p class="book-kicker">Available now</p><h3>Hardcover</h3><p class="book-price">$21.99 <small>USD</small></p><p>142 pages · Case laminate hardcover · Matte finish · Cream paper</p><p>Available to order on Amazon.</p><a class="book-button secondary" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Choose hardcover on Amazon</a></div>
-</div><p class="book-note">U.S. prices shown. Check Amazon for current local pricing, taxes, and availability. Select your preferred format on the Amazon listing.</p></section>
-<section class="book-section"><p class="book-kicker">Inside the book</p><h2>Seven chapters. One demand for examination.</h2><ol class="book-chapters">
+<div class="book-format" id="paperback-edition"><p class="book-kicker">Available now</p><h3>Paperback</h3><p class="book-price">$16.99 <small>USD</small></p><p>142 pages · Matte cover · Cream paper</p><p>Available to order on Amazon.</p><a class="book-button secondary" href="https://www.amazon.com/dp/B0HNJDZ9D5" target="_blank" rel="noopener">Buy paperback on Amazon</a></div>
+<div class="book-format" id="hardcover-edition"><p class="book-kicker">Available now</p><h3>Hardcover</h3><p class="book-price">$21.99 <small>USD</small></p><p>142 pages · Case laminate hardcover · Matte finish · Cream paper</p><p>Available to order on Amazon.</p><a class="book-button secondary" href="https://www.amazon.com/dp/B0HPPJNLCL" target="_blank" rel="noopener">Buy hardcover on Amazon</a></div>
+</div><p class="book-note">U.S. prices shown. Check Amazon for current local pricing, taxes, and availability. Choose an edition above to open its Amazon listing.</p></section>
+<section class="book-section"><p class="book-kicker">Inside the book</p><h2>Seven chapters. One demand for examination.</h2><details><summary>Explore the seven chapters</summary><ol class="book-chapters">
 <li>The People, the Law, and the Land</li><li>The Business of Captivity</li><li>Rome Claimed God Too</li><li>Who Profits from the System?</li><li>Justice Until It Costs Something</li><li>Christian Marxism: Faith as Cover for Exploitation</li><li>Truth Demands More Than Agreement</li>
-</ol></section>
+</ol></details></section>
 <section class="book-section book-original-region book-closing"><blockquote class="book-quote">“We cannot correct what we refuse to examine.”</blockquote><p class="book-note">From the preface to Christian Marxism</p><div class="book-actions"><a class="book-button" href="https://www.amazon.com/dp/B0HNC3SGGP" target="_blank" rel="noopener">Buy on Amazon</a><a class="book-button secondary" href="/about.html">About Semitic Jew</a></div></section>
 </div></main><div id="site-footer"></div><script src="/js/include.js"></script>
 
