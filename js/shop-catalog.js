@@ -50,20 +50,20 @@
         name: 'TRIBE. | 12. Embroidered Snapback', price: 'From $42.99',
         description: 'TRIBE. embroidered front and back, with 12. on the sides and coordinated embroidery colors.',
         colors: [
-          ['Navy / Natural', '#1f2d48', 'https://images-api.printify.com/mockup/6b0063467f5076e0c30c6e3c/125370/135059/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=left&revision=1795194525300', '#e5d7b9', '34780278/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Red / Natural', '#8c2633', 'https://images-api.printify.com/mockup/6b007a1ad5e992fad203b08e/125368/135057/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=right&revision=1795194486224', '#e5d7b9', '34784114/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Dark Green / Natural', '#243f31', 'https://images-api.printify.com/mockup/6b007aa5533947cdd0023c33/125369/135059/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=left&revision=1795193645326', '#e5d7b9', '34784181/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Solid Black / White', '#171717', 'https://images-api.printify.com/mockup/6b007b4551c5961fa30b8b66/125365/135057/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=right&revision=1795194454652', null, '34784540/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection']
+          ['Navy / Natural', '#1f2d48', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121025839-1f1e5577-3bdf-6170-80c2-a6058d49d060.png?revision=1795229929634', '#e5d7b9', '34780278/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Red / Natural', '#8c2633', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030157-1f1e557e-a076-6d84-8d71-86bbc60f87c3.png?revision=1795230126653', '#e5d7b9', '34784114/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Dark Green / Natural', '#243f31', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030348-1f1e5582-bd5d-6af2-8838-76d70cf2108e.png?revision=1795230237237', '#e5d7b9', '34784181/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Solid Black / White', '#171717', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030311-1f1e5581-6412-6476-91bd-569281c427a1.png?revision=1795230200633', null, '34784540/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection']
         ]
       },
       {
         name: '12. | TRIBE. Embroidered Snapback', price: 'From $39.99',
         description: '12. embroidered on the front, 1 and 2 split across the back center seam, and TRIBE. on the sides in coordinated colors.',
         colors: [
-          ['Navy / Natural', '#1f2d48', 'https://images-api.printify.com/mockup/6b006817d5e992fad203a266/125370/135059/12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=left&revision=1795194609841', '#e5d7b9', '34781634/12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Red / Natural', '#8c2633', 'https://images-api.printify.com/mockup/6b007717d1ce2f567f0450c8/125368/135059/12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=left&revision=1795194505403', '#e5d7b9', '34783603/12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Dark Green / Natural', '#243f31', 'https://images-api.printify.com/mockup/6b006f2051c5961fa30b8276/125369/135057/12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=right&revision=1795194583576', '#e5d7b9', '34783339/12-embroidered-two-tone-snapback-cap-tribal-collection'],
-          ['Black / Natural', '#171717', 'https://images-api.printify.com/mockup/6b00779dfa28954d2106eebf/125371/135057/12-embroidered-two-tone-snapback-cap-tribal-collection.jpg?camera_label=right&revision=1795193316280', '#e5d7b9', '34783949/12-embroidered-two-tone-snapback-cap-tribal-collection']
+          ['Navy / Natural', '#1f2d48', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121025932-1f1e5579-3382-6caa-84ef-22054da716b5.png?revision=1795229983705', '#e5d7b9', '34781634/12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Red / Natural', '#8c2633', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121025746-1f1e5575-4743-64aa-b61b-4e840d2a206c.png?revision=1795229890928', '#e5d7b9', '34783603/12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Dark Green / Natural', '#243f31', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030041-1f1e557b-cbae-6b26-b37c-726e289c3875.png?revision=1795230069958', '#e5d7b9', '34783339/12-embroidered-two-tone-snapback-cap-tribal-collection'],
+          ['Black / Natural', '#171717', 'https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030231-1f1e557f-e3cf-60bc-a341-22054da716b5.png?revision=1795230168226', '#e5d7b9', '34783949/12-embroidered-two-tone-snapback-cap-tribal-collection']
         ]
       }
     ]
