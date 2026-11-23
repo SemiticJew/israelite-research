@@ -7,7 +7,7 @@
   <meta name="description" content="Shop the Good Tree and Tribal collections, including embroidered Tribe Gear snapbacks rooted in Scripture, identity, and clear thinking.">
   <link rel="canonical" href="https://semiticjew.org/shop.html">
   <meta property="og:title" content="Good Tree + Tribe Gear | Semitic Jew Shop">
-  <meta property="og:description" content="Wear what you're rooted in. Explore Good Tree apparel and the Tribal Collection.">
+  <meta property="og:description" content="Rooted in the Scriptures. Explore Good Tree apparel and the Tribal Collection.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://semiticjew.org/shop.html">
   <meta property="og:image" content="https://semiticjew.org/images/shop/shop-social-card.jpg">
@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@semitic_jew">
   <meta name="twitter:title" content="Good Tree + Tribe Gear | Semitic Jew Shop">
-  <meta name="twitter:description" content="Wear what you're rooted in. Explore Good Tree apparel and the Tribal Collection.">
+  <meta name="twitter:description" content="Rooted in the Scriptures. Explore Good Tree apparel and the Tribal Collection.">
   <meta name="twitter:image" content="https://semiticjew.org/images/shop/shop-social-card.jpg">
   <meta name="theme-color" content="#243b2a">
   <link rel="icon" href="/favicon.ico">
@@ -23,7 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/css/good-tree.css">
+  <link rel="stylesheet" href="/css/good-tree.css?v=20261122">
+  <link rel="stylesheet" href="/css/shop-nav.css?v=20261122">
+  <link rel="stylesheet" href="/css/shop-showcase.css?v=20261122">
 </head>
 <body class="shop-page">
   <a class="shop-skip" href="#shop-main">Skip to shop</a>
@@ -31,46 +33,93 @@
   <main id="shop-main" class="shop">
     <nav class="shop-bar" aria-label="Shop navigation">
       <a class="shop-wordmark" href="/shop.html">SEMITIC JEW <span>SHOP</span></a>
-      <div class="shop-nav-links"><a href="#good-tree">Good Tree</a><a href="#collections">Collections</a><a href="#site-footer">Newsletter</a></div>
+      <div class="shop-nav-links"><a href="/shop.html#good-tree" data-shop-route>Good Tree</a><a href="/collections.html">Collections</a><a href="#site-footer">Newsletter</a></div>
     </nav>
-    <section class="shop-hero" aria-labelledby="shop-title">
-      <div class="shop-hero-copy">
-        <p class="shop-eyebrow">THE MERCHANDISE SHOP · COLLECTIONS 01 + 03</p>
-        <p class="shop-availability"><span aria-hidden="true"></span> Good Tree + Tribe Gear · Available Now</p>
-        <h1 id="shop-title">Wear what<br>you’re <em>rooted in.</em></h1>
-        <p class="shop-lede">An evolving collection of apparel shaped by Scripture, identity, and clear thinking. Good Tree and Tribe Gear are available now.</p>
-        <a class="shop-button" href="#tribe-gear">Shop the Tribal Collection <span aria-hidden="true">↓</span></a>
+    <section class="gt-hero" aria-labelledby="shop-title">
+      <div class="gt-hero-copy">
+        <img class="gt-hero-logo" src="/images/good-tree/good-tree-logo.png" alt="Good Tree, Matthew 12:33" width="720" height="532" fetchpriority="high">
+        <h1 id="shop-title">Rooted in the <em>Scriptures</em></h1>
+        <p class="gt-hero-lede">Quiet details. An enduring message. Our namesake collection carries the spirit of “Known by the fruit.”</p>
+        <a class="shop-button" href="#good-tree">Explore the Collection <span aria-hidden="true">↓</span></a>
       </div>
-      <a class="shop-hero-image" href="https://goodtree.semiticjew.org/product/34633853/good-tree-known-by-the-fruit-vintage-hoodie" target="_blank" rel="noopener" aria-label="Shop the Good Tree Vintage Hoodie on Printify">
-        <img src="/images/good-tree/black-hoodie-hero.webp" alt="Good Tree Known by the Fruit Vintage Hoodie" width="1200" height="1200">
-      </a>
+      <figure class="gt-hero-media">
+        <div class="spot-tilt tilt"><img src="/images/good-tree/vintage-hoodie-black-folded.jpg" alt="Good Tree Vintage Hoodie in Vintage Black, folded, reading Good Tree, Known by the fruit" width="1200" height="1200" fetchpriority="high" draggable="false"></div>
+        <figcaption><span>Vintage Hoodie · Vintage Black</span><a href="https://goodtree.semiticjew.org/product/34633853/good-tree-known-by-the-fruit-vintage-hoodie" target="_blank" rel="noopener" aria-label="Shop the Good Tree Vintage Hoodie on Printify">Shop the Hoodie <span aria-hidden="true">↗</span></a></figcaption>
+      </figure>
     </section>
-    <nav class="collection-index" aria-label="Six merchandise collections">
-      <a class="is-live" href="#good-tree"><span>01</span> Good Tree</a><a href="#semitic"><span>02</span> Semitic</a><a class="is-live" href="#tribe-gear"><span>03</span> Tribe Gear</a><a href="#scripture"><span>04</span> Scripture</a><a href="#logic"><span>05</span> Logic / Fallacies</a><a href="#scripture-logic-truth"><span>06</span> Scripture. Logic. Truth.</a>
+    <nav class="category-nav" aria-label="Shop by category">
+      <ul>
+        <li><a href="/shop.html" data-category="all" data-shop-route aria-current="page">Shop All</a></li>
+        <li><a href="/shop.html?category=hats" data-category="hats" data-shop-route>Hats</a></li>
+        <li><a href="/shop.html?category=hoodies" data-category="hoodies" data-shop-route>Hoodies</a></li>
+        <li><a href="/shop.html?category=t-shirts" data-category="t-shirts" data-shop-route>T-Shirts</a></li>
+        <li><a href="/shop.html?category=sweatshirts" data-category="sweatshirts" data-shop-route>Sweatshirts</a></li>
+        <li class="category-nav-split"><a href="/collections.html">All Collections</a></li>
+      </ul>
     </nav>
+    <header class="category-intro" id="category-intro" hidden>
+      <p class="shop-eyebrow">SHOP BY CATEGORY</p>
+      <h1 id="category-title" tabindex="-1">Hats</h1>
+      <p class="category-lede" id="category-lede"></p>
+      <p class="category-count" id="category-count"></p>
+    </header>
+    <section class="showcase showcase--tribe" id="tribe-gear" aria-labelledby="tribe-title">
+      <div class="showcase-inner">
+        <header class="showcase-head"><div><p class="shop-eyebrow">03 · TRIBE GEAR · FEATURED</p><h2 id="tribe-title">Heaven’s <em>Tribe</em></h2></div><p>A collection inspired by the tribes of Israel. Heritage takes shape through classic collegiate lettering.</p></header>
+        <article class="spot" id="spot-tribe-hat" aria-labelledby="spot-hat-title">
+          <div class="spot-stage">
+            <div class="spot-tilt tilt"><img src="https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261121030311-1f1e5581-6412-6476-91bd-569281c427a1.png?revision=1795230200633" alt="TRIBE. | 12. Embroidered Snapback in Solid Black / White" width="1254" height="1254" loading="lazy" draggable="false"></div>
+            <p class="spot-hint" aria-hidden="true">Drag to tilt</p>
+          </div>
+          <div class="spot-copy">
+            <h3 id="spot-hat-title">TRIBE. | 12. Embroidered Snapback</h3>
+            <p class="spot-price">From $42.99</p>
+            <p class="spot-description">TRIBE. embroidered front and back, with 12. on the sides and coordinated embroidery colors.</p>
+            <fieldset class="spot-options" hidden><legend>Colorway</legend><div class="swatch-row spot-swatches"></div></fieldset>
+            <p class="selected-color" aria-live="polite">Selected: <strong>Solid Black / White</strong></p>
+            <a class="catalog-cta spot-cta" href="https://goodtree.semiticjew.org/product/34784540/tribe-12-embroidered-two-tone-snapback-cap-tribal-collection" target="_blank" rel="noopener" aria-label="Shop TRIBE. | 12. Embroidered Snapback in Solid Black / White on Printify">Shop This Colorway <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="showcase showcase--hoodie" id="good-tree-hoodie" aria-labelledby="hoodie-title">
+      <div class="showcase-inner">
+        <header class="showcase-head"><div><p class="shop-eyebrow">01 · GOOD TREE · FEATURED</p><h2 id="hoodie-title">Known by the <em>Fruit</em></h2></div><p>Turn the Vintage Hoodie to see the front, back and folded views, in every available color.</p></header>
+        <article class="spot spot--reverse" id="spot-good-tree-hoodie" aria-labelledby="spot-hoodie-title">
+          <div class="spot-stage">
+            <div class="spot-tilt tilt"><img src="https://d123s6f1z9g2wk.cloudfront.net/files/2026/11/20261120142140-1f1e4edb-3eb2-6f2a-8f5b-9e2622fb01c8.png?revision=1795185293158" alt="Good Tree Vintage Hoodie in Vintage Black, front view" width="1200" height="1200" loading="lazy" draggable="false"></div>
+            <p class="spot-hint" aria-hidden="true">Drag to tilt</p>
+          </div>
+          <div class="spot-copy">
+            <h3 id="spot-hoodie-title">Good Tree Vintage Hoodie</h3>
+            <p class="spot-price">From $49.99</p>
+            <p class="spot-description">The Good Tree leaf mark and “Known by the fruit” on the chest, with a plain back.</p>
+            <fieldset class="spot-options" hidden><legend>Color</legend><div class="swatch-row spot-swatches"></div></fieldset>
+            <div class="spot-options view-toggle spot-views" role="group" aria-label="Hoodie view" hidden></div>
+            <p class="selected-color" aria-live="polite">Selected: <strong>Vintage Black · Front</strong></p>
+            <a class="catalog-cta spot-cta" href="https://goodtree.semiticjew.org/product/34633853/good-tree-known-by-the-fruit-vintage-hoodie" target="_blank" rel="noopener" aria-label="Shop the Good Tree Vintage Hoodie in Vintage Black on Printify">Shop This Color <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
     <section class="product-section" id="good-tree" aria-labelledby="good-tree-title">
-      <header class="section-heading"><div><p class="shop-eyebrow">01 · THE SIGNATURE COLLECTION</p><h2 id="good-tree-title">Good Tree</h2></div><p>Quiet details. An enduring message. Our namesake collection carries the spirit of “Known by the fruit.”</p></header>
+      <header class="section-heading"><div><p class="shop-eyebrow">01 · THE SIGNATURE COLLECTION</p><h2 id="good-tree-title">Good Tree</h2></div><p>An evolving collection of apparel shaped by Scripture, identity, and clear thinking.</p></header>
       <div class="product-grid" id="good-tree-products" aria-live="polite"></div>
       <p class="fulfillment-note">Product options, secure checkout, shipping, returns, and fulfillment are handled by Printify.</p>
     </section>
-    <section class="product-section tribe-section" id="tribe-gear" aria-labelledby="tribe-gear-title">
-      <header class="section-heading"><div><p class="shop-eyebrow">03 · THE TRIBAL COLLECTION</p><h2 id="tribe-gear-title">Tribe Gear</h2></div><p>A collection inspired by the tribes of Israel. Heritage takes shape through classic collegiate lettering.</p></header>
-      <div class="product-grid tribe-product-grid" id="tribe-products" aria-live="polite"></div>
+    <section class="product-section category-section" id="category-products" aria-labelledby="category-title" hidden>
+      <div class="product-grid" id="category-grid" aria-live="polite"></div>
       <p class="fulfillment-note">Product options, secure checkout, shipping, returns, and fulfillment are handled by Printify.</p>
     </section>
-    <section class="future-section" id="collections" aria-labelledby="collections-title">
-      <header class="section-heading future-heading"><div><p class="shop-eyebrow">THE COMPLETE VISION</p><h2 id="collections-title">Explore Our Collections</h2></div><p>Two collections available now. Four forthcoming expressions, each grounded in the same purpose.</p></header>
-      <div class="future-grid">
-        <article class="future-card future-semitic" id="semitic"><div class="future-art" aria-hidden="true"><span>02</span><strong>SEMITIC</strong><small>Scripture. Logic. Truth.</small></div><div class="future-copy"><div><h3>Semitic</h3><span>Coming Soon</span></div><p class="future-subtitle">Identity, worn with purpose</p><p>A bold expression of identity, grounded in the words that guide us: Scripture. Logic. Truth.</p></div></article>
-        <article class="future-card future-scripture" id="scripture"><div class="future-art" aria-hidden="true"><span>04</span><strong>“for the tree is known<br>by his fruit.”</strong><small>MATTHEW 12:33 · KJV</small></div><div class="future-copy"><div><h3>Scripture</h3><span>Coming Soon</span></div><p class="future-subtitle">Words to carry with you</p><p>Verse-led designs with thoughtful typography, giving the words room to speak.</p></div></article>
-        <article class="future-card future-logic" id="logic"><div class="future-art" aria-hidden="true"><span>05</span><small>EXAMINE THE ARGUMENT.</small><strong>Think <em>clearly.</em></strong><small>THE LOGIC COLLECTION</small></div><div class="future-copy"><div><h3>Logic / Fallacies</h3><span>Coming Soon</span></div><p class="future-subtitle">Think carefully. Ask better questions.</p><p>Ten fallacies. A collection connecting biblical reflection with the practice of examining arguments.</p></div></article>
-        <article class="future-card future-three" id="scripture-logic-truth"><div class="future-art" aria-hidden="true"><span>06</span><strong>Scripture.<br>Logic.<br>Truth.</strong></div><div class="future-copy"><div><h3>Scripture. Logic. Truth.</h3><span>Coming Soon</span></div><p class="future-subtitle">Three words. A way of thinking.</p><p>Individual wordmarks paired with Scripture. Bold, minimal, and elegant expressions of the same conviction.</p></div></article>
-      </div>
-    </section>
-    <footer class="shop-footer"><span>SEMITIC JEW SHOP</span><a href="#shop-main">Back to top ↑</a><span>SIX COLLECTIONS · ONE PURPOSE</span></footer>
+    <nav class="collection-index" aria-label="Six merchandise collections">
+      <a class="is-live" href="/shop.html#good-tree" data-shop-route><span>01</span> Good Tree</a><a href="/collections/semitic.html"><span>02</span> Semitic</a><a class="is-live" href="/shop.html#tribe-gear" data-shop-route><span>03</span> Tribe Gear</a><a href="/collections/scripture.html"><span>04</span> Scripture</a><a href="/collections/logic.html"><span>05</span> Logic / Fallacies</a><a href="/collections/scripture-logic-truth.html"><span>06</span> Scripture. Logic. Truth.</a>
+    </nav>
+    <footer class="shop-footer"><span>SEMITIC JEW SHOP</span><a href="#shop-main">Back to top ↑</a><a href="/collections.html">ALL SIX COLLECTIONS →</a></footer>
   </main>
   <div id="site-footer"></div>
   <script src="/js/include.js"></script>
-  <script src="/js/shop-catalog.js"></script>
+  <script src="/js/shop-catalog.js?v=20261122"></script>
+  <script src="/js/shop-showcase.js?v=20261122"></script>
+  <script src="/js/shop-categories.js?v=20261122"></script>
 </body>
 </html>
