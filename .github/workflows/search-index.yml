@@ -9,7 +9,19 @@ on:
       - "pages/**"
       - "*.html"
       - "tools/build_search_index.py"
+      - "tests/test_build_search_index.py"
+      - ".github/workflows/search-index.yml"
   workflow_dispatch: {}
+
+# The default GITHUB_TOKEN is read-only for this repository; the job commits
+# search-index.json back to main, so it needs explicit write access to contents.
+permissions:
+  contents: write
+
+# Never let two rebuilds race each other to push to main.
+concurrency:
+  group: search-index-main
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -17,23 +29,49 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          ref: main
+          fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Build search index
+
+      - name: Test curated-tag preservation
+        run: python3 -m unittest discover -s tests -p "test_build_search_index.py" -v
+
+      - name: Build search index (keeps existing hand-curated tags)
         run: |
+          cp search-index.json "$RUNNER_TEMP/search-index.before.json"
           python3 tools/build_search_index.py --root . --out search-index.json
-      - name: Commit search-index.json
+
+      - name: Verify index before committing
         run: |
-          if [[ -n "$(git status --porcelain search-index.json)" ]]; then
-            git config user.name "github-actions"
-            git config user.email "github-actions@users.noreply.github.com"
-            git add search-index.json
-            git commit -m "CI: rebuild search-index.json"
+          python3 - "$RUNNER_TEMP/search-index.before.json" search-index.json <<'EOF'
+          import json, sys
+          before = {d["url"]: d["tags"] for d in json.load(open(sys.argv[1], encoding="utf-8"))}
+          after = json.load(open(sys.argv[2], encoding="utf-8"))
+          assert isinstance(after, list) and after, "index is empty or not a list"
+          now = {d["url"]: d["tags"] for d in after}
+          changed = [u for u in before if u in now and now[u] != before[u]]
+          assert not changed, f"curated tags changed for: {changed}"
+          print(f"OK: {len(after)} records; curated tags intact for {sum(u in now for u in before)} existing pages")
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          if [[ -z "$(git status --porcelain search-index.json)" ]]; then
+            echo "search-index.json unchanged; nothing to commit."
+            exit 0
           fi
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add search-index.json
+          git commit -m "CI: rebuild search-index.json"
+          # Rebase onto anything pushed while we were building; never force-push.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed; retrying..."
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not push search-index.json to main after 3 attempts."
+          exit 1
