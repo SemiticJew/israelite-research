@@ -44,10 +44,20 @@ test('every article (and the template) loads the reading stylesheet and still pa
 });
 
 test('podcast and channel links are the verified destinations (never generic platform home pages)', () => {
+  // Compare parsed URLs (exact origin + path), never substrings of the page source.
+  const key = u => `${u.origin}${u.pathname}`;
+  const verified = new Set([SPOTIFY, APPLE, YT].map(u => key(new URL(u))));
+  const platformHosts = new Set(['open.spotify.com', 'podcasts.apple.com', 'www.youtube.com', 'youtube.com']);
+  const allowedYouTube = /^\/(@blksemitic(\/podcasts)?|playlist)$/;
   for (const f of ['media.html', 'publications.html']) {
     const s = read(f);
-    assert.ok(s.includes(SPOTIFY) && s.includes(APPLE) && s.includes(YT), f);
-    assert.ok(!/href="https:\/\/open\.spotify\.com\/"/.test(s) && !/href="https:\/\/podcasts\.apple\.com\/"/.test(s), `${f}: generic platform link`);
+    const links = [...s.matchAll(/href="([^"]+)"/g)].map(m => { try { return new URL(m[1].replace(/&amp;/g, '&'), 'https://semiticjew.org/'); } catch { return null; } }).filter(Boolean);
+    const found = new Set(links.map(key));
+    for (const v of verified) assert.ok(found.has(v), `${f} links to ${v}`);
+    for (const u of links.filter(l => platformHosts.has(l.hostname))) {
+      const ok = verified.has(key(u)) || (u.hostname === 'www.youtube.com' && allowedYouTube.test(u.pathname));
+      assert.ok(ok && u.protocol === 'https:', `${f}: unexpected platform link ${u.href}`);
+    }
     for (const m of s.matchAll(/<a [^>]*target="_blank"[^>]*>/g)) assert.match(m[0], /rel="noopener"/, `${f}: ${m[0]}`);
   }
   const media = read('media.html');
