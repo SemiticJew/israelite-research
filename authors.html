@@ -576,6 +576,8 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
 }
 
 </style>
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/publications.css"/>
 
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -585,7 +587,7 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
 <meta name="theme-color" content="#054A91"/>
 </head>
 
-<body class="authors-page" data-page="authors">
+<body class="authors-page sj-pub" data-page="authors">
 <div id="site-header"></div>
 
 <main class="authors-wrap">
@@ -605,7 +607,7 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
         <span>Current Author</span>
       </div>
       <div>
-        <strong>7</strong>
+        <strong data-article-count>26</strong>
         <span>Published Articles</span>
       </div>
       <div>
@@ -640,7 +642,7 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
 
           <div class="author-card-meta">
             <div class="author-mini-stat">
-              <b>7</b>
+              <b data-article-count data-article-author="Semitic Jew">26</b>
               <span>Articles</span>
             </div>
             <div class="author-mini-stat">
@@ -703,7 +705,7 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
         <li>
           <a href="/authors/semitic-jew.html">
             <span class="author-index-name">Semitic Jew</span>
-            <span class="author-index-count">7 Articles</span>
+            <span class="author-index-count" data-article-count="{n} Article{s}" data-article-author="Semitic Jew">26 Articles</span>
           </a>
         </li>
       </ul>
@@ -722,5 +724,7 @@ html[data-theme="dark"] .author-index-list a:focus-visible{
 <div id="site-footer"></div>
 
 <script src="/js/include.js"></script>
+<script src="/js/article-catalog.js"></script>
+<script src="/js/author-counts.js"></script>
 </body>
 </html>

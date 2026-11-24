@@ -31,6 +31,8 @@ STATIC_PAGES = [
     "donate.html",
     "events.html",
     "media.html",
+    "publications.html",
+    "books.html",
     "tanakh.html",
     "newtestament.html",
     "apocrypha.html",
