@@ -2,361 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Luke — Chapters | Semitic Jew</title>
 <meta name="description" content="Read Luke with chapter navigation, writer identity, approximate date, audience, and New Testament category context."/>
+<script>/* Apply the saved theme before first paint (same key as /js/theme-toggle.js) */try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="/styles.css"/>
-<style>
-  body.nt-book-page{
-    background:var(--surface);
-    color:var(--ink);
-  }
-
-  body.nt-book-page main.container{
-    max-width:1200px;
-    margin:0 auto;
-    padding:0 24px 80px;
-  }
-
-  .book-hero{
-    margin:32px auto 28px;
-    padding:56px 30px;
-    border:1px solid var(--border);
-    text-align:center;
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
-    box-shadow:var(--shadow);
-  }
-
-  .book-kicker{
-    margin:0 0 12px;
-    color:var(--accent);
-    font-size:.78rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.16em;
-  }
-
-  .book-title{
-    margin:0;
-    color:var(--ink);
-    font-size:clamp(2.35rem, 6vw, 4.8rem);
-    line-height:1;
-    font-weight:900;
-    letter-spacing:-.05em;
-  }
-
-  .book-subtitle{
-    margin:18px auto 0;
-    max-width:820px;
-    color:var(--muted);
-    font-size:1.05rem;
-    line-height:1.7;
-  }
-
-  .book-identity{
-    display:grid;
-    grid-template-columns:1.25fr repeat(4, minmax(0, 1fr));
-    gap:12px;
-    margin:0 0 28px;
-  }
-
-  .identity-card{
-    border:1px solid var(--border);
-    background:var(--surface);
-    padding:16px;
-    box-shadow:var(--shadow);
-  }
-
-  .identity-label{
-    display:block;
-    margin-bottom:8px;
-    color:var(--accent);
-    font-size:.72rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-  }
-
-  .identity-value{
-    color:var(--ink);
-    font-size:.95rem;
-    font-weight:900;
-    line-height:1.45;
-  }
-
-  .chapter-panel{
-    border:1px solid var(--border);
-    background:var(--surface);
-    box-shadow:var(--shadow);
-    padding:0;
-    overflow:hidden;
-  }
-
-  .chapter-panel-head{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:18px;
-    flex-wrap:wrap;
-    padding:18px 20px;
-    border-bottom:1px solid var(--border);
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.08), transparent 40%),
-      var(--surface);
-  }
-
-  .chapter-panel-head h2{
-    margin:0 0 6px;
-    color:var(--ink);
-    font-size:1.2rem;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .chapter-panel-head p{
-    margin:0;
-    color:var(--muted);
-    line-height:1.55;
-  }
-
-  .chapter-count{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:8px 11px;
-    border:1px solid var(--border);
-    background:rgba(241,115,0,.08);
-    color:var(--accent);
-    font-size:.78rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    white-space:nowrap;
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(76px, 1fr));
-    gap:12px;
-    margin:0;
-    padding:20px;
-  }
-
-  .ch,
-  .ch:hover,
-  .ch:focus,
-  .ch:focus-visible{
-    text-decoration:none !important;
-  }
-
-  .ch{
-    position:relative;
-    min-height:68px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:1px solid var(--border);
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.10), transparent 42%),
-      var(--surface);
-    color:var(--ink);
-    font-size:1rem;
-    font-weight:900;
-    box-shadow:var(--shadow);
-    transition:transform .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
-    overflow:hidden;
-  }
-
-  .ch::after{
-    content:"";
-    position:absolute;
-    left:0;
-    top:0;
-    width:4px;
-    height:100%;
-    background:var(--accent);
-    transform:scaleY(0);
-    transform-origin:bottom;
-    transition:transform .2s ease;
-  }
-
-  .ch:hover,
-  .ch:focus-visible{
-    transform:translateY(-3px);
-    border-color:var(--accent);
-    color:var(--accent);
-    box-shadow:var(--shadow-hover, 0 12px 26px rgba(0,0,0,.12));
-    outline:none;
-  }
-
-  .ch:hover::after,
-  .ch:focus-visible::after{
-    transform:scaleY(1);
-  }
-
-  html[data-theme="dark"] .book-hero{
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
-  }
-
-  html[data-theme="dark"] .book-title,
-  html[data-theme="dark"] .identity-value,
-  html[data-theme="dark"] .chapter-panel-head h2,
-  html[data-theme="dark"] .ch{
-    color:#ffffff !important;
-  }
-
-  html[data-theme="dark"] .identity-card,
-  html[data-theme="dark"] .chapter-panel,
-  html[data-theme="dark"] .chapter-panel-head,
-  html[data-theme="dark"] .ch{
-    background:var(--surface) !important;
-    border-color:var(--border) !important;
-  }
-
-  html[data-theme="dark"] .ch:hover,
-  html[data-theme="dark"] .ch:focus-visible{
-    color:var(--accent) !important;
-    border-color:var(--accent) !important;
-  }
-
-  @media(max-width:1000px){
-    .book-identity{
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media(max-width:700px){
-    body.nt-book-page main.container{
-      padding:0 20px 64px;
-      overflow-x:hidden;
-    }
-
-    .book-hero{
-      margin:22px auto 24px;
-      padding:42px 20px;
-    }
-
-    .book-identity{
-      grid-template-columns:1fr;
-    }
-
-    .grid{
-      grid-template-columns:repeat(auto-fill, minmax(64px, 1fr));
-      padding:16px;
-    }
-  }
-
-/* Book page rhythm: match canon hub breadcrumb placement */
-body.tanakh-book-page main.container,
-body.nt-book-page main.container,
-body.newtestament-book-page main.container,
-body.apocrypha-book-page main.container{
-  padding-top:40px !important;
-}
-
-body.tanakh-book-page main.container > .breadcrumbs,
-body.nt-book-page main.container > .breadcrumbs,
-body.newtestament-book-page main.container > .breadcrumbs,
-body.apocrypha-book-page main.container > .breadcrumbs{
-  margin:0 0 18px !important;
-  padding:0 !important;
-  max-width:none !important;
-}
-
-body.tanakh-book-page main.container > .breadcrumbs + .book-hero,
-body.nt-book-page main.container > .breadcrumbs + .book-hero,
-body.newtestament-book-page main.container > .breadcrumbs + .book-hero,
-body.apocrypha-book-page main.container > .breadcrumbs + .book-hero{
-  margin-top:0 !important;
-}
-
-@media(max-width:700px){
-  body.tanakh-book-page main.container,
-  body.nt-book-page main.container,
-  body.newtestament-book-page main.container,
-  body.apocrypha-book-page main.container{
-    padding-top:30px !important;
-  }
-
-  body.tanakh-book-page main.container > .breadcrumbs,
-  body.nt-book-page main.container > .breadcrumbs,
-  body.newtestament-book-page main.container > .breadcrumbs,
-  body.apocrypha-book-page main.container > .breadcrumbs{
-    margin:0 0 14px !important;
-    padding:0 2px 8px !important;
-  }
-}
-
-</style>
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/scripture-pages.css"/>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <link rel="manifest" href="/site.webmanifest"/>
-<meta name="theme-color" content="#054A91"/>
-
+<meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#0A1322" media="(prefers-color-scheme: dark)"/>
+<!-- Generated by tools/build_scripture_pages.py from tools/scripture_pages_content.json — edit those, not this file. -->
 </head>
-<body class="nt-book-page">
+<body class="sj-scripture" data-canon="newtestament" data-book="luke">
+<a class="sp-skip" href="#main">Skip to content</a>
 <div id="site-header"></div>
 
-<main class="container">
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="/index.html">Home</a>
-    <span class="sep">›</span>
-    <a href="/biblia.html">Biblia</a>
-    <span class="sep">›</span>
-    <a href="/newtestament.html">New Testament</a>
-    <span class="sep">›</span>
-    <span class="current">Luke</span>
-  </nav>
+<main class="sp" id="main">
+  <nav class="breadcrumbs sp-crumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a><span class="sep" aria-hidden="true">›</span><a href="/biblia.html">Biblia</a><span class="sep" aria-hidden="true">›</span><a href="/newtestament.html">New Testament</a><span class="sep" aria-hidden="true">›</span><span class="current" aria-current="page">Luke</span></nav>
 
-  <header class="book-hero">
-    <div class="book-kicker">New Testament Book</div>
-    <h1 class="book-title">Luke</h1>
-    <p class="book-subtitle">Select a chapter to begin reading. This page gives the book’s Israelite writer context, approximate date, audience, and canon category.</p>
+  <header class="sp-head sp-book-head">
+    <p class="sp-eyebrow"><a href="/newtestament.html">New Testament Book</a> · <span>Israelite Testimonies of the Messiah</span></p>
+    <h1 class="sp-title">Luke</h1>
+    <p class="sp-lede">Select a chapter to begin reading. This page gives the book’s Israelite writer context, approximate date, audience, and canon category.</p>
+    <div class="sp-actions">
+      <a class="sp-btn is-primary" href="/newtestament/chapter.html?book=luke&ch=1">Start reading <span class="sp-btn-sub">Luke 1</span></a>
+      <a class="sp-btn" href="#" data-continue hidden></a>
+    </div>
   </header>
 
-  <section class="book-identity" aria-label="Luke book identity">
-    <article class="identity-card">
-      <span class="identity-label">Writer</span>
-      <div class="identity-value">Luke, an Israelite physician and companion in the apostolic work</div>
-    </article>
-    <article class="identity-card">
-      <span class="identity-label">Approximate Date</span>
-      <div class="identity-value">c. 60–90 CE</div>
-    </article>
-    <article class="identity-card">
-      <span class="identity-label">Audience</span>
-      <div class="identity-value">Theophilus and readers receiving an ordered account of Christ</div>
-    </article>
-    <article class="identity-card">
-      <span class="identity-label">Category</span>
-      <div class="identity-value">Israelite Testimonies of the Messiah</div>
-    </article>
-    <article class="identity-card">
-      <span class="identity-label">Chapters</span>
-      <div class="identity-value">24</div>
-    </article>
-  </section>
-
-  <section class="chapter-panel" aria-labelledby="chapterSelectTitle">
-    <div class="chapter-panel-head">
+  <section class="sp-section sp-chapters" aria-labelledby="chapterSelectTitle">
+    <div class="sp-sec-head">
       <div>
         <h2 id="chapterSelectTitle">Choose a Chapter</h2>
         <p>Open the chapter reader for Luke.</p>
       </div>
-      <span class="chapter-count">24 chapters</span>
+      <span class="sp-count">24 chapters</span>
     </div>
-    <div id="chapGrid" class="grid"></div>
+    
+    <ol class="sp-ch-grid" id="chapGrid" data-canon="newtestament" data-book="luke" aria-label="Luke chapters">
+      <li><a href="/newtestament/chapter.html?book=luke&ch=1" aria-label="Luke chapter 1" data-ch="1">1</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=2" aria-label="Luke chapter 2" data-ch="2">2</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=3" aria-label="Luke chapter 3" data-ch="3">3</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=4" aria-label="Luke chapter 4" data-ch="4">4</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=5" aria-label="Luke chapter 5" data-ch="5">5</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=6" aria-label="Luke chapter 6" data-ch="6">6</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=7" aria-label="Luke chapter 7" data-ch="7">7</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=8" aria-label="Luke chapter 8" data-ch="8">8</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=9" aria-label="Luke chapter 9" data-ch="9">9</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=10" aria-label="Luke chapter 10" data-ch="10">10</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=11" aria-label="Luke chapter 11" data-ch="11">11</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=12" aria-label="Luke chapter 12" data-ch="12">12</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=13" aria-label="Luke chapter 13" data-ch="13">13</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=14" aria-label="Luke chapter 14" data-ch="14">14</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=15" aria-label="Luke chapter 15" data-ch="15">15</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=16" aria-label="Luke chapter 16" data-ch="16">16</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=17" aria-label="Luke chapter 17" data-ch="17">17</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=18" aria-label="Luke chapter 18" data-ch="18">18</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=19" aria-label="Luke chapter 19" data-ch="19">19</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=20" aria-label="Luke chapter 20" data-ch="20">20</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=21" aria-label="Luke chapter 21" data-ch="21">21</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=22" aria-label="Luke chapter 22" data-ch="22">22</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=23" aria-label="Luke chapter 23" data-ch="23">23</a></li><li><a href="/newtestament/chapter.html?book=luke&ch=24" aria-label="Luke chapter 24" data-ch="24">24</a></li>
+    </ol>
   </section>
+
+  <section class="sp-section sp-facts" aria-label="Luke book identity">
+    <h2 class="sp-sec-title">About Luke</h2>
+    <dl class="sp-fact-list"><div class="sp-fact"><dt>Writer</dt><dd>Luke, an Israelite physician and companion in the apostolic work</dd></div><div class="sp-fact"><dt>Approximate Date</dt><dd>c. 60–90 CE</dd></div><div class="sp-fact"><dt>Audience</dt><dd>Theophilus and readers receiving an ordered account of Christ</dd></div><div class="sp-fact"><dt>Category</dt><dd>Israelite Testimonies of the Messiah</dd></div><div class="sp-fact"><dt>Chapters</dt><dd>24</dd></div></dl>
+  </section>
+
+  <nav class="sp-booknav" aria-label="New Testament books">
+    <a class="sp-booknav-prev" href="/newtestament/mark.html" rel="prev"><small>Previous book</small><strong>Mark</strong></a>
+    <a class="sp-booknav-all" href="/newtestament.html">All New Testament books</a>
+    <a class="sp-booknav-next" href="/newtestament/john.html" rel="next"><small>Next book</small><strong>John</strong></a>
+  </nav>
 </main>
 
 <div id="site-footer"></div>
-<script src="/js/wire-chapter-cards.js" defer></script>
 <script src="/js/include.js" defer></script>
+<script src="/js/scripture-pages.js" defer></script>
 </body>
 </html>
