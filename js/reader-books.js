@@ -100,14 +100,19 @@
     return out;
   }
 
+  const knownCanon = c => Object.prototype.hasOwnProperty.call(CANONS, c);
+
   function chapterHref(canon, slug, ch, verse){
-    return `/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(ch)}${verse ? `#v${verse}` : ''}`;
+    if(!knownCanon(canon)) return '/biblia.html';
+    const v = /^\d+$/.test(String(verse || '')) ? `#v${verse}` : '';
+    return `/${canon}/chapter.html?book=${encodeURIComponent(slug)}&ch=${encodeURIComponent(ch)}${v}`;
   }
 
   function landingHref(canon, slug){
-    if(NO_LANDING.has(`${canon}:${slug}`)) return (CANONS[canon] || {}).hub || '/biblia.html';
+    if(!knownCanon(canon)) return '/biblia.html';
+    if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(slug || '')) || NO_LANDING.has(`${canon}:${slug}`)) return CANONS[canon].hub;
     const page = (LANDING[canon] && LANDING[canon][slug]) || slug;
-    return `/${canon}/${page}.html`;
+    return `/${canon}/${encodeURIComponent(page)}.html`;
   }
 
   function xrefDir(canon, slug){ return (XREF_DIR[canon] && XREF_DIR[canon][slug]) || slug; }

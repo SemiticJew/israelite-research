@@ -37,20 +37,40 @@
     offline: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 5-2.6M22 8.5A15 15 0 0 0 10.5 5M5 12a10 10 0 0 1 4-2M19 12a10 10 0 0 0-2.3-1.4M8.5 15.5a5 5 0 0 1 6 0M12 19h.01M3 3l18 18"/></svg>'
   };
 
+  /** Build an element without HTML parsing: strings become text nodes, attributes are set individually. */
+  function h(tag, attrs, ...children){
+    const node = document.createElement(tag);
+    for(const [k, v] of Object.entries(attrs || {})){
+      if(v == null || v === false) continue;
+      if(k === 'class') node.className = v;
+      else node.setAttribute(k, v === true ? '' : String(v));
+    }
+    for(const c of children.flat()){
+      if(c == null || c === false || c === '') continue;
+      node.append(c instanceof Node ? c : String(c));
+    }
+    return node;
+  }
+
   // ---------- context ----------
   const canon = location.pathname.includes('/tanakh/') ? 'tanakh'
     : location.pathname.includes('/apocrypha/') ? 'apocrypha' : 'newtestament';
   const CANON = B.CANONS[canon];
   const params = new URLSearchParams(location.search);
-  const book = B.canonical(params.get('book') || CANON.first);
+  // The book comes from the URL, so only a plain slug ("genesis", "1-kings") is accepted; anything else
+  // is treated as an unknown book and never reaches a path, a link or the page markup.
+  const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  const requestedBook = B.canonical(params.get('book') || CANON.first);
+  const validBook = requestedBook.length <= 40 && SLUG.test(requestedBook);
+  const book = validBook ? requestedBook : '';
   const chRaw = params.get('ch') || '1';                   // legacy key part used by every enhancer
   let chapter = parseInt(params.get('ch') || params.get('c') || '1', 10);
   if(!Number.isFinite(chapter) || chapter < 1) chapter = 1;
   const keyPrefix = `${canon}:${params.get('book') || ''}:${chRaw}:`;   // highlight/exposition key prefix
   const notesKey = `notes:${canon}/${book}/${chapter}`;
   const chapterUrl = `${location.pathname}?book=${encodeURIComponent(params.get('book') || book)}&ch=${encodeURIComponent(chRaw)}`;
-  const bookName = B.name(book);
-  const headName = B.chapterName(book);                     // "Psalm" in a Psalms chapter
+  const bookName = validBook ? B.name(book) : 'Unknown book';
+  const headName = validBook ? B.chapterName(book) : 'Unknown book';   // "Psalm" in a Psalms chapter
   const refName = `${headName} ${chapter}`;
   const POETRY = new Set(['psalm', 'proverbs', 'song-of-solomon', 'lamentations']);
   const isPoetry = POETRY.has(book) || (book === 'job' && chapter >= 3 && chapter <= 41);
@@ -75,9 +95,15 @@
     const short = `${B.shortName(book)} ${chapter}`;
     if(short !== refName) el.ref.dataset.short = short;   // shown by CSS on small phones; text stays full for screen readers
   }
-  if(el.eyebrow) el.eyebrow.innerHTML = `<a href="${CANON.hub}">${esc(CANON.label)}</a>${groupOf && groupOf !== CANON.label ? ` · ${esc(groupOf)}` : ''}`;
+  if(el.eyebrow) el.eyebrow.replaceChildren(h('a', { href: CANON.hub }, CANON.label), groupOf && groupOf !== CANON.label ? ` · ${groupOf}` : '');
   if(el.crumbs){
-    el.crumbs.innerHTML = `<a href="/index.html">Home</a><span class="sep" aria-hidden="true">›</span><a href="/biblia.html">Biblia</a><span class="sep" aria-hidden="true">›</span><a href="${CANON.hub}">${esc(CANON.label)}</a><span class="sep" aria-hidden="true">›</span><a href="${B.landingHref(canon, book)}">${esc(bookName)}</a><span class="sep" aria-hidden="true">›</span><span class="current">Chapter ${chapter}</span>`;
+    const sep = () => h('span', { class: 'sep', 'aria-hidden': 'true' }, '›');
+    el.crumbs.replaceChildren(
+      h('a', { href: '/index.html' }, 'Home'), sep(),
+      h('a', { href: '/biblia.html' }, 'Biblia'), sep(),
+      h('a', { href: CANON.hub }, CANON.label), sep(),
+      ...(validBook ? [h('a', { href: B.landingHref(canon, book) }, bookName), sep(), h('span', { class: 'current' }, `Chapter ${chapter}`)] : [h('span', { class: 'current' }, 'Book not found')])
+    );
   }
   el.text?.setAttribute('aria-label', `${refName} text`);
 
@@ -148,54 +174,67 @@
       else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); a.setAttribute('aria-label', `${word} (none)`); a.setAttribute('tabindex', '-1'); }
     });
     if(el.pager){
-      el.pager.innerHTML = `
-        ${prev ? `<a class="prev" href="${hrefOf(prev)}" rel="prev"><small>Previous</small><strong>${esc(labelOf(prev))}</strong></a>` : ''}
-        ${next ? `<a class="next" href="${hrefOf(next)}" rel="next"><small>Next</small><strong>${esc(labelOf(next))}</strong></a>` : ''}
-        <div class="rd-pager-foot"><a href="${B.landingHref(canon, book)}">${esc(bookName)} overview</a><a href="#" data-open-nav>All books</a></div>`;
+      el.pager.replaceChildren(
+        prev ? h('a', { class: 'prev', href: hrefOf(prev), rel: 'prev' }, h('small', null, 'Previous'), h('strong', null, labelOf(prev))) : '',
+        next ? h('a', { class: 'next', href: hrefOf(next), rel: 'next' }, h('small', null, 'Next'), h('strong', null, labelOf(next))) : '',
+        h('div', { class: 'rd-pager-foot' }, h('a', { href: B.landingHref(canon, book) }, `${bookName} overview`), h('a', { href: '#', 'data-open-nav': true }, 'All books'))
+      );
       el.pager.hidden = false;
     }
   }
 
   // ---------- status / states ----------
   function setBusy(on){ el.text?.setAttribute('aria-busy', on ? 'true' : 'false'); }
-  function showNotice(html, icon = 'info'){
+  /** message: text or nodes. The icon is one of the fixed SVG strings above. */
+  function showNotice(message, icon = 'info'){
     if(!el.notice) return;
-    el.notice.innerHTML = `${ICON[icon] || ''}<div>${html}</div>`;
+    el.notice.replaceChildren();
+    el.notice.insertAdjacentHTML('afterbegin', ICON[icon] || '');
+    el.notice.append(h('div', null, message));
     el.notice.hidden = false;
   }
-  function showState(title, body, actions = ''){
+  /** title/body are plain text; actions are elements. */
+  function showState(title, body, actions = []){
     setBusy(false);
-    el.text.innerHTML = `<div class="rd-state" role="status"><h2>${title}</h2><p>${body}</p>${actions ? `<div class="rd-state-actions">${actions}</div>` : ''}</div>`;
+    el.text.replaceChildren(h('div', { class: 'rd-state', role: 'status' },
+      h('h2', null, title), h('p', null, body),
+      actions.length ? h('div', { class: 'rd-state-actions' }, actions) : ''));
     el.text.removeAttribute('tabindex');
   }
-  const browseBtn = (label = `Browse ${esc(CANON.label)} books`, primary = true) => `<button type="button" class="rd-btn${primary ? ' is-primary' : ''}" data-open-nav>${label}</button>`;
+  const browseBtn = (label = `Browse ${CANON.label} books`, primary = true) => h('button', { type: 'button', class: `rd-btn${primary ? ' is-primary' : ''}`, 'data-open-nav': true }, label);
+  const linkBtn = (href, label, primary = false) => h('a', { class: `rd-btn${primary ? ' is-primary' : ''}`, href }, label);
+  const retryBtn = () => h('button', { type: 'button', class: 'rd-btn is-primary', 'data-retry': true }, 'Try again');
 
   function stateNoBook(){
     document.title = `Not found · ${CANON.label} — Semitic Jew`;
-    showState(`“${esc(B.titleCase(params.get('book') || book))}” isn’t in the ${esc(CANON.label)} reader`,
+    if(el.title) el.title.textContent = 'Book not found';
+    if(el.titleCh) el.titleCh.textContent = '';
+    if(el.ref){ el.ref.textContent = 'Choose a book'; delete el.ref.dataset.short; }
+    const asked = B.titleCase(String(params.get('book') || '').slice(0, 60)) || 'That book';
+    showState(`“${asked}” isn’t in the ${CANON.label} reader`,
       `We couldn’t find a book with that name here. It may be spelled differently or belong to another collection.`,
-      `${browseBtn()}<a class="rd-btn" href="${CANON.hub}">${esc(CANON.label)} overview</a>`);
+      [browseBtn(), linkBtn(CANON.hub, `${CANON.label} overview`)]);
     if(el.pager) el.pager.hidden = true;
   }
   function stateNoChapter(total){
-    showState(`${esc(bookName)} has ${total} chapter${total === 1 ? '' : 's'}`,
-      `There is no chapter ${chapter} in ${esc(bookName)}.`,
-      `<a class="rd-btn is-primary" href="${B.chapterHref(canon, book, total)}">Read ${esc(B.chapterName(book))} ${total}</a><a class="rd-btn" href="${B.chapterHref(canon, book, 1)}">Start at chapter 1</a>${browseBtn('Choose a chapter', false)}`);
+    showState(`${bookName} has ${total} chapter${total === 1 ? '' : 's'}`,
+      `There is no chapter ${chapter} in ${bookName}.`,
+      [linkBtn(B.chapterHref(canon, book, total), `Read ${B.chapterName(book)} ${total}`, true), linkBtn(B.chapterHref(canon, book, 1), 'Start at chapter 1'), browseBtn('Choose a chapter', false)]);
   }
   function stateMissing(){
-    showState(`${esc(refName)} isn’t available yet`,
-      `The text of this chapter hasn’t been added to the reader. Other chapters of ${esc(bookName)} may still be available.`,
-      `${browseBtn('Choose a chapter')}<a class="rd-btn" href="${B.landingHref(canon, book)}">${esc(bookName)} overview</a>`);
+    showState(`${refName} isn’t available yet`,
+      `The text of this chapter hasn’t been added to the reader. Other chapters of ${bookName} may still be available.`,
+      [browseBtn('Choose a chapter'), linkBtn(B.landingHref(canon, book), `${bookName} overview`)]);
   }
   function stateOffline(){
     showState(`You’re offline`,
-      `${esc(refName)} hasn’t been saved on this device yet, so it can’t be opened without a connection. Reconnect to read it, or open a chapter you’ve saved for offline reading.`,
-      `<button type="button" class="rd-btn is-primary" data-retry>Try again</button><a class="rd-btn" href="/app.html#offline-chapters">Saved chapters</a>`);
+      `${refName} hasn’t been saved on this device yet, so it can’t be opened without a connection. Reconnect to read it, or open a chapter you’ve saved for offline reading.`,
+      [retryBtn(), linkBtn('/app.html#offline-chapters', 'Saved chapters')]);
   }
   function stateError(){
-    showState(`We couldn’t load ${esc(refName)}`,
+    showState(`We couldn’t load ${refName}`,
       `Something went wrong while loading this chapter. Please check your connection and try again.`,
-      `<button type="button" class="rd-btn is-primary" data-retry>Try again</button>${browseBtn('Choose another chapter', false)}`);
+      [retryBtn(), browseBtn('Choose another chapter', false)]);
   }
 
   // ---------- offline copy (written by reader-offline-chapter.js) ----------
@@ -782,6 +821,7 @@
   }
 
   async function load(){
+    if(!validBook){ if(el.pager) el.pager.hidden = true; return stateNoBook(); }
     setBusy(true);
     const [booksRes, chapterRes] = await Promise.all([
       getJSON(`/data/${canon}/books.json`),
@@ -805,7 +845,7 @@
       if(saved){
         renderVerses(saved.verses);
         const when = saved.savedAt ? new Date(saved.savedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-        showNotice(`${navigator.onLine === false ? 'You’re offline.' : 'The site couldn’t be reached.'} Showing the copy of ${esc(refName)} saved on this device${when ? ` on ${esc(when)}` : ''}. Word study and cross-references need a connection.`, 'offline');
+        showNotice(`${navigator.onLine === false ? 'You’re offline.' : 'The site couldn’t be reached.'} Showing the copy of ${refName} saved on this device${when ? ` on ${when}` : ''}. Word study and cross-references need a connection.`, 'offline');
         return;
       }
       return navigator.onLine === false || chapterRes.network ? stateOffline() : stateError();
@@ -823,5 +863,9 @@
   wireUI();
   load();
   window.addEventListener('hashchange', () => { if(/^#v\d+$/.test(location.hash)) goToVerse(location.hash.slice(2)); });
-  window.addEventListener('online', () => { if(!VERSES.length || !el.notice.hidden) showNotice(`You’re back online. <a href="${esc(location.href)}">Reload ${esc(refName)}</a> for word study and cross-references.`); });
+  window.addEventListener('online', () => {
+    if(!VERSES.length || !el.notice.hidden){
+      showNotice(['You’re back online. ', h('button', { type: 'button', class: 'rd-btn', 'data-retry': true }, `Reload ${refName}`), ' for word study and cross-references.']);
+    }
+  });
 })();

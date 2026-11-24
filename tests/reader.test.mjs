@@ -103,3 +103,27 @@ test('storage keys written by the reader are the existing ones (no new keys)', (
   ))));
   for (const k of new Set(keys)) assert.ok(known.has(k), `${k} is a known app data key`);
 });
+
+test('security: book links never carry markup or script from the URL', () => {
+  const evil = ['x"><img src=x onerror=alert(1)>', 'genesis" onmouseover="alert(1)', 'javascript:alert(1)', '../../etc', '<b>'];
+  for (const slug of evil) {
+    for (const canon of ['tanakh', 'newtestament', 'apocrypha', 'javascript:x']) {
+      const landing = B0.landingHref(canon, slug);
+      assert.match(landing, /^\/[a-z]+(\.html|\/[a-z0-9-]+\.html)$/, `landingHref(${canon}, ${slug}) → ${landing}`);
+      const chapter = B0.chapterHref(canon, slug, 1, '1"><x');
+      assert.ok(!/["<>\s]/.test(chapter) && chapter.startsWith('/'), `chapterHref → ${chapter}`);
+    }
+  }
+});
+
+test('security: reader-core validates the URL book and builds URL-derived UI without HTML strings', () => {
+  const core = read('js/reader-core.js');
+  assert.ok(core.includes('const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;'), 'strict slug check');
+  assert.ok(core.includes("const book = validBook ? requestedBook : '';"), 'invalid book never used');
+  assert.ok(/if\(!validBook\)\{[^}]*return stateNoBook\(\); \}/.test(core), 'invalid book skips fetching and rendering');
+  for (const line of core.split('\n')) {
+    if (/\.innerHTML\s*=|insertAdjacentHTML/.test(line)) {
+      assert.ok(!/landingHref\(|params\.get|location\.(href|search|hash)|requestedBook/.test(line), `URL-derived value in HTML string: ${line.trim().slice(0, 120)}`);
+    }
+  }
+});
