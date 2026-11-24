@@ -58,7 +58,9 @@
     const nav = document.querySelector(".reader-chapter-nav");
     const header = document.querySelector("main .page-header");
 
-    if(prefs){
+    if(window.SJReader && window.SJReader.mount("search", shell)){
+      // Reading-first reader: opens from the search button in the reader bar.
+    }else if(prefs){
       prefs.insertAdjacentElement("afterend", shell);
     }else if(progress){
       progress.insertAdjacentElement("afterend", shell);
@@ -160,7 +162,9 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
+
+    if(window.SJReader){ bind(createShell()); return; }
 
     let attempts = 0;
 

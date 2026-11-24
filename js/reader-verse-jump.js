@@ -21,6 +21,7 @@
 
     if(!target) return false;
 
+    if(window.SJReader && window.SJReader.closeStudy) window.SJReader.closeStudy();
     target.scrollIntoView({behavior:"smooth", block:"center"});
     target.classList.add("reader-jump-pulse");
     setTimeout(() => target.classList.remove("reader-jump-pulse"), 1600);
@@ -76,7 +77,9 @@
     const share = document.querySelector(".reader-share-shell");
     const search = document.querySelector(".reader-search-shell");
 
-    if(shortcuts){
+    if(window.SJReader && window.SJReader.mount("jump", shell)){
+      // Reading-first reader: Study drawer → Chapter tools.
+    }else if(shortcuts){
       shortcuts.insertAdjacentElement("afterend", shell);
     }else if(share){
       share.insertAdjacentElement("afterend", shell);
@@ -106,7 +109,7 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
 
     let attempts = 0;
 

@@ -137,7 +137,9 @@
     const prefs = document.querySelector(".reader-preferences-shell");
     const progress = document.querySelector(".reader-progress-shell");
 
-    if(search){
+    if(window.SJReader && window.SJReader.mount("share", shell)){
+      // Reading-first reader: Study drawer → Chapter tools.
+    }else if(search){
       search.insertAdjacentElement("afterend", shell);
     }else if(prefs){
       prefs.insertAdjacentElement("afterend", shell);
@@ -201,7 +203,9 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
+
+    if(window.SJReader){ bind(createShell()); return; }
 
     let attempts = 0;
 

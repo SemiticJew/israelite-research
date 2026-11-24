@@ -71,7 +71,9 @@
     const nav = document.querySelector(".reader-chapter-nav");
     const header = document.querySelector("main .page-header");
 
-    if(nav){
+    if(window.SJReader && window.SJReader.mount("progress", shell)){
+      // Reading-first reader: a thin progress line in the reader bar.
+    }else if(nav){
       nav.insertAdjacentElement("afterend", shell);
     }else if(header){
       header.insertAdjacentElement("afterend", shell);
@@ -100,7 +102,7 @@
     return readStore()[getKey()] || null;
   }
 
-  function updateProgress(){
+  function updateProgress(save){
     const verses = getVerses();
     if(!verses.length) return;
 
@@ -130,7 +132,12 @@
     bar.style.width = `${percent}%`;
     lastEl.textContent = `Last position: verse ${verseNumber}.`;
 
-    savePosition(percent, verseNumber);
+    // Only record a position once the reader has actually scrolled, so opening a chapter
+    // never overwrites the saved "resume" point with verse 1.
+    if(save !== false) savePosition(percent, verseNumber);
+
+    const resume = shell.querySelector("#reader-progress-resume");
+    if(resume && !resume.hidden && Number(resume.dataset.verse) <= verseNumber) resume.hidden = true;
   }
 
   function setupResume(){
@@ -139,6 +146,8 @@
     const saved = getSavedPosition();
 
     if(!saved || !saved.verse) return;
+    // Nothing to resume at the top of a chapter, or when the link already targets a verse.
+    if(Number(saved.verse) <= 1 || /^#v\d+$/.test(location.hash)) return;
 
     const verses = getVerses();
     const target = verses.find(v => getVerseNumber(v) === Number(saved.verse));
@@ -146,9 +155,11 @@
     if(!target) return;
 
     button.hidden = false;
+    button.dataset.verse = String(saved.verse);
     button.textContent = `Resume at verse ${saved.verse}`;
 
     button.addEventListener("click", function(){
+      button.hidden = true;
       target.scrollIntoView({behavior:"smooth", block:"center"});
       target.classList.add("reader-resume-pulse");
       setTimeout(() => target.classList.remove("reader-resume-pulse"), 1600);
@@ -167,7 +178,7 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
 
     let attempts = 0;
 
@@ -177,7 +188,7 @@
         clearInterval(waitForVerses);
         createShell();
         setupResume();
-        updateProgress();
+        updateProgress(false);
 
         const throttled = throttle(updateProgress, 180);
         window.addEventListener("scroll", throttled, {passive:true});

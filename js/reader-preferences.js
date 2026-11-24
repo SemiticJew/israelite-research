@@ -64,7 +64,9 @@
     const nav = document.querySelector(".reader-chapter-nav");
     const header = document.querySelector("main .page-header");
 
-    if(progress){
+    if(window.SJReader && window.SJReader.mount("display", shell)){
+      // Reading-first reader: lives in the "Aa" display popover.
+    }else if(progress){
       progress.insertAdjacentElement("afterend", shell);
     }else if(nav){
       nav.insertAdjacentElement("afterend", shell);
@@ -102,9 +104,11 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
 
     applyPrefs(readPrefs());
+
+    if(window.SJReader){ createControls(); return; }
 
     let attempts = 0;
     const wait = setInterval(function(){
