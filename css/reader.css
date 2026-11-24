@@ -76,6 +76,8 @@ body.sj-reader .rd-crumbs.breadcrumbs{
   color: var(--sj-muted);
   background: none; border: 0;
 }
+/* The global normalization in styles.css zeroes breadcrumb padding with !important; restore the shared gap. */
+html body.sj-reader .rd-crumbs.breadcrumbs{ padding-top: var(--sj-crumb-gap, 18px) !important; }
 body.sj-reader .rd-crumbs a{ color: var(--sj-muted) !important; text-decoration: none; }
 body.sj-reader .rd-crumbs a:hover{ color: var(--sj-ink) !important; text-decoration: underline; }
 body.sj-reader .rd-crumbs .sep{ color: var(--sj-line-strong); }
