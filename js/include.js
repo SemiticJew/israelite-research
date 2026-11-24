@@ -273,10 +273,29 @@
 
     header.dataset.mobileNavReady = 'true';
 
-    btn.addEventListener('click', function(){
+    function closeMenu(){
+      header.classList.remove('mobile-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open navigation menu');
+    }
+
+    btn.addEventListener('click', function(e){
       const open = header.classList.toggle('mobile-open');
       btn.setAttribute('aria-expanded', String(open));
       btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      // Keyboard activation (detail === 0): the menu precedes the button in the DOM,
+      // so move focus into it rather than leaving keyboard users behind it.
+      if(open && e.detail === 0){
+        const first = nav.querySelector('a');
+        if(first) first.focus();
+      }
+    });
+
+    // Close the open mobile menu once keyboard focus leaves the header entirely.
+    header.addEventListener('focusout', function(e){
+      if(!window.matchMedia('(max-width: 920px)').matches) return;
+      if(!header.classList.contains('mobile-open')) return;
+      if(e.relatedTarget && !header.contains(e.relatedTarget)) closeMenu();
     });
 
     nav.addEventListener('click', function(e){
@@ -301,9 +320,10 @@
 
     document.addEventListener('keydown', function(e){
       if(e.key !== 'Escape') return;
-      header.classList.remove('mobile-open');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', 'Open navigation menu');
+      const focusWasInMenu = nav.contains(document.activeElement);
+      const wasOpen = header.classList.contains('mobile-open');
+      closeMenu();
+      if(wasOpen && focusWasInMenu) btn.focus();
     });
   }
 
