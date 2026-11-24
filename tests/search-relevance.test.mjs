@@ -8,7 +8,25 @@ import vm from 'node:vm';
 const root = new URL('../', import.meta.url);
 const html = readFileSync(new URL('search.html', root), 'utf8');
 const index = JSON.parse(readFileSync(new URL('search-index.json', root), 'utf8'));
-const inline = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('function tokenize'));
+// Collect inline <script> bodies by scanning tags case-insensitively (no regex HTML parsing):
+// handles <SCRIPT>, attributes and "</script >"; scripts with a src attribute are skipped.
+function inlineScripts(source){
+  const lower = source.toLowerCase();
+  const bodies = [];
+  let at = 0;
+  for(;;){
+    const open = lower.indexOf('<script', at);
+    if(open < 0) break;
+    const openEnd = lower.indexOf('>', open);
+    if(openEnd < 0) break;
+    const close = lower.indexOf('</script', openEnd);
+    if(close < 0) break;
+    if(!/\ssrc\s*=/.test(lower.slice(open, openEnd))) bodies.push(source.slice(openEnd + 1, close));
+    at = close + 8;
+  }
+  return bodies;
+}
+const inline = inlineScripts(html).find(s => s.includes('function tokenize'));
 assert.ok(inline, 'search.html inline search script not found');
 
 // Minimal DOM so the page script can boot; fetch never resolves so we drive state by hand.
