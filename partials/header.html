@@ -1,566 +1,577 @@
-<!-- Universal Header Partial -->
-<header id="site-header" class="site-header-bar">
+<!-- Universal Header Partial
+     Injected into <div id="site-header"> by /js/include.js, which also wires the menus.
+     Class names use the "sjh-" prefix so legacy #site-header rules in styles.css cannot reach them.
+     Logo switching: #site-logo is updated by /js/theme-toggle.js and /js/include.js (data-logo). -->
+<header class="sjh" data-sjh>
   <style>
-    #site-header{
-      background:var(--surface, #ffffff);
-      color:var(--ink, #0b2340);
-      border-bottom:1px solid var(--border, #e6ebf2);
+    #site-header .sjh{
+      --sjh-bg:#ffffff;
+      --sjh-panel:#ffffff;
+      --sjh-ink:#0B2340;
+      --sjh-muted:#55657A;
+      --sjh-line:#E2E7EE;
+      --sjh-hover:rgba(11,35,64,.055);
+      --sjh-accent:#F17300;
+      --sjh-accent-ink:#B45400;
+      --sjh-focus:#054A91;
+      --sjh-shadow:0 1px 2px rgba(11,35,64,.06), 0 22px 48px -18px rgba(11,35,64,.28);
+      --sjh-display:"League Spartan", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --sjh-serif:"Newsreader", Georgia, "Times New Roman", serif;
+      /* global button system (styles.css) reads these on hover/focus */
+      --sj-button-hover-bg:var(--sjh-hover);
+      --sj-button-hover-text:var(--sjh-ink);
+      --sj-button-focus:var(--sjh-focus);
+
       position:relative;
       z-index:1000;
+      display:block;
+      background:var(--sjh-bg) !important;
+      color:var(--sjh-ink) !important;
+      border-bottom:1px solid var(--sjh-line) !important;
+      font-family:var(--sjh-display);
+      -webkit-font-smoothing:antialiased;
+    }
+    html[data-theme="dark"] #site-header .sjh{
+      --sjh-bg:#0A1322;
+      --sjh-panel:#0F1A2B;
+      --sjh-ink:#E9EEF6;
+      --sjh-muted:#A3B0C2;
+      --sjh-line:#22324A;
+      --sjh-hover:rgba(233,238,246,.07);
+      --sjh-accent-ink:#FF9A3D;
+      --sjh-focus:#81A4CD;
+      --sjh-shadow:0 1px 2px rgba(0,0,0,.4), 0 24px 52px -18px rgba(0,0,0,.75);
+    }
+    #site-header .sjh *,
+    #site-header .sjh *::before,
+    #site-header .sjh *::after{box-sizing:border-box}
+    #site-header .sjh :where(ul,p){margin:0;padding:0;list-style:none}
+    #site-header .sjh :where(a){color:var(--sjh-ink) !important;text-decoration:none !important}
+    #site-header .sjh a:hover{text-decoration:none !important}
+    #site-header .sjh :where(button){font:inherit;color:inherit !important;box-shadow:none !important;transform:none}
+    #site-header .sjh :is(a,button):focus-visible{
+      outline:2px solid var(--sjh-focus);
+      outline-offset:3px;
+      border-radius:4px;
     }
 
-    #site-header .header-inner{
-      max-width:1200px;
-      margin:0 auto;
-      padding:14px 28px;
+    /* ---------- Bar ---------- */
+    #site-header .sjh-bar{
       display:grid;
-      grid-template-columns:1fr auto 1fr;
+      grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
       align-items:center;
-      gap:18px;
+      gap:24px;
+      max-width:1320px;
+      height:76px;
+      margin:0 auto;
+      padding:0 clamp(16px, 3vw, 40px);
     }
-
-    #site-header .brand{
+    #site-header .sjh-brand{
+      justify-self:start;
       display:inline-flex;
       align-items:center;
-      min-width:0;
-      justify-self:start;
+      border-radius:4px;
     }
-
-    #site-header .brand img{
-      height:52px;
-      width:auto;
+    #site-header .sjh-brand img{
       display:block;
+      width:auto;
+      height:48px;
+      max-width:none;
     }
 
-    #site-header nav.primary{
+    /* ---------- Primary navigation (desktop) ---------- */
+    #site-header .sjh-nav{justify-self:center}
+    #site-header .sjh-list{
       display:flex;
       align-items:center;
-      gap:4px;
-      justify-self:center;
-      font-family:Georgia, serif;
-      font-size:1rem;
-      line-height:1.1;
-      user-select:none;
-      -webkit-user-select:none;
-      -webkit-tap-highlight-color:transparent;
+      gap:2px;
     }
-
-    #site-header nav.primary a{
-      color:var(--ink, #0b2340);
-      text-decoration:none;
-    }
-
-    #site-header nav.primary > a,
-    #site-header .nav-dd-toggle{
-      display:inline-flex;
-      align-items:center;
-      min-height:36px;
-      padding:8px 9px;
-      font-weight:500;
-      background:transparent;
-      border-radius:2px;
-      transition:color .14s ease, opacity .14s ease, background-color .14s ease;
-    }
-
-    #site-header nav.primary > a:hover,
-    #site-header .nav-dd:hover > .nav-dd-toggle,
-    #site-header .nav-dd:focus-within > .nav-dd-toggle,
-    #site-header .nav-dd.is-open > .nav-dd-toggle,
-    #site-header .nav-dd-toggle:hover{
-      color:var(--ink, #0b2340);
-      background:rgba(11,35,64,.035);
-      opacity:.9;
-    }
-
-    #site-header nav.primary > a:focus-visible,
-    #site-header .nav-dd-toggle:focus-visible,
-    #site-header .nav-dd-menu a:focus-visible,
-    #site-header .mobile-menu-toggle:focus-visible,
-    #site-header .icon-btn:focus-visible,
-    #site-header .theme-btn:focus-visible,
-    #site-header .give-btn:focus-visible{
-      outline:2px solid rgba(5,74,145,.36);
-      outline-offset:3px;
-    }
-
-    #site-header .nav-dd{
+    #site-header .sjh-item{position:relative}
+    #site-header .sjh-top{
       position:relative;
       display:inline-flex;
       align-items:center;
-    }
-
-    #site-header .nav-dd-toggle::after{
-      content:"";
-      width:6px;
-      height:6px;
-      margin-left:7px;
-      border-right:1.5px solid currentColor;
-      border-bottom:1.5px solid currentColor;
-      transform:rotate(45deg) translateY(-2px);
-      opacity:.58;
-      transition:transform .14s ease;
-    }
-
-    #site-header .nav-dd:hover .nav-dd-toggle::after,
-    #site-header .nav-dd:focus-within .nav-dd-toggle::after,
-    #site-header .nav-dd.is-open .nav-dd-toggle::after,
-    #site-header .nav-dd.mobile-subopen .nav-dd-toggle::after{
-      transform:rotate(225deg) translate(-2px,-1px);
-    }
-
-    #site-header .nav-dd-menu{
-      position:absolute;
-      top:100%;
-      left:0;
-      z-index:1001;
-      min-width:190px;
-      width:max-content;
-      max-width:215px;
-      padding:6px;
-      border:1px solid var(--border, #e6ebf2);
-      border-radius:4px;
-      background:var(--surface, #ffffff);
-      box-shadow:0 8px 22px rgba(0,0,0,.08);
-      opacity:0;
-      visibility:hidden;
-      transform:translateY(2px);
-      transition:opacity .12s ease, transform .12s ease, visibility .12s ease;
-    }
-
-    #site-header .nav-dd:hover .nav-dd-menu,
-    #site-header .nav-dd:focus-within .nav-dd-menu,
-    #site-header .nav-dd.is-open .nav-dd-menu{
-      opacity:1;
-      visibility:visible;
-      transform:translateY(0);
-    }
-
-    #site-header .nav-dd-menu a{
-      display:block;
-      padding:7px 11px;
-      color:var(--ink, #0b2340);
-      font-family:Georgia, serif;
-      font-size:.94rem;
-      font-weight:400;
-      line-height:1.2;
+      gap:6px;
+      height:44px;
+      padding:0 13px;
+      border:0 !important;
+      border-radius:6px;
+      background:transparent !important;
+      color:var(--sjh-ink) !important;
+      font:400 .98rem/1 var(--sjh-display);
+      letter-spacing:.01em;
+      cursor:pointer;
       white-space:nowrap;
-      background:transparent;
-      border-radius:0;
-      box-shadow:none;
-      transition:background-color .12s ease, opacity .12s ease;
+      transition:background-color .16s ease, color .16s ease;
     }
-
-    #site-header .nav-dd-menu a:hover,
-    #site-header .nav-dd-menu a:focus-visible{
-      background:rgba(11,35,64,.035);
-      color:var(--ink, #0b2340);
-      opacity:.95;
-      text-decoration:none;
+    #site-header .sjh-top::after{
+      content:"";
+      position:absolute;
+      left:13px;right:13px;bottom:6px;
+      height:2px;
+      border-radius:2px;
+      background:var(--sjh-accent) !important;
+      transform:scaleX(0);
+      transform-origin:center;
+      transition:transform .22s ease;
     }
+    #site-header .sjh-top:hover,
+    #site-header .sjh-item.is-open > .sjh-top{background:var(--sjh-hover) !important;color:var(--sjh-ink) !important}
+    #site-header .sjh-item.is-current > .sjh-top::after,
+    #site-header .sjh-top[aria-current="page"]::after{transform:scaleX(1)}
+    #site-header .sjh-item.is-current > .sjh-top,
+    #site-header .sjh-top[aria-current="page"]{font-weight:700}
+    #site-header .sjh-chev{
+      width:10px;height:10px;
+      flex:none;
+      opacity:.6 !important;
+      transition:transform .2s ease;
+    }
+    #site-header .sjh-item.is-open .sjh-chev{transform:rotate(180deg)}
 
-    #site-header .tools{
+    /* ---------- Dropdown panels ---------- */
+    #site-header .sjh-menu{
+      position:absolute;
+      top:calc(100% + 10px);
+      left:50%;
+      z-index:1001;
+      width:max-content;
+      min-width:260px;
+      max-width:min(640px, calc(100vw - 32px));
+      padding:10px;
+      border:1px solid var(--sjh-line) !important;
+      border-radius:10px;
+      background:var(--sjh-panel) !important;
+      box-shadow:var(--sjh-shadow) !important;
+      opacity:0 !important;
+      visibility:hidden;
+      transform:translate(-50%, 6px);
+      transition:opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+    }
+    #site-header .sjh-menu::before{
+      /* hover bridge between the button and the panel */
+      content:"";
+      position:absolute;
+      left:0;right:0;top:-12px;
+      height:12px;
+    }
+    #site-header .sjh-item.is-open > .sjh-menu{
+      opacity:1 !important;
+      visibility:visible;
+      transform:translate(-50%, 0);
+      transition:opacity .16s ease, transform .16s ease, visibility 0s;
+    }
+    #site-header .sjh-menu--2col .sjh-links{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(220px, 1fr));
+      gap:2px 6px;
+    }
+    #site-header .sjh-menu--mega{
+      display:grid;
+      grid-template-columns:minmax(260px, 1.1fr) minmax(250px, 1fr);
+      gap:8px;
+      padding:10px;
+    }
+    #site-header .sjh-col--ologies{
+      padding:8px 8px 10px 18px;
+      border-left:1px solid var(--sjh-line) !important;
+    }
+    #site-header .sjh-menu-label{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
+      padding:8px 12px 10px;
+      font:700 .68rem/1 var(--sjh-display);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--sjh-muted) !important;
+    }
+    #site-header .sjh-col--ologies .sjh-menu-label{padding-left:4px}
+    #site-header .sjh-menu-label::before{
+      content:"";
+      width:14px;height:2px;
+      background:var(--sjh-accent) !important;
+      border-radius:2px;
+    }
+    #site-header .sjh-links a{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      padding:10px 12px;
+      border-radius:7px;
+      transition:background-color .14s ease;
+    }
+    #site-header .sjh-links a:hover,
+    #site-header .sjh-links a:focus-visible{background:var(--sjh-hover) !important}
+    #site-header .sjh-l-title{
+      font:700 .95rem/1.2 var(--sjh-display);
+      color:var(--sjh-ink) !important;
+    }
+    #site-header .sjh-links a:hover .sjh-l-title{color:var(--sjh-accent-ink) !important}
+    #site-header .sjh-l-desc{
+      font:400 .86rem/1.35 var(--sjh-serif);
+      color:var(--sjh-muted) !important;
+    }
+    #site-header .sjh-links a[aria-current="page"] .sjh-l-title{color:var(--sjh-accent-ink) !important}
+    #site-header .sjh-compact{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:0 10px;
+    }
+    #site-header .sjh-compact a{
+      display:block;
+      padding:7px 4px;
+      border-radius:5px;
+      font:400 .95rem/1.25 var(--sjh-serif);
+      color:var(--sjh-ink) !important;
+    }
+    #site-header .sjh-compact a:hover,
+    #site-header .sjh-compact a:focus-visible{color:var(--sjh-accent-ink) !important;background:var(--sjh-hover) !important}
+    #site-header .sjh-compact a[aria-current="page"]{color:var(--sjh-accent-ink) !important;font-weight:500}
+    #site-header .sjh-hub{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin:10px 0 0 4px;
+      padding:6px 0;
+      font:700 .88rem/1 var(--sjh-display);
+      color:var(--sjh-ink) !important;
+      border-bottom:1.5px solid var(--sjh-accent) !important;
+    }
+    #site-header .sjh-hub::after{content:"→";font-weight:400}
+    #site-header .sjh-hub:hover{color:var(--sjh-accent-ink) !important}
+
+    /* ---------- Utilities ---------- */
+    #site-header .sjh-utils{
       justify-self:end;
-    }
-
-    #site-header .mobile-menu-toggle,
-    #site-header .icon-btn{
-      width:38px;
-      height:38px;
-      border:1px solid transparent;
-      border-radius:999px;
-      background:transparent;
-      color:var(--ink, #0b2340);
-      display:inline-flex;
+      display:flex;
       align-items:center;
-      justify-content:center;
+      gap:8px;
+    }
+    #site-header .sjh-icon,
+    #site-header .sjh-menu-btn{
+      display:inline-grid;
+      place-items:center;
+      width:42px;height:42px;
+      flex:none;
+      padding:0;
+      border:1px solid transparent !important;
+      border-radius:999px;
+      background:transparent !important;
+      color:var(--sjh-ink) !important;
       cursor:pointer;
-      text-decoration:none;
-      transition:background-color .14s ease, border-color .14s ease, color .14s ease;
+      transition:background-color .16s ease, border-color .16s ease, color .16s ease;
     }
+    #site-header .sjh-icon:hover{background:var(--sjh-hover) !important;color:var(--sjh-ink) !important}
+    #site-header .sjh-icon svg{width:20px;height:20px}
 
-    #site-header .mobile-menu-toggle{
-      display:none;
-      border-color:var(--border, #e6ebf2);
-    }
-
-    #site-header .mobile-menu-toggle svg,
-    #site-header .icon-btn svg{
-      width:19px;
-      height:19px;
-    }
-
-    #site-header .icon-btn:hover,
-    #site-header .mobile-menu-toggle:hover{
-      background:rgba(5,74,145,.045);
-      border-color:var(--border, #e6ebf2);
-      color:var(--ink, #0b2340);
-    }
-
-    #site-header .give-btn{
-      min-height:38px;
+    #site-header .sjh-theme{
       display:inline-flex;
       align-items:center;
-      justify-content:center;
-      padding:0 15px;
+      gap:2px;
+      padding:3px;
+      border:1px solid var(--sjh-line) !important;
       border-radius:999px;
-      background:var(--accent, #F17300);
-      color:#fff;
-      font-family:Georgia, serif;
-      font-size:.92rem;
-      font-weight:700;
-      text-decoration:none;
-      transition:background-color .14s ease, opacity .14s ease;
+      background:transparent !important;
+    }
+    #site-header .sjh-theme .theme-btn{
+      --sj-button-hover-bg:var(--sjh-hover);
+      display:inline-grid;
+      place-items:center;
+      width:34px;height:34px;
+      padding:0;
+      border:0 !important;
+      border-radius:999px;
+      background:transparent !important;
+      color:var(--sjh-muted) !important;
+      opacity:1 !important;
+      cursor:pointer;
+      transition:background-color .18s ease, color .18s ease;
+    }
+    #site-header .sjh-theme .theme-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+    #site-header .sjh-theme .theme-btn .sjh-moon{fill:currentColor;stroke:none}
+    html:not([data-theme="dark"]) #site-header .sjh-theme .theme-btn[data-theme="light"],
+    html[data-theme="dark"] #site-header .sjh-theme .theme-btn[data-theme="dark"]{
+      --sj-button-hover-bg:var(--sjh-ink);
+      --sj-button-hover-text:var(--sjh-bg);
+      background:var(--sjh-ink) !important;
+      color:var(--sjh-bg) !important;
     }
 
-    #site-header .give-btn:hover{
-      color:#fff;
-      opacity:.9;
-      text-decoration:none;
+    #site-header .sjh-give{
+      display:inline-flex;
+      align-items:center;
+      height:40px;
+      padding:0 18px;
+      border-radius:999px;
+      background:#F17300 !important;
+      color:#0B2340 !important;
+      font:700 .95rem/1 var(--sjh-display);
+      letter-spacing:.01em;
+      transition:background-color .16s ease, transform .16s ease;
+    }
+    #site-header .sjh-give:hover{background:#FF8A1F !important;color:#0B2340 !important}
+    #site-header .sjh-cart{margin-left:2px}
+
+    /* Mobile-only pieces are hidden on desktop */
+    #site-header .sjh-menu-btn,
+    #site-header .sjh-drawer-foot{display:none}
+
+    /* ---------- Compact desktop ---------- */
+    @media (max-width:1180px){
+      #site-header .sjh-bar{gap:14px}
+      #site-header .sjh-top{padding:0 10px;font-size:.92rem}
+      #site-header .sjh-top::after{left:10px;right:10px}
+      #site-header .sjh-utils{gap:4px}
+      #site-header .sjh-give{padding:0 15px}
+    }
+    @media (max-width:1080px){
+      #site-header .sjh-brand img{height:42px}
+      #site-header .sjh-top{padding:0 8px}
+      #site-header .sjh-top::after{left:8px;right:8px}
+      #site-header .sjh-icon{width:38px;height:38px}
     }
 
-    html[data-theme="dark"] #site-header{
-      background:var(--surface, #0f172a);
-      color:var(--ink, #f1f5f9);
-      border-color:var(--border, #1e293b);
-    }
-
-    html[data-theme="dark"] #site-header nav.primary a,
-    html[data-theme="dark"] #site-header .mobile-menu-toggle,
-    html[data-theme="dark"] #site-header .icon-btn{
-      color:var(--ink, #f1f5f9);
-    }
-
-    html[data-theme="dark"] #site-header nav.primary > a:hover,
-    html[data-theme="dark"] #site-header .nav-dd:hover > .nav-dd-toggle,
-    html[data-theme="dark"] #site-header .nav-dd:focus-within > .nav-dd-toggle,
-    html[data-theme="dark"] #site-header .nav-dd.is-open > .nav-dd-toggle,
-    html[data-theme="dark"] #site-header .nav-dd-toggle:hover,
-    html[data-theme="dark"] #site-header .nav-dd-menu a:hover,
-    html[data-theme="dark"] #site-header .nav-dd-menu a:focus-visible,
-    html[data-theme="dark"] #site-header .icon-btn:hover,
-    html[data-theme="dark"] #site-header .mobile-menu-toggle:hover{
-      background:rgba(255,255,255,.06);
-      color:var(--ink, #f1f5f9);
-    }
-
-    html[data-theme="dark"] #site-header .nav-dd-menu{
-      background:var(--surface, #0f172a);
-      border-color:var(--border, #1e293b);
-      box-shadow:0 8px 18px rgba(0,0,0,.26);
-    }
-
-    @media(max-width:1040px){
-      #site-header .header-inner{
-        padding-inline:20px;
-        gap:12px;
-      }
-
-      #site-header nav.primary{
-        gap:1px;
-        font-size:.96rem;
-      }
-
-      #site-header nav.primary > a,
-      #site-header .nav-dd-toggle{
-        padding-inline:7px;
-      }
-    }
-
-    @media(max-width:920px){
-      #site-header .header-inner{
-        display:grid;
-        grid-template-columns:minmax(80px, 1fr) auto;
-        align-items:center;
+    /* ---------- Mobile / tablet (<=1000px): drawer ---------- */
+    @media (max-width:1000px){
+      #site-header .sjh-bar{
+        grid-template-columns:auto minmax(0,1fr) auto;
         gap:8px;
-        padding:12px 14px;
+        height:64px;
+        padding:0 12px;
       }
+      #site-header .sjh-menu-btn{display:inline-grid;border-color:var(--sjh-line) !important}
+      #site-header .sjh-menu-btn:hover{background:var(--sjh-hover) !important}
+      #site-header .sjh-brand img{height:40px}
+      #site-header .sjh-utils{gap:4px}
+      #site-header .sjh-icon{width:38px;height:38px}
+      #site-header .sjh-give{height:36px;padding:0 14px;font-size:.9rem}
 
-      #site-header .brand{
-        grid-column:1;
-        overflow:hidden;
-      }
-
-      #site-header .brand img{
-        height:44px;
-        max-width:150px;
-        object-fit:contain;
-      }
-
-      #site-header .tools{
-        grid-column:2;
-        gap:5px;
-        margin-left:0;
-        min-width:max-content;
-      }
-
-      #site-header .mobile-menu-toggle{
-        display:inline-flex;
-      }
-
-      #site-header .mobile-menu-toggle,
-      #site-header .icon-btn{
-        width:34px;
-        height:34px;
-        min-width:34px;
-        padding:0;
-      }
-
-      #site-header .mobile-menu-toggle svg,
-      #site-header .icon-btn svg{
-        width:18px;
-        height:18px;
-      }
-
-      #site-header .give-btn{
-        min-height:34px;
-        height:34px;
-        padding:0 9px;
-        font-size:.76rem;
-        line-height:1;
-        white-space:nowrap;
-      }
-
-      #site-header nav.primary{
-        grid-column:1 / -1;
+      #site-header .sjh-nav{
+        position:absolute;
+        top:100%;
+        left:0;right:0;
+        justify-self:stretch;
         display:none;
+        max-height:calc(100vh - 64px);
+        max-height:calc(100dvh - 64px);
+        overflow-y:auto;
+        overscroll-behavior:contain;
+        padding:6px 16px 20px;
+        background:var(--sjh-panel) !important;
+        border-top:1px solid var(--sjh-line) !important;
+        border-bottom:1px solid var(--sjh-line) !important;
+        box-shadow:var(--sjh-shadow) !important;
+      }
+      #site-header .sjh.is-drawer-open .sjh-nav{display:block}
+      #site-header .sjh-list{flex-direction:column;align-items:stretch;gap:0}
+      #site-header .sjh-item{border-bottom:1px solid var(--sjh-line) !important}
+      #site-header .sjh-top{
         width:100%;
-        margin:6px 0 0;
-        padding:8px 0 10px;
-        border-top:1px solid var(--border, #e6ebf2);
-        gap:0;
-      }
-
-      #site-header.mobile-open nav.primary{
-        display:grid;
-        grid-template-columns:1fr;
-        max-height:calc(100vh - 74px);
-        overflow:auto;
-        -webkit-overflow-scrolling:touch;
-      }
-
-      #site-header nav.primary > a,
-      #site-header .nav-dd,
-      #site-header .nav-dd-toggle{
-        width:100%;
-        max-width:100%;
-        box-sizing:border-box;
-      }
-
-      #site-header nav.primary > a,
-      #site-header .nav-dd-toggle{
-        min-height:38px;
+        height:auto;
+        min-height:54px;
         justify-content:space-between;
-        padding:9px 2px;
-        font-size:.96rem;
-        font-weight:500;
-        background:transparent;
+        padding:0 4px;
+        border-radius:0;
+        font-size:1.05rem;
       }
+      #site-header .sjh-top:hover,
+      #site-header .sjh-item.is-open > .sjh-top{background:transparent !important}
+      #site-header .sjh-top::after{left:4px;right:auto;width:22px;bottom:10px;transform-origin:left}
+      #site-header .sjh-chev{width:12px;height:12px}
 
-      #site-header nav.primary > a:hover,
-      #site-header .nav-dd:hover > .nav-dd-toggle,
-      #site-header .nav-dd:focus-within > .nav-dd-toggle,
-      #site-header .nav-dd.is-open > .nav-dd-toggle,
-      #site-header .nav-dd-toggle:hover{
-        background:transparent;
-      }
-
-      #site-header .nav-dd{
-        display:block;
-        position:relative;
-      }
-
-      #site-header .nav-dd-menu{
+      #site-header .sjh-menu,
+      #site-header .sjh-item.is-open > .sjh-menu{
         position:static;
         display:none;
-        width:100%;
+        width:auto;
         min-width:0;
         max-width:none;
-        margin:0;
-        padding:0 0 6px 14px;
-        border:0;
-        background:transparent;
-        box-shadow:none;
-        opacity:1;
+        padding:0 0 14px;
+        border:0 !important;
+        border-radius:0;
+        background:transparent !important;
+        box-shadow:none !important;
+        opacity:1 !important;
         visibility:visible;
         transform:none;
+        transition:none;
       }
+      #site-header .sjh-menu::before{display:none}
+      #site-header .sjh-item.is-open > .sjh-menu{display:block}
+      #site-header .sjh-menu--2col .sjh-links{display:block}
+      #site-header .sjh-col--ologies{padding:6px 0 0;border-left:0 !important;border-top:1px dashed var(--sjh-line) !important;margin-top:6px}
+      #site-header .sjh-menu-label{padding:10px 4px 6px}
+      #site-header .sjh-links a{padding:9px 4px 9px 14px;border-radius:6px}
+      #site-header .sjh-l-desc{display:none}
+      #site-header .sjh-l-title{font:400 1rem/1.3 var(--sjh-serif)}
+      #site-header .sjh-compact{padding-left:14px}
+      #site-header .sjh-compact a{padding:8px 4px}
+      #site-header .sjh-hub{margin-left:14px}
 
-      #site-header .nav-dd:hover .nav-dd-menu,
-      #site-header .nav-dd:focus-within .nav-dd-menu{
+      #site-header .sjh-drawer-foot{
         display:none;
-      }
-
-      #site-header .nav-dd.mobile-subopen .nav-dd-menu{
-        display:grid;
-      }
-
-      #site-header .nav-dd-menu a{
-        min-height:30px;
-        padding:5px 0;
-        font-size:.88rem;
-        line-height:1.3;
-        color:var(--muted, #5f6b7a);
-        white-space:normal;
-      }
-
-      #site-header .nav-dd-menu a:hover,
-      #site-header .nav-dd-menu a:focus-visible{
-        background:transparent;
-        color:var(--ink, #0b2340);
-        opacity:1;
-      }
-
-      html[data-theme="dark"] #site-header nav.primary{
-        border-top-color:var(--border, #1e293b);
-      }
-
-      html[data-theme="dark"] #site-header .nav-dd-menu a{
-        color:var(--muted, #94a3b8);
+        align-items:center;
+        justify-content:space-between;
+        gap:16px;
+        padding:16px 4px 0;
+        font:700 .72rem/1 var(--sjh-display);
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:var(--sjh-muted) !important;
       }
     }
 
-    @media(max-width:430px){
-      #site-header .header-inner{
-        grid-template-columns:minmax(64px, 1fr) auto;
-        padding-inline:10px;
-      }
-
-      #site-header .brand img{
-        height:38px;
-        max-width:112px;
-      }
-
-      #site-header .tools{
-        gap:4px;
-      }
-
-      #site-header .mobile-menu-toggle,
-      #site-header .icon-btn{
-        width:32px;
-        height:32px;
-        min-width:32px;
-      }
-
-      #site-header .give-btn{
-        height:32px;
-        min-height:32px;
-        padding:0 7px;
-        font-size:.7rem;
-      }
+    /* Narrow phones: theme switcher moves into the drawer so the bar never overflows */
+    @media (max-width:419px){
+      #site-header .sjh-bar{padding:0 10px;gap:6px}
+      #site-header .sjh-brand img{height:36px}
+      #site-header .sjh-utils > .sjh-theme{display:none}
+      #site-header .sjh-drawer-foot{display:flex}
+      #site-header .sjh-icon{width:36px;height:36px}
+      #site-header .sjh-menu-btn{width:40px;height:40px}
+      #site-header .sjh-give{padding:0 12px}
+    }
+    @media (max-width:339px){
+      #site-header .sjh-brand img{height:30px}
+      #site-header .sjh-give{padding:0 10px;font-size:.82rem}
     }
 
-    @media(max-width:360px){
-      #site-header .brand img{
-        max-width:96px;
-      }
+    /* Hamburger icon */
+    #site-header .sjh-burger{position:relative;width:18px;height:12px;display:block}
+    #site-header .sjh-burger span{
+      position:absolute;left:0;
+      width:100%;height:2px;
+      border-radius:2px;
+      background:currentColor !important;
+      transition:transform .22s ease, opacity .16s ease, top .22s ease;
+    }
+    #site-header .sjh-burger span:nth-child(1){top:0}
+    #site-header .sjh-burger span:nth-child(2){top:5px}
+    #site-header .sjh-burger span:nth-child(3){top:10px}
+    #site-header .sjh.is-drawer-open .sjh-burger span:nth-child(1){top:5px;transform:rotate(45deg)}
+    #site-header .sjh.is-drawer-open .sjh-burger span:nth-child(2){opacity:0 !important}
+    #site-header .sjh.is-drawer-open .sjh-burger span:nth-child(3){top:5px;transform:rotate(-45deg)}
 
-      #site-header .mobile-menu-toggle,
-      #site-header .icon-btn{
-        width:30px;
-        height:30px;
-        min-width:30px;
-      }
-
-      #site-header .give-btn{
-        height:30px;
-        min-height:30px;
-        padding:0 6px;
-        font-size:.68rem;
-      }
+    @media (prefers-reduced-motion: reduce){
+      #site-header .sjh *,
+      #site-header .sjh *::before,
+      #site-header .sjh *::after{transition:none !important;animation:none !important}
     }
   </style>
 
-  <div class="header-inner">
-    <a class="brand" href="/index.html">
-      <img id="site-logo" src="/images/black-logo-letters.png" alt="Semitic Jew Logo">
+  <div class="sjh-bar">
+    <button class="sjh-menu-btn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-primary-nav">
+      <span class="sjh-burger" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+    <a class="sjh-brand" href="/index.html" aria-label="Semitic Jew home">
+      <img id="site-logo" data-logo src="/images/black-logo-letters.png" alt="Semitic Jew Logo" width="250" height="100">
     </a>
 
-    <nav class="primary" id="site-primary-nav" aria-label="Primary">
-      <a href="/index.html">Home</a>
-      <a href="/study-guides.html">Study Guides</a>
-      <a href="/articles.html">Articles</a>
-      <a href="/books.html">Books</a>
-      <a href="/shop.html" aria-label="Good Tree shop" title="Good Tree shop" style="display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 3h2l2.4 12h11.2l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></a>
+    <nav class="sjh-nav" id="site-primary-nav" aria-label="Primary">
+      <ul class="sjh-list">
+        <li class="sjh-item"><a class="sjh-top" href="/index.html">Home</a></li>
 
-      <div class="nav-dd">
-        <a class="nav-dd-toggle" href="/biblia.html" aria-haspopup="true">Biblia</a>
-        <div class="nav-dd-menu" aria-label="Biblia submenu">
-          <a href="/biblia.html">Biblia Hub</a>
-          <a href="/tanakh.html">Tanakh</a>
-          <a href="/newtestament.html">New Testament</a>
-          <a href="/apocrypha.html">Apocrypha</a>
-          <a href="/dietary-laws.html">Dietary Laws</a>
-          <a href="/biblical_references.html">Biblical References</a>
-        </div>
-      </div>
+        <li class="sjh-item sjh-has-menu">
+          <button class="sjh-top sjh-toggle" type="button" aria-expanded="false" aria-controls="sjh-menu-biblia">Biblia<svg class="sjh-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4.25 6 8l4-3.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="sjh-menu sjh-menu--2col" id="sjh-menu-biblia">
+            <p class="sjh-menu-label">Scripture</p>
+            <ul class="sjh-links">
+              <li><a href="/biblia.html"><span class="sjh-l-title">Biblia Hub</span><span class="sjh-l-desc">Every collection, tool &amp; source</span></a></li>
+              <li><a href="/tanakh.html"><span class="sjh-l-title">Tanakh</span><span class="sjh-l-desc">Law, writings, wisdom &amp; prophets</span></a></li>
+              <li><a href="/newtestament.html"><span class="sjh-l-title">New Testament</span><span class="sjh-l-desc">Christ, apostolic history &amp; letters</span></a></li>
+              <li><a href="/apocrypha.html"><span class="sjh-l-title">Apocrypha</span><span class="sjh-l-desc">Histories, wisdom &amp; Maccabees</span></a></li>
+              <li><a href="/dietary-laws.html"><span class="sjh-l-title">Dietary Laws</span><span class="sjh-l-desc">Clean, unclean &amp; hidden ingredients</span></a></li>
+              <li><a href="/biblical_references.html"><span class="sjh-l-title">Biblical References</span><span class="sjh-l-desc">Definitions, study terms &amp; covenant language</span></a></li>
+            </ul>
+          </div>
+        </li>
 
-      <div class="nav-dd">
-        <a class="nav-dd-toggle" href="/ologies.html" aria-haspopup="true">Ologies</a>
-        <div class="nav-dd-menu" aria-label="Ologies submenu">
-          <a href="/ologies.html">Ologies Hub</a>
-          <a href="/ologies/bibliology.html">Bibliology</a>
-          <a href="/ologies/christology.html">Christology</a>
-          <a href="/ologies/israelology.html">Israelology</a>
-          <a href="/ologies/eschatology.html">Eschatology</a>
-        </div>
-      </div>
+        <li class="sjh-item sjh-has-menu">
+          <button class="sjh-top sjh-toggle" type="button" aria-expanded="false" aria-controls="sjh-menu-research">Research<svg class="sjh-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4.25 6 8l4-3.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="sjh-menu sjh-menu--mega" id="sjh-menu-research">
+            <div class="sjh-col">
+              <p class="sjh-menu-label">Study &amp; reference</p>
+              <ul class="sjh-links">
+                <li><a href="/study-guides.html"><span class="sjh-l-title">Study Guides</span><span class="sjh-l-desc">Digital Scripture study resources</span></a></li>
+                <li><a href="/articles.html"><span class="sjh-l-title">Articles</span><span class="sjh-l-desc">Scripture, logic, history &amp; identity</span></a></li>
+                <li><a href="/encyclopedia.html"><span class="sjh-l-title">Encyclopedia</span><span class="sjh-l-desc">People, groups &amp; identity terms</span></a></li>
+                <li><a href="/israelite-catechism.html"><span class="sjh-l-title">Israelite Catechism</span><span class="sjh-l-desc">Structured doctrinal teaching</span></a></li>
+                <li><a href="/black-history-biblical-identity.html"><span class="sjh-l-title">Black History &amp; Biblical Identity</span><span class="sjh-l-desc">Presence, captivity &amp; resistance</span></a></li>
+                <li><a href="/extra-biblical-sources.html"><span class="sjh-l-title">Extra-Biblical Sources</span><span class="sjh-l-desc">Historical sources &amp; map evidence</span></a></li>
+              </ul>
+            </div>
+            <div class="sjh-col sjh-col--ologies">
+              <p class="sjh-menu-label">Ologies</p>
+              <ul class="sjh-compact">
+                <li><a href="/ologies/anthropology.html">Anthropology</a></li>
+                <li><a href="/ologies/bibliology.html">Bibliology</a></li>
+                <li><a href="/ologies/christology.html">Christology</a></li>
+                <li><a href="/ologies/ecclesiology.html">Ecclesiology</a></li>
+                <li><a href="/ologies/elology.html">Elology</a></li>
+                <li><a href="/ologies/eschatology.html">Eschatology</a></li>
+                <li><a href="/ologies/hamartiology.html">Hamartiology</a></li>
+                <li><a href="/ologies/israelology.html">Israelology</a></li>
+                <li><a href="/ologies/pneumatology.html">Pneumatology</a></li>
+                <li><a href="/ologies/soteriology.html">Soteriology</a></li>
+              </ul>
+              <a class="sjh-hub" href="/ologies.html">Ologies Hub</a>
+            </div>
+          </div>
+        </li>
 
-      <a href="/programs.html">Programs</a>
+        <li class="sjh-item sjh-has-menu">
+          <button class="sjh-top sjh-toggle" type="button" aria-expanded="false" aria-controls="sjh-menu-publications">Publications<svg class="sjh-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4.25 6 8l4-3.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="sjh-menu" id="sjh-menu-publications">
+            <p class="sjh-menu-label">Books &amp; media</p>
+            <ul class="sjh-links">
+              <li><a href="/books.html"><span class="sjh-l-title">Books</span><span class="sjh-l-desc">Every title by Semitic Jew</span></a></li>
+              <li><a href="/christian-marxism.html"><span class="sjh-l-title">Christian Marxism</span><span class="sjh-l-desc">The Fallacies That Shaped a Nation</span></a></li>
+              <li><a href="/media.html"><span class="sjh-l-title">Media</span><span class="sjh-l-desc">Videos, podcast teachings &amp; lessons</span></a></li>
+              <li><a href="/imprint-studio.html"><span class="sjh-l-title">Imprint Studio</span><span class="sjh-l-desc">Creative video editing, early access</span></a></li>
+            </ul>
+          </div>
+        </li>
 
-      <div class="nav-dd">
-        <a class="nav-dd-toggle" href="/about.html" aria-haspopup="true">Organization</a>
-        <div class="nav-dd-menu" aria-label="Organization submenu">
-          <a href="/mission.html">Mission</a>
-          <a href="/about.html">About</a>
-          <a href="/authors.html">Authors</a>
-          <a href="/events.html">Events</a>
-          <a href="/newsletter.html">Newsletter</a>
-          <a href="/imprint-studio.html">Imprint Studio</a>
-          <a href="/contact.html">Contact</a>
+        <li class="sjh-item sjh-has-menu">
+          <button class="sjh-top sjh-toggle" type="button" aria-expanded="false" aria-controls="sjh-menu-organization">Organization<svg class="sjh-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4.25 6 8l4-3.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="sjh-menu sjh-menu--2col" id="sjh-menu-organization">
+            <p class="sjh-menu-label">Semitic Jew Inc</p>
+            <ul class="sjh-links">
+              <li><a href="/about.html"><span class="sjh-l-title">About</span><span class="sjh-l-desc">Our 501(c)(3) educational nonprofit</span></a></li>
+              <li><a href="/mission.html"><span class="sjh-l-title">Mission</span><span class="sjh-l-desc">Biblical literacy &amp; critical thinking</span></a></li>
+              <li><a href="/programs.html"><span class="sjh-l-title">Programs</span><span class="sjh-l-desc">Our public educational work</span></a></li>
+              <li><a href="/authors.html"><span class="sjh-l-title">Authors</span><span class="sjh-l-desc">Writers &amp; contributors</span></a></li>
+              <li><a href="/events.html"><span class="sjh-l-title">Events</span><span class="sjh-l-desc">Sabbath, feasts &amp; live sessions</span></a></li>
+              <li><a href="/newsletter.html"><span class="sjh-l-title">Newsletter</span><span class="sjh-l-desc">Scripture-first updates by email</span></a></li>
+              <li><a href="/contact.html"><span class="sjh-l-title">Contact</span><span class="sjh-l-desc">Questions, media &amp; speaking</span></a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+
+      <div class="sjh-drawer-foot">
+        <span>Theme</span>
+        <div class="sjh-theme" role="group" aria-label="Color theme">
+          <button class="theme-btn" type="button" data-theme="light" aria-label="Light Mode"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke-linecap="round"/></svg></button>
+          <button class="theme-btn" type="button" data-theme="dark" aria-label="Dark Mode"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="sjh-moon" d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg></button>
         </div>
       </div>
     </nav>
 
-    <div class="tools">
-      <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-primary-nav">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-
-      <a class="icon-btn" href="/search.html" aria-label="Search">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    <div class="sjh-utils">
+      <a class="sjh-icon" href="/search.html" aria-label="Search">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </a>
-
-      <div class="theme-toggle-group">
-        <button class="theme-btn" data-theme="light" aria-label="Light Mode">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"/>
-            <line x1="12" y1="1" x2="12" y2="4"/>
-            <line x1="12" y1="20" x2="12" y2="23"/>
-            <line x1="1" y1="12" x2="4" y2="12"/>
-            <line x1="20" y1="12" x2="23" y2="12"/>
-            <line x1="4.2" y1="4.2" x2="6.5" y2="6.5"/>
-            <line x1="17.5" y1="17.5" x2="19.8" y2="19.8"/>
-            <line x1="4.2" y1="19.8" x2="6.5" y2="17.5"/>
-            <line x1="17.5" y1="6.5" x2="19.8" y2="4.2"/>
-          </svg>
-        </button>
-
-        <button class="theme-btn" data-theme="dark" aria-label="Dark Mode">
-          <svg class="moon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-          </svg>
-        </button>
+      <div class="sjh-theme" role="group" aria-label="Color theme">
+        <button class="theme-btn" type="button" data-theme="light" aria-label="Light Mode"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke-linecap="round"/></svg></button>
+        <button class="theme-btn" type="button" data-theme="dark" aria-label="Dark Mode"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="sjh-moon" d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg></button>
       </div>
-
-      <a class="give-btn" href="/donate.html">Give</a>
+      <a class="sjh-give" href="/donate.html">Give</a>
+      <a class="sjh-icon sjh-cart" href="/shop.html" aria-label="Good Tree shop" title="Good Tree shop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 3h2l2.4 12h11.2l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+      </a>
     </div>
   </div>
 </header>

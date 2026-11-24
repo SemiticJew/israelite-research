@@ -88,10 +88,8 @@ html[data-theme="dark"] body.home-page{
 
 /* Reserve the injected header's height (partials/header.html is fetched by include.js)
    so the page does not jump down once it arrives. :empty releases it after injection. */
-body.home-page > #site-header:empty{display:block;min-height:82px}
-@media (max-width:920px){body.home-page > #site-header:empty{min-height:70px}}
-@media (max-width:760px){body.home-page > #site-header:empty{min-height:66px}}
-@media (max-width:430px){body.home-page > #site-header:empty{min-height:64px}}
+body.home-page > #site-header:empty{display:block;min-height:77px}
+@media (max-width:1000px){body.home-page > #site-header:empty{min-height:65px}}
 
 /* Skip link */
 .home-page .sj-skip{
