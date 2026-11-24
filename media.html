@@ -22,361 +22,6 @@
 
 <link rel="stylesheet" href="/styles.css"/>
 
-<style>
-  .media-page{
-    max-width:1200px;
-    margin:0 auto;
-    padding:40px 24px 80px;
-  }
-
-  .media-hero{
-    margin:24px 0 46px;
-    padding:56px 28px;
-    text-align:center;
-    border:1px solid var(--border);
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.12), rgba(129,164,205,.10));
-  }
-
-  .media-kicker{
-    margin:0 0 12px;
-    color:var(--accent);
-    font-size:.78rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.16em;
-  }
-
-  .media-title{
-    margin:0;
-    color:var(--ink);
-    font-size:clamp(2.5rem, 6vw, 5rem);
-    line-height:1;
-    font-weight:900;
-    letter-spacing:-.05em;
-  }
-
-  .media-subtitle{
-    max-width:760px;
-    margin:18px auto 0;
-    color:var(--muted);
-    font-size:1.05rem;
-    line-height:1.7;
-  }
-
-  .media-actions{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-top:28px;
-  }
-
-  .media-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:13px 20px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    color:var(--ink);
-    text-decoration:none;
-    font-size:.82rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-  }
-
-  .media-btn:hover{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#fff;
-    text-decoration:none;
-  }
-
-  .media-section{
-    margin:58px 0;
-  }
-
-  .media-section-head{
-    display:flex;
-    align-items:end;
-    justify-content:space-between;
-    gap:18px;
-    margin-bottom:22px;
-    border-bottom:1px solid var(--border);
-    padding-bottom:14px;
-  }
-
-  .media-section-title{
-    margin:0;
-    color:var(--ink);
-    font-size:1.1rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-  }
-
-  .media-section-note{
-    margin:0;
-    color:var(--muted);
-    font-size:.92rem;
-    line-height:1.5;
-  }
-
-  .media-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:28px;
-  }
-
-  .media-grid.latest{
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:24px;
-  }
-
-  .media-card{
-    display:flex;
-    flex-direction:column;
-    color:inherit;
-    text-decoration:none;
-    background:transparent;
-  }
-
-  .media-card:hover{
-    text-decoration:none;
-  }
-
-  .media-thumb{
-    position:relative;
-    aspect-ratio:16/9;
-    overflow:hidden;
-    background:#000;
-  }
-
-  .media-thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    transition:transform .25s ease;
-  }
-
-  .media-card:hover .media-thumb img{
-    transform:scale(1.025);
-  }
-
-  .media-play{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    width:46px;
-    height:46px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.72);
-    color:#fff;
-    font-size:1rem;
-  }
-
-  .media-card-body{
-    padding:14px 0 0;
-  }
-
-  .media-label{
-    margin-bottom:7px;
-    color:#8a8f98;
-    font-size:.72rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-  }
-
-  .media-card h3{
-    margin:0 0 8px;
-    color:var(--ink);
-    font-size:1.12rem;
-    line-height:1.26;
-    font-weight:900;
-  }
-
-  .media-card time{
-    display:block;
-    margin-bottom:8px;
-    color:var(--muted);
-    font-size:.84rem;
-    font-weight:700;
-  }
-
-  .media-card p{
-    margin:0;
-    color:var(--muted);
-    font-size:.94rem;
-    line-height:1.52;
-  }
-
-  .media-empty{
-    color:var(--muted);
-    line-height:1.6;
-  }
-
-  .platform-strip{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:18px;
-    margin-top:18px;
-  }
-
-  .platform-card{
-    padding:22px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    text-decoration:none;
-    color:var(--ink);
-  }
-
-  .platform-card:hover{
-    border-color:var(--accent);
-    color:var(--ink);
-    text-decoration:none;
-  }
-
-  .platform-card h3{
-    margin:0 0 8px;
-    font-size:1rem;
-    font-weight:900;
-  }
-
-  .platform-card p{
-    margin:0;
-    color:var(--muted);
-    line-height:1.55;
-    font-size:.94rem;
-  }
-
-  html[data-theme="dark"] .media-hero{
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.25), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.28), rgba(15,23,42,.92));
-  }
-
-  html[data-theme="dark"] .media-card h3,
-  html[data-theme="dark"] .platform-card h3{
-    color:#fff;
-  }
-
-  @media(max-width:1000px){
-    .media-grid,
-    .media-grid.latest,
-    .platform-strip{
-      grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-  }
-
-  @media(max-width:700px){
-    .media-page{
-      padding:22px 20px 64px;
-      overflow-x:hidden;
-    }
-
-    .media-hero{
-      margin:18px 0 36px;
-      padding:42px 20px;
-    }
-
-    .media-section-head{
-      display:block;
-    }
-
-    .media-section-note{
-      margin-top:8px;
-    }
-
-    .media-grid,
-    .media-grid.latest,
-    .platform-strip{
-      grid-template-columns:1fr;
-    }
-
-    .media-card h3{
-      font-size:1.2rem;
-    }
-  }
-
-/* Support the Work callouts */
-.support-callout{
-  margin:56px auto;
-  padding:28px;
-  border:1px solid var(--border);
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
-    var(--surface);
-  color:var(--ink);
-  text-align:center;
-}
-
-.support-callout h2,
-.support-callout h3{
-  margin:0 0 10px;
-  color:var(--ink);
-  font-size:1.45rem;
-  font-weight:900;
-  letter-spacing:-.02em;
-}
-
-.support-callout p{
-  max-width:760px;
-  margin:0 auto 18px;
-  color:var(--muted);
-  line-height:1.7;
-}
-
-.support-callout .support-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:13px 22px;
-  border:1px solid var(--accent);
-  background:var(--accent);
-  color:#fff;
-  text-decoration:none;
-  font-size:.82rem;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-.support-callout .support-btn:hover,
-.support-callout .support-btn:focus,
-.support-callout .support-btn:focus-visible{
-  background:var(--ink);
-  border-color:var(--ink);
-  color:#fff;
-  text-decoration:none;
-}
-
-html[data-theme="dark"] .support-callout{
-  background:
-    radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
-    var(--surface);
-}
-
-@media(max-width:760px){
-  .support-callout{
-    margin:42px auto;
-    padding:24px 18px;
-  }
-
-  .support-callout h2,
-  .support-callout h3{
-    font-size:1.25rem;
-  }
-}
-
-</style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -384,12 +29,13 @@ html[data-theme="dark"] .support-callout{
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/publications.css"/>
 </head>
-
-<body>
+<body class="sj-pub">
 <div id="site-header"></div>
 
-<main class="media-page">
+<main class="pub-page media-page" id="main">
 
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <a href="/index.html">Home</a>
@@ -397,64 +43,78 @@ html[data-theme="dark"] .support-callout{
     <span class="current">Media</span>
   </nav>
 
-  <section class="media-hero">
-    <div class="media-kicker">Watch & Listen</div>
-    <h1 class="media-title">Media</h1>
-    <p class="media-subtitle">
-      Explore Semitic Jew teachings, podcast videos, Bible studies, and media content built around Scripture, logic, and truth.
-    </p>
-
-    <div class="media-actions">
-      <a class="media-btn" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener">YouTube Channel</a>
-      <a class="media-btn" href="https://www.youtube.com/@blksemitic/podcasts" target="_blank" rel="noopener">Podcast Videos</a>
-      <a class="media-btn" href="https://anchor.fm/s/d92a4020/podcast/rss" target="_blank" rel="noopener">Podcast RSS</a>
+  <header class="pub-head">
+    <p class="pub-eyebrow">Watch &amp; Listen</p>
+    <h1 class="pub-title">Media</h1>
+    <p class="pub-lede">Explore Semitic Jew teachings, podcast videos, Bible studies, and media content built around Scripture, logic, and truth.</p>
+    <div style="margin-top:1.5rem">
+      <ul class="pub-follow" aria-label="Follow Semitic Jew">
+        <li><a class="is-youtube" href="https://www.youtube.com/@blksemitic?sub_confirmation=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="5" width="21" height="14" rx="4.2" fill="#FF0000"/><path d="M10 8.8l5.4 3.2L10 15.2z" fill="#fff"/></svg><span>Subscribe on YouTube<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+        <li><a class="is-spotify" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1DB954"/><path d="M6.4 9.2c3.9-1.15 8.1-.85 11.3.95M7.1 12.5c3.15-.9 6.5-.62 9.2.85M7.8 15.6c2.45-.62 5-.42 7.05.72" stroke="#fff" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg><span>Follow on Spotify<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+        <li><a class="is-apple" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5.5" fill="#9933CC"/><circle cx="12" cy="10.2" r="2.2" fill="#fff"/><path d="M10.9 13.6h2.2l-.45 5.6h-1.3z" fill="#fff"/><path d="M8.1 14.9a5.4 5.4 0 1 1 7.8 0M6.2 16.8a8 8 0 1 1 11.6 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Follow on Apple Podcasts<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+      </ul>
     </div>
+  </header>
+
+  <nav class="pub-subnav" aria-label="Publications"><ul><li><a href="/publications.html">Publications</a></li><li><a href="/articles.html">Articles</a></li><li><a href="/books.html">Books</a></li><li><a href="/media.html" aria-current="page">Podcast & Videos</a></li></ul></nav>
+
+  <section class="pub-section" id="podcast-teachings" aria-labelledby="podcast-title">
+    <div class="pub-sec-head">
+      <div>
+        <span class="pub-sec-kicker">The Podcast</span>
+        <h2 class="pub-sec-title" id="podcast-title">Podcast Teachings</h2>
+        <p>Listen right here. Episodes come from the Semitic Jew podcast feed and update automatically.</p>
+      </div>
+      <a class="pub-link" href="https://www.youtube.com/playlist?list=PLvFSorNtgHVC_PKawdta23O5AfMIEcpd1" target="_blank" rel="noopener">Season Two on YouTube<span class="pub-sr"> (opens in a new tab)</span></a>
+    </div>
+    <ul class="pub-audio-list" id="media-podcast-grid" aria-label="Podcast episodes">
+      <li class="pub-empty">Loading episodes…</li>
+    </ul>
   </section>
 
-  <section class="media-section" id="podcast-teachings">
-    <div class="media-section-head">
-      <h2 class="media-section-title">Podcast Teachings</h2>
-      <p class="media-section-note">Auto-populated from the Semitic Jew podcast playlist.</p>
+  <section class="pub-section" id="listen" aria-labelledby="listen-title">
+    <div class="pub-sec-head">
+      <div>
+        <span class="pub-sec-kicker">Listen anywhere</span>
+        <h2 class="pub-sec-title" id="listen-title">Listen on Spotify &amp; Apple Podcasts</h2>
+        <p>The podcast audio is available on Spotify, Apple Podcasts, and by RSS.</p>
+      </div>
     </div>
-
-    <div class="media-grid" id="media-podcast-grid">
-      <p class="media-empty">Loading podcast teachings…</p>
-    </div>
+    <ul class="pub-follow" aria-label="Listen to the podcast">
+        <li><a class="is-youtube" href="https://www.youtube.com/@blksemitic?sub_confirmation=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="5" width="21" height="14" rx="4.2" fill="#FF0000"/><path d="M10 8.8l5.4 3.2L10 15.2z" fill="#fff"/></svg><span>Subscribe on YouTube<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+        <li><a class="is-spotify" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1DB954"/><path d="M6.4 9.2c3.9-1.15 8.1-.85 11.3.95M7.1 12.5c3.15-.9 6.5-.62 9.2.85M7.8 15.6c2.45-.62 5-.42 7.05.72" stroke="#fff" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg><span>Follow on Spotify<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+        <li><a class="is-apple" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5.5" fill="#9933CC"/><circle cx="12" cy="10.2" r="2.2" fill="#fff"/><path d="M10.9 13.6h2.2l-.45 5.6h-1.3z" fill="#fff"/><path d="M8.1 14.9a5.4 5.4 0 1 1 7.8 0M6.2 16.8a8 8 0 1 1 11.6 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><span>Follow on Apple Podcasts<span class="pub-sr"> (opens in a new tab)</span></span><svg class="pub-follow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+      </ul>
   </section>
 
-  <section class="media-section" id="latest-videos">
-    <div class="media-section-head">
-      <h2 class="media-section-title">Latest Videos</h2>
-      <p class="media-section-note">Auto-populated from the public YouTube channel feed.</p>
+  <section class="pub-section" id="latest-videos" aria-labelledby="videos-title">
+    <div class="pub-sec-head">
+      <div>
+        <span class="pub-sec-kicker">YouTube</span>
+        <h2 class="pub-sec-title" id="videos-title">Recent Video Teachings</h2>
+        <p>Long-form lessons from the Semitic Jew YouTube channel, newest season episodes first. Shorts are not included.</p>
+      </div>
+      <a class="pub-link" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener">YouTube channel<span class="pub-sr"> (opens in a new tab)</span></a>
     </div>
-
-    <div class="media-grid latest" id="media-latest-grid">
-      <p class="media-empty">Loading latest videos…</p>
-    </div>
+    <ul class="pub-grid" id="media-latest-grid">
+      <li class="pub-empty">Loading latest videos…</li>
+    </ul>
   </section>
 
-  <section class="media-section" id="platforms">
-    <div class="media-section-head">
-      <h2 class="media-section-title">Platforms</h2>
-      <p class="media-section-note">Follow, watch, and listen across official Semitic Jew channels.</p>
+  <section class="pub-section" id="platforms" aria-labelledby="platforms-title">
+    <div class="pub-sec-head">
+      <div>
+        <span class="pub-sec-kicker">Platforms</span>
+        <h2 class="pub-sec-title" id="platforms-title">Platforms</h2>
+        <p>Follow, watch, and listen across official Semitic Jew channels.</p>
+      </div>
     </div>
-
-    <div class="platform-strip">
-      <a class="platform-card" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener">
-        <h3>YouTube</h3>
-        <p>Watch Bible studies, podcast videos, teachings, and visual lessons.</p>
-      </a>
-
-      <a class="platform-card" href="https://open.spotify.com/" target="_blank" rel="noopener">
-        <h3>Spotify</h3>
-        <p>Listen to Semitic Jew Podcast audio episodes and teachings.</p>
-      </a>
-
-      <a class="platform-card" href="https://podcasts.apple.com/" target="_blank" rel="noopener">
-        <h3>Apple Podcasts</h3>
-        <p>Follow the podcast on Apple Podcasts when available.</p>
-      </a>
-    </div>
+    <ul class="pub-formats">
+      <li><a class="pub-format-tile" href="https://www.youtube.com/@blksemitic" target="_blank" rel="noopener"><strong>YouTube</strong><span>Watch Bible studies, podcast videos, teachings, and visual lessons.</span></a></li>
+      <li><a class="pub-format-tile" href="https://open.spotify.com/show/0GvSSHiBeVAmvHMIXP6lOi" target="_blank" rel="noopener"><strong>Spotify</strong><span>Listen to Semitic Jew Podcast audio episodes and teachings.</span></a></li>
+      <li><a class="pub-format-tile" href="https://podcasts.apple.com/us/podcast/semitic-jew/id1693178004" target="_blank" rel="noopener"><strong>Apple Podcasts</strong><span>Follow the podcast on Apple Podcasts.</span></a></li>
+    </ul>
+    <p class="pub-note">More ways to follow: <a href="https://www.youtube.com/@blksemitic/podcasts" target="_blank" rel="noopener">Podcast videos on YouTube</a> · <a href="https://anchor.fm/s/d92a4020/podcast/rss" target="_blank" rel="noopener">Podcast RSS feed</a></p>
   </section>
 
 <section class="support-callout" aria-label="Support the Work">

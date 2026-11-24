@@ -1,0 +1,262 @@
+/* publications.css — Publications & Media (Batch 3)
+   Articles archive, All Articles, Authors, author profile, Books, Christian Marxism, Media and the
+   Publications hub. Built on /css/sj-tokens.css (same design system as the reader and Biblia pages).
+   Scoped to body.sj-pub. Existing page markup is kept; these rules restyle it, so automation that
+   reads or edits the markup (rotate-featured-article.py, article-catalog.js, the app content feed,
+   the weekly publisher) keeps working unchanged. */
+
+/* ---------- Base + legacy variable bridge ---------- */
+html body.sj-pub{
+  background: var(--sj-paper) !important;
+  color: var(--sj-ink);
+  --surface: var(--sj-surface); --bg: var(--sj-surface); --white: var(--sj-surface); --ink: var(--sj-ink); --text: var(--sj-ink);
+  --muted: var(--sj-muted); --border: var(--sj-line); --sky: var(--sj-line); --brand: var(--sj-brand); --accent: var(--sj-accent-fill);
+  --shadow: var(--sj-shadow-1); --shadow-hover: var(--sj-shadow-2);
+}
+html body.sj-pub main{ font-family: var(--sj-font-ui); -webkit-font-smoothing: antialiased; color: var(--sj-ink); }
+html body.sj-pub main :is(a, button, input, select, summary, [tabindex]):focus-visible{ outline: 2px solid var(--sj-focus) !important; outline-offset: 3px; border-radius: 6px; }
+.pub-sr{ position:absolute!important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+/* Page width */
+html body.sj-pub :is(main.archive-page, main.authors-wrap, main.author-page, main.books-page, main.book-page .book-wrap, main.pub-page){
+  max-width: 72rem !important; margin-left: auto !important; margin-right: auto !important;
+  padding-left: var(--sj-space-5) !important; padding-right: var(--sj-space-5) !important;
+}
+html body.sj-pub main.book-page{ max-width: none !important; padding: 0 !important; }
+
+/* Breadcrumbs (spacing comes from the site-wide breadcrumb rules) */
+html body.sj-pub main nav.breadcrumbs{ font: 500 var(--sj-text-xs)/1.4 var(--sj-font-ui) !important; justify-content: flex-start !important; text-align: left !important; }
+html body.sj-pub main nav.breadcrumbs a{ color: var(--sj-muted) !important; font-weight: 500 !important; }
+html body.sj-pub main nav.breadcrumbs a:hover{ color: var(--sj-ink) !important; text-decoration: underline !important; }
+html body.sj-pub main nav.breadcrumbs .sep{ color: var(--sj-line-strong) !important; font-weight: 400 !important; }
+html body.sj-pub main nav.breadcrumbs .current{ color: var(--sj-ink-soft) !important; font-weight: 600 !important; }
+
+/* ---------- Editorial page heads (replaces the gradient hero boxes) ---------- */
+html body.sj-pub :is(.hub-hero, .archive-hero, .author-hero, .book-banner, .pub-head){
+  background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+  text-align: left !important; margin: 0 !important; padding: var(--sj-space-8) 0 var(--sj-space-6) !important; max-width: 46rem;
+}
+html body.sj-pub .authors-hero{ background: none !important; border: 0 !important; box-shadow: none !important; padding: var(--sj-space-8) 0 var(--sj-space-6) !important; gap: var(--sj-space-6) !important; }
+html body.sj-pub :is(.authors-hero-main, .authors-hero-side){ background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+html body.sj-pub :is(.hub-kicker, .archive-kicker, .authors-kicker, .author-kicker, .book-kicker, .pub-eyebrow){
+  font: 600 var(--sj-text-xs)/1.3 var(--sj-font-ui) !important; letter-spacing: .14em !important; text-transform: uppercase !important; color: var(--sj-accent) !important; margin: 0 0 var(--sj-space-2) !important;
+}
+html body.sj-pub :is(.hub-title, .archive-title, .author-title, .authors-hero h1, .book-banner h1, .pub-title){
+  font: 500 clamp(2.4rem, 1.6rem + 3.6vw, 4rem)/1.04 var(--sj-font-scripture) !important; letter-spacing: -.02em !important; color: var(--sj-ink) !important; margin: 0 !important;
+}
+html body.sj-pub :is(.hub-subtitle, .archive-subtitle, .author-subtitle, .authors-hero-main p, .book-banner .book-subtitle, .pub-lede){
+  font: 400 clamp(1.05rem, 1rem + .3vw, 1.2rem)/1.6 var(--sj-font-scripture) !important; color: var(--sj-ink-soft) !important; margin: var(--sj-space-4) 0 0 !important; max-width: 40rem !important;
+}
+html body.sj-pub .book-banner .book-author{ margin-top: var(--sj-space-3) !important; color: var(--sj-muted) !important; font: 500 var(--sj-text-sm)/1.4 var(--sj-font-ui) !important; }
+html body.sj-pub .authors-hero-side{ display: flex !important; gap: var(--sj-space-2) !important; align-self: end; }
+html body.sj-pub .authors-hero-side > div{ padding: var(--sj-space-3) var(--sj-space-4) !important; border-radius: var(--sj-radius-md) !important; background: var(--sj-surface) !important; border: 1px solid var(--sj-line) !important; }
+html body.sj-pub .authors-hero-side strong{ font: 500 1.6rem/1 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; }
+html body.sj-pub .authors-hero-side span{ font: 500 var(--sj-text-xs)/1.3 var(--sj-font-ui) !important; color: var(--sj-muted) !important; }
+
+/* Section headings */
+html body.sj-pub :is(.authors-section-head h2, .authors-index-head h2, .author-section-head h2, .book-section h2, .pub-sec-title){
+  font: 500 clamp(1.5rem, 1.3rem + .8vw, 2rem)/1.15 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; letter-spacing: -.01em !important; text-transform: none !important;
+}
+html body.sj-pub :is(.authors-section-head p, .authors-index-head p){ color: var(--sj-ink-soft) !important; }
+
+/* ---------- Publications sub-navigation ---------- */
+.pub-subnav{ margin: 0 0 var(--sj-space-6); border-bottom: 1px solid var(--sj-line); }
+.pub-subnav ul{ display: flex; gap: var(--sj-space-1); margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
+.pub-subnav ul::-webkit-scrollbar{ display: none; }
+.pub-subnav a{ position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; white-space: nowrap; font: 600 var(--sj-text-sm)/1 var(--sj-font-ui); color: var(--sj-muted) !important; text-decoration: none !important; }
+.pub-subnav a:hover{ color: var(--sj-ink) !important; }
+.pub-subnav a[aria-current="page"]{ color: var(--sj-ink) !important; }
+.pub-subnav a[aria-current="page"]::after{ content: ""; position: absolute; left: .9rem; right: .9rem; bottom: -1px; height: 2px; border-radius: 2px; background: var(--sj-accent-fill); }
+
+/* ---------- Cards (articles archive, All Articles, author profile, authors, books) ---------- */
+/* The Articles page cards (.featured-left, .featured-right, .article-card and their parts) are an
+   approved, locked design: this file deliberately has no rules for them. */
+html body.sj-pub :is(.archive-card, .author-article-card, .hub-card, .author-card, .author-profile){
+  background: var(--sj-surface) !important; border: 1px solid var(--sj-line) !important; border-radius: var(--sj-radius-lg) !important; box-shadow: none !important; overflow: hidden;
+  transition: border-color var(--sj-fast) var(--sj-ease), box-shadow var(--sj-fast) var(--sj-ease), transform var(--sj-fast) var(--sj-ease);
+}
+html body.sj-pub :is(.archive-card, .author-article-card, .author-card):hover{ border-color: var(--sj-line-strong) !important; box-shadow: var(--sj-shadow-2) !important; transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce){ html body.sj-pub :is(.archive-card, .author-article-card, .author-card):hover{ transform: none; } }
+html body.sj-pub :is(.archive-card, .author-article-card, .author-card) a{ color: inherit !important; text-decoration: none !important; }
+html body.sj-pub :is(.archive-thumb, .author-article-image){ background: var(--sj-surface-2) !important; border: 0 !important; }
+html body.sj-pub :is(.archive-card, .author-article-card) h2,
+html body.sj-pub .author-article-card h3,
+html body.sj-pub .hub-card h3{
+  font: 500 1.3rem/1.25 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; letter-spacing: -.005em !important;
+}
+html body.sj-pub :is(.archive-body p, .author-article-body p, .hub-card p){ color: var(--sj-ink-soft) !important; font: 400 var(--sj-text-sm)/1.55 var(--sj-font-ui) !important; }
+html body.sj-pub :is(.archive-meta, .article-date, .book-author){ color: var(--sj-muted) !important; font: 500 var(--sj-text-xs)/1.4 var(--sj-font-ui) !important; letter-spacing: .02em; }
+html body.sj-pub .archive-label{
+  background: none !important; color: var(--sj-accent) !important; border: 0 !important; padding: 0 !important; box-shadow: none !important;
+  font: 600 .6875rem/1.2 var(--sj-font-ui) !important; letter-spacing: .14em !important; text-transform: uppercase !important;
+}
+/* All Articles controls */
+html body.sj-pub :is(.archive-search, .archive-filter){
+  min-height: 48px; border-radius: var(--sj-radius-pill) !important; border: 1px solid var(--sj-line-strong) !important;
+  background-color: var(--sj-surface) !important; color: var(--sj-ink) !important; font: 400 var(--sj-text-md)/1 var(--sj-font-ui) !important; padding: 0 1.1rem !important; box-shadow: none !important;
+}
+
+/* ---------- Buttons ---------- */
+html body.sj-pub :is(.book-button, .support-btn, .author-btn, .pub-btn, .media-btn){
+  display: inline-flex !important; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: 0 1.2rem !important; border-radius: var(--sj-radius-pill) !important;
+  border: 1px solid var(--sj-ink) !important; background: var(--sj-ink) !important; color: var(--sj-paper) !important;
+  font: 600 var(--sj-text-sm)/1 var(--sj-font-ui) !important; letter-spacing: 0 !important; text-transform: none !important; text-decoration: none !important; box-shadow: none !important;
+  transition: opacity var(--sj-fast) var(--sj-ease), background-color var(--sj-fast) var(--sj-ease);
+}
+html body.sj-pub :is(.book-button.secondary, .author-btn.secondary, .pub-btn.is-quiet, .media-btn){
+  background: var(--sj-surface) !important; color: var(--sj-ink) !important; border-color: var(--sj-line-strong) !important;
+}
+html body.sj-pub :is(.book-button, .support-btn, .author-btn, .pub-btn, .media-btn):hover{ opacity: .9 !important; transform: none !important; }
+html body.sj-pub :is(.book-button.secondary, .author-btn.secondary, .pub-btn.is-quiet, .media-btn):hover{ background: var(--sj-surface-2) !important; color: var(--sj-ink) !important; opacity: 1 !important; }
+html body.sj-pub .book-more{ color: var(--sj-ink-soft) !important; font-weight: 600 !important; text-decoration: underline !important; text-underline-offset: .2em; }
+
+/* Support callout */
+html body.sj-pub .support-callout{
+  max-width: 72rem !important; margin: var(--sj-space-10) auto var(--sj-space-12) !important; padding: var(--sj-space-8) !important;
+  border-radius: var(--sj-radius-lg) !important; border: 1px solid var(--sj-line) !important; background: var(--sj-surface) !important; box-shadow: none !important; text-align: left !important;
+  display: grid; grid-template-columns: 1fr auto; gap: var(--sj-space-2) var(--sj-space-8); align-items: center;
+}
+html body.sj-pub .support-callout h2{ grid-column: 1; margin: 0 !important; font: 500 1.6rem/1.2 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; }
+html body.sj-pub .support-callout p{ grid-column: 1; margin: 0 !important; color: var(--sj-ink-soft) !important; max-width: 40rem; }
+html body.sj-pub .support-callout .support-btn{ grid-column: 2; grid-row: 1 / span 2; background: var(--sj-accent-fill) !important; border-color: var(--sj-accent-fill) !important; color: #fff !important; }
+
+/* ---------- Books & book page ---------- */
+html body.sj-pub .books-grid{ gap: var(--sj-space-5) !important; }
+html body.sj-pub .hub-card{ padding: var(--sj-space-5) !important; }
+html body.sj-pub .cover-display{ background: var(--sj-surface-2) !important; border-radius: var(--sj-radius-md) !important; border: 0 !important; }
+html body.sj-pub .cover-pending{ border: 1px dashed var(--sj-line-strong) !important; color: var(--sj-muted) !important; }
+html body.sj-pub .book-cover{ box-shadow: 0 18px 40px -16px rgba(0,0,0,.45) !important; border-radius: 3px; }
+html body.sj-pub :is(.coming, .book-release, .book-availability){ color: var(--sj-muted) !important; font: 600 var(--sj-text-xs)/1.4 var(--sj-font-ui) !important; }
+html body.sj-pub :is(.book-hero, .book-section, .book-format){ background: var(--sj-surface) !important; border-color: var(--sj-line) !important; border-radius: var(--sj-radius-lg) !important; box-shadow: none !important; color: var(--sj-ink) !important; }
+html body.sj-pub .book-section{ padding: var(--sj-space-8) !important; }
+html body.sj-pub :is(.book-intro, .book-section p, .book-chapters li){ color: var(--sj-ink-soft) !important; font-family: var(--sj-font-scripture) !important; font-size: 1.075rem !important; line-height: 1.65 !important; }
+html body.sj-pub .book-overview h2, html body.sj-pub .book-format h3{ font-family: var(--sj-font-scripture) !important; font-weight: 500 !important; color: var(--sj-ink) !important; }
+html body.sj-pub .book-price{ font: 500 1.6rem/1.1 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; }
+html body.sj-pub .book-quote{ font: italic 400 clamp(1.4rem, 1.2rem + 1vw, 2rem)/1.35 var(--sj-font-scripture) !important; color: var(--sj-ink) !important; border-left: 3px solid var(--sj-accent-fill) !important; padding-left: var(--sj-space-5) !important; }
+html body.sj-pub .book-section details summary{ cursor: pointer; font-weight: 600; color: var(--sj-ink); }
+
+/* Authors */
+html body.sj-pub .author-card-top{ background: var(--sj-surface-2) !important; }
+html body.sj-pub :is(.author-role, .author-card-cta){ color: var(--sj-accent) !important; }
+html body.sj-pub :is(.author-mini-stat, .authors-count-pill){ background: var(--sj-surface-2) !important; border-color: var(--sj-line) !important; color: var(--sj-ink-soft) !important; }
+html body.sj-pub .authors-index, html body.sj-pub .authors-future{ background: var(--sj-surface) !important; border: 1px solid var(--sj-line) !important; box-shadow: none !important; border-radius: var(--sj-radius-lg) !important; }
+html body.sj-pub .author-profile img{ box-shadow: none !important; }
+
+/* ---------- Subscribe buttons (YouTube / Spotify / Apple Podcasts) ---------- */
+.pub-follow{ display: flex; flex-wrap: wrap; gap: var(--sj-space-2); margin: 0; padding: 0; list-style: none; }
+.pub-follow a{
+  display: inline-flex; align-items: center; gap: .6rem; min-height: 48px; padding: 0 1.1rem 0 .85rem;
+  border-radius: var(--sj-radius-pill); border: 1px solid var(--sj-line-strong); background: var(--sj-surface);
+  color: var(--sj-ink) !important; text-decoration: none !important; font: 600 var(--sj-text-sm)/1.1 var(--sj-font-ui);
+  transition: border-color var(--sj-fast) var(--sj-ease), background-color var(--sj-fast) var(--sj-ease), transform var(--sj-fast) var(--sj-ease);
+}
+.pub-follow a:hover{ border-color: var(--brand-c); background: color-mix(in srgb, var(--brand-c) 8%, var(--sj-surface)); transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce){ .pub-follow a:hover{ transform: none; } }
+.pub-follow a:focus-visible{ outline: 2px solid var(--sj-focus) !important; outline-offset: 3px; }
+.pub-follow svg{ width: 22px; height: 22px; flex: none; }
+.pub-follow small{ display: block; font-weight: 500; font-size: .6875rem; letter-spacing: .04em; color: var(--sj-muted); }
+.pub-follow .is-youtube{ --brand-c: #FF0000; }
+.pub-follow .is-spotify{ --brand-c: #1DB954; }
+.pub-follow .is-apple{ --brand-c: #A64DE3; }
+.pub-follow-ext{ width: 14px !important; height: 14px !important; opacity: .55; }
+
+/* ---------- Publications hub & media page ---------- */
+.pub-section{ padding: var(--sj-space-8) 0; border-top: 1px solid var(--sj-line); }
+.pub-section:first-of-type{ border-top: 0; }
+.pub-sec-head{ display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--sj-space-2) var(--sj-space-6); margin-bottom: var(--sj-space-5); }
+.pub-sec-head p{ margin: .4rem 0 0; color: var(--sj-ink-soft); max-width: 38rem; line-height: 1.6; }
+.pub-sec-kicker{ display: block; margin-bottom: var(--sj-space-2); font: 600 var(--sj-text-xs)/1.2 var(--sj-font-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--sj-accent); }
+.pub-sec-title{ margin: 0; }
+.pub-link{ font: 600 var(--sj-text-sm)/1.3 var(--sj-font-ui); color: var(--sj-ink-soft) !important; text-decoration: none !important; white-space: nowrap; }
+.pub-link::after{ content: " →"; }
+.pub-link:hover{ color: var(--sj-ink) !important; text-decoration: underline !important; }
+.pub-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr)); gap: var(--sj-space-4); margin: 0; padding: 0; list-style: none; }
+.pub-card{ display: flex; flex-direction: column; height: 100%; border-radius: var(--sj-radius-lg); border: 1px solid var(--sj-line); background: var(--sj-surface); overflow: hidden; color: inherit !important; text-decoration: none !important;
+  transition: border-color var(--sj-fast) var(--sj-ease), box-shadow var(--sj-fast) var(--sj-ease), transform var(--sj-fast) var(--sj-ease); }
+a.pub-card:hover{ border-color: var(--sj-line-strong); box-shadow: var(--sj-shadow-2); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce){ a.pub-card:hover{ transform: none; } }
+.pub-thumb{ position: relative; aspect-ratio: 16 / 9; background: var(--sj-surface-2); overflow: hidden; }
+.pub-thumb img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.pub-thumb.is-contain img{ object-fit: contain; }
+.pub-play{ position: absolute; right: .75rem; bottom: .75rem; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(10,19,34,.78); color: #fff; }
+.pub-play svg{ width: 16px; height: 16px; fill: currentColor; margin-left: 2px; }
+.pub-card-body{ display: grid; gap: .45rem; padding: var(--sj-space-4) var(--sj-space-5) var(--sj-space-5); }
+.pub-format{ font: 600 .6875rem/1.2 var(--sj-font-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--sj-accent); }
+.pub-card-title{ margin: 0; font: 500 1.2rem/1.25 var(--sj-font-scripture); color: var(--sj-ink); }
+.pub-card-desc{ margin: 0; color: var(--sj-ink-soft); font: 400 var(--sj-text-sm)/1.55 var(--sj-font-ui); }
+.pub-card-meta{ font: 500 var(--sj-text-xs)/1.4 var(--sj-font-ui); color: var(--sj-muted); }
+.pub-empty{ color: var(--sj-muted); padding: var(--sj-space-6) 0; }
+
+/* Format tiles on the Publications hub */
+.pub-formats{ display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--sj-space-3); margin: 0 0 var(--sj-space-4); padding: 0; list-style: none; }
+.pub-format-tile{ display: grid; align-content: start; gap: .35rem; height: 100%; padding: var(--sj-space-5); border-radius: var(--sj-radius-lg); border: 1px solid var(--sj-line); background: var(--sj-surface); color: inherit !important; text-decoration: none !important; }
+.pub-format-tile:hover{ border-color: var(--sj-line-strong); background: var(--sj-surface-2); }
+.pub-format-tile strong{ font: 500 1.35rem/1.2 var(--sj-font-scripture); color: var(--sj-ink); }
+.pub-format-tile span{ color: var(--sj-ink-soft); font-size: var(--sj-text-sm); line-height: 1.5; }
+.pub-format-tile svg{ width: 26px; height: 26px; stroke: var(--sj-accent); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; margin-bottom: var(--sj-space-2); }
+
+/* Featured episode (media page) */
+.pub-feature{ display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--sj-space-6); align-items: start; }
+.pub-player{ position: relative; aspect-ratio: 16 / 9; border-radius: var(--sj-radius-lg); overflow: hidden; background: #000; }
+.pub-player img{ width: 100%; height: 100%; object-fit: cover; display: block; opacity: .92; }
+.pub-player iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pub-player-btn{
+  position: absolute; inset: 0; display: grid; place-items: center; width: 100%; border: 0; cursor: pointer;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.55)); color: #fff;
+}
+.pub-player-btn span{ display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 1.3rem; border-radius: var(--sj-radius-pill); background: rgba(10,19,34,.82); font: 600 var(--sj-text-md)/1 var(--sj-font-ui); }
+.pub-player-btn svg{ width: 18px; height: 18px; fill: currentColor; }
+.pub-player-btn:hover span{ background: #c00; }
+.pub-feature-copy h3{ margin: .35rem 0 .6rem; font: 500 clamp(1.4rem, 1.2rem + .8vw, 1.9rem)/1.2 var(--sj-font-scripture); color: var(--sj-ink); }
+.pub-feature-copy p{ color: var(--sj-ink-soft); line-height: 1.6; margin: 0 0 var(--sj-space-4); }
+.pub-note{ margin: var(--sj-space-3) 0 0; color: var(--sj-muted); font-size: var(--sj-text-xs); line-height: 1.5; }
+
+
+/* Episode list */
+.pub-episodes{ display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; border-radius: var(--sj-radius-lg); overflow: hidden; border: 1px solid var(--sj-line); background: var(--sj-line); }
+.pub-episode{ display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--sj-space-4); align-items: center; padding: var(--sj-space-3); background: var(--sj-surface); color: inherit !important; text-decoration: none !important; }
+.pub-episode:hover{ background: var(--sj-surface-2); }
+.pub-episode .pub-thumb{ border-radius: var(--sj-radius-sm); }
+.pub-episode h3{ margin: 0 0 .25rem; font: 500 1.08rem/1.3 var(--sj-font-scripture); color: var(--sj-ink); }
+.pub-episode p{ margin: .25rem 0 0; font-size: var(--sj-text-sm); line-height: 1.5; color: var(--sj-ink-soft); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 899px){
+  .pub-feature{ grid-template-columns: 1fr; }
+}
+@media (max-width: 719px){
+  html body.sj-pub :is(main.archive-page, main.authors-wrap, main.author-page, main.books-page, main.book-page .book-wrap, main.pub-page){ padding-left: var(--sj-space-4) !important; padding-right: var(--sj-space-4) !important; }
+  html body.sj-pub :is(.hub-hero, .archive-hero, .author-hero, .book-banner, .pub-head, .authors-hero){ padding: var(--sj-space-5) 0 var(--sj-space-4) !important; }
+  html body.sj-pub .support-callout{ grid-template-columns: 1fr; margin-left: var(--sj-space-4) !important; margin-right: var(--sj-space-4) !important; padding: var(--sj-space-6) !important; }
+  html body.sj-pub .support-callout .support-btn{ grid-column: 1; grid-row: auto; justify-self: start; }
+  html body.sj-pub .book-section{ padding: var(--sj-space-5) !important; }
+  .pub-section{ padding: var(--sj-space-6) 0; }
+  .pub-episode{ grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--sj-space-3); }
+  .pub-follow a{ flex: 1 1 100%; }
+}
+
+/* ---------- Articles page intro (new block above the locked Featured/Recent cards) ----------
+   Only .pub-intro* is styled here; nothing in this file targets the article cards. */
+.pub-intro{ padding: 0 0 var(--sj-space-2); }
+.pub-intro-head{ padding: var(--sj-space-6) 0 var(--sj-space-5); max-width: 46rem; }
+.pub-intro-eyebrow{ margin: 0 0 var(--sj-space-2); font: 600 var(--sj-text-xs)/1.3 var(--sj-font-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--sj-accent); }
+.pub-intro-title{ margin: 0; font: 500 clamp(2.4rem, 1.6rem + 3.6vw, 4rem)/1.04 var(--sj-font-scripture); letter-spacing: -.02em; color: var(--sj-ink); }
+.pub-intro-lede{ margin: var(--sj-space-4) 0 0; font: 400 clamp(1.05rem, 1rem + .3vw, 1.2rem)/1.6 var(--sj-font-scripture); color: var(--sj-ink-soft); max-width: 40rem; }
+.pub-intro nav.breadcrumbs{ justify-content: flex-start !important; text-align: left !important; padding-top: var(--sj-crumb-gap, 18px) !important; }
+.pub-intro .pub-subnav{ margin-bottom: 0; }
+
+/* ---------- Podcast audio (branded HTML5 player, verified RSS) ---------- */
+.pub-audio-list{ display: grid; gap: var(--sj-space-3); margin: 0; padding: 0; list-style: none; }
+.pub-audio{ display: grid; gap: .45rem; padding: var(--sj-space-4) var(--sj-space-5); border-radius: var(--sj-radius-lg); border: 1px solid var(--sj-line); background: var(--sj-surface); }
+.pub-audio.is-featured{ padding: var(--sj-space-6); border-color: var(--sj-line-strong); }
+.pub-audio-title{ margin: 0; font: 500 1.15rem/1.3 var(--sj-font-scripture); color: var(--sj-ink); }
+.pub-audio.is-featured .pub-audio-title{ font-size: clamp(1.35rem, 1.2rem + .7vw, 1.75rem); }
+.pub-audio audio{ width: 100%; margin-top: .35rem; height: 44px; }
+.pub-audio audio:focus-visible{ outline: 2px solid var(--sj-focus); outline-offset: 3px; border-radius: 22px; }
+html[data-theme="dark"] .pub-audio audio{ color-scheme: dark; }
+
+/* ---------- Articles page: Recent Articles shows two desktop rows (8 cards) ----------
+   Display only: all cards stay in the HTML for the catalog, author modal, homepage previews,
+   search and publishing automation. Card styling is untouched (this rule only hides cards 9+). */
+body.articles-page #recent-articles .recent-grid > .article-card:nth-child(n+9){ display: none !important; }

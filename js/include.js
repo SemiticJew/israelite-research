@@ -421,6 +421,6 @@
 // Load the live author article catalog after the shared includes.
 if(window.isArticlePage()) {
  const catalog=document.createElement('script');catalog.src='/js/article-catalog.js';
- catalog.onload=()=>{const recent=document.createElement('script');recent.src='/js/author-recent.js';document.head.append(recent);};
+ catalog.onload=()=>{const recent=document.createElement('script');recent.src='/js/author-recent.js';document.head.append(recent);const related=document.createElement('script');related.src='/js/article-related.js';document.head.append(related);};
  document.head.append(catalog);
 }

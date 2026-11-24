@@ -56,6 +56,8 @@
   @media(max-width:980px){.author-articles{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:700px){.author-page{padding:22px 20px 64px;overflow-x:hidden}.author-hero{margin:18px 0 32px;padding:42px 20px}.author-profile{grid-template-columns:1fr;text-align:center;justify-items:center;padding:24px 18px}.author-actions{justify-content:center}.author-section-head{display:block}.author-count{display:block;margin-top:6px}.author-articles{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/publications.css"/>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -63,7 +65,7 @@
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 </head>
-<body>
+<body class="sj-pub">
 <div id="site-header"></div>
 <main class="author-page">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -98,10 +100,10 @@
   <section aria-label="Articles by Semitic Jew">
     <div class="author-section-head">
       <h2>Articles by Semitic Jew</h2>
-      <span class="author-count">18 Articles</span>
+      <span class="author-count" data-article-count="{n} Article{s}" data-article-author="Semitic Jew">26 Articles</span>
     </div>
 
-    <div class="author-articles">
+    <div class="author-articles" data-author-articles="Semitic Jew">
 <article class="author-article-card"><a class="author-article-image" href="/articles/manufacturing-innocence.html"><img src="/images/articles/manufacturing-innocence-700x394.png" alt="Satirical cartoon of a colonist posting MINE over PRIVATE PROPERTY while saying, Relax. We’re just colonists."/></a><div class="author-article-body"><p class="article-date"><time datetime="2026-11-03">Nov 3, 2026</time></p><h2><a href="/articles/manufacturing-innocence.html">Manufacturing Innocence: The Lost Cause and America’s “Civilizing” Myth</a></h2><p>How the Lost Cause rewrote slavery, conquest became civilization, and Scripture exposes the contradiction.</p></div></article>
         <article class="author-article-card">
           <a class="author-article-image" href="/articles/defiled-bread-in-america.html"><img src="/images/articles/defiled-bread-in-america-700x394.png" alt="A Black man’s hand holding a can whose ingredient label reads Clean, Unclean, Unclean, Unclean"/></a>
@@ -272,5 +274,7 @@
 </main>
 <div id="site-footer"></div>
 <script src="/js/include.js"></script>
+<script src="/js/article-catalog.js"></script>
+<script src="/js/author-counts.js"></script>
 </body>
 </html>
