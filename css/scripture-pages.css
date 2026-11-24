@@ -27,6 +27,8 @@ body.sj-scripture .sp-crumbs.breadcrumbs{
   font: 500 var(--sj-text-xs)/1.4 var(--sj-font-ui) !important; color: var(--sj-muted);
   background: none; border: 0;
 }
+/* The global normalization in styles.css zeroes breadcrumb padding with !important; restore the shared gap. */
+html body.sj-scripture .sp-crumbs.breadcrumbs{ padding-top: var(--sj-crumb-gap, 18px) !important; }
 body.sj-scripture .sp-crumbs a{ color: var(--sj-muted) !important; font-weight: 500 !important; }
 body.sj-scripture .sp-crumbs a:hover{ color: var(--sj-ink) !important; text-decoration: underline !important; }
 body.sj-scripture .sp-crumbs .sep{ color: var(--sj-line-strong) !important; font-weight: 400 !important; }

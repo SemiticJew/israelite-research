@@ -5779,6 +5779,11 @@ html[data-theme="dark"] .breadcrumbs .current{
 
 
 /* Global breadcrumb consistency normalization */
+/* Shared breathing room between the site header and breadcrumbs that sit at the very top of the page.
+   Pages whose container already pads the top (most of the site: 22–44px) keep that; the reading-first
+   reader and the Biblia/book pages apply this gap directly (css/reader.css, css/scripture-pages.css). */
+:root{ --sj-crumb-gap: 18px; }
+
 .breadcrumbs,
 .breadcrumb,
 .crumbs{
