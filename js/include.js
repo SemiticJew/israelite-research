@@ -1,3 +1,26 @@
+// Apply the saved theme as early as possible to avoid a light/dark flash.
+// Same storage key and attribute as /js/theme-toggle.js (the single source of truth).
+(function(){
+  try {
+    var saved = localStorage.getItem('theme');
+    if(saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  } catch(e) {}
+})();
+
+// Load the brand typefaces used by the shared header/footer (same URL as index.html, so it is cached once).
+(function(){
+  var FONT_URL = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=League+Spartan:wght@400;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap';
+  if(document.querySelector('link[href*="fonts.googleapis.com"][href*="League+Spartan"][href*="Newsreader"]')) return;
+  [['preconnect','https://fonts.googleapis.com'],['preconnect','https://fonts.gstatic.com']].forEach(function(pair){
+    var l = document.createElement('link'); l.rel = pair[0]; l.href = pair[1];
+    if(pair[1].indexOf('gstatic') > -1) l.crossOrigin = 'anonymous';
+    document.head.appendChild(l);
+  });
+  var css = document.createElement('link');
+  css.rel = 'stylesheet'; css.href = FONT_URL; css.id = 'sj-brand-fonts';
+  document.head.appendChild(css);
+})();
+
 // Detect article pages
 (function(){
   window.isArticlePage = function(){
@@ -109,39 +132,6 @@
 })();
 
 
-// Mobile Ellipsis Navigation
-(function(){
-  function wireMobileNav(){
-    const header = document.getElementById("site-header");
-    if (!header) return;
-
-    const btn = header.querySelector(".mobile-menu-toggle");
-    if (!btn || btn.dataset.wired === "1") return;
-
-    btn.dataset.wired = "1";
-
-    btn.addEventListener("click", function(){
-      const open = header.classList.toggle("mobile-nav-open");
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-
-    document.addEventListener("click", function(e){
-      if (!header.classList.contains("mobile-nav-open")) return;
-      if (header.contains(e.target)) return;
-      header.classList.remove("mobile-nav-open");
-      btn.setAttribute("aria-expanded", "false");
-    });
-
-    document.addEventListener("keydown", function(e){
-      if (e.key !== "Escape") return;
-      header.classList.remove("mobile-nav-open");
-      btn.setAttribute("aria-expanded", "false");
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", wireMobileNav);
-  setTimeout(wireMobileNav, 250);
-})();
 
 
 // Google Analytics / Google tag
@@ -261,194 +251,147 @@
 
 
 
-/* Mobile navigation bootstrap */
+/* Site navigation controller (partials/header.html, "sjh-" markup)
+   Desktop: disclosure dropdowns (click/tap, hover with intent, Escape, outside click).
+   <=1000px: drawer with accordion sections, focus management, Escape, outside tap.
+   Replaces the former mobile-ellipsis, mobile-bootstrap, dropdown-state and submenu modules. */
 (function(){
-  function setupMobileNav(){
-    const header = document.getElementById('site-header');
-    if(!header || header.dataset.mobileNavReady === 'true') return;
+  var MOBILE_QUERY = '(max-width: 1000px)';
 
-    const btn = header.querySelector('.mobile-menu-toggle');
-    const nav = header.querySelector('nav.primary');
-    if(!btn || !nav) return;
+  function setupSiteNav(){
+    var host = document.getElementById('site-header');
+    var root = host && host.querySelector('[data-sjh]');
+    if(!root || root.dataset.navReady === 'true') return;
+    root.dataset.navReady = 'true';
 
-    header.dataset.mobileNavReady = 'true';
+    var mq = window.matchMedia(MOBILE_QUERY);
+    var menuBtn = root.querySelector('.sjh-menu-btn');
+    var nav = root.querySelector('.sjh-nav');
+    var items = Array.prototype.slice.call(root.querySelectorAll('.sjh-has-menu'));
+    var hoverTimer = null;
+    var lastPointer = '';
 
-    function closeMenu(){
-      header.classList.remove('mobile-open');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', 'Open navigation menu');
+    function toggleOf(item){ return item.querySelector('.sjh-toggle'); }
+    function setItem(item, open){
+      item.classList.toggle('is-open', open);
+      toggleOf(item).setAttribute('aria-expanded', String(open));
     }
-
-    btn.addEventListener('click', function(e){
-      const open = header.classList.toggle('mobile-open');
-      btn.setAttribute('aria-expanded', String(open));
-      btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-      // Keyboard activation (detail === 0): the menu precedes the button in the DOM,
-      // so move focus into it rather than leaving keyboard users behind it.
-      if(open && e.detail === 0){
-        const first = nav.querySelector('a');
+    function closeItems(except){
+      items.forEach(function(item){ if(item !== except) setItem(item, false); });
+    }
+    function drawerOpen(){ return root.classList.contains('is-drawer-open'); }
+    function setDrawer(open, focusFirst){
+      root.classList.toggle('is-drawer-open', open);
+      if(menuBtn){
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menuBtn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      }
+      if(!open) closeItems();
+      if(open && focusFirst){
+        var first = nav.querySelector('a, button');
         if(first) first.focus();
       }
+    }
+
+    root.addEventListener('pointerdown', function(e){ lastPointer = e.pointerType || ''; }, true);
+
+    if(menuBtn){
+      menuBtn.addEventListener('click', function(e){
+        // detail === 0 means keyboard activation: move focus into the drawer.
+        setDrawer(!drawerOpen(), e.detail === 0);
+      });
+    }
+
+    items.forEach(function(item){
+      var toggle = toggleOf(item);
+      toggle.addEventListener('click', function(){
+        var isOpen = item.classList.contains('is-open');
+        // A desktop mouse user already opened it by hovering; a click should not snap it shut.
+        var open = (!mq.matches && lastPointer === 'mouse') ? true : !isOpen;
+        closeItems(item);
+        setItem(item, open);
+      });
+      item.addEventListener('mouseenter', function(e){
+        if(mq.matches || (e.pointerType && e.pointerType !== 'mouse')) return;
+        clearTimeout(hoverTimer);
+        closeItems(item);
+        setItem(item, true);
+      });
+      item.addEventListener('mouseleave', function(){
+        if(mq.matches) return;
+        clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(function(){
+          if(!item.contains(document.activeElement)) setItem(item, false);
+        }, 200);
+      });
+      item.addEventListener('focusout', function(e){
+        if(mq.matches) return;
+        if(!item.contains(e.relatedTarget)) setItem(item, false);
+      });
     });
 
-    // Close the open mobile menu once keyboard focus leaves the header entirely.
-    header.addEventListener('focusout', function(e){
-      if(!window.matchMedia('(max-width: 920px)').matches) return;
-      if(!header.classList.contains('mobile-open')) return;
-      if(e.relatedTarget && !header.contains(e.relatedTarget)) closeMenu();
+    // Leaving the header with the keyboard closes the drawer on small screens.
+    root.addEventListener('focusout', function(e){
+      if(!mq.matches || !drawerOpen()) return;
+      if(e.relatedTarget && !root.contains(e.relatedTarget)) setDrawer(false);
     });
 
-    nav.addEventListener('click', function(e){
-      const link = e.target.closest('a');
-      if(!link) return;
-      if(link.classList.contains('nav-dd-toggle')) return;
-      if(window.matchMedia('(max-width: 920px)').matches){
-        header.classList.remove('mobile-open');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label', 'Open navigation menu');
+    document.addEventListener('keydown', function(e){
+      if(e.key !== 'Escape' && e.key !== 'Esc') return;
+      var openItem = items.filter(function(item){ return item.classList.contains('is-open'); })[0];
+      if(openItem){
+        var wasInside = openItem.contains(document.activeElement);
+        setItem(openItem, false);
+        if(wasInside || !mq.matches) toggleOf(openItem).focus();
+        return;
+      }
+      if(drawerOpen()){
+        var focusWasInMenu = nav.contains(document.activeElement);
+        setDrawer(false);
+        if(focusWasInMenu && menuBtn) menuBtn.focus();
       }
     });
 
     document.addEventListener('click', function(e){
-      if(!window.matchMedia('(max-width: 920px)').matches) return;
-      if(!header.classList.contains('mobile-open')) return;
-      if(header.contains(e.target)) return;
-      header.classList.remove('mobile-open');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', 'Open navigation menu');
+      if(root.contains(e.target)) return;
+      closeItems();
+      if(drawerOpen()) setDrawer(false);
     });
 
-    document.addEventListener('keydown', function(e){
-      if(e.key !== 'Escape') return;
-      const focusWasInMenu = nav.contains(document.activeElement);
-      const wasOpen = header.classList.contains('mobile-open');
-      closeMenu();
-      if(wasOpen && focusWasInMenu) btn.focus();
+    nav.addEventListener('click', function(e){
+      var link = e.target.closest('a[href]');
+      if(link && mq.matches) setDrawer(false);
     });
-  }
 
-  document.addEventListener('DOMContentLoaded', setupMobileNav);
-  window.addEventListener('load', setupMobileNav);
+    function onBreakpointChange(){ clearTimeout(hoverTimer); closeItems(); setDrawer(false); }
+    if(mq.addEventListener) mq.addEventListener('change', onBreakpointChange);
+    else if(mq.addListener) mq.addListener(onBreakpointChange);
 
-  const mo = new MutationObserver(setupMobileNav);
-  mo.observe(document.documentElement, {childList:true, subtree:true});
-})();
+    // Mark the current page and its section.
+    var here = location.pathname.replace(/\/index\.html$/, '/');
+    Array.prototype.forEach.call(nav.querySelectorAll('a[href]'), function(a){
+      var path = new URL(a.getAttribute('href'), location.origin).pathname.replace(/\/index\.html$/, '/');
+      if(path !== here) return;
+      a.setAttribute('aria-current', 'page');
+      var item = a.closest('.sjh-item');
+      if(item) item.classList.add('is-current');
+    });
 
-
-/* Header dropdown accessibility state */
-(function(){
-  function setupHeaderDropdowns(){
-    const header = document.getElementById('site-header');
-    if(!header || header.dataset.dropdownsReady === 'true') return;
-
-    const dropdowns = Array.from(header.querySelectorAll('.nav-dd'));
-    if(!dropdowns.length) return;
-
-    header.dataset.dropdownsReady = 'true';
-
-    const isMobile = () => window.matchMedia('(max-width: 920px)').matches;
-
-    function setOpen(dd, open){
-      const toggle = dd.querySelector('.nav-dd-toggle');
-      dd.classList.toggle('is-open', Boolean(open));
-      if(toggle) toggle.setAttribute('aria-expanded', String(Boolean(open)));
+    // Reflect the active theme on the switcher buttons (theme-toggle.js sets html[data-theme]).
+    function syncThemeButtons(){
+      var theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      Array.prototype.forEach.call(root.querySelectorAll('.theme-btn[data-theme]'), function(btn){
+        btn.setAttribute('aria-pressed', String(btn.getAttribute('data-theme') === theme));
+      });
     }
-
-    dropdowns.forEach(dd => {
-      const toggle = dd.querySelector('.nav-dd-toggle');
-      if(!toggle) return;
-
-      toggle.setAttribute('aria-expanded', dd.classList.contains('mobile-subopen') ? 'true' : 'false');
-
-      dd.addEventListener('mouseenter', function(){
-        if(isMobile()) return;
-        setOpen(dd, true);
-      });
-
-      dd.addEventListener('mouseleave', function(){
-        if(isMobile()) return;
-        setOpen(dd, false);
-      });
-
-      dd.addEventListener('focusin', function(){
-        if(isMobile()) return;
-        setOpen(dd, true);
-      });
-
-      dd.addEventListener('focusout', function(){
-        if(isMobile()) return;
-        window.setTimeout(function(){
-          if(!dd.contains(document.activeElement)) setOpen(dd, false);
-        }, 0);
-      });
-    });
-
-    window.addEventListener('resize', function(){
-      dropdowns.forEach(dd => {
-        if(isMobile()){
-          setOpen(dd, dd.classList.contains('mobile-subopen'));
-        }else{
-          dd.classList.remove('mobile-subopen');
-          setOpen(dd, false);
-        }
-      });
-    });
+    syncThemeButtons();
+    new MutationObserver(syncThemeButtons).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
   }
 
-  document.addEventListener('DOMContentLoaded', setupHeaderDropdowns);
-  window.addEventListener('load', setupHeaderDropdowns);
-
-  const mo = new MutationObserver(setupHeaderDropdowns);
-  mo.observe(document.documentElement, {childList:true, subtree:true});
-})();
-
-
-/* Mobile submenu accordion behavior */
-(function(){
-  function setupMobileSubmenus(){
-    const header = document.getElementById('site-header');
-    if(!header || header.dataset.mobileSubmenusReady === 'true') return;
-
-    const dropdowns = header.querySelectorAll('.nav-dd');
-    if(!dropdowns.length) return;
-
-    header.dataset.mobileSubmenusReady = 'true';
-
-    dropdowns.forEach(dd => {
-      const toggle = dd.querySelector('.nav-dd-toggle');
-      if(!toggle) return;
-
-      toggle.setAttribute('aria-expanded', 'false');
-
-      toggle.addEventListener('click', function(e){
-        if(!window.matchMedia('(max-width: 920px)').matches) return;
-
-        const rect = toggle.getBoundingClientRect();
-        if(e.clientX && e.clientX < rect.right - 44) return;
-
-        e.preventDefault();
-
-        const willOpen = !dd.classList.contains('mobile-subopen');
-
-        dropdowns.forEach(other => {
-          if(other !== dd){
-            other.classList.remove('mobile-subopen');
-            const otherToggle = other.querySelector('.nav-dd-toggle');
-            if(otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        dd.classList.toggle('mobile-subopen', willOpen);
-        toggle.setAttribute('aria-expanded', String(willOpen));
-      });
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', setupMobileSubmenus);
-  window.addEventListener('load', setupMobileSubmenus);
-
-  const mo = new MutationObserver(setupMobileSubmenus);
-  mo.observe(document.documentElement, {childList:true, subtree:true});
+  document.addEventListener('DOMContentLoaded', setupSiteNav);
+  window.addEventListener('load', setupSiteNav);
+  var mo = new MutationObserver(setupSiteNav);
+  mo.observe(document.documentElement, { childList:true, subtree:true });
 })();
 
 
