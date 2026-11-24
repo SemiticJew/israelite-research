@@ -260,3 +260,18 @@ html[data-theme="dark"] .pub-audio audio{ color-scheme: dark; }
    Display only: all cards stay in the HTML for the catalog, author modal, homepage previews,
    search and publishing automation. Card styling is untouched (this rule only hides cards 9+). */
 body.articles-page #recent-articles .recent-grid > .article-card:nth-child(n+9){ display: none !important; }
+
+/* ---------- Articles page: Explore the Research (compact topic links below Recent Articles) ---------- */
+.pub-explore{ margin: var(--sj-space-10) 0 var(--sj-space-4); padding: var(--sj-space-6) var(--sj-space-6) var(--sj-space-5); border-radius: var(--sj-radius-lg); background: var(--sj-paper); border: 1px solid var(--sj-line); font-family: var(--sj-font-ui); }
+.pub-explore-title{ margin: 0 0 var(--sj-space-4); font: 500 1.45rem/1.2 var(--sj-font-scripture); color: var(--sj-ink); letter-spacing: -.01em; }
+.pub-explore-topics{ display: flex; flex-wrap: wrap; gap: var(--sj-space-2); margin: 0 0 var(--sj-space-5); padding: 0; list-style: none; }
+.pub-explore-topics a{ display: inline-flex; align-items: center; min-height: 40px; padding: 0 1rem; border-radius: var(--sj-radius-pill); border: 1px solid var(--sj-line-strong); background: var(--sj-surface); color: var(--sj-ink) !important; font: 600 var(--sj-text-sm)/1 var(--sj-font-ui); text-decoration: none !important; transition: border-color var(--sj-fast) var(--sj-ease), color var(--sj-fast) var(--sj-ease); }
+.pub-explore-topics a:hover{ border-color: var(--sj-accent-fill); color: var(--sj-accent) !important; }
+.pub-explore-more{ display: grid; gap: .45rem; margin: 0; padding-top: var(--sj-space-4); border-top: 1px solid var(--sj-line); }
+.pub-explore-more > div{ display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .9rem; }
+.pub-explore-more dt{ min-width: 5.5rem; font: 600 .6875rem/1.4 var(--sj-font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--sj-accent); }
+.pub-explore-more dd{ margin: 0; display: flex; flex-wrap: wrap; gap: .25rem .9rem; }
+.pub-explore-more a{ font: 500 var(--sj-text-sm)/1.6 var(--sj-font-ui); color: var(--sj-ink-soft) !important; text-decoration: none !important; }
+.pub-explore-more a:hover{ color: var(--sj-ink) !important; text-decoration: underline !important; }
+.pub-explore :is(a):focus-visible{ outline: 2px solid var(--sj-focus) !important; outline-offset: 3px; border-radius: 6px; }
+@media (max-width: 719px){ .pub-explore{ padding: var(--sj-space-5) var(--sj-space-4); } .pub-explore-more dt{ min-width: 100%; } }
