@@ -200,6 +200,10 @@
   }
 
   function addHighlightButtons(){
+    // The reading-first reader (body.sj-reader) offers highlights in its verse action menu and
+    // stores them through window.SemJHighlights with this same format, so no per-verse buttons.
+    if(document.body && document.body.classList.contains("sj-reader")) return;
+
     const ctx = currentChapterContext();
     if(!ctx) return;
 

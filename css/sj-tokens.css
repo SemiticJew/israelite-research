@@ -1,0 +1,98 @@
+/* sj-tokens.css — Semitic Jew design tokens (reader-first).
+   Colours, type, spacing and motion shared by the Scripture reader.
+   Light is the default; html[data-theme="dark"] (set by /js/theme-toggle.js) switches palettes.
+   Palette is aligned with the site header (partials/header.html). */
+:root{
+  /* Type */
+  --sj-font-scripture: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sj-font-display: "League Spartan", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sj-font-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --sj-text-xs: .75rem;
+  --sj-text-sm: .875rem;
+  --sj-text-md: 1rem;
+  --sj-text-lg: 1.125rem;
+  --sj-scripture-size: clamp(1.1875rem, 1.05rem + .55vw, 1.375rem);
+  --sj-scripture-leading: 1.72;
+  --sj-measure: 36rem;            /* ~66–72 characters of Scripture per line */
+
+  /* Space (4px grid) */
+  --sj-space-1: .25rem; --sj-space-2: .5rem; --sj-space-3: .75rem; --sj-space-4: 1rem;
+  --sj-space-5: 1.25rem; --sj-space-6: 1.5rem; --sj-space-8: 2rem; --sj-space-10: 2.5rem;
+  --sj-space-12: 3rem; --sj-space-16: 4rem;
+
+  /* Shape */
+  --sj-radius-sm: 8px; --sj-radius-md: 12px; --sj-radius-lg: 18px; --sj-radius-pill: 999px;
+  --sj-tap: 44px;                  /* minimum touch target */
+
+  /* Motion */
+  --sj-ease: cubic-bezier(.2,.7,.2,1);
+  --sj-fast: 140ms; --sj-med: 240ms;
+
+  /* Layers */
+  --sj-z-bar: 60; --sj-z-sheet: 1200; --sj-z-scrim: 1190; --sj-z-toast: 1300;
+
+  /* Light palette — warm paper, navy ink, brand orange */
+  --sj-paper: #FBF8F3;
+  --sj-surface: #FFFFFF;
+  --sj-surface-2: #F4EFE7;
+  --sj-ink: #18212D;
+  --sj-ink-soft: #3B4757;
+  --sj-muted: #66727F;
+  --sj-line: #E6DFD3;
+  --sj-line-strong: #D5CBBB;
+  --sj-brand: #054A91;
+  --sj-accent: #C25E00;           /* orange darkened to 4.5:1 on paper for text */
+  --sj-accent-fill: #F17300;
+  --sj-on-accent: #FFFFFF;
+  --sj-focus: #054A91;
+  --sj-hover: rgba(24,33,45,.06);
+  --sj-selected: rgba(5,74,145,.09);
+  --sj-scrim: rgba(12,18,28,.38);
+  --sj-shadow-1: 0 1px 2px rgba(24,33,45,.06), 0 1px 1px rgba(24,33,45,.04);
+  --sj-shadow-2: 0 12px 32px -12px rgba(24,33,45,.28), 0 2px 6px rgba(24,33,45,.06);
+  --sj-shadow-3: 0 24px 64px -16px rgba(24,33,45,.38);
+
+  /* Verse highlight categories (same four the app already stores) */
+  --sj-hl-key: rgba(242,184,7,.30);
+  --sj-hl-law: rgba(5,74,145,.14);
+  --sj-hl-prophecy: rgba(124,58,237,.14);
+  --sj-hl-question: rgba(16,150,110,.16);
+  --sj-hl-key-dot: #E0A800; --sj-hl-law-dot: #2F6DB5; --sj-hl-prophecy-dot: #7C3AED; --sj-hl-question-dot: #12966E;
+
+  color-scheme: light;
+}
+
+html[data-theme="dark"]{
+  --sj-paper: #0A1322;
+  --sj-surface: #0F1A2B;
+  --sj-surface-2: #142236;
+  --sj-ink: #ECE7DE;               /* warm off-white: softer than pure white for long reading */
+  --sj-ink-soft: #C9CFD9;
+  --sj-muted: #9AA7B8;
+  --sj-line: #22324A;
+  --sj-line-strong: #2E4262;
+  --sj-brand: #9DBCE0;
+  --sj-accent: #FFA552;
+  --sj-accent-fill: #F17300;
+  --sj-on-accent: #0A1322;
+  --sj-focus: #9DBCE0;
+  --sj-hover: rgba(236,231,222,.07);
+  --sj-selected: rgba(157,188,224,.13);
+  --sj-scrim: rgba(0,0,0,.55);
+  --sj-shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --sj-shadow-2: 0 14px 36px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.35);
+  --sj-shadow-3: 0 28px 70px -16px rgba(0,0,0,.8);
+
+  --sj-hl-key: rgba(242,184,7,.22);
+  --sj-hl-law: rgba(110,160,225,.20);
+  --sj-hl-prophecy: rgba(167,139,250,.20);
+  --sj-hl-question: rgba(52,211,153,.17);
+  --sj-hl-key-dot: #F2C230; --sj-hl-law-dot: #7FAEE6; --sj-hl-prophecy-dot: #B49CFB; --sj-hl-question-dot: #4FD8A6;
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce){
+  :root{ --sj-fast: 0ms; --sj-med: 0ms; }
+}

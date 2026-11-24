@@ -127,7 +127,9 @@
     const shortcuts = document.querySelector(".reader-shortcuts-button");
     const share = document.querySelector(".reader-share-shell");
 
-    if(jump){
+    if(window.SJReader && window.SJReader.mount("offline", shell)){
+      // Reading-first reader: Study drawer → Chapter tools.
+    }else if(jump){
       jump.insertAdjacentElement("afterend", shell);
     }else if(shortcuts){
       shortcuts.insertAdjacentElement("afterend", shell);
@@ -161,7 +163,7 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
 
     let attempts = 0;
 

@@ -16,6 +16,7 @@
   }
 
   function focusSearch(){
+    if(window.SJReader && window.SJReader.openSearch){ window.SJReader.openSearch(); return; }
     const input = document.getElementById("reader-chapter-search");
     if(input){
       input.focus();
@@ -43,6 +44,9 @@
 
         <dl>
           <div><dt>/</dt><dd>Focus chapter search</dd></div>
+          <div><dt>[ ]</dt><dd>Previous / next chapter</dd></div>
+          <div><dt>↑ ↓</dt><dd>Move between verses (in the text)</dd></div>
+          <div><dt>enter</dt><dd>Verse actions for the focused verse</dd></div>
           <div><dt>n</dt><dd>Next search match</dd></div>
           <div><dt>p</dt><dd>Previous search match</dd></div>
           <div><dt>+</dt><dd>Increase reader text</dd></div>
@@ -82,7 +86,9 @@
     const share = document.querySelector(".reader-share-shell");
     const search = document.querySelector(".reader-search-shell");
 
-    if(share){
+    if(window.SJReader && window.SJReader.mount("shortcuts", btn)){
+      btn.textContent = "Show keyboard shortcuts";
+    }else if(share){
       share.insertAdjacentElement("afterend", btn);
     }else if(search){
       search.insertAdjacentElement("afterend", btn);
@@ -92,9 +98,11 @@
   }
 
   function init(){
-    if(!document.body.classList.contains("reader-page")) return;
+    if(!document.body.matches(".reader-page, .sj-reader")) return;
 
     createHelp();
+
+    if(window.SJReader){ createButton(); }
 
     let attempts = 0;
     const wait = setInterval(function(){

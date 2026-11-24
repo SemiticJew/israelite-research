@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v185';
+const CACHE_VERSION = 'sj-pwa-v186';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -41,6 +41,17 @@ const APP_SHELL_ASSETS = [
   '/js/reader-offline-chapter.js',
   '/js/reader-verse-jump.js',
   '/js/reader-deep-link.js',
+  '/js/reader-core.js',
+  '/js/reader-books.js',
+  '/js/canon-strongs.js',
+  '/js/xref-hover.js',
+  '/js/theme-toggle.js',
+  '/js/shims.js',
+  '/css/sj-tokens.css',
+  '/css/reader.css',
+  '/tanakh/chapter.html',
+  '/newtestament/chapter.html',
+  '/apocrypha/chapter.html',
   '/js/app-bookmarks.js',
   '/js/app-highlights.js',
   '/js/app-expositions.js',
@@ -156,7 +167,15 @@ async function networkFirst(request){
     return fresh;
   }catch(error){
     const cached = await caches.match(request);
-    return cached || fallbackResponseFor(request);
+    if(cached) return cached;
+    // Offline on a reader chapter that was never opened online: serve the reader shell, which then
+    // renders any copy saved with "Save Offline" (or explains that the chapter isn't saved).
+    const url = new URL(request.url);
+    if(isHtmlRequest(request) && /^\/(tanakh|newtestament|apocrypha)\/chapter\.html$/.test(url.pathname)){
+      const shell = await caches.match(url.pathname, { ignoreSearch: true });
+      if(shell) return shell;
+    }
+    return fallbackResponseFor(request);
   }
 }
 
