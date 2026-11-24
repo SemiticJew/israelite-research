@@ -729,23 +729,32 @@ html[data-theme="dark"] .search-page .result-item:hover{
   <div id="site-footer"></div>
 
   <script>
-    const state={all:[],filtered:[],page:1,perPage:20,query:'',type:'',sort:'newest',tags:new Set(),active:{types:new Set(),tags:new Set()},dateFrom:'',dateTo:''};
+    const state={all:[],filtered:[],page:1,perPage:20,query:'',type:'',sort:'',tags:new Set(),active:{types:new Set(),tags:new Set()},dateFrom:'',dateTo:''};
     const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
     const resultsEl=$('#results'),metaEl=$('#resultsMeta'),pagerEl=$('#pager');
     const facetTypeEl=$('#facetType'),facetTagsEl=$('#facetTags'),sortEl=$('#sort'),inputEl=$('#q');
     const dateFromEl=$('#dateFrom'),dateToEl=$('#dateTo');
 
     function normalize(s){return (s||'').toString().toLowerCase()}
-    function tokenize(str){return normalize(str).match(/\\"[^\\"]+\\"|[^\\s]+/g)||[]}
+    // Tokens: "quoted phrases", -exclusions (incl. -"phrases") and plain words. Curly quotes count as straight quotes.
+    function tokenize(str){return normalize(str).replace(/[“”„‟″]/g,'"').match(/-?"[^"]+"|[^\s"]+/g)||[]}
     function stripQuotes(s){return s.startsWith('"')&&s.endsWith('"')?s.slice(1,-1):s}
+    // Filler words match nearly every record, so they never earn a score on their own.
+    const STOPWORDS=new Set(['a','an','and','are','as','at','be','by','for','from','in','is','it','of','on','or','the','to','was','with']);
+    function positiveTerms(terms){const all=terms.filter(t=>!t.startsWith('-')).map(stripQuotes).map(t=>t.trim()).filter(Boolean);const content=all.filter(t=>!STOPWORDS.has(t));return content.length?content:all}
     function levenshtein(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++){for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}}return d[m][n]}
-    function fuzzy(term,word){if(term.length<4)return word.includes(term);return word===term||word.includes(term)||levenshtein(term,word)<=1}
+    // Typo tolerance (one edit) only for words of 5+ letters, so short nonsense cannot fuzzy-match real words.
+    function fuzzy(term,word){if(term.length<5)return word.includes(term);return word===term||word.includes(term)||(Math.abs(term.length-word.length)<=1&&levenshtein(term,word)<=1)}
     function score(doc,terms){let s=0;const title=normalize(doc.title),ex=normalize(doc.excerpt),tg=(doc.tags||[]).map(normalize);const joined=terms.filter(t=>t.startsWith('"')&&t.endsWith('"')).map(stripQuotes);
-      for(const t of terms){if(t.startsWith('-'))continue;const term=stripQuotes(t);if(!term)continue;if(title.includes(term))s+=12;if(tg.some(x=>x.includes(term)))s+=7;if(ex.includes(term))s+=3;const words=new Set((title+' '+ex+' '+tg.join(' ')).split(/[^a-z0-9]+/).filter(Boolean));for(const w of words){if(fuzzy(term,w))s+=2}}
+      const words=new Set((title+' '+ex+' '+tg.join(' ')).split(/[^a-z0-9]+/).filter(Boolean));
+      for(const term of positiveTerms(terms)){if(title.includes(term))s+=12;if(tg.some(x=>x.includes(term)))s+=7;if(ex.includes(term))s+=3;if(!term.includes(' ')){for(const w of words){if(fuzzy(term,w))s+=2}}}
       for(const p of joined){if(title.includes(p))s+=10;if(ex.includes(p))s+=6}return s}
+    const byDate=(a,b)=>(Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0);
+    // An explicit ?sort= wins; otherwise a search defaults to relevance and browsing to newest.
+    function effectiveSort(terms){return state.sort||(positiveTerms(terms).length?'relevance':'newest')}
 
     function apply(){
-      const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))));
+      const terms=tokenize(state.query);const excludes=new Set(terms.filter(t=>t.startsWith('-')).map(t=>stripQuotes(t.slice(1))).filter(Boolean));
       let pool=state.all.filter(d=>{
         if(state.type && d.type!==state.type)return false;
         if(state.active.types.size && !state.active.types.has(d.type))return false;
@@ -755,11 +764,13 @@ html[data-theme="dark"] .search-page .result-item:hover{
         if(excludes.size){const hay=(normalize(d.title)+' '+normalize(d.excerpt)+' '+(d.tags||[]).map(normalize).join(' '));for(const ex of excludes){if(hay.includes(ex))return false}}
         return true
       });
-      if(terms.length){pool=pool.map(d=>({...d,_score:score(d,terms)}))}
-      switch(state.sort){
+      // With real search words, keep only records that actually match (score > 0).
+      if(positiveTerms(terms).length){pool=pool.map(d=>({...d,_score:score(d,terms)})).filter(d=>d._score>0)}
+      const sort=effectiveSort(terms);sortEl.value=sort;
+      switch(sort){
         case 'az': pool.sort((a,b)=>a.title.localeCompare(b.title)); break;
-        case 'relevance': pool.sort((a,b)=>(b._score||0)-(a._score||0)); break;
-        default: pool.sort((a,b)=>(Date.parse(b.date||'')||0)-(Date.parse(a.date||'')||0));
+        case 'relevance': pool.sort((a,b)=>((b._score||0)-(a._score||0))||byDate(a,b)||a.title.localeCompare(b.title)); break;
+        default: pool.sort(byDate);
       }
       state.filtered=pool;state.page=1;render()
     }
@@ -818,7 +829,7 @@ html[data-theme="dark"] .search-page .result-item:hover{
       const p=new URLSearchParams(location.search);
       state.query=p.get('q')||'';
       state.type=p.get('type')||'';
-      state.sort=p.get('sort')||'newest';
+      const sortParam=p.get('sort')||'';state.sort=['newest','relevance','az'].includes(sortParam)?sortParam:'';
       state.perPage=parseInt(p.get('pp')||'20',10);
       state.page=parseInt(p.get('page')||'1',10);
       state.dateFrom=p.get('from')||'';
@@ -827,7 +838,7 @@ html[data-theme="dark"] .search-page .result-item:hover{
       state.active.tags=new Set(tags);
       const tset=(p.get('types')||'').split(',').filter(Boolean);
       state.active.types=new Set(tset);
-      inputEl.value=state.query;sortEl.value=state.sort;dateFromEl.value=state.dateFrom;dateToEl.value=state.dateTo;
+      inputEl.value=state.query;sortEl.value=state.sort||'newest';dateFromEl.value=state.dateFrom;dateToEl.value=state.dateTo;
       $$('.tabs .tab').forEach(btn=>btn.setAttribute('aria-selected', String((btn.dataset.type||'')===state.type)));
     }
 
@@ -835,7 +846,7 @@ html[data-theme="dark"] .search-page .result-item:hover{
       const p=new URLSearchParams();
       if(state.query)p.set('q',state.query);
       if(state.type)p.set('type',state.type);
-      if(state.sort!=='newest')p.set('sort',state.sort);
+      if(state.sort)p.set('sort',state.sort);
       if(state.page>1)p.set('page',String(state.page));
       if(state.perPage!==20)p.set('pp',String(state.perPage));
       if(state.active.types.size)p.set('types',[...state.active.types].join(','));
@@ -868,7 +879,7 @@ html[data-theme="dark"] .search-page .result-item:hover{
       clearFiltersBtn.addEventListener('click',()=>{
         state.query='';
         state.type='';
-        state.sort='newest';
+        state.sort='';
         state.page=1;
         state.dateFrom='';
         state.dateTo='';

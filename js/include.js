@@ -110,7 +110,8 @@
 
 // Load Theme Toggle Globally
 (function(){
-  if (document.getElementById("theme-toggle-loader")) return;
+  // Pages such as the Bible readers already include <script src="/js/theme-toggle.js">; never load it twice.
+  if (document.getElementById("theme-toggle-loader") || document.querySelector('script[src^="/js/theme-toggle.js"]')) return;
 
   const s = document.createElement("script");
   s.src = "/js/theme-toggle.js";

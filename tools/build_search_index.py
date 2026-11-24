@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from pathlib import Path
 from html.parser import HTMLParser
+import argparse
 import json
+import sys
 import re
 from datetime import datetime
 
@@ -215,7 +217,28 @@ def should_include(path):
 
     return True
 
-def build():
+def load_curated_tags(path):
+    """Return {url: tags} from an existing index so hand-curated tags survive a rebuild.
+
+    A missing index is fine (first build). An unreadable one is an error: rebuilding
+    over it would silently discard every curated tag.
+    """
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"Refusing to rebuild: existing index {path} is unreadable ({exc}).")
+    if not isinstance(data, list):
+        raise SystemExit(f"Refusing to rebuild: existing index {path} is not a list.")
+    curated = {}
+    for item in data:
+        if isinstance(item, dict) and item.get("url") and isinstance(item.get("tags"), list):
+            curated[item["url"]] = list(item["tags"])
+    return curated
+
+def build(curated_tags=None):
+    curated_tags = curated_tags or {}
     files = []
 
     for page in STATIC_PAGES:
@@ -255,7 +278,8 @@ def build():
             "image": image_for(parser),
             "date": date_for(parser, rel),
             "excerpt": excerpt,
-            "tags": sorted(set(tags_for(title, excerpt, rel) + keyword_tags(parser))),
+            # Existing records keep their tags exactly as curated; only new pages get generated tags.
+            "tags": curated_tags[url] if url in curated_tags else sorted(set(tags_for(title, excerpt, rel) + keyword_tags(parser))),
         })
 
     def sort_key(item):
@@ -263,9 +287,36 @@ def build():
         return (d, item.get("title", ""))
 
     items.sort(key=sort_key, reverse=True)
+    return items
 
-    OUT.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n")
-    print(f"Wrote {OUT} with {len(items)} records")
+def main(argv=None):
+    global ROOT, OUT
+    ap = argparse.ArgumentParser(description="Rebuild search-index.json, preserving curated tags.")
+    ap.add_argument("--root", default=".", help="site root (default: .)")
+    ap.add_argument("--out", default=None, help="output file (default: <root>/search-index.json)")
+    ap.add_argument("--existing", default=None,
+                    help="index whose tags are preserved (default: the --out file)")
+    args = ap.parse_args(argv)
+
+    ROOT = Path(args.root)
+    OUT = Path(args.out) if args.out else ROOT / "search-index.json"
+    existing = Path(args.existing) if args.existing else OUT
+
+    curated = load_curated_tags(existing)
+    items = build(curated)
+
+    # Safety: never replace a populated index with an empty or much smaller one.
+    if not items:
+        raise SystemExit("Refusing to write an empty search index.")
+    if curated and len(items) < len(curated) * 0.8:
+        raise SystemExit(f"Refusing to write: {len(items)} records vs {len(curated)} before (over 20% drop).")
+
+    lost = sorted(u for u in curated if u not in {i["url"] for i in items})
+    OUT.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    kept = sum(1 for i in items if i["url"] in curated)
+    print(f"Wrote {OUT} with {len(items)} records ({kept} kept curated tags, {len(items) - kept} new)")
+    if lost:
+        print("Pages no longer present (removed from index): " + ", ".join(lost))
 
 if __name__ == "__main__":
-    build()
+    main()
