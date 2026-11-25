@@ -38,7 +38,25 @@ STATIC_PAGES = [
     "apocrypha.html",
     "ologies.html",
     "black-history-biblical-identity.html",
+    "encyclopedia.html",
+    "biblical_references.html",
+    "israelite-catechism.html",
+    "extra-biblical-sources.html",
+    "bible-summaries.html",
+    "study-guides.html",
+    "study-guides/genesis-1.html",
 ]
+
+# Research-library record types (shown as filters on /search.html).
+RESOURCE_PAGES = {
+    "biblical_references.html",
+    "dietary-laws.html",
+    "israelite-catechism.html",
+    "extra-biblical-sources.html",
+    "bible-summaries.html",
+    "black-history-biblical-identity.html",
+}
+ENCYCLOPEDIA_JSON = "data/encyclopedia.json"
 
 TAG_WORDS = {
     "logic": "logic",
@@ -130,6 +148,14 @@ def type_for(path):
     p = str(path).replace("\\", "/")
     if p.startswith("articles/"):
         return "Article"
+    if p == "ologies.html" or p.startswith("ologies/"):
+        return "Ology"
+    if p == "encyclopedia.html":
+        return "Encyclopedia"
+    if p == "study-guides.html" or p.startswith("study-guides/"):
+        return "Study Guide"
+    if p in RESOURCE_PAGES:
+        return "Resource"
     if p.startswith("authors/"):
         return "Page"
     if "map" in p or "region" in p:
@@ -198,6 +224,51 @@ def excerpt_for(parser):
     text = clean(" ".join(parser.text_chunks))
     return text[:220] + ("…" if len(text) > 220 else "")
 
+def encyclopedia_entries():
+    path = ROOT / ENCYCLOPEDIA_JSON
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    # The source file may hold more than one entry with the same id (the Encyclopedia page keeps
+    # them all). They share one destination, /encyclopedia.html#<id>, so they become one search
+    # record: the first entry's headword and definition, with every entry's references and variants.
+    groups = {}
+    for e in data if isinstance(data, list) else []:
+        if not isinstance(e, dict):
+            continue
+        entry_id = str(e.get("id") or "").strip()
+        head = clean(str(e.get("headword") or ""))
+        if not (head and re.fullmatch(r"[a-z0-9][a-z0-9-]*", entry_id)):
+            continue
+        groups.setdefault(entry_id, []).append((head, e))
+    out = []
+    for entry_id, entries in groups.items():
+        head, first = entries[0]
+        definition = clean(str(first.get("definition") or ""))
+        refs, variants = [], set()
+        for _, e in entries:
+            for r in e.get("bible_refs") or []:
+                label = r.get("label") if isinstance(r, dict) else None
+                if label and label not in refs:
+                    refs.append(label)
+            variants.update(clean(str(v)).lower() for v in e.get("variants") or [] if str(v).strip())
+        excerpt = definition[:220] + ("…" if len(definition) > 220 else "")
+        if refs:
+            excerpt = f"{excerpt} ({'; '.join(refs[:3])})" if excerpt else "; ".join(refs[:3])
+        out.append({
+            "type": "Encyclopedia",
+            "title": head,
+            "url": f"/encyclopedia.html#{entry_id}",
+            "image": "",
+            "date": "",
+            "excerpt": excerpt,
+            "tags": sorted(set(["encyclopedia"]) | variants),
+        })
+    return out
+
 def should_include(path):
     name = path.name
     s = str(path).replace("\\", "/")
@@ -250,8 +321,9 @@ def build(curated_tags=None):
 
     article_files = sorted((ROOT / "articles").glob("*.html")) if (ROOT / "articles").exists() else []
     author_files = sorted((ROOT / "authors").glob("*.html")) if (ROOT / "authors").exists() else []
+    ology_files = sorted((ROOT / "ologies").glob("*.html")) if (ROOT / "ologies").exists() else []
 
-    for p in article_files + author_files:
+    for p in article_files + author_files + ology_files:
         if should_include(p) and p not in files:
             files.append(p)
 
@@ -283,6 +355,15 @@ def build(curated_tags=None):
             # Existing records keep their tags exactly as curated; only new pages get generated tags.
             "tags": curated_tags[url] if url in curated_tags else sorted(set(tags_for(title, excerpt, rel) + keyword_tags(parser))),
         })
+
+    # Each Israelite Encyclopedia entry is its own record; /encyclopedia.html#<id> opens it.
+    for entry in encyclopedia_entries():
+        if entry["url"] in seen:
+            continue
+        seen.add(entry["url"])
+        if entry["url"] in curated_tags:
+            entry["tags"] = curated_tags[entry["url"]]
+        items.append(entry)
 
     def sort_key(item):
         d = item.get("date") or "0000-00-00"

@@ -1028,8 +1028,10 @@ html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/research.css"/>
 </head>
-<body class="dietary-page">
+<body class="dietary-page sj-research">
 <div id="site-header"></div>
 
 <main class="container">
@@ -1041,31 +1043,47 @@ html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .
     <span class="current">Dietary Laws</span>
   </nav>
 
-  <section class="dietary-hero">
-    <div class="dietary-kicker">Torah Focus</div>
-    <h1 class="dietary-title">Dietary Laws</h1>
-    <p class="dietary-subtitle">
+  <section class="dietary-hero rs-hero">
+    <div class="dietary-kicker rs-kicker">Torah Focus</div>
+    <h1 class="dietary-title rs-title">Dietary Laws</h1>
+    <p class="dietary-subtitle rs-lede">
       Search clean and unclean foods, hidden ingredients, biblical categories, and Scripture references from the Law.
     </p>
   </section>
 
-  <section class="dietary-intro-grid" aria-label="Dietary law overview">
-    <article class="dietary-info-card">
+<nav class="rs-subnav" aria-label="Research library">
+  <ul>
+    <li><a href="/search.html">Search</a></li>
+    <li><a href="/ologies.html">Ologies</a></li>
+    <li><a href="/encyclopedia.html">Encyclopedia</a></li>
+    <li><a href="/biblical_references.html">Biblical References</a></li>
+    <li><a href="/dietary-laws.html" aria-current="page">Dietary Laws</a></li>
+    <li><a href="/israelite-catechism.html">Catechism</a></li>
+    <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+    <li><a href="/black-history-biblical-identity.html">Black History &amp; Identity</a></li>
+    <li><a href="/bible-summaries.html">Bible Summaries</a></li>
+    <li><a href="/study-guides.html">Study Guides</a></li>
+  </ul>
+</nav>
+
+
+  <section class="dietary-intro-grid rs-intro" aria-label="Dietary law overview">
+    <article class="dietary-info-card rs-card">
       <h2>Clean & Unclean</h2>
       <p>Study biblical categories for mammals, fish, birds, insects, blood, carcasses, and prohibited practices.</p>
     </article>
-    <article class="dietary-info-card">
+    <article class="dietary-info-card rs-card">
       <h2>Hidden Ingredients</h2>
       <p>Check common modern ingredients such as gelatin, lard, shellfish derivatives, carmine, enzymes, and flavor bases.</p>
     </article>
-    <article class="dietary-info-card">
+    <article class="dietary-info-card rs-card">
       <h2>Scripture References</h2>
       <p>Use linked references to move from practical examples back to the biblical text.</p>
     </article>
   </section>
 
-  <section class="dietary-tool-shell" aria-label="Dietary search tools">
-    <div class="dietary-section-head">
+  <section class="dietary-tool-shell rs-panel" aria-label="Dietary search tools">
+    <div class="dietary-section-head rs-section-head">
       <h2>Search the Dietary Guide</h2>
       <p>Filter the guide or paste ingredients to flag forbidden, avoid, verify, or allowed items.</p>
     </div>
@@ -1073,12 +1091,12 @@ html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .
   <div class="dietary-quick-tools" aria-label="Dietary quick tools">
     <div class="dietary-chip-row" aria-label="Quick searches">
       <span class="dietary-chip-label">Quick Search</span>
-      <button class="dietary-chip" type="button" data-diet-query="pork">Pork</button>
-      <button class="dietary-chip" type="button" data-diet-query="gelatin">Gelatin</button>
-      <button class="dietary-chip" type="button" data-diet-query="shellfish">Shellfish</button>
-      <button class="dietary-chip" type="button" data-diet-query="blood">Blood</button>
-      <button class="dietary-chip" type="button" data-diet-query="carmine">Carmine</button>
-      <button class="dietary-chip" type="button" data-diet-query="rennet">Rennet</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="pork">Pork</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="gelatin">Gelatin</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="shellfish">Shellfish</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="blood">Blood</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="carmine">Carmine</button>
+      <button class="dietary-chip rs-chip" type="button" data-diet-query="rennet">Rennet</button>
     </div>
 
     <div class="dietary-tree-actions" aria-label="Tree controls">
@@ -1113,8 +1131,8 @@ html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .
 </section>
   </section>
 
-  <section class="dietary-tree-shell" aria-label="Dietary law categories">
-    <div class="dietary-section-head">
+  <section class="dietary-tree-shell rs-panel" aria-label="Dietary law categories">
+    <div class="dietary-section-head rs-section-head">
       <h2>Dietary Categories</h2>
       <p>Open each category to study the biblical references and modern examples.</p>
     </div>
@@ -1125,6 +1143,35 @@ html[data-theme="dark"] .dietary-page .dietary-tree-shell .example-card.verify .
   <p class="note">
     <strong>Note:</strong> “Modern examples” are practical guides based on biblical categories (e.g., fins &amp; scales; cloven hoof &amp; chewing cud; blood). Verify ingredients/sourcing (e.g., enzyme origin, gelatin type, shellfish derivatives) and preparation (blood removal per Lev 17).
   </p>
+
+<!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->
+<nav class="rs-related" aria-labelledby="rs-related-title">
+  <h2 class="rs-related-title" id="rs-related-title">Continue your research</h2>
+  <div class="rs-related-groups">
+    <section class="rs-related-group" aria-label="Scripture cited on this page">
+      <h3>Scripture cited on this page</h3>
+      <ul>
+      <li><a href="/tanakh/chapter.html?book=leviticus&amp;ch=11"><span>Leviticus 11<span class="rs-related-kind">Scripture</span></span></a></li>
+      <li><a href="/tanakh/chapter.html?book=deuteronomy&amp;ch=14"><span>Deuteronomy 14<span class="rs-related-kind">Scripture</span></span></a></li>
+      <li><a href="/tanakh/chapter.html?book=leviticus&amp;ch=17"><span>Leviticus 17<span class="rs-related-kind">Scripture</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Articles">
+      <h3>Articles</h3>
+      <ul>
+      <li><a href="/articles/defiled-bread-in-america.html"><span>Defiled Bread in America<span class="rs-related-kind">Article</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Reference tools">
+      <h3>Reference tools</h3>
+      <ul>
+      <li><a href="/israelite-catechism.html"><span>Israelite Catechism<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/biblical_references.html"><span>Biblical References<span class="rs-related-kind">Research tool</span></span></a></li>
+      </ul>
+    </section>
+  </div>
+</nav>
+<!-- rs-related:end -->
 </main>
 
 <div id="site-footer"></div>
