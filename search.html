@@ -23,6 +23,7 @@
   <link href="/styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="/css/sj-tokens.css" />
   <link rel="stylesheet" href="/css/research.css" />
+  <link rel="stylesheet" href="/css/library.css" />
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -34,38 +35,42 @@
 <link rel="canonical" href="https://semiticjew.org/search.html"/>
 </head>
 </head>
-<body class="search-page sj-research">
+<body class="search-page sj-research sj-lib lb-search">
   <div id="site-header"></div>
 
-  <main class="rs-shell sr-page" id="main">
-    <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="/index.html">Home</a>
-      <span class="sep">›</span>
-      <span class="current">Search</span>
-    </nav>
-
-    <header class="rs-hero">
-      <p class="rs-kicker">Research Library</p>
-      <h1 class="rs-title">Search</h1>
-      <p class="rs-lede">Search articles, Scripture, Ologies, the Israelite Encyclopedia, study guides and research resources. Type a reference such as <em>John 3:16</em> to go straight to the verse.</p>
+  <main class="rs-shell sr-shell" id="main">
+    <header class="lb-mast lb-mast--desk lb-bleed">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/index.html">Home</a>
+        <span class="sep">›</span>
+        <span class="current">Search</span>
+      </nav>
+      <div class="lb-desk">
+        <div class="lb-desk__intro rs-hero">
+          <p class="rs-kicker">Research Library</p>
+          <h1 class="rs-title">Search</h1>
+          <p class="rs-lede">Search articles, Scripture, Ologies, the Israelite Encyclopedia, study guides and research resources. Type a reference such as <em>John 3:16</em> to go straight to the verse.</p>
+        </div>
+        <div class="lb-desk__query">
+          <form id="sj-search" class="sr-form" role="search" aria-label="Search the research library">
+            <label class="pub-sr" for="q">Search</label>
+            <svg class="sr-icon" aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="q" name="q" class="sr-input" type="search" placeholder="Search words, “exact phrases” or a reference like Genesis 1:1" autocomplete="off" spellcheck="false" aria-describedby="sr-help" />
+            <button class="sr-submit" type="submit">Search</button>
+          </form>
+          <p class="sr-help" id="sr-help">Use “quotes” for an exact phrase and a minus sign to exclude a word (logic -fallacy). Press <kbd>/</kbd> to search from anywhere on this page, and <kbd>↓</kbd> to move through results.</p>
+          <p class="sr-try"><span>Try</span>
+            <button type="button" class="sr-chip" data-query="John 3:16">John 3:16</button>
+            <button type="button" class="sr-chip" data-query="Deuteronomy 28">Deuteronomy 28</button>
+            <button type="button" class="sr-chip" data-query="dietary laws">Dietary laws</button>
+            <button type="button" class="sr-chip" data-query="black history">Black history</button>
+            <button type="button" class="sr-chip" data-query="maccabees">Maccabees</button>
+          </p>
+        </div>
+      </div>
     </header>
 
-    <form id="sj-search" class="sr-form" role="search" aria-label="Search the research library">
-      <label class="pub-sr" for="q">Search</label>
-      <svg class="sr-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input id="q" name="q" class="sr-input" type="search" placeholder="Search words, “exact phrases” or a reference like Genesis 1:1" autocomplete="off" spellcheck="false" aria-describedby="sr-help" />
-      <button class="sr-submit" type="submit">Search</button>
-    </form>
-    <p class="sr-help" id="sr-help">Use “quotes” for an exact phrase and a minus sign to exclude a word (logic -fallacy). Press <kbd>/</kbd> to search from anywhere on this page, and <kbd>↓</kbd> to move through results.</p>
-    <p class="sr-try"><span>Try</span>
-      <button type="button" class="sr-chip" data-query="John 3:16">John 3:16</button>
-      <button type="button" class="sr-chip" data-query="Deuteronomy 28">Deuteronomy 28</button>
-      <button type="button" class="sr-chip" data-query="dietary laws">Dietary laws</button>
-      <button type="button" class="sr-chip" data-query="black history">Black history</button>
-      <button type="button" class="sr-chip" data-query="maccabees">Maccabees</button>
-    </p>
-
-    <div class="sr-bar">
+    <div class="sr-bar lb-bleed">
       <div class="sr-filters" id="sr-filters" role="group" aria-label="Filter by resource type"></div>
       <div class="sr-canon" id="sr-canon" role="group" aria-label="Filter Scripture by collection" hidden>
         <button type="button" data-canon="">All Scripture</button>

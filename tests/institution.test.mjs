@@ -19,8 +19,22 @@ test('generated pages are up to date (institution shell, page metadata, Scriptur
   assert.match(py('tools/build_scripture_pages.py', '--check'), /85 pages up to date/);
 });
 
-test('organization pages share the institutional design after their own styles, with one title and the Organization navigation', () => {
-  for (const f of INST) {
+test('organization pages have their own layouts (org.css) with one title and the Organization strip', () => {
+  for (const f of ORG) {
+    const s = read(f);
+    assert.match(s, /<body[^>]*class="[^"]*\bsj-org\b/, f);
+    assert.ok(s.includes('/css/org.css') && !s.includes('/css/institution.css'), `${f}: org.css only`);
+    assert.equal((s.match(/<h1\b/g) || []).length, 1, `${f}: one h1`);
+    assert.ok(s.includes('class="breadcrumbs"'), `${f}: breadcrumbs`);
+    assert.ok(s.includes('<nav class="og-strip" aria-label="Organization">'), `${f}: Organization strip`);
+    assert.ok(new RegExp(`<a href="/${f}" aria-current="page">`).test(s), `${f}: current page marked`);
+    assert.ok(!/<style>/.test(s), `${f}: no leftover page styles`);
+  }
+  assert.ok(read('about.html').includes('id="organization-verification"'), 'verification anchor kept for /about.html#organization-verification');
+});
+
+test('the remaining institution pages share the institutional design after their own styles', () => {
+  for (const f of INST.filter(f => !ORG.includes(f))) {
     const s = read(f);
     assert.match(s, /<body[^>]*class="[^"]*\bsj-inst\b/, f);
     const css = s.indexOf('/css/institution.css');
@@ -28,9 +42,7 @@ test('organization pages share the institutional design after their own styles, 
     assert.equal((s.match(/<h1\b/g) || []).length, 1, `${f}: one h1`);
     assert.equal((s.match(/\bin-title\b/g) || []).length, 1, `${f}: one in-title`);
     if (f !== 'offline.html') assert.ok(s.includes('class="breadcrumbs"'), `${f}: breadcrumbs`);
-    const nav = s.includes('<nav class="in-orgnav"');
-    assert.equal(nav, ORG.includes(f), `${f}: Organization navigation only on organization pages`);
-    if (nav) assert.ok(s.includes(`<a href="/${f}" aria-current="page">`), `${f}: current page marked`);
+    assert.ok(!s.includes('og-strip') && !s.includes('in-orgnav'), `${f}: no Organization navigation`);
   }
 });
 
@@ -114,6 +126,6 @@ test('institution.css is scoped to the organization pages and loaded nowhere els
   const css = read('css/institution.css').replace(/\/\*[\s\S]*?\*\//g, '');
   const selectors = css.split('}').map(r => r.split('{')[0].trim()).filter(s => s && !s.startsWith('@') && !/^(from|to)$/.test(s));
   for (const sel of selectors) assert.ok(/sj-inst|^\.in-/.test(sel), `unscoped selector: ${sel}`);
-  for (const f of ['index.html', 'articles.html', 'tanakh/chapter.html', 'biblia.html', 'search.html', 'shop.html', 'imprint-studio.html']) assert.ok(!read(f).includes('/css/institution.css'), f);
+  for (const f of ['index.html', 'articles.html', 'tanakh/chapter.html', 'biblia.html', 'search.html', 'shop.html', 'imprint-studio.html', ...ORG]) assert.ok(!read(f).includes('/css/institution.css'), f);
   assert.ok(read('sw.js').includes("'/css/institution.css',"), 'precached for the 404 and offline pages');
 });
