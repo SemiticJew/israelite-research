@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v191';
+const CACHE_VERSION = 'sj-pwa-v192';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -76,6 +76,7 @@ const APP_SHELL_ASSETS = [
   '/site.webmanifest',
   '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
+  '/favicon.svg',
   '/favicon-16x16.png',
   '/favicon-32x32.png',
   '/apple-touch-icon.png',
@@ -118,6 +119,7 @@ const APP_SHELL = [
   '/data/app/watch-feed.json',
   '/data/lexicon/verse-strongs-order.json',
   '/favicon.ico',
+  '/favicon.svg',
   '/favicon-16x16.png',
   '/favicon-32x32.png',
   '/apple-touch-icon.png'

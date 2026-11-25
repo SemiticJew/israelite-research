@@ -36,10 +36,11 @@ TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="/styles.css"/>
 <link rel="stylesheet" href="/css/sj-tokens.css"/>
 <link rel="stylesheet" href="/css/reader.css"/>
-<link rel="icon" type="image/x-icon" href="/favicon.ico?v=sj2"/>
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=sj2"/>
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=sj2"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=sj2"/>
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=sj3"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=sj3"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=sj3"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=sj3"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=sj3"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)"/>
 <meta name="theme-color" content="#0A1322" media="(prefers-color-scheme: dark)"/>
