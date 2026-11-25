@@ -480,8 +480,10 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/research.css"/>
 </head>
-<body class="ologies-page">
+<body class="ologies-page sj-research">
 <div id="site-header"></div>
 
 <main class="container">
@@ -492,31 +494,47 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
   </nav>
 
   <!-- HERO -->
-  <section class="apol-hero">
-    <div class="apol-kicker">Doctrine, Logic & Study</div>
-    <h1 class="apol-title">Ologies</h1>
-    <p class="apol-subtitle">
+  <section class="apol-hero rs-hero">
+    <div class="apol-kicker rs-kicker">Doctrine, Logic & Study</div>
+    <h1 class="apol-title rs-title">Ologies</h1>
+    <p class="apol-subtitle rs-lede">
       A Scripture-first index of the Bible’s core doctrines, argument paths, and theological categories organized for clarity, logic, and primary-source study.
     </p>
   </section>
 
-  <section class="apol-intro-grid" aria-label="Apologetics overview">
-    <article class="apol-info-card">
+<nav class="rs-subnav" aria-label="Research library">
+  <ul>
+    <li><a href="/search.html">Search</a></li>
+    <li><a href="/ologies.html" aria-current="page">Ologies</a></li>
+    <li><a href="/encyclopedia.html">Encyclopedia</a></li>
+    <li><a href="/biblical_references.html">Biblical References</a></li>
+    <li><a href="/dietary-laws.html">Dietary Laws</a></li>
+    <li><a href="/israelite-catechism.html">Catechism</a></li>
+    <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+    <li><a href="/black-history-biblical-identity.html">Black History &amp; Identity</a></li>
+    <li><a href="/bible-summaries.html">Bible Summaries</a></li>
+    <li><a href="/study-guides.html">Study Guides</a></li>
+  </ul>
+</nav>
+
+
+  <section class="apol-intro-grid rs-intro" aria-label="Apologetics overview">
+    <article class="apol-info-card rs-card">
       <h2>Text-First Reasoning</h2>
       <p>Begin with the written text, define terms carefully, and test claims by Scripture rather than tradition.</p>
     </article>
-    <article class="apol-info-card">
+    <article class="apol-info-card rs-card">
       <h2>Doctrine With Structure</h2>
       <p>Study major doctrinal categories without confusion, contradiction, or inherited theological fog.</p>
     </article>
-    <article class="apol-info-card">
+    <article class="apol-info-card rs-card">
       <h2>Arguments You Can Verify</h2>
       <p>Use logic, cross-references, and source-based reasoning to examine claims clearly and consistently.</p>
     </article>
   </section>
 
-  <section class="apol-tools-shell" aria-label="Search and filters">
-    <div class="apol-tools-head">
+  <section class="apol-tools-shell rs-panel" aria-label="Search and filters">
+    <div class="apol-tools-head rs-section-head">
       <div>
         <h2>Search Ologies</h2>
         <p>Filter doctrines, arguments, and study paths.</p>
@@ -530,10 +548,10 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
         <option>Newest</option>
         <option>A–Z</option>
       </select>
-      <a class="chip" href="#bibliology">Bibliology</a>
-      <a class="chip" href="#christology">Christology</a>
-      <a class="chip" href="#israelology">Israelology</a>
-      <a class="chip" href="#soteriology">Soteriology</a>
+      <a class="chip rs-chip" href="#bibliology">Bibliology</a>
+      <a class="chip rs-chip" href="#christology">Christology</a>
+      <a class="chip rs-chip" href="#israelology">Israelology</a>
+      <a class="chip rs-chip" href="#soteriology">Soteriology</a>
     </div>
   </section>
 
@@ -546,7 +564,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
 
     <div class="grid-3">
       <!-- Bibliology -->
-      <a class="card" id="bibliology" href="/ologies/bibliology.html">
+      <a class="card rs-tile" id="bibliology" href="/ologies/bibliology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- book / scroll -->
@@ -567,7 +585,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Elology -->
-      <a class="card" href="/ologies/elology.html">
+      <a class="card rs-tile" href="/ologies/elology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- triangle/order -->
@@ -587,7 +605,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Christology -->
-      <a class="card" id="christology" href="/ologies/christology.html">
+      <a class="card rs-tile" id="christology" href="/ologies/christology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- chi-rho inspired monogram (abstract) -->
@@ -607,7 +625,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Pneumatology -->
-      <a class="card" href="/ologies/pneumatology.html">
+      <a class="card rs-tile" href="/ologies/pneumatology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- wind/flame abstract -->
@@ -627,7 +645,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Anthropology -->
-      <a class="card" href="/ologies/anthropology.html">
+      <a class="card rs-tile" href="/ologies/anthropology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- human outline -->
@@ -647,7 +665,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Hamartiology -->
-      <a class="card" href="/ologies/hamartiology.html">
+      <a class="card rs-tile" href="/ologies/hamartiology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- scales -->
@@ -667,7 +685,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Soteriology -->
-      <a class="card" id="soteriology" href="/ologies/soteriology.html">
+      <a class="card rs-tile" id="soteriology" href="/ologies/soteriology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- olive branch / graft -->
@@ -687,7 +705,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Israelology -->
-      <a class="card" id="israelology" href="/ologies/israelology.html">
+      <a class="card rs-tile" id="israelology" href="/ologies/israelology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- compass / map pin -->
@@ -707,7 +725,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Ecclesiology -->
-      <a class="card" href="/ologies/ecclesiology.html">
+      <a class="card rs-tile" href="/ologies/ecclesiology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- assembly -->
@@ -727,7 +745,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
 
       <!-- Eschatology -->
-      <a class="card" href="/ologies/eschatology.html">
+      <a class="card rs-tile" href="/ologies/eschatology.html">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- horizon / sunrise -->
@@ -757,19 +775,19 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       <a class="link" href="/articles.html">All Articles</a>
     </div>
     <div class="grid-3">
-      <a class="card" href="/articles/three-laws-of-logic.html">
+      <a class="card rs-tile" href="/articles/three-laws-of-logic.html">
         <div class="arg">
           <h3>Three Laws of Logic</h3>
           <p>Identity, non-contradiction, excluded middle—traced within Scripture’s own reasoning.</p>
         </div>
       </a>
-      <a class="card" href="/articles/is-creation-logical.html">
+      <a class="card rs-tile" href="/articles/is-creation-logical.html">
         <div class="arg">
           <h3>Creation is Coherent</h3>
           <p>Genesis as form-then-fill: domains, inhabitants, fit, and purpose.</p>
         </div>
       </a>
-      <a class="card" href="/articles/is-scripture-and-logic-compatible.html">
+      <a class="card rs-tile" href="/articles/is-scripture-and-logic-compatible.html">
         <div class="arg">
           <h3>Scripture & Logic</h3>
           <p>Prophets and Jesus reasoning text-first with precise claims and consequences.</p>
@@ -777,6 +795,37 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
       </a>
     </div>
   </section>
+
+<!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->
+<nav class="rs-related" aria-labelledby="rs-related-title">
+  <h2 class="rs-related-title" id="rs-related-title">Continue your research</h2>
+  <div class="rs-related-groups">
+    <section class="rs-related-group" aria-label="Reference tools">
+      <h3>Reference tools</h3>
+      <ul>
+      <li><a href="/encyclopedia.html"><span>Israelite Encyclopedia<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/biblical_references.html"><span>Biblical References<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/israelite-catechism.html"><span>Israelite Catechism<span class="rs-related-kind">Research tool</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Scripture">
+      <h3>Scripture</h3>
+      <ul>
+      <li><a href="/biblia.html"><span>Biblia<span class="rs-related-kind">Scripture</span></span></a></li>
+      <li><a href="/tanakh.html"><span>Tanakh<span class="rs-related-kind">Scripture</span></span></a></li>
+      <li><a href="/newtestament.html"><span>New Testament<span class="rs-related-kind">Scripture</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Study">
+      <h3>Study</h3>
+      <ul>
+      <li><a href="/study-guides.html"><span>Semitic Jew Study Guides<span class="rs-related-kind">Study guide</span></span></a></li>
+      <li><a href="/search.html"><span>Search<span class="rs-related-kind">Research tool</span></span></a></li>
+      </ul>
+    </section>
+  </div>
+</nav>
+<!-- rs-related:end -->
 </main>
 
 <div id="site-footer"></div>

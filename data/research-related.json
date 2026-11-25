@@ -1,0 +1,46 @@
+{
+  "_about": "Related-resource links for the research library pages, rendered by tools/apply_research_shell.py into each page's 'Continue your research' section. Each target must be an existing page, an Encyclopedia entry (/encyclopedia.html#<id>) or a Scripture chapter (scripture:<canon>:<book>:<chapter>). Titles are read from the targets, never typed here. Only list relationships the pages themselves support (a chapter the page cites, an article on the same subject, a reference tool for the same material). tests/research.test.mjs checks every target.",
+  "pages": {
+    "ologies.html": [
+      ["Reference tools", ["/encyclopedia.html", "/biblical_references.html", "/israelite-catechism.html"]],
+      ["Scripture", ["/biblia.html", "/tanakh.html", "/newtestament.html"]],
+      ["Study", ["/study-guides.html", "/search.html"]]
+    ],
+    "ologies/anthropology.html": [["Encyclopedia", ["/encyclopedia.html#adam-ha-adam", "/encyclopedia.html#adamic"]]],
+    "ologies/israelology.html": [["Encyclopedia", ["/encyclopedia.html#jacob-israel", "/encyclopedia.html#hebrews", "/encyclopedia.html#kushite-israelites"]]],
+    "ologies/pneumatology.html": [["Encyclopedia", ["/encyclopedia.html#wind-spirit-ruach"]]],
+    "encyclopedia.html": [
+      ["Reference tools", ["/biblical_references.html", "/extra-biblical-sources.html", "/black-history-biblical-identity.html"]],
+      ["Study", ["/ologies.html", "/israelite-catechism.html", "/search.html"]]
+    ],
+    "biblical_references.html": [
+      ["Reference tools", ["/encyclopedia.html", "/dietary-laws.html", "/israelite-catechism.html"]],
+      ["Scripture", ["/tanakh.html", "/newtestament.html", "/apocrypha.html"]]
+    ],
+    "dietary-laws.html": [
+      ["Scripture cited on this page", ["scripture:tanakh:leviticus:11", "scripture:tanakh:deuteronomy:14", "scripture:tanakh:leviticus:17"]],
+      ["Articles", ["/articles/defiled-bread-in-america.html"]],
+      ["Reference tools", ["/israelite-catechism.html", "/biblical_references.html"]]
+    ],
+    "israelite-catechism.html": [
+      ["Scripture cited on this page", ["scripture:tanakh:deuteronomy:6", "scripture:tanakh:leviticus:26"]],
+      ["Reference tools", ["/ologies.html", "/dietary-laws.html", "/biblical_references.html", "/encyclopedia.html"]]
+    ],
+    "extra-biblical-sources.html": [
+      ["Reference tools", ["/encyclopedia.html", "/black-history-biblical-identity.html", "/biblical_references.html"]],
+      ["Scripture", ["/apocrypha.html", "/biblia.html"]]
+    ],
+    "black-history-biblical-identity.html": [
+      ["Scripture cited on this page", ["scripture:tanakh:deuteronomy:28"]],
+      ["Articles", ["/articles/hamites-historicity.html", "/articles/adam-was-not-pale.html", "/articles/god-loves-black-people.html"]],
+      ["Reference tools", ["/extra-biblical-sources.html", "/encyclopedia.html", "/ologies.html"]]
+    ],
+    "bible-summaries.html": [
+      ["Scripture", ["/tanakh.html", "/newtestament.html", "/apocrypha.html", "/biblia.html"]]
+    ],
+    "study-guides.html": [
+      ["Scripture", ["scripture:tanakh:genesis:1", "/tanakh/genesis.html"]],
+      ["Articles", ["/articles/is-creation-logical.html", "/articles/who-defined-man-first-adam-human-origins.html"]]
+    ]
+  }
+}

@@ -377,8 +377,10 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/research.css"/>
 </head>
-<body class="eschatology-page ology-detail-page">
+<body class="eschatology-page ology-detail-page sj-research">
 <div id="site-header"></div>
 <main class="container">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -390,11 +392,27 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   </nav>
 
   <!-- HERO -->
-  <header class="hero">
-    <div class="ology-kicker">Doctrine Study</div>
-    <h1 class="title">Eschatology</h1>
-    <p class="sub"><strong>Eschatology</strong> (Gk, ἔσχατος + λογία, “eschatos + logia,” discourse about last things); hope of Israel’s restoration, the reign of the King from Zion, resurrection, judgment, and the renewal of creation—with blessing ordered through Israel to the nations.</p>
+  <header class="hero rs-hero">
+    <div class="ology-kicker rs-kicker">Doctrine Study</div>
+    <h1 class="title rs-title">Eschatology</h1>
+    <p class="sub rs-lede"><strong>Eschatology</strong> (Gk, ἔσχατος + λογία, “eschatos + logia,” discourse about last things); hope of Israel’s restoration, the reign of the King from Zion, resurrection, judgment, and the renewal of creation—with blessing ordered through Israel to the nations.</p>
   </header>
+
+<nav class="rs-subnav" aria-label="Research library">
+  <ul>
+    <li><a href="/search.html">Search</a></li>
+    <li><a href="/ologies.html" aria-current="page">Ologies</a></li>
+    <li><a href="/encyclopedia.html">Encyclopedia</a></li>
+    <li><a href="/biblical_references.html">Biblical References</a></li>
+    <li><a href="/dietary-laws.html">Dietary Laws</a></li>
+    <li><a href="/israelite-catechism.html">Catechism</a></li>
+    <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+    <li><a href="/black-history-biblical-identity.html">Black History &amp; Identity</a></li>
+    <li><a href="/bible-summaries.html">Bible Summaries</a></li>
+    <li><a href="/study-guides.html">Study Guides</a></li>
+  </ul>
+</nav>
+
 
   <!-- VIDEO PLACEHOLDER -->
   <section aria-label="Video" class="section">
@@ -411,7 +429,7 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="kingdom-day-of-the-lord">
     <div class="sec-head"><h2 class="sec-title">Kingdom &amp; Day of the Most High</h2></div>
     <div class="grid-3">
-      <a class="card" href="#">
+      <a class="card rs-tile" href="#">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- crown/king -->
@@ -421,11 +439,11 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
         </div>
         <div class="card-body">The King’s righteous reign over Israel and nations.</div>
       </a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- trumpet -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 12l8-4v8l-8-4zM12 10h3M12 14h3"/></svg></span>
         <h3 class="card-title">Day of the LORD — Coming Soon</h3></div><div class="card-body">Justice, deliverance, and cosmic shaking.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- scepter -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 4l12 12M16 8l2-2M6 20l2-2"/></svg></span>
         <h3 class="card-title">Messiah’s Reign — Coming Soon</h3></div><div class="card-body">Justice, peace, and order established.</div></a>
@@ -436,18 +454,18 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="resurrection-judgment">
     <div class="sec-head"><h2 class="sec-title">Resurrection &amp; Judgment</h2></div>
     <div class="grid-3">
-      <a class="card" href="#">
+      <a class="card rs-tile" href="#">
         <div class="card-top"><span class="icon" aria-hidden="true">
           <!-- sunrise/resurrection -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 18h18"/><path d="M6 15a6 6 0 0112 0"/><path d="M12 6v3M5 12l2 1M19 12l-2 1"/></svg>
         </span><h3 class="card-title">Resurrection — Coming Soon</h3></div>
         <div class="card-body">Defeat of death; hope anchored in promise.</div>
       </a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- scales -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3v18M4 7h16M6 7l-3 5h6l-3-5z"/></svg></span>
         <h3 class="card-title">Judgment — Coming Soon</h3></div><div class="card-body">Righteous verdicts; mercy for the repentant.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- book/records -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 4h10a3 3 0 010 6H7a2 2 0 00-2 2v8"/><path d="M7 20h10a2 2 0 002-2V6"/></svg></span>
         <h3 class="card-title">Books Opened — Coming Soon</h3></div><div class="card-body">Records, reward, and recompense.</div></a>
@@ -458,15 +476,15 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="restoration-of-israel">
     <div class="sec-head"><h2 class="sec-title">Restoration of Israel</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- olive/branch -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 17c6-2 9-6 10-12"/><path d="M8 15c0 3 2 5 5 5"/></svg></span>
         <h3 class="card-title">New Heart & Spirit — Coming Soon</h3></div><div class="card-body">Covenant renewal; obedience by the Spirit.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- gathering/net -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M6 8l12 8M6 16l12-8"/></svg></span>
         <h3 class="card-title">Ingathering — Coming Soon</h3></div><div class="card-body">Tribes gathered from the four corners.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- land/map pin -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 21s7-5 7-10a7 7 0 10-14 0c0 5 7 10 7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></span>
         <h3 class="card-title">Land & Inheritance — Coming Soon</h3></div><div class="card-body">Promises fulfilled in place and people.</div></a>
@@ -477,18 +495,18 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="new-covenant-consummation">
     <div class="sec-head"><h2 class="sec-title">New Covenant Consummation</h2></div>
     <div class="grid-3">
-      <a class="card" href="#">
+      <a class="card rs-tile" href="#">
         <div class="card-top"><span class="icon" aria-hidden="true">
           <!-- heart/torah -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 21s-7-4.5-7-10a4 4 0 018-1 4 4 0 018 1c0 5.5-7 10-7 10z"/></svg>
         </span><h3 class="card-title">Torah on the Heart — Coming Soon</h3></div>
         <div class="card-body">Obedience, purity, and knowledge of Elohim.</div>
       </a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- table/meal -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 10h18M6 10v10M18 10v10M9 10V6M15 10V6"/></svg></span>
         <h3 class="card-title">Covenant Feast — Coming Soon</h3></div><div class="card-body">Communion, joy, and thanksgiving.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- temple/presence -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M6 18v-6l6-4 6 4v6"/></svg></span>
         <h3 class="card-title">Presence with His People — Coming Soon</h3></div><div class="card-body">No more exile; abiding nearness.</div></a>
@@ -499,15 +517,15 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="signs-seasons">
     <div class="sec-head"><h2 class="sec-title">Signs &amp; Seasons</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- moon/calendar -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M15 3a9 9 0 010 18"/></svg></span>
         <h3 class="card-title">Appointed Times — Coming Soon</h3></div><div class="card-body">Feasts as prophetic rhythms of hope.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- birth pangs/wave -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 12c4-4 14-4 18 0"/></svg></span>
         <h3 class="card-title">Birth Pangs — Coming Soon</h3></div><div class="card-body">Troubles that precede restoration.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- watchman/tower -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 20h12M9 20V8l3-3 3 3v12"/></svg></span>
         <h3 class="card-title">Watchfulness — Coming Soon</h3></div><div class="card-body">Sober readiness, prayer, and faithfulness.</div></a>
@@ -518,15 +536,15 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="hope-perseverance">
     <div class="sec-head"><h2 class="sec-title">Hope &amp; Perseverance</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- anchor/hope -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3v12M6 9h12M4 19c3 2 13 2 16 0"/></svg></span>
         <h3 class="card-title">Endurance — Coming Soon</h3></div><div class="card-body">Faith under pressure; overcoming by truth.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- oil/joy -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/></svg></span>
         <h3 class="card-title">Comfort & Joy — Coming Soon</h3></div><div class="card-body">Promises that steady the heart.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- shield/faith -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3l8 4v5c0 5-4 8-8 9-4-1-8-4-8-9V7l8-4z"/></svg></span>
         <h3 class="card-title">Protection — Coming Soon</h3></div><div class="card-body">Kept by the Most High amid trials.</div></a>
@@ -537,24 +555,46 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="new-heavens-new-earth">
     <div class="sec-head"><h2 class="sec-title">New Heavens &amp; New Earth</h2></div>
     <div class="grid-3">
-      <a class="card" href="#">
+      <a class="card rs-tile" href="#">
         <div class="card-top"><span class="icon" aria-hidden="true">
           <!-- leaf/new creation -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 17c6-2 9-6 10-12"/><path d="M8 15c0 3 2 5 5 5"/></svg>
         </span><h3 class="card-title">Renewed Creation — Coming Soon</h3></div>
         <div class="card-body">No curse, no death—life and light.</div>
       </a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- city/new Jerusalem -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="4" y="8" width="16" height="12"/><path d="M8 8V4h8v4"/></svg></span>
         <h3 class="card-title">Holy City — Coming Soon</h3></div><div class="card-body">Dwelling of Elohim with His people.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- river/tree of life -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M6 12h12"/></svg></span>
         <h3 class="card-title">Tree & River of Life — Coming Soon</h3></div><div class="card-body">Healing of nations; unending fruitfulness.</div></a>
     </div>
   </section>
 
+<!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->
+<nav class="rs-related" aria-labelledby="rs-related-title">
+  <h2 class="rs-related-title" id="rs-related-title">Continue your research</h2>
+  <div class="rs-related-groups">
+    <section class="rs-related-group" aria-label="More Ologies">
+      <h3>More Ologies</h3>
+      <ul>
+      <li><a href="/ologies/ecclesiology.html"><span>Ecclesiology<span class="rs-related-kind">Ology</span></span></a></li>
+      <li><a href="/ologies.html"><span>Ologies<span class="rs-related-kind">Ology</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Reference tools">
+      <h3>Reference tools</h3>
+      <ul>
+      <li><a href="/encyclopedia.html"><span>Israelite Encyclopedia<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/biblical_references.html"><span>Biblical References<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/israelite-catechism.html"><span>Israelite Catechism<span class="rs-related-kind">Research tool</span></span></a></li>
+      </ul>
+    </section>
+  </div>
+</nav>
+<!-- rs-related:end -->
 </main>
 <div id="site-footer"></div>
 <script src="/js/include.js"></script>

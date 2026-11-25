@@ -382,8 +382,10 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/research.css"/>
 </head>
-<body class="ecclesiology-page ology-detail-page">
+<body class="ecclesiology-page ology-detail-page sj-research">
 <div id="site-header"></div>
 <main class="container">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -395,11 +397,27 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   </nav>
 
   <!-- HERO -->
-  <header class="hero">
-    <div class="ology-kicker">Doctrine Study</div>
-    <h1 class="title">Ecclesiology</h1>
-    <p class="sub"><strong>Ecclesiology</strong> (Gk, ἐκκλησία + λογία, “ekklēsia + logia,” discourse about the assembly); study of the set-apart assembly of Israel and grafted participants—its identity, order, leadership, unity, and mission—while preserving Israel’s covenant roles and Shemitic-Hamitic heritage.</p>
+  <header class="hero rs-hero">
+    <div class="ology-kicker rs-kicker">Doctrine Study</div>
+    <h1 class="title rs-title">Ecclesiology</h1>
+    <p class="sub rs-lede"><strong>Ecclesiology</strong> (Gk, ἐκκλησία + λογία, “ekklēsia + logia,” discourse about the assembly); study of the set-apart assembly of Israel and grafted participants—its identity, order, leadership, unity, and mission—while preserving Israel’s covenant roles and Shemitic-Hamitic heritage.</p>
   </header>
+
+<nav class="rs-subnav" aria-label="Research library">
+  <ul>
+    <li><a href="/search.html">Search</a></li>
+    <li><a href="/ologies.html" aria-current="page">Ologies</a></li>
+    <li><a href="/encyclopedia.html">Encyclopedia</a></li>
+    <li><a href="/biblical_references.html">Biblical References</a></li>
+    <li><a href="/dietary-laws.html">Dietary Laws</a></li>
+    <li><a href="/israelite-catechism.html">Catechism</a></li>
+    <li><a href="/extra-biblical-sources.html">Extra-Biblical Sources</a></li>
+    <li><a href="/black-history-biblical-identity.html">Black History &amp; Identity</a></li>
+    <li><a href="/bible-summaries.html">Bible Summaries</a></li>
+    <li><a href="/study-guides.html">Study Guides</a></li>
+  </ul>
+</nav>
+
 
   <!-- VIDEO PLACEHOLDER -->
   <section aria-label="Video" class="section">
@@ -416,7 +434,7 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="nature-assembly">
     <div class="sec-head"><h2 class="sec-title">Nature of the Assembly</h2></div>
     <div class="grid-3">
-      <a class="card" href="#">
+      <a class="card rs-tile" href="#">
         <div class="card-top">
           <span class="icon" aria-hidden="true">
             <!-- assembly/house -->
@@ -428,7 +446,7 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
         </div>
         <div class="card-body">Gathered by covenant word and Spirit.</div>
       </a>
-      <a class="card" href="#"><div class="card-top">
+      <a class="card rs-tile" href="#"><div class="card-top">
         <span class="icon" aria-hidden="true">
           <!-- lamp/light -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -437,7 +455,7 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
         </span>
         <h3 class="card-title">Set-Apart Identity — Coming Soon</h3>
       </div><div class="card-body">Holiness, truth, and visible distinctness.</div></a>
-      <a class="card" href="#"><div class="card-top">
+      <a class="card rs-tile" href="#"><div class="card-top">
         <span class="icon" aria-hidden="true">
           <!-- body/members -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -453,19 +471,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="leadership-offices">
     <div class="sec-head"><h2 class="sec-title">Leadership &amp; Offices</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- shepherd/staff -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M12 3v18M9 6h6M9 12h6M9 18h6"/>
         </svg></span>
         <h3 class="card-title">Elders & Overseers — Coming Soon</h3></div><div class="card-body">Character, teaching, and care.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- servant/hands -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M4 6h16M6 10h12M8 14h8"/>
         </svg></span>
         <h3 class="card-title">Servants/Deacons — Coming Soon</h3></div><div class="card-body">Order, mercy, and practical service.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- teachers/scroll -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M5 4h10a3 3 0 010 6H7a2 2 0 00-2 2v8"/><path d="M7 20h10a2 2 0 002-2V6"/>
@@ -478,19 +496,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="worship-ordinances">
     <div class="sec-head"><h2 class="sec-title">Worship &amp; Ordinances</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- temple/house -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M3 21h18M6 18v-6l6-4 6 4v6"/>
         </svg></span>
         <h3 class="card-title">Gathered Worship — Coming Soon</h3></div><div class="card-body">Reading, teaching, prayer, song.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- water/wash -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M12 2s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/>
         </svg></span>
         <h3 class="card-title">Washings — Coming Soon</h3></div><div class="card-body">Purity signs and renewal themes.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- table/meal -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M3 10h18M6 10v10M18 10v10M9 10V6M15 10V6"/>
@@ -503,19 +521,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="discipline-care">
     <div class="sec-head"><h2 class="sec-title">Discipline &amp; Care</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- scales/justice -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M12 3v18M4 7h16M6 7l-3 5h6l-3-5z"/>
         </svg></span>
         <h3 class="card-title">Correction — Coming Soon</h3></div><div class="card-body">Restoring the straying in truth and mercy.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- heart/care -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M12 21s-7-4.5-7-10a4 4 0 018-1 4 4 0 018 1c0 5.5-7 10-7 10z"/>
         </svg></span>
         <h3 class="card-title">Mercy & Support — Coming Soon</h3></div><div class="card-body">Widows, orphans, poor; tangible relief.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- shield/protection -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M12 3l8 4v5c0 5-4 8-8 9-4-1-8-4-8-9V7l8-4z"/>
@@ -528,19 +546,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="unity-diversity">
     <div class="sec-head"><h2 class="sec-title">Unity &amp; Diversity</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- olive/graft -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M4 17c6-2 9-6 10-12"/><path d="M8 15c0 3 2 5 5 5"/>
         </svg></span>
         <h3 class="card-title">One New Man — Coming Soon</h3></div><div class="card-body">Peace in Messiah with covenant roles intact.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- globe/nations -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <circle cx="12" cy="12" r="9"/>
         </svg></span>
         <h3 class="card-title">Nations & Israel — Coming Soon</h3></div><div class="card-body">Order of blessing; grafted participation.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- cords/threefold -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M8 4v16M12 4v16M16 4v16"/>
@@ -553,19 +571,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="mission-witness">
     <div class="sec-head"><h2 class="sec-title">Mission &amp; Witness</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- trumpet/voice -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M4 12l8-4v8l-8-4zM12 10h3M12 14h3"/>
         </svg></span>
         <h3 class="card-title">Proclamation — Coming Soon</h3></div><div class="card-body">Good news of the kingdom in word and deed.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- mercy/works -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M6 4h12M9 20h6"/>
         </svg></span>
         <h3 class="card-title">Works of Mercy — Coming Soon</h3></div><div class="card-body">Justice, care, and generosity.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- seeds/fruit -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <circle cx="12" cy="12" r="2.5"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/>
@@ -578,19 +596,19 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
   <section class="section" id="order-rhythm">
     <div class="sec-head"><h2 class="sec-title">Order &amp; Rhythm</h2></div>
     <div class="grid-3">
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- calendar/moon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <circle cx="12" cy="12" r="9"/><path d="M15 3a9 9 0 010 18"/>
         </svg></span>
         <h3 class="card-title">Appointed Times — Coming Soon</h3></div><div class="card-body">Sabbaths and feasts structuring life together.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- table/fellowship -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M3 10h18M6 10v10M18 10v10M9 10V6M15 10V6"/>
         </svg></span>
         <h3 class="card-title">Table & Fellowship — Coming Soon</h3></div><div class="card-body">Hospitality, generosity, and peace.</div></a>
-      <a class="card" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
+      <a class="card rs-tile" href="#"><div class="card-top"><span class="icon" aria-hidden="true">
         <!-- order/lines -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path d="M6 4h12M9 20h6"/>
@@ -599,6 +617,29 @@ html[data-theme="dark"] body.ology-detail-page .card-body::after{
     </div>
   </section>
 
+<!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->
+<nav class="rs-related" aria-labelledby="rs-related-title">
+  <h2 class="rs-related-title" id="rs-related-title">Continue your research</h2>
+  <div class="rs-related-groups">
+    <section class="rs-related-group" aria-label="More Ologies">
+      <h3>More Ologies</h3>
+      <ul>
+      <li><a href="/ologies/israelology.html"><span>Israelology<span class="rs-related-kind">Ology</span></span></a></li>
+      <li><a href="/ologies/eschatology.html"><span>Eschatology<span class="rs-related-kind">Ology</span></span></a></li>
+      <li><a href="/ologies.html"><span>Ologies<span class="rs-related-kind">Ology</span></span></a></li>
+      </ul>
+    </section>
+    <section class="rs-related-group" aria-label="Reference tools">
+      <h3>Reference tools</h3>
+      <ul>
+      <li><a href="/encyclopedia.html"><span>Israelite Encyclopedia<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/biblical_references.html"><span>Biblical References<span class="rs-related-kind">Research tool</span></span></a></li>
+      <li><a href="/israelite-catechism.html"><span>Israelite Catechism<span class="rs-related-kind">Research tool</span></span></a></li>
+      </ul>
+    </section>
+  </div>
+</nav>
+<!-- rs-related:end -->
 </main>
 <div id="site-footer"></div>
 <script src="/js/include.js"></script>
