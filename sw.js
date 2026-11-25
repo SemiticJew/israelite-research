@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v188';
+const CACHE_VERSION = 'sj-pwa-v189';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -49,6 +49,7 @@ const APP_SHELL_ASSETS = [
   '/js/shims.js',
   '/css/sj-tokens.css',
   '/css/research.css',
+  '/css/institution.css',
   '/js/research-search.js',
   '/css/reader.css',
   '/tanakh/chapter.html',
