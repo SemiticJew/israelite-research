@@ -475,8 +475,23 @@ html[data-theme="dark"] .events-page .cal-legend button{
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/institution.css"/>
+<!-- page-meta (added by tools/apply_page_meta.py) -->
+<link rel="canonical" href="https://semiticjew.org/events.html"/>
+<meta name="description" content="Track Sabbath, New Moon, feast days, teachings, live sessions, and community events in one organized calendar."/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+<meta property="og:title" content="Events — Semitic Jew"/>
+<meta property="og:url" content="https://semiticjew.org/events.html"/>
+<meta property="og:description" content="Track Sabbath, New Moon, feast days, teachings, live sessions, and community events in one organized calendar."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Events — Semitic Jew"/>
+<meta name="twitter:description" content="Track Sabbath, New Moon, feast days, teachings, live sessions, and community events in one organized calendar."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
 </head>
-<body class="events-page">
+<body class="events-page sj-inst">
 <!-- Header partial -->
 <div id="site-header"></div>
 
@@ -487,10 +502,10 @@ html[data-theme="dark"] .events-page .cal-legend button{
     <span class="current">Events</span>
   </nav>
 
-  <section class="events-hero">
-    <div class="events-kicker">Calendar & Gatherings</div>
-    <h1 class="events-title">Events</h1>
-    <p class="events-subtitle">
+  <section class="events-hero in-hero">
+    <div class="events-kicker in-kicker">Calendar & Gatherings</div>
+    <h1 class="events-title in-title">Events</h1>
+    <p class="events-subtitle in-lede">
       Track Sabbath, New Moon, feast days, teachings, live sessions, and community events in one organized calendar.
     </p>
   </section>
@@ -499,7 +514,7 @@ html[data-theme="dark"] .events-page .cal-legend button{
   <div class="tabs-toolbar">
     <div class="tabs-left"></div>    <div class="tabs-right">
       <a class="btn" href="/assets/cal/basic.ics" download>Download ICS</a>
-      <a class="btn" href="webcal://semiticjew.github.io/assets/cal/basic.ics">Subscribe (webcal)</a>
+      <a class="btn" href="webcal://semiticjew.org/assets/cal/basic.ics">Subscribe (webcal)</a>
     </div>
   </div>
 

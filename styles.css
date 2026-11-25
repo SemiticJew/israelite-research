@@ -7851,3 +7851,12 @@ body.articles-page .featured-left.boxed:hover,
 body.articles-page .featured-left.boxed:focus-within {
   transform: none !important;
 }
+
+/* Batch 5 — practical touch targets for breadcrumb links (a larger tap area without moving anything). */
+.breadcrumbs a{ position: relative; }
+.breadcrumbs a::after{ content: ""; position: absolute; inset: -12px -6px; }
+
+/* Batch 5 — honour reduced-motion preferences across the site. */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

@@ -9,41 +9,39 @@ permissions:
   pages: write
   id-token: write
 
+# Let a running production deploy finish; a newer push queues behind it instead of cancelling it.
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Debug listing
+      # Publish only the website. The repository also holds the iOS app project (~570 MB),
+      # tests, build tools and automation that the site never serves; leaving them out keeps the
+      # Pages artifact well under GitHub's 1 GB published-site limit. Nothing is deleted from the repo.
+      - name: Stage site files
         run: |
-          set -euxo pipefail
-          pwd
-          ls -la
-          find . -maxdepth 3 -type d -print
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/site"
+          rsync -a \
+            --exclude='/.git' --exclude='/.github' --exclude='/ios/' --exclude='/node_modules/' \
+            --exclude='/tests/' --exclude='/tools/' --exclude='/automation/' --exclude='/scripts/' \
+            --exclude='/cloudflare/' --exclude='/workers/' --exclude='/tmp/' --exclude='*.bak*' \
+            ./ "$RUNNER_TEMP/site/"
+          touch "$RUNNER_TEMP/site/.nojekyll"   # serve files as-is (no Jekyll)
+          test -f "$RUNNER_TEMP/site/index.html" && test -f "$RUNNER_TEMP/site/CNAME"
+          test -f "$RUNNER_TEMP/site/data/scripture-search-index.json"
+          du -sh "$RUNNER_TEMP/site"
 
-      # Ensure Pages doesn’t try to run Jekyll (you’re serving static files)
-      - name: Disable Jekyll
-        run: |
-          set -euxo pipefail
-          touch .nojekyll
-
-      # Clean any stray backups so they don't confuse the deploy
-      - name: Clean backup files
-        run: |
-          set -euxo pipefail
-          find . -type f -name "*.bak*" -delete || true
-
-      # Upload the WHOLE repo (your site lives under /israelite-research plus root HTML)
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ${{ runner.temp }}/site
 
   deploy:
     environment:

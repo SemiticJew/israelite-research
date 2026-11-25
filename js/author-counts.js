@@ -26,7 +26,9 @@
         list.replaceChildren(...mine.map(a => {
           const card = el('article', 'author-article-card');
           const imgLink = el('a', 'author-article-image'); imgLink.href = a.href;
-          if (a.image && /^\/images\//.test(a.image)) { const img = el('img'); img.src = a.image; img.alt = ''; img.loading = 'lazy'; imgLink.append(img); }
+          // The title link below is the accessible link; the picture is a duplicate, so keep it out of the tab order.
+          imgLink.tabIndex = -1; imgLink.setAttribute('aria-hidden', 'true');
+          if (a.image && /^\/images\//.test(a.image) && !/ARTICLE_IMAGE/.test(a.image)) { const img = el('img'); img.src = a.image; img.alt = ''; img.loading = 'lazy'; imgLink.append(img); }
           const body = el('div', 'author-article-body');
           const date = fmtDate(a.date);
           if (date) { const p = el('p', 'article-date'); const t = el('time', null, date); t.dateTime = a.date.slice(0, 10); p.append(t); body.append(p); }

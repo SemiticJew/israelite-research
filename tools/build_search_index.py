@@ -203,12 +203,30 @@ def date_for(parser, path):
 
     return ""
 
+# Search shows small thumbnails, so prefer an article's 700x394 card image over its 1200x630 social
+# card (often 0.5-1 MB), and skip the generic site preview, which says nothing about the result.
+GENERIC_IMAGES = {"/images/social-preview.png"}
+
+
+def thumbnail_for(val):
+    if val in GENERIC_IMAGES:
+        return ""
+    m = re.match(r"^(/images/articles/.+?)-social(?:-1200x630)?\.(png|jpe?g)$", val)
+    if m:
+        for ext in ("png", "jpg", "jpeg"):
+            card = f"{m.group(1)}-700x394.{ext}"
+            if (ROOT / card.lstrip("/")).exists():
+                return card
+    return val
+
+
 def image_for(parser):
     for key in ["og:image", "twitter:image", "image"]:
         val = parser.meta.get(key)
         if val:
-            val = val.replace("https://semiticjew.org", "")
-            return val
+            val = thumbnail_for(val.replace("https://semiticjew.org", ""))
+            if val:
+                return val
 
     for img in parser.images:
         if "/images/" in img or img.startswith("/images/"):

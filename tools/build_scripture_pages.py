@@ -324,6 +324,33 @@ def render_biblia():
     return page('data-hub="biblia"', hub["title"], hub["description"] or hub["subtitle"], main)
 
 
+# ---------------------------------------------------------------- sharing metadata
+SITE = "https://semiticjew.org"
+SHARE_IMAGE = SITE + "/images/social-preview.png"
+
+
+def with_share_meta(rel, html_text):
+    """Canonical URL plus Open Graph / X cards, built from the page's own <title> and description."""
+    title = html.unescape(re.search(r"<title>(.*?)</title>", html_text).group(1))
+    m = re.search(r'<meta name="description" content="([^"]*)"/>', html_text)
+    desc = html.unescape(m.group(1)) if m else ""
+    url = f"{SITE}/{rel.as_posix()}"
+    tags = [f'<link rel="canonical" href="{e(url)}"/>',
+            f'<meta property="og:type" content="website"/>',
+            f'<meta property="og:site_name" content="Semitic Jew"/>',
+            f'<meta property="og:title" content="{e(title)}"/>',
+            f'<meta property="og:url" content="{e(url)}"/>',
+            f'<meta property="og:image" content="{SHARE_IMAGE}"/>',
+            f'<meta name="twitter:card" content="summary_large_image"/>',
+            f'<meta name="twitter:title" content="{e(title)}"/>',
+            f'<meta name="twitter:image" content="{SHARE_IMAGE}"/>']
+    if desc:
+        tags[4:4] = [f'<meta property="og:description" content="{e(desc)}"/>']
+        tags.append(f'<meta name="twitter:description" content="{e(desc)}"/>')
+    anchor = "\n<script>/* Apply the saved theme"
+    return html_text.replace(anchor, "\n" + "\n".join(tags) + anchor, 1)
+
+
 # ---------------------------------------------------------------- build
 def build():
     out = {Path("biblia.html"): render_biblia()}
@@ -336,7 +363,7 @@ def build():
             prev_card = books[i - 1] if i > 0 else None
             next_card = books[i + 1] if i < len(books) - 1 else None
             out[Path(key + ".html")] = render_book(key, prev_card, next_card, group_of.get(card["href"], ""))
-    return out
+    return {rel: with_share_meta(rel, text) for rel, text in out.items()}
 
 
 def main():

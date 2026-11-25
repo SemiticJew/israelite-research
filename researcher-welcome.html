@@ -28,18 +28,35 @@
 <link rel="manifest" href="/site.webmanifest"/>
 <meta name="theme-color" content="#054A91"/>
 
+<link rel="stylesheet" href="/css/sj-tokens.css"/>
+<link rel="stylesheet" href="/css/institution.css"/>
+<!-- page-meta (added by tools/apply_page_meta.py) -->
+<link rel="canonical" href="https://semiticjew.org/researcher-welcome.html"/>
+<meta name="description" content="Join a community committed to logical, text-first study across Scripture and history."/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Semitic Jew"/>
+<meta property="og:title" content="Become an Israelite Researcher — Semitic Jew"/>
+<meta property="og:url" content="https://semiticjew.org/researcher-welcome.html"/>
+<meta property="og:description" content="Join a community committed to logical, text-first study across Scripture and history."/>
+<meta property="og:image" content="https://semiticjew.org/images/social-preview.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Become an Israelite Researcher — Semitic Jew"/>
+<meta name="twitter:description" content="Join a community committed to logical, text-first study across Scripture and history."/>
+<meta name="twitter:image" content="https://semiticjew.org/images/social-preview.png"/>
 </head>
-<body>
+<body class="sj-inst">
 <div id="site-header"></div>
 
 <main class="container">
-  <header class="hero">
-    <h1 class="title">Become an Israelite Researcher</h1>
-    <p class="sub">Join a community committed to logical, text-first study across Scripture and history.</p>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a><span class="sep">›</span><span class="current" aria-current="page">Become a Researcher</span></nav>
+
+  <header class="hero in-hero">
+    <h1 class="title in-title">Become an Israelite Researcher</h1>
+    <p class="sub in-lede">Join a community committed to logical, text-first study across Scripture and history.</p>
   </header>
 
   <section class="section">
-    <div class="card">
+    <div class="card in-card in-card--form">
       <h2 class="h2">What we’re building</h2>
       <p class="p">A collaborative network producing research notes, articles, and study tools—rooted in Scripture, consistent logic, and ancient context.</p>
       <h3 class="h2" style="font-size:1.1rem;">Expectations</h3>
@@ -52,16 +69,16 @@
   </section>
 
   <section class="section">
-    <div class="card">
+    <div class="card in-card in-card--form">
       <h2 class="h2">Apply</h2>
-      <form class="form" action="#" method="post">
-        <input class="input" type="text" name="name" placeholder="Full name" required/>
-        <input class="input" type="email" name="email" placeholder="Email" required/>
-        <select class="select" name="focus">
+      <form class="form" action="mailto:contact@semiticjew.org?subject=Israelite%20Researcher%20Application" method="post" enctype="text/plain">
+        <input class="input" type="text" name="name" placeholder="Full name" aria-label="Full name" autocomplete="name" required/>
+        <input class="input" type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required/>
+        <select class="select" name="focus" aria-label="Primary focus area">
           <option value="">Primary focus area</option>
           <option>Hebrew Bible</option><option>Second Temple</option><option>Gospels/Acts</option><option>Early Church</option><option>Languages</option><option>Archaeology/ANE</option>
         </select>
-        <textarea class="textarea" name="motivation" rows="5" placeholder="Tell us about your research interests and experience…"></textarea>
+        <textarea class="textarea" name="motivation" rows="5" aria-label="Research interests and experience" placeholder="Tell us about your research interests and experience…"></textarea>
         <button class="btn" type="submit">Submit Application</button>
       </form>
     </div>

@@ -8,14 +8,18 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: youtube-feed
+  cancel-in-progress: false
+
 jobs:
   update-youtube-feed:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
@@ -30,7 +34,14 @@ jobs:
           git add data/youtube-videos.json data/youtube-podcast-videos.json data/podcast-episodes.json
           if git diff --cached --quiet; then
             echo "No YouTube feed changes."
-          else
-            git commit -m "Update YouTube video feed"
-            git push
+            exit 0
           fi
+          git commit -m "Update YouTube video feed"
+          # Other automated jobs also push to main; rebase onto their commits and retry, never force-push.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed; retrying..."
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not push after 3 attempts."
+          exit 1
