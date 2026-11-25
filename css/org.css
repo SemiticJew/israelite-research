@@ -118,8 +118,6 @@ html body.sj-org .og-arrow{
   display:inline-flex; align-items:center; gap:.4rem; color:var(--og-ink) !important; text-decoration:none !important;
   font:700 .8125rem/1 var(--og-display); letter-spacing:.02em; padding:.6rem 0 .35rem; border-bottom:1.5px solid var(--og-orange);
 }
-html body.sj-org .og-arrow::after{ content:"→"; font-family:var(--og-ui); transition:transform .15s; }
-html body.sj-org .og-arrow:hover::after{ transform:translateX(3px); }
 
 /* ---------- Mastheads ---------- */
 html body.sj-org .og-mast{ position:relative; padding:clamp(24px, 3vw, 36px) 0 clamp(56px, 7vw, 96px); }
@@ -308,7 +306,6 @@ html body.sj-org .og-notes strong{ color:var(--og-ink); }
 html body.sj-org .og-sec--explore{ padding:2rem 0; }
 html body.sj-org .og-explore{ display:flex; flex-wrap:wrap; gap:.5rem 2.5rem; }
 html body.sj-org .og-explore a{ color:var(--og-ink) !important; font:700 .9375rem/1 var(--og-display); text-decoration:none !important; padding:.9rem 0; }
-html body.sj-org .og-explore a::after{ content:" →"; color:var(--og-orange); }
 
 /* ---------- Mission ---------- */
 html body.sj-org .og-audience{ display:grid; gap:0; border-top:2px solid var(--og-ink); }
@@ -403,3 +400,20 @@ html body.sj-org .og-mast--navy .og-numeral, html body.sj-org .og-band .og-folio
 html body.sj-org .og-strip a span{ color:var(--og-muted); }
 html body.sj-org .og-manifesto__title span:first-child{ color:var(--og-num); }
 html body.sj-org .og-program__num{ -webkit-text-stroke-color:var(--og-num); }
+
+/* ---------- Polish: text-only link chips, roomier boxed text ---------- */
+html body.sj-org :is(.og-arrow, .og-explore a, .og-give__links a){
+  display:inline-flex !important; align-items:center; justify-content:center; min-height:40px; padding:.5rem 1rem !important; gap:0;
+  border:1px solid var(--og-line-strong) !important; border-bottom:2px solid var(--og-orange) !important; border-radius:2px;
+  background:var(--og-surface); color:var(--og-ink) !important; text-decoration:none !important; white-space:nowrap;
+  font:700 .8125rem/1.2 var(--og-display) !important; letter-spacing:.01em; transition:background .15s, border-color .15s, color .15s;
+}
+html body.sj-org :is(.og-arrow, .og-explore a, .og-give__links a):hover{ background:var(--og-ink); border-color:var(--og-ink) !important; border-bottom-color:var(--og-orange) !important; color:var(--og-paper) !important; }
+html body.sj-org .og-ledger .og-arrow{ margin-top:.75rem; }
+html body.sj-org .og-explore{ gap:.75rem; }
+html body.sj-org .og-give__links{ gap:.5rem; }
+html body.sj-org .og-impact__item, html body.sj-org .og-audience > div{ padding-right:1.75rem; }
+html body.sj-org .og-ledger li{ padding-right:1.25rem; }
+html body.sj-org .og-index a{ grid-template-columns:2.5rem minmax(0, 1fr) 1.5rem; padding-right:.25rem; }
+html body.sj-org .og-directory__item p, html body.sj-org .og-checks li{ padding-right:.5rem; }
+html body.sj-org .og-facts dd{ padding-right:.5rem; }

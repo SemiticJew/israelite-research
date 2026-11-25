@@ -217,7 +217,6 @@ html body.lb-ologies #apolCount{ flex-basis:100%; font:500 .8125rem/1 var(--lb-u
 html body.lb-ologies #core{ margin-top:var(--lb-section) !important; }
 html body.lb-ologies #core .sec-head, html body.lb-ologies #arguments .sec-head{ display:flex; align-items:baseline; justify-content:space-between; margin:0 0 1.5rem !important; }
 html body.lb-ologies .sec-head .link{ font:700 .875rem/1 var(--lb-display) !important; color:var(--lb-ink) !important; border-bottom:1.5px solid var(--lb-orange); padding-bottom:.3rem; text-decoration:none !important; }
-html body.lb-ologies #core .sec-head .link::after, html body.lb-ologies #arguments .sec-head .link::after{ content:" →"; }
 html body.lb-ologies #core .grid-3{ display:grid !important; grid-template-columns:1fr !important; gap:0 clamp(32px, 5vw, 72px) !important; border-top:2px solid var(--lb-ink); counter-reset:doc; }
 @media (min-width:860px){ html body.lb-ologies #core .grid-3{ grid-template-columns:1fr 1fr !important; } }
 html body.lb-ologies #core .grid-3 > .card{
@@ -237,7 +236,7 @@ html body.lb-ologies #core .card-body{ grid-column:2; padding:0 !important; font
 html body.lb-ologies #core .card-body .meta{ margin-top:.75rem !important; font:600 .8125rem/1.4 var(--lb-ui) !important; color:var(--lb-muted) !important; }
 html body.lb-ologies #core .card-cta{ grid-column:2; display:flex !important; flex-wrap:wrap; gap:.4rem; padding:0 !important; margin-top:.35rem !important; }
 html body.lb-ologies #core .card-cta .btn{ display:inline-flex !important; min-height:0 !important; padding:.35rem .6rem !important; border-radius:2px !important; border:1px solid var(--lb-line-strong) !important; background:none !important; color:var(--lb-ink-soft) !important; font:600 .75rem/1 var(--lb-ui) !important; box-shadow:none !important; }
-html body.lb-ologies #core .card-cta::after{ content:"Open study →"; margin-left:auto; align-self:center; font:700 .8125rem/1 var(--lb-display); color:var(--lb-ink); border-bottom:1.5px solid var(--lb-orange); padding-bottom:.2rem; }
+html body.lb-ologies #core .card-cta::after{ content:"Open study"; margin-left:auto; align-self:center; font:700 .8125rem/1 var(--lb-display); color:var(--lb-ink); border-bottom:1.5px solid var(--lb-orange); padding-bottom:.2rem; }
 html body.lb-ologies main > .rule{ display:none !important; }
 
 /* argument folios on a navy band */
@@ -256,7 +255,7 @@ html body.lb-ologies #arguments .card.hide{ display:none !important; }
 html body.lb-ologies #arguments .arg h3{ font:700 1.5rem/1.1 var(--lb-display) !important; color:#fff !important; margin:0 0 .75rem !important; }
 html body.lb-ologies #arguments .arg h3::before{ content:"“"; display:block; font:italic 700 3.5rem/.6 var(--lb-script); color:var(--lb-orange); margin-bottom:.75rem; }
 html body.lb-ologies #arguments .arg p{ font:400 1.125rem/1.55 var(--lb-serif) !important; color:#C9D5E3 !important; }
-html body.lb-ologies #arguments .arg::after{ content:"Read the argument →"; display:inline-block; margin-top:1.25rem; font:700 .8125rem/1 var(--lb-display); color:#fff; border-bottom:1.5px solid var(--lb-orange); padding-bottom:.25rem; }
+html body.lb-ologies #arguments .arg::after{ content:"Read the argument"; display:inline-block; margin-top:1.25rem; font:700 .8125rem/1 var(--lb-display); color:#fff; border-bottom:1.5px solid var(--lb-orange); padding-bottom:.25rem; }
 html body.lb-ologies #arguments + .rs-related, html body.lb-ologies #arguments ~ .rs-related{ border-top:0 !important; }
 html body.lb-ologies #core .card-body{ background:none !important; box-shadow:none !important; border:0 !important; }
 html body.lb-ologies #core .card-body::after{ display:none !important; }
@@ -622,7 +621,7 @@ html body.lb-summaries .bs-grid > .card{
   color:var(--lb-ink) !important; text-decoration:none !important; transition:border-color .15s, box-shadow .15s;
 }
 html body.lb-summaries .bs-grid > a.card:hover{ border-left-color:var(--lb-orange) !important; box-shadow:var(--lb-shadow) !important; }
-html body.lb-summaries .bs-grid > a.card::after{ content:"Book overview →"; font:700 .75rem/1 var(--lb-display); color:var(--lb-ink); margin-top:.6rem; }
+html body.lb-summaries .bs-grid > a.card::after{ content:"Book overview"; font:700 .75rem/1 var(--lb-display); color:var(--lb-ink); margin-top:.6rem; }
 html body.lb-summaries .bs-grid .card-body{ padding:0 !important; background:none !important; }
 html body.lb-summaries .bs-grid .title{ font:600 1.25rem/1.15 var(--lb-serif) !important; color:var(--lb-ink) !important; margin:0 !important; }
 html body.lb-summaries .bs-status{ order:3; margin-top:.5rem; font:700 .625rem/1.3 var(--lb-ui) !important; letter-spacing:.12em !important; text-transform:uppercase; color:var(--lb-accent) !important; background:none !important; padding:0 !important; border:0 !important; }
@@ -681,7 +680,6 @@ html body.lb-identity .study-card h3{ font:700 clamp(1.375rem, 1.1rem + 1vw, 1.8
 html body.lb-identity .study-card p{ font:400 1.125rem/1.65 var(--lb-serif) !important; color:var(--lb-ink-soft) !important; max-width:40rem; }
 html body.lb-identity .study-links{ display:flex !important; flex-wrap:wrap; gap:.5rem 1.5rem !important; margin-top:1rem !important; }
 html body.lb-identity .study-links a{ font:700 .875rem/1 var(--lb-display) !important; color:var(--lb-ink) !important; text-decoration:none !important; border-bottom:1.5px solid var(--lb-orange) !important; padding:.6rem 0 .3rem !important; background:none !important; border-radius:0 !important; }
-html body.lb-identity .study-links a::after{ content:" →"; }
 html body.lb-extra .extra-map-shell .status{ background:#0F1A2B !important; border-color:rgba(219,228,238,.16) !important; color:#C9D5E3 !important; }
 html body.lb-extra .extra-map-shell .status b{ color:#F7A04F !important; }
 html body.lb-extra .extra-map-shell input::placeholder{ color:#6B7A8D !important; opacity:1; }
@@ -709,3 +707,54 @@ html body.lb-dietary #dietTree :is(.badge, .count, [class*="count"], [class*="ba
 /* section links in the Ologies heads get a proper tap area */
 html body.lb-ologies .sec-head .link{ display:inline-flex; align-items:center; min-height:44px; padding:0 0 .1rem !important; }
 html[data-theme="dark"] body.lb-search .sr-submit{ background:var(--lb-orange) !important; border-color:var(--lb-orange) !important; color:#0A1322 !important; }
+
+/* ---------- Polish: text-only link chips, roomier boxed text ---------- */
+html body.sj-lib :is(.lb-identity .study-links a, .lb-ologies .sec-head .link){
+  display:inline-flex !important; align-items:center; justify-content:center; min-height:40px; padding:.5rem 1rem !important;
+  border:1px solid var(--lb-line-strong) !important; border-bottom:2px solid var(--lb-orange) !important; border-radius:2px !important;
+  background:var(--lb-surface) !important; color:var(--lb-ink) !important; text-decoration:none !important; white-space:nowrap;
+  font:700 .8125rem/1.2 var(--lb-display) !important; letter-spacing:.01em; transition:background .15s, border-color .15s, color .15s;
+}
+html body.sj-lib :is(.lb-identity .study-links a, .lb-ologies .sec-head .link):hover{ background:var(--lb-ink) !important; border-color:var(--lb-ink) !important; border-bottom-color:var(--lb-orange) !important; color:var(--lb-paper) !important; }
+html body.lb-identity .study-links{ gap:.6rem !important; }
+/* labels inside whole-card links read as chips too (text only) */
+html body.lb-ologies #core .card-cta::after,
+html body.lb-ologies #arguments .arg::after,
+html body.lb-summaries .bs-grid > a.card::after{
+  display:inline-flex; align-items:center; padding:.45rem .8rem; border:1px solid var(--lb-line-strong); border-bottom:2px solid var(--lb-orange); border-radius:2px; white-space:nowrap; line-height:1.2;
+}
+html body.lb-summaries .bs-grid > a.card::after{ align-self:flex-start; font-size:.6875rem; padding:.4rem .6rem; }
+html body.lb-ologies #arguments .arg::after{ border-color:rgba(219,228,238,.3); border-bottom-color:var(--lb-orange); }
+html body.lb-ologies #core .grid-3 > .card:hover .card-cta::after,
+html body.lb-summaries .bs-grid > a.card:hover::after{ background:var(--lb-ink); color:var(--lb-paper); border-color:var(--lb-ink); border-bottom-color:var(--lb-orange); }
+html body.lb-ologies #arguments .card:hover .arg::after{ background:#fff; color:#0B2340; }
+html body.lb-ologies #core .card-cta{ align-items:center; row-gap:.5rem; }
+
+/* boxed list rows: breathing room on the right, balanced type */
+html body.lb-ency .panel-left .results .card{ padding:1rem 1.25rem 1.1rem .75rem !important; }
+html body.lb-ency .panel-left .results .card[aria-selected="true"]{ padding-left:1rem !important; }
+html body.lb-ency .results .line1{ flex-wrap:wrap; row-gap:.15rem; }
+html body.lb-ency .results .term{ font-size:1.125rem !important; overflow-wrap:anywhere; }
+html body.lb-ency .results .abstract{ max-width:34rem; padding-right:.25rem; }
+html body.lb-ency .panel-left .results{ scrollbar-gutter:stable; }
+html body.lb-refs .results .card{ padding:.9rem 1.25rem .95rem .75rem !important; }
+html body.lb-refs .results .card.active{ padding-left:1rem !important; }
+html body.lb-refs .results .term{ overflow-wrap:anywhere; }
+html body.lb-refs .panel-left .results{ scrollbar-gutter:stable; }
+html body.sj-lib .lb-toc a, html body.lb-ology .lb-outline a{ padding-right:.5rem; }
+html body.lb-ologies #core .grid-3 > .card{ padding-right:1rem !important; }
+html body.lb-ologies #core .card-cta .btn{ white-space:nowrap; padding:.4rem .7rem !important; }
+html body.lb-ology .lb-study__body .grid-3 > .card{ padding-right:.75rem !important; }
+html body.lb-search .sr-browse a{ display:block; padding:.6rem .5rem .6rem 0 !important; }
+html body.lb-search .sr-chip, html body.lb-ency .ency-chip, html body.lb-refs .bibrefs-chip{ white-space:nowrap; padding:0 .9rem !important; }
+html body.lb-summaries .bs-grid > .card{ padding-right:1rem !important; }
+html body.lb-summaries .bs-grid .title{ overflow-wrap:anywhere; hyphens:auto; }
+html body.lb-guides .guide-points li{ padding-right:.75rem !important; }
+html body.lb-guides .lb-shelf .coming-card{ padding-right:1.1rem !important; }
+html body.lb-guides .lb-shelf .coming-card h3{ overflow-wrap:anywhere; hyphens:auto; }
+html body.lb-dietary .dietary-tool-shell .rs-chip{ white-space:nowrap; padding:0 .85rem !important; }
+html body.lb-catechism .vtab{ padding-right:.75rem !important; }
+html body.lb-ency .lb-ency-find .r-toolbar, html body.lb-refs .lb-lexicon-find .r-toolbar{ flex-wrap:nowrap !important; }
+html body.lb-ency .lb-ency-find #clearQ, html body.lb-refs .lb-lexicon-find #clearQ{ flex:none !important; width:auto !important; }
+html body.sj-lib.lb-ologies #arguments .sec-head .link{ background:transparent !important; color:#fff !important; border-color:rgba(219,228,238,.35) !important; border-bottom-color:var(--lb-orange) !important; }
+html body.sj-lib.lb-ologies #arguments .sec-head .link:hover{ background:#fff !important; color:#0B2340 !important; }
