@@ -526,13 +526,15 @@ html[data-theme="dark"] .bibrefs-quick-row{
 
 <link rel="stylesheet" href="/css/sj-tokens.css"/>
 <link rel="stylesheet" href="/css/research.css"/>
+<link rel="stylesheet" href="/css/library.css"/>
 <!-- page-meta (added by tools/apply_page_meta.py) -->
 <link rel="canonical" href="https://semiticjew.org/biblical_references.html"/>
 </head>
-<body class="bib-refs-page bib-refs sj-research">
+<body class="bib-refs-page bib-refs sj-research sj-lib lb-refs">
 <!-- Header include -->
 <div data-include="partials/header.html" id="site-header"></div>
 <main class="container bibrefs-main">
+<header class="lb-mast lb-mast--ruled lb-mast--lexicon lb-bleed">
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a>
   <span class="sep">›</span>
@@ -540,7 +542,7 @@ html[data-theme="dark"] .bibrefs-quick-row{
   <span class="sep">›</span>
   <span class="current">Biblical References</span>
 </nav>
-
+<div class="lb-lexicon-head">
 <section class="bibrefs-hero rs-hero">
   <div class="bibrefs-kicker rs-kicker">Reference Library</div>
   <h1 class="bibrefs-title rs-title">Biblical References</h1>
@@ -548,6 +550,31 @@ html[data-theme="dark"] .bibrefs-quick-row{
     Search study terms, dictionary entries, covenant language, and Scripture-related concepts for quick reference and deeper study.
   </p>
 </section>
+<div class="lb-lexicon-find">
+  <div class="bibrefs-section-head rs-section-head">
+    <div>
+      <h2>Reference Search</h2>
+      <p>Search the reference library or browse alphabetically.</p>
+    </div>
+    <div id="bibRefCount">Loading entries…</div>
+  </div>
+<form autocomplete="off" class="r-toolbar" onsubmit="return false;">
+<input aria-label="Search dictionaries" autocapitalize="off" autocomplete="off" autocorrect="off" id="q" name="q_bibrefs" placeholder="Search (e.g., sabbath, covenant, Zion, lemma:hesed)…" spellcheck="false" type="search"/>
+<button class="btn" id="clearQ" type="button">Clear</button>
+</form>
+  <div class="bibrefs-quick-row" aria-label="Quick reference searches">
+    <span class="bibrefs-chip-label">Quick Search</span>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="sabbath">Sabbath</button>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="covenant">Covenant</button>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="zion">Zion</button>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="israel">Israel</button>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="law">Law</button>
+    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="kingdom">Kingdom</button>
+  </div>
+</div>
+</div>
+</header>
+
 
 <nav class="rs-subnav" aria-label="Research library">
   <ul>
@@ -565,39 +592,9 @@ html[data-theme="dark"] .bibrefs-quick-row{
 </nav>
 
 
-<section class="bibrefs-intro-grid rs-intro" aria-label="Biblical references overview">
-  <article class="bibrefs-info-card rs-card">
-    <h2>Study Terms</h2>
-    <p>Browse biblical concepts, names, themes, and theological vocabulary from the reference database.</p>
-  </article>
-  <article class="bibrefs-info-card rs-card">
-    <h2>Fast Lookup</h2>
-    <p>Search by term or use the A–Z index to quickly locate entries and definitions.</p>
-  </article>
-  <article class="bibrefs-info-card rs-card">
-    <h2>Plain Reading</h2>
-    <p>Use the reader panel to study entries in a clean format without leaving the page.</p>
-  </article>
-</section>
 
 <section class="bibrefs-tool-shell rs-panel" aria-label="Biblical reference search tool">
-  <div class="bibrefs-section-head rs-section-head">
-    <div>
-      <h2>Reference Search</h2>
-      <p>Search the reference library or browse alphabetically.</p>
-    </div>
-    <div id="bibRefCount">Loading entries…</div>
-  </div>
 
-  <div class="bibrefs-quick-row" aria-label="Quick reference searches">
-    <span class="bibrefs-chip-label">Quick Search</span>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="sabbath">Sabbath</button>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="covenant">Covenant</button>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="zion">Zion</button>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="israel">Israel</button>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="law">Law</button>
-    <button class="bibrefs-chip rs-chip" type="button" data-ref-query="kingdom">Kingdom</button>
-  </div>
 
   <div class="layout">
 <!-- Left: results + facets -->
@@ -617,10 +614,6 @@ html[data-theme="dark"] .bibrefs-quick-row{
 <div class="reader" id="reader">
 <div class="head">
 <h2 class="r-title">Select an entry</h2>
-<form autocomplete="off" class="r-toolbar" onsubmit="return false;">
-<input aria-label="Search dictionaries" autocapitalize="off" autocomplete="off" autocorrect="off" id="q" name="q_bibrefs" placeholder="Search (e.g., sabbath, covenant, Zion, lemma:hesed)…" spellcheck="false" type="search"/>
-<button class="btn" id="clearQ" type="button">Clear</button>
-</form>
 </div>
 <article>
 <div class="empty">Definitions will appear here when you select a result.</div>
@@ -628,6 +621,21 @@ html[data-theme="dark"] .bibrefs-quick-row{
 </div>
 </aside>
   </div>
+</section>
+
+<section class="bibrefs-intro-grid rs-intro lb-notes" aria-label="Biblical references overview">
+  <article class="bibrefs-info-card rs-card">
+    <h2>Study Terms</h2>
+    <p>Browse biblical concepts, names, themes, and theological vocabulary from the reference database.</p>
+  </article>
+  <article class="bibrefs-info-card rs-card">
+    <h2>Fast Lookup</h2>
+    <p>Search by term or use the A–Z index to quickly locate entries and definitions.</p>
+  </article>
+  <article class="bibrefs-info-card rs-card">
+    <h2>Plain Reading</h2>
+    <p>Use the reader panel to study entries in a clean format without leaving the page.</p>
+  </article>
 </section>
 
 <!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->
@@ -732,11 +740,17 @@ html[data-theme="dark"] .bibrefs-quick-row{
         card.className='card';
         card.innerHTML=`<div class="line1"><div class="term">${escapeHtml(e.term)}</div></div>
                         <div class="abstract">${escapeHtml(e.abstract)}</div>`;
-        card.addEventListener('click',()=>{
-          document.querySelectorAll('.results .card.active').forEach(c=>c.classList.remove('active'));
+        card.setAttribute('role','option');
+        card.tabIndex=0;
+        const choose=()=>{
+          document.querySelectorAll('.results .card.active').forEach(c=>{c.classList.remove('active');c.removeAttribute('aria-selected');});
           card.classList.add('active');
+          card.setAttribute('aria-selected','true');
           openEntry(e);
-        });
+          if(window.matchMedia && window.matchMedia('(max-width: 899px)').matches) readerEl.scrollIntoView({behavior:'smooth',block:'start'});
+        };
+        card.addEventListener('click',choose);
+        card.addEventListener('keydown',ev=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); choose(); } });
         frag.appendChild(card);
       });
       resultsEl.innerHTML='';

@@ -1,0 +1,405 @@
+/* org.css — Semitic Jew Inc organization pages: About, Mission, Programs, Support, Contact, Newsletter.
+
+   Each page has its own composition built from the homepage's design language — League Spartan
+   display type, Playfair italic accents, Newsreader text, ruled parchment, numbered folios and
+   full-width navy and orange bands:
+     About       navy masthead with the Scripture · Logic · Truth motto, roman-numeral pillars,
+                 a numbered ledger of the work and a certificate-style verification record;
+     Programs    ruled masthead with a program index, then one full-width chapter per program area;
+     Support     the Give card sits in the masthead beside the appeal, impact columns below;
+     Mission     centred manifesto; audience columns; a numbered practice list;
+     Contact     inquiry directory pairing each kind of question with its email channel;
+     Newsletter  a navy signup spread with the Zeffy form on a paper card.
+
+   Scoped to body.sj-org (pages opt in by body class; tools/apply_institution_shell.py keeps the
+   stylesheet link and the Organization strip current). Tokens: css/sj-tokens.css plus the local
+   --og-* palette below, redefined for dark mode. */
+
+html body.sj-org{
+  --og-navy:#0B2340; --og-navy-deep:#071A31; --og-blue:#054A91; --og-orange:#F17300; --og-orange-hover:#FF8A1F;
+  --og-paper:#F6F4EF; --og-tint:#EFEBE3; --og-surface:#FFFFFF; --og-ink:#0B2340; --og-ink-soft:#2E4360; --og-muted:#55657A;
+  --og-line:#DCE2E9; --og-line-strong:#B9C4D1; --og-accent:#B45400; --og-rule:rgba(11,35,64,.055);
+  --og-display:"League Spartan", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --og-script:"Playfair Display", Georgia, serif;
+  --og-serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --og-ui:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --og-gutter:clamp(16px, 4vw, 40px);
+  --og-section:clamp(56px, 8vw, 112px);
+  --og-shadow:0 1px 2px rgba(11,35,64,.06), 0 18px 40px -18px rgba(11,35,64,.28);
+  background:var(--og-paper) !important; color:var(--og-ink);
+}
+html[data-theme="dark"] body.sj-org{
+  --og-paper:#08111F; --og-tint:#0C1828; --og-surface:#0F1A2B; --og-ink:#E9EEF6; --og-ink-soft:#C3CEDC; --og-muted:#A3B0C2;
+  --og-line:#223046; --og-line-strong:#34465E; --og-accent:#FF9A3D; --og-rule:rgba(219,228,238,.05);
+  --og-shadow:0 1px 2px rgba(0,0,0,.3), 0 18px 40px -18px rgba(0,0,0,.65);
+}
+
+/* ---------- Shell ---------- */
+html body.sj-org main.og-page{
+  max-width:none !important; margin:0 !important; padding:0 !important; background:none !important;
+  box-shadow:none !important; font-family:var(--og-ui); overflow-x:clip;
+}
+html body.sj-org .og-wrap{ max-width:1200px; margin:0 auto; padding:0 var(--og-gutter); box-sizing:border-box; }
+html body.sj-org .og-page :is(h1,h2,h3,p,ul,ol,dl,dd){ margin:0; }
+html body.sj-org .og-page :is(a,button,summary,iframe):focus-visible{ outline:2px solid var(--og-orange) !important; outline-offset:3px !important; }
+
+/* Breadcrumbs inside each masthead */
+html body.sj-org .og-page nav.breadcrumbs{
+  display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; justify-content:flex-start !important; text-align:left !important;
+  margin:0 0 clamp(28px, 4vw, 48px) !important; padding:0 !important; font:500 .75rem/1.4 var(--og-ui) !important; letter-spacing:.02em;
+}
+html body.sj-org .og-page nav.breadcrumbs a{ color:var(--og-muted) !important; text-decoration:none !important; font-weight:500 !important; }
+html body.sj-org .og-page nav.breadcrumbs a:hover{ color:var(--og-ink) !important; text-decoration:underline !important; }
+html body.sj-org .og-page nav.breadcrumbs .sep{ color:var(--og-line-strong) !important; }
+html body.sj-org .og-page nav.breadcrumbs .current{ color:var(--og-ink-soft) !important; font-weight:600 !important; }
+
+/* ---------- Type ---------- */
+html body.sj-org .og-eyebrow{
+  display:flex; align-items:center; gap:.75rem; color:var(--og-accent);
+  font:700 .75rem/1.2 var(--og-ui); letter-spacing:.16em; text-transform:uppercase; margin-bottom:1.1rem !important;
+}
+html body.sj-org .og-eyebrow::before{ content:""; width:2rem; height:2px; background:var(--og-orange); flex:none; }
+html body.sj-org .og-eyebrow--plain::before{ display:none; }
+html body.sj-org .og-h1{
+  font:900 clamp(3rem, 2rem + 5vw, 6.25rem)/.92 var(--og-display) !important; letter-spacing:-.035em; color:var(--og-ink) !important;
+  margin:0 0 1.5rem !important; text-wrap:balance;
+}
+html body.sj-org .og-lede{
+  font:400 clamp(1.125rem, 1rem + .45vw, 1.375rem)/1.55 var(--og-serif); color:var(--og-ink-soft); max-width:36rem;
+}
+html body.sj-org .og-lede--wide{ max-width:46rem; margin-inline:auto !important; }
+html body.sj-org .og-fine{ margin-top:1.25rem !important; font:500 .8125rem/1.5 var(--og-ui); color:var(--og-muted); }
+
+html body.sj-org .og-head{ display:flex; flex-direction:column; gap:.75rem; margin-bottom:clamp(28px, 4vw, 48px); }
+html body.sj-org .og-head h2,
+html body.sj-org .og-program h2,
+html body.sj-org .og-band h2,
+html body.sj-org .og-give h2,
+html body.sj-org .og-cert h2{
+  font:700 clamp(1.875rem, 1.3rem + 2vw, 3rem)/1.02 var(--og-display) !important; letter-spacing:-.025em; color:var(--og-ink) !important; text-wrap:balance;
+}
+html body.sj-org .og-folio{ font:italic 700 1.25rem/1 var(--og-script); color:var(--og-orange); }
+html body.sj-org .og-head--side{ margin-bottom:0; }
+html body.sj-org .og-side-note{ margin-top:1rem !important; color:var(--og-muted); font:400 1rem/1.6 var(--og-serif); max-width:22rem; }
+
+html body.sj-org .og-statement{
+  font:400 clamp(1.375rem, 1.05rem + 1.2vw, 2.125rem)/1.38 var(--og-serif); color:var(--og-ink); max-width:56rem; text-wrap:pretty;
+}
+html body.sj-org .og-statement--center{ margin:0 auto !important; text-align:center; }
+html body.sj-org .og-intro{ font:400 clamp(1.125rem, 1rem + .4vw, 1.3125rem)/1.6 var(--og-serif); color:var(--og-ink-soft); max-width:44rem; }
+html body.sj-org .og-intro--small{ font-size:1.0625rem; }
+html body.sj-org .og-prose{ display:grid; gap:1.1rem; font:400 1.0625rem/1.75 var(--og-ui); color:var(--og-ink-soft); max-width:44rem; }
+html body.sj-org .og-prose--lead p:first-child,
+html body.sj-org .og-prose--drop p:first-child{ font:400 clamp(1.1875rem, 1rem + .5vw, 1.375rem)/1.6 var(--og-serif); color:var(--og-ink); }
+html body.sj-org .og-prose--drop p:first-child::first-letter{
+  float:left; font:italic 700 4.1em/.8 var(--og-script); color:var(--og-orange); padding:.08em .12em 0 0;
+}
+
+/* ---------- Buttons and links ---------- */
+html body.sj-org .og-actions{ display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2rem; }
+html body.sj-org .og-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:48px; padding:0 1.4rem; border-radius:2px;
+  background:var(--og-navy); color:#fff !important; border:1.5px solid var(--og-navy); text-decoration:none !important;
+  font:700 .875rem/1 var(--og-display); letter-spacing:.02em; transition:background .15s, color .15s, border-color .15s, transform .15s;
+}
+html body.sj-org .og-btn::after{ content:"→"; font-family:var(--og-ui); transition:transform .15s; }
+html body.sj-org .og-btn:hover{ background:var(--og-blue); border-color:var(--og-blue); }
+html body.sj-org .og-btn:hover::after{ transform:translateX(3px); }
+html body.sj-org .og-btn--ghost{ background:transparent; color:var(--og-ink) !important; border-color:var(--og-line-strong); }
+html body.sj-org .og-btn--ghost::after{ content:none; }
+html body.sj-org .og-btn--ghost:hover{ background:transparent; border-color:var(--og-ink); }
+html body.sj-org .og-btn--give{ background:var(--og-orange); border-color:var(--og-orange); color:#0A1322 !important; }
+html body.sj-org .og-btn--give:hover{ background:var(--og-orange-hover); border-color:var(--og-orange-hover); }
+html body.sj-org .og-btn--navy{ background:var(--og-navy); border-color:var(--og-navy); color:#fff !important; }
+html body.sj-org .og-btn--block{ width:100%; min-height:56px; font-size:1rem; }
+html[data-theme="dark"] body.sj-org .og-btn:not(.og-btn--ghost):not(.og-btn--give){ background:#E9EEF6; border-color:#E9EEF6; color:#0B2340 !important; }
+html[data-theme="dark"] body.sj-org .og-btn:not(.og-btn--ghost):not(.og-btn--give):hover{ background:#fff; }
+html body.sj-org .og-arrow{
+  display:inline-flex; align-items:center; gap:.4rem; color:var(--og-ink) !important; text-decoration:none !important;
+  font:700 .8125rem/1 var(--og-display); letter-spacing:.02em; padding:.6rem 0 .35rem; border-bottom:1.5px solid var(--og-orange);
+}
+html body.sj-org .og-arrow::after{ content:"→"; font-family:var(--og-ui); transition:transform .15s; }
+html body.sj-org .og-arrow:hover::after{ transform:translateX(3px); }
+
+/* ---------- Mastheads ---------- */
+html body.sj-org .og-mast{ position:relative; padding:clamp(24px, 3vw, 36px) 0 clamp(56px, 7vw, 96px); }
+html body.sj-org .og-mast__grid{ display:grid; gap:clamp(32px, 5vw, 72px); align-items:end; }
+@media (min-width:960px){
+  html body.sj-org .og-mast__grid{ grid-template-columns:minmax(0, 1.35fr) minmax(0, 1fr); }
+  html body.sj-org .og-mast__grid--give{ grid-template-columns:minmax(0, 1.15fr) minmax(360px, 1fr); align-items:start; }
+}
+/* Ruled parchment (Programs, Contact) — the homepage hero's manuscript lines */
+html body.sj-org .og-mast--ruled,
+html body.sj-org .og-mast--give,
+html body.sj-org .og-mast--center{
+  background:
+    repeating-linear-gradient(180deg, transparent 0 39px, var(--og-rule) 39px 40px),
+    linear-gradient(180deg, color-mix(in srgb, var(--og-orange) 5%, var(--og-paper)) 0%, var(--og-paper) 100%);
+  border-bottom:1px solid var(--og-line);
+}
+/* Navy (About) */
+html body.sj-org .og-mast--navy{
+  background:
+    repeating-linear-gradient(180deg, transparent 0 39px, rgba(219,228,238,.06) 39px 40px),
+    radial-gradient(ellipse at 85% 20%, rgba(241,115,0,.16), transparent 55%),
+    var(--og-navy-deep);
+  --og-ink:#fff; --og-ink-soft:#C9D5E3; --og-muted:#9FB0C5; --og-accent:#F7A04F; --og-line-strong:#34465E;
+}
+html body.sj-org .og-motto{
+  display:grid; gap:.1em; justify-self:end; text-align:right; font:italic 700 clamp(2.5rem, 1.5rem + 4vw, 5.25rem)/1 var(--og-script); color:#F17300;
+}
+html body.sj-org .og-motto span:nth-child(2){ color:#fff; }
+html body.sj-org .og-motto span:nth-child(3){ color:#C9D5E3; }
+/* Centred (Mission) */
+html body.sj-org .og-mast--center{ text-align:center; }
+html body.sj-org .og-mast--center nav.breadcrumbs{ justify-content:center !important; }
+html body.sj-org .og-mast--center .og-eyebrow{ justify-content:center; }
+html body.sj-org .og-mast--center .og-eyebrow::after{ content:""; width:2rem; height:2px; background:var(--og-orange); }
+html body.sj-org .og-mast--center .og-h1{ font-size:clamp(3.5rem, 2rem + 8vw, 9rem) !important; }
+
+/* Program index inside the Programs masthead */
+html body.sj-org .og-index{ border-top:2px solid var(--og-ink); padding-top:1rem; }
+html body.sj-org .og-index__label{ font:700 .6875rem/1 var(--og-ui); letter-spacing:.16em; text-transform:uppercase; color:var(--og-muted); margin-bottom:.5rem !important; }
+html body.sj-org .og-index ol{ list-style:none; padding:0; }
+html body.sj-org .og-index a{
+  display:grid; grid-template-columns:2.5rem 1fr auto; align-items:center; gap:.5rem; padding:.9rem 0; border-bottom:1px solid var(--og-line);
+  color:var(--og-ink) !important; text-decoration:none !important; font:700 1rem/1.3 var(--og-display);
+}
+html body.sj-org .og-index a::after{ content:"↓"; color:var(--og-orange); font-family:var(--og-ui); transition:transform .15s; }
+html body.sj-org .og-index a:hover::after{ transform:translateY(3px); }
+html body.sj-org .og-index a span{ font:italic 700 1rem/1 var(--og-script); color:var(--og-orange); }
+
+/* ---------- Organization strip (generated) ---------- */
+html body.sj-org .og-strip{ background:var(--og-surface); border-bottom:1px solid var(--og-line); position:relative; z-index:1; }
+html body.sj-org .og-strip ul{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(6, 1fr); }
+html body.sj-org .og-strip li + li a{ border-left:1px solid var(--og-line); }
+html body.sj-org .og-strip a{
+  position:relative; display:flex; align-items:baseline; gap:.6rem; padding:1.1rem 1rem 1.05rem; min-height:44px; box-sizing:border-box;
+  color:var(--og-ink-soft) !important; text-decoration:none !important; font:700 .875rem/1.2 var(--og-display); letter-spacing:.01em;
+}
+html body.sj-org .og-strip a span{ font:italic 700 .8125rem/1 var(--og-script); color:var(--og-muted); }
+html body.sj-org .og-strip a::before{ content:""; position:absolute; left:0; right:0; top:-1px; height:3px; background:transparent; transition:background .15s; }
+html body.sj-org .og-strip a:hover{ color:var(--og-ink) !important; }
+html body.sj-org .og-strip a:hover::before{ background:var(--og-line-strong); }
+html body.sj-org .og-strip a[aria-current="page"]{ color:var(--og-ink) !important; }
+html body.sj-org .og-strip a[aria-current="page"]::before{ background:var(--og-orange); }
+html body.sj-org .og-strip a[aria-current="page"] span{ color:var(--og-orange); }
+@media (max-width:900px){
+  html body.sj-org .og-strip .og-wrap{ padding:0; }
+  html body.sj-org .og-strip ul{ display:flex; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x proximity; }
+  html body.sj-org .og-strip ul::-webkit-scrollbar{ display:none; }
+  html body.sj-org .og-strip li{ flex:none; scroll-snap-align:start; }
+  html body.sj-org .og-strip li:first-child a{ padding-left:var(--og-gutter); }
+}
+
+/* ---------- Sections ---------- */
+html body.sj-org .og-sec{ padding:var(--og-section) 0; }
+html body.sj-org .og-sec + .og-sec:not(.og-sec--tint):not(.og-sec--registry){ border-top:1px solid var(--og-line); }
+html body.sj-org .og-sec--tint{ background:var(--og-tint); }
+html body.sj-org .og-split{ display:grid; gap:clamp(24px, 4vw, 40px); }
+@media (min-width:900px){
+  html body.sj-org .og-split{ grid-template-columns:minmax(0, 4fr) minmax(0, 8fr); gap:clamp(40px, 6vw, 96px); align-items:start; }
+  html body.sj-org .og-split > .og-head--side{ position:sticky; top:96px; }
+  html body.sj-org .og-split--top{ align-items:end; margin-bottom:clamp(40px, 5vw, 64px); }
+  html body.sj-org .og-split--top > .og-head--side{ position:static; }
+}
+html body.sj-org .og-sec--statement .og-head{ flex-direction:row; align-items:baseline; gap:1rem; }
+
+/* Roman-numeral pillars (About, Mission) — the homepage "method" columns */
+html body.sj-org .og-pillars{ display:grid; gap:clamp(28px, 4vw, 48px); margin-top:clamp(48px, 6vw, 80px); }
+@media (min-width:760px){ html body.sj-org .og-pillars{ grid-template-columns:repeat(3, 1fr); } }
+html body.sj-org .og-pillar{ border-top:2px solid var(--og-ink); padding-top:1.5rem; }
+html body.sj-org .og-numeral{ display:block; font:italic 700 clamp(2.25rem, 1.8rem + 1.5vw, 3.25rem)/1 var(--og-script); color:var(--og-orange); margin-bottom:1.25rem; }
+html body.sj-org .og-pillar h3{ font:700 1.5rem/1.1 var(--og-display) !important; letter-spacing:-.015em; color:var(--og-ink) !important; margin-bottom:.6rem !important; }
+html body.sj-org .og-pillar p{ font:400 1.0625rem/1.6 var(--og-serif); color:var(--og-muted); }
+
+/* Mission manifesto */
+html body.sj-org .og-sec--manifesto{ text-align:center; }
+html body.sj-org .og-manifesto__title{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:0 .35em; margin-bottom:2rem !important;
+  font:italic 700 clamp(2.75rem, 1.5rem + 5.5vw, 6.5rem)/1.02 var(--og-script) !important; letter-spacing:-.01em; color:var(--og-ink) !important;
+}
+html body.sj-org .og-manifesto__title span:first-child{ color:var(--og-orange); }
+html body.sj-org .og-pillars--words{ text-align:left; }
+
+/* Numbered ledger (About: public educational work) */
+html body.sj-org .og-ledger{ list-style:none; padding:0; counter-reset:og; display:grid; border-top:2px solid var(--og-ink); }
+@media (min-width:760px){ html body.sj-org .og-ledger{ grid-template-columns:repeat(2, 1fr); column-gap:clamp(32px, 5vw, 72px); } }
+html body.sj-org .og-ledger li{
+  counter-increment:og; display:grid; grid-template-columns:3.25rem 1fr; grid-template-rows:auto auto 1fr; column-gap:1rem; row-gap:.5rem;
+  padding:1.75rem 0 2rem; border-bottom:1px solid var(--og-line);
+}
+html body.sj-org .og-ledger li::before{ content:counter(og, decimal-leading-zero); grid-row:1 / 4; font:italic 700 1.5rem/1.1 var(--og-script); color:var(--og-orange); }
+html body.sj-org .og-ledger h3{ font:700 1.375rem/1.15 var(--og-display) !important; color:var(--og-ink) !important; letter-spacing:-.01em; }
+html body.sj-org .og-ledger p{ font:400 1.0625rem/1.6 var(--og-serif); color:var(--og-muted); }
+html body.sj-org .og-ledger .og-arrow{ justify-self:start; align-self:end; margin-top:.5rem; }
+
+/* Verification certificate (About) */
+html body.sj-org .og-sec--registry{ background:var(--og-tint); }
+html body.sj-org .og-cert{
+  position:relative; display:grid; gap:clamp(28px, 4vw, 48px); padding:clamp(28px, 5vw, 64px); background:var(--og-surface);
+  border:1px solid var(--og-line-strong); outline:1px solid var(--og-line); outline-offset:-10px; box-shadow:var(--og-shadow);
+}
+@media (min-width:900px){
+  html body.sj-org .og-cert{ grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); }
+  html body.sj-org .og-cert__head{ grid-column:1 / -1; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 clamp(28px, 4vw, 48px); align-items:end; }
+  html body.sj-org .og-cert__head .og-folio{ grid-column:1 / -1; margin-bottom:.75rem; }
+}
+html body.sj-org .og-cert__head p{ font:400 1.125rem/1.6 var(--og-serif); color:var(--og-ink-soft); margin-top:1rem !important; }
+html body.sj-org .og-cert__body{ display:grid; gap:1rem; align-content:start; font:400 1rem/1.7 var(--og-ui); color:var(--og-ink-soft); }
+html body.sj-org .og-cert__body .og-actions{ margin-top:1rem; }
+
+/* Fact records */
+html body.sj-org .og-facts{ display:grid; align-content:start; border-top:2px solid var(--og-ink); }
+html body.sj-org .og-facts > div{ display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; gap:1rem; padding:.95rem 0; border-bottom:1px solid var(--og-line); }
+html body.sj-org .og-facts dt{ font:700 .6875rem/1.6 var(--og-ui); letter-spacing:.14em; text-transform:uppercase; color:var(--og-muted); padding-top:.15rem; }
+html body.sj-org .og-facts dd{ font:500 1.0625rem/1.45 var(--og-serif); color:var(--og-ink); overflow-wrap:anywhere; }
+html body.sj-org .og-facts--compact > div{ grid-template-columns:7.5rem 1fr; padding:.7rem 0; }
+html body.sj-org .og-facts--compact dd{ font-size:.9375rem; }
+html body.sj-org .og-facts--plate{ background:var(--og-surface); border:1px solid var(--og-line); border-top:3px solid var(--og-orange); padding:.5rem 1.5rem; box-shadow:var(--og-shadow); }
+html body.sj-org .og-facts--plate > div:last-child{ border-bottom:0; }
+
+/* ---------- Programs: one chapter per program area ---------- */
+html body.sj-org .og-program{ padding:clamp(56px, 7vw, 96px) 0; border-top:1px solid var(--og-line); scroll-margin-top:80px; }
+html body.sj-org .og-program:nth-child(even){ background:var(--og-tint); }
+html body.sj-org .og-program__grid{ display:grid; gap:clamp(24px, 4vw, 56px); }
+@media (min-width:960px){
+  html body.sj-org .og-program__grid{ grid-template-columns:minmax(0, 2.2fr) minmax(0, 5fr) minmax(0, 4fr); align-items:start; }
+}
+html body.sj-org .og-program__num{
+  font:900 clamp(4.5rem, 3rem + 6vw, 9rem)/.8 var(--og-display); letter-spacing:-.05em; color:transparent;
+  -webkit-text-stroke:1.5px var(--og-orange); opacity:.9;
+}
+html body.sj-org .og-program__main > p:not(.og-eyebrow){ margin-top:1rem !important; font:400 1.1875rem/1.6 var(--og-serif); color:var(--og-ink-soft); max-width:34rem; }
+html body.sj-org .og-checks{ list-style:none; padding:0; display:grid; border-top:2px solid var(--og-ink); }
+html body.sj-org .og-checks li{ position:relative; padding:1rem 0 1rem 2rem; border-bottom:1px solid var(--og-line); font:500 1rem/1.5 var(--og-ui); color:var(--og-ink); }
+html body.sj-org .og-checks li::before{
+  content:""; position:absolute; left:.15rem; top:1.4rem; width:.6rem; height:.6rem; border:2px solid var(--og-orange); transform:rotate(45deg);
+}
+html body.sj-org .og-checks--plain{ margin-top:2rem; border-top-width:1px; border-top-color:var(--og-line); }
+
+/* ---------- Support ---------- */
+html body.sj-org .og-give{
+  position:relative; background:var(--og-surface); border:1px solid var(--og-line); border-top:4px solid var(--og-orange);
+  box-shadow:var(--og-shadow); padding:clamp(24px, 3vw, 36px); display:grid; gap:1.25rem;
+}
+html body.sj-org .og-give h2{ font-size:clamp(1.75rem, 1.4rem + 1vw, 2.25rem) !important; }
+html body.sj-org .og-give > p{ font:400 1.0625rem/1.6 var(--og-serif); color:var(--og-ink-soft); }
+html body.sj-org .og-seal{ display:grid; grid-template-columns:96px 1fr; gap:1rem; align-items:center; padding:1rem; background:var(--og-tint); }
+html body.sj-org .og-seal a{ display:block; background:#fff; padding:6px; line-height:0; }
+html body.sj-org .og-seal img{ width:100%; height:auto; aspect-ratio:1; display:block; }
+html body.sj-org .og-seal p{ font:400 .9375rem/1.5 var(--og-serif); color:var(--og-ink-soft); }
+html body.sj-org .og-give__links{ display:flex; flex-wrap:wrap; gap:.25rem 1.5rem; }
+html body.sj-org .og-give__links a{ color:var(--og-ink) !important; font:700 .8125rem/1 var(--og-display); text-decoration:underline !important; text-decoration-color:var(--og-orange) !important; text-underline-offset:5px; text-decoration-thickness:1.5px !important; padding:.75rem 0; }
+html body.sj-org .og-mast--give{ padding-bottom:clamp(56px, 7vw, 96px); }
+
+html body.sj-org .og-impact{ display:grid; gap:0; border-top:2px solid var(--og-ink); }
+@media (min-width:720px){ html body.sj-org .og-impact{ grid-template-columns:repeat(2, 1fr); } }
+@media (min-width:1100px){ html body.sj-org .og-impact{ grid-template-columns:repeat(4, 1fr); } }
+html body.sj-org .og-impact__item{ padding:1.75rem 1.5rem 2rem 0; border-bottom:1px solid var(--og-line); }
+@media (min-width:1100px){
+  html body.sj-org .og-impact__item + .og-impact__item{ padding-left:1.5rem; border-left:1px solid var(--og-line); }
+}
+html body.sj-org .og-impact__item h3{ font:700 1.25rem/1.15 var(--og-display) !important; color:var(--og-ink) !important; margin-bottom:.6rem !important; }
+html body.sj-org .og-impact__item h3::before{ content:""; display:block; width:1.5rem; height:3px; background:var(--og-orange); margin-bottom:1rem; }
+html body.sj-org .og-impact__item p{ font:400 1rem/1.6 var(--og-serif); color:var(--og-muted); }
+html body.sj-org .og-notes{ display:grid; gap:1rem; margin-top:2.5rem; max-width:52rem; font:400 .9375rem/1.65 var(--og-ui); color:var(--og-muted); }
+html body.sj-org .og-notes strong{ color:var(--og-ink); }
+html body.sj-org .og-sec--explore{ padding:2rem 0; }
+html body.sj-org .og-explore{ display:flex; flex-wrap:wrap; gap:.5rem 2.5rem; }
+html body.sj-org .og-explore a{ color:var(--og-ink) !important; font:700 .9375rem/1 var(--og-display); text-decoration:none !important; padding:.9rem 0; }
+html body.sj-org .og-explore a::after{ content:" →"; color:var(--og-orange); }
+
+/* ---------- Mission ---------- */
+html body.sj-org .og-audience{ display:grid; gap:0; border-top:2px solid var(--og-ink); }
+@media (min-width:720px){ html body.sj-org .og-audience{ grid-template-columns:repeat(2, 1fr); } }
+@media (min-width:1100px){ html body.sj-org .og-audience{ grid-template-columns:repeat(4, 1fr); } }
+html body.sj-org .og-audience > div{ padding:1.75rem 1.5rem 2rem 0; border-bottom:1px solid var(--og-line); }
+@media (min-width:1100px){ html body.sj-org .og-audience > div + div{ padding-left:1.5rem; border-left:1px solid var(--og-line); } }
+html body.sj-org .og-audience h3{ font:700 1.25rem/1.15 var(--og-display) !important; color:var(--og-ink) !important; margin-bottom:.6rem !important; }
+html body.sj-org .og-audience p{ font:400 1rem/1.6 var(--og-serif); color:var(--og-muted); }
+html body.sj-org .og-numbered{ list-style:none; padding:0; counter-reset:ogn; border-top:2px solid var(--og-ink); }
+html body.sj-org .og-numbered li{
+  counter-increment:ogn; display:grid; grid-template-columns:3.5rem 1fr; align-items:baseline; padding:1.25rem 0; border-bottom:1px solid var(--og-line);
+  font:400 clamp(1.125rem, 1rem + .4vw, 1.3125rem)/1.45 var(--og-serif); color:var(--og-ink);
+}
+html body.sj-org .og-numbered li::before{ content:counter(ogn, decimal-leading-zero); font:italic 700 1.125rem/1 var(--og-script); color:var(--og-orange); }
+html body.sj-org .og-details{ margin-top:2.5rem; border:1px solid var(--og-line); background:var(--og-surface); }
+html body.sj-org .og-details summary{
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; min-height:52px; padding:0 1.25rem;
+  font:700 .875rem/1 var(--og-display); color:var(--og-ink);
+}
+html body.sj-org .og-details summary::-webkit-details-marker{ display:none; }
+html body.sj-org .og-details summary::after{ content:"+"; font:400 1.5rem/1 var(--og-ui); color:var(--og-orange); }
+html body.sj-org .og-details[open] summary::after{ content:"–"; }
+html body.sj-org .og-details .og-facts{ margin:0 1.25rem 1.25rem; }
+
+/* ---------- Contact directory ---------- */
+html body.sj-org .og-directory{ display:grid; gap:clamp(16px, 2vw, 24px); }
+@media (min-width:860px){ html body.sj-org .og-directory{ grid-template-columns:repeat(3, 1fr); } }
+html body.sj-org .og-directory__item{
+  display:grid; grid-template-rows:auto 1fr auto; gap:.9rem; padding:clamp(24px, 3vw, 32px); background:var(--og-surface);
+  border:1px solid var(--og-line); border-top:3px solid var(--og-ink);
+}
+html body.sj-org .og-directory__item:first-child{ border-top-color:var(--og-orange); }
+html body.sj-org .og-directory__item h3{ font:700 1.375rem/1.15 var(--og-display) !important; color:var(--og-ink) !important; }
+html body.sj-org .og-directory__item p{ font:400 1.0625rem/1.6 var(--og-serif); color:var(--og-muted); }
+html body.sj-org .og-directory__item .og-btn{ justify-self:start; }
+
+/* ---------- Bands ---------- */
+html body.sj-org .og-band{ padding:clamp(56px, 7vw, 96px) 0; }
+html body.sj-org .og-band__grid{ display:grid; gap:1.5rem 4rem; align-items:end; }
+@media (min-width:900px){ html body.sj-org .og-band__grid{ grid-template-columns:minmax(0, 1fr) minmax(0, 1.2fr); } }
+html body.sj-org .og-band p{ font:400 clamp(1.125rem, 1rem + .4vw, 1.3125rem)/1.6 var(--og-serif); margin-bottom:1.75rem !important; max-width:38rem; }
+html body.sj-org .og-band h2{ font-size:clamp(2.25rem, 1.5rem + 3vw, 4.25rem) !important; }
+html body.sj-org .og-band--give{ background:var(--og-orange); }
+html body.sj-org .og-band--give h2,
+html body.sj-org .og-band--give p{ color:#0A1322 !important; }
+html[data-theme="dark"] body.sj-org .og-band--give .og-btn--navy{ background:#0B2340; border-color:#0B2340; color:#fff !important; }
+html body.sj-org .og-band--navy{
+  background:repeating-linear-gradient(180deg, transparent 0 39px, rgba(219,228,238,.06) 39px 40px), var(--og-navy-deep);
+}
+html body.sj-org .og-band--navy h2{ color:#fff !important; }
+html body.sj-org .og-band--navy p{ color:#C9D5E3; }
+
+/* ---------- Newsletter ---------- */
+html body.sj-org .og-mast--news{
+  padding-bottom:clamp(64px, 8vw, 120px);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 39px, rgba(219,228,238,.06) 39px 40px),
+    radial-gradient(ellipse at 10% 90%, rgba(241,115,0,.18), transparent 50%),
+    var(--og-navy-deep);
+  --og-ink:#fff; --og-ink-soft:#C9D5E3; --og-muted:#9FB0C5; --og-accent:#F7A04F; --og-line-strong:#34465E;
+}
+html body.sj-org .og-news__grid{ display:grid; gap:clamp(32px, 5vw, 72px); align-items:center; }
+@media (min-width:960px){ html body.sj-org .og-news__grid{ grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); } }
+html body.sj-org .og-h1--news{ font-size:clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem) !important; }
+html body.sj-org .og-news__form{ background:#fff; border-top:4px solid var(--og-orange); box-shadow:0 30px 60px -30px rgba(0,0,0,.6); padding:clamp(12px, 2vw, 20px); }
+html body.sj-org .newsletter-signup-form{ display:block !important; width:100%; max-width:none; margin:0; }
+html body.sj-org .newsletter-signup-form [data-zeffy-embed],
+html body.sj-org .newsletter-signup-form [data-zeffy-embed-fallback]{ width:100%; }
+html body.sj-org .zeffy-embed-frame{ position:relative; overflow:hidden; min-height:460px; width:100%; }
+html body.sj-org .zeffy-embed-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+@media (max-width:620px){ html body.sj-org .zeffy-embed-frame{ min-height:500px; } }
+
+/* ---------- Small screens ---------- */
+@media (max-width:759px){
+  html body.sj-org .og-motto{ justify-self:start; text-align:left; display:flex; flex-wrap:wrap; gap:0 .3em; font-size:2.25rem; }
+  html body.sj-org .og-facts > div{ grid-template-columns:1fr; gap:.25rem; }
+  html body.sj-org .og-program__num{ font-size:4rem; }
+  html body.sj-org .og-btn{ width:100%; }
+  html body.sj-org .og-directory__item .og-btn{ justify-self:stretch; }
+}
+@media (prefers-reduced-motion:reduce){
+  html body.sj-org *{ transition:none !important; scroll-behavior:auto !important; }
+}
+
+/* ---------- Validation fixes ---------- */
+html body.sj-org{ --og-num:#C85A00; }
+html[data-theme="dark"] body.sj-org{ --og-num:#F7A04F; }
+html body.sj-org :is(.og-folio, .og-numeral, .og-index a span, .og-strip a[aria-current="page"] span),
+html body.sj-org .og-ledger li::before, html body.sj-org .og-numbered li::before{ color:var(--og-num) !important; }
+html body.sj-org .og-mast--navy .og-numeral, html body.sj-org .og-band .og-folio{ color:#F7A04F !important; }
+html body.sj-org .og-strip a span{ color:var(--og-muted); }
+html body.sj-org .og-manifesto__title span:first-child{ color:var(--og-num); }
+html body.sj-org .og-program__num{ -webkit-text-stroke-color:var(--og-num); }

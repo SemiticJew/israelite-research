@@ -520,15 +520,17 @@ html[data-theme="dark"] .ency-quick-row{
 
 <link rel="stylesheet" href="/css/sj-tokens.css"/>
 <link rel="stylesheet" href="/css/research.css"/>
+<link rel="stylesheet" href="/css/library.css"/>
 <!-- page-meta (added by tools/apply_page_meta.py) -->
 <link rel="canonical" href="https://semiticjew.org/encyclopedia.html"/>
 </head>
 
-<body class="encyclopedia-page bib-refs sj-research" data-page="encyclopedia">
+<body class="encyclopedia-page bib-refs sj-research sj-lib lb-ency" data-page="encyclopedia">
 
 <div id="site-header"></div>
 
 <main class="container ency-main">
+  <header class="lb-mast lb-mast--navy lb-mast--ency lb-bleed">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <a href="/index.html">Home</a>
     <span class="sep">›</span>
@@ -536,7 +538,7 @@ html[data-theme="dark"] .ency-quick-row{
     <span class="sep">›</span>
     <span class="current">Israelite Encyclopedia</span>
   </nav>
-
+    <div class="lb-ency-head">
   <section class="ency-hero rs-hero">
     <div class="ency-kicker rs-kicker">People, Nations & Identity</div>
     <h1 class="ency-title rs-title">Israelite Encyclopedia</h1>
@@ -544,6 +546,33 @@ html[data-theme="dark"] .ency-quick-row{
       Search people, ethnonyms, groups, biblical identity terms, historical notes, complexion context, and Scripture-connected reference entries.
     </p>
   </section>
+      <div class="lb-ency-find">
+        <div class="ency-section-head rs-section-head">
+      <div>
+        <h2>Encyclopedia Search</h2>
+        <p>Search the encyclopedia or browse alphabetically.</p>
+      </div>
+      <div id="encyCount">Loading entries…</div>
+    </div>
+        <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
+          <input aria-label="Search encyclopedia" id="q" name="q_ency"
+                 placeholder="Search (e.g., Judeans, Gentiles, Kushites)…"
+                 spellcheck="false" type="search"/>
+          <button class="btn" id="clearQ" type="button">Clear</button>
+        </form>
+    <div class="ency-quick-row" aria-label="Quick encyclopedia searches">
+      <span class="ency-chip-label">Quick Search</span>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="israel">Israel</button>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="judeans">Judeans</button>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="gentiles">Gentiles</button>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="kushites">Kushites</button>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="hamites">Hamites</button>
+      <button class="ency-chip rs-chip" type="button" data-ency-query="edom">Edom</button>
+    </div>
+      </div>
+    </div>
+  </header>
+
 
 <nav class="rs-subnav" aria-label="Research library">
   <ul>
@@ -559,9 +588,41 @@ html[data-theme="dark"] .ency-quick-row{
     <li><a href="/study-guides.html">Study Guides</a></li>
   </ul>
 </nav>
+  <nav class="lb-az lb-bleed" aria-label="Browse alphabetically">
+    <span class="lb-az__label" aria-hidden="true">A–Z</span>
+    <div aria-label="A–Z jump" class="az"></div>
+  </nav>
 
 
-  <section class="ency-intro-grid rs-intro" aria-label="Israelite encyclopedia overview">
+
+  <section class="ency-tool-shell rs-panel" aria-label="Israelite encyclopedia search tool">
+
+
+    <div class="layout">
+  <section aria-label="Results and facets" class="panel panel-left">
+    <h3>Browse</h3>
+    <div aria-label="Search results" class="results" id="results" role="listbox">
+      <div class="empty">Type in the search or select a letter to browse.</div>
+    </div>
+  </section>
+
+  <aside aria-label="Reading panel" class="panel panel-right">
+    <div class="reader" id="reader">
+      <div class="head">
+        <h2 class="r-title">Select an entry</h2>
+      </div>
+
+      <article class="article-content">
+        <div class="empty">
+          Definitions will appear here when you select a result.
+        </div>
+      </article>
+    </div>
+  </aside>
+    </div>
+  </section>
+
+  <section class="ency-intro-grid rs-intro lb-ency-notes" aria-label="Israelite encyclopedia overview">
     <article class="ency-info-card rs-card">
       <h2>People & Groups</h2>
       <p>Browse names, ethnonyms, regions, and groups connected to biblical history and identity.</p>
@@ -574,58 +635,6 @@ html[data-theme="dark"] .ency-quick-row{
       <h2>Cross-References</h2>
       <p>Use linked references and see-also connections to move between related entries and sources.</p>
     </article>
-  </section>
-
-  <section class="ency-tool-shell rs-panel" aria-label="Israelite encyclopedia search tool">
-    <div class="ency-section-head rs-section-head">
-      <div>
-        <h2>Encyclopedia Search</h2>
-        <p>Search the encyclopedia or browse alphabetically.</p>
-      </div>
-      <div id="encyCount">Loading entries…</div>
-    </div>
-
-    <div class="ency-quick-row" aria-label="Quick encyclopedia searches">
-      <span class="ency-chip-label">Quick Search</span>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="israel">Israel</button>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="judeans">Judeans</button>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="gentiles">Gentiles</button>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="kushites">Kushites</button>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="hamites">Hamites</button>
-      <button class="ency-chip rs-chip" type="button" data-ency-query="edom">Edom</button>
-    </div>
-
-    <div class="layout">
-  <section aria-label="Results and facets" class="panel panel-left">
-    <h3>Browse</h3>
-    <div class="facets">
-      <div aria-label="A–Z jump" class="az"></div>
-    </div>
-    <div aria-label="Search results" class="results" id="results" role="listbox">
-      <div class="empty">Type in the search or select a letter to browse.</div>
-    </div>
-  </section>
-
-  <aside aria-label="Reading panel" class="panel panel-right">
-    <div class="reader" id="reader">
-      <div class="head">
-        <h2 class="r-title">Select an entry</h2>
-        <form autocomplete="off" class="r-toolbar" onsubmit="return false;">
-          <input aria-label="Search encyclopedia" id="q" name="q_ency"
-                 placeholder="Search (e.g., Judeans, Gentiles, Kushites)…"
-                 spellcheck="false" type="search"/>
-          <button class="btn" id="clearQ" type="button">Clear</button>
-        </form>
-      </div>
-
-      <article class="article-content">
-        <div class="empty">
-          Definitions will appear here when you select a result.
-        </div>
-      </article>
-    </div>
-  </aside>
-    </div>
   </section>
 
 <!-- rs-related:start (generated by tools/apply_research_shell.py from data/research-related.json; do not edit by hand) -->

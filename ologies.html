@@ -482,27 +482,46 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
 
 <link rel="stylesheet" href="/css/sj-tokens.css"/>
 <link rel="stylesheet" href="/css/research.css"/>
+<link rel="stylesheet" href="/css/library.css"/>
 <!-- page-meta (added by tools/apply_page_meta.py) -->
 <link rel="canonical" href="https://semiticjew.org/ologies.html"/>
 </head>
-<body class="ologies-page sj-research">
+<body class="ologies-page sj-research sj-lib lb-ologies">
 <div id="site-header"></div>
 
 <main class="container">
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="/index.html">Home</a>
-    <span class="sep">›</span>
-    <span class="current">Ologies</span>
-  </nav>
-
-  <!-- HERO -->
-  <section class="apol-hero rs-hero">
-    <div class="apol-kicker rs-kicker">Doctrine, Logic & Study</div>
-    <h1 class="apol-title rs-title">Ologies</h1>
-    <p class="apol-subtitle rs-lede">
-      A Scripture-first index of the Bible’s core doctrines, argument paths, and theological categories organized for clarity, logic, and primary-source study.
-    </p>
-  </section>
+  <header class="lb-mast lb-mast--ruled lb-bleed">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/index.html">Home</a>
+      <span class="sep">›</span>
+      <span class="current">Ologies</span>
+    </nav>
+    <div class="lb-contents">
+      <!-- HERO -->
+      <section class="apol-hero rs-hero">
+        <div class="apol-kicker rs-kicker">Doctrine, Logic & Study</div>
+        <h1 class="apol-title rs-title">Ologies</h1>
+        <p class="apol-subtitle rs-lede">
+          A Scripture-first index of the Bible’s core doctrines, argument paths, and theological categories organized for clarity, logic, and primary-source study.
+        </p>
+      </section>
+      <nav class="lb-toc" aria-label="The ten doctrines">
+        <p class="lb-toc__label">Contents</p>
+        <ol>
+          <li><a href="/ologies/bibliology.html"><span aria-hidden="true">01</span>Bibliology</a></li>
+          <li><a href="/ologies/elology.html"><span aria-hidden="true">02</span>Elology</a></li>
+          <li><a href="/ologies/christology.html"><span aria-hidden="true">03</span>Christology</a></li>
+          <li><a href="/ologies/pneumatology.html"><span aria-hidden="true">04</span>Pneumatology</a></li>
+          <li><a href="/ologies/anthropology.html"><span aria-hidden="true">05</span>Anthropology</a></li>
+          <li><a href="/ologies/hamartiology.html"><span aria-hidden="true">06</span>Hamartiology</a></li>
+          <li><a href="/ologies/soteriology.html"><span aria-hidden="true">07</span>Soteriology</a></li>
+          <li><a href="/ologies/israelology.html"><span aria-hidden="true">08</span>Israelology</a></li>
+          <li><a href="/ologies/ecclesiology.html"><span aria-hidden="true">09</span>Ecclesiology</a></li>
+          <li><a href="/ologies/eschatology.html"><span aria-hidden="true">10</span>Eschatology</a></li>
+        </ol>
+      </nav>
+    </div>
+  </header>
 
 <nav class="rs-subnav" aria-label="Research library">
   <ul>
@@ -771,7 +790,7 @@ html[data-theme="dark"] .ologies-page .card:hover .arg::after{
   <div class="rule"></div>
 
   <!-- FEATURED ARGUMENT PATHS -->
-  <section class="section" id="arguments">
+  <section class="section lb-band lb-bleed" id="arguments">
     <div class="sec-head">
       <h2 class="sec-title">Argument Paths</h2>
       <a class="link" href="/articles.html">All Articles</a>

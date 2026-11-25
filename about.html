@@ -22,275 +22,6 @@
 
 <link rel="stylesheet" href="/styles.css"/>
 
-<style>
-  .about-page{
-    max-width:1200px;
-    margin:0 auto;
-    padding:40px 24px 80px;
-  }
-
-  .about-hero{
-    margin:24px 0 42px;
-    padding:58px 30px;
-    text-align:center;
-    border:1px solid var(--border);
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.16), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.10), rgba(129,164,205,.08));
-  }
-
-  .about-kicker{
-    margin:0 0 12px;
-    color:var(--accent);
-    font-size:.78rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.16em;
-  }
-
-  .about-title{
-    margin:0;
-    color:var(--ink);
-    font-size:clamp(2.5rem, 6vw, 5rem);
-    line-height:1;
-    font-weight:900;
-    letter-spacing:-.05em;
-  }
-
-  .about-subtitle{
-    max-width:780px;
-    margin:18px auto 0;
-    color:var(--muted);
-    font-size:1.05rem;
-    line-height:1.7;
-  }
-
-  .about-section,
-  .org-verification{
-    background:var(--surface);
-    color:var(--ink);
-    border:1px solid var(--border);
-    padding:28px;
-    margin:24px 0;
-  }
-
-  .about-section h2,
-  .org-verification h2{
-    margin:0 0 14px;
-    color:var(--ink);
-    font-size:1.45rem;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .about-section p,
-  .org-verification p{
-    margin:0 0 16px;
-    color:var(--muted);
-    line-height:1.75;
-  }
-
-  .about-section p:last-child,
-  .org-verification p:last-child{
-    margin-bottom:0;
-  }
-
-  .verification-details{
-    background:rgba(5,74,145,.045);
-    border:1px solid var(--border);
-    padding:18px;
-    color:var(--muted);
-  }
-
-  .verification-details strong{
-    color:var(--ink);
-  }
-
-  .mission-grid,
-  .work-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-    margin-top:20px;
-  }
-
-  .work-grid{
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .mission-card,
-  .work-card{
-    border:1px solid var(--border);
-    background:rgba(5,74,145,.035);
-    padding:18px;
-  }
-
-  .mission-card h3,
-  .work-card h3{
-    margin:0 0 8px;
-    color:var(--ink);
-    font-size:1rem;
-    font-weight:900;
-  }
-
-  .mission-card p,
-  .work-card p{
-    margin:0;
-    color:var(--muted);
-    line-height:1.6;
-    font-size:.95rem;
-  }
-
-  .about-actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-top:22px;
-  }
-
-  .about-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:13px 18px;
-    border:1px solid var(--accent);
-    background:var(--accent);
-    color:#fff;
-    text-decoration:none;
-    font-size:.82rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-  }
-
-  .about-btn.secondary{
-    background:transparent;
-    color:var(--ink);
-    border-color:var(--border);
-  }
-
-  .about-btn:hover,
-  .about-btn:focus,
-  .about-btn:focus-visible{
-    background:var(--ink);
-    border-color:var(--ink);
-    color:#fff;
-    text-decoration:none;
-  }
-
-  .about-btn.secondary:hover,
-  .about-btn.secondary:focus,
-  .about-btn.secondary:focus-visible{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#fff;
-  }
-
-  .support-callout{
-    margin:56px auto;
-    padding:28px;
-    border:1px solid var(--border);
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.12), transparent 32%),
-      var(--surface);
-    color:var(--ink);
-    text-align:center;
-  }
-
-  .support-callout h2,
-  .support-callout h3{
-    margin:0 0 10px;
-    color:var(--ink);
-    font-size:1.45rem;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .support-callout p{
-    max-width:760px;
-    margin:0 auto 18px;
-    color:var(--muted);
-    line-height:1.7;
-  }
-
-  .support-callout .support-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:13px 22px;
-    border:1px solid var(--accent);
-    background:var(--accent);
-    color:#fff;
-    text-decoration:none;
-    font-size:.82rem;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-  }
-
-  .support-callout .support-btn:hover,
-  .support-callout .support-btn:focus,
-  .support-callout .support-btn:focus-visible{
-    background:var(--ink);
-    border-color:var(--ink);
-    color:#fff;
-    text-decoration:none;
-  }
-
-  html[data-theme="dark"] .about-hero{
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.22), transparent 34%),
-      linear-gradient(135deg, rgba(5,74,145,.24), rgba(15,23,42,.92));
-  }
-
-  html[data-theme="dark"] .about-section h2,
-  html[data-theme="dark"] .org-verification h2,
-  html[data-theme="dark"] .mission-card h3,
-  html[data-theme="dark"] .work-card h3,
-  html[data-theme="dark"] .verification-details strong{
-    color:#fff;
-  }
-
-  html[data-theme="dark"] .mission-card,
-  html[data-theme="dark"] .work-card,
-  html[data-theme="dark"] .verification-details{
-    background:rgba(255,255,255,.035);
-  }
-
-  html[data-theme="dark"] .support-callout{
-    background:
-      radial-gradient(circle at top left, rgba(241,115,0,.18), transparent 32%),
-      var(--surface);
-  }
-
-  @media(max-width:900px){
-    .work-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-  }
-
-  @media(max-width:760px){
-    .about-page{
-      padding:22px 20px 64px;
-      overflow-x:hidden;
-    }
-
-    .about-hero{
-      margin:18px 0 32px;
-      padding:42px 20px;
-    }
-
-    .about-section,
-    .org-verification{
-      padding:22px 18px;
-    }
-
-    .mission-grid,
-    .work-grid{
-      grid-template-columns:1fr;
-    }
-  }
-</style>
 <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -299,154 +30,165 @@
 <meta name="theme-color" content="#054A91"/>
 
 <link rel="stylesheet" href="/css/sj-tokens.css"/>
-<link rel="stylesheet" href="/css/institution.css"/>
+<link rel="stylesheet" href="/css/org.css"/>
 <!-- page-meta (added by tools/apply_page_meta.py) -->
 <link rel="canonical" href="https://semiticjew.org/about.html"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NGO","@id":"https://semiticjew.org/#organization","name":"Semitic Jew Inc","legalName":"Semitic Jew Inc","url":"https://semiticjew.org/","logo":"https://semiticjew.org/images/black-logo-letters.png","email":"contact@semiticjew.org","description":"Semitic Jew Inc is a 501(c)(3) educational nonprofit advancing biblical literacy, historical understanding, and critical thinking through research, digital media, public education, and teaching resources.","nonprofitStatus":"Nonprofit501c3","taxID":"93-4076422","address":{"@type":"PostalAddress","streetAddress":"161 Rushton Drive","addressLocality":"Chapin","addressRegion":"SC","postalCode":"29036-9843","addressCountry":"US"},"sameAs":["https://www.youtube.com/channel/UC6ukYTYZ8YqsSYq4-nl11gA","https://www.facebook.com/semiticjew/","https://www.instagram.com/semiticjew/","https://x.com/semitic_jew","https://www.tiktok.com/@semitic_jew"]}</script>
 </head>
 
-<body class="sj-inst">
+<body class="sj-org">
 <div id="site-header"></div>
 
-<main class="about-page">
+<main class="about-page og-page">
 
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="/index.html">Home</a>
-    <span class="sep">›</span>
-    <span class="current">About</span>
-  </nav>
-
-  <section class="about-hero in-hero">
-    <div class="about-kicker in-kicker">About the Organization</div>
-    <h1 class="about-title in-title">Semitic Jew Inc</h1>
-    <p class="about-subtitle in-lede">
-      Semitic Jew Inc is a 501(c)(3) educational nonprofit advancing biblical literacy, historical understanding, and critical thinking through research, digital media, public education, and teaching resources.
-    </p>
-  </section>
-<!-- in-orgnav:start (generated by tools/apply_institution_shell.py) -->
-<nav class="in-orgnav" aria-label="Organization"><ul><li><a href="/about.html" aria-current="page">About</a></li><li><a href="/mission.html">Mission</a></li><li><a href="/programs.html">Programs</a></li><li><a href="/donate.html">Support</a></li><li><a href="/newsletter.html">Newsletter</a></li><li><a href="/contact.html">Contact</a></li></ul></nav>
-<!-- in-orgnav:end -->
-
-  <section class="about-section in-section">
-    <h2>Mission</h2>
-    <p>
-      Our mission is to advance biblical literacy, historical understanding, and critical thinking
-      through research, publications, digital media, instructional programming, and public education. We create public resources that help readers and viewers study Scripture, evaluate arguments, and engage history with discipline and clarity.
-    </p>
-
-    <div class="mission-grid in-grid">
-      <div class="mission-card in-card">
-        <h3>Scripture</h3>
-        <p>
-          We promote careful engagement with biblical texts, context, language, and interpretation.
+  <header class="og-mast og-mast--navy">
+    <div class="og-wrap og-mast__grid">
+      <div class="og-mast__copy">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="/index.html">Home</a>
+          <span class="sep">›</span>
+          <span class="current">About</span>
+        </nav>
+        <p class="og-eyebrow">About the Organization</p>
+        <h1 class="og-h1">Semitic Jew Inc</h1>
+        <p class="og-lede">
+          Semitic Jew Inc is a 501(c)(3) educational nonprofit advancing biblical literacy, historical understanding, and critical thinking through research, digital media, public education, and teaching resources.
         </p>
       </div>
+      <p class="og-motto" aria-hidden="true"><span>Scripture.</span><span>Logic.</span><span>Truth.</span></p>
+    </div>
+  </header>
+<!-- og-orgnav:start (generated by tools/apply_institution_shell.py) -->
+<nav class="og-strip" aria-label="Organization"><div class="og-wrap"><ul><li><a href="/about.html" aria-current="page"><span aria-hidden="true">01</span>About</a></li><li><a href="/mission.html"><span aria-hidden="true">02</span>Mission</a></li><li><a href="/programs.html"><span aria-hidden="true">03</span>Programs</a></li><li><a href="/donate.html"><span aria-hidden="true">04</span>Support</a></li><li><a href="/newsletter.html"><span aria-hidden="true">05</span>Newsletter</a></li><li><a href="/contact.html"><span aria-hidden="true">06</span>Contact</a></li></ul></div></nav>
+<!-- og-orgnav:end -->
 
-      <div class="mission-card in-card">
-        <h3>Logic</h3>
+  <section class="og-sec og-sec--statement" aria-labelledby="about-mission">
+    <div class="og-wrap">
+      <div class="og-head"><span class="og-folio">01</span><h2 id="about-mission">Mission</h2></div>
+      <p class="og-statement">
+        Our mission is to advance biblical literacy, historical understanding, and critical thinking
+        through research, publications, digital media, instructional programming, and public education. We create public resources that help readers and viewers study Scripture, evaluate arguments, and engage history with discipline and clarity.
+      </p>
+      <div class="og-pillars">
+        <div class="og-pillar">
+          <span class="og-numeral" aria-hidden="true">I</span>
+          <h3>Scripture</h3>
+          <p>We promote careful engagement with biblical texts, context, language, and interpretation.</p>
+        </div>
+        <div class="og-pillar">
+          <span class="og-numeral" aria-hidden="true">II</span>
+          <h3>Logic</h3>
+          <p>We encourage sound reasoning, careful definitions, and consistent analysis.</p>
+        </div>
+        <div class="og-pillar">
+          <span class="og-numeral" aria-hidden="true">III</span>
+          <h3>Truth</h3>
+          <p>We develop educational resources that examine Scripture, history, and evidence with clarity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="og-sec og-sec--tint" aria-labelledby="about-history">
+    <div class="og-wrap og-split">
+      <div class="og-head og-head--side"><span class="og-folio">02</span><h2 id="about-history">History and Work</h2></div>
+      <div class="og-prose og-prose--drop">
         <p>
-          We encourage sound reasoning, careful definitions, and consistent analysis.
+          Semitic Jew Inc was organized to support educational work centered on biblical literacy,
+          historical research, and public instruction. The organization produces articles, Bible-study
+          resources, teaching materials, digital media, and other educational tools designed to help
+          readers and viewers engage Scripture and history with discipline and clarity.
+        </p>
+        <p>
+          Current projects include SemiticJew.org, biblical research articles, Bible-study resources,
+          educational media production, lectures, podcast and video teaching, and digital tools for
+          studying Scripture, history, and logic.
         </p>
       </div>
+    </div>
+  </section>
 
-      <div class="mission-card in-card">
-        <h3>Truth</h3>
-        <p>
-          We develop educational resources that examine Scripture, history, and evidence with clarity.
+  <section class="og-sec" id="public-educational-work" aria-labelledby="about-work">
+    <div class="og-wrap">
+      <div class="og-split og-split--top">
+        <div class="og-head og-head--side"><span class="og-folio">03</span><h2 id="about-work">Public Educational Work</h2></div>
+        <p class="og-intro">
+          Semitic Jew Inc serves the public through free and accessible educational resources. Our work includes biblical research, articles, digital media, Bible-study tools, teaching resources, and future curriculum development.
         </p>
       </div>
+      <ol class="og-ledger">
+        <li>
+          <h3>Biblical Research</h3>
+          <p>Scripture-centered articles, historical analysis, apologetics, and research-based teaching.</p>
+          <a class="og-arrow" href="/articles.html">Read Articles</a>
+        </li>
+        <li>
+          <h3>Media Education</h3>
+          <p>Podcast, video, and public teaching content that explains Scripture, logic, and history.</p>
+          <a class="og-arrow" href="/media.html">Watch Media</a>
+        </li>
+        <li>
+          <h3>Bible-Study Tools</h3>
+          <p>Digital tools, Biblia resources, study aids, and reader improvements for public use.</p>
+          <a class="og-arrow" href="/biblia.html">Study Biblia</a>
+        </li>
+        <li>
+          <h3>Teaching Resources</h3>
+          <p>Instructional materials, lectures, future courses, and public learning resources.</p>
+          <a class="og-arrow" href="/contact.html">Contact</a>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <section class="about-section in-section">
-    <h2>History and Work</h2>
-    <p>
-      Semitic Jew Inc was organized to support educational work centered on biblical literacy,
-      historical research, and public instruction. The organization produces articles, Bible-study
-      resources, teaching materials, digital media, and other educational tools designed to help
-      readers and viewers engage Scripture and history with discipline and clarity.
-    </p>
-
-    <p>
-      Current projects include SemiticJew.org, biblical research articles, Bible-study resources,
-      educational media production, lectures, podcast and video teaching, and digital tools for
-      studying Scripture, history, and logic.
-    </p>
-  </section>
-
-  <section class="about-section in-section" id="public-educational-work">
-    <h2>Public Educational Work</h2>
-    <p>
-      Semitic Jew Inc serves the public through free and accessible educational resources. Our work includes biblical research, articles, digital media, Bible-study tools, teaching resources, and future curriculum development.
-    </p>
-
-    <div class="work-grid in-grid in-grid--4">
-      <div class="work-card in-card">
-        <h3>Biblical Research</h3>
-        <p>Scripture-centered articles, historical analysis, apologetics, and research-based teaching.</p>
+  <section class="og-sec og-sec--registry" id="organization-verification" aria-labelledby="about-verification">
+    <div class="og-wrap">
+      <div class="og-cert">
+        <div class="og-cert__head">
+          <span class="og-folio">04</span>
+          <h2 id="about-verification">Organization Verification</h2>
+          <p>
+            Semitic Jew Inc is a federally recognized 501(c)(3) educational nonprofit corporation.
+            Semitic Jew Inc owns and operates semiticjew.org as its official organizational website.
+          </p>
+        </div>
+        <dl class="og-facts">
+          <div><dt>Legal Name:</dt><dd>Semitic Jew Inc</dd></div>
+          <div><dt>Primary Domain:</dt><dd>semiticjew.org</dd></div>
+          <div><dt>Charity ID / EIN:</dt><dd>93-4076422</dd></div>
+          <div><dt>Physical Address:</dt><dd>161 Rushton Drive, Chapin, SC 29036-9843</dd></div>
+        </dl>
+        <div class="og-cert__body">
+          <p>
+            Our mission is to advance biblical literacy, historical understanding, and critical thinking
+            through research, publications, digital media, instructional programming, and public education.
+          </p>
+          <p>
+            Current projects include SemiticJew.org, biblical research articles, Bible-study resources,
+            educational media production, lectures, podcast/video teaching, and digital tools for studying
+            Scripture, history, and logic.
+          </p>
+          <div class="og-actions">
+            <a class="og-btn" href="/donate.html">Support the Work</a>
+            <a class="og-btn og-btn--ghost" href="/contact.html">Contact Us</a>
+          </div>
+        </div>
       </div>
-      <div class="work-card in-card">
-        <h3>Media Education</h3>
-        <p>Podcast, video, and public teaching content that explains Scripture, logic, and history.</p>
-      </div>
-      <div class="work-card in-card">
-        <h3>Bible-Study Tools</h3>
-        <p>Digital tools, Biblia resources, study aids, and reader improvements for public use.</p>
-      </div>
-      <div class="work-card in-card">
-        <h3>Teaching Resources</h3>
-        <p>Instructional materials, lectures, future courses, and public learning resources.</p>
-      </div>
-    </div>
-
-    <div class="about-actions in-actions">
-      <a class="about-btn in-btn" href="/articles.html">Read Articles</a>
-      <a class="about-btn secondary in-btn in-btn--quiet" href="/biblia.html">Study Biblia</a>
-      <a class="about-btn secondary in-btn in-btn--quiet" href="/media.html">Watch Media</a>
-      <a class="about-btn secondary in-btn in-btn--quiet" href="/contact.html">Contact</a>
     </div>
   </section>
 
-  <section class="org-verification in-section in-section--registry" id="organization-verification">
-    <h2>Organization Verification</h2>
-
-    <p>
-      Semitic Jew Inc is a federally recognized 501(c)(3) educational nonprofit corporation.
-      Semitic Jew Inc owns and operates semiticjew.org as its official organizational website.
-    </p>
-
-    <p class="verification-details in-facts">
-      <strong>Legal Name:</strong> Semitic Jew Inc<br>
-      <strong>Primary Domain:</strong> semiticjew.org<br>
-      <strong>Charity ID / EIN:</strong> 93-4076422<br>
-      <strong>Physical Address:</strong> 161 Rushton Drive, Chapin, SC 29036-9843
-    </p>
-
-    <p>
-      Our mission is to advance biblical literacy, historical understanding, and critical thinking
-      through research, publications, digital media, instructional programming, and public education.
-    </p>
-
-    <p>
-      Current projects include SemiticJew.org, biblical research articles, Bible-study resources,
-      educational media production, lectures, podcast/video teaching, and digital tools for studying
-      Scripture, history, and logic.
-    </p>
-
-    <div class="about-actions in-actions">
-      <a class="about-btn in-btn" href="/donate.html">Support the Work</a>
-      <a class="about-btn secondary in-btn in-btn--quiet" href="/contact.html">Contact Us</a>
+  <section class="og-band og-band--give" aria-labelledby="about-support">
+    <div class="og-wrap og-band__grid">
+      <h2 id="about-support">Support the Work</h2>
+      <div>
+        <p>
+          Semitic Jew Inc is a 501(c)(3) educational nonprofit. Your support helps us produce biblical research,
+          articles, media, and teaching resources rooted in Scripture, logic, and truth.
+        </p>
+        <a class="og-btn og-btn--navy" href="/donate.html">Give / Support</a>
+      </div>
     </div>
   </section>
-
-<section class="support-callout in-callout" aria-label="Support the Work">
-  <h2>Support the Work</h2>
-  <p>
-    Semitic Jew Inc is a 501(c)(3) educational nonprofit. Your support helps us produce biblical research,
-    articles, media, and teaching resources rooted in Scripture, logic, and truth.
-  </p>
-  <a class="support-btn in-btn in-btn--give" href="/donate.html">Give / Support</a>
-</section>
 
 </main>
 

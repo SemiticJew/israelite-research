@@ -155,7 +155,7 @@ html body.sj-research .featured-guide :is(p, li){ color: var(--sj-ink-soft) !imp
 .rs-related-kind{ display: block; font: 500 var(--sj-text-xs)/1.3 var(--sj-font-ui); color: var(--sj-muted); margin-top: 2px; }
 
 /* ================================================================ Search page */
-.sr-page .rs-hero{ padding-bottom: var(--sj-space-5) !important; }
+.sr-shell .rs-hero{ padding-bottom: var(--sj-space-5) !important; }
 .sr-form{ position: relative; display: flex; align-items: center; gap: var(--sj-space-2); max-width: 52rem; padding: 6px; border-radius: var(--sj-radius-pill); background: var(--sj-surface); border: 1px solid var(--sj-line-strong); box-shadow: var(--sj-shadow-1); }
 .sr-form:focus-within{ border-color: var(--sj-brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sj-focus) 25%, transparent), var(--sj-shadow-1); }
 .sr-icon{ flex: none; margin-left: .85rem; color: var(--sj-muted); }
@@ -206,7 +206,7 @@ html body.sj-research .sr-sort select{ min-height: 36px !important; padding: 0 .
 .sr-excerpt{ margin: .45rem 0 0; font: 400 var(--sj-text-sm)/1.6 var(--sj-font-ui); color: var(--sj-ink-soft); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .sr-meta-line{ margin: .55rem 0 0; font: 500 var(--sj-text-xs)/1.4 var(--sj-font-ui); color: var(--sj-muted); }
 .sr-thumb{ width: 160px; height: 90px; object-fit: cover; border-radius: var(--sj-radius-md); border: 1px solid var(--sj-line); background: var(--sj-surface-2); }
-.sr-page mark, .sr-scripture mark{ background: color-mix(in srgb, var(--sj-accent-fill) 22%, transparent); color: inherit; border-radius: 2px; padding: 0 1px; }
+.sr-shell mark, .sr-scripture mark{ background: color-mix(in srgb, var(--sj-accent-fill) 22%, transparent); color: inherit; border-radius: 2px; padding: 0 1px; }
 
 .sr-pager{ display: flex; flex-wrap: wrap; align-items: center; gap: var(--sj-space-1); margin: var(--sj-space-6) 0 0; }
 .sr-page{ min-width: 44px; min-height: 44px; padding: 0 .8rem; border-radius: var(--sj-radius-md); border: 1px solid var(--sj-line); background: var(--sj-surface); color: var(--sj-ink-soft); font: 600 var(--sj-text-sm)/1 var(--sj-font-ui); cursor: pointer; }

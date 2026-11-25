@@ -95,7 +95,18 @@
           <div class="pos">${escapeHtml(e.pos)}</div>
         </div>
         <div class="abstract">${escapeHtml(e.abstract)}</div>`;
-      card.addEventListener('click', ()=>openEntry(e));
+      card.setAttribute('role', 'option');
+      card.tabIndex = 0;
+      if (currentEntry && currentEntry.id === e.id) card.setAttribute('aria-selected', 'true');
+      const choose = ()=>{
+        RESULTS.querySelectorAll('[aria-selected="true"]').forEach(n => n.removeAttribute('aria-selected'));
+        card.setAttribute('aria-selected', 'true');
+        openEntry(e);
+        // On narrow screens the entry opens below the index: bring it into view.
+        if (window.matchMedia && window.matchMedia('(max-width: 899px)').matches) READER.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      card.addEventListener('click', choose);
+      card.addEventListener('keydown', ev=>{ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); choose(); } });
       frag.appendChild(card);
     });
     RESULTS.innerHTML = '';
@@ -128,7 +139,7 @@
     const bits = [];
 
     // Dictionary-style: headword / POS; then definition top, then extras below
-    bits.push(`<h2 class="r-title">${escapeHtml(e.headword)}${e.pos?` <span style="font-weight:400;color:#6b7280">(${escapeHtml(e.pos)})</span>`:''}</h2>`);
+    bits.push(`<h2 class="r-title">${escapeHtml(e.headword)}${e.pos?` <span class="r-pos">(${escapeHtml(e.pos)})</span>`:''}</h2>`);
     bits.push(`<p>${escapeHtml(e.definition)}</p>`);
 
     if(e.etymology)    bits.push(`<p><strong>Etymology.</strong> ${escapeHtml(e.etymology)}</p>`);
@@ -170,9 +181,16 @@
   Q.addEventListener('input', doFilter);
   CLEAR.addEventListener('click', ()=>{ Q.value=''; renderResults(); Q.focus(); });
 
+  // Quick-search buttons in the page head fill the search field.
+  document.querySelectorAll('[data-ency-query]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ Q.value = btn.dataset.encyQuery; activeLetter = null; renderResults(); });
+  });
+
   (async function init(){
     buildAZ();
     await loadJSON();
+    const count = document.getElementById('encyCount');
+    if (count) count.textContent = DB.length.toLocaleString() + ' entries';
     renderResults();
     openEntryFromHash();
   })();
