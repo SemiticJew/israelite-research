@@ -617,22 +617,6 @@ html body.lb-extra .extra-guide-card{ background:none !important; border:0 !impo
 html body.lb-extra .extra-guide-card .extra-guide-num{ width:auto !important; height:auto !important; background:none !important; color:var(--lb-orange) !important; font:italic 700 2rem/1 var(--lb-script) !important; border-radius:0 !important; display:block !important; margin:0 0 .85rem !important; box-shadow:none !important; }
 html body.lb-extra .extra-guide-card h2, html body.lb-extra .extra-guide-card h3{ font:700 1.25rem/1.15 var(--lb-display) !important; }
 html body.lb-extra .extra-guide-card p{ font:400 1rem/1.6 var(--lb-serif) !important; color:var(--lb-muted) !important; }
-html body.lb-extra .extra-map-shell{
-  margin-top:clamp(40px, 5vw, 64px) !important; margin-left:calc(50% - 50vw) !important; margin-right:calc(50% - 50vw) !important;
-  padding:clamp(40px, 5vw, 72px) calc(50vw - 50% + var(--sj-space-6)) !important; border:0 !important; border-radius:0 !important;
-  background:repeating-linear-gradient(180deg, transparent 0 39px, rgba(219,228,238,.05) 39px 40px), var(--lb-navy-deep) !important;
-  --lb-ink:#fff; --lb-ink-soft:#C9D5E3; --lb-muted:#9FB0C5; --lb-line:rgba(219,228,238,.16); --lb-line-strong:rgba(219,228,238,.3);
-  --sj-ink:#fff; --sj-ink-soft:#C9D5E3; --sj-muted:#9FB0C5; --sj-line:rgba(219,228,238,.16); --sj-surface:#0F1A2B; --sj-surface-2:#142236;
-  color:#fff;
-}
-html body.lb-extra .extra-map-shell .rs-section-head h2{ color:#fff !important; }
-html body.lb-extra .extra-map-shell .rs-section-head p, html body.lb-extra .extra-map-hint{ color:#C9D5E3 !important; }
-html body.lb-extra .extra-map-shell .mapwrap{ border-radius:2px !important; border:1px solid rgba(219,228,238,.16) !important; background:#0A1628 !important; }
-html body.lb-extra .extra-map-shell :is(input, button, select){ border-radius:2px !important; }
-html body.lb-extra .extra-map-shell input{ background:#fff !important; color:#0B2340 !important; }
-html body.lb-extra .extra-map-shell .card{ background:#0F1A2B !important; border:1px solid rgba(219,228,238,.16) !important; color:#E9EEF6 !important; border-radius:2px !important; }
-html body.lb-extra .extra-map-legend, html body.lb-extra .extra-map-shell .status{ color:#C9D5E3 !important; }
-@media (max-width:700px){ html body.lb-extra .extra-map-shell{ padding-left:calc(50vw - 50% + 16px) !important; padding-right:calc(50vw - 50% + 16px) !important; } }
 
 /* =====================================================================
    BLACK HISTORY & BIBLICAL IDENTITY — a study syllabus on a timeline
@@ -660,10 +644,6 @@ html body.lb-identity .study-card h3{ font:700 clamp(1.375rem, 1.1rem + 1vw, 1.8
 html body.lb-identity .study-card p{ font:400 1.125rem/1.65 var(--lb-serif) !important; color:var(--lb-ink-soft) !important; max-width:40rem; }
 html body.lb-identity .study-links{ display:flex !important; flex-wrap:wrap; gap:.5rem 1.5rem !important; margin-top:1rem !important; }
 html body.lb-identity .study-links a{ font:700 .875rem/1 var(--lb-display) !important; color:var(--lb-ink) !important; text-decoration:none !important; border-bottom:1.5px solid var(--lb-orange) !important; padding:.6rem 0 .3rem !important; background:none !important; border-radius:0 !important; }
-html body.lb-extra .extra-map-shell .status{ background:#0F1A2B !important; border-color:rgba(219,228,238,.16) !important; color:#C9D5E3 !important; }
-html body.lb-extra .extra-map-shell .status b{ color:#F7A04F !important; }
-html body.lb-extra .extra-map-shell input::placeholder{ color:#6B7A8D !important; opacity:1; }
-html body.lb-extra .extra-map-shell .extra-map-controls{ background:#0F1A2B !important; border-color:rgba(219,228,238,.16) !important; }
 
 /* ---------- Validation fixes ---------- */
 /* numerals: a slightly deeper orange on light paper keeps large italic folios at 3:1+ */
