@@ -548,27 +548,7 @@ html body.lb-guides .lb-shelf .coming-card span{ align-self:flex-start; font:700
 html body.lb-guides .lb-shelf .coming-card::after{ display:none !important; }
 @media (max-width:959px){ html body.lb-guides .guide-cover-image, html body.lb-guides .guide-cover{ width:min(78%, 360px) !important; } }
 
-/* =====================================================================
-   DIETARY LAWS — a workbench: the checker beside the law tree
-   ===================================================================== */
-html body.lb-dietary .lb-mast .rs-title{ font-size:clamp(3rem, 1.8rem + 5.5vw, 6.5rem) !important; }
-html body.lb-dietary .lb-bench{ display:grid; gap:clamp(24px, 4vw, 48px); margin-top:clamp(32px, 4vw, 56px); }
-@media (min-width:1080px){
-  html body.lb-dietary .lb-bench{ grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); align-items:start; }
-  html body.lb-dietary .lb-bench > .dietary-tool-shell{ position:sticky; top:72px; max-height:calc(100vh - 88px); overflow-y:auto; scrollbar-width:thin; }
-}
-html body.lb-dietary .lb-bench > .rs-panel{ margin:0 !important; border-radius:0 !important; box-shadow:none !important; }
-html body.lb-dietary .dietary-tool-shell{ background:var(--lb-surface) !important; border:1px solid var(--lb-line) !important; border-top:4px solid var(--lb-orange) !important; padding:clamp(20px, 3vw, 32px) !important; }
-html body.lb-dietary .dietary-tool-shell .rs-section-head h2{ font-size:1.625rem !important; }
-html body.lb-dietary .dietary-tool-shell :is(input, textarea, select){ border-radius:2px !important; }
-html body.lb-dietary .dietary-tool-shell :is(.rs-chip, button){ border-radius:2px !important; }
-html body.lb-dietary .dietary-tool-shell .dietary-quick-tools{ background:none !important; border:0 !important; padding:0 !important; flex-wrap:wrap; }
-html body.lb-dietary #foodCheck{ margin-top:1.25rem !important; padding-top:1.25rem !important; border-top:1px solid var(--lb-line) !important; }
-html body.lb-dietary .dietary-tree-shell{ background:none !important; border:0 !important; border-top:2px solid var(--lb-ink) !important; padding:1.25rem 0 0 !important; }
-html body.lb-dietary .dietary-tree-shell::before{ display:none !important; }
-html body.lb-dietary .dietary-tree-shell .rs-section-head h2{ font-size:clamp(1.75rem, 1.3rem + 1.5vw, 2.5rem) !important; }
-html body.lb-dietary #dietTree :is(details, .node, .group, .cat){ border-radius:2px !important; }
-html body.lb-dietary main > :is(.note, .dietary-note, aside){ border-radius:2px !important; }
+/* DIETARY LAWS — its own stylesheet, css/dietary.css (loaded after this file). */
 
 /* =====================================================================
    ISRAELITE CATECHISM — a bound book: contents beside the page
@@ -700,10 +680,6 @@ html body.lb-ology .lb-study{ grid-template-columns:minmax(0, 1fr); }
 @media (min-width:980px){ html body.lb-ology .lb-study{ grid-template-columns:15rem minmax(0, 1fr); } }
 /* Encyclopedia quick-search label on navy */
 html body.lb-ency .lb-mast .ency-quick-row .ency-chip-label{ color:#F7A04F !important; opacity:1 !important; }
-/* Dietary Laws: the search Clear button had white text on white */
-html body.lb-dietary #dietClear{ min-height:44px !important; padding:0 1.1rem !important; background:var(--lb-ink) !important; color:var(--lb-paper) !important; border:0 !important; border-radius:2px !important; font:700 .8125rem/1 var(--lb-display) !important; }
-html body.lb-dietary #dietTree a{ color:var(--lb-accent) !important; }
-html body.lb-dietary #dietTree :is(.badge, .count, [class*="count"], [class*="badge"]){ color:var(--lb-accent) !important; }
 /* section links in the Ologies heads get a proper tap area */
 html body.lb-ologies .sec-head .link{ display:inline-flex; align-items:center; min-height:44px; padding:0 0 .1rem !important; }
 html[data-theme="dark"] body.lb-search .sr-submit{ background:var(--lb-orange) !important; border-color:var(--lb-orange) !important; color:#0A1322 !important; }
@@ -752,7 +728,6 @@ html body.lb-summaries .bs-grid .title{ overflow-wrap:anywhere; hyphens:auto; }
 html body.lb-guides .guide-points li{ padding-right:.75rem !important; }
 html body.lb-guides .lb-shelf .coming-card{ padding-right:1.1rem !important; }
 html body.lb-guides .lb-shelf .coming-card h3{ overflow-wrap:anywhere; hyphens:auto; }
-html body.lb-dietary .dietary-tool-shell .rs-chip{ white-space:nowrap; padding:0 .85rem !important; }
 html body.lb-catechism .vtab{ padding-right:.75rem !important; }
 html body.lb-ency .lb-ency-find .r-toolbar, html body.lb-refs .lb-lexicon-find .r-toolbar{ flex-wrap:nowrap !important; }
 html body.lb-ency .lb-ency-find #clearQ, html body.lb-refs .lb-lexicon-find #clearQ{ flex:none !important; width:auto !important; }

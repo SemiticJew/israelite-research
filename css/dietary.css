@@ -1,0 +1,289 @@
+/* dietary.css — Dietary Laws: a biblical food reference.
+
+   Loaded after css/research.css and css/library.css on /dietary-laws.html only (body.lb-dietary).
+   Composition: a navy masthead with the ingredient checker as its centrepiece; a key to the four
+   markings; a sticky finding rail (search, quick searches, category index) beside the categories,
+   set like a printed reference; and a closing note on reading the modern examples.
+
+   The guide's data, search, checker and Scripture links are driven by the page's own scripts;
+   this file only styles the elements those scripts render (.sec, .grp, .law-link, .example-card,
+   .fc-banner …). Status colours: Forbidden/Prohibited orange, Avoid amber tint, Verify parchment
+   with a dashed edge, Allowed navy — each also carries a glyph, so colour is never the only cue. */
+
+html body.lb-dietary{
+  --dl-forbidden:#F17300; --dl-forbidden-ink:#0B2340;
+  --dl-avoid:#FBE3CC; --dl-avoid-ink:#8A3B00; --dl-avoid-edge:#F0B27A;
+  --dl-verify:#F3EEE3; --dl-verify-ink:#2E4360; --dl-verify-edge:#8FA3BC;
+  --dl-allowed:#0B2340; --dl-allowed-ink:#FBF8F3;
+  --dl-card:#FFFFFF; --dl-sticky:84px;
+}
+html[data-theme="dark"] body.lb-dietary{
+  --dl-forbidden:#F7A04F; --dl-forbidden-ink:#0A1322;
+  --dl-avoid:#3A2512; --dl-avoid-ink:#FFC48A; --dl-avoid-edge:#7A4A1E;
+  --dl-verify:#16243A; --dl-verify-ink:#C9D5E3; --dl-verify-edge:#5A6E89;
+  --dl-allowed:#DCE6F2; --dl-allowed-ink:#0B2340;
+  --dl-card:#0F1A2B;
+}
+html body.lb-dietary main.container{ max-width:1240px !important; padding-bottom:0 !important; }
+html body.lb-dietary .hide{ display:none !important; }
+html body.lb-dietary .sr-only{ position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* ---------- Masthead: title + principal passages | the checker ---------- */
+html body.lb-dietary .dl-mast{ padding-bottom:clamp(48px, 6vw, 88px) !important; overflow:hidden; }
+html body.lb-dietary .dl-mast::after{
+  content:""; position:absolute; right:-6vw; bottom:-12vw; width:44vw; height:44vw; max-width:640px; max-height:640px; pointer-events:none;
+  border-radius:50%; border:1px solid rgba(241,115,0,.18); box-shadow:0 0 0 40px rgba(241,115,0,.035), 0 0 0 90px rgba(241,115,0,.025);
+}
+html body.lb-dietary .dl-mast__grid{ position:relative; z-index:1; display:grid; gap:clamp(32px, 5vw, 72px); align-items:start; }
+@media (min-width:1000px){ html body.lb-dietary .dl-mast__grid{ grid-template-columns:minmax(0, 5fr) minmax(0, 6fr); } }
+html body.lb-dietary .dl-mast .rs-title{ font-size:clamp(3.25rem, 1.9rem + 6vw, 7.25rem) !important; color:#fff !important; }
+html body.lb-dietary .dl-mast .rs-lede{ color:#C9D5E3 !important; }
+html body.lb-dietary .dl-mast__refs{ list-style:none; margin:clamp(28px, 4vw, 48px) 0 0; padding:0; border-top:1px solid rgba(219,228,238,.18); max-width:34rem; }
+html body.lb-dietary .dl-mast__refs li{ border-bottom:1px solid rgba(219,228,238,.18); }
+html body.lb-dietary .dl-mast__refs a{
+  display:flex; align-items:baseline; justify-content:space-between; gap:1rem; min-height:52px; padding:.85rem 0;
+  color:#fff !important; text-decoration:none !important;
+}
+html body.lb-dietary .dl-mast__refs a span{ font:700 1.125rem/1.2 var(--lb-display); letter-spacing:-.01em; }
+html body.lb-dietary .dl-mast__refs a small{ font:italic 400 1rem/1.3 var(--lb-serif); color:#9FB0C5; }
+html body.lb-dietary .dl-mast__refs a:hover span{ color:#F7A04F; }
+html body.lb-dietary .dl-mast__refs a::after{ content:"→"; color:#F17300; font:600 1rem/1 var(--lb-ui); transition:transform .2s; }
+html body.lb-dietary .dl-mast__refs a:hover::after{ transform:translateX(3px); }
+html body.lb-dietary .dl-mast__refs a small{ margin-left:auto; }
+
+/* The checker: a paper card on the navy band */
+html body.lb-dietary .dl-checker{
+  --lb-ink:#0B2340; --lb-ink-soft:#2E4360; --lb-muted:#55657A; --lb-line:#DCE2E9; --lb-accent:#B45400;
+  background:#FBF8F3; color:#0B2340; border-top:4px solid var(--lb-orange); border-radius:2px;
+  padding:clamp(22px, 3vw, 36px); box-shadow:0 40px 80px -40px rgba(0,0,0,.75);
+}
+html[data-theme="dark"] body.lb-dietary .dl-checker{
+  --lb-ink:#E9EEF6; --lb-ink-soft:#C3CEDC; --lb-muted:#A3B0C2; --lb-line:#2A3A52; --lb-accent:#FF9A3D;
+  background:#0F1A2B; color:#E9EEF6; box-shadow:0 0 0 1px #223046, 0 40px 80px -40px rgba(0,0,0,.9);
+}
+html body.lb-dietary .dl-checker__head{ display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; }
+html body.lb-dietary .dl-checker__icon{ flex:none; display:grid; place-items:center; width:52px; height:52px; border-radius:50%; background:var(--lb-orange); color:#0B2340; }
+html body.lb-dietary .dl-checker__icon svg{ width:26px; height:26px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+html body.lb-dietary .dl-checker__eyebrow{ margin:0 0 .3rem; font:700 .6875rem/1 var(--lb-ui); letter-spacing:.16em; text-transform:uppercase; color:var(--lb-accent); }
+html body.lb-dietary .dl-checker h2{ margin:0; font:700 clamp(1.625rem, 1.3rem + 1vw, 2.125rem)/1.05 var(--lb-display); letter-spacing:-.025em; color:var(--lb-ink); }
+html body.lb-dietary .dl-checker__label{ display:block; margin:0 0 .5rem; font:600 .8125rem/1.3 var(--lb-ui); color:var(--lb-ink-soft); }
+html body.lb-dietary #foodText{
+  display:block; width:100%; min-height:7.5rem; box-sizing:border-box; resize:vertical; padding:1rem 1.1rem;
+  font:400 1.0625rem/1.5 var(--lb-serif) !important; color:var(--lb-ink) !important; background:var(--lb-surface, #fff) !important;
+  border:1px solid var(--lb-line-strong, #B9C4D1) !important; border-radius:2px !important; box-shadow:inset 0 1px 2px rgba(11,35,64,.06);
+}
+html[data-theme="dark"] body.lb-dietary #foodText{ background:#08111F !important; border-color:#34465E !important; }
+html body.lb-dietary #foodText::placeholder{ color:var(--lb-muted); opacity:1; }
+html body.lb-dietary #foodText:focus{ outline:none; border-color:var(--lb-orange) !important; box-shadow:0 0 0 3px rgba(241,115,0,.25) !important; }
+html body.lb-dietary .fc-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1rem; margin-top:.9rem; }
+html body.lb-dietary #foodCheckBtn{
+  display:inline-flex; align-items:center; gap:.5rem; min-height:48px; padding:0 1.4rem; cursor:pointer;
+  background:var(--lb-orange) !important; color:#0A1322 !important; border:0 !important; border-radius:2px !important;
+  font:700 .9375rem/1 var(--lb-display) !important; letter-spacing:.01em;
+}
+html body.lb-dietary #foodCheckBtn:hover{ background:var(--lb-orange-hover) !important; }
+html body.lb-dietary .fc-hint{ flex:1 1 14rem; font:400 .875rem/1.45 var(--lb-ui); color:var(--lb-muted); }
+html body.lb-dietary .fc-suggest{ margin:12px 0; border:1px solid var(--lb-line); }
+html body.lb-dietary .fc-suggest button{ display:block; width:100%; text-align:left; padding:.6rem .9rem; background:none; border:0; border-bottom:1px solid var(--lb-line); color:var(--lb-ink); cursor:pointer; }
+
+/* Verdict: a ruled strip with the status glyph */
+html body.lb-dietary .fc-banner{
+  display:flex; align-items:center; gap:.75rem; margin:1.25rem 0 0; padding:.9rem 1rem; border-radius:2px;
+  font:700 1rem/1.3 var(--lb-display); border:1px solid transparent;
+}
+html body.lb-dietary .fc-banner[hidden]{ display:none; }
+html body.lb-dietary .fc-banner::before{
+  flex:none; display:grid; place-items:center; width:28px; height:28px; border-radius:50%; font:800 .9375rem/1 var(--lb-ui);
+}
+html body.lb-dietary .fc-banner:is(.forbidden, .prohibited){ background:var(--dl-forbidden); color:var(--dl-forbidden-ink); }
+html body.lb-dietary .fc-banner:is(.forbidden, .prohibited)::before{ content:"✕"; background:var(--dl-forbidden-ink); color:var(--dl-forbidden); }
+html body.lb-dietary .fc-banner.avoid{ background:var(--dl-avoid); color:var(--dl-avoid-ink); border-color:var(--dl-avoid-edge); }
+html body.lb-dietary .fc-banner.avoid::before{ content:"!"; background:var(--dl-avoid-ink); color:var(--dl-avoid); }
+html body.lb-dietary .fc-banner.verify{ background:var(--dl-verify); color:var(--dl-verify-ink); border:1px dashed var(--dl-verify-edge); }
+html body.lb-dietary .fc-banner.verify::before{ content:"?"; background:var(--dl-verify-ink); color:var(--dl-verify); }
+html body.lb-dietary .fc-banner.allowed{ background:var(--dl-allowed); color:var(--dl-allowed-ink); }
+html body.lb-dietary .fc-banner.allowed::before{ content:"✓"; background:var(--dl-allowed-ink); color:var(--dl-allowed); }
+html body.lb-dietary .dl-results:not(:empty){ margin-top:1rem; }
+
+/* ---------- Example and result cards (rendered by the scripts) ---------- */
+html body.lb-dietary .example-cards{ display:grid; gap:12px; grid-template-columns:repeat(auto-fill, minmax(min(100%, 190px), 1fr)); }
+html body.lb-dietary .example-card{
+  display:flex; flex-direction:column; min-width:0; overflow:hidden; padding:0; border-radius:2px;
+  background:var(--dl-card); border:1px solid var(--lb-line); box-shadow:none; font-size:inherit; transition:border-color .15s, transform .15s;
+}
+html body.lb-dietary .example-card:hover{ transform:translateY(-1px); border-color:var(--lb-line-strong); box-shadow:none; }
+html body.lb-dietary .example-card .card-head{
+  display:flex; align-items:center; gap:.45rem; padding:.5rem .75rem; letter-spacing:.12em; text-transform:uppercase;
+  font:800 .6875rem/1.1 var(--lb-ui); border-bottom:1px solid transparent;
+}
+html body.lb-dietary .example-card .card-head::before{ font:800 .8125rem/1 var(--lb-ui); letter-spacing:0; }
+html body.lb-dietary .example-card:is(.forbidden, .prohibited) .card-head{ background:var(--dl-forbidden); color:var(--dl-forbidden-ink); }
+html body.lb-dietary .example-card:is(.forbidden, .prohibited) .card-head::before{ content:"✕"; }
+html body.lb-dietary .example-card.avoid .card-head{ background:var(--dl-avoid); color:var(--dl-avoid-ink); border-bottom-color:var(--dl-avoid-edge); }
+html body.lb-dietary .example-card.avoid .card-head::before{ content:"!"; }
+html body.lb-dietary .example-card.verify .card-head{ background:var(--dl-verify); color:var(--dl-verify-ink); border-bottom:1px dashed var(--dl-verify-edge); }
+html body.lb-dietary .example-card.verify .card-head::before{ content:"?"; }
+html body.lb-dietary .example-card.allowed .card-head{ background:var(--dl-allowed); color:var(--dl-allowed-ink); }
+html body.lb-dietary .example-card.allowed .card-head::before{ content:"✓"; }
+html body.lb-dietary .example-card .card-title{ padding:.75rem .85rem .2rem; font:600 1.0625rem/1.3 var(--lb-serif); color:var(--lb-ink); overflow-wrap:anywhere; }
+html body.lb-dietary .example-card .card-foot{ padding:0 .85rem .85rem; font:400 .875rem/1.45 var(--lb-ui); color:var(--lb-muted); }
+html body.lb-dietary .example-card .card-title:last-child{ padding-bottom:.85rem; }
+html body.lb-dietary .example-card.hl{ border-color:var(--lb-orange); box-shadow:0 0 0 2px var(--lb-orange); background:var(--dl-card); }
+
+/* ---------- Key to the markings ---------- */
+html body.lb-dietary .dl-key{ background:var(--lb-surface); border-bottom:1px solid var(--lb-line); padding-top:clamp(28px, 4vw, 44px) !important; padding-bottom:clamp(28px, 4vw, 44px) !important; }
+html body.lb-dietary .dl-key__title{ margin:0 0 1.25rem; font:700 .75rem/1 var(--lb-ui); letter-spacing:.16em; text-transform:uppercase; color:var(--lb-muted); }
+html body.lb-dietary .dl-key__list{ list-style:none; margin:0 auto; padding:0; max-width:1192px; display:grid; gap:0; grid-template-columns:repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+html body.lb-dietary .dl-key__item{ display:grid; align-content:start; grid-template-columns:auto 1fr; column-gap:.85rem; row-gap:.3rem; align-items:center; padding:1rem 1.25rem 1rem 0; border-top:1px solid var(--lb-line); }
+@media (min-width:980px){ html body.lb-dietary .dl-key__item + .dl-key__item{ padding-left:1.25rem; border-left:1px solid var(--lb-line); } }
+html body.lb-dietary .dl-key__item strong{ font:700 1.25rem/1 var(--lb-display); letter-spacing:-.01em; color:var(--lb-ink); }
+html body.lb-dietary .dl-key__item > span:last-child{ grid-column:1 / -1; font:400 .9375rem/1.5 var(--lb-serif); color:var(--lb-ink-soft); }
+html body.lb-dietary .dl-status{ display:grid; place-items:center; width:30px; height:30px; border-radius:50%; font:800 .875rem/1 var(--lb-ui); }
+html body.lb-dietary .forbidden > .dl-status{ background:var(--dl-forbidden); color:var(--dl-forbidden-ink); }
+html body.lb-dietary .forbidden > .dl-status::before{ content:"✕"; }
+html body.lb-dietary .avoid > .dl-status{ background:var(--dl-avoid); color:var(--dl-avoid-ink); box-shadow:inset 0 0 0 1px var(--dl-avoid-edge); }
+html body.lb-dietary .avoid > .dl-status::before{ content:"!"; }
+html body.lb-dietary .verify > .dl-status{ background:var(--dl-verify); color:var(--dl-verify-ink); outline:1px dashed var(--dl-verify-edge); outline-offset:-1px; }
+html body.lb-dietary .verify > .dl-status::before{ content:"?"; }
+html body.lb-dietary .allowed > .dl-status{ background:var(--dl-allowed); color:var(--dl-allowed-ink); }
+html body.lb-dietary .allowed > .dl-status::before{ content:"✓"; }
+
+/* ---------- The guide: finding rail | categories ---------- */
+html body.lb-dietary .dl-guide{ display:grid; gap:clamp(28px, 4vw, 64px); padding:clamp(36px, 5vw, 72px) 0 clamp(48px, 6vw, 88px); }
+@media (min-width:1000px){
+  html body.lb-dietary .dl-guide{ grid-template-columns:300px minmax(0, 1fr); align-items:start; }
+  html body.lb-dietary .dl-rail{ position:sticky; top:var(--dl-sticky); max-height:calc(100vh - var(--dl-sticky) - 16px); overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; padding:0 6px 6px 2px; margin-left:-2px; }
+}
+html body.lb-dietary .dl-rail{ display:grid; grid-template-columns:minmax(0, 1fr); gap:2rem; align-content:start; min-width:0; }
+html body.lb-dietary .dl-rail__label{ display:flex; align-items:baseline; gap:.5rem; margin:0 0 .85rem; font:700 .75rem/1 var(--lb-ui); letter-spacing:.16em; text-transform:uppercase; color:var(--lb-ink); }
+html body.lb-dietary .dl-rail__label .lb-folio{ display:inline; margin:0; font-size:1.125rem; letter-spacing:0; text-transform:none; }
+html body.lb-dietary .dl-find .searchbar{
+  display:flex; align-items:center; gap:0; margin:0; padding:0; background:var(--lb-surface); border:1px solid var(--lb-line-strong); border-radius:2px;
+}
+html body.lb-dietary .dl-find .searchbar:focus-within{ border-color:var(--lb-orange); box-shadow:0 0 0 3px rgba(241,115,0,.2); }
+html body.lb-dietary .dl-find__icon{ flex:none; width:18px; height:18px; margin-left:.85rem; fill:none; stroke:var(--lb-muted); stroke-width:2; stroke-linecap:round; }
+html body.lb-dietary #dietSearch{
+  flex:1; min-width:0; min-height:48px; padding:0 .75rem !important; border:0 !important; border-radius:0 !important; box-shadow:none !important;
+  background:transparent !important; color:var(--lb-ink) !important; font:500 1rem/1.3 var(--lb-ui) !important;
+}
+html body.lb-dietary #dietSearch:focus-visible{ outline:none !important; }
+html body.lb-dietary #dietSearch::placeholder{ color:var(--lb-muted); opacity:1; }
+html body.lb-dietary #dietClear{
+  flex:none; min-height:48px; padding:0 1rem !important; background:var(--lb-ink) !important; color:var(--lb-paper) !important; border:0 !important;
+  border-radius:0 !important; font:700 .8125rem/1 var(--lb-display) !important; cursor:pointer;
+}
+html body.lb-dietary .dietary-search-meta{ margin:.6rem 0 0; font:500 .8125rem/1.4 var(--lb-ui); color:var(--lb-muted); }
+html body.lb-dietary .dl-quick{ display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin-top:1rem; }
+html body.lb-dietary .dl-quick .dietary-chip-label{ margin-right:.25rem; text-transform:uppercase; }
+html body.lb-dietary .dl-q{
+  min-height:36px; padding:0 .8rem; cursor:pointer; border-radius:999px; background:transparent; color:var(--lb-ink);
+  border:1px solid var(--lb-line-strong); font:600 .8125rem/1 var(--lb-ui); transition:background .15s, border-color .15s, color .15s;
+}
+html body.lb-dietary .dl-q:hover{ border-color:var(--lb-orange); color:var(--lb-accent); }
+
+html body.lb-dietary .dl-index ol{ list-style:none; margin:0; padding:0; border-top:2px solid var(--lb-ink); }
+html body.lb-dietary .dl-index li{ border-bottom:1px solid var(--lb-line); }
+html body.lb-dietary .dl-index a{
+  display:grid; grid-template-columns:2.25rem 1fr; column-gap:.5rem; row-gap:.15rem; padding:.85rem 0; min-height:44px;
+  color:var(--lb-ink) !important; text-decoration:none !important;
+}
+html body.lb-dietary .dl-index__n{ grid-row:1 / span 2; font:italic 700 1.125rem/1.2 var(--lb-script); color:var(--lb-orange); }
+html body.lb-dietary .dl-index__t{ font:700 1rem/1.25 var(--lb-display); letter-spacing:-.005em; }
+html body.lb-dietary .dl-index__c{ font:500 .75rem/1.3 var(--lb-ui); color:var(--lb-muted); }
+html body.lb-dietary .dl-index a:hover .dl-index__t{ color:var(--lb-accent); }
+html body.lb-dietary .dietary-tree-actions{ display:flex; gap:.5rem; margin-top:1rem; }
+html body.lb-dietary .dietary-tree-btn{
+  flex:1; min-width:0; min-height:40px; cursor:pointer; background:transparent; color:var(--lb-ink-soft); border:1px solid var(--lb-line);
+  border-radius:2px; font:600 .8125rem/1 var(--lb-ui);
+}
+html body.lb-dietary .dietary-tree-btn:hover{ border-color:var(--lb-ink); color:var(--lb-ink); }
+
+html body.lb-dietary .dl-book__title{ margin:0; font:700 clamp(2rem, 1.4rem + 2vw, 3.25rem)/1 var(--lb-display); letter-spacing:-.03em; color:var(--lb-ink); }
+html body.lb-dietary .dl-book__intro{ margin:.75rem 0 0; font:italic 400 1.125rem/1.5 var(--lb-serif); color:var(--lb-muted); }
+
+/* Category chapters (details.sec) */
+html body.lb-dietary .tree{ margin:clamp(20px, 3vw, 36px) 0 0; background:none !important; border:0 !important; }
+html body.lb-dietary .tree summary{ list-style:none; cursor:pointer; }
+html body.lb-dietary .tree summary::-webkit-details-marker{ display:none; }
+html body.lb-dietary .tree .sec{ margin:0; padding:0; border:0; border-top:2px solid var(--lb-ink); border-radius:0; background:none; scroll-margin-top:calc(var(--dl-sticky) + 8px); }
+html body.lb-dietary .tree .sec + .sec{ margin-top:clamp(32px, 4vw, 56px); }
+html body.lb-dietary .tree .sec > summary{
+  position:relative; display:grid; grid-template-columns:auto minmax(0, 1fr) auto; gap:.25rem 1.25rem; align-items:baseline;
+  padding:1.25rem 2.5rem 1.25rem 0;
+}
+html body.lb-dietary .diet-sec-num{ font:italic 700 clamp(2rem, 1.5rem + 1.6vw, 3rem)/1 var(--lb-script); color:var(--lb-orange); }
+html body.lb-dietary .diet-sec-main{ display:grid; gap:.35rem; min-width:0; }
+html body.lb-dietary .diet-sec-title{ font:700 clamp(1.5rem, 1.15rem + 1.2vw, 2.25rem)/1.05 var(--lb-display); letter-spacing:-.025em; color:var(--lb-ink); }
+html body.lb-dietary .diet-sec-sub{ font:400 1.0625rem/1.5 var(--lb-serif); color:var(--lb-ink-soft); }
+html body.lb-dietary .diet-sec-count{ font:700 .6875rem/1 var(--lb-ui); letter-spacing:.14em; text-transform:uppercase; color:var(--lb-muted); white-space:nowrap; }
+html body.lb-dietary .tree summary::after{
+  content:""; position:absolute; right:.35rem; top:50%; width:.55rem; height:.55rem; margin-top:-.4rem;
+  border:solid var(--lb-orange); border-width:0 2px 2px 0; transform:rotate(45deg); transition:transform .2s;
+}
+html body.lb-dietary .tree details[open] > summary::after{ transform:rotate(-135deg); margin-top:-.1rem; }
+html body.lb-dietary .tree .sec > .group{ margin:0; padding:0; border-top:1px solid var(--lb-line); }
+
+/* Groups (details.grp): entries in the reference */
+html body.lb-dietary .tree .grp{ margin:0; padding:0; border:0; border-bottom:1px solid var(--lb-line); border-radius:0; background:none; box-shadow:none; }
+html body.lb-dietary .tree .grp > summary{
+  position:relative; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.5rem 1rem;
+  min-height:56px; padding:.75rem 2.5rem .75rem 0; font-weight:inherit; color:var(--lb-ink); transition:background .15s;
+}
+html body.lb-dietary .tree .grp > summary:hover{ background:color-mix(in srgb, var(--lb-orange) 5%, transparent); }
+html body.lb-dietary .diet-grp-title{ display:inline-flex; align-items:center; gap:.75rem; font:700 1.0625rem/1.3 var(--lb-display); letter-spacing:-.005em; color:var(--lb-ink); }
+html body.lb-dietary .diet-grp-title .ico{
+  flex:none; width:36px; height:36px; margin:0; padding:8px; box-sizing:border-box; border-radius:50%;
+  background:color-mix(in srgb, var(--lb-orange) 12%, transparent); color:var(--lb-accent);
+}
+html body.lb-dietary .ico :is(path, circle, rect, polygon, line){ fill:currentColor; stroke:none; }
+html body.lb-dietary .diet-grp-meta{ display:inline-flex; gap:.35rem; }
+html body.lb-dietary .tree .tag{
+  display:inline-flex; align-items:center; min-height:24px; padding:0 .55rem; border-radius:999px; background:none; color:var(--lb-muted);
+  border:1px solid var(--lb-line); font:600 .75rem/1 var(--lb-ui);
+}
+html body.lb-dietary .tree .grp[open]{ padding-bottom:1.5rem; }
+html body.lb-dietary .tree .grp[open] > summary{ background:none; }
+
+/* Scripture references as citation tabs */
+html body.lb-dietary .tree .grp > ul{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.25rem 0 1.25rem 48px !important; padding:0 !important; list-style:none; }
+html body.lb-dietary .tree .leaf{ margin:0; display:block; }
+html body.lb-dietary .law-link{
+  display:inline-flex; align-items:center; gap:.45rem; min-height:36px; padding:0 .8rem 0 .65rem; border-radius:2px;
+  background:var(--lb-surface); border:1px solid var(--lb-line); border-left:3px solid var(--lb-orange);
+  color:var(--lb-ink) !important; text-decoration:none !important; font:500 .9375rem/1.2 var(--lb-serif);
+}
+html body.lb-dietary .law-link::before{
+  content:""; width:14px; height:14px; flex:none; background:var(--lb-accent);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+html body.lb-dietary .law-link:hover{ border-color:var(--lb-line-strong); border-left-color:var(--lb-orange); color:var(--lb-accent) !important; }
+html body.lb-dietary .law-link.hl{ background:color-mix(in srgb, var(--lb-orange) 14%, var(--lb-surface)); box-shadow:none; border-color:var(--lb-orange); }
+html body.lb-dietary .tree .grp > .example-cards{ margin-left:48px; }
+@media (max-width:640px){
+  html body.lb-dietary .tree .grp > ul, html body.lb-dietary .tree .grp > .example-cards{ margin-left:0 !important; }
+  html body.lb-dietary .tree .sec > summary{ grid-template-columns:auto minmax(0, 1fr); padding-right:2rem; }
+  html body.lb-dietary .diet-sec-count{ grid-column:2; }
+  html body.lb-dietary .example-cards{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+}
+
+/* ---------- Closing note ---------- */
+html body.lb-dietary .dl-notes{ background:var(--lb-tint); border-top:1px solid var(--lb-line); padding-top:var(--lb-section) !important; padding-bottom:var(--lb-section) !important; }
+html body.lb-dietary .dl-notes__inner{ max-width:1192px; margin:0 auto; display:grid; gap:clamp(28px, 4vw, 64px); }
+@media (min-width:960px){ html body.lb-dietary .dl-notes__inner{ grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); } }
+html body.lb-dietary .dl-notes h2{ margin:0 0 1rem; font:700 clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)/1.04 var(--lb-display); letter-spacing:-.025em; color:var(--lb-ink); }
+html body.lb-dietary .dl-notes .note{ margin:0; font:400 1.0625rem/1.65 var(--lb-serif); color:var(--lb-ink-soft); }
+html body.lb-dietary .dl-notes .note strong{ color:var(--lb-ink); }
+html body.lb-dietary .dl-notes__steps{ list-style:none; counter-reset:dl; margin:0; padding:0; display:grid; gap:0; }
+html body.lb-dietary .dl-notes__steps li{ counter-increment:dl; display:grid; grid-template-columns:3rem 1fr; column-gap:1rem; padding:1.25rem 0; border-top:1px solid var(--lb-line-strong); }
+html body.lb-dietary .dl-notes__steps li:last-child{ border-bottom:1px solid var(--lb-line-strong); }
+html body.lb-dietary .dl-notes__steps li::before{ content:counter(dl, upper-roman) "."; grid-row:1 / span 2; font:italic 700 1.5rem/1.1 var(--lb-script); color:var(--lb-orange); }
+html body.lb-dietary .dl-notes__steps h3{ margin:0 0 .35rem; font:700 1.25rem/1.2 var(--lb-display); color:var(--lb-ink); }
+html body.lb-dietary .dl-notes__steps p{ margin:0; font:400 1rem/1.6 var(--lb-serif); color:var(--lb-ink-soft); }
+html body.lb-dietary .dl-notes + .rs-related{ margin-top:clamp(40px, 5vw, 72px) !important; }
+html body.lb-dietary .rs-related{ margin-bottom:clamp(48px, 6vw, 88px) !important; }
+
+@media (prefers-reduced-motion:reduce){ html body.lb-dietary *{ transition:none !important; } }
+/* While searching, matches stand out and the rest of a matched group recedes. */
+html body.lb-dietary .tree .grp:has(.example-card.hl) .example-card:not(.hl){ opacity:.5; }
+html body.lb-dietary :is(.dl-q, .dietary-tree-btn, #dietClear, #foodCheckBtn){ box-shadow:none; }
