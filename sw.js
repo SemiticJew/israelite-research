@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sj-pwa-v192';
+const CACHE_VERSION = 'sj-pwa-v193';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -52,6 +52,8 @@ const APP_SHELL_ASSETS = [
   '/css/institution.css',
   '/css/org.css',
   '/css/library.css',
+  '/css/dietary.css',
+  '/css/events.css',
   '/js/research-search.js',
   '/css/reader.css',
   '/tanakh/chapter.html',
